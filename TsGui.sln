@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsGui", "TsGui\TsGui.csproj", "{5E3CFB02-4012-4298-8770-A101BC0AE200}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core", "core\core.csproj", "{BEADCB16-D65D-4104-8272-4383137C500B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsGui-Tester", "TsGui-Tester\TsGui-Tester.csproj", "{871BE38F-7460-425D-A5A5-849E0EBB4897}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E3CFB02-4012-4298-8770-A101BC0AE200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3CFB02-4012-4298-8770-A101BC0AE200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3CFB02-4012-4298-8770-A101BC0AE200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3CFB02-4012-4298-8770-A101BC0AE200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEADCB16-D65D-4104-8272-4383137C500B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEADCB16-D65D-4104-8272-4383137C500B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEADCB16-D65D-4104-8272-4383137C500B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEADCB16-D65D-4104-8272-4383137C500B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{871BE38F-7460-425D-A5A5-849E0EBB4897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{871BE38F-7460-425D-A5A5-849E0EBB4897}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{871BE38F-7460-425D-A5A5-849E0EBB4897}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{871BE38F-7460-425D-A5A5-849E0EBB4897}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
