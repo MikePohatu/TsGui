@@ -1,0 +1,29 @@
+<TsGui>
+	<Column>
+		<Button>
+		</Button>
+		<Button>
+		</Button>
+		<GuiOption Type="FreeText">
+			<Variable>TextVariable</Variable>
+			<Label>This is free text</Label>
+			<DefaultValue>Example</DefaultValue>
+		</GuiOption>
+		<GuiOption Type="DropDownList">
+			<Variable>ListVariable</Variable>
+			<Label>This is a list</Label>
+			<ListOption>
+				<Label>Option 1</Label>
+				<Value>Option1</Value>
+			</ListOption>
+			<ListOption>
+				<Label>Option 2</Label>
+				<Value>Option2</Value>
+			</ListOption>
+			<ListOption>
+				<Label>Option 3</Label>
+				<Value>Option3</Value>
+			</ListOption>
+		</GuiOption>
+	</Column>
+</TsGui>
