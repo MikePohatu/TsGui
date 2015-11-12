@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Xml.Linq;
+using System.Windows.Controls;
 
 namespace core
 {
     public interface IGuiOption
     {
-        public TsVariable TsVariable;
-        public string Label;
+        TsVariable TsVariable { get; }
+        string Label { get; }
+        Control Control { get; }
+        bool LoadXml(XElement Xml);
     }
 }

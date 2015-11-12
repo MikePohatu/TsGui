@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
+using System.Windows.Controls;
 
 namespace core
 {
@@ -9,6 +10,7 @@ namespace core
         private string name;
         private string value;
         private string label;
+        private TextBox control;
 
         public TsVariable TsVariable
         {
@@ -16,10 +18,8 @@ namespace core
             //set { this.tsvar = value; }
         }
 
-        public string Label
-        {
-            get { return this.label; }
-        }
+        public string Label { get { return this.label; } }
+        public TextBox Control { get { return this.control; } }
 
         public bool LoadXml(XElement pXml)
         {
