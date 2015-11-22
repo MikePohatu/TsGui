@@ -45,5 +45,10 @@ namespace core
 
             return update;
         }
+
+        private void Build()
+        {
+            this.control = new ComboBox();
+        }
     }
 }
