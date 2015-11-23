@@ -12,7 +12,7 @@ namespace core
         private string label;
         private TextBox control;
 
-        public TsVariable TsVariable
+        public TsVariable Variable
         {
             get { return new TsVariable(this.name,this.value); }
             //set { this.tsvar = value; }

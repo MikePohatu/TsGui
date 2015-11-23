@@ -12,18 +12,18 @@
 		<GuiOption Type="DropDownList">
 			<Variable>ListVariable</Variable>
 			<Label>This is a list</Label>
-			<ListOption>
-				<Label>Option 1</Label>
+			<Option>
+				<Text>Option 1</Text>
 				<Value>Option1</Value>
-			</ListOption>
-			<ListOption>
-				<Label>Option 2</Label>
+			</Option>
+			<Option>
+        <Text>Option 2</Text>
 				<Value>Option2</Value>
-			</ListOption>
-			<ListOption>
-				<Label>Option 3</Label>
+			</Option>
+			<Option>
+        <Text>Option 3</Text>
 				<Value>Option3</Value>
-			</ListOption>
+			</Option>
 		</GuiOption>
 	</Column>
 </TsGui>

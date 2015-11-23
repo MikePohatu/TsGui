@@ -6,7 +6,7 @@ namespace core
 {
     public interface IGuiOption
     {
-        TsVariable TsVariable { get; }
+        TsVariable Variable { get; }
         string Label { get; }
         Control Control { get; }
         bool LoadXml(XElement Xml);
