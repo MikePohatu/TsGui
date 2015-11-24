@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Xml.Linq;
+
 namespace core
 {
     /// <summary>
@@ -19,9 +21,14 @@ namespace core
     /// </summary>
     public partial class TsGuiWindow : UserControl
     {
+        private XmlHandler handler;
+        private string exefolder = AppDomain.CurrentDomain.BaseDirectory;
+
         public TsGuiWindow()
         {
-            InitializeComponent();
+            handler = new XmlHandler();
+            XElement x = handler.Read(exefolder + @"\Config.xml");
+            InitializeComponent();           
         }
     }
 }

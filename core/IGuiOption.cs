@@ -4,11 +4,10 @@ using System.Windows.Controls;
 
 namespace core
 {
-    public interface IGuiOption
+    public interface IGuiOption: ITsGuiElement
     {
         TsVariable Variable { get; }
         string Label { get; }
         Control Control { get; }
-        bool LoadXml(XElement Xml);
     }
 }

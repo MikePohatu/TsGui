@@ -31,7 +31,7 @@ namespace core
                 } 
         }
         public string Label { get { return this.label; } }
-        public ComboBox Control { get { return this.control; } }
+        public Control Control { get { return this.control; } }
 
 
         public void LoadXml(XElement pXml)

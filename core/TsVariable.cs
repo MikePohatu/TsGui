@@ -4,20 +4,21 @@ namespace core
 {
     public class TsVariable
     {
+        private string name;
         public string Value { get; set; }
         public string Name 
-        { 
-            get; 
+        {
+            get { return this.name; } 
             set
             {
                 if (value == null) { throw new InvalidOperationException("TsVariable name cannot be null"); }
-                else { this.Name = value; }
+                else { this.name = value; }
             }
         }
 
         public TsVariable (string pName, string pValue)
         {
-            this.Name = pName;
+            this.name = pName;
             this.Value = pValue;
         }
     }
