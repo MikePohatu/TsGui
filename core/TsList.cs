@@ -16,6 +16,7 @@ namespace core
         public TsDropDownList(XElement pXml)
         {
             this.LoadXml(pXml);
+            this.Build();
         }
 
         //properties
