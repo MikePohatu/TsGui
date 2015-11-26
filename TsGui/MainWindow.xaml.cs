@@ -22,6 +22,7 @@ namespace TsGui
         public MainWindow()
         {
             InitializeComponent();
+            this.Hide();
         }
     }
 }

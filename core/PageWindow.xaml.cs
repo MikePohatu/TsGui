@@ -21,13 +21,9 @@ namespace core
     /// </summary>
     public partial class TsGuiWindow : UserControl
     {
-        private XmlHandler handler;
-        private string exefolder = AppDomain.CurrentDomain.BaseDirectory;
-
         public TsGuiWindow()
         {
-            handler = new XmlHandler();
-            XElement x = handler.Read(exefolder + @"\Config.xml");
+            
             InitializeComponent();           
         }
     }

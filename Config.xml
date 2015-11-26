@@ -1,4 +1,6 @@
 <TsGui>
+  <Height>250</Height>
+  <Width>300</Width>
 	<Page>
 		<Column>
 			<Button>
