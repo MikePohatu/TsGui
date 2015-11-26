@@ -12,6 +12,11 @@ namespace core
         private string label;
         private TextBox control;
 
+        public TsFreeText (XElement SourceXml)
+        {
+            this.LoadXml(SourceXml);
+        }
+
         public TsVariable Variable
         {
             get { return new TsVariable(this.name,this.value); }
@@ -38,15 +43,9 @@ namespace core
             { this.label = pXml.Element("Label").Value; }
         }
 
-        //public XElement GetXml()
-        //{
-        //    XElement x = new XElement("SystemSettings",
-        //        new XElement("DefaultInterval", this.DefaultInterval),
-        //        new XElement("MinInterval", this.MinInterval),
-        //        new XElement("MaxInterval", this.MaxInterval));
-
-        //    return x;
-        //    //this.Interval = XmlConvert.ToInt32(pXml.Element("Interval").Value);
-        //}
+        private void Build()
+        {
+            this.control = new TextBox();
+        }
     }
 }

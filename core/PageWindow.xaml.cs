@@ -12,19 +12,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using System.Xml.Linq;
-
 namespace core
 {
     /// <summary>
-    /// Interaction logic for TsGuiWindow.xaml
+    /// Interaction logic for PageWindow.xaml
     /// </summary>
-    public partial class TsGuiWindow : UserControl
+    public partial class PageWindow : UserControl
     {
-        public TsGuiWindow()
+        public PageWindow()
         {
-            
-            InitializeComponent();           
+            InitializeComponent();
         }
     }
 }

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Text;
 
+using System.Diagnostics;
+
 namespace core
 {
     public class Builder
@@ -21,37 +23,52 @@ namespace core
         public Builder()
         {
             string exefolder = AppDomain.CurrentDomain.BaseDirectory;
+            configpath = @"c:\Config.xml";
+            //configpath = exefolder + @"\Config.xml"
 
-            XElement x = handler.Read(exefolder + @"\Config.xml");
+            XElement x = handler.Read(configpath);
+            this.LoadXml(x);
         }
 
         public Builder(string ConfigPath)
         {
             //code to be added to make sure config file exists
             XElement x = handler.Read(ConfigPath);
+            this.LoadXml(x);
         }
 
 
         private void LoadXml(XElement SourceXml)
         {
             XElement x;
+            XElement tsguiXml;
             IEnumerable<XElement> pagesXml;
 
-            x = SourceXml.Element("Width");
-            if (x != null)
-            { this.pageWidth = x.Element("Width").Value; }
-
-            x = SourceXml.Element("Height");
-            if (x != null)
-            { this.pageHeight = x.Element("Height").Value; }
-
-            //now read in the options and add to a dictionary for later use
-            pagesXml = SourceXml.Elements("Page");
-            if (pagesXml != null)
+            tsguiXml = SourceXml.Element("TsGui");
+            if (tsguiXml != null)
             {
-                foreach (XElement xPage in pagesXml)
+
+                x = tsguiXml.Element("Width");
+                if (x != null)
+                { this.pageWidth = Convert.ToInt32(x.Element("Width").Value); }
+
+                x = tsguiXml.Element("Height");
+                if (x != null)
+                { this.pageHeight = Convert.ToInt32(x.Element("Height").Value); }
+
+                x = tsguiXml.Element("Padding");
+                if (x != null)
+                { this.pagePadding = Convert.ToInt32(x.Element("Padding").Value); }
+
+                //now read in the options and add to a dictionary for later use
+                pagesXml = tsguiXml.Elements("Page");
+                if (pagesXml != null)
                 {
-                    this.pages.Add(new Page(xPage));
+                    foreach (XElement xPage in pagesXml)
+                    {
+                        Debug.WriteLine("Creating page");
+                        this.pages.Add(new Page(xPage, this.pageHeight, this.pageWidth, this.pagePadding));
+                    }
                 }
             }
         }

@@ -1,17 +1,15 @@
 <TsGui>
   <Height>250</Height>
   <Width>300</Width>
+  <Padding>20</Padding>
 	<Page>
 		<Column>
-			<Button>
-			</Button>
-			<Button>
-			</Button>
 			<GuiOption Type="FreeText">
 				<Variable>TextVariable</Variable>
 				<Label>This is free text</Label>
 				<DefaultValue>Example</DefaultValue>
 			</GuiOption>
+      
 			<GuiOption Type="DropDownList">
 				<Variable>ListVariable</Variable>
 				<Label>This is a list</Label>
@@ -20,14 +18,15 @@
 					<Value>Option1</Value>
 				</Option>
 				<Option>
-			<Text>Option 2</Text>
+			    <Text>Option 2</Text>
 					<Value>Option2</Value>
 				</Option>
 				<Option>
-			<Text>Option 3</Text>
+			    <Text>Option 3</Text>
 					<Value>Option3</Value>
 				</Option>
 			</GuiOption>
+      
 		</Column>
 	</Page>
 </TsGui>

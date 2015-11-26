@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using core;
+
 namespace TsGui
 {
     /// <summary>
@@ -23,6 +25,12 @@ namespace TsGui
         {
             InitializeComponent();
             this.Hide();
+            this.Startup();
+        }
+
+        private void Startup()
+        {
+            Builder builder = new Builder();
         }
     }
 }
