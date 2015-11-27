@@ -10,6 +10,7 @@ namespace gui_lib
         private string name;
         private string value;
         private string label;
+        private Label labelcontrol;
         private ComboBox control;
         private Dictionary<string, string> options = new Dictionary<string,string>();
 
@@ -31,7 +32,8 @@ namespace gui_lib
                     return new TsVariable(this.name, this.value); 
                 } 
         }
-        public string Label { get { return this.label; } }
+
+        public Label Label { get { return this.labelcontrol; } }
         public Control Control { get { return this.control; } }
 
 
@@ -73,6 +75,9 @@ namespace gui_lib
             this.control = new ComboBox();
             this.control.DisplayMemberPath = "Key";
             this.control.SelectedValuePath = "Value";
+
+            this.labelcontrol = new Label();
+            this.labelcontrol.Content = this.label;
 
             foreach (KeyValuePair<string, string> entry in this.options)
             {

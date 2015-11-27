@@ -9,11 +9,16 @@ namespace gui_lib
     {
         private List<IGuiOption> options = new List<IGuiOption>();
 
+        public int Index { get; set; }
         public List<IGuiOption> Options { get { return this.options; } }
 
+        public int ControlWidth { get; set; }
+        public int LabelWidth { get; set; }
+
         //constructor
-        public Column (XElement SourceXml)
+        public Column (XElement SourceXml,int PageIndex)
         {
+            this.Index = PageIndex;
             this.LoadXml(SourceXml);
         }
 

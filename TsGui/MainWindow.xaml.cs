@@ -31,6 +31,8 @@ namespace TsGui
         private void Startup()
         {
             Builder builder = new Builder();
+            builder.ParentWindow = this;
+            builder.Start();
         }
     }
 }

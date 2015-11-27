@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 using System.Diagnostics;
 
@@ -22,21 +23,22 @@ namespace gui_lib
         private List<Page> pages = new List<Page>();
         private List<IGuiOption> options = new List<IGuiOption>();
 
+        //properties
+        public Window ParentWindow { get; set; }
+
         //constructors
         public Builder()
         {
             string exefolder = AppDomain.CurrentDomain.BaseDirectory;
             this.configpath = @"c:\Config.xml";
-            StartBuilder();
         }
 
         public Builder(string ConfigPath)
         {
             this.configpath = ConfigPath;
-            StartBuilder();
         }
 
-        private void StartBuilder()
+        public void Start()
         {
             //code to be added to make sure config file exists
             XElement x = handler.Read(this.configpath);

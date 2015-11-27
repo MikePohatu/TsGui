@@ -13,7 +13,7 @@ namespace gui_lib
         private int padding;
         private List<Column> columns = new List<Column>();
         private List<IGuiOption> options = new List<IGuiOption>();
-        private PageWindow window = new PageWindow();
+        private PageWindow window;
 
         public List<IGuiOption> Options { get { return this.options; } }
 
@@ -33,13 +33,15 @@ namespace gui_lib
         public void LoadXml(XElement SourceXml)
         {
             IEnumerable<XElement> columnsXml;
+            int colIndex = 0;
             //now read in the options and add to a dictionary for later use
             columnsXml = SourceXml.Elements("Column");
             if (columnsXml != null)
             {
                 foreach (XElement xColumn in columnsXml)
                 {
-                    this.columns.Add(new Column(xColumn));
+                    this.columns.Add(new Column(xColumn, colIndex));
+                    colIndex++;
                 }
             }
 
@@ -48,10 +50,13 @@ namespace gui_lib
 
         private void Build()
         {
-            //this.window.
-            foreach (IGuiOption guiopt in this.options)
+            this.window = new PageWindow(this.height,this.width,this.padding);
+            foreach (Column col in this.columns)
             {
-                window.AddControl(guiopt.Control);
+                foreach (IGuiOption guiopt in col.Options)
+                {
+                    window.AddControl(guiopt.Control, guiopt.Label, col.Index);
+                }
             }
         }
 

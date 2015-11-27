@@ -7,7 +7,7 @@ namespace gui_lib
     public interface IGuiOption: ITsGuiElement
     {
         TsVariable Variable { get; }
-        string Label { get; }
+        Label Label { get; }
         Control Control { get; }
     }
 }

@@ -10,6 +10,7 @@ namespace gui_lib
         private string name;
         private string value;
         private string label;
+        private Label labelcontrol;
         private TextBox control;
 
         public TsFreeText (XElement SourceXml)
@@ -24,7 +25,7 @@ namespace gui_lib
             //set { this.tsvar = value; }
         }
 
-        public string Label { get { return this.label; } }
+        public Label Label { get { return this.labelcontrol; } }
         public Control Control { get { return this.control; } }
 
         public void LoadXml(XElement pXml)
@@ -47,6 +48,11 @@ namespace gui_lib
         private void Build()
         {
             this.control = new TextBox();
+            this.control.MaxLines = 1;
+            this.control.MaxLength = 2048;
+            this.labelcontrol = new Label();
+            //this.labelcontrol.Height = "Auto";
+            this.labelcontrol.Content = this.label;
         }
     }
 }

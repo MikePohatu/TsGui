@@ -18,19 +18,36 @@ namespace gui_lib
     /// </summary>
     public partial class PageWindow : Window
     {
-        StackPanel stackPanel = new StackPanel { Orientation = Orientation.Vertical };
+        //StackPanel controlPanel = new StackPanel { Orientation = Orientation.Vertical };
+        //StackPanel labelPanel = new StackPanel { Orientation = Orientation.Vertical };
+        Grid maingrid = new Grid();
 
-        public PageWindow()
+        private int padding; 
+
+        public PageWindow(int PageHeight,int PageWidth,int PagePadding)
         {
             InitializeComponent();
-            //code to be added to make sure config file exists
-            this.Content = stackPanel;
+
+            this.Height = PageHeight;
+            this.Width = PageWidth;
+            this.padding = PagePadding;
+
+            this.maingrid.ShowGridLines = true;
+            this.Content = maingrid;
+            //this.maingrid.Margin = this.padding;
         }
 
-        public void AddControl(Control NewControl)
+        public void AddControl(Control NewControl,Label Label,int ColumnIndex)
         {
             if (NewControl == null) { throw new InvalidOperationException("Null control passed to PageWindow: "); }
-            else { stackPanel.Children.Add(NewControl); }
+            else
+            {
+                Grid.SetColumn(Label, ColumnIndex);
+                Grid.SetColumn(NewControl, ColumnIndex + 1);               
+
+                this.maingrid.Children.Add(NewControl);
+                this.maingrid.Children.Add(Label);
+            }
         }
     }
 }
