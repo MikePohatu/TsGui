@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Builder.cs" />
     <Compile Include="Column.cs" />
-    <Compile Include="Factory.cs" />
     <Compile Include="IGuiOption.cs" />
     <Compile Include="ITsGuiElement.cs" />
     <Compile Include="Page.cs" />

@@ -9,6 +9,9 @@ namespace core
     {
         private List<IGuiOption> options = new List<IGuiOption>();
 
+        public List<IGuiOption> Options { get { return this.options; } }
+
+        //constructor
         public Column (XElement SourceXml)
         {
             this.LoadXml(SourceXml);

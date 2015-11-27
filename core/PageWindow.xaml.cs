@@ -19,9 +19,19 @@ namespace core
     /// </summary>
     public partial class PageWindow : UserControl
     {
+        StackPanel stackPanel = new StackPanel { Orientation = Orientation.Vertical };
+
         public PageWindow()
         {
             InitializeComponent();
+            //code to be added to make sure config file exists
+            this.Content = stackPanel;
+        }
+
+        public void AddControl(Control NewControl)
+        {
+            if (NewControl == null) { throw new InvalidOperationException("Null control passed to PageWindow: "); }
+            else { stackPanel.Children.Add(NewControl); }         
         }
     }
 }
