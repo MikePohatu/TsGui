@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace core
+namespace gui_lib
 {
     public class Page: ITsGuiElement
     {

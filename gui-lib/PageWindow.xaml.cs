@@ -9,15 +9,14 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace core
+namespace gui_lib
 {
     /// <summary>
     /// Interaction logic for PageWindow.xaml
     /// </summary>
-    public partial class PageWindow : UserControl
+    public partial class PageWindow : Window
     {
         StackPanel stackPanel = new StackPanel { Orientation = Orientation.Vertical };
 
@@ -31,7 +30,7 @@ namespace core
         public void AddControl(Control NewControl)
         {
             if (NewControl == null) { throw new InvalidOperationException("Null control passed to PageWindow: "); }
-            else { stackPanel.Children.Add(NewControl); }         
+            else { stackPanel.Children.Add(NewControl); }
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using System.Windows.Controls;
 
-namespace core
+namespace gui_lib
 {
     public interface IGuiOption: ITsGuiElement
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Controls;
 
-namespace core
+namespace gui_lib
 {
     public class TsDropDownList: IGuiOption
     {

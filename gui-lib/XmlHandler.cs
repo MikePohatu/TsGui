@@ -18,7 +18,7 @@ using System;
 using System.IO;
 using System.Xml.Linq;
 
-namespace core
+namespace gui_lib
 {
     public class XmlHandler
     {

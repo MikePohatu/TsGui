@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Text;
 
-namespace core
+namespace gui_lib
 {
     public class Column
     {

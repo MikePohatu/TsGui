@@ -9,7 +9,7 @@ using System.Text;
 
 using System.Diagnostics;
 
-namespace core
+namespace gui_lib
 {
     public class Builder
     {

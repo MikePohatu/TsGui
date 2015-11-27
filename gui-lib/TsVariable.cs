@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace core
+namespace gui_lib
 {
     public class TsVariable
     {
