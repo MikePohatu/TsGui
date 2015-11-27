@@ -65,7 +65,7 @@ namespace core
 
         public void Show()
         {
-            //this.window.
+            this.window.Show();
         }
     }
 }

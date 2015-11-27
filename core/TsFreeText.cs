@@ -15,6 +15,7 @@ namespace core
         public TsFreeText (XElement SourceXml)
         {
             this.LoadXml(SourceXml);
+            this.Build();
         }
 
         public TsVariable Variable
