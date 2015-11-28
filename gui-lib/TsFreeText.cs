@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace gui_lib
 {
@@ -10,6 +11,8 @@ namespace gui_lib
         private string name;
         private string value;
         private string label;
+        private int height = 23;
+        private Thickness padding = new Thickness(3, 3, 5, 3);
         private Label labelcontrol;
         private TextBox control;
 
@@ -34,15 +37,26 @@ namespace gui_lib
 
             x = pXml.Element("Variable");
             if (x != null)
-            { this.name = pXml.Element("Variable").Value; }
+            { this.name = x.Value; }
 
             x = pXml.Element("DefaultValue");
             if (x != null)
-            { this.value = pXml.Element("DefaultValue").Value; }
+            { this.value = x.Value; }
 
             x = pXml.Element("Label");
             if (x != null)
-            { this.label = pXml.Element("Label").Value; }
+            { this.label = x.Value; }
+
+            x = pXml.Element("Height");
+            if (x != null)
+            { this.height = Convert.ToInt32(x.Value); }
+
+            x = pXml.Element("Padding");
+            if (x != null)
+            {
+                int padInt = Convert.ToInt32(x.Value);
+                this.padding = new System.Windows.Thickness(padInt, padInt, padInt, padInt);
+            }
         }
 
         private void Build()
@@ -50,9 +64,16 @@ namespace gui_lib
             this.control = new TextBox();
             this.control.MaxLines = 1;
             this.control.MaxLength = 2048;
+            this.control.Height = this.height;
+            this.control.Text = this.value;
+            this.control.Padding = this.padding;
+
             this.labelcontrol = new Label();
             //this.labelcontrol.Height = "Auto";
             this.labelcontrol.Content = this.label;
+            this.labelcontrol.Height = this.height;
+            this.labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+            //this.labelcontrol.Padding = this.padding;
         }
     }
 }

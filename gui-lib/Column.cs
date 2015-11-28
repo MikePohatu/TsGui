@@ -55,38 +55,34 @@ namespace gui_lib
 
         public void Build()
         {
-            //StackPanel labelpanel = new StackPanel { Orientation = Orientation.Vertical };
-            //StackPanel controlspanel = new StackPanel { Orientation = Orientation.Vertical };
-            //this.columnpanel = new StackPanel { Orientation = Orientation.Horizontal };
-
+            int rowindex = 0;
             Grid colGrid = new Grid();
             ColumnDefinition coldefControls = new ColumnDefinition();
             ColumnDefinition coldefLabels = new ColumnDefinition();
 
-            //coldefControls.
+            colGrid.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             colGrid.ColumnDefinitions.Add(coldefLabels);
             colGrid.ColumnDefinitions.Add(coldefControls);
+            //colGrid.ShowGridLines = true;
             
-            //colGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = "1*" });
             foreach (IGuiOption option in this.options)
             {
                 RowDefinition coldefRow = new RowDefinition();
                 colGrid.RowDefinitions.Add(coldefRow);
-                //coldefRow.Height = new gridl 20;
-                //colGrid.Children.Add
-                //labelpanel.Children.Add(option.Label);
-                //controlspanel.Children.Add(option.Control);
-                coldefRow.
+
                 Grid.SetColumn(option.Label, 0);
                 Grid.SetColumn(option.Control, 1);
+                Grid.SetRow(option.Label, rowindex);
+                Grid.SetRow(option.Control, rowindex);
+
 
                 colGrid.Children.Add(option.Label);
                 colGrid.Children.Add(option.Control);
+
+                rowindex++;
             }
 
             this.columnpanel = colGrid;
-            //this.columnpanel.Children.Add(labelpanel);
-            //this.columnpanel.Children.Add(controlspanel);
         }
     }
 }
