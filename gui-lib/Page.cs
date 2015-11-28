@@ -53,10 +53,12 @@ namespace gui_lib
             this.window = new PageWindow(this.height,this.width,this.padding);
             foreach (Column col in this.columns)
             {
-                foreach (IGuiOption guiopt in col.Options)
-                {
-                    window.AddControl(guiopt.Control, guiopt.Label, col.Index);
-                }
+                //foreach (IGuiOption guiopt in col.Options)
+                //{
+                //    window.AddControl(guiopt.Control, guiopt.Label, col.Index);
+                //}
+
+                this.window.AddPanel(col.Panel);
             }
         }
 

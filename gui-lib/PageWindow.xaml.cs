@@ -34,19 +34,20 @@ namespace gui_lib
 
             this.maingrid.ShowGridLines = true;
             this.Content = maingrid;
-            //this.maingrid.Margin = this.padding;
+            this.maingrid.Margin = new Thickness(this.padding);
         }
 
-        public void AddControl(Control NewControl,Label Label,int ColumnIndex)
+        public void AddPanel(Panel NewPanel)
         {
-            if (NewControl == null) { throw new InvalidOperationException("Null control passed to PageWindow: "); }
+            if (NewPanel == null) { throw new InvalidOperationException("null control passed to pagewindow: "); }
             else
             {
-                Grid.SetColumn(Label, ColumnIndex);
-                Grid.SetColumn(NewControl, ColumnIndex + 1);               
-
-                this.maingrid.Children.Add(NewControl);
-                this.maingrid.Children.Add(Label);
+                //Grid.setcolumn(label, columnindex);
+                //grid.setcolumn(newcontrol, columnindex + 1);
+                //this.chil
+                this.maingrid.Children.Add(NewPanel);
+                //this.AddChild(NewPanel);
+                //this.maingrid.children.add(label);
             }
         }
     }
