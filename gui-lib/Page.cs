@@ -65,6 +65,7 @@ namespace gui_lib
             this.window = new PageWindow(this.height,this.width,this.padding);
             this.pagepanel = new Grid();
             this.pagepanel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            //this.pagepanel.
             //this.pagepanel.ShowGridLines = true;
 
             //create a last row for the buttons

@@ -33,10 +33,11 @@ namespace gui_lib
             this.Width = PageWidth;
             this.padding = PagePadding;
 
-            this.MainGrid.ShowGridLines = true;
+            //this.MainGrid.ShowGridLines = true;
             //this.Content = maingrid;
             this.MainGrid.Margin = new Thickness(this.padding);
-            this.WindowStyle = WindowStyle.None;
+            this.Title = "TsGui";
+            //this.WindowStyle = WindowStyle.None;
         }
 
         public void AddPanel(Panel NewPanel)
@@ -44,13 +45,8 @@ namespace gui_lib
             if (NewPanel == null) { throw new InvalidOperationException("null control passed to pagewindow: "); }
             else
             {
-                //Grid.setcolumn(label, columnindex);
-                //grid.setcolumn(newcontrol, columnindex + 1);
-                //this.chil
                 Grid.SetRow(NewPanel,0);
                 this.MainGrid.Children.Add(NewPanel);
-                //this.AddChild(NewPanel);
-                //this.maingrid.children.add(label);
             }
         }
     }
