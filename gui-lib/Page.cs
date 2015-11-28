@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Text;
 using System.Windows.Controls;
+using System.Windows;
 using System.Diagnostics;
 
 namespace gui_lib
@@ -16,6 +17,13 @@ namespace gui_lib
         private List<IGuiOption> options = new List<IGuiOption>();
         private Grid pagepanel;
         private PageWindow window;
+        private Page prevPage;
+        private Page nextPage;
+        //private Button nextButton = new Button();
+        //private Button prevButton = new Button();
+        //private Button cancelButton = new Button();
+        private int buttonHeight = 20;
+        private int buttonWidth = 75;
 
         public List<IGuiOption> Options { get { return this.options; } }
 
@@ -59,6 +67,10 @@ namespace gui_lib
             this.pagepanel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             //this.pagepanel.ShowGridLines = true;
 
+            //create a last row for the buttons
+            RowDefinition colrowdef = new RowDefinition();
+            this.pagepanel.RowDefinitions.Add(colrowdef);
+
             foreach (Column col in this.columns)
             {
                 ColumnDefinition coldef = new ColumnDefinition();
@@ -68,6 +80,41 @@ namespace gui_lib
                 this.pagepanel.Children.Add(col.Panel);
                 colindex++;
             }
+
+            //create a last row for the buttons
+            //RowDefinition butrowdef = new RowDefinition();
+            //this.pagepanel.RowDefinitions.Add(butrowdef);
+
+            //this.cancelButton.Width = this.buttonWidth;
+            //this.nextButton.Width = this.buttonWidth;
+            //this.prevButton.Width = this.buttonWidth;
+
+            //this.cancelButton.Height = this.buttonHeight;
+            //this.nextButton.Height = this.buttonHeight;
+            //this.prevButton.Height = this.buttonHeight;
+
+            //this.cancelButton.HorizontalAlignment = HorizontalAlignment.Left;
+            //this.nextButton.HorizontalAlignment = HorizontalAlignment.Right;
+
+            //this.prevButton.Content = "Back";
+            //this.cancelButton.Content = "Cancel";
+
+            //if (this.nextPage == null) { this.nextButton.Content = "Finish"; }
+            //else { this.nextButton.Content = "Next"; }
+
+            //if (this.prevPage == null) { this.prevButton.IsEnabled = false; }
+
+            //now place the buttons
+            //Grid.SetColumn(this.cancelButton, 0);
+            //Grid.SetColumn(this.prevButton, this.pagepanel.ColumnDefinitions.Count);
+            //Grid.SetColumn(this.nextButton, this.pagepanel.ColumnDefinitions.Count);
+            //Grid.SetRow(this.cancelButton, this.pagepanel.RowDefinitions.Count);
+            //Grid.SetRow(this.prevButton, this.pagepanel.RowDefinitions.Count);
+            //Grid.SetRow(this.nextButton, this.pagepanel.RowDefinitions.Count);
+            
+            //this.pagepanel.Children.Add(this.cancelButton);
+            //this.pagepanel.Children.Add(this.prevButton);
+            //this.pagepanel.Children.Add(this.nextButton);
 
             this.window.AddPanel(this.pagepanel);
         }

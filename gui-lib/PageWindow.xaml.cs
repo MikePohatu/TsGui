@@ -20,11 +20,10 @@ namespace gui_lib
     {
         //StackPanel controlPanel = new StackPanel { Orientation = Orientation.Vertical };
         //StackPanel labelPanel = new StackPanel { Orientation = Orientation.Vertical };
-        Grid maingrid = new Grid();
+        //Grid maingrid = new Grid();
 
         private int padding;
-        private Button nextButton = new Button();
-        private Button prevButton = new Button();
+        
 
         public PageWindow(int PageHeight,int PageWidth,int PagePadding)
         {
@@ -34,15 +33,10 @@ namespace gui_lib
             this.Width = PageWidth;
             this.padding = PagePadding;
 
-            this.maingrid.ShowGridLines = true;
-            this.Content = maingrid;
-            this.maingrid.Margin = new Thickness(this.padding);
-
-            nextButton.Content = "Next";
-            prevButton.Content = "Previous";
-
-            //this.AddChild(prevButton);
-            //this.AddChild(nextButton);
+            this.MainGrid.ShowGridLines = true;
+            //this.Content = maingrid;
+            this.MainGrid.Margin = new Thickness(this.padding);
+            this.WindowStyle = WindowStyle.None;
         }
 
         public void AddPanel(Panel NewPanel)
@@ -53,7 +47,8 @@ namespace gui_lib
                 //Grid.setcolumn(label, columnindex);
                 //grid.setcolumn(newcontrol, columnindex + 1);
                 //this.chil
-                this.maingrid.Children.Add(NewPanel);
+                Grid.SetRow(NewPanel,0);
+                this.MainGrid.Children.Add(NewPanel);
                 //this.AddChild(NewPanel);
                 //this.maingrid.children.add(label);
             }
