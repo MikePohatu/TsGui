@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:gui_lib"
         mc:Ignorable="d"
-        Title="PageWindow" Height="300" Width="300">
+        Title="PageWindow" Height="300" Width="300"
+        WindowStartupLocation="Manual" 
+        Left="40" Top="40">
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition x:Name ="MainRow" Height="100*"/>
@@ -17,9 +19,9 @@
                 <ColumnDefinition Width="80"></ColumnDefinition>
                 <ColumnDefinition Width="80"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button x:Name="buttonNext" Content="Next" HorizontalAlignment="Right" Margin="0,0,0,0" Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" Width="75"/>
-            <Button x:Name="buttonPrev" Content="Back" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" Width="75"/>
-            <Button x:Name="buttonCancel" Content="Cancel" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" Width="75"/>
+            <Button x:Name="buttonNext" Content="Next" HorizontalAlignment="Right" Margin="0,0,0,0" Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" Width="75" Click="buttonNext_Click"/>
+            <Button x:Name="buttonPrev" Content="Back" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" Width="75" Click="buttonPrev_Click"/>
+            <Button x:Name="buttonCancel" Content="Cancel" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" Width="75" Click="buttonCancel_Click"/>
         </Grid>
     </Grid>
 </Window>

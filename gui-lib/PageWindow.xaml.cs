@@ -49,5 +49,20 @@ namespace gui_lib
                 this.MainGrid.Children.Add(NewPanel);
             }
         }
+
+        private void buttonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void buttonPrev_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void buttonNext_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
     }
 }

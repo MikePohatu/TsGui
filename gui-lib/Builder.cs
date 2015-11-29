@@ -44,6 +44,8 @@ namespace gui_lib
             XElement x = handler.Read(this.configpath);
             this.LoadXml(x);
             this.PopulateOptions();
+
+            //now show the first page in the list
             Page firstpage = this.pages.First();
             firstpage.Show();
         }
@@ -51,6 +53,8 @@ namespace gui_lib
         private void LoadXml(XElement SourceXml)
         {
             XElement x;
+            Page currPage = null;
+            Page prevPage = null;
 
             IEnumerable<XElement> pagesXml;
             //Debug.WriteLine("Source: " + SourceXml);
@@ -79,14 +83,31 @@ namespace gui_lib
                     Debug.WriteLine("pagesXml not null");
                     foreach (XElement xPage in pagesXml)
                     {
-                        Debug.WriteLine("Creating page");
-                        this.pages.Add(new Page(xPage, this.pageHeight, this.pageWidth, this.pagePadding));
-                    }
-                }
+                        Debug.WriteLine("creating new page");
+                        if (currPage == null)
+                        {
+                            currPage = new Page(xPage, this.pageHeight, this.pageWidth, this.pagePadding);
+                            currPage.IsFirst();
+                        }
+                        else
+                        {
+                            //record the last page as the prevPage
+                            prevPage = currPage;
+                            currPage = new Page(xPage, this.pageHeight, this.pageWidth, this.pagePadding);                 
+                        }
+                        
+                        //create the new page and assign the next page/prev page links
+                        currPage.PreviousPage = prevPage;
+                        if (prevPage != null) { prevPage.NextPage = currPage; }
 
-                //Debug.WriteLine(this.pageHeight);
-                //Debug.WriteLine(this.pageWidth);
-                //Debug.WriteLine("Done");
+                        currPage.Window.buttonCancel.Click += this.buttonCancel_Click;
+
+                        this.pages.Add(currPage);
+                    }
+
+                    currPage.IsLast();
+                    currPage.Window.buttonNext.Click += this.buttonFinish_Click;
+                }
             }
         }
 
@@ -96,6 +117,24 @@ namespace gui_lib
             {
                 this.options.AddRange(pg.Options);
             }
+        }
+
+        //method to deal with the cancel button being pressed on any page
+        public void buttonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Page pg in this.pages)
+            { pg.Window.Close(); }
+            this.ParentWindow.Close();
+        }
+
+        //method to deal with the finish button being pressed on the last page
+        public void buttonFinish_Click(object sender, RoutedEventArgs e)
+        {
+            //System.Windows.MessageBox.Show("Finish clicked");
+            foreach (Page pg in this.pages)
+            { pg.Window.Close(); }
+
+            this.ParentWindow.Close();
         }
     }
 }

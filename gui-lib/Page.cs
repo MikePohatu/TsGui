@@ -17,15 +17,11 @@ namespace gui_lib
         private List<IGuiOption> options = new List<IGuiOption>();
         private Grid pagepanel;
         private PageWindow window;
-        private Page prevPage;
-        private Page nextPage;
-        //private Button nextButton = new Button();
-        //private Button prevButton = new Button();
-        //private Button cancelButton = new Button();
-        private int buttonHeight = 20;
-        private int buttonWidth = 75;
 
         public List<IGuiOption> Options { get { return this.options; } }
+        public Page PreviousPage { get; set; }
+        public Page NextPage { get; set; }
+        public PageWindow Window { get { return this.window; } }
 
         public Page(XElement SourceXml,int Height,int Width,int Padding)
         {
@@ -44,6 +40,7 @@ namespace gui_lib
         {
             IEnumerable<XElement> columnsXml;
             int colIndex = 0;
+
             //now read in the options and add to a dictionary for later use
             columnsXml = SourceXml.Elements("Column");
             if (columnsXml != null)
@@ -63,9 +60,13 @@ namespace gui_lib
         {
             int colindex = 0;
             this.window = new PageWindow(this.height,this.width,this.padding);
+
+            //register for the button clicks
+            this.window.buttonNext.Click += this.buttonNext_Click;
+            this.window.buttonPrev.Click += this.buttonPrev_Click;
+
             this.pagepanel = new Grid();
             this.pagepanel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            //this.pagepanel.
             //this.pagepanel.ShowGridLines = true;
 
             //create a last row for the buttons
@@ -81,42 +82,7 @@ namespace gui_lib
                 this.pagepanel.Children.Add(col.Panel);
                 colindex++;
             }
-
-            //create a last row for the buttons
-            //RowDefinition butrowdef = new RowDefinition();
-            //this.pagepanel.RowDefinitions.Add(butrowdef);
-
-            //this.cancelButton.Width = this.buttonWidth;
-            //this.nextButton.Width = this.buttonWidth;
-            //this.prevButton.Width = this.buttonWidth;
-
-            //this.cancelButton.Height = this.buttonHeight;
-            //this.nextButton.Height = this.buttonHeight;
-            //this.prevButton.Height = this.buttonHeight;
-
-            //this.cancelButton.HorizontalAlignment = HorizontalAlignment.Left;
-            //this.nextButton.HorizontalAlignment = HorizontalAlignment.Right;
-
-            //this.prevButton.Content = "Back";
-            //this.cancelButton.Content = "Cancel";
-
-            //if (this.nextPage == null) { this.nextButton.Content = "Finish"; }
-            //else { this.nextButton.Content = "Next"; }
-
-            //if (this.prevPage == null) { this.prevButton.IsEnabled = false; }
-
-            //now place the buttons
-            //Grid.SetColumn(this.cancelButton, 0);
-            //Grid.SetColumn(this.prevButton, this.pagepanel.ColumnDefinitions.Count);
-            //Grid.SetColumn(this.nextButton, this.pagepanel.ColumnDefinitions.Count);
-            //Grid.SetRow(this.cancelButton, this.pagepanel.RowDefinitions.Count);
-            //Grid.SetRow(this.prevButton, this.pagepanel.RowDefinitions.Count);
-            //Grid.SetRow(this.nextButton, this.pagepanel.RowDefinitions.Count);
             
-            //this.pagepanel.Children.Add(this.cancelButton);
-            //this.pagepanel.Children.Add(this.prevButton);
-            //this.pagepanel.Children.Add(this.nextButton);
-
             this.window.AddPanel(this.pagepanel);
         }
 
@@ -141,6 +107,24 @@ namespace gui_lib
         public void CatchClose()
         {
 
+        }
+
+        public void IsLast()
+        { this.window.buttonNext.Content = "Finish"; }
+
+        public void IsFirst()
+        { this.window.buttonPrev.IsEnabled = false; }
+
+        //method to deal with the Next button being pressed
+        public void buttonNext_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.NextPage != null) { this.NextPage.Show(); }            
+        }
+
+        //method to deal with the Previous button being pressed
+        public void buttonPrev_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.PreviousPage != null) { this.PreviousPage.Show(); }
         }
     }
 }

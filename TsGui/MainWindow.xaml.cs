@@ -21,6 +21,8 @@ namespace TsGui
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Builder builder;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -30,7 +32,7 @@ namespace TsGui
 
         private void Startup()
         {
-            Builder builder = new Builder();
+            builder = new Builder();
             builder.ParentWindow = this;
             builder.Start();
         }
