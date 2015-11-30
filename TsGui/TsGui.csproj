@@ -84,7 +84,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewController.cs" />
+    <Compile Include="Controller.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="IGuiOption.cs" />
     <Compile Include="ITsGuiElement.cs" />

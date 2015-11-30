@@ -20,19 +20,19 @@ namespace TsGui
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ViewController controller;
+        private Controller controller;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.controller = new ViewController(this);
+            this.controller = new Controller(this);
             this.controller.Startup();
         }
 
         public MainWindow(bool TestingMode)
         {
             InitializeComponent();
-            this.controller = new ViewController(this);
+            this.controller = new Controller(this);
             this.controller.TestingMode = TestingMode;
             this.controller.Startup();
         }

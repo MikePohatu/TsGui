@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace TsGui
 {
-    public class ViewController
+    public class Controller
     {
         private string configpath;
         private int pageWidth;
@@ -33,14 +33,14 @@ namespace TsGui
         }
 
         //constructors
-        public ViewController(MainWindow ParentWindow)
+        public Controller(MainWindow ParentWindow)
         {
             string exefolder = AppDomain.CurrentDomain.BaseDirectory;
             this.configpath = @"c:\Config.xml";
             this.ParentWindow = ParentWindow;
         }
 
-        public ViewController(MainWindow ParentWindow, string ConfigPath)
+        public Controller(MainWindow ParentWindow, string ConfigPath)
         {
             this.ParentWindow = ParentWindow;
             this.configpath = ConfigPath;
