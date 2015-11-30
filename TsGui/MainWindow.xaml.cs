@@ -12,7 +12,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using gui_lib;
 
 namespace TsGui
 {
@@ -21,20 +20,45 @@ namespace TsGui
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Builder builder;
+        private ViewController controller;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.Hide();
-            this.Startup();
+            this.controller = new ViewController(this);
+            this.controller.Startup();
         }
 
-        private void Startup()
+        public MainWindow(bool TestingMode)
         {
-            builder = new Builder();
-            builder.ParentWindow = this;
-            builder.Start();
+            InitializeComponent();
+            this.controller = new ViewController(this);
+            this.controller.TestingMode = TestingMode;
+            this.controller.Startup();
+        }
+
+        private void buttonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            //this.Hide();
+            this.controller.Cancel();
+        }
+
+        private void buttonPrev_Click(object sender, RoutedEventArgs e)
+        {
+            //this.Hide();
+            this.controller.MovePrevious();
+        }
+
+        private void buttonNext_Click(object sender, RoutedEventArgs e)
+        {
+            //this.Hide();
+            this.controller.MoveNext();
+        }
+
+        private void buttonFinish_Click(object sender, RoutedEventArgs e)
+        {
+            //this.Hide();
+            this.controller.Finish();
         }
     }
 }

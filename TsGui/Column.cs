@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using System.Text;
 using System.Windows.Controls;
 
-namespace gui_lib
+namespace TsGui
 {
     public class Column
     {

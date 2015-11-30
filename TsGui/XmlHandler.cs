@@ -18,7 +18,7 @@ using System;
 using System.IO;
 using System.Xml.Linq;
 
-namespace gui_lib
+namespace TsGui
 {
     public class XmlHandler
     {

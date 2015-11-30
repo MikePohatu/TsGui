@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using TsGui;
+
 namespace TsGui_Tester
 {
     /// <summary>
@@ -22,6 +24,9 @@ namespace TsGui_Tester
         public MainWindow()
         {
             InitializeComponent();
+            //this.Hide();
+            TsGui.MainWindow window = new TsGui.MainWindow(true);
+            window.Show();
         }
     }
 }

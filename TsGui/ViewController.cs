@@ -10,35 +10,44 @@ using System.Windows;
 
 using System.Diagnostics;
 
-namespace gui_lib
+namespace TsGui
 {
-    public class Builder
+    public class ViewController
     {
         private string configpath;
         private int pageWidth;
         private int pageHeight;
         private int pagePadding;
-
+        private bool testingmode = false;
         private XmlHandler handler = new XmlHandler();
         private List<Page> pages = new List<Page>();
         private List<IGuiOption> options = new List<IGuiOption>();
 
         //properties
-        public Window ParentWindow { get; set; }
+        public MainWindow ParentWindow { get; set; }
+        public Page CurrentPage { get; set; }
+        public bool TestingMode
+        {
+            get { return this.testingmode; }
+            set { this.testingmode = value; }
+        }
 
         //constructors
-        public Builder()
+        public ViewController(MainWindow ParentWindow)
         {
             string exefolder = AppDomain.CurrentDomain.BaseDirectory;
             this.configpath = @"c:\Config.xml";
+            this.ParentWindow = ParentWindow;
         }
 
-        public Builder(string ConfigPath)
+        public ViewController(MainWindow ParentWindow, string ConfigPath)
         {
+            this.ParentWindow = ParentWindow;
             this.configpath = ConfigPath;
+            this.Startup();
         }
 
-        public void Start()
+        public void Startup()
         {
             //code to be added to make sure config file exists
             XElement x = handler.Read(this.configpath);
@@ -47,7 +56,8 @@ namespace gui_lib
 
             //now show the first page in the list
             Page firstpage = this.pages.First();
-            firstpage.Show();
+            this.CurrentPage = firstpage;
+            this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
         }
 
         private void LoadXml(XElement SourceXml)
@@ -87,7 +97,7 @@ namespace gui_lib
                         if (currPage == null)
                         {
                             currPage = new Page(xPage, this.pageHeight, this.pageWidth, this.pagePadding);
-                            currPage.IsFirst();
+                            currPage.IsFirst = true;
                         }
                         else
                         {
@@ -100,13 +110,12 @@ namespace gui_lib
                         currPage.PreviousPage = prevPage;
                         if (prevPage != null) { prevPage.NextPage = currPage; }
 
-                        currPage.Window.buttonCancel.Click += this.buttonCancel_Click;
-
                         this.pages.Add(currPage);
                     }
 
-                    currPage.IsLast();
-                    currPage.Window.buttonNext.Click += this.buttonFinish_Click;
+                    currPage.IsLast = true;
+                    this.ParentWindow.buttonPrev.Visibility = Visibility.Hidden;
+                    this.ParentWindow.buttonPrev.IsEnabled = false;
                 }
             }
         }
@@ -119,21 +128,53 @@ namespace gui_lib
             }
         }
 
-        //method to deal with the cancel button being pressed on any page
-        public void buttonCancel_Click(object sender, RoutedEventArgs e)
+        //move to the next page and update the next/prev/finish buttons
+        public void MoveNext()
         {
-            foreach (Page pg in this.pages)
-            { pg.Window.Close(); }
+            this.ParentWindow.MainGrid.Children.Remove(this.CurrentPage.Panel);
+            this.CurrentPage = this.CurrentPage.NextPage;
+            this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
+
+            if (this.CurrentPage.IsLast == true)
+            {
+                this.ParentWindow.buttonNext.Visibility = Visibility.Hidden;
+                this.ParentWindow.buttonFinish.Visibility = Visibility.Visible;
+            }
+
+            if (this.CurrentPage.IsFirst == false)
+            {
+                this.ParentWindow.buttonPrev.Visibility = Visibility.Visible;
+                this.ParentWindow.buttonPrev.IsEnabled = true;
+            }
+        }
+
+        //move to the previous page and update the next/prev/finish buttons
+        public void MovePrevious()
+        {
+            this.ParentWindow.MainGrid.Children.Remove(this.CurrentPage.Panel);
+            this.CurrentPage = this.CurrentPage.PreviousPage;
+            this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
+
+            if (this.CurrentPage.IsLast == false)
+            {
+                this.ParentWindow.buttonNext.Visibility = Visibility.Visible;
+                this.ParentWindow.buttonFinish.Visibility = Visibility.Hidden;
+            }
+
+            if (this.CurrentPage.IsFirst == true)
+            {
+                this.ParentWindow.buttonPrev.Visibility = Visibility.Hidden;
+                this.ParentWindow.buttonPrev.IsEnabled = false;
+            }
+        }
+
+        public void Finish()
+        {
             this.ParentWindow.Close();
         }
 
-        //method to deal with the finish button being pressed on the last page
-        public void buttonFinish_Click(object sender, RoutedEventArgs e)
+        public void Cancel()
         {
-            //System.Windows.MessageBox.Show("Finish clicked");
-            foreach (Page pg in this.pages)
-            { pg.Window.Close(); }
-
             this.ParentWindow.Close();
         }
     }

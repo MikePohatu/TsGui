@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Text;
 
-namespace gui_lib
+namespace TsGui
 {
     public interface ITsGuiElement
     {

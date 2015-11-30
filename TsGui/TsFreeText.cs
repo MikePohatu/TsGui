@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
 
-namespace gui_lib
+namespace TsGui
 {
     public class TsFreeText: IGuiOption
     {
