@@ -39,9 +39,9 @@ namespace TsGui
         {
             this.ParentWindow = ParentWindow;
             string exefolder = AppDomain.CurrentDomain.BaseDirectory;
-            this.configpath = exefolder + @"\Config.xml";
-            Debug.WriteLine(this.configpath);                       
+            this.configpath = exefolder + @"Config.xml";                    
             this.CreateSccmObject();
+            this.Startup();
         }
 
         public Controller(MainWindow ParentWindow, string ConfigPath)
@@ -54,8 +54,18 @@ namespace TsGui
 
         public void Startup()
         {
+            XElement x = null;
             //code to be added to make sure config file exists
-            XElement x = handler.Read(this.configpath);
+            try { x = handler.Read(this.configpath); }
+            catch
+            {
+                MessageBox.Show("Unable to read config file: " + this.configpath,"Error reading file",MessageBoxButton.OK,MessageBoxImage.Error);
+                this.ParentWindow.Close();
+                return;
+            }
+
+            this.ParentWindow.Closing += this.OnWindowClosing;
+
             this.LoadXml(x);
             this.PopulateOptions();
 
@@ -107,7 +117,7 @@ namespace TsGui
             IEnumerable<XElement> pagesXml;
             //Debug.WriteLine("Source: " + SourceXml);
 
-            Debug.WriteLine("Starting xml load in builder");
+            //Debug.WriteLine("Starting xml load in builder");
 
             if (SourceXml != null)
             {
@@ -128,10 +138,10 @@ namespace TsGui
                 pagesXml = SourceXml.Elements("Page");
                 if (pagesXml != null)
                 {
-                    Debug.WriteLine("pagesXml not null");
+                    //Debug.WriteLine("pagesXml not null");
                     foreach (XElement xPage in pagesXml)
                     {
-                        Debug.WriteLine("creating new page");
+                        //Debug.WriteLine("creating new page");
                         if (currPage == null)
                         {
                             currPage = new Page(xPage, this.pageHeight, this.pageWidth, this.pagePadding);
@@ -152,8 +162,15 @@ namespace TsGui
                     }
 
                     currPage.IsLast = true;
-                    this.ParentWindow.buttonPrev.Visibility = Visibility.Hidden;
-                    this.ParentWindow.buttonPrev.IsEnabled = false;
+
+                    //if currPage is still the first page, this is a single page tsgui. 
+                    //turn the next button into the finish button
+                    if (currPage.IsFirst == true)
+                    {
+                        this.ParentWindow.buttonNext.Visibility = Visibility.Hidden;
+                        this.ParentWindow.buttonFinish.Visibility = Visibility.Visible;
+                    }
+
                 }
             }
             #endregion
@@ -174,18 +191,7 @@ namespace TsGui
             this.ParentWindow.MainGrid.Children.Remove(this.CurrentPage.Panel);
             this.CurrentPage = this.CurrentPage.NextPage;
             this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
-
-            if (this.CurrentPage.IsLast == true)
-            {
-                this.ParentWindow.buttonNext.Visibility = Visibility.Hidden;
-                this.ParentWindow.buttonFinish.Visibility = Visibility.Visible;
-            }
-
-            if (this.CurrentPage.IsFirst == false)
-            {
-                this.ParentWindow.buttonPrev.Visibility = Visibility.Visible;
-                this.ParentWindow.buttonPrev.IsEnabled = true;
-            }
+            this.SetButtons();            
         }
 
         //move to the previous page and update the next/prev/finish buttons
@@ -194,19 +200,35 @@ namespace TsGui
             this.ParentWindow.MainGrid.Children.Remove(this.CurrentPage.Panel);
             this.CurrentPage = this.CurrentPage.PreviousPage;
             this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
+            this.SetButtons();            
+        }
 
-            if (this.CurrentPage.IsLast == false)
+        public void SetButtons()
+        {
+            if (this.CurrentPage.IsLast == true)
+            {
+                this.ParentWindow.buttonNext.Visibility = Visibility.Hidden;
+                this.ParentWindow.buttonFinish.Visibility = Visibility.Visible;
+            }
+            else
             {
                 this.ParentWindow.buttonNext.Visibility = Visibility.Visible;
                 this.ParentWindow.buttonFinish.Visibility = Visibility.Hidden;
             }
+
 
             if (this.CurrentPage.IsFirst == true)
             {
                 this.ParentWindow.buttonPrev.Visibility = Visibility.Hidden;
                 this.ParentWindow.buttonPrev.IsEnabled = false;
             }
+            else
+            {
+                this.ParentWindow.buttonPrev.Visibility = Visibility.Visible;
+                this.ParentWindow.buttonPrev.IsEnabled = true;
+            }
         }
+
 
         public void Finish()
         {

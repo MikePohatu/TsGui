@@ -27,16 +27,7 @@ namespace TsGui
         {
             InitializeComponent();
             this.controller = new Controller(this);
-            this.controller.Startup();
-            Closing += this.controller.OnWindowClosing;
-        }
-
-        public MainWindow(bool TestingMode)
-        {
-            InitializeComponent();
-            this.controller = new Controller(this);
-            this.controller.TestingMode = TestingMode;
-            this.controller.Startup();
+            //this.controller.Startup();           
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
