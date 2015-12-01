@@ -44,6 +44,7 @@ namespace TsGui
 
         public void LoadXml(XElement pXml)
         {
+            #region
             XElement x;
             IEnumerable<XElement> optionsXml;
 
@@ -82,6 +83,7 @@ namespace TsGui
 
             //finished reading xml now build the control
             this.Build();
+            #endregion
         }
 
 

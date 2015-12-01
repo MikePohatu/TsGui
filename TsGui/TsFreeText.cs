@@ -24,8 +24,11 @@ namespace TsGui
 
         public TsVariable Variable
         {
-            get { return new TsVariable(this.name,this.value); }
-            //set { this.tsvar = value; }
+            get
+            {
+                this.value = this.control.Text;
+                return new TsVariable(this.name,this.value);
+            }
         }
 
         public Label Label { get { return this.labelcontrol; } }
@@ -33,6 +36,7 @@ namespace TsGui
 
         public void LoadXml(XElement pXml)
         {
+            #region
             XElement x;
 
             x = pXml.Element("Variable");
@@ -57,6 +61,7 @@ namespace TsGui
                 int padInt = Convert.ToInt32(x.Value);
                 this.padding = new System.Windows.Thickness(padInt, padInt, padInt, padInt);
             }
+            #endregion
         }
 
         private void Build()
@@ -73,7 +78,6 @@ namespace TsGui
             this.labelcontrol.Content = this.label;
             this.labelcontrol.Height = this.height;
             this.labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
-            //this.labelcontrol.Padding = this.padding;
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.ComponentModel;
 
 using System.Diagnostics;
 
@@ -22,6 +23,7 @@ namespace TsGui
         private XmlHandler handler = new XmlHandler();
         private List<Page> pages = new List<Page>();
         private List<IGuiOption> options = new List<IGuiOption>();
+        private ITsVariableOutput outputconnector;
 
         //properties
         public MainWindow ParentWindow { get; set; }
@@ -35,15 +37,18 @@ namespace TsGui
         //constructors
         public Controller(MainWindow ParentWindow)
         {
-            string exefolder = AppDomain.CurrentDomain.BaseDirectory;
-            this.configpath = @"c:\Config.xml";
             this.ParentWindow = ParentWindow;
+            string exefolder = AppDomain.CurrentDomain.BaseDirectory;
+            this.configpath = exefolder + @"\Config.xml";
+            Debug.WriteLine(this.configpath);                       
+            this.CreateSccmObject();
         }
 
         public Controller(MainWindow ParentWindow, string ConfigPath)
         {
             this.ParentWindow = ParentWindow;
             this.configpath = ConfigPath;
+            this.CreateSccmObject();
             this.Startup();
         }
 
@@ -60,8 +65,41 @@ namespace TsGui
             this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
         }
 
+        private void CreateSccmObject()
+        {
+            try { this.outputconnector = new SccmConnector(); }
+            catch
+            {
+                string msg = "Could not connect to SCCM task sequence agent." + Environment.NewLine + 
+                    Environment.NewLine +
+                    "This is because:" + Environment.NewLine +
+                    "a. The tool hasn't been run from a task sequence" + Environment.NewLine +
+                    "b. There was an error connecting to the SCCM client" + Environment.NewLine + 
+                    Environment.NewLine +
+                    "Do you wish to run in test mode?" + Environment.NewLine +
+                    Environment.NewLine +
+                    "Click Yes to run in test mode, click No to close Task Sequence Gui.";
+                string title = "Error";
+                MessageBoxResult result = MessageBox.Show(msg, title,MessageBoxButton.YesNo,MessageBoxImage.Warning);
+                
+                if (result == MessageBoxResult.Yes)
+                {
+                    this.SetupTestMode();
+                }
+                else { this.ParentWindow.Close(); }
+            }
+        }
+
+        private void SetupTestMode()
+        {
+            this.testingmode = true;
+            this.outputconnector = new TestingConnector();
+        }
+
+
         private void LoadXml(XElement SourceXml)
         {
+            #region
             XElement x;
             Page currPage = null;
             Page prevPage = null;
@@ -118,7 +156,9 @@ namespace TsGui
                     this.ParentWindow.buttonPrev.IsEnabled = false;
                 }
             }
+            #endregion
         }
+
 
         private void PopulateOptions()
         {
@@ -170,12 +210,24 @@ namespace TsGui
 
         public void Finish()
         {
+            foreach (IGuiOption option in this.options)
+            {
+                Debug.WriteLine(option.Variable.Name + ": " + option.Variable.Value);
+                this.outputconnector.AddVariable(option.Variable);
+            }
+            this.outputconnector.AddVariable(new TsVariable("TsGui_Cancel", "FALSE"));
             this.ParentWindow.Close();
         }
 
         public void Cancel()
         {
+            this.outputconnector.AddVariable(new TsVariable("TsGui_Cancel", "TRUE"));
             this.ParentWindow.Close();
+        }
+
+        public void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+            this.outputconnector.Release();
         }
     }
 }

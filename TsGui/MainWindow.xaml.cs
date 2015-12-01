@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 
 namespace TsGui
@@ -27,6 +28,7 @@ namespace TsGui
             InitializeComponent();
             this.controller = new Controller(this);
             this.controller.Startup();
+            Closing += this.controller.OnWindowClosing;
         }
 
         public MainWindow(bool TestingMode)
@@ -60,5 +62,7 @@ namespace TsGui
             //this.Hide();
             this.controller.Finish();
         }
+
+
     }
 }

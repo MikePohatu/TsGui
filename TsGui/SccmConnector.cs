@@ -5,18 +5,23 @@ using System.Text;
 
 namespace TsGui
 {
-    internal class SccmConnector
+    public class SccmConnector: ITsVariableOutput
     {
         dynamic objTSProgUI = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TsProgressUI"));
         dynamic objTSEnv = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TSEnvironment "));
 
-        internal void AddVariable(string Name,string Value)
+        public SccmConnector()
         {
-            //this.cmComObject.Value[Name] = Value;
-            objTSEnv.Value[Name] = Value;
+            this.CloseProgressUI();
         }
 
-        internal void Release()
+        public void AddVariable(TsVariable Variable)
+        {
+            //this.cmComObject.Value[Name] = Value;
+            objTSEnv.Value[Variable.Name] = Variable.Value;
+        }
+
+        public void Release()
         {
             // Release the comm objects.
             if (System.Runtime.InteropServices.Marshal.IsComObject(this.objTSProgUI) == true)
@@ -30,7 +35,7 @@ namespace TsGui
             }
         }
 
-        internal void CloseProgressUI()
+        private void CloseProgressUI()
         {
             objTSProgUI.CloseProgressDialog();
         }
