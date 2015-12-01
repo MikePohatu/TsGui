@@ -12,7 +12,7 @@ namespace TsGui
 
         public SccmConnector()
         {
-            this.CloseProgressUI();
+            objTSProgUI.CloseProgressDialog();
         }
 
         public void AddVariable(TsVariable Variable)
@@ -33,11 +33,6 @@ namespace TsGui
             {
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(this.objTSEnv);
             }
-        }
-
-        private void CloseProgressUI()
-        {
-            objTSProgUI.CloseProgressDialog();
         }
     }
 }
