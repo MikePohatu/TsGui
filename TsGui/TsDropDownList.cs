@@ -11,7 +11,7 @@ namespace TsGui
         private string name;
         private string value;
         private string label;
-        private int height = 23;
+        private int height = 25;
         private Thickness padding = new Thickness(6,3,5,3);
         private Label labelcontrol;
         private ComboBox control;
