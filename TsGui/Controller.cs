@@ -54,6 +54,10 @@ namespace TsGui
 
         public void Startup()
         {
+            //try to hide the tsprogressui
+            try { this.outputconnector.Hide(); }
+            catch { }
+
             XElement x = null;
             //code to be added to make sure config file exists
             try { x = handler.Read(this.configpath); }
@@ -80,9 +84,6 @@ namespace TsGui
             try
             {
                 this.outputconnector = new SccmConnector();
-
-                try { this.outputconnector.Hide(); }
-                catch { }
             }
             catch
             {

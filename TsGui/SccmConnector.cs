@@ -32,15 +32,18 @@ namespace TsGui
 
         public void Release()
         {
-            // Release the comm objects.
-            if (System.Runtime.InteropServices.Marshal.IsComObject(this.objTSProgUI) == true)
+            if (this.hidden == false)
             {
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(this.objTSProgUI);
-            }
+                // Release the comm objects.
+                if (System.Runtime.InteropServices.Marshal.IsComObject(this.objTSProgUI) == true)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(this.objTSProgUI);
+                }
 
-            if (System.Runtime.InteropServices.Marshal.IsComObject(this.objTSEnv) == true)
-            {
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(this.objTSEnv);
+                if (System.Runtime.InteropServices.Marshal.IsComObject(this.objTSEnv) == true)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(this.objTSEnv);
+                }
             }
         }
     }
