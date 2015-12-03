@@ -9,5 +9,6 @@ namespace TsGui
     {
         void AddVariable(TsVariable Variable);
         void Release();
+        void Hide();
     }
 }

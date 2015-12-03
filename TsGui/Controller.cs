@@ -77,7 +77,13 @@ namespace TsGui
 
         private void CreateSccmObject()
         {
-            try { this.outputconnector = new SccmConnector(); }
+            try
+            {
+                this.outputconnector = new SccmConnector();
+
+                try { this.outputconnector.Hide(); }
+                catch { }
+            }
             catch
             {
                 string msg = "Could not connect to SCCM task sequence agent." + Environment.NewLine + 
@@ -98,6 +104,7 @@ namespace TsGui
                 }
                 else { this.ParentWindow.Close(); }
             }
+
         }
 
         private void SetupTestMode()

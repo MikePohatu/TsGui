@@ -7,18 +7,27 @@ namespace TsGui
 {
     public class SccmConnector: ITsVariableOutput
     {
-        dynamic objTSProgUI = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TsProgressUI"));
-        dynamic objTSEnv = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TSEnvironment "));
+        dynamic objTSProgUI;
+        dynamic objTSEnv;
+        bool hidden;
 
         public SccmConnector()
         {
-            objTSProgUI.CloseProgressDialog();
+            hidden = false;
+            objTSEnv = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TSEnvironment "));           
         }
 
         public void AddVariable(TsVariable Variable)
         {
             //this.cmComObject.Value[Name] = Value;
             objTSEnv.Value[Variable.Name] = Variable.Value;
+        }
+
+        public void Hide()
+        {
+            objTSProgUI = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TsProgressUI"));
+            objTSProgUI.CloseProgressDialog();
+            this.hidden = true;
         }
 
         public void Release()

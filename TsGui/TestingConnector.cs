@@ -26,5 +26,8 @@ namespace TsGui
 
             MessageBox.Show(msg);
         }
+
+        public void Hide()
+        { }
     }
 }
