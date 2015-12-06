@@ -14,7 +14,7 @@ namespace TsGui
         public SccmConnector()
         {
             hidden = false;
-            objTSEnv = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TSEnvironment "));           
+            objTSEnv = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TSEnvironment"));           
         }
 
         public void AddVariable(TsVariable Variable)
