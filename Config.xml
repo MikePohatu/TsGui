@@ -4,35 +4,65 @@
   <Padding>20</Padding>
 	<Page>
 		<Column>
+			<!--
+			<Margin>2</Margin>
+			-->
 			<GuiOption Type="FreeText">
-				<Variable>TextVariable</Variable>
-				<Label>This is free text</Label>
-				<DefaultValue>Example</DefaultValue>
-			</GuiOption>
-			
-			<GuiOption Type="CheckBox">
-				<Variable>CheckBoxVariable</Variable>
-				<Label>This is a checkbox</Label>
-				<Checked />
+				<Variable>OSDComputerName</Variable>
+				<Label>Computer name:</Label>
+				<DefaultValue>PC1</DefaultValue>
 			</GuiOption>
 			
 			<GuiOption Type="DropDownList">
-				<Variable>ListVariable</Variable>
-				<Label>This is a list</Label>
+				<Variable>PCType</Variable>
+				<Label>PC Type:</Label>
+				<DefaultValue>STDPC</DefaultValue>
 				<Option>
-					<Text>Option 1</Text>
-					<Value>Option1</Value>
+					<Text>Standard Desktop</Text>
+					<Value>STDPC</Value>
 				</Option>
 				<Option>
-			    <Text>Option 2</Text>
-					<Value>Option2</Value>
+					<Text>Standard Laptop</Text>
+					<Value>STDLT</Value>
 				</Option>
 				<Option>
-			    <Text>Option 3</Text>
-					<Value>Option3</Value>
+					<Text>Clinical PC</Text>
+					<Value>ClinicalPC</Value>
 				</Option>
 			</GuiOption>
-      
+			
+			<GuiOption Type="Heading">
+				<Label></Label>
+				<Bold />
+				<Height>30</Height>
+			</GuiOption>
+			
+			<GuiOption Type="Heading">
+				<Label>Applications</Label>
+				<Bold />
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>AdminApps</Variable>
+				<Label>Admin applications</Label>
+				<!--
+				<TrueValue>YES</TrueValue>
+				<FalseValue>NO</FalseValue>
+				-->
+				<HAlign>left</HAlign>
+				<Checked />
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>OfficeApps</Variable>
+				<Label>Office applications</Label>
+				<!--
+				<TrueValue>YES</TrueValue>
+				<FalseValue>NO</FalseValue>
+				<Checked />
+				-->
+				<HAlign>left</HAlign>
+			</GuiOption>
 		</Column>
 	</Page>
 </TsGui>

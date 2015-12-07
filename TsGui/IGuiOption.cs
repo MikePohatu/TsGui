@@ -9,5 +9,6 @@ namespace TsGui
         TsVariable Variable { get; }
         Label Label { get; }
         Control Control { get; }
+        int Height { get; }
     }
 }

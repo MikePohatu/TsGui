@@ -5,32 +5,24 @@ using System.Windows;
 
 namespace TsGui
 {
-    public class TsFreeText: IGuiOption
+    public class TsHeading: IGuiOption
     {
-        //private TsVariable tsvar;
         private string name;
-        private string value;
         private string label;
         private int height = 25;
-        private Thickness padding = new Thickness(3, 3, 5, 3);
+        private Thickness padding = new Thickness(0, 0, 0, 0);
         private Label labelcontrol;
-        private TextBox control;
+        private Label control;
+        private bool bold;
 
-        public TsFreeText (XElement SourceXml)
+        public TsHeading(XElement SourceXml)
         {
+            this.control = new Label();
             this.LoadXml(SourceXml);
             this.Build();
         }
 
-        public TsVariable Variable
-        {
-            get
-            {
-                this.value = this.control.Text;
-                return new TsVariable(this.name,this.value);
-            }
-        }
-
+        public TsVariable Variable { get { return null; } }
         public Label Label { get { return this.labelcontrol; } }
         public Control Control { get { return this.control; } }
         public int Height { get { return this.height; } }
@@ -44,10 +36,6 @@ namespace TsGui
             if (x != null)
             { this.name = x.Value; }
 
-            x = pXml.Element("DefaultValue");
-            if (x != null)
-            { this.value = x.Value; }
-
             x = pXml.Element("Label");
             if (x != null)
             { this.label = x.Value; }
@@ -55,6 +43,10 @@ namespace TsGui
             x = pXml.Element("Height");
             if (x != null)
             { this.height = Convert.ToInt32(x.Value); }
+
+            x = pXml.Element("Bold");
+            if (x != null)
+            { this.bold = true; }
 
             x = pXml.Element("Padding");
             if (x != null)
@@ -67,18 +59,17 @@ namespace TsGui
 
         private void Build()
         {
-            this.control = new TextBox();
-            this.control.MaxLines = 1;
-            this.control.MaxLength = 2048;
-            this.control.Height = this.height;
-            this.control.Text = this.value;
+            this.control = new Label();
+            this.control.Content = "";
             this.control.Padding = this.padding;
+            this.control.VerticalAlignment = VerticalAlignment.Center;
 
             this.labelcontrol = new Label();
-            //this.labelcontrol.Height = "Auto";
+            this.labelcontrol.Height = this.height;
             this.labelcontrol.Content = this.label;
             this.labelcontrol.Height = this.height;
             this.labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+            if (this.bold) { this.labelcontrol.FontWeight = FontWeights.Bold; }
         }
     }
 }

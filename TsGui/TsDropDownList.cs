@@ -40,7 +40,7 @@ namespace TsGui
 
         public Label Label { get { return this.labelcontrol; } }
         public Control Control { get { return this.control; } }
-
+        public int Height { get { return this.height; } }
 
         public void LoadXml(XElement pXml)
         {

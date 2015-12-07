@@ -76,6 +76,7 @@
     <Compile Include="SccmConnector.cs" />
     <Compile Include="SystemConnector.cs" />
     <Compile Include="TestingConnector.cs" />
+    <Compile Include="TsHeading.cs" />
     <Compile Include="TsDropDownList.cs" />
     <Compile Include="TsCheckBox.cs" />
     <Compile Include="TsFreeText.cs" />

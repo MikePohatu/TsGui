@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Text;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace TsGui
 {
@@ -10,6 +11,7 @@ namespace TsGui
     {
         private List<IGuiOption> options = new List<IGuiOption>();
         private Grid columnpanel;
+        private Thickness margin = new Thickness(2,2,2,2);
 
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this.options; } }
@@ -27,6 +29,7 @@ namespace TsGui
 
         private void LoadXml(XElement SourceXml)
         {
+            XElement x;
             IEnumerable<XElement> optionsXml;
             IGuiOption newOption;
             //now read in the options and add to a dictionary for later use
@@ -35,15 +38,25 @@ namespace TsGui
             {
                 foreach (XElement xOption in optionsXml)
                 {
-                    this.options.Add(GuiFactory.CreateGuiOption(xOption));
+                    newOption = GuiFactory.CreateGuiOption(xOption);
+                    this.options.Add(newOption);
                 }
             }
+
+            x = SourceXml.Element("Margin");
+            if (x != null)
+            {
+                int i = Convert.ToInt32(x.Value);
+                this.margin = new Thickness(i,i,i,i);
+            }
         }
+
 
         public void Build()
         {
             int rowindex = 0;
             Grid colGrid = new Grid();
+            
             ColumnDefinition coldefControls = new ColumnDefinition();
             ColumnDefinition coldefLabels = new ColumnDefinition();
 
@@ -54,7 +67,11 @@ namespace TsGui
             
             foreach (IGuiOption option in this.options)
             {
+                option.Control.Margin = this.margin;
+                option.Label.Margin = this.margin;
+
                 RowDefinition coldefRow = new RowDefinition();
+                coldefRow.Height = new GridLength(option.Height + this.margin.Top + this.margin.Bottom) ;
                 colGrid.RowDefinitions.Add(coldefRow);
 
                 Grid.SetColumn(option.Label, 0);
@@ -62,10 +79,9 @@ namespace TsGui
                 Grid.SetRow(option.Label, rowindex);
                 Grid.SetRow(option.Control, rowindex);
 
-
                 colGrid.Children.Add(option.Label);
                 colGrid.Children.Add(option.Control);
-
+                
                 rowindex++;
             }
 

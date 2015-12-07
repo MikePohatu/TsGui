@@ -243,7 +243,9 @@ namespace TsGui
             foreach (IGuiOption option in this.options)
             {
                 Debug.WriteLine(option.Variable.Name + ": " + option.Variable.Value);
-                this.outputconnector.AddVariable(option.Variable);
+                if (option.Variable != null)
+                { this.outputconnector.AddVariable(option.Variable); }
+                
             }
             this.outputconnector.AddVariable(new TsVariable("TsGui_Cancel", "FALSE"));
             this.ParentWindow.Close();

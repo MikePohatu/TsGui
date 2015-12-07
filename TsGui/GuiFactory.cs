@@ -25,6 +25,10 @@ namespace TsGui
                 return new TsCheckBox(OptionXml);
             }
 
+            else if (OptionXml.Attribute("Type").Value == "Heading")
+            {
+                return new TsHeading(OptionXml);
+            }
             else { return null; }
         }
     }
