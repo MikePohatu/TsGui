@@ -28,27 +28,14 @@ namespace TsGui
         private void LoadXml(XElement SourceXml)
         {
             IEnumerable<XElement> optionsXml;
+            IGuiOption newOption;
             //now read in the options and add to a dictionary for later use
             optionsXml = SourceXml.Elements("GuiOption");
             if (optionsXml != null)
             {
                 foreach (XElement xOption in optionsXml)
                 {
-                    //need to update with factory
-                    if (xOption.Attribute("Type").Value == "DropDownList")
-                    {
-                        this.options.Add(new TsDropDownList(xOption));
-                    }
-
-                    else if (xOption.Attribute("Type").Value == "FreeText")
-                    {
-                        this.options.Add(new TsFreeText(xOption));
-                    }
-
-                    //else if (xOption.Attribute("Type").Value == "FreeText")
-                    //{
-                    //    this.options.Add(new TsFreeText(xOption));
-                    //}
+                    this.options.Add(GuiFactory.CreateGuiOption(xOption));
                 }
             }
         }

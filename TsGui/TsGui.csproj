@@ -71,11 +71,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GuiFactory.cs" />
     <Compile Include="ITsVariableOutput.cs" />
     <Compile Include="SccmConnector.cs" />
     <Compile Include="SystemConnector.cs" />
     <Compile Include="TestingConnector.cs" />
     <Compile Include="TsDropDownList.cs" />
+    <Compile Include="TsCheckBox.cs" />
     <Compile Include="TsFreeText.cs" />
     <Compile Include="TsVariable.cs" />
     <Compile Include="XmlHandler.cs" />

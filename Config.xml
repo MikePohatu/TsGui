@@ -9,7 +9,13 @@
 				<Label>This is free text</Label>
 				<DefaultValue>Example</DefaultValue>
 			</GuiOption>
-      
+			
+			<GuiOption Type="CheckBox">
+				<Variable>CheckBoxVariable</Variable>
+				<Label>This is a checkbox</Label>
+				<Checked />
+			</GuiOption>
+			
 			<GuiOption Type="DropDownList">
 				<Variable>ListVariable</Variable>
 				<Label>This is a list</Label>
