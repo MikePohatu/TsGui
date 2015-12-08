@@ -13,6 +13,7 @@ namespace TsGui
         private Grid columnpanel;
         private Thickness margin = new Thickness(2,2,2,2);
 
+        public bool ShowGridLines { get; set; }
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this.options; } }
         public Panel Panel { get { return this.columnpanel; } }
@@ -23,13 +24,13 @@ namespace TsGui
         public Column (XElement SourceXml,int PageIndex)
         {
             this.Index = PageIndex;
+            this.ShowGridLines = false;
             this.LoadXml(SourceXml);
             this.Build();
         }
 
         private void LoadXml(XElement SourceXml)
         {
-            XElement x;
             IEnumerable<XElement> optionsXml;
             IGuiOption newOption;
             //now read in the options and add to a dictionary for later use
@@ -43,12 +44,7 @@ namespace TsGui
                 }
             }
 
-            x = SourceXml.Element("Margin");
-            if (x != null)
-            {
-                int i = Convert.ToInt32(x.Value);
-                this.margin = new Thickness(i,i,i,i);
-            }
+            GuiFactory.LoadMargins(SourceXml, this.margin);
         }
 
 
@@ -56,7 +52,9 @@ namespace TsGui
         {
             int rowindex = 0;
             Grid colGrid = new Grid();
-            
+
+            colGrid.ShowGridLines = this.ShowGridLines;
+
             ColumnDefinition coldefControls = new ColumnDefinition();
             ColumnDefinition coldefLabels = new ColumnDefinition();
 

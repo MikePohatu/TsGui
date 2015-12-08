@@ -10,45 +10,51 @@ namespace TsGui
 {
     public class Page: ITsGuiElement
     {
-        private int height;
-        private int width;
-        private int padding;
-        private List<Column> columns = new List<Column>();
-        private List<IGuiOption> options = new List<IGuiOption>();
-        private Grid pagepanel;
-        //private MainWindow window;
-        private bool islast = false;
-        private bool isfirst = false;
+        private int _height;
+        private int _width;
 
-        public List<IGuiOption> Options { get { return this.options; } }
+        private Thickness _margin = new Thickness(0, 0, 0, 0);
+        private List<Column> _columns = new List<Column>();
+        private List<IGuiOption> _options = new List<IGuiOption>();
+        private Grid _pagepanel;
+
+        private bool _islast = false;
+        private bool _isfirst = false;
+
+        public bool ShowGridlines { get; set; }
+        public List<IGuiOption> Options { get { return this._options; } }
         public Page PreviousPage { get; set; }
         public Page NextPage { get; set; }
-        public Grid Panel { get { return this.pagepanel; } }
+        public Grid Panel { get { return this._pagepanel; } }
         public bool IsLast
         {
-            get { return this.islast; }
-            set { this.islast = value; }
+            get { return this._islast; }
+            set { this._islast = value; }
         }
         public bool IsFirst
         {
-            get { return this.isfirst; }
-            set { this.isfirst = value; }
+            get { return this._isfirst; }
+            set { this._isfirst = value; }
         }
-        //public PageWindow Window { get { return this.window; } }
 
-        public Page(XElement SourceXml,int Height,int Width,int Padding)
+
+        //Constructors
+        public Page(XElement SourceXml,int Height,int Width,Thickness Margin)
         {
             Debug.WriteLine("New page constructor");
             //Debug.WriteLine(SourceXml);
 
-            this.height = Height;
-            this.width = Width;
-            this.padding = Padding;
+            this._height = Height;
+            this._width = Width;
+            this._margin = Margin;
+            this.ShowGridlines = false;
 
             this.LoadXml(SourceXml);
             this.Build();
         }
 
+
+        //Methods
         public void LoadXml(XElement SourceXml)
         {
             IEnumerable<XElement> columnsXml;
@@ -60,7 +66,9 @@ namespace TsGui
             {
                 foreach (XElement xColumn in columnsXml)
                 {
-                    this.columns.Add(new Column(xColumn, colIndex));
+                    Column c = new Column(xColumn, colIndex);
+                    c.ShowGridLines = this.ShowGridlines;
+                    this._columns.Add(c);
                     colIndex++;
                 }
             }
@@ -74,21 +82,22 @@ namespace TsGui
             int colindex = 0;
             //this.window = new PageWindow(this.height,this.width,this.padding);
 
-            this.pagepanel = new Grid();
-            this.pagepanel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            this._pagepanel = new Grid();
+            this._pagepanel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            this._pagepanel.ShowGridLines = this.ShowGridlines;
             //this.pagepanel.ShowGridLines = true;
 
             //create a last row for the buttons
             RowDefinition colrowdef = new RowDefinition();
-            this.pagepanel.RowDefinitions.Add(colrowdef);
+            this._pagepanel.RowDefinitions.Add(colrowdef);
 
-            foreach (Column col in this.columns)
+            foreach (Column col in this._columns)
             {
                 ColumnDefinition coldef = new ColumnDefinition();
-                this.pagepanel.ColumnDefinitions.Add(coldef);
+                this._pagepanel.ColumnDefinitions.Add(coldef);
 
                 Grid.SetColumn(col.Panel, colindex);
-                this.pagepanel.Children.Add(col.Panel);
+                this._pagepanel.Children.Add(col.Panel);
                 colindex++;
             }
         }
@@ -97,9 +106,9 @@ namespace TsGui
         //list of ts variables to set at the end. 
         private void PopulateOptions()
         {
-            foreach (Column col in this.columns)
+            foreach (Column col in this._columns)
             {
-                this.options.AddRange(col.Options);
+                this._options.AddRange(col.Options);
             }
         }
 

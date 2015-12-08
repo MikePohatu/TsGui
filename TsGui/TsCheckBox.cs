@@ -39,54 +39,35 @@ namespace TsGui
         public Control Control { get { return this.control; } }
         public int Height { get { return this.height; } }
 
-        public void LoadXml(XElement pXml)
+        public void LoadXml(XElement SourceXml)
         {
             #region
             XElement x;
 
-            x = pXml.Element("Variable");
+            x = SourceXml.Element("Variable");
             if (x != null)
             { this.name = x.Value; }
 
-            x = pXml.Element("Checked");
-            if (x != null)
-            { this.control.IsChecked = true; }
-
-            x = pXml.Element("Label");
+            x = SourceXml.Element("Label");
             if (x != null)
             { this.label = x.Value; }
 
-            x = pXml.Element("TrueValue");
+            x = SourceXml.Element("Checked");
+            if (x != null)
+            { this.control.IsChecked = true; }
+
+            x = SourceXml.Element("TrueValue");
             if (x != null)
             { this.valTrue = x.Value; }
 
-            x = pXml.Element("FalseValue");
+            x = SourceXml.Element("FalseValue");
             if (x != null)
             { this.valFalse = x.Value; }
 
-            x = pXml.Element("HAlign");
-            if (x != null)
-            {
-                if ( x.Value.ToUpper() == "LEFT" )
-                {
-                    this.hAlignment = HorizontalAlignment.Left;
-                }
-                else if (x.Value.ToUpper() == "RIGHT")
-                {
-                    this.hAlignment = HorizontalAlignment.Right;
-                }
-                else if (x.Value.ToUpper() == "CENTER")
-                {
-                    this.hAlignment = HorizontalAlignment.Center;
-                }
-            }
 
-            x = pXml.Element("Margin");
-            if (x != null)
-            {
-                int padInt = Convert.ToInt32(x.Value);
-                this.margin = new System.Windows.Thickness(padInt, padInt, padInt, padInt);
-            }
+            GuiFactory.LoadHAlignment(SourceXml, ref this.hAlignment);
+            GuiFactory.LoadMargins(SourceXml, this.margin);
+
             #endregion
         }
 

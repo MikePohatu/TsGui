@@ -1,7 +1,8 @@
 <TsGui>
   <Height>250</Height>
   <Width>300</Width>
-  <Padding>20</Padding>
+  <Margin>20</Margin>
+  <ShowGridLines />
 	<Page>
 		<Column>
 			<!--
@@ -36,7 +37,10 @@
 				<Bold />
 				<Height>30</Height>
 			</GuiOption>
-			
+		</Column>
+	</Page>
+	<Page>
+		<Column>
 			<GuiOption Type="Heading">
 				<Label>Applications</Label>
 				<Bold />
@@ -49,7 +53,7 @@
 				<TrueValue>YES</TrueValue>
 				<FalseValue>NO</FalseValue>
 				-->
-				<HAlign>left</HAlign>
+				<HAlign>right</HAlign>
 				<Checked />
 			</GuiOption>
 			
@@ -61,7 +65,7 @@
 				<FalseValue>NO</FalseValue>
 				<Checked />
 				-->
-				<HAlign>left</HAlign>
+				<HAlign>right</HAlign>
 			</GuiOption>
 		</Column>
 	</Page>
