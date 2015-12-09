@@ -46,5 +46,11 @@ namespace TsGui
                 }
             }
         }
+
+        public string GetTsVar(string Variable)
+        {
+            return objTSEnv.Value[Variable];
+
+        }
     }
 }

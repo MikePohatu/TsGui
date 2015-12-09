@@ -16,10 +16,15 @@ namespace TsGui
             #region
             string s;
 
-            foreach (XElement x in InputXml.Elements("EnvironmentalVariable"))
+            foreach (XElement x in InputXml.Elements("EnvironmentVariable"))
             {
                 if (x != null)
                 {
+                    //try ts env 
+                    //try process variables
+                    s = Environment.GetEnvironmentVariable(x.Value, EnvironmentVariableTarget.Process);
+                    if (s != null) { return s; }
+
                     //try computer variables
                     s = Environment.GetEnvironmentVariable(x.Value, EnvironmentVariableTarget.Machine);
                     if (s != null) { return s; }
