@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using System.Text;
 
@@ -19,12 +20,22 @@ namespace TsGui
             {
                 if (x != null)
                 {
-                    s = Environment.GetEnvironmentVariable(x.Value);
+                    //try computer variables
+                    s = Environment.GetEnvironmentVariable(x.Value, EnvironmentVariableTarget.Machine);
+                    if (s != null) { return s; }
+
+                    //try user variables
+                    s = Environment.GetEnvironmentVariable(x.Value, EnvironmentVariableTarget.User);
                     if (s != null) { return s; }
                 }
             }
 
-            return InputXml.Value;
+            XText xt = InputXml.Nodes().OfType<XText>().FirstOrDefault();
+            s = xt.Value.Trim();
+
+            if (s != null) { return s; }
+            else { return null; }
+
             #endregion
         }
     }
