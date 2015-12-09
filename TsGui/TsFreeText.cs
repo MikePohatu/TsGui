@@ -46,7 +46,7 @@ namespace TsGui
 
             x = pXml.Element("DefaultValue");
             if (x != null)
-            { this.value = x.Value; }
+            { this.value = SystemConnector.GetEnvVar(x); }
 
             x = pXml.Element("Label");
             if (x != null)
