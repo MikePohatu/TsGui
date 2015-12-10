@@ -10,6 +10,7 @@ namespace TsGui
 {
     public class Page: ITsGuiElement
     {
+        private Controller _controller;
         private int _height;
         private int _width;
 
@@ -39,11 +40,11 @@ namespace TsGui
 
 
         //Constructors
-        public Page(XElement SourceXml,int Height,int Width,Thickness Margin)
+        public Page(XElement SourceXml,int Height,int Width,Thickness Margin,Controller RootController)
         {
             Debug.WriteLine("New page constructor");
             //Debug.WriteLine(SourceXml);
-
+            this._controller = RootController;
             this._height = Height;
             this._width = Width;
             this._margin = Margin;
@@ -66,7 +67,7 @@ namespace TsGui
             {
                 foreach (XElement xColumn in columnsXml)
                 {
-                    Column c = new Column(xColumn, colIndex);
+                    Column c = new Column(xColumn, colIndex,this._controller);
                     c.ShowGridLines = this.ShowGridlines;
                     this._columns.Add(c);
                     colIndex++;

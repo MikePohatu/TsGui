@@ -181,14 +181,14 @@ namespace TsGui
                         //Debug.WriteLine("creating new page");
                         if (currPage == null)
                         {
-                            currPage = new Page(xPage, this._pageHeight, this._pageWidth, this._pageMargin);
+                            currPage = new Page(xPage, this._pageHeight, this._pageWidth, this._pageMargin,this);
                             currPage.IsFirst = true;
                         }
                         else
                         {
                             //record the last page as the prevPage
                             prevPage = currPage;
-                            currPage = new Page(xPage, this._pageHeight, this._pageWidth, this._pageMargin);                 
+                            currPage = new Page(xPage, this._pageHeight, this._pageWidth, this._pageMargin,this);                 
                         }
                         
                         //create the new page and assign the next page/prev page links

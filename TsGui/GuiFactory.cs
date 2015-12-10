@@ -8,7 +8,7 @@ namespace TsGui
 {
     public static class GuiFactory
     {
-        public static IGuiOption CreateGuiOption(XElement OptionXml)
+        public static IGuiOption CreateGuiOption(XElement OptionXml,Controller RootController)
         {
             #region
             //need to update with factory
@@ -19,7 +19,7 @@ namespace TsGui
 
             else if (OptionXml.Attribute("Type").Value == "FreeText")
             {
-                return new TsFreeText(OptionXml);
+                return new TsFreeText(OptionXml,RootController);
             }
 
             else if (OptionXml.Attribute("Type").Value == "CheckBox")

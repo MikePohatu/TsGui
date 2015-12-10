@@ -13,6 +13,7 @@ namespace TsGui
         private Grid columnpanel;
         private Thickness margin = new Thickness(2,2,2,2);
 
+        private Controller _controller;
         public bool ShowGridLines { get; set; }
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this.options; } }
@@ -21,8 +22,9 @@ namespace TsGui
         public int LabelWidth { get; set; }
 
         //constructor
-        public Column (XElement SourceXml,int PageIndex)
+        public Column (XElement SourceXml,int PageIndex, Controller RootController)
         {
+            this._controller = RootController;
             this.Index = PageIndex;
             this.ShowGridLines = false;
             this.LoadXml(SourceXml);
@@ -39,7 +41,7 @@ namespace TsGui
             {
                 foreach (XElement xOption in optionsXml)
                 {
-                    newOption = GuiFactory.CreateGuiOption(xOption);
+                    newOption = GuiFactory.CreateGuiOption(xOption,this._controller);
                     this.options.Add(newOption);
                 }
             }
