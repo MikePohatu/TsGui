@@ -22,6 +22,7 @@ namespace TsGui
             try
             {
                 this._sccmconnector = new SccmConnector();
+                this._sccmconnector.Hide();
                 return true;
             }
             catch
