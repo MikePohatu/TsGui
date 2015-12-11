@@ -71,6 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EnvironmentConnector.cs" />
     <Compile Include="GuiFactory.cs" />
     <Compile Include="ITsVariableOutput.cs" />
     <Compile Include="SccmConnector.cs" />
@@ -90,7 +91,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controller.cs" />
+    <Compile Include="MainController.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="IGuiOption.cs" />
     <Compile Include="ITsGuiElement.cs" />

@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace TsGui
 {
-    public class Controller
+    public class MainController
     {
         private string _configpath;
         private int _pageWidth;
@@ -23,7 +23,8 @@ namespace TsGui
         private XmlHandler _handler = new XmlHandler();
         private List<Page> _pages = new List<Page>();
         private List<IGuiOption> _options = new List<IGuiOption>();
-        private ITsVariableOutput _outputconnector;
+        //private ITsVariableOutput _outputconnector;
+        private EnvironmentController _envController = new EnvironmentController();
 
         //properties
         public bool ShowGridLines { get; set; }
@@ -36,21 +37,19 @@ namespace TsGui
         }
 
         //constructors
-        public Controller(MainWindow ParentWindow)
+        public MainController(MainWindow ParentWindow)
         {
             this.ParentWindow = ParentWindow;
             string exefolder = AppDomain.CurrentDomain.BaseDirectory;
             this._configpath = exefolder + @"Config.xml";                    
-            this.CreateSccmObject();
             this.Startup();
         }
 
-        public Controller(MainWindow ParentWindow, string ConfigPath)
+        public MainController(MainWindow ParentWindow, string ConfigPath)
         {
 
             this.ParentWindow = ParentWindow;
             this._configpath = ConfigPath;
-            this.CreateSccmObject();
             this.Startup();
         }
 
@@ -59,10 +58,19 @@ namespace TsGui
             //initialize values
             this.ShowGridLines = false;
 
-            //try to hide the tsprogressui
-            try { this._outputconnector.Hide(); }
-            catch { }
+            this._testingmode = this._envController.Init();
 
+            //if testingmode is true, the envcontroller couldn't connect to sccm
+            //prompt the user if they want to continue. exit if not. 
+            if (this._testingmode != true)
+            {
+                if (this.PromptTestMode() != true)
+                {
+                    this.Cancel();
+                    return;
+                }               
+            }
+            
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
 
@@ -100,44 +108,6 @@ namespace TsGui
                 this.ParentWindow.Close();
                 return null;
             }
-        }
-
-
-        private void CreateSccmObject()
-        {
-            try
-            {
-                this._outputconnector = new SccmConnector();
-            }
-            catch
-            {
-                string msg = "Could not connect to SCCM task sequence agent." + Environment.NewLine + 
-                    Environment.NewLine +
-                    "This is because:" + Environment.NewLine +
-                    "a. The tool hasn't been run from a task sequence" + Environment.NewLine +
-                    "b. There was an error connecting to the SCCM client" + Environment.NewLine + 
-                    Environment.NewLine +
-                    "Do you wish to run in test mode?" + Environment.NewLine +
-                    Environment.NewLine +
-                    "Click Yes to run in test mode, click No to close Task Sequence Gui.";
-                string title = "Error";
-                MessageBoxResult result = MessageBox.Show(msg, title,MessageBoxButton.YesNo,MessageBoxImage.Warning);
-                
-                if (result == MessageBoxResult.Yes)
-                {
-                    this.SetupTestMode();
-                }
-                else { this.ParentWindow.Close(); }
-            }
-
-        }
-
-
-
-        private void SetupTestMode()
-        {
-            this._testingmode = true;
-            this._outputconnector = new TestingConnector();
         }
 
 
@@ -225,6 +195,7 @@ namespace TsGui
             }
         }
 
+
         //move to the next page and update the next/prev/finish buttons
         public void MoveNext()
         {
@@ -234,6 +205,7 @@ namespace TsGui
             this.SetButtons();            
         }
 
+
         //move to the previous page and update the next/prev/finish buttons
         public void MovePrevious()
         {
@@ -242,6 +214,7 @@ namespace TsGui
             this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
             this.SetButtons();            
         }
+
 
         public void SetButtons()
         {
@@ -278,23 +251,46 @@ namespace TsGui
                 if (option.Variable != null)
                 {
                     Debug.WriteLine(option.Variable.Name + ": " + option.Variable.Value);
-                    this._outputconnector.AddVariable(option.Variable);
+                    this._envController.AddVariable(option.Variable);
                 }
                 
             }
-            this._outputconnector.AddVariable(new TsVariable("TsGui_Cancel", "FALSE"));
+            this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE"));
             this.ParentWindow.Close();
         }
 
         public void Cancel()
         {
-            this._outputconnector.AddVariable(new TsVariable("TsGui_Cancel", "TRUE"));
+            this._envController.AddVariable(new TsVariable("TsGui_Cancel", "TRUE"));
             this.ParentWindow.Close();
         }
 
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            this._outputconnector.Release();
+            this._envController.Release();
+        }
+
+        public String GetVariableValue(XElement InputXml)
+        {
+            return this._envController.GetValueFromList(InputXml);
+        }
+
+        private bool PromptTestMode()
+        {
+            string msg = "Could not connect to SCCM task sequence agent." + Environment.NewLine +
+                    Environment.NewLine +
+                    "This is because:" + Environment.NewLine +
+                    "a. The tool hasn't been run from a task sequence" + Environment.NewLine +
+                    "b. There was an error connecting to the SCCM client" + Environment.NewLine +
+                    Environment.NewLine +
+                    "Do you wish to run in test mode?" + Environment.NewLine +
+                    Environment.NewLine +
+                    "Click Yes to run in test mode, click No to close Task Sequence Gui.";
+            string title = "Error";
+            MessageBoxResult result = MessageBox.Show(msg, title, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes) return true;
+            else return false;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace TsGui
     public class TsFreeText: IGuiOption
     {
         //private TsVariable tsvar;
-        private Controller _controller;
+        private MainController _controller;
         private string name;
         private string value;
         private string label;
@@ -17,7 +17,7 @@ namespace TsGui
         private Label labelcontrol;
         private TextBox control;
 
-        public TsFreeText (XElement SourceXml, Controller RootController)
+        public TsFreeText (XElement SourceXml, MainController RootController)
         {
             this._controller = RootController;
             this.LoadXml(SourceXml);
@@ -48,7 +48,7 @@ namespace TsGui
 
             x = pXml.Element("DefaultValue");
             if (x != null)
-            { this.value = SystemConnector.GetEnvVar(x); }
+            { this.value = this._controller.GetVariableValue(x); }
 
             x = pXml.Element("Label");
             if (x != null)

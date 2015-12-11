@@ -21,12 +21,12 @@ namespace TsGui
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Controller controller;
+        private MainController controller;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.controller = new Controller(this);
+            this.controller = new MainController(this);
             //this.controller.Startup();           
         }
 

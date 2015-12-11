@@ -8,7 +8,7 @@ namespace TsGui
 {
     public static class GuiFactory
     {
-        public static IGuiOption CreateGuiOption(XElement OptionXml,Controller RootController)
+        public static IGuiOption CreateGuiOption(XElement OptionXml,MainController RootController)
         {
             #region
             //need to update with factory

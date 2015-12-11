@@ -10,7 +10,7 @@ namespace TsGui
 {
     public class Page: ITsGuiElement
     {
-        private Controller _controller;
+        private MainController _controller;
         private int _height;
         private int _width;
 
@@ -40,7 +40,7 @@ namespace TsGui
 
 
         //Constructors
-        public Page(XElement SourceXml,int Height,int Width,Thickness Margin,Controller RootController)
+        public Page(XElement SourceXml,int Height,int Width,Thickness Margin,MainController RootController)
         {
             Debug.WriteLine("New page constructor");
             //Debug.WriteLine(SourceXml);

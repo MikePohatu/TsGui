@@ -47,10 +47,9 @@ namespace TsGui
             }
         }
 
-        public string GetTsVar(string Variable)
+        public string GetVariable(string Variable)
         {
             return objTSEnv.Value[Variable];
-
         }
     }
 }
