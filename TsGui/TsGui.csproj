@@ -71,7 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="EnvironmentConnector.cs" />
+    <Compile Include="EnvironmentController.cs" />
     <Compile Include="GuiFactory.cs" />
     <Compile Include="ITsVariableOutput.cs" />
     <Compile Include="SccmConnector.cs" />

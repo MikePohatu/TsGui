@@ -23,18 +23,17 @@ namespace TsGui
         private XmlHandler _handler = new XmlHandler();
         private List<Page> _pages = new List<Page>();
         private List<IGuiOption> _options = new List<IGuiOption>();
-        //private ITsVariableOutput _outputconnector;
         private EnvironmentController _envController = new EnvironmentController();
 
         //properties
         public bool ShowGridLines { get; set; }
         public MainWindow ParentWindow { get; set; }
         public Page CurrentPage { get; set; }
-        public bool TestingMode
-        {
-            get { return this._testingmode; }
-            set { this._testingmode = value; }
-        }
+        //public bool TestingMode
+        //{
+        //    get { return this._testingmode; }
+        //    set { this._testingmode = value; }
+        //}
 
         //constructors
         public MainController(MainWindow ParentWindow)

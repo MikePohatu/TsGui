@@ -35,7 +35,7 @@ namespace TsGui
 
         public void AddVariable(TsVariable Variable)
         {
-            if (this._sccmconnector != null) { this.AddVariable(Variable); }
+            if (this._sccmconnector != null) { this._sccmconnector.AddVariable(Variable); }
             else { this._testconnector.AddVariable(Variable); }
         }
 

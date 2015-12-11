@@ -19,7 +19,6 @@ namespace TsGui
 
         public void AddVariable(TsVariable Variable)
         {
-            //this.cmComObject.Value[Name] = Value;
             objTSEnv.Value[Variable.Name] = Variable.Value;
         }
 
@@ -32,8 +31,8 @@ namespace TsGui
 
         public void Release()
         {
-            if (this.hidden == false)
-            {
+            //if (this.hidden == false)
+            //{
                 // Release the comm objects.
                 if (System.Runtime.InteropServices.Marshal.IsComObject(this.objTSProgUI) == true)
                 {
@@ -44,7 +43,7 @@ namespace TsGui
                 {
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(this.objTSEnv);
                 }
-            }
+            //}
         }
 
         public string GetVariable(string Variable)
