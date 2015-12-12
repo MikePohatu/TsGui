@@ -50,14 +50,16 @@ namespace TsGui
 
         public static string RemoveInvalid (string StringValue, string InvalidChars)
         {
+            //Debug.WriteLine("RemoveInvalid called");
             char[] invalidchars = InvalidChars.ToCharArray();
+            string newstring = StringValue;
 
             foreach (char c in invalidchars)
-            {             
-                StringValue.Replace(c.ToString(), "");
+            {
+                newstring = newstring.Replace(c.ToString(),string.Empty);
             }
 
-            return StringValue;
+            return newstring;
         }
     }
 }
