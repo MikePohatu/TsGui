@@ -8,10 +8,18 @@
 			<!--
 			<Margin>2</Margin>
 			-->
-			<GuiOption Type="FreeText">
+			<GuiOption Type="FreeText" MaxLength="15">
 				<Variable>OSDComputerName</Variable>
 				<Label>Computer name:</Label>
-				<DefaultValue>PC1</DefaultValue>
+				<DefaultValue>
+					<EnvironmentVariable>
+						<Ignore>MINNT</Ignore>
+						_SMSTSMachineName
+					</EnvironmentVariable>
+					<WmiQuery>
+						<Query>SELECT SerialNumber FROM Win32_BIOS</Query>
+					</WmiQuery>
+				</DefaultValue>
 			</GuiOption>
 			
 			<GuiOption Type="DropDownList">
