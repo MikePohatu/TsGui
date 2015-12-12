@@ -5,6 +5,8 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Text;
 
+using System.Diagnostics;
+
 namespace TsGui
 {
     internal static class SystemConnector
@@ -41,7 +43,6 @@ namespace TsGui
             try
             {
                 WqlObjectQuery wqlQuery = new WqlObjectQuery(WmiQuery);
-                //SelectQuery selectQuery = new SelectQuery(WmiQuery);
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery);
 
                 foreach (ManagementObject m in searcher.Get())
@@ -49,8 +50,7 @@ namespace TsGui
                     foreach (PropertyData propdata in m.Properties)
                     {
                         s = s + propdata.Value;
-                    }
-                    
+                    }                    
                 }
 
                 //ManagementObject m = new ManagementObject(WmiQuery);
@@ -60,7 +60,7 @@ namespace TsGui
             }
             catch
             {
-                //throw new ManagementException("An error occurred while querying for WMI data: " + e.Message);
+                Debug.WriteLine("Exception thrown in SystemConnector: GetWmiQuery");
                 return null;
             }
             

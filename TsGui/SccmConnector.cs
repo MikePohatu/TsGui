@@ -9,11 +9,11 @@ namespace TsGui
     {
         dynamic objTSProgUI;
         dynamic objTSEnv;
-        bool hidden;
+        //bool hidden;
 
         public SccmConnector()
         {
-            hidden = false;
+            //hidden = false;
             objTSEnv = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TSEnvironment"));           
         }
 
@@ -26,7 +26,7 @@ namespace TsGui
         {
             objTSProgUI = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TsProgressUI"));
             objTSProgUI.CloseProgressDialog();
-            this.hidden = true;
+            //this.hidden = true;
         }
 
         public void Release()

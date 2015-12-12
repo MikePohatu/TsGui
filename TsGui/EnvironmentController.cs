@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Management;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -40,34 +41,42 @@ namespace TsGui
             else { this._testconnector.AddVariable(Variable); }
         }
 
+
         //input a list of options as xml. Return the value of the first one that exists. 
         public string GetValueFromList(XElement InputXml)
         {
-            #region
             string s = null;
 
             foreach (XElement x in InputXml.Elements())
             {
                 if (x.Name == "EnvironmentVariable")
                 {
-                    s = this.GetEnvVar(x.Value);
-                    if (s != null) { return s; }
+                    s = this.GetEnvVar(x.Value.Trim());
+                    if (s != null)
+                    {
+                        //if it shouldn't be ignored, return the value. Otherwise, carry on
+                        if (Checker.ShouldIgnore(x, s) == false) { return s; }
+                        else { s = null; }
+                    }
                 }  
                 else if (x.Name == "WmiQuery")
                 {
-                    s = SystemConnector.GetWmiQuery(x.Value);
-                    if (s != null ) { return s; }
+                    string query = x.Element("Query").Value;
+                    s = SystemConnector.GetWmiQuery(query);
+                    if (s != null )
+                    {
+                        //if it shouldn't be ignored, return the value. Otherwise, carry on
+                        if (Checker.ShouldIgnore(x,s) == false) { return s; }
+                        else { s = null;  }                    
+                    }
                 }             
             }
 
+            s = string.Concat(InputXml.Nodes().OfType<XText>()).Trim();
 
             return s;
-
-            #endregion
         }
 
-
-        
 
         //get and environmental variable, trying the sccm ts variables first
         private string GetEnvVar(string VariableName)
@@ -89,6 +98,7 @@ namespace TsGui
             }
             else { return null; }
         }
+
 
         //release the output connectors.
         public void Release()

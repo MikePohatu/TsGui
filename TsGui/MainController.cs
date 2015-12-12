@@ -269,12 +269,9 @@ namespace TsGui
             this._envController.Release();
         }
 
-        public String GetVariableValue(XElement InputXml)
+        public String GetValueFromList(XElement InputXml)
         {
-            string s;
-            s = this._envController.GetValueFromList(InputXml);
-
-            return s;
+            return this._envController.GetValueFromList(InputXml);
         }
 
         private bool PromptTestMode()

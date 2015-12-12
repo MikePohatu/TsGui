@@ -13,6 +13,7 @@ namespace TsGui
         private string value;
         private string label;
         private int height = 25;
+        private int _maxlength;
         private Thickness padding = new Thickness(3, 3, 5, 3);
         private Label labelcontrol;
         private TextBox control;
@@ -41,6 +42,10 @@ namespace TsGui
         {
             #region
             XElement x;
+            XAttribute attrib;
+
+            attrib = pXml.Attribute("MaxLength");
+            if (attrib != null) { this._maxlength = Convert.ToInt32(attrib.Value); }
 
             x = pXml.Element("Variable");
             if (x != null)
@@ -48,7 +53,10 @@ namespace TsGui
 
             x = pXml.Element("DefaultValue");
             if (x != null)
-            { this.value = this._controller.GetVariableValue(x); }
+            {
+                this.value = this._controller.GetValueFromList(x);
+                if (this._maxlength > 0) { this.value = Checker.Truncate(this.value,this._maxlength); }
+            }
 
             x = pXml.Element("Label");
             if (x != null)
