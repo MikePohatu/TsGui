@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Management;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace TsGui
 {
-    internal class SystemConnector
+    internal static class SystemConnector
     {
         //check an xml element. check for environmental variable elements
         //return the first one that brings back a value. otherwise, return 
@@ -31,6 +32,38 @@ namespace TsGui
             //not found. return null
             return null;
              
+        }
+
+        //get a value from WMI
+        public static string GetWmiQuery(string WmiQuery)
+        {
+            string s = null;
+            try
+            {
+                WqlObjectQuery wqlQuery = new WqlObjectQuery(WmiQuery);
+                //SelectQuery selectQuery = new SelectQuery(WmiQuery);
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery);
+
+                foreach (ManagementObject m in searcher.Get())
+                {
+                    foreach (PropertyData propdata in m.Properties)
+                    {
+                        s = s + propdata.Value;
+                    }
+                    
+                }
+
+                //ManagementObject m = new ManagementObject(WmiQuery);
+                //s = m.ToString();
+                if (String.IsNullOrEmpty(s)) { return null; }
+                else { return s; }
+            }
+            catch
+            {
+                //throw new ManagementException("An error occurred while querying for WMI data: " + e.Message);
+                return null;
+            }
+            
         }
     }
 }

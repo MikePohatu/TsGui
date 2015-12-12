@@ -271,7 +271,10 @@ namespace TsGui
 
         public String GetVariableValue(XElement InputXml)
         {
-            return this._envController.GetValueFromList(InputXml);
+            string s;
+            s = this._envController.GetValueFromList(InputXml);
+
+            return s;
         }
 
         private bool PromptTestMode()

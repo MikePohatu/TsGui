@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Management;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace TsGui
         public string GetValueFromList(XElement InputXml)
         {
             #region
-            string s;
+            string s = null;
 
             foreach (XElement x in InputXml.Elements())
             {
@@ -54,24 +55,19 @@ namespace TsGui
                 }  
                 else if (x.Name == "WmiQuery")
                 {
-                    s = this.GetWmiQuery(x.Value);
+                    s = SystemConnector.GetWmiQuery(x.Value);
                     if (s != null ) { return s; }
                 }             
             }
 
-            XText xt = InputXml.Nodes().OfType<XText>().FirstOrDefault();
-            s = xt.Value.Trim();
 
             return s;
 
             #endregion
         }
 
-        //get a value from WMI
-        public string GetWmiQuery(string WmiQuery)
-        {
-            return null;
-        }
+
+        
 
         //get and environmental variable, trying the sccm ts variables first
         private string GetEnvVar(string VariableName)
