@@ -47,5 +47,17 @@ namespace TsGui
             if (StringValue.Length > Length) { return StringValue.Substring(0, Length); }
             else { return StringValue; }
         }
+
+        public static string RemoveInvalid (string StringValue, string InvalidChars)
+        {
+            char[] invalidchars = InvalidChars.ToCharArray();
+
+            foreach (char c in invalidchars)
+            {             
+                StringValue.Replace(c.ToString(), "");
+            }
+
+            return StringValue;
+        }
     }
 }
