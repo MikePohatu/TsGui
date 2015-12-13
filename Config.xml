@@ -8,7 +8,7 @@
 			<!--
 			<Margin>2</Margin>
 			-->
-			<GuiOption Type="FreeText" MaxLength="15">
+			<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
 				<Invalid>/\[]":;|&lt;>+=,?* _</Invalid>
 				<Variable>OSDComputerName</Variable>
 				<Label>Computer name:</Label>
