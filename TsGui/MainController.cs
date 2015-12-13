@@ -198,20 +198,26 @@ namespace TsGui
         //move to the next page and update the next/prev/finish buttons
         public void MoveNext()
         {
-            this.ParentWindow.MainGrid.Children.Remove(this.CurrentPage.Panel);
-            this.CurrentPage = this.CurrentPage.NextPage;
-            this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
-            this.SetButtons();            
+            if (this.CurrentPage.OptionsValid() == true)
+            {
+                this.ParentWindow.MainGrid.Children.Remove(this.CurrentPage.Panel);
+                this.CurrentPage = this.CurrentPage.NextPage;
+                this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
+                this.SetButtons();
+            }           
         }
 
 
         //move to the previous page and update the next/prev/finish buttons
         public void MovePrevious()
         {
-            this.ParentWindow.MainGrid.Children.Remove(this.CurrentPage.Panel);
-            this.CurrentPage = this.CurrentPage.PreviousPage;
-            this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
-            this.SetButtons();            
+            if (this.CurrentPage.OptionsValid() == true)
+            {
+                this.ParentWindow.MainGrid.Children.Remove(this.CurrentPage.Panel);
+                this.CurrentPage = this.CurrentPage.PreviousPage;
+                this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
+                this.SetButtons();
+            }        
         }
 
 

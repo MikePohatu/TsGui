@@ -17,6 +17,7 @@ namespace TsGui
         private Thickness _margin = new Thickness(0, 0, 0, 0);
         private List<Column> _columns = new List<Column>();
         private List<IGuiOption> _options = new List<IGuiOption>();
+        private List<IEditableGuiOption> _editables = new List<IEditableGuiOption>();
         private Grid _pagepanel;
 
         private bool _islast = false;
@@ -111,13 +112,19 @@ namespace TsGui
             {
                 this._options.AddRange(col.Options);
             }
+
+            foreach (IGuiOption option in this._options)
+            {
+                if (option is IEditableGuiOption) { this._editables.Add((IEditableGuiOption)option); }
+            }
         }
 
-        //code to catch when a window is closed. warn the user, if ok, continue close and set
-        //a variable to record the cancel. if mistake, open the last page
-        public void CatchClose()
+        public bool OptionsValid()
         {
+            foreach (IEditableGuiOption option in this._editables)
+            { if (option.IsValid == false) { return false; } }
 
+            return true;
         }
     }
 }

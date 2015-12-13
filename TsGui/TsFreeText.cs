@@ -2,10 +2,11 @@
 using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Documents;
 
 namespace TsGui
 {
-    public class TsFreeText: IGuiOption
+    public class TsFreeText: IGuiOption, IEditableGuiOption
     {
         //private TsVariable tsvar;
         private MainController _controller;
@@ -13,8 +14,11 @@ namespace TsGui
         private string _value;
         private string _label;
         private string _invalidchars;
+        private bool _caseSensValidate = false;
+        private bool _isvalid = true;
         private int _height = 25;
-        private int _maxlength;
+        private int _maxlength = 0;
+        private int _minlength = 0;
         private Thickness _padding = new Thickness(3, 3, 5, 3);
         private Label _labelcontrol;
         private TextBox _control;
@@ -24,6 +28,7 @@ namespace TsGui
             this._controller = RootController;
             this.LoadXml(SourceXml);
             this.Build();
+            this._control.LostFocus += this.onLostFocus;
         }
 
         public TsVariable Variable
@@ -38,6 +43,14 @@ namespace TsGui
         public Label Label { get { return this._labelcontrol; } }
         public Control Control { get { return this._control; } }
         public int Height { get { return this._height; } }
+        public bool IsValid
+        {
+            get
+            {
+                this.Validate();
+                return this._isvalid;
+            }
+        }
 
         public void LoadXml(XElement pXml)
         {
@@ -47,6 +60,9 @@ namespace TsGui
 
             attrib = pXml.Attribute("MaxLength");
             if (attrib != null) { this._maxlength = Convert.ToInt32(attrib.Value); }
+
+            attrib = pXml.Attribute("MinLength");
+            if (attrib != null) { this._minlength = Convert.ToInt32(attrib.Value); }
 
             x = pXml.Element("Invalid");
             if (x != null)
@@ -82,6 +98,7 @@ namespace TsGui
             #endregion
         }
 
+
         private void Build()
         {
             this._control = new TextBox();
@@ -96,6 +113,42 @@ namespace TsGui
             this._labelcontrol.Content = this._label;
             this._labelcontrol.Height = this._height;
             this._labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+        }
+
+
+        private void onLostFocus(object sender, RoutedEventArgs e)
+        {
+            this.Validate();
+        }
+
+        public void Validate()
+        {
+            string s = "";
+            bool valid = true;
+
+            if (Checker.ValidCharacters(this._control.Text,this._invalidchars,this._caseSensValidate) != true)
+            {
+                s = "Invalid characters: " + this._invalidchars + Environment.NewLine;
+                valid = false;
+            }
+
+            if (Checker.ValidMaxLength(this._control.Text,this._maxlength) == false)
+            {
+                s = s + "Maximum length: " + this._maxlength + " characters" + Environment.NewLine;
+                valid = false;
+            }
+            else if (Checker.ValidMinLength(this._control.Text, this._minlength) == false)
+            {
+                s = s + "Minimum length: " + this._minlength + " characters" + Environment.NewLine;
+                valid = false;
+            }
+
+            if (valid == false)
+            {
+                s = this._control.Text + " is invalid:" + Environment.NewLine + Environment.NewLine + s;
+                MessageBox.Show(s);
+            }
+            this._isvalid = valid;
         }
     }
 }

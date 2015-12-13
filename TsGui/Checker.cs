@@ -61,5 +61,42 @@ namespace TsGui
 
             return newstring;
         }
+
+        public static bool ValidCharacters( string StringValue, string InvalidChars, bool CaseSensitive)
+        {
+            //Debug.WriteLine("RemoveInvalid called");
+            char[] invalidchars = InvalidChars.ToCharArray();
+
+            foreach (char c in invalidchars)
+            {
+                if (CaseSensitive == true)
+                {
+                    if (StringValue.ToUpper().Contains(c.ToString().ToUpper())) { return false; }
+                }
+                else
+                {
+                    if (StringValue.Contains(c.ToString())) { return false; }
+                }             
+            }
+
+            return true;
+        }
+
+
+        public static bool ValidMaxLength(string StringValue,int MaxLength)
+        {
+            //if max length is 0, maxlength is undefined 
+            if (MaxLength == 0 ) { return true; }
+            if (StringValue.Length <= MaxLength) { return true; }
+            else { return false; }
+        }
+
+
+        public static bool ValidMinLength(string StringValue, int MinLength)
+        {
+            Debug.WriteLine(StringValue.Length);
+            if (StringValue.Length >= MinLength) { return true; }
+            else { return false; }
+        }
     }
 }

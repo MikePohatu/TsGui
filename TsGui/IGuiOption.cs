@@ -1,6 +1,4 @@
-﻿using System;
-using System.Xml.Linq;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace TsGui
 {
