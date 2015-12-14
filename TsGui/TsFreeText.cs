@@ -155,11 +155,13 @@ namespace TsGui
 
         private void ShowToolTip(string Message)
         {
+             
+            if (this._control.ToolTip == null) { this._control.ToolTip = new ToolTip(); }
             ToolTip tt = this._control.ToolTip as ToolTip;
-            TextBlock tb = tt.Content as TextBlock;
 
-            if (tt == null) { this._control.ToolTip = new ToolTip(); }
-            if (tb == null) { tb = new TextBlock(); }
+            if (tt.Content == null) { tt.Content = new TextBlock(); }
+            TextBlock tb = tt.Content as TextBlock;
+            
 
             tb.Text = Message;
             tt.Content = tb;
