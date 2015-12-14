@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows;
 using System.Windows.Documents;
 
@@ -20,15 +21,16 @@ namespace TsGui
         private int _maxlength = 0;
         private int _minlength = 0;
         private Thickness _padding = new Thickness(3, 3, 5, 3);
-        private Label _labelcontrol;
-        private TextBox _control;
+        private Label _labelcontrol = new Label();
+        private TextBox _control = new TextBox();
 
         public TsFreeText (XElement SourceXml, MainController RootController)
         {
             this._controller = RootController;
             this.LoadXml(SourceXml);
             this.Build();
-            this._control.LostFocus += this.onLostFocus;
+            this._control.TextChanged += this.onChange;
+            this._control.ToolTip = new ToolTip();
         }
 
         public TsVariable Variable
@@ -59,10 +61,15 @@ namespace TsGui
             XAttribute attrib;
 
             attrib = pXml.Attribute("MaxLength");
-            if (attrib != null) { this._maxlength = Convert.ToInt32(attrib.Value); }
+            if (attrib != null)
+            {
+                this._maxlength = Convert.ToInt32(attrib.Value);
+                this._control.MaxLength = this._maxlength;
+            }
 
             attrib = pXml.Attribute("MinLength");
-            if (attrib != null) { this._minlength = Convert.ToInt32(attrib.Value); }
+            if (attrib != null)
+            { this._minlength = Convert.ToInt32(attrib.Value); }
 
             x = pXml.Element("Invalid");
             if (x != null)
@@ -101,22 +108,18 @@ namespace TsGui
 
         private void Build()
         {
-            this._control = new TextBox();
             this._control.MaxLines = 1;
-            this._control.MaxLength = 2048;
             this._control.Height = this._height;
             this._control.Text = this._value;
             this._control.Padding = this._padding;
 
-            this._labelcontrol = new Label();
-            //this.labelcontrol.Height = "Auto";
             this._labelcontrol.Content = this._label;
             this._labelcontrol.Height = this._height;
             this._labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
         }
 
 
-        private void onLostFocus(object sender, RoutedEventArgs e)
+        private void onChange(object sender, RoutedEventArgs e)
         {
             this.Validate();
         }
@@ -132,12 +135,7 @@ namespace TsGui
                 valid = false;
             }
 
-            if (Checker.ValidMaxLength(this._control.Text,this._maxlength) == false)
-            {
-                s = s + "Maximum length: " + this._maxlength + " characters" + Environment.NewLine;
-                valid = false;
-            }
-            else if (Checker.ValidMinLength(this._control.Text, this._minlength) == false)
+            if (Checker.ValidMinLength(this._control.Text, this._minlength) == false)
             {
                 s = s + "Minimum length: " + this._minlength + " characters" + Environment.NewLine;
                 valid = false;
@@ -146,9 +144,39 @@ namespace TsGui
             if (valid == false)
             {
                 s = this._control.Text + " is invalid:" + Environment.NewLine + Environment.NewLine + s;
-                MessageBox.Show(s);
+                this.ShowToolTip(s);
             }
+            else
+            {
+                this.HideToolTip();
+            }
+
             this._isvalid = valid;
+        }
+
+        private void ShowToolTip(string Message)
+        {
+            ToolTip tt = new ToolTip();
+            TextBlock tb = new TextBlock();
+
+            tb.Text = Message;
+            tt.Content = tb;
+            tt.StaysOpen = true;
+            tt.Placement = PlacementMode.Right;
+            tt.PlacementRectangle = new Rect(50, 0, 0, 0);
+
+            this._control.ToolTip = tt;
+            tt.IsOpen = true;
+        }
+
+        private void HideToolTip()
+        {
+            if (this._control.ToolTip != null)
+            {
+                ToolTip tt = this._control.ToolTip as ToolTip;
+                tt.StaysOpen = false;
+                tt.IsOpen = false;
+            }
         }
     }
 }
