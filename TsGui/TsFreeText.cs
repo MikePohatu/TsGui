@@ -156,7 +156,7 @@ namespace TsGui
 
         private void ShowToolTip(string Message)
         {
-            ToolTip tt = new ToolTip();
+            ToolTip tt = this._control.ToolTip as ToolTip;
             TextBlock tb = new TextBlock();
 
             tb.Text = Message;
