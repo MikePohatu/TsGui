@@ -21,28 +21,7 @@ namespace TsGui
         {
             if (String.IsNullOrEmpty(SourceXml.Value) == true)
             {
-                //base.LoadXml();
-                XElement x = new XElement("ComputerName",this._invalidchars);
-                x.Add(new XElement("Variable", "OSDComputerName"));
-                x.Add(new XElement("Label", "Computer Name:"));
-
-                XElement def = new XElement("DefaultValue");
-
-                XElement envvar = new XElement("EnvironmentVariable", "_SMSTSMachineName");
-                //envvar.Add(new XElement("Ignore", "MINNT"));
-
-                XElement wmiquery = new XElement("WmiQuery");
-                wmiquery.Add(new XElement("Query", "SELECT SerialNumber FROM Win32_BIOS"));
-
-                
-                def.Add(envvar);
-                def.Add(wmiquery);
-
-                x.Add(def);
-
-                Debug.WriteLine("TsComputerName XML: " + x);
-
-                base.LoadXml(x);
+                //setup the default values e.g
                 //< Invalid >/\[]":;|&lt;>+=,?* _</Invalid>
                 //<Variable>OSDComputerName</Variable>
                 //<Label>Computer name:</Label>
@@ -52,9 +31,40 @@ namespace TsGui
                 //                    _SMSTSMachineName
                 //                </EnvironmentVariable>
                 //	<WmiQuery>
+                //		<Query>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Query>
+                //      <Ignore>No Asset Tag</Ignore>
+                //	</WmiQuery>
+                //	<WmiQuery>
                 //		<Query>SELECT SerialNumber FROM Win32_BIOS</Query>
                 //	</WmiQuery>
                 //</DefaultValue>
+                XElement x = new XElement("ComputerName",this._invalidchars);
+                x.Add(new XElement("Variable", "OSDComputerName"));
+                x.Add(new XElement("Label", "Computer Name:"));
+
+                XElement def = new XElement("DefaultValue");
+
+                XElement envvar = new XElement("EnvironmentVariable", "_SMSTSMachineName");
+                envvar.Add(new XElement("Ignore", "MINNT"));
+
+                XElement assettag = new XElement("WmiQuery");
+                assettag.Add(new XElement("Query", "SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure"));
+                assettag.Add(new XElement("Ignore", "No Asset Tag"));
+
+                XElement serial = new XElement("WmiQuery");
+                serial.Add(new XElement("Query", "SELECT SerialNumber FROM Win32_BIOS"));
+
+                
+                def.Add(envvar);
+                def.Add(assettag);
+                def.Add(serial);
+
+                x.Add(def);
+
+                Debug.WriteLine("TsComputerName XML: " + x);
+
+                base.LoadXml(x);
+                
             }
             else { base.LoadXml(SourceXml); }
         }
