@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Task Sequence Gui" Height="300" Width="400"
         WindowStartupLocation="Manual" 
-        Left="40" Top="40">
+        Left="40" Top="40" WindowStyle="None">
     <Grid x:Name="MainGrid" Margin="10,10,10,10">
         <Grid.RowDefinitions>
             <RowDefinition x:Name ="MainRow" Height="100*"/>

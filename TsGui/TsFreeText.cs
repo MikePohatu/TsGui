@@ -30,7 +30,6 @@ namespace TsGui
             this.LoadXml(SourceXml);
             this.Build();
             this._control.TextChanged += this.onChange;
-            this._control.ToolTip = new ToolTip();
         }
 
         public TsVariable Variable
@@ -157,15 +156,19 @@ namespace TsGui
         private void ShowToolTip(string Message)
         {
             ToolTip tt = this._control.ToolTip as ToolTip;
-            TextBlock tb = new TextBlock();
+            TextBlock tb = tt.Content as TextBlock;
+
+            if (tt == null) { this._control.ToolTip = new ToolTip(); }
+            if (tb == null) { tb = new TextBlock(); }
 
             tb.Text = Message;
             tt.Content = tb;
             tt.StaysOpen = true;
             tt.Placement = PlacementMode.Right;
-            tt.PlacementRectangle = new Rect(50, 0, 0, 0);
-
+            tt.HorizontalOffset = 5;
+            tt.PlacementTarget = this._control;
             this._control.ToolTip = tt;
+
             tt.IsOpen = true;
         }
 
