@@ -136,13 +136,24 @@ namespace TsGui
 
             if (Checker.ValidMinLength(this._control.Text, this._minlength) == false)
             {
-                s = s + "Minimum length: " + this._minlength + " characters" + Environment.NewLine;
+                string charWord;
+                if (this._minlength == 1) { charWord = " character"; }
+                else { charWord = " characters"; }
+                s = s + "Minimum length: " + this._minlength + charWord + Environment.NewLine;
                 valid = false;
             }
 
             if (valid == false)
             {
-                s = this._control.Text + " is invalid:" + Environment.NewLine + Environment.NewLine + s;
+                if ( this._control.Text.Length == 0)
+                {
+                    s = "Required" + Environment.NewLine + Environment.NewLine + s;
+                }
+                else
+                {
+                    s = "\"" + this._control.Text + "\" is invalid:" + Environment.NewLine + Environment.NewLine + s;
+                }
+                
                 this.ShowToolTip(s);
             }
             else
@@ -155,22 +166,22 @@ namespace TsGui
 
         private void ShowToolTip(string Message)
         {
-             
-            if (this._control.ToolTip == null) { this._control.ToolTip = new ToolTip(); }
             ToolTip tt = this._control.ToolTip as ToolTip;
+            if (tt == null)
+            {
+                tt = new ToolTip();
+                tt.Placement = PlacementMode.Right;
+                tt.HorizontalOffset = 5;
+                tt.PlacementTarget = this._control;
+                tt.Content = new TextBlock();
+                this._control.ToolTip = tt;
+            }
 
-            if (tt.Content == null) { tt.Content = new TextBlock(); }
             TextBlock tb = tt.Content as TextBlock;
             
-
             tb.Text = Message;
             tt.Content = tb;
             tt.StaysOpen = true;
-            tt.Placement = PlacementMode.Right;
-            tt.HorizontalOffset = 5;
-            tt.PlacementTarget = this._control;
-            this._control.ToolTip = tt;
-
             tt.IsOpen = true;
         }
 
