@@ -38,9 +38,7 @@ namespace TsGui
                 //		<Query>SELECT SerialNumber FROM Win32_BIOS</Query>
                 //	</WmiQuery>
                 //</DefaultValue>
-                XElement x = new XElement("ComputerName",this._invalidchars);
-                x.Add(new XElement("Variable", "OSDComputerName"));
-                x.Add(new XElement("Label", "Computer Name:"));
+                XElement x = new XElement("ComputerName");
 
                 XElement def = new XElement("DefaultValue");
 
