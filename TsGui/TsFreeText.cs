@@ -3,7 +3,10 @@ using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows;
-using System.Windows.Documents;
+
+using System.Diagnostics;
+
+
 
 namespace TsGui
 {
@@ -11,18 +14,25 @@ namespace TsGui
     {
         //private TsVariable tsvar;
         private MainController _controller;
-        private string _name;
+        protected string _name;
         private string _value;
-        private string _label;
-        private string _invalidchars;
-        private bool _caseSensValidate = false;
+        protected string _label;
+        protected string _invalidchars;
+        protected bool _caseSensValidate = false;
         private bool _isvalid = true;
         private int _height = 25;
-        private int _maxlength = 0;
-        private int _minlength = 0;
+        protected int _maxlength = 0;
+        protected int _minlength = 0;
         private Thickness _padding = new Thickness(3, 3, 5, 3);
         private Label _labelcontrol = new Label();
         private TextBox _control = new TextBox();
+
+        protected TsFreeText(MainController RootController)
+        {
+            Debug.WriteLine("TsFreeText: protected constructor called");
+            this._controller = RootController;
+            this._control.TextChanged += this.onChange;
+        }
 
         public TsFreeText (XElement SourceXml, MainController RootController)
         {
@@ -105,7 +115,7 @@ namespace TsGui
         }
 
 
-        private void Build()
+        protected void Build()
         {
             this._control.MaxLines = 1;
             this._control.Height = this._height;

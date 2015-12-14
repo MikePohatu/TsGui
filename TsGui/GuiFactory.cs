@@ -11,10 +11,14 @@ namespace TsGui
         public static IGuiOption CreateGuiOption(XElement OptionXml,MainController RootController)
         {
             #region
-            //need to update with factory
             if (OptionXml.Attribute("Type").Value == "DropDownList")
             {
                 return new TsDropDownList(OptionXml);
+            }
+
+            else if (OptionXml.Attribute("Type").Value == "ComputerName")
+            {
+                return new TsComputerName(OptionXml, RootController);
             }
 
             else if (OptionXml.Attribute("Type").Value == "FreeText")

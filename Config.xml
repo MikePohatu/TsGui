@@ -8,6 +8,7 @@
 			<!--
 			<Margin>2</Margin>
 			-->
+			<!--
 			<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
 				<Invalid>/\[]":;|&lt;>+=,?* _</Invalid>
 				<Variable>OSDComputerName</Variable>
@@ -22,7 +23,8 @@
 					</WmiQuery>
 				</DefaultValue>
 			</GuiOption>
-			
+			-->
+			<GuiOption Type="ComputerName" />
 			<GuiOption Type="DropDownList">
 				<Variable>PCType</Variable>
 				<Label>PC Type:</Label>
