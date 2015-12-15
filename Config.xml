@@ -3,6 +3,10 @@
   <Width>300</Width>
   <Margin>20</Margin>
   <ShowGridLines />
+	<Heading>
+		<Title>Welcome to Task Sequence Gui</Title>
+		<Text>Do whatever you want. I don't care.</Text>
+	</Heading>
 	<Page>
 		<Column>
 			<!--
@@ -10,7 +14,9 @@
 			-->
 			<!--
 			<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
-				<Invalid>/\[]":;|&lt;>+=,?* _</Invalid>
+				<Disallowed>
+					<Characters>/\[]":;|&lt;>+=,?* _</Characters>
+				</Disallowed>
 				<Variable>OSDComputerName</Variable>
 				<Label>Computer name:</Label>
 				<DefaultValue>

@@ -138,10 +138,8 @@ namespace TsGui
                     x = headingX.Element("Text");
                     if (x != null) { this._headingText = x.Value; }
 
-                    Bold boldText = new Bold(new Run(this._headingTitle));
-
-                    this.ParentWindow.HeadingTitle.Inlines.Add(boldText);
-                    this.ParentWindow.HeadingText.Inlines.Add(new Run(this._headingText));
+                    this.ParentWindow.HeadingTitle.Text = this._headingTitle;
+                    this.ParentWindow.HeadingText.Text = this._headingText;
                 }
 
                 x = SourceXml.Element("Width");

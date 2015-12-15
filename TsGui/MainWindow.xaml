@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <Grid x:Name="HeadingGrid" Grid.Row="0">
             <StackPanel>
-                <TextBlock x:Name="HeadingTitle"></TextBlock>
+                <TextBlock FontWeight="Bold" x:Name="HeadingTitle"></TextBlock>
                 <TextBlock x:Name="HeadingText"></TextBlock>
             </StackPanel>
         </Grid>
