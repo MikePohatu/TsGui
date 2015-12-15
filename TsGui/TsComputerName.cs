@@ -12,7 +12,7 @@ namespace TsGui
             base._label = "Computer Name:";
             base._minlength = 1;
             base._maxlength = 15;
-            base._invalidchars = "/\\[]\":;|&lt;>+=,?* _";
+            base._disallowedChars = "`~!@#$%^&*()+={}[]\\/|<>,.? :;\"'";
             this.LoadXml(SourceXml);
             base.Build();
         }
@@ -22,14 +22,16 @@ namespace TsGui
             if (String.IsNullOrEmpty(SourceXml.Value) == true)
             {
                 //setup the default values e.g
-                //< Invalid >/\[]":;|&lt;>+=,?* _</Invalid>
+                //<Disallowed>
+                //    <Characters>`~!@#$%^&*()+={}[]\/|<>,.? :;"'</Characters>
+                //</Disallowed>
                 //<Variable>OSDComputerName</Variable>
                 //<Label>Computer name:</Label>
                 //<DefaultValue>
                 //	<EnvironmentVariable>
                 //		<Ignore>MINNT</Ignore>
-                //                    _SMSTSMachineName
-                //                </EnvironmentVariable>
+                //      _SMSTSMachineName
+                //      </EnvironmentVariable>
                 //	<WmiQuery>
                 //		<Query>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Query>
                 //      <Ignore>No Asset Tag</Ignore>

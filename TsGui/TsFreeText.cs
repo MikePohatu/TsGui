@@ -17,7 +17,7 @@ namespace TsGui
         protected string _name;
         private string _value;
         protected string _label;
-        protected string _invalidchars;
+        protected string _disallowedChars;
         protected bool _caseSensValidate = false;
         private bool _isvalid = true;
         private int _height = 25;
@@ -80,9 +80,12 @@ namespace TsGui
             if (attrib != null)
             { this._minlength = Convert.ToInt32(attrib.Value); }
 
-            x = pXml.Element("Invalid");
+            x = pXml.Element("Disallowed");
             if (x != null)
-            { this._invalidchars = x.Value; }
+            {
+                x = x.Element("Characters");
+                if (x != null) { this._disallowedChars = x.Value; }               
+            }
 
             x = pXml.Element("Variable");
             if (x != null)
@@ -93,7 +96,7 @@ namespace TsGui
             {
                 this._value = this._controller.GetValueFromList(x);
                 //if required, remove invalid characters and truncate
-                if (String.IsNullOrEmpty(this._invalidchars) != true) { this._value = Checker.RemoveInvalid(this._value, this._invalidchars); }
+                if (String.IsNullOrEmpty(this._disallowedChars) != true) { this._value = Checker.RemoveInvalid(this._value, this._disallowedChars); }
                 if (this._maxlength > 0) { this._value = Checker.Truncate(this._value,this._maxlength); }
             }
 
@@ -138,9 +141,9 @@ namespace TsGui
             string s = "";
             bool valid = true;
 
-            if (Checker.ValidCharacters(this._control.Text,this._invalidchars,this._caseSensValidate) != true)
+            if (Checker.ValidCharacters(this._control.Text,this._disallowedChars, this._caseSensValidate) != true)
             {
-                s = "Invalid characters: " + this._invalidchars + Environment.NewLine;
+                s = "Invalid characters: " + this._disallowedChars + Environment.NewLine;
                 valid = false;
             }
 

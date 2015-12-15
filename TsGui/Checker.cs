@@ -97,6 +97,6 @@ namespace TsGui
             Debug.WriteLine(StringValue.Length);
             if (StringValue.Length >= MinLength) { return true; }
             else { return false; }
-        }
+        } 
     }
 }

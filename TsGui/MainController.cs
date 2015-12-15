@@ -7,14 +7,18 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.ComponentModel;
 
 using System.Diagnostics;
+using System.Windows.Documents;
 
 namespace TsGui
 {
     public class MainController
     {
+        private string _headingTitle;
+        private string _headingText;
         private string _configpath;
         private int _pageWidth;
         private int _pageHeight;
@@ -124,6 +128,21 @@ namespace TsGui
 
             if (SourceXml != null)
             {
+
+                XElement headingX = SourceXml.Element("Heading");
+                if (headingX != null)
+                {
+                    x = headingX.Element("Title");
+                    if (x != null) { this._headingTitle = x.Value; }
+
+                    x = headingX.Element("Text");
+                    if (x != null) { this._headingText = x.Value; }
+
+                    Bold boldText = new Bold(new Run(this._headingTitle));
+
+                    this.ParentWindow.HeadingTitle.Inlines.Add(boldText);
+                    this.ParentWindow.HeadingText.Inlines.Add(new Run(this._headingText));
+                }
 
                 x = SourceXml.Element("Width");
                 if (x != null)

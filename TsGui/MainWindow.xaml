@@ -8,12 +8,20 @@
         Title="Task Sequence Gui" Height="300" Width="400"
         WindowStartupLocation="Manual" 
         Left="40" Top="40" WindowStyle="None">
-    <Grid x:Name="MainGrid" Margin="10,10,10,10">
+    <Grid Margin="10,10,10,10">
         <Grid.RowDefinitions>
+            <RowDefinition x:Name ="HeadingRow" Height="50"/>
             <RowDefinition x:Name ="MainRow" Height="100*"/>
             <RowDefinition x:Name="ButtonRow" Height="30" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1">
+        <Grid x:Name="HeadingGrid" Grid.Row="0">
+            <StackPanel>
+                <TextBlock x:Name="HeadingTitle"></TextBlock>
+                <TextBlock x:Name="HeadingText"></TextBlock>
+            </StackPanel>
+        </Grid>
+        <Grid x:Name="MainGrid" Grid.Row="1"></Grid>
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="75*"></ColumnDefinition>
                 <ColumnDefinition Width="80"></ColumnDefinition>
