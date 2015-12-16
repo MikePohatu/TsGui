@@ -11,7 +11,7 @@ namespace TsGui
     {
         private List<IGuiOption> options = new List<IGuiOption>();
         private Grid columnpanel;
-        private Thickness margin = new Thickness(2,2,2,2);
+        private Thickness _margin = new Thickness(2,2,2,2);
 
         private MainController _controller;
         public bool ShowGridLines { get; set; }
@@ -43,10 +43,11 @@ namespace TsGui
                 {
                     newOption = GuiFactory.CreateGuiOption(xOption,this._controller);
                     this.options.Add(newOption);
+                    this._controller.AddOptionToLibary(newOption);
                 }
             }
 
-            GuiFactory.LoadMargins(SourceXml, this.margin);
+            GuiFactory.LoadMargins(SourceXml, this._margin);
         }
 
 
@@ -63,15 +64,14 @@ namespace TsGui
             colGrid.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             colGrid.ColumnDefinitions.Add(coldefLabels);
             colGrid.ColumnDefinitions.Add(coldefControls);
-            //colGrid.ShowGridLines = true;
             
             foreach (IGuiOption option in this.options)
             {
-                option.Control.Margin = this.margin;
-                option.Label.Margin = this.margin;
+                option.Control.Margin = this._margin;
+                option.Label.Margin = this._margin;
 
                 RowDefinition coldefRow = new RowDefinition();
-                coldefRow.Height = new GridLength(option.Height + this.margin.Top + this.margin.Bottom) ;
+                coldefRow.Height = new GridLength(option.Height + this._margin.Top + this._margin.Bottom) ;
                 colGrid.RowDefinitions.Add(coldefRow);
 
                 Grid.SetColumn(option.Label, 0);

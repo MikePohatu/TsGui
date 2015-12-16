@@ -69,7 +69,7 @@ namespace TsGui
                 foreach (XElement xColumn in columnsXml)
                 {
                     Column c = new Column(xColumn, colIndex,this._controller);
-                    c.ShowGridLines = this.ShowGridlines;
+                    //c.ShowGridLines = this.ShowGridlines;
                     this._columns.Add(c);
                     colIndex++;
                 }
@@ -79,15 +79,14 @@ namespace TsGui
         }
 
         //build the gui controls.
-        private void Build()
+        public void Build()
         {
             int colindex = 0;
             //this.window = new PageWindow(this.height,this.width,this.padding);
 
             this._pagepanel = new Grid();
             this._pagepanel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            this._pagepanel.ShowGridLines = this.ShowGridlines;
-            //this.pagepanel.ShowGridLines = true;
+            //this._pagepanel.ShowGridLines = this.ShowGridlines;
 
             //create a last row for the buttons
             RowDefinition colrowdef = new RowDefinition();

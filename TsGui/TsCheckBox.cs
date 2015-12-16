@@ -10,8 +10,9 @@ namespace TsGui
         //private TsVariable tsvar;
         private string name;
         private string label;
-        private int height = 25;
-        private Thickness margin = new Thickness(0, 0, 0, 0);
+        private int height = 15;
+        private Thickness _margin = new Thickness(0, 0, 0, 0);
+        private Thickness _padding = new Thickness(5, 0, 0, 0);
         private Label labelcontrol;
         private CheckBox control;
         private HorizontalAlignment hAlignment = HorizontalAlignment.Left;
@@ -66,14 +67,15 @@ namespace TsGui
 
 
             GuiFactory.LoadHAlignment(SourceXml, ref this.hAlignment);
-            GuiFactory.LoadMargins(SourceXml, this.margin);
+            GuiFactory.LoadMargins(SourceXml, this._margin);
 
             #endregion
         }
 
         private void Build()
         {          
-            this.control.Margin = this.margin;
+            //this.control.Margin = this._margin;
+            //this.control.Padding = this._padding;
             this.control.VerticalAlignment = VerticalAlignment.Center;
             this.control.HorizontalAlignment = hAlignment;
             
@@ -81,6 +83,7 @@ namespace TsGui
             //this.labelcontrol.Height = "Auto";
             this.labelcontrol.Content = this.label;
             this.labelcontrol.Height = this.height;
+            this.labelcontrol.Padding = this._padding;
             this.labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
            
         }

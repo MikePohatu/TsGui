@@ -26,8 +26,9 @@ namespace TsGui
         private bool _testingmode = false;
         private XmlHandler _handler = new XmlHandler();
         private List<Page> _pages = new List<Page>();
-        private List<IGuiOption> _options = new List<IGuiOption>();
+        //private List<IGuiOption> _options = new List<IGuiOption>();
         private EnvironmentController _envController = new EnvironmentController();
+        private OptionLibrary _optionlibrary = new OptionLibrary();
 
         //properties
         public string HeadingTitle { get { return this._headingTitle; } }
@@ -35,11 +36,6 @@ namespace TsGui
         public bool ShowGridLines { get; set; }
         public MainWindow ParentWindow { get; set; }
         public Page CurrentPage { get; set; }
-        //public bool TestingMode
-        //{
-        //    get { return this._testingmode; }
-        //    set { this._testingmode = value; }
-        //}
 
         //constructors
         public MainController(MainWindow ParentWindow)
@@ -83,7 +79,7 @@ namespace TsGui
             this.ParentWindow.Closing += this.OnWindowClosing;
 
             this.LoadXml(x);
-            this.PopulateOptions();
+            //this.PopulateOptions();
 
             //now show the first page in the list
             Page firstpage = this._pages.First();
@@ -140,9 +136,6 @@ namespace TsGui
 
                     x = headingX.Element("Text");
                     if (x != null) { this._headingText = x.Value; }
-
-                    //this.ParentWindow.HeadingTitle.Text = this._headingTitle;
-                    //this.ParentWindow.HeadingText.Text = this._headingText;
                 }
 
                 x = SourceXml.Element("Width");
@@ -177,14 +170,14 @@ namespace TsGui
                         {
                             //record the last page as the prevPage
                             prevPage = currPage;
-                            currPage = new Page(xPage, this._pageHeight, this._pageWidth, this._pageMargin,this);                 
+                            currPage = new Page(xPage, this._pageHeight, this._pageWidth, this._pageMargin,this);
                         }
-                        
+
+                        currPage.ShowGridlines = this.ShowGridLines;
+
                         //create the new page and assign the next page/prev page links
                         currPage.PreviousPage = prevPage;
                         if (prevPage != null) { prevPage.NextPage = currPage; }
-
-                        currPage.ShowGridlines = this.ShowGridLines;
 
                         this._pages.Add(currPage);
                         #endregion
@@ -205,15 +198,12 @@ namespace TsGui
             
         }
 
-
-        private void PopulateOptions()
+        //add options from sub classes to the main library. used to generate the final list of 
+        //tsvariables
+        public void AddOptionToLibary(IGuiOption Option)
         {
-            foreach (Page pg in this._pages)
-            {
-                this._options.AddRange(pg.Options);
-            }
+            this._optionlibrary.Add(Option);
         }
-
 
         //move to the next page and update the next/prev/finish buttons
         public void MoveNext()
@@ -270,7 +260,7 @@ namespace TsGui
 
         public void Finish()
         {
-            foreach (IGuiOption option in this._options)
+            foreach (IGuiOption option in this._optionlibrary.Options)
             {
                 
                 if (option.Variable != null)

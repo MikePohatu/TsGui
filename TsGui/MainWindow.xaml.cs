@@ -25,36 +25,35 @@ namespace TsGui
 
         public MainWindow()
         {
+            
             InitializeComponent();
             this._controller = new MainController(this);
             this.HeadingStack.DataContext = this._controller;
-            //this.controller.Startup();           
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            //this.Hide();
             this._controller.Cancel();
         }
 
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {
-            //this.Hide();
             this._controller.MovePrevious();
         }
 
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {
-            //this.Hide();
             this._controller.MoveNext();
         }
 
         private void buttonFinish_Click(object sender, RoutedEventArgs e)
         {
-            //this.Hide();
             this._controller.Finish();
         }
 
-
+        private void windowDrag(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
     }
 }
