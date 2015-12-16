@@ -12,9 +12,18 @@ namespace TsGui
         private List<IGuiOption> options = new List<IGuiOption>();
         private Grid columnpanel;
         private Thickness _margin = new Thickness(2,2,2,2);
+        private bool _gridlines;
 
         private MainController _controller;
-        public bool ShowGridLines { get; set; }
+        public bool ShowGridLines
+        {
+            get { return this._gridlines; }
+            set
+            {
+                this.columnpanel.ShowGridLines = value;
+                this._gridlines = value;
+            }
+        }
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this.options; } }
         public Panel Panel { get { return this.columnpanel; } }
@@ -26,7 +35,7 @@ namespace TsGui
         {
             this._controller = RootController;
             this.Index = PageIndex;
-            this.ShowGridLines = false;
+            this._gridlines = false;
             this.LoadXml(SourceXml);
             this.Build();
         }
@@ -56,7 +65,7 @@ namespace TsGui
             int rowindex = 0;
             Grid colGrid = new Grid();
 
-            colGrid.ShowGridLines = this.ShowGridLines;
+            //colGrid.ShowGridLines = this.ShowGridLines;
 
             ColumnDefinition coldefControls = new ColumnDefinition();
             ColumnDefinition coldefLabels = new ColumnDefinition();

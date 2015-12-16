@@ -22,8 +22,17 @@ namespace TsGui
 
         private bool _islast = false;
         private bool _isfirst = false;
+        private bool _gridlines = false;
 
-        public bool ShowGridlines { get; set; }
+        public bool ShowGridlines
+        {
+            get { return this._gridlines; }
+            set
+            {
+                this._gridlines = value;
+                foreach (Column c in this._columns) { c.ShowGridLines = value; }
+            }
+        }
         public List<IGuiOption> Options { get { return this._options; } }
         public Page PreviousPage { get; set; }
         public Page NextPage { get; set; }
@@ -49,7 +58,6 @@ namespace TsGui
             this._height = Height;
             this._width = Width;
             this._margin = Margin;
-            this.ShowGridlines = false;
 
             this.LoadXml(SourceXml);
             this.Build();
@@ -69,7 +77,6 @@ namespace TsGui
                 foreach (XElement xColumn in columnsXml)
                 {
                     Column c = new Column(xColumn, colIndex,this._controller);
-                    //c.ShowGridLines = this.ShowGridlines;
                     this._columns.Add(c);
                     colIndex++;
                 }

@@ -23,7 +23,7 @@ namespace TsGui
         private int _pageWidth;
         private int _pageHeight;
         private Thickness _pageMargin = new Thickness(0,0,0,0);
-        private bool _testingmode = false;
+        private bool _prodmode = false;
         private XmlHandler _handler = new XmlHandler();
         private List<Page> _pages = new List<Page>();
         //private List<IGuiOption> _options = new List<IGuiOption>();
@@ -33,7 +33,6 @@ namespace TsGui
         //properties
         public string HeadingTitle { get { return this._headingTitle; } }
         public string HeadingText { get { return this._headingText; } }
-        public bool ShowGridLines { get; set; }
         public MainWindow ParentWindow { get; set; }
         public Page CurrentPage { get; set; }
 
@@ -57,14 +56,11 @@ namespace TsGui
 
         public void Startup()
         {
-            //initialize values
-            this.ShowGridLines = false;
-
-            this._testingmode = this._envController.Init();
+            this._prodmode = this._envController.Init();
 
             //if testingmode is true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
-            if (this._testingmode != true)
+            if (this._prodmode != true)
             {
                 if (this.PromptTestMode() != true)
                 {
@@ -121,9 +117,6 @@ namespace TsGui
             Page prevPage = null;
 
             IEnumerable<XElement> pagesXml;
-            //Debug.WriteLine("Source: " + SourceXml);
-
-            //Debug.WriteLine("Starting xml load in builder");
 
             if (SourceXml != null)
             {
@@ -146,9 +139,7 @@ namespace TsGui
                 if (x != null)
                 { this._pageHeight = Convert.ToInt32(x.Value); }
 
-                x = SourceXml.Element("ShowGridLines");
-                if (x != null)
-                { this.ShowGridLines = true; }
+                
 
                 GuiFactory.LoadMargins(SourceXml, this._pageMargin);
 
@@ -173,8 +164,6 @@ namespace TsGui
                             currPage = new Page(xPage, this._pageHeight, this._pageWidth, this._pageMargin,this);
                         }
 
-                        currPage.ShowGridlines = this.ShowGridLines;
-
                         //create the new page and assign the next page/prev page links
                         currPage.PreviousPage = prevPage;
                         if (prevPage != null) { prevPage.NextPage = currPage; }
@@ -194,6 +183,10 @@ namespace TsGui
                     }
 
                 }
+
+                x = SourceXml.Element("ShowGridLines");
+                if (x != null)
+                { this.ShowGridLines(true); }
             }
             
         }
@@ -288,6 +281,20 @@ namespace TsGui
         public String GetValueFromList(XElement InputXml)
         {
             return this._envController.GetValueFromList(InputXml);
+        }
+
+        private void ShowGridLines(bool OnOff)
+        {
+            //Debug.WriteLine("TestingMode: " + this._prodmode);
+            if (this._prodmode != true)
+            {
+                this.ParentWindow.WrapperGrid.ShowGridLines = OnOff;
+                this.ParentWindow.HeadingGrid.ShowGridLines = OnOff;
+                this.ParentWindow.ButtonGrid.ShowGridLines = OnOff;
+
+                foreach (Page page in this._pages)
+                { page.ShowGridlines = OnOff; }
+            }
         }
 
         private bool PromptTestMode()
