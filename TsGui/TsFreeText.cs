@@ -120,6 +120,7 @@ namespace TsGui
 
         protected void Build()
         {
+            //this._control.DataContext = this;
             this._control.MaxLines = 1;
             this._control.Height = this._height;
             this._control.Text = this._value;

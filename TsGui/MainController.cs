@@ -30,6 +30,8 @@ namespace TsGui
         private EnvironmentController _envController = new EnvironmentController();
 
         //properties
+        public string HeadingTitle { get { return this._headingTitle; } }
+        public string HeadingText { get { return this._headingText; } }
         public bool ShowGridLines { get; set; }
         public MainWindow ParentWindow { get; set; }
         public Page CurrentPage { get; set; }
@@ -43,6 +45,7 @@ namespace TsGui
         public MainController(MainWindow ParentWindow)
         {
             this.ParentWindow = ParentWindow;
+            //this.ParentWindow.HeadingStack.DataContext = this;
             string exefolder = AppDomain.CurrentDomain.BaseDirectory;
             this._configpath = exefolder + @"Config.xml";                    
             this.Startup();
@@ -138,8 +141,8 @@ namespace TsGui
                     x = headingX.Element("Text");
                     if (x != null) { this._headingText = x.Value; }
 
-                    this.ParentWindow.HeadingTitle.Text = this._headingTitle;
-                    this.ParentWindow.HeadingText.Text = this._headingText;
+                    //this.ParentWindow.HeadingTitle.Text = this._headingTitle;
+                    //this.ParentWindow.HeadingText.Text = this._headingText;
                 }
 
                 x = SourceXml.Element("Width");

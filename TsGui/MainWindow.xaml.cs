@@ -21,37 +21,38 @@ namespace TsGui
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainController controller;
+        private MainController _controller;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.controller = new MainController(this);
+            this._controller = new MainController(this);
+            this.HeadingStack.DataContext = this._controller;
             //this.controller.Startup();           
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
             //this.Hide();
-            this.controller.Cancel();
+            this._controller.Cancel();
         }
 
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {
             //this.Hide();
-            this.controller.MovePrevious();
+            this._controller.MovePrevious();
         }
 
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {
             //this.Hide();
-            this.controller.MoveNext();
+            this._controller.MoveNext();
         }
 
         private void buttonFinish_Click(object sender, RoutedEventArgs e)
         {
             //this.Hide();
-            this.controller.Finish();
+            this._controller.Finish();
         }
 
 

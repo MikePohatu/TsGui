@@ -15,9 +15,9 @@
             <RowDefinition x:Name="ButtonRow" Height="30" />
         </Grid.RowDefinitions>
         <Grid x:Name="HeadingGrid" Grid.Row="0">
-            <StackPanel>
-                <TextBlock FontWeight="Bold" x:Name="HeadingTitle"></TextBlock>
-                <TextBlock x:Name="HeadingText"></TextBlock>
+            <StackPanel x:Name="HeadingStack">
+                <TextBlock FontWeight="Bold" x:Name="HeadingTitle" Text="{Binding HeadingTitle}"></TextBlock>
+                <TextBlock x:Name="HeadingText" Text="{Binding HeadingText}"></TextBlock>
             </StackPanel>
         </Grid>
         <Grid x:Name="MainGrid" Grid.Row="1"></Grid>
