@@ -81,11 +81,11 @@
     <Compile Include="SccmConnector.cs" />
     <Compile Include="SystemConnector.cs" />
     <Compile Include="TestingConnector.cs" />
-    <Compile Include="TsComputerName.cs" />
-    <Compile Include="TsHeading.cs" />
-    <Compile Include="TsDropDownList.cs" />
-    <Compile Include="TsCheckBox.cs" />
-    <Compile Include="TsFreeText.cs" />
+    <Compile Include="GuiOptions\TsComputerName.cs" />
+    <Compile Include="GuiOptions\TsHeading.cs" />
+    <Compile Include="GuiOptions\TsDropDownList.cs" />
+    <Compile Include="GuiOptions\TsCheckBox.cs" />
+    <Compile Include="GuiOptions\TsFreeText.cs" />
     <Compile Include="TsVariable.cs" />
     <Compile Include="XmlHandler.cs" />
     <Page Include="MainWindow.xaml">
@@ -97,8 +97,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainController.cs" />
-    <Compile Include="Column.cs" />
-    <Compile Include="IGuiOption.cs" />
+    <Compile Include="PageLayout\Column.cs" />
+    <Compile Include="GuiOptions\IGuiOption.cs" />
     <Compile Include="ITsGuiElement.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -106,7 +106,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Page.cs" />
+    <Compile Include="PageLayout\Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
