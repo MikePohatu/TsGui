@@ -31,7 +31,11 @@ namespace TsGui
                 //	<EnvironmentVariable>
                 //		<Ignore>MINNT</Ignore>
                 //      _SMSTSMachineName
-                //      </EnvironmentVariable>
+                //  </EnvironmentVariable>
+                //	<EnvironmentVariable>
+                //		<Ignore>MINNT</Ignore>
+                //      ComputerName
+                //  </EnvironmentVariable>
                 //	<WmiQuery>
                 //		<Query>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Query>
                 //      <Ignore>No Asset Tag</Ignore>
@@ -47,6 +51,9 @@ namespace TsGui
                 XElement envvar = new XElement("EnvironmentVariable", "_SMSTSMachineName");
                 envvar.Add(new XElement("Ignore", "MINNT"));
 
+                XElement compName = new XElement("EnvironmentVariable", "computername");
+                envvar.Add(new XElement("Ignore", "MINNT"));
+
                 XElement assettag = new XElement("WmiQuery");
                 assettag.Add(new XElement("Query", "SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure"));
                 assettag.Add(new XElement("Ignore", "No Asset Tag"));
@@ -56,6 +63,7 @@ namespace TsGui
 
                 
                 def.Add(envvar);
+                def.Add(compName);
                 def.Add(assettag);
                 def.Add(serial);
 
