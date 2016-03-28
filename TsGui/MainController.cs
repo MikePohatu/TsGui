@@ -26,6 +26,7 @@ namespace TsGui
         //private List<IGuiOption> _options = new List<IGuiOption>();
         private EnvironmentController _envController = new EnvironmentController();
         private OptionLibrary _optionlibrary = new OptionLibrary();
+        private ChassisCheck _chassischeck = new ChassisCheck();
 
         //properties
         public string HeadingTitle { get { return this._headingTitle; } }
@@ -260,6 +261,13 @@ namespace TsGui
                 }
                 
             }
+
+            foreach (TsVariable var in this._chassischeck.GetTsVariables)
+            {
+                Debug.WriteLine(var.Name + ": " + var.Value);
+                this._envController.AddVariable(var);
+            }
+
             this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE"));
             this.ParentWindow.Close();
         }
