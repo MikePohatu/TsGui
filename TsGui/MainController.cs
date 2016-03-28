@@ -1,17 +1,14 @@
-﻿//'Root' class from which to spin everything off. TsGui or TsGui-Tester create this
+﻿//'Root' class from which to spin everything off. TsGui creates this
 //class to do the actual work. 
 
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.ComponentModel;
 
 using System.Diagnostics;
-using System.Windows.Documents;
 
 namespace TsGui
 {

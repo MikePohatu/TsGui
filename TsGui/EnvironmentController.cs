@@ -62,7 +62,7 @@ namespace TsGui
                 else if (x.Name == "WmiQuery")
                 {
                     string query = x.Element("Query").Value;
-                    s = SystemConnector.GetWmiQuery(query);
+                    s = SystemConnector.GetWmiString(query);
                     if (s != null )
                     {
                         //if it shouldn't be ignored, return the value. Otherwise, carry on

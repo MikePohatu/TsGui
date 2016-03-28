@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Management;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
-using System.Text;
 
 using System.Diagnostics;
 
@@ -37,7 +33,7 @@ namespace TsGui
         }
 
         //get a value from WMI
-        public static string GetWmiQuery(string WmiQuery)
+        public static string GetWmiString(string WmiQuery)
         {
             string s = null;
             try
@@ -64,6 +60,22 @@ namespace TsGui
                 return null;
             }
             
+        }
+
+        public static ManagementObjectCollection GetWmiManagementObjects(string WmiQuery)
+        {
+            try
+            {
+                WqlObjectQuery wqlQuery = new WqlObjectQuery(WmiQuery);
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery);
+
+                return searcher.Get();
+            }
+            catch
+            {
+                Debug.WriteLine("Exception thrown in SystemConnector: GetWmiQuery");
+                return null;
+            }
         }
     }
 }
