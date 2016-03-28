@@ -7,13 +7,13 @@ using System.Management;
 
 namespace TsGui.GuiOptions
 {
-    internal class TsChassis
+    internal class ChassisCheck
     {
         private bool _islaptop = false;
         private bool _isdesktop = false;
         private bool _isserver = false;
 
-        public TsChassis()
+        public ChassisCheck()
         {
             //ManagementObject m;
 
