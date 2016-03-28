@@ -15,12 +15,40 @@ namespace TsGui.GuiOptions
 
         public ChassisCheck()
         {
-            //ManagementObject m;
 
-            //foreach (ManagementObject m in SystemConnector.GetWmiManagementObjects("select ChassisTypes from Win32_SystemEnclosure")
-            //{
-            //    if (m.)
-            //}
+        }
+
+        private void Evaluate()
+        { 
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjects("select ChassisTypes from Win32_SystemEnclosure"))
+            {
+                foreach (PropertyData propdata in m.Properties)
+                {
+                    string s = (string)propdata.Value;
+
+
+                    switch (s)
+                    {
+                        case "8":
+                        case "9":
+                        case "10":
+                        case "11":
+                        case "12":
+                        case "14":
+                        case "18":
+                        case "21":
+                            {
+                                this._islaptop = true;
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                                //nothing
+                            }
+                    }
+                }
+            }
         }
 
   //      Set objResults = objWMI.InstancesOf("Win32_SystemEnclosure")
