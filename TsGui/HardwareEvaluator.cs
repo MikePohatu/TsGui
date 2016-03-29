@@ -49,18 +49,33 @@ namespace TsGui
         private void Evaluate()
         {
             //virtual machine tests
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjects("select Model from Win32_ComputerSystem"))
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjects("select Model,Manufacturer from Win32_ComputerSystem"))
             {
-                string model = (string)m["Model"]; 
-                switch (model)
+                string model = (string)m["Model"];
+                string maker = (string)m["Manufacturer"];
+                //vmware
+                if (model == "VMware Virtual Platform")
                 {
-                    case "VMware Virtual Platform":
-                        {
-                            this._isvm = true;
-                            break;
-                        }
-                    default:
-                        { break; }
+                    this._isvm = true;
+                    break;
+                }
+                //hyper-v
+                if (model == "Virtual Machine")
+                {
+                    this._isvm = true;
+                    break;
+                }
+                //virtualbox
+                if (model == "VirtualBox")
+                {
+                    this._isvm = true;
+                    break;
+                }
+                //Xen
+                if (maker == "Xen")
+                {
+                    this._isvm = true;
+                    break;
                 }
             }
 
