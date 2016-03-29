@@ -75,7 +75,7 @@
     <Compile Include="Checker.cs" />
     <Compile Include="EnvironmentController.cs" />
     <Compile Include="GuiFactory.cs" />
-    <Compile Include="ChassisCheck.cs" />
+    <Compile Include="HardwareEvaluator.cs" />
     <Compile Include="IEditableGuiOption.cs" />
     <Compile Include="ITsVariableOutput.cs" />
     <Compile Include="OptionLibrary.cs" />

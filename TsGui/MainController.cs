@@ -26,7 +26,7 @@ namespace TsGui
         //private List<IGuiOption> _options = new List<IGuiOption>();
         private EnvironmentController _envController = new EnvironmentController();
         private OptionLibrary _optionlibrary = new OptionLibrary();
-        private ChassisCheck _chassischeck = new ChassisCheck();
+        private HardwareEvaluator _chassischeck = new HardwareEvaluator();
 
         //properties
         public string HeadingTitle { get { return this._headingTitle; } }
