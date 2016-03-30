@@ -26,7 +26,7 @@ namespace TsGui
         //private List<IGuiOption> _options = new List<IGuiOption>();
         private EnvironmentController _envController = new EnvironmentController();
         private OptionLibrary _optionlibrary = new OptionLibrary();
-        private HardwareEvaluator _chassischeck = new HardwareEvaluator();
+        private HardwareEvaluator _chassischeck;
 
         //properties
         public string HeadingTitle { get { return this._headingTitle; } }
@@ -129,6 +129,10 @@ namespace TsGui
                     if (x != null) { this._headingText = x.Value; }
                 }
 
+                x = SourceXml.Element("HardwareEval");
+                if (x != null)
+                { this._chassischeck = new HardwareEvaluator(); }
+                 
                 x = SourceXml.Element("Width");
                 if (x != null)
                 { this._pageWidth = Convert.ToInt32(x.Value); }
@@ -262,10 +266,13 @@ namespace TsGui
                 
             }
 
-            foreach (TsVariable var in this._chassischeck.GetTsVariables)
+            if (this._chassischeck != null)
             {
-                Debug.WriteLine(var.Name + ": " + var.Value);
-                this._envController.AddVariable(var);
+                foreach (TsVariable var in this._chassischeck.GetTsVariables)
+                {
+                    Debug.WriteLine(var.Name + ": " + var.Value);
+                    this._envController.AddVariable(var);
+                }
             }
 
             this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE"));
