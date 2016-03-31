@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows;
-
+using System.Windows.Data;
 using System.Diagnostics;
 
 
@@ -32,6 +32,13 @@ namespace TsGui
             Debug.WriteLine("TsFreeText: protected constructor called");
             this._controller = RootController;
             this._control.TextChanged += this.onChange;
+            this._control.DataContext = this;
+
+            //maxLenBind.Source = this;
+            //this._control.SetBinding(TextBox.MaxLengthProperty, new Binding("MaxLength"));
+            BindingOperations.SetBinding(this._control, TextBox.MaxLengthProperty, new Binding("MaxLength"));
+            //BindingOperations.SetBinding(this._control, this._control.MaxLength, maxLenBind);
+
         }
 
         public TsFreeText (XElement SourceXml, MainController RootController)
@@ -40,6 +47,7 @@ namespace TsGui
             this.LoadXml(SourceXml);
             this.Build();
             this._control.TextChanged += this.onChange;
+            this._control.SetBinding(TextBox.MaxLengthProperty, new Binding("MaxLength"));
         }
 
         public TsVariable Variable
@@ -54,6 +62,21 @@ namespace TsGui
         public Label Label { get { return this._labelcontrol; } }
         public Control Control { get { return this._control; } }
         public int Height { get { return this._height; } }
+        //public int MaxLength
+        //{
+        //    get { return this._maxlength; }
+        //    set
+        //    {
+        //        this._maxlength = value;
+        //        this._control.MaxLength = this._maxlength;
+        //    }
+        //}
+        //protected int MinLength
+        //{
+        //    get { return this._minlength; }
+        //    set { this._minlength = value; }
+        //}
+
         public bool IsValid
         {
             get
@@ -153,6 +176,7 @@ namespace TsGui
                 string charWord;
                 if (this._minlength == 1) { charWord = " character"; }
                 else { charWord = " characters"; }
+
                 s = s + "Minimum length: " + this._minlength + charWord + Environment.NewLine;
                 valid = false;
             }

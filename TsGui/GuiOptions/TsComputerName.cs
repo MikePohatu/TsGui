@@ -21,12 +21,7 @@ namespace TsGui
         {
             if (String.IsNullOrEmpty(SourceXml.Value) == true)
             {
-                //setup the default values e.g
-                //<Disallowed>
-                //    <Characters>`~!@#$%^&*()+={}[]\/|<>,.? :;"'</Characters>
-                //</Disallowed>
-                //<Variable>OSDComputerName</Variable>
-                //<Label>Computer name:</Label>
+                //setup the default values i.e.
                 //<DefaultValue>
                 //	<EnvironmentVariable>
                 //		<Ignore>MINNT</Ignore>
@@ -45,7 +40,6 @@ namespace TsGui
                 //	</WmiQuery>
                 //</DefaultValue>
                 XElement x = new XElement("ComputerName");
-
                 XElement def = new XElement("DefaultValue");
 
                 XElement envvar = new XElement("EnvironmentVariable", "_SMSTSMachineName");
@@ -68,8 +62,9 @@ namespace TsGui
                 def.Add(serial);
 
                 x.Add(def);
+                
 
-                Debug.WriteLine("TsComputerName XML: " + x);
+                Debug.WriteLine("TsComputerName XML: " + Environment.NewLine + x);
 
                 base.LoadXml(x);
                 
