@@ -8,11 +8,11 @@ namespace TsGui
     {
         public TsComputerName(XElement SourceXml, MainController RootController):base (RootController)
         {
-            base._name = "OSDComputerName";
-            base._label = "Computer Name:";
-            base._minlength = 1;
-            base._maxlength = 15;
-            base._disallowedChars = "`~!@#$%^&*()+={}[]\\/|<>,.? :;\"'";
+            base.Name = "OSDComputerName";
+            base.LabelText = "Computer Name:";
+            base.MinLength = 1;
+            base.MaxLength = 15;
+            base.DisallowedCharacters = "`~!@#$%^&*()+={}[]\\/|<>,.? :;\"'";
             this.LoadXml(SourceXml);
             base.Build();
         }
