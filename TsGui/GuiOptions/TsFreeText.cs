@@ -5,19 +5,17 @@ using System.Windows.Controls.Primitives;
 using System.Windows;
 using System.Windows.Data;
 using System.Diagnostics;
-
+using System.ComponentModel;
 
 
 namespace TsGui
 {
-    public class TsFreeText: IGuiOption, IEditableGuiOption
+    public class TsFreeText: IGuiOption, IEditableGuiOption, INotifyPropertyChanged
     {
-        //private TsVariable tsvar;
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private MainController _controller;
-        //protected string _name;
-        private string _value;
-        //protected string _label;
-        //protected string _disallowedChars;
+        //private string _value;
         private bool _caseSensValidate = false;
         private bool _isvalid = true;
         private int _height = 25;
@@ -27,39 +25,39 @@ namespace TsGui
         private Label _labelcontrol = new Label();
         private TextBox _control = new TextBox();
 
-        protected string DisallowedCharacters { get; set; }
+        //properties
         protected string Name { get; set; }
-        public Label Label { get { return this._labelcontrol; } }
-        protected string LabelText { get; set; }
         protected bool CaseSensitive
         {
             get { return this._caseSensValidate; }
             set { this._caseSensValidate = value; }
-        }
-        protected int MaxLength
-        {
-            get { return this._maxlength; }
-            set
-            {
-                this._maxlength = value;
-                this._control.MaxLength = value;
-            }
         }
         protected int MinLength
         {
             get { return this._minlength; }
             set { this._minlength = value; }
         }
+
+        public string Text { get; set; }
+        public string DisallowedCharacters { get; set; }   
+        public Label Label { get { return this._labelcontrol; } }
+        public string LabelText { get; set; }        
+        public int MaxLength
+        {
+            get { return this._maxlength; }
+            set { this._maxlength = value; }
+        }        
         public TsVariable Variable
         {
             get
             {
-                this._value = this._control.Text;
-                return new TsVariable(this.Name, this._value);
+                //this.Text = this._control.Text;
+                return new TsVariable(this.Name, this.Text);
             }
         }
         public Control Control { get { return this._control; } }
         public int Height { get { return this._height; } }
+        public Thickness Padding { get { return this._padding; } }
         public bool IsValid
         {
             get
@@ -73,41 +71,45 @@ namespace TsGui
         protected TsFreeText(MainController RootController)
         {
             Debug.WriteLine("TsFreeText: protected constructor called");
-            this._controller = RootController;
-            this._control.TextChanged += this.onChange;
-            //this._control.DataContext = this;
-
-            //maxLenBind.Source = this;
-            //this._control.SetBinding(TextBox.MaxLengthProperty, new Binding("MaxLength"));
-            //BindingOperations.SetBinding(this._control, TextBox.MaxLengthProperty, new Binding("MaxLength"));
-            //BindingOperations.SetBinding(this._control, this._control.MaxLength, maxLenBind);
+            this.Startup(RootController);
         }
 
         public TsFreeText (XElement SourceXml, MainController RootController)
         {
-            this._controller = RootController;
+            this.Startup(RootController);
             this.LoadXml(SourceXml);
             this.Build();
-            this._control.TextChanged += this.onChange;
-            //this._control.SetBinding(TextBox.MaxLengthProperty, new Binding("MaxLength"));
         }
 
-        
-        //public int MaxLength
-        //{
-        //    get { return this._maxlength; }
-        //    set
-        //    {
-        //        this._maxlength = value;
-        //        this._control.MaxLength = this._maxlength;
-        //    }
-        //}
-        //protected int MinLength
-        //{
-        //    get { return this._minlength; }
-        //    set { this._minlength = value; }
-        //}
+        //Generic startup function to share between constructors
+        private void Startup(MainController RootController)
+        {
+            this._controller = RootController;
+            this._control.TextChanged += this.onChange;
 
+            //setup the bindings
+            this._control.DataContext = this;
+            this._control.SetBinding(TextBox.MaxLengthProperty, new Binding("MaxLength"));
+            this._control.SetBinding(TextBox.HeightProperty, new Binding("Height"));
+            this._control.SetBinding(TextBox.TextProperty, new Binding("Text"));
+            this._control.SetBinding(TextBox.PaddingProperty, new Binding("Padding"));
+
+            this._labelcontrol.DataContext = this;
+            this._labelcontrol.SetBinding(Label.ContentProperty, new Binding("LabelText"));
+            this._labelcontrol.SetBinding(Label.HeightProperty, new Binding("Height"));
+        }
+
+
+
+        // Create the OnPropertyChanged method to raise the event
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
 
 
         public void LoadXml(XElement pXml)
@@ -138,10 +140,10 @@ namespace TsGui
             x = pXml.Element("DefaultValue");
             if (x != null)
             {
-                this._value = this._controller.GetValueFromList(x);
+                this.Text = this._controller.GetValueFromList(x);
                 //if required, remove invalid characters and truncate
-                if (String.IsNullOrEmpty(this.DisallowedCharacters) != true) { this._value = Checker.RemoveInvalid(this._value, this.DisallowedCharacters); }
-                if (this._maxlength > 0) { this._value = Checker.Truncate(this._value,this._maxlength); }
+                if (String.IsNullOrEmpty(this.DisallowedCharacters) != true) { this.Text = Checker.RemoveInvalid(this.Text, this.DisallowedCharacters); }
+                if (this._maxlength > 0) { this.Text = Checker.Truncate(this.Text, this._maxlength); }
             }
 
             x = pXml.Element("Label");
@@ -164,15 +166,14 @@ namespace TsGui
 
         protected void Build()
         {
-            //this._control.DataContext = this;
             this._control.MaxLines = 1;
-            this._control.Height = this._height;
-            this._control.Text = this._value;
-            this._control.Padding = this._padding;
-
-            this._labelcontrol.Content = this.LabelText;
-            this._labelcontrol.Height = this._height;
             this._labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+
+            this.OnPropertyChanged("MaxLength");
+            this.OnPropertyChanged("Height");
+            this.OnPropertyChanged("Text");
+            this.OnPropertyChanged("Padding");
+            this.OnPropertyChanged("LabelText");
         }
 
 
