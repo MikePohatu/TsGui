@@ -66,11 +66,19 @@ namespace TsGui
             get { return this._help; }
             set
             {
-                this._help = value;
-                this.OnPropertyChanged("ToolTip");
+                if (!string.IsNullOrEmpty(value))
+                {
+                    //if the tooltip is not already setup, setup the event subscriptions for mouseover
+                    //if (string.IsNullOrEmpty(this._help))
+                    //{
+                    //    this._control.MouseEnter += this.onMouseOver;
+                    //    this._control.MouseLeave += this.onMouseLeave;
+                    //}
+                    this._help = value;
+                    this.OnPropertyChanged("ToolTip");
+                }
             }
         }
-
         public ToolTip ToolTip
         {
             get { return this._tooltip; }
@@ -99,8 +107,7 @@ namespace TsGui
             {
                 return new TsVariable(this.Name, this.Text);
             }
-        }
-        
+        }      
         public int Height
         {
             get { return this._height; }
@@ -160,14 +167,12 @@ namespace TsGui
             this._validToolTip = new ToolTip();
             this._controller = RootController;
 
-            //Subscribe to events
-            this._control.MouseEnter += this.onHoverOn;
-            this._control.MouseLeave += this.onHoverOff;
+            //Subscribe to events           
             this._control.TextChanged += this.onChange;
 
             //Setup the tooltips
             this._tooltip = WindowAlerts.SetToolTipText(this._control, this._help);
-            //this._labelcontrol.ToolTip = WindowAlerts.SetToolTipText(this._control, this._help);
+            //if (string.IsNullOrEmpty(this._help)) { this._tooltip.IsEnabled = false; }
             TextBlock tb = this._tooltip.Content as TextBlock;
 
             //setup the bindings
@@ -226,6 +231,10 @@ namespace TsGui
             if (x != null)
             { this.Name = x.Value; }
 
+            x = pXml.Element("HelpText");
+            if (x != null)
+            { this.HelpText = x.Value; }
+
             x = pXml.Element("DefaultValue");
             if (x != null)
             {
@@ -252,18 +261,18 @@ namespace TsGui
             #endregion
         }
 
-        private void onHoverOn(object sender, RoutedEventArgs e)
-        {
-            Control c = sender as Control;
-            if (this._help != null) { WindowAlerts.ShowToolTip(c); }
-            
-        }
+        //private void onMouseOver(object sender, RoutedEventArgs e)
+        //{
+        //    Control c = sender as Control;
+        //    if (!string.IsNullOrEmpty(this.HelpText)) { WindowAlerts.ShowToolTip(c); }
+        //    else { Debug.WriteLine("onMouseOver with null helptext"); }
+        //}
 
-        private void onHoverOff(object sender, RoutedEventArgs e)
-        {
-            Control c = sender as Control;
-            WindowAlerts.HideToolTip(c);
-        }
+        //private void onMouseLeave(object sender, RoutedEventArgs e)
+        //{
+        //    Control c = sender as Control;
+        //    if (!string.IsNullOrEmpty(this.HelpText)) { WindowAlerts.HideToolTip(c); }
+        //}
 
 
         private void onChange(object sender, RoutedEventArgs e)

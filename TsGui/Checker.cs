@@ -50,6 +50,7 @@ namespace TsGui
 
         public static string RemoveInvalid (string StringValue, string InvalidChars)
         {
+            if (string.IsNullOrEmpty(InvalidChars)) { return StringValue; }
             //Debug.WriteLine("RemoveInvalid called");
             char[] invalidchars = InvalidChars.ToCharArray();
             string newstring = StringValue;
@@ -64,6 +65,8 @@ namespace TsGui
 
         public static bool ValidCharacters( string StringValue, string InvalidChars, bool CaseSensitive)
         {
+            if (string.IsNullOrEmpty(InvalidChars)) { return true; }
+
             //Debug.WriteLine("RemoveInvalid called");
             char[] invalidchars = InvalidChars.ToCharArray();
 

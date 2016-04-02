@@ -46,7 +46,7 @@ namespace TsGui
         public string GetValueFromList(XElement InputXml)
         {
             string s = null;
-
+            
             foreach (XElement x in InputXml.Elements())
             {
                 if (x.Name == "EnvironmentVariable")
