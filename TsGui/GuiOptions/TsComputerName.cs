@@ -1,4 +1,23 @@
-﻿using System;
+﻿//setup the default values for a computer name i.e.
+//<DefaultValue>
+//	<EnvironmentVariable>
+//		<Ignore>MINNT</Ignore>
+//      _SMSTSMachineName
+//  </EnvironmentVariable>
+//	<EnvironmentVariable>
+//		<Ignore>MINNT</Ignore>
+//      ComputerName
+//  </EnvironmentVariable>
+//	<WmiQuery>
+//		<Query>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Query>
+//      <Ignore>No Asset Tag</Ignore>
+//	</WmiQuery>
+//	<WmiQuery>
+//		<Query>SELECT SerialNumber FROM Win32_BIOS</Query>
+//	</WmiQuery>
+//</DefaultValue>
+
+using System;
 using System.Xml.Linq;
 using System.Diagnostics;
 
@@ -10,35 +29,18 @@ namespace TsGui
         {
             base.Name = "OSDComputerName";
             base.LabelText = "Computer Name:";
+            base.HelpText = "Enter a computer name for the device";
             base.MinLength = 1;
             base.MaxLength = 15;
             base.DisallowedCharacters = "`~!@#$%^&*()+={}[]\\/|<>,.? :;\"'";
             this.LoadXml(SourceXml);
-            base.Build();
         }
 
         public new void LoadXml(XElement SourceXml)
         {
             if (String.IsNullOrEmpty(SourceXml.Value) == true)
             {
-                //setup the default values i.e.
-                //<DefaultValue>
-                //	<EnvironmentVariable>
-                //		<Ignore>MINNT</Ignore>
-                //      _SMSTSMachineName
-                //  </EnvironmentVariable>
-                //	<EnvironmentVariable>
-                //		<Ignore>MINNT</Ignore>
-                //      ComputerName
-                //  </EnvironmentVariable>
-                //	<WmiQuery>
-                //		<Query>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Query>
-                //      <Ignore>No Asset Tag</Ignore>
-                //	</WmiQuery>
-                //	<WmiQuery>
-                //		<Query>SELECT SerialNumber FROM Win32_BIOS</Query>
-                //	</WmiQuery>
-                //</DefaultValue>
+                
                 XElement x = new XElement("ComputerName");
                 XElement def = new XElement("DefaultValue");
 

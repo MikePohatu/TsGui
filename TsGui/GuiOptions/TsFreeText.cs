@@ -14,20 +14,31 @@ namespace TsGui
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        //fields
+        #region
         private MainController _controller;
-        //private string _value;
-        private bool _caseSensValidate = false;
-        private bool _isvalid = true;
-        private int _height = 25;
-        private int _maxlength = 0;
-        private int _minlength = 0;
-        private Thickness _padding = new Thickness(3, 3, 5, 3);
-        private Label _labelcontrol = new Label();
-        private TextBox _control = new TextBox();
+        private string _value;
+        private string _labeltext;
+        private bool _caseSensValidate;
+        private bool _isvalid;
+        private int _height;
+        private int _maxlength;
+        private int _minlength;
+        private Thickness _padding;
+        private Label _labelcontrol;
+        private TextBox _control;
+        private string _help;
+        private ToolTip _tooltip;
+        private ToolTip _validToolTip;
+        #endregion
 
         //properties
-        protected string Name { get; set; }
-        protected bool CaseSensitive
+        #region
+        public string Name { get; set; }
+        public string DisallowedCharacters { get; set; }
+        public Label Label { get { return this._labelcontrol; } }
+        public Control Control { get { return this._control; } }
+        public bool CaseSensitive
         {
             get { return this._caseSensValidate; }
             set { this._caseSensValidate = value; }
@@ -35,29 +46,79 @@ namespace TsGui
         protected int MinLength
         {
             get { return this._minlength; }
-            set { this._minlength = value; }
+            set
+            {
+                if (value < 0) { this._minlength = 0; }
+                else { this._minlength = value; }
+            }
+        }
+        public string Text
+        {
+            get { return this._value; }
+            set
+            {
+                this._value = value;
+                this.OnPropertyChanged("Text");
+            }
+        }
+        public string HelpText
+        {
+            get { return this._help; }
+            set
+            {
+                this._help = value;
+                this.OnPropertyChanged("ToolTip");
+            }
         }
 
-        public string Text { get; set; }
-        public string DisallowedCharacters { get; set; }   
-        public Label Label { get { return this._labelcontrol; } }
-        public string LabelText { get; set; }        
+        public ToolTip ToolTip
+        {
+            get { return this._tooltip; }
+        }
+
+        public string LabelText
+        {
+            get { return this._labeltext; }
+            set
+            {
+                this._labeltext = value;
+                this.OnPropertyChanged("LabelText");
+            }
+        }        
         public int MaxLength
         {
             get { return this._maxlength; }
-            set { this._maxlength = value; }
+            set {
+                this._maxlength = value;
+                this.OnPropertyChanged("MaxLength"); 
+            }
         }        
         public TsVariable Variable
         {
             get
             {
-                //this.Text = this._control.Text;
                 return new TsVariable(this.Name, this.Text);
             }
         }
-        public Control Control { get { return this._control; } }
-        public int Height { get { return this._height; } }
-        public Thickness Padding { get { return this._padding; } }
+        
+        public int Height
+        {
+            get { return this._height; }
+            set
+            {
+                this._height = value;
+                this.OnPropertyChanged("Height");
+            }
+        }
+        public Thickness Padding
+        {
+            get { return this._padding; }
+            set
+            {
+                this._padding = value;
+                this.OnPropertyChanged("Padding");
+            }
+        }
         public bool IsValid
         {
             get
@@ -66,8 +127,11 @@ namespace TsGui
                 return this._isvalid;
             }
         }
+        #endregion
+
 
         //constructors
+        #region
         protected TsFreeText(MainController RootController)
         {
             Debug.WriteLine("TsFreeText: protected constructor called");
@@ -78,25 +142,50 @@ namespace TsGui
         {
             this.Startup(RootController);
             this.LoadXml(SourceXml);
-            this.Build();
         }
+        #endregion
+
 
         //Generic startup function to share between constructors
         private void Startup(MainController RootController)
         {
+            this._caseSensValidate = false;
+            this._isvalid = true;
+            this._height = 25;
+            this._maxlength = 0;
+            this._minlength = 0;
+            this._padding = new Thickness(3, 3, 5, 3);
+            this._labelcontrol = new Label();
+            this._control = new TextBox();
+            this._validToolTip = new ToolTip();
             this._controller = RootController;
+
+            //Subscribe to events
+            this._control.MouseEnter += this.onHoverOn;
+            this._control.MouseLeave += this.onHoverOff;
             this._control.TextChanged += this.onChange;
+
+            //Setup the tooltips
+            this._tooltip = WindowAlerts.SetToolTipText(this._control, this._help);
+            //this._labelcontrol.ToolTip = WindowAlerts.SetToolTipText(this._control, this._help);
+            TextBlock tb = this._tooltip.Content as TextBlock;
 
             //setup the bindings
             this._control.DataContext = this;
+            tb.SetBinding(TextBlock.TextProperty, new Binding("HelpText"));
+
             this._control.SetBinding(TextBox.MaxLengthProperty, new Binding("MaxLength"));
             this._control.SetBinding(TextBox.HeightProperty, new Binding("Height"));
             this._control.SetBinding(TextBox.TextProperty, new Binding("Text"));
             this._control.SetBinding(TextBox.PaddingProperty, new Binding("Padding"));
+            this._control.SetBinding(TextBox.ToolTipProperty, new Binding("ToolTip"));
 
             this._labelcontrol.DataContext = this;
             this._labelcontrol.SetBinding(Label.ContentProperty, new Binding("LabelText"));
             this._labelcontrol.SetBinding(Label.HeightProperty, new Binding("Height"));
+
+            this._control.MaxLines = 1;
+            this._labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
         }
 
 
@@ -152,28 +241,28 @@ namespace TsGui
 
             x = pXml.Element("Height");
             if (x != null)
-            { this._height = Convert.ToInt32(x.Value); }
+            { this.Height = Convert.ToInt32(x.Value); }
 
             x = pXml.Element("Padding");
             if (x != null)
             {
                 int padInt = Convert.ToInt32(x.Value);
-                this._padding = new System.Windows.Thickness(padInt, padInt, padInt, padInt);
+                this.Padding = new System.Windows.Thickness(padInt, padInt, padInt, padInt);
             }
             #endregion
         }
 
-
-        protected void Build()
+        private void onHoverOn(object sender, RoutedEventArgs e)
         {
-            this._control.MaxLines = 1;
-            this._labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+            Control c = sender as Control;
+            if (this._help != null) { WindowAlerts.ShowToolTip(c); }
+            
+        }
 
-            this.OnPropertyChanged("MaxLength");
-            this.OnPropertyChanged("Height");
-            this.OnPropertyChanged("Text");
-            this.OnPropertyChanged("Padding");
-            this.OnPropertyChanged("LabelText");
+        private void onHoverOff(object sender, RoutedEventArgs e)
+        {
+            Control c = sender as Control;
+            WindowAlerts.HideToolTip(c);
         }
 
 
@@ -213,46 +302,15 @@ namespace TsGui
                 {
                     s = "\"" + this._control.Text + "\" is invalid:" + Environment.NewLine + Environment.NewLine + s;
                 }
-                
-                this.ShowToolTip(s);
+
+                WindowAlerts.ShowUnboundToolTip(this._validToolTip,this._control,s);
             }
             else
             {
-                this.HideToolTip();
+                WindowAlerts.HideToolTip(this._validToolTip);
             }
 
             this._isvalid = valid;
-        }
-
-        private void ShowToolTip(string Message)
-        {
-            ToolTip tt = this._control.ToolTip as ToolTip;
-            if (tt == null)
-            {
-                tt = new ToolTip();
-                tt.Placement = PlacementMode.Right;
-                tt.HorizontalOffset = 5;
-                tt.PlacementTarget = this._control;
-                tt.Content = new TextBlock();
-                this._control.ToolTip = tt;
-            }
-
-            TextBlock tb = tt.Content as TextBlock;
-            
-            tb.Text = Message;
-            tt.Content = tb;
-            tt.StaysOpen = true;
-            tt.IsOpen = true;
-        }
-
-        private void HideToolTip()
-        {
-            if (this._control.ToolTip != null)
-            {
-                ToolTip tt = this._control.ToolTip as ToolTip;
-                tt.StaysOpen = false;
-                tt.IsOpen = false;
-            }
         }
     }
 }
