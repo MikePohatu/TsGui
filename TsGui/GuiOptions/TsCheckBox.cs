@@ -1,27 +1,29 @@
-﻿using System;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
 
 namespace TsGui
 {
-    public class TsCheckBox: IGuiOption
+    public class TsCheckBox: TsBaseOption, IGuiOption
     {
-        //private TsVariable tsvar;
-        private string name;
-        private string label;
-        private int height = 15;
-        private Thickness _margin = new Thickness(0, 0, 0, 0);
-        private Thickness _padding = new Thickness(5, 0, 0, 0);
-        private Label labelcontrol;
-        private CheckBox control;
-        private HorizontalAlignment hAlignment = HorizontalAlignment.Left;
-        private string valTrue = "TRUE";
-        private string valFalse = "FALSE";
+        private Thickness _margin;
+        new private CheckBox _control;
+        private HorizontalAlignment _hAlignment;
+        private string _valTrue;
+        private string _valFalse;
 
-        public TsCheckBox(XElement SourceXml)
+        public TsCheckBox(XElement SourceXml) : base()
         {
-            this.control = new CheckBox();
+            this._control = new CheckBox();
+            base._control = this._control;
+
+            this._hAlignment = HorizontalAlignment.Left;
+            //this._labelcontrol = new Label();
+            this._margin = new Thickness(0, 0, 0, 0);
+            this.Height = 15;
+            this._padding = new Thickness(5, 0, 0, 0);           
+            this._valTrue = "TRUE";
+            this._valFalse = "FALSE";
             this.LoadXml(SourceXml);
             this.Build();
         }
@@ -31,61 +33,46 @@ namespace TsGui
             get
             {
                 //this.value = this.control.Text;
-                if (this.control.IsChecked == true) { return new TsVariable(this.name, this.valTrue); }
-                else { return new TsVariable(this.name, this.valFalse); }
+                if (this._control.IsChecked == true) { return new TsVariable(this.VariableName, this._valTrue); }
+                else { return new TsVariable(this.VariableName, this._valFalse); }
             }
         }
 
-        public Label Label { get { return this.labelcontrol; } }
-        public Control Control { get { return this.control; } }
-        public int Height { get { return this.height; } }
-
-        public void LoadXml(XElement SourceXml)
+        //public Label Label { get { return this._labelcontrol; } }
+        //public Control Control { get { return this._control; } }
+        //public int Height { get { return this.height; } }
+        public void LoadXml(XElement InputXml)
         {
             #region
             XElement x;
 
-            x = SourceXml.Element("Variable");
+            //load the xml for the base class stuff
+            this.LoadBaseXml(InputXml);
+
+            x = InputXml.Element("Checked");
             if (x != null)
-            { this.name = x.Value; }
+            { this._control.IsChecked = true; }
 
-            x = SourceXml.Element("Label");
+            x = InputXml.Element("TrueValue");
             if (x != null)
-            { this.label = x.Value; }
+            { this._valTrue = x.Value; }
 
-            x = SourceXml.Element("Checked");
+            x = InputXml.Element("FalseValue");
             if (x != null)
-            { this.control.IsChecked = true; }
+            { this._valFalse = x.Value; }
 
-            x = SourceXml.Element("TrueValue");
-            if (x != null)
-            { this.valTrue = x.Value; }
-
-            x = SourceXml.Element("FalseValue");
-            if (x != null)
-            { this.valFalse = x.Value; }
-
-
-            GuiFactory.LoadHAlignment(SourceXml, ref this.hAlignment);
-            GuiFactory.LoadMargins(SourceXml, this._margin);
+            GuiFactory.LoadHAlignment(InputXml, ref this._hAlignment);
+            GuiFactory.LoadMargins(InputXml, this._margin);
 
             #endregion
         }
 
         private void Build()
         {          
-            //this.control.Margin = this._margin;
-            //this.control.Padding = this._padding;
-            this.control.VerticalAlignment = VerticalAlignment.Center;
-            this.control.HorizontalAlignment = hAlignment;
-            
-            this.labelcontrol = new Label();
-            //this.labelcontrol.Height = "Auto";
-            this.labelcontrol.Content = this.label;
-            this.labelcontrol.Height = this.height;
-            this.labelcontrol.Padding = this._padding;
-            this.labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
-           
+            this._control.VerticalAlignment = VerticalAlignment.Center;
+            this._control.HorizontalAlignment = _hAlignment;
+            //this._labelcontrol.Padding = this._padding;
+            //this._labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;         
         }
     }
 }

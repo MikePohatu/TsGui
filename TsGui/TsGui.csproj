@@ -75,6 +75,7 @@
     <Compile Include="Checker.cs" />
     <Compile Include="EnvironmentController.cs" />
     <Compile Include="GuiFactory.cs" />
+    <Compile Include="GuiOptions\TsBaseOption.cs" />
     <Compile Include="HardwareEvaluator.cs" />
     <Compile Include="IEditableGuiOption.cs" />
     <Compile Include="ITsVariableOutput.cs" />
@@ -88,7 +89,7 @@
     <Compile Include="GuiOptions\TsCheckBox.cs" />
     <Compile Include="GuiOptions\TsFreeText.cs" />
     <Compile Include="TsVariable.cs" />
-    <Compile Include="WindowAlerts.cs" />
+    <Compile Include="TsWindowAlerts.cs" />
     <Compile Include="XmlHandler.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

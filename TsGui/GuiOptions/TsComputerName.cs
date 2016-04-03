@@ -27,12 +27,12 @@ namespace TsGui
     {
         public TsComputerName(XElement SourceXml, MainController RootController):base (RootController)
         {
-            base.Name = "OSDComputerName";
-            base.LabelText = "Computer Name:";
-            base.HelpText = "Enter a computer name for the device";
-            base.MinLength = 1;
-            base.MaxLength = 15;
-            base.DisallowedCharacters = "`~!@#$%^&*()+={}[]\\/|<>,.? :;\"'";
+            this.VariableName = "OSDComputerName";
+            this.LabelText = "Computer Name:";
+            this.HelpText = "Enter a computer name for the device";
+            this.MinLength = 1;
+            this.MaxLength = 15;
+            this.DisallowedCharacters = "`~!@#$%^&*()+={}[]\\/|<>,.? :;\"'";
             this.LoadXml(SourceXml);
         }
 

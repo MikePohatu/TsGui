@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml.Linq;
-using System.Text;
 using System.Windows.Controls;
 using System.Windows;
+using System;
 
 namespace TsGui
 {
@@ -76,6 +75,7 @@ namespace TsGui
             
             foreach (IGuiOption option in this.options)
             {
+                //if ((option.Label == null ) || (option.Control == null)) { throw new NullReferenceException(); }
                 option.Control.Margin = this._margin;
                 option.Label.Margin = this._margin;
 
