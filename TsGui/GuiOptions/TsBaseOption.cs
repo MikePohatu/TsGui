@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Diagnostics;
 
 namespace TsGui
 {
@@ -85,6 +86,7 @@ namespace TsGui
         //constructor
         protected TsBaseOption()
         {
+            Debug.WriteLine("TsBaseOption constructor called");
             this._labelcontrol = new Label();
             this._labelcontrol.DataContext = this;
             this._labelcontrol.SetBinding(Label.ContentProperty, new Binding("LabelText"));

@@ -97,7 +97,7 @@ namespace TsGui
 
         public static bool ValidMinLength(string StringValue, int MinLength)
         {
-            Debug.WriteLine(StringValue.Length);
+            //Debug.WriteLine(StringValue.Length);
             if (StringValue.Length >= MinLength) { return true; }
             else { return false; }
         } 

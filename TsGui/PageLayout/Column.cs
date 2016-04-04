@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
-using System;
+using System.Diagnostics;
 
 namespace TsGui
 {
@@ -75,7 +75,7 @@ namespace TsGui
             
             foreach (IGuiOption option in this.options)
             {
-                //if ((option.Label == null ) || (option.Control == null)) { throw new NullReferenceException(); }
+                //if ((option.Label.DataContext == null ) || (option.Control == null)) { Debug.WriteLine("null option or control"); }
                 option.Control.Margin = this._margin;
                 option.Label.Margin = this._margin;
 

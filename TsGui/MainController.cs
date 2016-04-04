@@ -260,7 +260,7 @@ namespace TsGui
                 
                 if (option.Variable != null)
                 {
-                    Debug.WriteLine(option.Variable.Name + ": " + option.Variable.Value);
+                    //Debug.WriteLine(option.Variable.Name + ": " + option.Variable.Value);
                     this._envController.AddVariable(option.Variable);
                 }
                 
@@ -270,7 +270,7 @@ namespace TsGui
             {
                 foreach (TsVariable var in this._chassischeck.GetTsVariables)
                 {
-                    Debug.WriteLine(var.Name + ": " + var.Value);
+                    //Debug.WriteLine(var.Name + ": " + var.Value);
                     this._envController.AddVariable(var);
                 }
             }

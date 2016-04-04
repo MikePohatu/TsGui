@@ -75,12 +75,12 @@ namespace TsGui
         //build the actual display control
         private void Build()
         {
-            Debug.WriteLine("TsDropDownList build started");
+            //Debug.WriteLine("TsDropDownList build started");
             int index = 0;
 
             foreach (KeyValuePair<string, string> entry in this._options)
             {
-                Debug.WriteLine(entry.Value);
+                //Debug.WriteLine(entry.Value);
                 this._control.Items.Add(entry);
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list

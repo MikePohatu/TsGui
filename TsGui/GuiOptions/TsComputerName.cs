@@ -66,7 +66,7 @@ namespace TsGui
                 x.Add(def);
                 
 
-                Debug.WriteLine("TsComputerName XML: " + Environment.NewLine + x);
+                //Debug.WriteLine("TsComputerName XML: " + Environment.NewLine + x);
 
                 base.LoadXml(x);
                 
