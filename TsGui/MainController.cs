@@ -16,6 +16,7 @@ namespace TsGui
     {
         private string _headingTitle;
         private string _headingText;
+        private int _headingHeight;
         private string _configpath;
         private int _pageWidth;
         private int _pageHeight;
@@ -31,8 +32,11 @@ namespace TsGui
         //properties
         public string HeadingTitle { get { return this._headingTitle; } }
         public string HeadingText { get { return this._headingText; } }
+        public int HeadingHeight { get { return this._headingHeight; } }
+
         public MainWindow ParentWindow { get; set; }
         public Page CurrentPage { get; set; }
+        
 
         //constructors
         public MainController(MainWindow ParentWindow)
@@ -54,6 +58,9 @@ namespace TsGui
 
         public void Startup()
         {
+            //set default values
+            this._headingHeight = 50;
+
             this._prodmode = this._envController.Init();
 
             //if testingmode is true, the envcontroller couldn't connect to sccm
@@ -127,6 +134,9 @@ namespace TsGui
 
                     x = headingX.Element("Text");
                     if (x != null) { this._headingText = x.Value; }
+
+                    x = headingX.Element("Height");
+                    if (x != null) { this._headingHeight = Convert.ToInt32(x.Value); }
                 }
 
                 x = SourceXml.Element("HardwareEval");
@@ -255,28 +265,31 @@ namespace TsGui
 
         public void Finish()
         {
-            foreach (IGuiOption option in this._optionlibrary.Options)
+            if (this.CurrentPage.OptionsValid() == true)
             {
-                
-                if (option.Variable != null)
+                foreach (IGuiOption option in this._optionlibrary.Options)
                 {
-                    //Debug.WriteLine(option.Variable.Name + ": " + option.Variable.Value);
-                    this._envController.AddVariable(option.Variable);
-                }
-                
-            }
 
-            if (this._chassischeck != null)
-            {
-                foreach (TsVariable var in this._chassischeck.GetTsVariables)
+                    if (option.Variable != null)
+                    {
+                        //Debug.WriteLine(option.Variable.Name + ": " + option.Variable.Value);
+                        this._envController.AddVariable(option.Variable);
+                    }
+
+                }
+
+                if (this._chassischeck != null)
                 {
-                    //Debug.WriteLine(var.Name + ": " + var.Value);
-                    this._envController.AddVariable(var);
+                    foreach (TsVariable var in this._chassischeck.GetTsVariables)
+                    {
+                        //Debug.WriteLine(var.Name + ": " + var.Value);
+                        this._envController.AddVariable(var);
+                    }
                 }
-            }
 
-            this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE"));
-            this.ParentWindow.Close();
+                this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE"));
+                this.ParentWindow.Close();
+            }
         }
 
         public void Cancel()
