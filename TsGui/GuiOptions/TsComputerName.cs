@@ -44,11 +44,15 @@ namespace TsGui
                 XElement x = new XElement("ComputerName");
                 XElement def = new XElement("DefaultValue");
 
-                XElement envvar = new XElement("EnvironmentVariable", "_SMSTSMachineName");
+                XElement envvar = new XElement("EnvironmentVariable");
+                envvar.Add(new XElement("Variable", "_SMSTSMachineName"));
                 envvar.Add(new XElement("Ignore", "MINNT"));
+                envvar.Add(new XElement("Ignore", "MINWIN"));
 
-                XElement compName = new XElement("EnvironmentVariable", "computername");
-                envvar.Add(new XElement("Ignore", "MINNT"));
+                XElement compName = new XElement("EnvironmentVariable");
+                compName.Add(new XElement("Variable", "computername"));
+                compName.Add(new XElement("Ignore", "MINNT"));
+                compName.Add(new XElement("Ignore", "MINWIN"));
 
                 XElement assettag = new XElement("WmiQuery");
                 assettag.Add(new XElement("Query", "SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure"));
@@ -66,7 +70,7 @@ namespace TsGui
                 x.Add(def);
                 
 
-                //Debug.WriteLine("TsComputerName XML: " + Environment.NewLine + x);
+                Debug.WriteLine("TsComputerName XML: " + Environment.NewLine + x);
 
                 base.LoadXml(x);
                 

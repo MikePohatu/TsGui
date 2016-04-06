@@ -8,13 +8,19 @@ namespace TsGui
 {
     public static class Checker
     {
+        /// <summary>
+        /// Check xml value against ignore strings. Return true if the value should be ignored
+        /// </summary>
+        /// <param name="InputXml"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
         public static bool ShouldIgnore(XElement InputXml, string Value)
         {
             foreach (XElement xignore in InputXml.Elements("Ignore"))
             {
                 //first check for empty value in the ignore entry i.e. it has been left in 
                 //the file but has no use
-                if (String.IsNullOrEmpty(xignore.Value.Trim()) == true) { continue; }
+                if (string.IsNullOrEmpty(xignore.Value.Trim())) { continue; }
 
                 bool toignore = false;
                 XAttribute attrib = xignore.Attribute("SearchType");
@@ -35,7 +41,8 @@ namespace TsGui
                 else
                 { toignore = Value.StartsWith(xignore.Value, StringComparison.OrdinalIgnoreCase); }
 
-                if (toignore == true) { return true; }
+                Debug.WriteLine("toignore value: " + toignore);
+                if (toignore) { return true; }
             }
 
             //match hasn't been found. Return false i.e. don't ignore

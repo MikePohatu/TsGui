@@ -51,8 +51,10 @@ namespace TsGui
             {
                 if (x.Name == "EnvironmentVariable")
                 {
-                    s = this.GetEnvVar(x.Value.Trim());
-                    if (s != null)
+                    string variable = x.Element("Variable").Value;
+                    //s = x.Element("Variable").Value;
+                    s = this.GetEnvVar(variable.Trim());
+                    if (!string.IsNullOrEmpty(s))
                     {
                         //if it shouldn't be ignored, return the value. Otherwise, carry on
                         if (Checker.ShouldIgnore(x, s) == false) { return s; }
@@ -83,18 +85,19 @@ namespace TsGui
         {
             string s;
 
-            if (VariableName != null)
+            if (!string.IsNullOrEmpty(VariableName))
             {
                 //try ts env first
                 if (this._sccmconnector != null)
                 {
                     s = this._sccmconnector.GetVariable(VariableName);
-                    if (s != null) { return s; }
+                    if (!string.IsNullOrEmpty(s)) { return s; }
                 }
 
                 //if hasn't returned already, try system env variables
                 s = SystemConnector.GetVariableValue(VariableName);
-                return s;
+                if (!string.IsNullOrEmpty(s)) { return s; }
+                else return null;
             }
             else { return null; }
         }

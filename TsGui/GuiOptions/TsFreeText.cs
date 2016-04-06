@@ -142,7 +142,7 @@ namespace TsGui
             {
                 this.Value = this._controller.GetValueFromList(x);
                 //if required, remove invalid characters and truncate
-                if (String.IsNullOrEmpty(this.DisallowedCharacters) != true) { this.Value = Checker.RemoveInvalid(this.Value, this.DisallowedCharacters); }
+                if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.Value = Checker.RemoveInvalid(this.Value, this.DisallowedCharacters); }
                 if (this._maxlength > 0) { this.Value = Checker.Truncate(this.Value, this._maxlength); }
             }
             #endregion

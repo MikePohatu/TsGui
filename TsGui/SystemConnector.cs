@@ -17,15 +17,15 @@ namespace TsGui
             //try ts env 
             //try process variables
             s = Environment.GetEnvironmentVariable(Variable, EnvironmentVariableTarget.Process);
-            if (s != null) { return s; }
+            if (!string.IsNullOrEmpty(s)) { return s; }
 
             //try computer variables
             s = Environment.GetEnvironmentVariable(Variable, EnvironmentVariableTarget.Machine);
-            if (s != null) { return s; }
+            if (!string.IsNullOrEmpty(s)) { return s; }
 
             //try user variables
             s = Environment.GetEnvironmentVariable(Variable, EnvironmentVariableTarget.User);
-            if (s != null) { return s; }
+            if (!string.IsNullOrEmpty(s)) { return s; }
 
             //not found. return null
             return null;
