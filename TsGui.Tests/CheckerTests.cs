@@ -53,10 +53,43 @@ namespace TsGui.Tests
         [TestCase("ThisIsATestString",7, ExpectedResult = "ThisIsA")]
         [TestCase(null, 7, ExpectedResult = null)]
         [TestCase("Testing", 45, ExpectedResult = "Testing")]
-        public string Truncate(string StringValue, int Length)
+        public string TruncateTest(string StringValue, int Length)
         {
-            string result = Checker.Truncate(StringValue, Length);
-            return result;
+            return Checker.Truncate(StringValue, Length);
+        }
+
+        [Test]
+        [TestCase("MINIT_Test","_", true,ExpectedResult = false)]
+        [TestCase("MINIT_Test", "m", true, ExpectedResult = false)]
+        [TestCase(null, "m", true, ExpectedResult = false)]
+        [TestCase("MINIT_Test", "", true, ExpectedResult = true)]
+        [TestCase("MINIT_Test", "M", true, ExpectedResult = false)]
+        public bool ValidCharactersTest(string StringValue, string InvalidChars, bool CaseSensitive)
+        {
+            return Checker.ValidCharacters(StringValue, InvalidChars, CaseSensitive);
+            
+        }
+
+        [Test]
+        [TestCase("MINIT_Test", 4, ExpectedResult = false)]
+        [TestCase("MINIT_Test", 12, ExpectedResult = true)]
+        [TestCase("MINIT_Test", 10, ExpectedResult = true)]
+        [TestCase("MINIT_Test", 0, ExpectedResult = true)]
+        [TestCase(null, 10, ExpectedResult = false)]
+        public bool ValidMaxLengthTest(string StringValue, int MaxLength)
+        {
+            return Checker.ValidMaxLength(StringValue, MaxLength);
+        }
+
+        [Test]
+        [TestCase("MINIT_Test", 4, ExpectedResult = true)]
+        [TestCase("MINIT_Test", 12, ExpectedResult = false)]
+        [TestCase("MINIT_Test", 10, ExpectedResult = true)]
+        [TestCase("MINIT_Test", 0, ExpectedResult = true)]
+        [TestCase(null, 10, ExpectedResult = false)]
+        public bool ValidMinLengthTest(string StringValue, int MinLength)
+        {
+            return Checker.ValidMinLength(StringValue, MinLength);
         }
     }
 }

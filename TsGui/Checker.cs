@@ -61,6 +61,12 @@ namespace TsGui
             else { return StringValue; }
         }
 
+        /// <summary>
+        /// Remove invalid characters from a string
+        /// </summary>
+        /// <param name="StringValue"></param>
+        /// <param name="InvalidChars"></param>
+        /// <returns></returns>
         public static string RemoveInvalid (string StringValue, string InvalidChars)
         {
             if (string.IsNullOrEmpty(InvalidChars)) { return StringValue; }
@@ -76,10 +82,20 @@ namespace TsGui
             return newstring;
         }
 
+        /// <summary>
+        /// Find if StringValue contains invalid characters. 
+        /// Returns true if StringValue contains no invalid characters
+        /// Returns false if String value is null, or if contains invalid characters
+        /// </summary>
+        /// <param name="StringValue"></param>
+        /// <param name="InvalidChars"></param>
+        /// <param name="CaseSensitive"></param>
+        /// <returns></returns>
         public static bool ValidCharacters( string StringValue, string InvalidChars, bool CaseSensitive)
         {
+            if (StringValue == null) { return false; }
             if (string.IsNullOrEmpty(InvalidChars)) { return true; }
-
+            
             //Debug.WriteLine("RemoveInvalid called");
             char[] invalidchars = InvalidChars.ToCharArray();
 
@@ -98,18 +114,33 @@ namespace TsGui
             return true;
         }
 
-
+        /// <summary>
+        /// Check if StringValue is too long. If StringValue is null,
+        /// will return false. If MaxLength is zero, will return true.
+        /// </summary>
+        /// <param name="StringValue"></param>
+        /// <param name="MaxLength"></param>
+        /// <returns></returns>
         public static bool ValidMaxLength(string StringValue,int MaxLength)
         {
+            if (StringValue == null) { return false; }
+
             //if max length is 0, maxlength is undefined 
             if (MaxLength == 0 ) { return true; }
             if (StringValue.Length <= MaxLength) { return true; }
             else { return false; }
         }
 
-
+        /// <summary>
+        /// Check if StringValue is too short. Will return false if StringValue
+        /// is null.
+        /// </summary>
+        /// <param name="StringValue"></param>
+        /// <param name="MinLength"></param>
+        /// <returns></returns>
         public static bool ValidMinLength(string StringValue, int MinLength)
         {
+            if (StringValue == null) { return false; }
             //Debug.WriteLine(StringValue.Length);
             if (StringValue.Length >= MinLength) { return true; }
             else { return false; }
