@@ -140,7 +140,10 @@ namespace TsGui
             x = InputXml.Element("DefaultValue");
             if (x != null)
             {
-                this.Value = this._controller.GetValueFromList(x);
+                string s = this._controller.GetEnvVar(this.VariableName);
+                if (!string.IsNullOrEmpty(s)) { this.Value = s; }
+                else { this.Value = this._controller.GetValueFromList(x); }
+
                 //if required, remove invalid characters and truncate
                 if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.Value = Checker.RemoveInvalid(this.Value, this.DisallowedCharacters); }
                 if (this._maxlength > 0) { this.Value = Checker.Truncate(this.Value, this._maxlength); }

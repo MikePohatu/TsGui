@@ -81,7 +81,7 @@ namespace TsGui
 
 
         //get and environmental variable, trying the sccm ts variables first
-        private string GetEnvVar(string VariableName)
+        public string GetEnvVar(string VariableName)
         {
             string s;
 

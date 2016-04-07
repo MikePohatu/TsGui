@@ -308,6 +308,11 @@ namespace TsGui
             return this._envController.GetValueFromList(InputXml);
         }
 
+        public String GetEnvVar(string VariableName)
+        {
+            return this._envController.GetEnvVar(VariableName);
+        }
+
         private void ShowGridLines(bool OnOff)
         {
             //Debug.WriteLine("TestingMode: " + this._prodmode);

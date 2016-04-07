@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Collections.Generic;
 using System.Xml.Linq;
-using System.Text;
 
 namespace TsGui
 {
@@ -16,6 +14,7 @@ namespace TsGui
         /// <returns></returns>
         public static bool ShouldIgnore(XElement InputXml, string Value)
         {
+            if (Value == null) { return true; }
             foreach (XElement xignore in InputXml.Elements("Ignore"))
             {
                 //first check for empty value in the ignore entry i.e. it has been left in 
@@ -49,8 +48,15 @@ namespace TsGui
             return false;
         }
 
+        /// <summary>
+        /// Truncate a string to the specified length
+        /// </summary>
+        /// <param name="StringValue"></param>
+        /// <param name="Length"></param>
+        /// <returns></returns>
         public static string Truncate (string StringValue, int Length)
         {
+            if (StringValue == null ) { return null; }
             if (StringValue.Length > Length) { return StringValue.Substring(0, Length); }
             else { return StringValue; }
         }
