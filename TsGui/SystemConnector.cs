@@ -5,13 +5,14 @@ using System.Diagnostics;
 
 namespace TsGui
 {
-    internal static class SystemConnector
+    public static class SystemConnector
     {
         //check an xml element. check for environmental variable elements
         //return the first one that brings back a value. otherwise, return 
         //the value of the root xml
         public static string GetVariableValue(string Variable)
         {
+            if (Variable == null) { return null; }
             string s;
 
             //try ts env 
