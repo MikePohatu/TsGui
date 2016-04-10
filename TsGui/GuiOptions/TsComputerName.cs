@@ -1,20 +1,20 @@
 ﻿//setup the default values for a computer name i.e.
 //<DefaultValue>
-//	<EnvironmentVariable>
+//	<Query Type=EnvironmentVariable>
 //		<Ignore>MINNT</Ignore>
 //      <Variable>_SMSTSMachineName</Variable>
-//  </EnvironmentVariable>
-//	<EnvironmentVariable>
+//  </Query>
+//	<Query Type=EnvironmentVariable>
 //		<Ignore>MINNT</Ignore>
 //      <Variable>ComputerName</Variable>
-//  </EnvironmentVariable>
-//	<WmiQuery>
+//  </Query>
+//	<Query Type=Wmi>
 //		<Query>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Query>
 //      <Ignore>No Asset Tag</Ignore>
-//	</WmiQuery>
-//	<WmiQuery>
-//		<Query>SELECT SerialNumber FROM Win32_BIOS</Query>
-//	</WmiQuery>
+//	</Query>
+//	<Query Type=Wmi>
+//		<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
+//	</Query>
 //</DefaultValue>
 
 using System;
@@ -40,28 +40,30 @@ namespace TsGui
         {
             if (String.IsNullOrEmpty(SourceXml.Value) == true)
             {
-                
-                XElement x = new XElement("ComputerName");
-                XElement def = new XElement("DefaultValue");
-
-                XElement envvar = new XElement("EnvironmentVariable");
+                XElement envvar = new XElement("Query");
+                envvar.Add(new XAttribute("Type","EnvironmentVariable"));
                 envvar.Add(new XElement("Variable", "_SMSTSMachineName"));
                 envvar.Add(new XElement("Ignore", "MININT"));
                 envvar.Add(new XElement("Ignore", "MINWIN"));
 
-                XElement compName = new XElement("EnvironmentVariable");
+                XElement compName = new XElement("Query");
+                compName.Add(new XAttribute("Type", "EnvironmentVariable"));
                 compName.Add(new XElement("Variable", "computername"));
                 compName.Add(new XElement("Ignore", "MININT"));
                 compName.Add(new XElement("Ignore", "MINWIN"));
 
-                XElement assettag = new XElement("WmiQuery");
+                XElement assettag = new XElement("Query");
+                assettag.Add(new XAttribute("Type", "Wmi"));
                 assettag.Add(new XElement("Query", "SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure"));
                 assettag.Add(new XElement("Ignore", "No Asset Tag"));
 
-                XElement serial = new XElement("WmiQuery");
-                serial.Add(new XElement("Query", "SELECT SerialNumber FROM Win32_BIOS"));
+                XElement serial = new XElement("Query");
+                serial.Add(new XAttribute("Type", "Wmi"));
+                serial.Add(new XElement("Wql", "SELECT SerialNumber FROM Win32_BIOS"));
 
-                
+                XElement x = new XElement("ComputerName");
+                XElement def = new XElement("DefaultValue");
+
                 def.Add(envvar);
                 def.Add(compName);
                 def.Add(assettag);

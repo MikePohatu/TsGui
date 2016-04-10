@@ -1,11 +1,6 @@
-﻿using System;
+﻿using System.Xml.Linq;
 using System.Diagnostics;
-using System.Management;
-using System.Collections.Generic;
-using System.Xml.Linq;
-using System.Linq;
-using System.Text;
-using System.Windows;
+using System;
 
 namespace TsGui
 {
@@ -43,17 +38,35 @@ namespace TsGui
 
 
         //input a list of options as xml. Return the value of the first one that exists. 
+        //return null if nothing is found. 
         public string GetValueFromList(XElement InputXml)
         {
             string s = null;
-            
+            XAttribute xtype;
+
+            Debug.WriteLine(InputXml);
+
             foreach (XElement x in InputXml.Elements())
             {
-                if (x.Name == "EnvironmentVariable")
+                if (string.Equals(x.Name.ToString(), "Query", StringComparison.OrdinalIgnoreCase))
                 {
-                    string variable = x.Element("Variable").Value;
-                    //s = x.Element("Variable").Value;
-                    s = this.GetEnvVar(variable.Trim());
+                    Debug.WriteLine("Query requested");
+                    xtype = x.Attribute("Type");
+                    if (xtype == null) { throw new NullReferenceException("Missing Type attribute XML: " + Environment.NewLine + x); }
+
+                    if (string.Equals(xtype.Value, "EnvironmentVariable", StringComparison.OrdinalIgnoreCase))
+                    {
+                        string variable = x.Element("Variable").Value;
+                        s = this.GetEnvVar(variable.Trim());
+                        
+                    }
+                    else if (string.Equals(xtype.Value, "Wmi", StringComparison.OrdinalIgnoreCase))
+                    {
+                        string wql = x.Element("Wql").Value;
+                        s = SystemConnector.GetWmiString(wql);
+                    }
+
+                    //now check any return value is valid before returning from method. 
                     if (!string.IsNullOrEmpty(s))
                     {
                         //if it shouldn't be ignored, return the value. Otherwise, carry on
@@ -61,20 +74,13 @@ namespace TsGui
                         else { s = null; }
                     }
                 }  
-                else if (x.Name == "WmiQuery")
+                
+                else if (string.Equals(x.Name.ToString(), "Value", StringComparison.OrdinalIgnoreCase))
                 {
-                    string query = x.Element("Query").Value;
-                    s = SystemConnector.GetWmiString(query);
-                    if (s != null )
-                    {
-                        //if it shouldn't be ignored, return the value. Otherwise, carry on
-                        if (Checker.ShouldIgnore(x,s) == false) { return s; }
-                        else { s = null;  }                    
-                    }
-                }             
+                    if (x.Value == null) { return string.Empty; }
+                    else { return x.Value; }
+                }
             }
-
-            s = string.Concat(InputXml.Nodes().OfType<XText>()).Trim();
 
             return s;
         }

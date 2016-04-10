@@ -140,9 +140,21 @@ namespace TsGui
             x = InputXml.Element("DefaultValue");
             if (x != null)
             {
-                string s = this._controller.GetEnvVar(this.VariableName);
-                if (!string.IsNullOrEmpty(s)) { this.Value = s; }
-                else { this.Value = this._controller.GetValueFromList(x); }
+                XAttribute xusecurrent = x.Attribute("UseCurrent");
+                if (xusecurrent != null)
+                {
+                    //default behaviour is to check if the ts variable is already set. If it is, set
+                    //that as the default i.e. add a query for an environment variable to the start
+                    //of the query list. 
+                    if (!string.Equals(xusecurrent.Value,"false",StringComparison.OrdinalIgnoreCase ))
+                    {
+                        XElement xcurrentquery = new XElement("Query", new XElement("Variable", this.VariableName));
+                        xcurrentquery.Add(new XAttribute("Type", "EnvironmentVariable"));
+                        x.AddFirst(xcurrentquery);
+                    }
+                }
+
+                this.Value = this._controller.GetValueFromList(x);
 
                 //if required, remove invalid characters and truncate
                 if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.Value = Checker.RemoveInvalid(this.Value, this.DisallowedCharacters); }

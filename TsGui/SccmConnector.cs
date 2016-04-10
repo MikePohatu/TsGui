@@ -11,7 +11,8 @@ namespace TsGui
         public SccmConnector()
         {
             //hidden = false;
-            objTSEnv = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TSEnvironment"));           
+            objTSEnv = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TSEnvironment"));
+            objTSProgUI = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TsProgressUI"));
         }
 
         public void AddVariable(TsVariable Variable)
@@ -20,8 +21,7 @@ namespace TsGui
         }
 
         public void Hide()
-        {
-            objTSProgUI = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TsProgressUI"));
+        {           
             objTSProgUI.CloseProgressDialog();
             //this.hidden = true;
         }

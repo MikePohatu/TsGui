@@ -54,7 +54,22 @@ namespace TsGui
 
             x = InputXml.Element("DefaultValue");
             if (x != null)
-            { this._value = x.Value; }
+            {
+                IEnumerable<XElement> defx = x.Elements();
+                foreach (XElement xdefoption in defx)
+                {
+                    if (xdefoption.Name == "Value")
+                    {
+                        this._value = xdefoption.Value;
+                        break;
+                    }
+                    else if (xdefoption.Name == "Query")
+                    {
+
+                    }
+                }
+                
+            }
 
             //now read in the options and add to a dictionary for later use
             optionsXml = InputXml.Elements("Option");        
