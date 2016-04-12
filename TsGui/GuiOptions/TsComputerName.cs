@@ -40,6 +40,12 @@ namespace TsGui
         {
             if (String.IsNullOrEmpty(SourceXml.Value) == true)
             {
+                XElement osdvar = new XElement("Query");
+                osdvar.Add(new XAttribute("Type", "EnvironmentVariable"));
+                osdvar.Add(new XElement("Variable", "OSDComputerName"));
+                osdvar.Add(new XElement("Ignore", "MININT"));
+                osdvar.Add(new XElement("Ignore", "MINWIN"));
+
                 XElement envvar = new XElement("Query");
                 envvar.Add(new XAttribute("Type","EnvironmentVariable"));
                 envvar.Add(new XElement("Variable", "_SMSTSMachineName"));
@@ -64,6 +70,8 @@ namespace TsGui
                 XElement x = new XElement("ComputerName");
                 XElement def = new XElement("DefaultValue");
 
+                def.Add(new XAttribute("UseCurrent", "False"));
+                def.Add(osdvar);
                 def.Add(envvar);
                 def.Add(compName);
                 def.Add(assettag);

@@ -29,7 +29,7 @@ namespace TsGui
             InitializeComponent();
             this._controller = new MainController(this);
             this.WrapperGrid.DataContext = this._controller;
-            //Init.Startup(this);
+            this.Activate();
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)

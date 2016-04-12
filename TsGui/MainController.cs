@@ -44,16 +44,26 @@ namespace TsGui
             this.ParentWindow = ParentWindow;
             //this.ParentWindow.HeadingStack.DataContext = this;
             string exefolder = AppDomain.CurrentDomain.BaseDirectory;
-            this._configpath = exefolder + @"Config.xml";                    
-            this.Startup();
+            this._configpath = exefolder + @"Config.xml";
+            this.Init();          
         }
 
         public MainController(MainWindow ParentWindow, string ConfigPath)
         {
-
             this.ParentWindow = ParentWindow;
             this._configpath = ConfigPath;
-            this.Startup();
+            this.Init();          
+        }
+
+        private void Init()
+        {
+            try { this.Startup(); }
+            catch (Exception exc)
+            {
+                string msg = "Error message: " + exc.Message + Environment.NewLine + exc.ToString();
+                MessageBox.Show(msg, "Application Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.ParentWindow.Close();
+            }
         }
 
         public void Startup()
