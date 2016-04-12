@@ -62,6 +62,7 @@ namespace TsGui
             {
                 string msg = "Error message: " + exc.Message + Environment.NewLine + exc.ToString();
                 MessageBox.Show(msg, "Application Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.ParentWindow.Closing -= this.OnWindowClosing;
                 this.ParentWindow.Close();
             }
         }
