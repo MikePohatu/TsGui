@@ -55,6 +55,8 @@ namespace TsGui
             this.Init();          
         }
 
+        //Wrap a generic exception handler to get some useful information in the event of a 
+        //crash. 
         private void Init()
         {
             try { this.Startup(); }

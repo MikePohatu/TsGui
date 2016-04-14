@@ -9,7 +9,7 @@
 //      <Variable>ComputerName</Variable>
 //  </Query>
 //	<Query Type=Wmi>
-//		<Query>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Query>
+//		<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
 //      <Ignore>No Asset Tag</Ignore>
 //	</Query>
 //	<Query Type=Wmi>
@@ -60,7 +60,7 @@ namespace TsGui
 
                 XElement assettag = new XElement("Query");
                 assettag.Add(new XAttribute("Type", "Wmi"));
-                assettag.Add(new XElement("Query", "SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure"));
+                assettag.Add(new XElement("Wql", "SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure"));
                 assettag.Add(new XElement("Ignore", "No Asset Tag"));
 
                 XElement serial = new XElement("Query");

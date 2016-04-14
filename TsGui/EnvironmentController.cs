@@ -63,7 +63,10 @@ namespace TsGui
                     else if (string.Equals(xtype.Value, "Wmi", StringComparison.OrdinalIgnoreCase))
                     {
                         string wql = x.Element("Wql").Value;
-                        s = SystemConnector.GetWmiString(wql);
+                        if (!string.IsNullOrEmpty(wql))
+                        { s = SystemConnector.GetWmiString(wql); }
+                        else { throw new InvalidOperationException("Invalid config file. Missing Wql from WMI query"); }
+                        
                     }
 
                     //now check any return value is valid before returning from method. 
