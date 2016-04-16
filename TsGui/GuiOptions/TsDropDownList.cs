@@ -20,7 +20,7 @@ namespace TsGui
             base._control = this._control;
 
             this._padding = new Thickness(6, 3, 5, 3);
-            this._height = 25;
+            //this._height = 25;
             this._control.DisplayMemberPath = "Key";
             this._control.SelectedValuePath = "Value";
             this._control.Height = this.Height;

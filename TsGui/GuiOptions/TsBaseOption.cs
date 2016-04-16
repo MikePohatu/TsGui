@@ -83,6 +83,16 @@ namespace TsGui
         //Setup the INotifyPropertyChanged interface 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // OnPropertyChanged method to raise the event
+        protected void OnPropertyChanged(object sender, string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(sender, new PropertyChangedEventArgs(name));
+            }
+        }
+
         //constructor
         protected TsBaseOption()
         {
@@ -95,17 +105,13 @@ namespace TsGui
             this._labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
             this._labelpadding = new Thickness(5, 0, 0, 0);
             this._labelcontrol.Padding = this._labelpadding;
+
+            //Set defaults
+            this.Height = 15;
+            this._labelcontrol.HorizontalAlignment = HorizontalAlignment.Left;
         }
 
-        // OnPropertyChanged method to raise the event
-        protected void OnPropertyChanged(object sender, string name)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(sender, new PropertyChangedEventArgs(name));
-            }
-        }
+        
 
         protected void LoadBaseXml(XElement InputXml)
         {

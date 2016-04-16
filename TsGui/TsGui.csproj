@@ -72,25 +72,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Checker.cs" />
-    <Compile Include="EnvironmentController.cs" />
-    <Compile Include="GuiFactory.cs" />
+    <Compile Include="Control\Checker.cs" />
+    <Compile Include="Control\EnvironmentController.cs" />
+    <Compile Include="Control\GuiFactory.cs" />
     <Compile Include="GuiOptions\TsBaseOption.cs" />
-    <Compile Include="HardwareEvaluator.cs" />
-    <Compile Include="IEditableGuiOption.cs" />
-    <Compile Include="ITsVariableOutput.cs" />
-    <Compile Include="OptionLibrary.cs" />
-    <Compile Include="SccmConnector.cs" />
-    <Compile Include="SystemConnector.cs" />
-    <Compile Include="TestingConnector.cs" />
+    <Compile Include="Control\HardwareEvaluator.cs" />
+    <Compile Include="GuiOptions\IEditableGuiOption.cs" />
+    <Compile Include="Control\ITsVariableOutput.cs" />
+    <Compile Include="PageLayout\PageLayout.xaml.cs">
+      <DependentUpon>PageLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\OptionLibrary.cs" />
+    <Compile Include="Control\SccmConnector.cs" />
+    <Compile Include="Control\SystemConnector.cs" />
+    <Compile Include="Control\TestingConnector.cs" />
     <Compile Include="GuiOptions\TsComputerName.cs" />
     <Compile Include="GuiOptions\TsHeading.cs" />
     <Compile Include="GuiOptions\TsDropDownList.cs" />
     <Compile Include="GuiOptions\TsCheckBox.cs" />
     <Compile Include="GuiOptions\TsFreeText.cs" />
-    <Compile Include="TsVariable.cs" />
-    <Compile Include="TsWindowAlerts.cs" />
-    <Compile Include="XmlHandler.cs" />
+    <Compile Include="Control\TsVariable.cs" />
+    <Compile Include="Control\TsWindowAlerts.cs" />
+    <Compile Include="Control\XmlHandler.cs" />
+    <Page Include="PageLayout\PageLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -100,16 +107,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainController.cs" />
-    <Compile Include="PageLayout\Column.cs" />
+    <Compile Include="PageLayout\TsColumn.cs" />
     <Compile Include="GuiOptions\IGuiOption.cs" />
-    <Compile Include="ITsGuiElement.cs" />
+    <Compile Include="GuiOptions\ITsGuiElement.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PageLayout\Page.cs" />
+    <Compile Include="PageLayout\TsPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

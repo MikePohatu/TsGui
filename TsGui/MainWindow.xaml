@@ -5,36 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TsGui"
         mc:Ignorable="d"
-        Title="Task Sequence Gui" Height="300" Width="400"
+        Title="{Binding HeadingTitle}" Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}"
         WindowStartupLocation="Manual" 
         Left="40" Top="40" WindowStyle="None"
         MouseLeftButtonDown="windowDrag">
-
-    <Grid x:Name="WrapperGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name ="HeadingRow" Height="{Binding HeadingHeight}"/>
-            <RowDefinition x:Name ="MainRow" Height="100*"/>
-            <RowDefinition x:Name="ButtonRow" Height="50" />
-        </Grid.RowDefinitions>
-        <Grid x:Name="HeadingGrid" Grid.Row="0" Background="#FF006AD4" >
-            <StackPanel x:Name="HeadingStack" Margin="10,5,10,10" >
-                <TextBlock x:Name="HeadingTitle" Text="{Binding HeadingTitle}" Foreground="White" FontFamily="Segoe UI Semibold" FontSize="13.333" />
-                <TextBlock x:Name="HeadingText" Text="{Binding HeadingText}" Foreground="White" />
-            </StackPanel>
-        </Grid>
-        <Grid x:Name="MainGrid" Grid.Row="1" Margin="10,5,10,5"></Grid>
-        <Grid Grid.Row="2" Background="#FFF3F2F2">
-            <Grid x:Name="ButtonGrid" Margin="10,10,10,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="75*"></ColumnDefinition>
-                    <ColumnDefinition Width="80"></ColumnDefinition>
-                    <ColumnDefinition Width="80"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="buttonNext" Content="Next" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Width="75" Height="30" Click="buttonNext_Click"/>
-                <Button x:Name="buttonFinish" Content="Finish" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Width="75" Height="30" Click="buttonFinish_Click" Visibility="Hidden"/>
-                <Button x:Name="buttonPrev" IsEnabled="False" Visibility="Hidden" Content="Back" HorizontalAlignment="Left" Margin="0,0,5,0" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="75" Height="30" Click="buttonPrev_Click"/>
-                <Button x:Name="buttonCancel" Content="Cancel" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Width="75" Height="30" Click="buttonCancel_Click"/>
-            </Grid>
-        </Grid>
-    </Grid>
+    <Frame Name="ContentArea" NavigationUIVisibility="Hidden">
+        
+    </Frame>
 </Window>

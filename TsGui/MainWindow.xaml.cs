@@ -24,32 +24,10 @@ namespace TsGui
         private MainController _controller;
 
         public MainWindow()
-        {
-            
+        {            
             InitializeComponent();
             this._controller = new MainController(this);
-            this.WrapperGrid.DataContext = this._controller;
-            this.Activate();
-        }
-
-        private void buttonCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this._controller.Cancel();
-        }
-
-        private void buttonPrev_Click(object sender, RoutedEventArgs e)
-        {
-            this._controller.MovePrevious();
-        }
-
-        private void buttonNext_Click(object sender, RoutedEventArgs e)
-        {
-            this._controller.MoveNext();
-        }
-
-        private void buttonFinish_Click(object sender, RoutedEventArgs e)
-        {
-            this._controller.Finish();
+            
         }
 
         private void windowDrag(object sender, MouseButtonEventArgs e)

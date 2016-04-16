@@ -1,4 +1,6 @@
-﻿namespace TsGui
+﻿
+
+namespace TsGui
 {
     public interface IEditableGuiOption
     {

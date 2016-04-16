@@ -20,7 +20,7 @@ namespace TsGui
             this._hAlignment = HorizontalAlignment.Left;
             //this._labelcontrol = new Label();
             this._margin = new Thickness(0, 0, 0, 0);
-            this.Height = 15;
+            //this.Height = 15;
             this._padding = new Thickness(5, 0, 0, 0);           
             this._valTrue = "TRUE";
             this._valFalse = "FALSE";
@@ -70,7 +70,7 @@ namespace TsGui
         private void Build()
         {          
             this._control.VerticalAlignment = VerticalAlignment.Center;
-            this._control.HorizontalAlignment = _hAlignment;
+            this._control.HorizontalAlignment = this._hAlignment;
             //this._labelcontrol.Padding = this._padding;
             //this._labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;         
         }

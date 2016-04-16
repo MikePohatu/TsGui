@@ -100,9 +100,9 @@ namespace TsGui
 
             //setup the bindings
             this._control.DataContext = this;
-            this._labelcontrol.DataContext = this;
-            this._labelcontrol.SetBinding(Label.ContentProperty, new Binding("LabelText"));
-            this._labelcontrol.SetBinding(Label.HeightProperty, new Binding("Height"));
+            //this._labelcontrol.DataContext = this;
+            //this._labelcontrol.SetBinding(Label.ContentProperty, new Binding("LabelText"));
+            //this._labelcontrol.SetBinding(Label.HeightProperty, new Binding("Height"));
 
             this._control.SetBinding(TextBox.MaxLengthProperty, new Binding("MaxLength"));
             this._control.SetBinding(TextBox.HeightProperty, new Binding("Height"));

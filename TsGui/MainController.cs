@@ -14,6 +14,8 @@ namespace TsGui
 {
     public class MainController
     {
+        private int _height;        //default page height for the window
+        private int _width;         //default page width for the window
         private string _headingTitle;
         private string _headingText;
         private int _headingHeight;
@@ -22,8 +24,9 @@ namespace TsGui
         private int _pageHeight;
         private Thickness _pageMargin = new Thickness(0,0,0,0);
         private bool _prodmode = false;
+        private bool _finished = false;
         private XmlHandler _handler = new XmlHandler();
-        private List<Page> _pages = new List<Page>();
+        private List<TsPage> _pages = new List<TsPage>();
         //private List<IGuiOption> _options = new List<IGuiOption>();
         private EnvironmentController _envController = new EnvironmentController();
         private OptionLibrary _optionlibrary = new OptionLibrary();
@@ -35,14 +38,14 @@ namespace TsGui
         public int HeadingHeight { get { return this._headingHeight; } }
 
         public MainWindow ParentWindow { get; set; }
-        public Page CurrentPage { get; set; }
-        
+        public TsPage CurrentPage { get; set; }
+
 
         //constructors
         public MainController(MainWindow ParentWindow)
         {
             this.ParentWindow = ParentWindow;
-            //this.ParentWindow.HeadingStack.DataContext = this;
+            this.ParentWindow.DataContext = this;
             string exefolder = AppDomain.CurrentDomain.BaseDirectory;
             this._configpath = exefolder + @"Config.xml";
             this.Init();          
@@ -65,13 +68,15 @@ namespace TsGui
                 string msg = "Error message: " + exc.Message + Environment.NewLine + exc.ToString();
                 MessageBox.Show(msg, "Application Exception", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.ParentWindow.Closing -= this.OnWindowClosing;
-                this.ParentWindow.Close();
+                //this.CurrentPage.Window.Close();
             }
         }
 
         public void Startup()
         {
             //set default values
+            this._width = 300;
+            this._height = 300;
             this._headingHeight = 50;
 
             this._prodmode = this._envController.Init();
@@ -90,15 +95,14 @@ namespace TsGui
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
 
+            this.LoadXml(x);
+
+            //subscribe to closing event
             this.ParentWindow.Closing += this.OnWindowClosing;
 
-            this.LoadXml(x);
-            //this.PopulateOptions();
-
             //now show the first page in the list
-            Page firstpage = this._pages.First();
-            this.CurrentPage = firstpage;
-            this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
+            this.CurrentPage = this._pages.First();
+            this.UpdateWindow();
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
@@ -131,8 +135,8 @@ namespace TsGui
         {
             
             XElement x;
-            Page currPage = null;
-            Page prevPage = null;
+            TsPage currPage = null;
+            TsPage prevPage = null;
 
             IEnumerable<XElement> pagesXml;
 
@@ -158,11 +162,11 @@ namespace TsGui
                  
                 x = SourceXml.Element("Width");
                 if (x != null)
-                { this._pageWidth = Convert.ToInt32(x.Value); }
+                { this._width = Convert.ToInt32(x.Value); }
 
                 x = SourceXml.Element("Height");
                 if (x != null)
-                { this._pageHeight = Convert.ToInt32(x.Value); }
+                { this._height = Convert.ToInt32(x.Value); }
 
                 
 
@@ -179,14 +183,14 @@ namespace TsGui
                         //Debug.WriteLine("creating new page");
                         if (currPage == null)
                         {
-                            currPage = new Page(xPage, this._pageHeight, this._pageWidth, this._pageMargin,this);
+                            currPage = new TsPage(xPage, this._headingTitle, this._headingText, this._height, this._width, this._pageMargin,this);
                             currPage.IsFirst = true;
                         }
                         else
                         {
                             //record the last page as the prevPage
                             prevPage = currPage;
-                            currPage = new Page(xPage, this._pageHeight, this._pageWidth, this._pageMargin,this);
+                            currPage = new TsPage(xPage, this._headingTitle, this._headingText, this._height, this._width, this._pageMargin,this);
                         }
 
                         //create the new page and assign the next page/prev page links
@@ -198,22 +202,12 @@ namespace TsGui
                     }
 
                     currPage.IsLast = true;
-
-                    //if currPage is still the first page, this is a single page tsgui. 
-                    //turn the next button into the finish button
-                    if (currPage.IsFirst == true)
-                    {
-                        this.ParentWindow.buttonNext.Visibility = Visibility.Hidden;
-                        this.ParentWindow.buttonFinish.Visibility = Visibility.Visible;
-                    }
-
                 }
 
                 x = SourceXml.Element("ShowGridLines");
                 if (x != null)
                 { this.ShowGridLines(true); }
             }
-            
         }
 
         //add options from sub classes to the main library. used to generate the final list of 
@@ -226,93 +220,59 @@ namespace TsGui
         //move to the next page and update the next/prev/finish buttons
         public void MoveNext()
         {
-            if (this.CurrentPage.OptionsValid() == true)
-            {
-                this.ParentWindow.MainGrid.Children.Remove(this.CurrentPage.Panel);
-                this.CurrentPage = this.CurrentPage.NextPage;
-                this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
-                this.SetButtons();
-            }           
+            this.CurrentPage = this.CurrentPage.NextPage;
+            this.UpdateWindow();
         }
 
 
         //move to the previous page and update the next/prev/finish buttons
         public void MovePrevious()
         {
-            if (this.CurrentPage.OptionsValid() == true)
-            {
-                this.ParentWindow.MainGrid.Children.Remove(this.CurrentPage.Panel);
-                this.CurrentPage = this.CurrentPage.PreviousPage;
-                this.ParentWindow.MainGrid.Children.Add(this.CurrentPage.Panel);
-                this.SetButtons();
-            }        
+            this.CurrentPage = this.CurrentPage.PreviousPage;
+            this.UpdateWindow();
         }
-
-
-        public void SetButtons()
+        
+        private void UpdateWindow()
         {
-            if (this.CurrentPage.IsLast == true)
-            {
-                this.ParentWindow.buttonNext.Visibility = Visibility.Hidden;
-                this.ParentWindow.buttonFinish.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                this.ParentWindow.buttonNext.Visibility = Visibility.Visible;
-                this.ParentWindow.buttonFinish.Visibility = Visibility.Hidden;
-            }
-
-
-            if (this.CurrentPage.IsFirst == true)
-            {
-                this.ParentWindow.buttonPrev.Visibility = Visibility.Hidden;
-                this.ParentWindow.buttonPrev.IsEnabled = false;
-            }
-            else
-            {
-                this.ParentWindow.buttonPrev.Visibility = Visibility.Visible;
-                this.ParentWindow.buttonPrev.IsEnabled = true;
-            }
+            this.ParentWindow.ContentArea.Navigate(this.CurrentPage.Page);
+            this.ParentWindow.DataContext = this.CurrentPage;
         }
-
 
         public void Finish()
         {
-            if (this.CurrentPage.OptionsValid() == true)
+            foreach (IGuiOption option in this._optionlibrary.Options)
             {
-                foreach (IGuiOption option in this._optionlibrary.Options)
+
+                if (option.Variable != null)
                 {
-
-                    if (option.Variable != null)
-                    {
-                        //Debug.WriteLine(option.Variable.Name + ": " + option.Variable.Value);
-                        this._envController.AddVariable(option.Variable);
-                    }
-
+                    //Debug.WriteLine(option.Variable.Name + ": " + option.Variable.Value);
+                    this._envController.AddVariable(option.Variable);
                 }
 
-                if (this._chassischeck != null)
-                {
-                    foreach (TsVariable var in this._chassischeck.GetTsVariables)
-                    {
-                        //Debug.WriteLine(var.Name + ": " + var.Value);
-                        this._envController.AddVariable(var);
-                    }
-                }
-
-                this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE"));
-                this.ParentWindow.Close();
             }
+
+            if (this._chassischeck != null)
+            {
+                foreach (TsVariable var in this._chassischeck.GetTsVariables)
+                {
+                    //Debug.WriteLine(var.Name + ": " + var.Value);
+                    this._envController.AddVariable(var);
+                }
+            }
+
+            this._finished = true;
+            this.ParentWindow.Close();
         }
 
         public void Cancel()
         {
-            this._envController.AddVariable(new TsVariable("TsGui_Cancel", "TRUE"));
             this.ParentWindow.Close();
         }
 
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
+            if (_finished) { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE")); }
+            else { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "TRUE")); }
             this._envController.Release();
         }
 
@@ -331,11 +291,11 @@ namespace TsGui
             //Debug.WriteLine("TestingMode: " + this._prodmode);
             if (this._prodmode != true)
             {
-                this.ParentWindow.WrapperGrid.ShowGridLines = OnOff;
-                this.ParentWindow.HeadingGrid.ShowGridLines = OnOff;
-                this.ParentWindow.ButtonGrid.ShowGridLines = OnOff;
+                //this.ParentWindow.WrapperGrid.ShowGridLines = OnOff;
+                //this.ParentWindow.HeadingGrid.ShowGridLines = OnOff;
+                //this.ParentWindow.ButtonGrid.ShowGridLines = OnOff;
 
-                foreach (Page page in this._pages)
+                foreach (TsPage page in this._pages)
                 { page.ShowGridlines = OnOff; }
             }
         }

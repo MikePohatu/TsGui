@@ -1,5 +1,4 @@
-﻿using System;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
 
@@ -13,12 +12,13 @@ namespace TsGui
         //private Thickness padding = new Thickness(0, 0, 0, 0);
         //private Label labelcontrol;
         new private Label _control;
-        private bool bold;
+        private bool _bold;
 
-        public TsHeading(XElement SourceXml)
+        public TsHeading(XElement SourceXml): base()
         {
             this._control = new Label();
             base._control = this._control;
+            
             this.LoadXml(SourceXml);
             this.Build();
         }
@@ -33,44 +33,22 @@ namespace TsGui
             #region
             XElement x;
             this.LoadBaseXml(InputXml);
-            //x = InputXml.Element("Variable");
-            //if (x != null)
-            //{ this.VariableName = x.Value; }
-
-            //x = InputXml.Element("Label");
-            //if (x != null)
-            //{ this._labeltext = x.Value; }
-
-            //x = InputXml.Element("Height");
-            //if (x != null)
-            //{ this._height = Convert.ToInt32(x.Value); }
 
             x = InputXml.Element("Bold");
             if (x != null)
-            { this.bold = true; }
+            { this._bold = true; }
 
-            //x = InputXml.Element("Padding");
-            //if (x != null)
-            //{
-            //    int padInt = Convert.ToInt32(x.Value);
-            //    this._padding = new System.Windows.Thickness(padInt, padInt, padInt, padInt);
-            //}
             #endregion
         }
 
         private void Build()
         {
-            this._control = new Label();
+            //this._control = new Label();
             this._control.Content = "";
-            this._control.Padding = this._padding;
-            this._control.VerticalAlignment = VerticalAlignment.Center;
-
-            this._labelcontrol = new Label();
-            this._labelcontrol.Height = this._height;
-            this._labelcontrol.Content = this._value;
-            this._labelcontrol.Height = this._height;
-            this._labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
-            if (this.bold) { this._labelcontrol.FontWeight = FontWeights.Bold; }
+            //this._control.Padding = this._padding;
+            //this._control.VerticalAlignment = VerticalAlignment.Center;
+            ;
+            if (this._bold) { this._labelcontrol.FontWeight = FontWeights.Bold; }
         }
     }
 }
