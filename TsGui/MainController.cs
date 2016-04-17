@@ -165,8 +165,6 @@ namespace TsGui
                 if (x != null)
                 { this._height = Convert.ToInt32(x.Value); }
 
-                
-
                 GuiFactory.LoadMargins(SourceXml, this._pageMargin);
 
                 //now read in the options and add to a dictionary for later use
@@ -201,6 +199,7 @@ namespace TsGui
                     currPage.IsLast = true;
                 }
 
+                //Set show grid lines after pages and columns have been created.
                 x = SourceXml.Element("ShowGridLines");
                 if (x != null)
                 { this.ShowGridLines(true); }
@@ -284,13 +283,13 @@ namespace TsGui
             return this._envController.GetEnvVar(VariableName);
         }
 
-        private void ShowGridLines(bool Enabled)
+        private void ShowGridLines(bool IsEnabled)
         {
             //Debug.WriteLine("TestingMode: " + this._prodmode);
             if (this._prodmode != true)
             {
                 foreach (TsPage page in this._pages)
-                { page.ShowGridlines = Enabled; }
+                { page.ShowGridLines = IsEnabled; }
             }
         }
 

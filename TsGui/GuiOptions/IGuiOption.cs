@@ -11,6 +11,7 @@ namespace TsGui
         Label Label { get; }
         Control Control { get; }
         int Height { get; }
+        //DataGridLength 
         //string HelpText { get; set; }
     }
 }

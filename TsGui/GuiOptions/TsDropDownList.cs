@@ -10,24 +10,23 @@ namespace TsGui
 {
     public class TsDropDownList: TsBaseOption, IGuiOption, INotifyPropertyChanged
     {
-        new private ComboBox _control;
+        new private ComboBoxEx _control;
         
         //dictionary in format text description,value
         private Dictionary<string, string> _options = new Dictionary<string,string>();
 
         public TsDropDownList(XElement InputXml): base()
         {
-            this._control = new ComboBox();
+            this._control = new ComboBoxEx();
             base._control = this._control;
 
             this._control.DataContext = this;
             this._control.SetBinding(ComboBox.HeightProperty, new Binding("Height"));
 
+            //this._control.
             this._padding = new Thickness(6, 3, 5, 3);
             this._control.DisplayMemberPath = "Key";
             this._control.SelectedValuePath = "Value";
-            //this._control.Height = this.Height;
-            //this._control.Padding = new Thickness(0, 0, 0, 0);
 
             this.LoadXml(InputXml);
             this.Height = 25;
@@ -100,6 +99,7 @@ namespace TsGui
             {
                 //Debug.WriteLine(entry.Value);
                 this._control.Items.Add(entry);
+
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list
                 if ((entry.Value == this._value) || (index == 0))

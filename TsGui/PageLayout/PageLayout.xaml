@@ -9,21 +9,21 @@
       d:DesignHeight="300" d:DesignWidth="300"
       Title="PageLayout">
 
-    <Grid x:Name="WrapperGrid">
+    <Grid x:Name="WrapperGrid" ShowGridLines="{Binding ShowGridLines}">
         <Grid.RowDefinitions>
             <RowDefinition x:Name ="HeadingRow" Height="50"/>
             <RowDefinition x:Name ="MainRow" Height="100*"/>
             <RowDefinition x:Name="ButtonRow" Height="50" />
         </Grid.RowDefinitions>
-        <Grid x:Name="HeadingGrid" Grid.Row="0" Background="#FF006AD4"  >
+        <Grid x:Name="HeadingGrid" Grid.Row="0" Background="#FF006AD4" ShowGridLines="{Binding ShowGridLines}" >
             <StackPanel x:Name="HeadingStack" Margin="10,5,10,10" >
                 <TextBlock x:Name="HeadingTitle" Text="{Binding HeadingTitle}" Foreground="White" FontFamily="Segoe UI Semibold" FontSize="13.333" />
                 <TextBlock x:Name="HeadingText" Text="{Binding HeadingText}" Foreground="White" />
             </StackPanel>
         </Grid>
-        <Grid x:Name="MainGrid" Grid.Row="1" Margin="10,5,10,5"></Grid>
-        <Grid Grid.Row="2" Background="#FFF3F2F2">
-            <Grid x:Name="ButtonGrid" Margin="10,10,10,10">
+        <Grid x:Name="MainGrid" Grid.Row="1" Margin="10,5,10,5" ShowGridLines="{Binding ShowGridLines}"></Grid>
+        <Grid Grid.Row="2" Background="#FFF3F2F2" ShowGridLines="{Binding ShowGridLines}">
+            <Grid x:Name="ButtonGrid" Margin="10,10,10,10" ShowGridLines="{Binding ShowGridLines}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*"></ColumnDefinition>
                     <ColumnDefinition Width="80"></ColumnDefinition>

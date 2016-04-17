@@ -25,7 +25,6 @@ namespace TsGui
         private PageLayout _pagelayout;
         private TsPage _previouspage;
         private TsPage _nextpage;
-        //private PageWindow _window;
 
         private bool _islast = false;
         private bool _isfirst = false;
@@ -33,7 +32,6 @@ namespace TsGui
 
         //Properties
         #region
-        //public PageLayout Window { get; set; }
         public double Width
         {
             get { return this._width; }
@@ -79,12 +77,13 @@ namespace TsGui
                 this.OnPropertyChanged(this, "HeadingHeight");
             }
         }
-        public bool ShowGridlines
+        public bool ShowGridLines
         {
             get { return this._gridlines; }
             set
             {
                 this._gridlines = value;
+                this.OnPropertyChanged(this, "ShowGridLines");
                 foreach (TsColumn c in this._columns) { c.ShowGridLines = value; }
             }
         }
@@ -148,9 +147,9 @@ namespace TsGui
             this.HeadingHeight = 40;
             this.HeadingTitle = HeadingTitle;
             this.HeadingText = HeadingText;
-            //this._pagepanel = new Grid();
 
             this._pagelayout.DataContext = this;
+            //this._pagepanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridlines"));
 
             this.LoadXml(SourceXml);
             this.Build();
@@ -207,9 +206,6 @@ namespace TsGui
 
             this._pagepanel.VerticalAlignment = VerticalAlignment.Top;
             this._pagepanel.HorizontalAlignment = HorizontalAlignment.Left;
-            //create a last row for the buttons
-            RowDefinition colrowdef = new RowDefinition();
-            this._pagepanel.RowDefinitions.Add(colrowdef);
 
             foreach (TsColumn col in this._columns)
             {
@@ -252,9 +248,7 @@ namespace TsGui
                     Debug.WriteLine("invalid option found");
                     return false;
                 }
-
             }
-
             return true;
         }
 

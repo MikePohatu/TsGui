@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
+using System.Diagnostics;
 using System;
 
 namespace TsGui
@@ -21,15 +22,6 @@ namespace TsGui
         private ColumnDefinition _coldefControls;
         private ColumnDefinition _coldefLabels;
 
-        public bool ShowGridLines
-        {
-            get { return this._gridlines; }
-            set
-            {
-                this._columnpanel.ShowGridLines = value;
-                this._gridlines = value;
-            }
-        }
         public GridLength LabelWidth
         {
             get { return this._labelwidth; }
@@ -57,6 +49,15 @@ namespace TsGui
                 this.OnPropertyChanged(this, "Width");
             }
         }
+        public bool ShowGridLines
+        {
+            get { return this._gridlines; }
+            set
+            {
+                this._gridlines = value;
+                this.OnPropertyChanged(this, "ShowGridLines");
+            }
+        }
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this.options; } }
         public Panel Panel { get { return this._columnpanel; } }
@@ -68,17 +69,19 @@ namespace TsGui
             this._controller = RootController;
             this.Index = PageIndex;
             
-            this._columnpanel = new Grid();
+            this._columnpanel = new Grid();          
+
             this._coldefControls = new ColumnDefinition();
             this._coldefLabels = new ColumnDefinition();
 
             this._columnpanel.DataContext = this;
+            this._columnpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
+
             this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
             this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
             this._coldefControls.SetBinding(ColumnDefinition.WidthProperty, new Binding("ControlWidth"));
 
             //Set defaults
-            this._gridlines = false;
             this._columnpanel.VerticalAlignment = VerticalAlignment.Top;
 
             this._columnpanel.ColumnDefinitions.Add(this._coldefLabels);
@@ -89,6 +92,7 @@ namespace TsGui
         }
 
         //Setup the INotifyPropertyChanged interface 
+        #region
         public event PropertyChangedEventHandler PropertyChanged;
 
         // OnPropertyChanged method to raise the event
@@ -100,6 +104,7 @@ namespace TsGui
                 handler(sender, new PropertyChangedEventArgs(name));
             }
         }
+        #endregion
 
         private void LoadXml(XElement InputXml)
         {
@@ -138,6 +143,7 @@ namespace TsGui
         public void Build()
         {
             int rowindex = 0;
+            double width =0;
 
             foreach (IGuiOption option in this.options)
             {
@@ -155,9 +161,18 @@ namespace TsGui
 
                 this._columnpanel.Children.Add(option.Label);
                 this._columnpanel.Children.Add(option.Control);
-                
+
+                Debug.WriteLine("Control width (" + option.Label.Content + "): " + width);
+                if (width < option.Control.Width)
+                {                   
+                    width = option.Control.Width;
+                }
+
                 rowindex++;
             }
+
+            Debug.WriteLine("Column width: " + width);
+            //this._coldefControls.Width = new GridLength(width);
         }
     }
 }
