@@ -12,9 +12,9 @@ namespace TsGui
     public class TsPage: ITsGuiElement, INotifyPropertyChanged
     {
         private MainController _controller;
-        private int _height;
-        private int _width;
-        private int _headingHeight;
+        private double _height;
+        private double _width;
+        private double _headingHeight;
         private string _headingTitle;
         private string _headingText;
         private Thickness _margin = new Thickness(0, 0, 0, 0);
@@ -34,7 +34,7 @@ namespace TsGui
         //Properties
         #region
         //public PageLayout Window { get; set; }
-        public int Width
+        public double Width
         {
             get { return this._width; }
             set
@@ -43,7 +43,7 @@ namespace TsGui
                 this.OnPropertyChanged(this, "Width");
             }
         }
-        public int Height
+        public double Height
         {
             get { return this._height; }
             set
@@ -70,7 +70,7 @@ namespace TsGui
                 this.OnPropertyChanged(this, "HeadingText");
             }
         }
-        public int HeadingHeight
+        public double HeadingHeight
         {
             get { return this._headingHeight; }
             set
@@ -135,7 +135,7 @@ namespace TsGui
         }
 
         //Constructors
-        public TsPage(XElement SourceXml, string HeadingTitle, string HeadingText, int Height,int Width,Thickness Margin,MainController RootController)
+        public TsPage(XElement SourceXml, string HeadingTitle, string HeadingText, double Height,double Width,Thickness Margin,MainController RootController)
         {
             Debug.WriteLine("New page constructor");
             //Debug.WriteLine(SourceXml);
@@ -151,8 +151,6 @@ namespace TsGui
             //this._pagepanel = new Grid();
 
             this._pagelayout.DataContext = this;
-            //this._window.SetBinding(Grid.HeightProperty, new Binding("Height"));
-            //this._window.SetBinding(Grid.HeightProperty, new Binding("Width"));
 
             this.LoadXml(SourceXml);
             this.Build();
@@ -176,6 +174,19 @@ namespace TsGui
                     this._columns.Add(c);
                     colIndex++;
                 }
+            }
+
+            XElement headingX = InputXml.Element("Heading");
+            if (headingX != null)
+            {
+                x = headingX.Element("Title");
+                if (x != null) { this._headingTitle = x.Value; }
+
+                x = headingX.Element("Text");
+                if (x != null) { this._headingText = x.Value; }
+
+                x = headingX.Element("Height");
+                if (x != null) { this._headingHeight = Convert.ToInt32(x.Value); }
             }
 
             x = InputXml.Element("Width");
@@ -203,7 +214,9 @@ namespace TsGui
             foreach (TsColumn col in this._columns)
             {
                 ColumnDefinition coldef = new ColumnDefinition();
-                //coldef
+                coldef.DataContext = col;
+                coldef.SetBinding(ColumnDefinition.WidthProperty, new Binding("Width"));
+
                 this._pagepanel.ColumnDefinitions.Add(coldef);
 
                 Grid.SetColumn(col.Panel, colindex);
@@ -211,7 +224,6 @@ namespace TsGui
                 colindex++;
             }
 
-            //this._pagelayout.MainGrid.Children.Add(this.Panel);
             this.UpdateButtons();
         }
 
@@ -275,13 +287,8 @@ namespace TsGui
             }
         }
 
-        public void Show()
-        {
-            Debug.WriteLine("Page show called: ");
-            //this.Window.Show();
-            //this.Window.Activate();
-        }
-
+        //Update the prev, next, finish buttons according to the current pages 
+        //place in the world
         private void UpdateButtons()
         {
             if (this.NextPage != null)

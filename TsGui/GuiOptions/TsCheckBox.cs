@@ -1,6 +1,7 @@
 ﻿using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
+using System.Diagnostics;
 
 namespace TsGui
 {
@@ -68,11 +69,10 @@ namespace TsGui
         }
 
         private void Build()
-        {          
+        {
+            Debug.WriteLine("CheckBox HAlignment: " + this._hAlignment.ToString());
             this._control.VerticalAlignment = VerticalAlignment.Center;
             this._control.HorizontalAlignment = this._hAlignment;
-            //this._labelcontrol.Padding = this._padding;
-            //this._labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;         
         }
     }
 }

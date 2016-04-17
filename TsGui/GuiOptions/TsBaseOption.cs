@@ -101,8 +101,9 @@ namespace TsGui
             this._labelcontrol.DataContext = this;
             this._labelcontrol.SetBinding(Label.ContentProperty, new Binding("LabelText"));
             this._labelcontrol.SetBinding(Label.HeightProperty, new Binding("Height"));
+            this._labelcontrol.SetBinding(Label.WidthProperty, new Binding("LabelWidth"));
 
-            this._labelcontrol.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
+            this._labelcontrol.VerticalContentAlignment = VerticalAlignment.Center;
             this._labelpadding = new Thickness(5, 0, 0, 0);
             this._labelcontrol.Padding = this._labelpadding;
 

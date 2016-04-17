@@ -2,17 +2,21 @@
 using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Data;
 using System.ComponentModel;
 using System;
 
 namespace TsGui
 {
-    public class TsColumn
+    public class TsColumn: INotifyPropertyChanged
     {
         private List<IGuiOption> options = new List<IGuiOption>();
         private Grid _columnpanel;
         private Thickness _margin = new Thickness(2,2,2,2);
         private bool _gridlines;
+        private GridLength _labelwidth;
+        private GridLength _controlwidth;
+        private GridLength _fullwidth;
         private MainController _controller;
         private ColumnDefinition _coldefControls;
         private ColumnDefinition _coldefLabels;
@@ -26,24 +30,52 @@ namespace TsGui
                 this._gridlines = value;
             }
         }
+        public GridLength LabelWidth
+        {
+            get { return this._labelwidth; }
+            set
+            {
+                this._labelwidth = value;
+                this.OnPropertyChanged(this, "LabelWidth");
+            }
+        }
+        public GridLength ControlWidth
+        {
+            get { return this._controlwidth; }
+            set
+            {
+                this._controlwidth = value;
+                this.OnPropertyChanged(this, "ControlWidth");
+            }
+        }
+        public GridLength Width
+        {
+            get { return this._fullwidth; }
+            set
+            {
+                this._fullwidth = value;
+                this.OnPropertyChanged(this, "Width");
+            }
+        }
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this.options; } }
         public Panel Panel { get { return this._columnpanel; } }
 
 
-        
-
         //constructor
         public TsColumn (XElement SourceXml,int PageIndex, MainController RootController)
-        {
-            
+        {            
             this._controller = RootController;
             this.Index = PageIndex;
             
-
             this._columnpanel = new Grid();
             this._coldefControls = new ColumnDefinition();
             this._coldefLabels = new ColumnDefinition();
+
+            this._columnpanel.DataContext = this;
+            this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
+            this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
+            this._coldefControls.SetBinding(ColumnDefinition.WidthProperty, new Binding("ControlWidth"));
 
             //Set defaults
             this._gridlines = false;
@@ -51,15 +83,22 @@ namespace TsGui
 
             this._columnpanel.ColumnDefinitions.Add(this._coldefLabels);
             this._columnpanel.ColumnDefinitions.Add(this._coldefControls);
-
-            //Setup bindings
-            //this._columnpanel.SetBinding(Grid.WidthProperty, new Binding("Width"));
-            //{Binding Source={x:Reference TextCol01}, Path=ActualWidth}
-            //this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
-            //this._coldefControls.SetBinding(ColumnDefinition.WidthProperty, new Binding("ControlWidth"));
-
+            
             this.LoadXml(SourceXml);
             this.Build();
+        }
+
+        //Setup the INotifyPropertyChanged interface 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // OnPropertyChanged method to raise the event
+        protected void OnPropertyChanged(object sender, string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(sender, new PropertyChangedEventArgs(name));
+            }
         }
 
         private void LoadXml(XElement InputXml)
@@ -67,6 +106,7 @@ namespace TsGui
             XElement x;
             IEnumerable<XElement> optionsXml;
             IGuiOption newOption;
+
             //now read in the options and add to a dictionary for later use
             optionsXml = InputXml.Elements("GuiOption");
             if (optionsXml != null)
@@ -81,15 +121,15 @@ namespace TsGui
 
             x = InputXml.Element("LabelWidth");
             if (x != null)
-            { this.SetLabelWidth(Convert.ToDouble(x.Value)); }
+            { this.LabelWidth = new GridLength(Convert.ToDouble(x.Value)); }
 
             x = InputXml.Element("ControlWidth");
             if (x != null)
-            { this.SetControlWidth(Convert.ToDouble(x.Value)); }
+            { this.ControlWidth = new GridLength(Convert.ToDouble(x.Value)); }
 
             x = InputXml.Element("Width");
             if (x != null)
-            { this.SetWidth(Convert.ToDouble(x.Value)); }
+            { this.Width = new GridLength(Convert.ToDouble(x.Value)); }
 
             GuiFactory.LoadMargins(InputXml, this._margin);
         }
@@ -118,40 +158,6 @@ namespace TsGui
                 
                 rowindex++;
             }
-        }
-
-        //View control methods
-        private void SetWidth(double Width)
-        {
-            //get { return this._width; }
-            //set
-            //{
-            _columnpanel.Width = Width;
-            //this._width = Width;
-            //this.OnPropertyChanged(this, "Width");
-            //}
-        }
-        private void SetControlWidth(double Width)
-        {
-            //get { return this._coldefControls.Width.Value; }
-            //set
-            //{
-            //this._controlwidth = value;
-            this._coldefControls.Width = new GridLength(Width);
-            //this.OnPropertyChanged(this, "ControlWidth");
-            //this._coldefControls.Width = this._controlwidth;
-            //this._coldefControls
-            //}
-        }
-        private void SetLabelWidth(double Width)
-        {
-            //get { return this._coldefLabels.Width.Value; }
-            //set
-            //{
-            //this._labelwidth = value;
-            this._coldefLabels.Width = new GridLength(Width);
-            //this.OnPropertyChanged(this, "LabelWidth");
-            //}
         }
     }
 }

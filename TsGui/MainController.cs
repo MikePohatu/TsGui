@@ -14,20 +14,17 @@ namespace TsGui
 {
     public class MainController
     {
-        private int _height;        //default page height for the window
-        private int _width;         //default page width for the window
+        private double _height;        //default page height for the window
+        private double _width;         //default page width for the window
         private string _headingTitle;
         private string _headingText;
         private int _headingHeight;
         private string _configpath;
-        private int _pageWidth;
-        private int _pageHeight;
         private Thickness _pageMargin = new Thickness(0,0,0,0);
         private bool _prodmode = false;
         private bool _finished = false;
         private XmlHandler _handler = new XmlHandler();
         private List<TsPage> _pages = new List<TsPage>();
-        //private List<IGuiOption> _options = new List<IGuiOption>();
         private EnvironmentController _envController = new EnvironmentController();
         private OptionLibrary _optionlibrary = new OptionLibrary();
         private HardwareEvaluator _chassischeck;
@@ -75,8 +72,8 @@ namespace TsGui
         public void Startup()
         {
             //set default values
-            this._width = 300;
-            this._height = 300;
+            this._width = Double.NaN;
+            this._height = Double.NaN;
             this._headingHeight = 50;
 
             this._prodmode = this._envController.Init();
@@ -232,6 +229,7 @@ namespace TsGui
             this.UpdateWindow();
         }
         
+        //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()
         {
             this.ParentWindow.ContentArea.Navigate(this.CurrentPage.Page);
@@ -286,17 +284,13 @@ namespace TsGui
             return this._envController.GetEnvVar(VariableName);
         }
 
-        private void ShowGridLines(bool OnOff)
+        private void ShowGridLines(bool Enabled)
         {
             //Debug.WriteLine("TestingMode: " + this._prodmode);
             if (this._prodmode != true)
             {
-                //this.ParentWindow.WrapperGrid.ShowGridLines = OnOff;
-                //this.ParentWindow.HeadingGrid.ShowGridLines = OnOff;
-                //this.ParentWindow.ButtonGrid.ShowGridLines = OnOff;
-
                 foreach (TsPage page in this._pages)
-                { page.ShowGridlines = OnOff; }
+                { page.ShowGridlines = Enabled; }
             }
         }
 

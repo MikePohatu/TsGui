@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Windows;
@@ -19,15 +20,17 @@ namespace TsGui
             this._control = new ComboBox();
             base._control = this._control;
 
+            this._control.DataContext = this;
+            this._control.SetBinding(ComboBox.HeightProperty, new Binding("Height"));
+
             this._padding = new Thickness(6, 3, 5, 3);
-            //this._height = 25;
             this._control.DisplayMemberPath = "Key";
             this._control.SelectedValuePath = "Value";
-            this._control.Height = this.Height;
-            this._control.Padding = this._padding;
+            //this._control.Height = this.Height;
+            //this._control.Padding = new Thickness(0, 0, 0, 0);
 
-            this.Height = 25;
             this.LoadXml(InputXml);
+            this.Height = 25;
         }
 
         //properties
