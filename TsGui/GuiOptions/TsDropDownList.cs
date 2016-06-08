@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Windows;
@@ -10,18 +9,19 @@ namespace TsGui
 {
     public class TsDropDownList: TsBaseOption, IGuiOption, INotifyPropertyChanged
     {
-        new private ComboBoxEx _control;
+        new private ComboBox _control;
         
         //dictionary in format text description,value
         private Dictionary<string, string> _options = new Dictionary<string,string>();
 
         public TsDropDownList(XElement InputXml): base()
         {
-            this._control = new ComboBoxEx();
+            this._control = new ComboBox();
             base._control = this._control;
 
-            this._control.DataContext = this;
-            this._control.SetBinding(ComboBox.HeightProperty, new Binding("Height"));
+            //this._control.DataContext = this;
+            //this._control.SetBinding(ComboBox.HeightProperty, new Binding("Height"));
+            //this._control.SetBinding(ComboBox.WidthProperty, new Binding("ControlWidth"));
 
             //this._control.
             this._padding = new Thickness(6, 3, 5, 3);
@@ -58,10 +58,13 @@ namespace TsGui
             if (x != null)
             {
                 IEnumerable<XElement> defx = x.Elements();
+                int defxCount = 0;
                 foreach (XElement xdefoption in defx)
                 {
+                    defxCount++;
                     if (xdefoption.Name == "Value")
                     {
+                        Debug.WriteLine("LoadXml default: " + xdefoption.Value);
                         this._value = xdefoption.Value;
                         break;
                     }
@@ -71,6 +74,7 @@ namespace TsGui
                     }
                 }
                 
+                if (defxCount == 0) { this._value = x.Value.Trim(); }
             }
 
             //now read in the options and add to a dictionary for later use
@@ -94,6 +98,7 @@ namespace TsGui
         {
             //Debug.WriteLine("TsDropDownList build started");
             int index = 0;
+            string longeststring = "";
 
             foreach (KeyValuePair<string, string> entry in this._options)
             {
@@ -104,11 +109,21 @@ namespace TsGui
                 //default, select it by default in the list
                 if ((entry.Value == this._value) || (index == 0))
                 {
+                    if (index == 0) { Debug.WriteLine("0 index"); }
+                    else { Debug.WriteLine("Default value found " + entry.Value); }
+
                     this._control.SelectedItem = entry;
                 }
 
+                //figure out if this is the longest item in the dropdownlist. 
+                if (entry.Key.Length > longeststring.Length) { longeststring = entry.Key; }
                 index++;
             }
+
+            Label templabel = new Label();
+            templabel.Content = longeststring;
+
+            //this._control.MinWidth = templabel.
 
             this.OnPropertyChanged(this,"Control");
         }

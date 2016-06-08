@@ -75,7 +75,6 @@
     <Compile Include="Control\Checker.cs" />
     <Compile Include="Control\EnvironmentController.cs" />
     <Compile Include="Control\GuiFactory.cs" />
-    <Compile Include="GuiOptions\ComboBoxEx.cs" />
     <Compile Include="GuiOptions\TsBaseOption.cs" />
     <Compile Include="Control\HardwareEvaluator.cs" />
     <Compile Include="GuiOptions\IEditableGuiOption.cs" />
