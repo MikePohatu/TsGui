@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="{Binding HeadingTitle}" Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}"
         WindowStartupLocation="Manual" 
+        Topmost="True"
         Left="40" Top="40" WindowStyle="None"
         MouseLeftButtonDown="windowDrag">
     <Frame Name="ContentArea" NavigationUIVisibility="Hidden">
