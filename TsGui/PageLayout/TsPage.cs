@@ -17,6 +17,9 @@ namespace TsGui
         private double _headingHeight;
         private string _headingTitle;
         private string _headingText;
+        private string _footerText;
+        private double _footerHeight = 27;
+        private HorizontalAlignment _footerHAlignment;
         private Thickness _margin = new Thickness(0, 0, 0, 0);
         private List<TsColumn> _columns = new List<TsColumn>();
         private List<IGuiOption> _options = new List<IGuiOption>();
@@ -77,6 +80,33 @@ namespace TsGui
                 this.OnPropertyChanged(this, "HeadingHeight");
             }
         }
+        public double FooterHeight
+        {
+            get { return this._footerHeight; }
+            set
+            {
+                this._footerHeight = value;
+                this.OnPropertyChanged(this, "FooterHeight");
+            }
+        }
+        public string FooterText
+        {
+            get { return this._footerText; }
+            set
+            {
+                this._footerText = value;
+                this.OnPropertyChanged(this, "FooterText");
+            }
+        }
+        public HorizontalAlignment FooterHAlignment
+        {
+            get { return this._footerHAlignment; }
+            set
+            {
+                this._footerHAlignment = value;
+                this.OnPropertyChanged(this, "FooterHAlignment");
+            }
+        }
         public bool ShowGridLines
         {
             get { return this._gridlines; }
@@ -134,7 +164,7 @@ namespace TsGui
         }
 
         //Constructors
-        public TsPage(XElement SourceXml, string HeadingTitle, string HeadingText, double Height,double Width,Thickness Margin,MainController RootController)
+        public TsPage(XElement SourceXml, string HeadingTitle, string HeadingText, double Height,double Width, string FooterText, double FooterHeight, HorizontalAlignment FooterHAlign, Thickness Margin,MainController RootController)
         {
             Debug.WriteLine("New page constructor");
             //Debug.WriteLine(SourceXml);
@@ -147,6 +177,9 @@ namespace TsGui
             this.HeadingHeight = 40;
             this.HeadingTitle = HeadingTitle;
             this.HeadingText = HeadingText;
+            this.FooterHeight = FooterHeight;
+            this.FooterText = FooterText;
+            this.FooterHAlignment = FooterHAlign;
 
             this._pagelayout.DataContext = this;
             //this._pagepanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridlines"));

@@ -19,6 +19,10 @@ namespace TsGui
         private string _headingTitle;
         private string _headingText;
         private int _headingHeight;
+        private string _footerText = "Powered by TsGui - www.20road.com";
+        private double _footerHeight = 15;
+        private HorizontalAlignment _footerHAlignment = HorizontalAlignment.Right;
+
         private string _configpath;
         private Thickness _pageMargin = new Thickness(0,0,0,0);
         private bool _prodmode = false;
@@ -153,6 +157,18 @@ namespace TsGui
                     if (x != null) { this._headingHeight = Convert.ToInt32(x.Value); }
                 }
 
+                XElement footerX = SourceXml.Element("Footer");
+                if (footerX != null)
+                {
+                    x = footerX.Element("Text");
+                    if (x != null) { this._footerText = x.Value; }
+
+                    x = footerX.Element("Height");
+                    if (x != null) { this._footerHeight = Convert.ToInt32(x.Value); }
+
+                    GuiFactory.LoadHAlignment(footerX, ref this._footerHAlignment);
+                }
+
                 x = SourceXml.Element("HardwareEval");
                 if (x != null)
                 { this._chassischeck = new HardwareEvaluator(); }
@@ -176,16 +192,36 @@ namespace TsGui
                     {
                         #region
                         //Debug.WriteLine("creating new page");
-                        if (currPage == null)
-                        {
-                            currPage = new TsPage(xPage, this._headingTitle, this._headingText, this._height, this._width, this._pageMargin,this);
-                            currPage.IsFirst = true;
-                        }
-                        else
+                        if (currPage != null)
                         {
                             //record the last page as the prevPage
                             prevPage = currPage;
-                            currPage = new TsPage(xPage, this._headingTitle, this._headingText, this._height, this._width, this._pageMargin,this);
+                            currPage = new TsPage(
+                                xPage, 
+                                this._headingTitle, 
+                                this._headingText, 
+                                this._height, 
+                                this._width, 
+                                this._footerText, 
+                                this._footerHeight, 
+                                this._footerHAlignment, 
+                                this._pageMargin, 
+                                this);                                                     
+                        }
+                        else
+                        {
+                            currPage = new TsPage(
+                                xPage,
+                                this._headingTitle,
+                                this._headingText,
+                                this._height,
+                                this._width,
+                                this._footerText,
+                                this._footerHeight,
+                                this._footerHAlignment,
+                                this._pageMargin,
+                                this);
+                            currPage.IsFirst = true;
                         }
 
                         //create the new page and assign the next page/prev page links
