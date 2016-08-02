@@ -14,12 +14,11 @@
             <RowDefinition x:Name="HeadingRow" Height="50"/>
             <RowDefinition x:Name="MainRow" Height="100*"/>
             <RowDefinition x:Name="ButtonRow" Height="50" />
-            <RowDefinition x:Name="FooterRow" Height="{Binding FooterHeight}" />
         </Grid.RowDefinitions>
-        <Grid x:Name="HeadingGrid" Grid.Row="0" Background="#FF006AD4" ShowGridLines="{Binding ShowGridLines}" >
+        <Grid x:Name="HeadingGrid" Grid.Row="0" Background="{Binding HeadingBgColor}" ShowGridLines="{Binding ShowGridLines}" >
             <StackPanel x:Name="HeadingStack" Margin="10,5,10,10" >
-                <TextBlock x:Name="HeadingTitle" Text="{Binding HeadingTitle}" Foreground="White" FontFamily="Segoe UI Semibold" FontSize="13.333" />
-                <TextBlock x:Name="HeadingText" Text="{Binding HeadingText}" Foreground="White" />
+                <TextBlock x:Name="HeadingTitle" Text="{Binding HeadingTitle}" Foreground="{Binding HeadingTextColor}" FontFamily="Segoe UI Semibold" FontSize="13.333" />
+                <TextBlock x:Name="HeadingText" Text="{Binding HeadingText}" Foreground="{Binding HeadingTextColor}" />
             </StackPanel>
         </Grid>
         <Grid x:Name="MainGrid" Grid.Row="1" Margin="10,5,10,5" ShowGridLines="{Binding ShowGridLines}"></Grid>
@@ -35,11 +34,6 @@
                 <Button x:Name="buttonPrev" IsEnabled="False" Visibility="Hidden" Content="Back" HorizontalAlignment="Left" Margin="0,0,5,0" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="75" Height="30" Click="buttonPrev_Click"/>
                 <Button x:Name="buttonCancel" Content="Cancel" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Width="75" Height="30" Click="buttonCancel_Click"/>
             </Grid>
-        </Grid>
-        <Grid x:Name="FooterGrid" Grid.Row="3" Background="#FFE5E5E5" Margin="0,0,0,0" ShowGridLines="{Binding ShowGridLines}">
-            <StackPanel >
-                <TextBlock Text="{Binding FooterText}" HorizontalAlignment="{Binding FooterHAlignment}" FontStyle="Italic" FontSize="10" Padding="3,1,3,1" />
-            </StackPanel>
         </Grid>
     </Grid>
 </Page>

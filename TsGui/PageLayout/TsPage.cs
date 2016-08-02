@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 using System;
 using System.Diagnostics;
 using System.ComponentModel;
@@ -17,9 +18,8 @@ namespace TsGui
         private double _headingHeight;
         private string _headingTitle;
         private string _headingText;
-        private string _footerText;
-        private double _footerHeight = 27;
-        private HorizontalAlignment _footerHAlignment;
+        private SolidColorBrush _headingBgColor;
+        private SolidColorBrush _headingTextColor;
         private Thickness _margin = new Thickness(0, 0, 0, 0);
         private List<TsColumn> _columns = new List<TsColumn>();
         private List<IGuiOption> _options = new List<IGuiOption>();
@@ -80,33 +80,26 @@ namespace TsGui
                 this.OnPropertyChanged(this, "HeadingHeight");
             }
         }
-        public double FooterHeight
+
+        public SolidColorBrush HeadingBgColor
         {
-            get { return this._footerHeight; }
+            get { return this._headingBgColor; }
             set
             {
-                this._footerHeight = value;
-                this.OnPropertyChanged(this, "FooterHeight");
+                this._headingBgColor = value;
+                this.OnPropertyChanged(this, "HeadingBgColor");
             }
         }
-        public string FooterText
+        public SolidColorBrush HeadingTextColor
         {
-            get { return this._footerText; }
+            get { return this._headingTextColor; }
             set
             {
-                this._footerText = value;
-                this.OnPropertyChanged(this, "FooterText");
+                this._headingTextColor = value;
+                this.OnPropertyChanged(this, "HeadingTextColor");
             }
         }
-        public HorizontalAlignment FooterHAlignment
-        {
-            get { return this._footerHAlignment; }
-            set
-            {
-                this._footerHAlignment = value;
-                this.OnPropertyChanged(this, "FooterHAlignment");
-            }
-        }
+
         public bool ShowGridLines
         {
             get { return this._gridlines; }
@@ -164,7 +157,7 @@ namespace TsGui
         }
 
         //Constructors
-        public TsPage(XElement SourceXml, string HeadingTitle, string HeadingText, double Height,double Width, string FooterText, double FooterHeight, HorizontalAlignment FooterHAlign, Thickness Margin,MainController RootController)
+        public TsPage(XElement SourceXml, string HeadingTitle, string HeadingText, double Height,double Width, Thickness Margin, SolidColorBrush HeadingBgColor, SolidColorBrush HeadingTextColor, MainController RootController)
         {
             Debug.WriteLine("New page constructor");
             //Debug.WriteLine(SourceXml);
@@ -177,9 +170,8 @@ namespace TsGui
             this.HeadingHeight = 40;
             this.HeadingTitle = HeadingTitle;
             this.HeadingText = HeadingText;
-            this.FooterHeight = FooterHeight;
-            this.FooterText = FooterText;
-            this.FooterHAlignment = FooterHAlign;
+            this.HeadingTextColor = HeadingTextColor;
+            this.HeadingBgColor = HeadingBgColor;
 
             this._pagelayout.DataContext = this;
             //this._pagepanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridlines"));
@@ -219,6 +211,18 @@ namespace TsGui
 
                 x = headingX.Element("Height");
                 if (x != null) { this._headingHeight = Convert.ToInt32(x.Value); }
+
+                x = headingX.Element("BgColor");
+                if (x != null)
+                {
+                    this.HeadingBgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value));
+                }
+
+                x = headingX.Element("TextColor");
+                if (x != null)
+                {
+                    this.HeadingTextColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value));
+                }
             }
 
             x = InputXml.Element("Width");

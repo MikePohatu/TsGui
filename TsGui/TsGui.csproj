@@ -116,6 +116,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PageLayout\TsMainWindow.cs" />
     <Compile Include="PageLayout\TsPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

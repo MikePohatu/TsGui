@@ -14,19 +14,12 @@ namespace TsGui
 {
     public class MainController
     {
-        private double _height;        //default page height for the window
-        private double _width;         //default page width for the window
-        private string _headingTitle;
-        private string _headingText;
-        private int _headingHeight;
-        private string _footerText = "Powered by TsGui - www.20road.com";
-        private double _footerHeight = 15;
-        private HorizontalAlignment _footerHAlignment = HorizontalAlignment.Right;
+        
 
         private string _configpath;
-        private Thickness _pageMargin = new Thickness(0,0,0,0);
         private bool _prodmode = false;
         private bool _finished = false;
+        private TsMainWindow _mainWindow;
         private XmlHandler _handler = new XmlHandler();
         private List<TsPage> _pages = new List<TsPage>();
         private EnvironmentController _envController = new EnvironmentController();
@@ -34,19 +27,13 @@ namespace TsGui
         private HardwareEvaluator _chassischeck;
 
         //properties
-        public string HeadingTitle { get { return this._headingTitle; } }
-        public string HeadingText { get { return this._headingText; } }
-        public int HeadingHeight { get { return this._headingHeight; } }
-
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
-
 
         //constructors
         public MainController(MainWindow ParentWindow)
         {
             this.ParentWindow = ParentWindow;
-            this.ParentWindow.DataContext = this;
             string exefolder = AppDomain.CurrentDomain.BaseDirectory;
             this._configpath = exefolder + @"Config.xml";
             this.Init();          
@@ -75,10 +62,8 @@ namespace TsGui
 
         public void Startup()
         {
-            //set default values
-            this._width = Double.NaN;
-            this._height = Double.NaN;
-            this._headingHeight = 50;
+            this._mainWindow = new TsMainWindow();
+            this.ParentWindow.ContentWrapper.DataContext = this._mainWindow;
 
             this._prodmode = this._envController.Init();
 
@@ -141,47 +126,14 @@ namespace TsGui
 
             IEnumerable<XElement> pagesXml;
 
+            this._mainWindow.LoadXml(SourceXml);
+
             if (SourceXml != null)
             {
-
-                XElement headingX = SourceXml.Element("Heading");
-                if (headingX != null)
-                {
-                    x = headingX.Element("Title");
-                    if (x != null) { this._headingTitle = x.Value; }
-
-                    x = headingX.Element("Text");
-                    if (x != null) { this._headingText = x.Value; }
-
-                    x = headingX.Element("Height");
-                    if (x != null) { this._headingHeight = Convert.ToInt32(x.Value); }
-                }
-
-                XElement footerX = SourceXml.Element("Footer");
-                if (footerX != null)
-                {
-                    x = footerX.Element("Text");
-                    if (x != null) { this._footerText = x.Value; }
-
-                    x = footerX.Element("Height");
-                    if (x != null) { this._footerHeight = Convert.ToInt32(x.Value); }
-
-                    GuiFactory.LoadHAlignment(footerX, ref this._footerHAlignment);
-                }
-
+                //turn hardware eval on or off
                 x = SourceXml.Element("HardwareEval");
                 if (x != null)
                 { this._chassischeck = new HardwareEvaluator(); }
-                 
-                x = SourceXml.Element("Width");
-                if (x != null)
-                { this._width = Convert.ToInt32(x.Value); }
-
-                x = SourceXml.Element("Height");
-                if (x != null)
-                { this._height = Convert.ToInt32(x.Value); }
-
-                GuiFactory.LoadMargins(SourceXml, this._pageMargin);
 
                 //now read in the options and add to a dictionary for later use
                 pagesXml = SourceXml.Elements("Page");
@@ -198,28 +150,26 @@ namespace TsGui
                             prevPage = currPage;
                             currPage = new TsPage(
                                 xPage, 
-                                this._headingTitle, 
-                                this._headingText, 
-                                this._height, 
-                                this._width, 
-                                this._footerText, 
-                                this._footerHeight, 
-                                this._footerHAlignment, 
-                                this._pageMargin, 
+                                this._mainWindow.HeadingTitle, 
+                                this._mainWindow.HeadingText, 
+                                this._mainWindow.Height, 
+                                this._mainWindow.Width, 
+                                this._mainWindow.PageMargin,
+                                this._mainWindow.HeadingBgColor,
+                                this._mainWindow.HeadingTextColor,
                                 this);                                                     
                         }
                         else
                         {
                             currPage = new TsPage(
                                 xPage,
-                                this._headingTitle,
-                                this._headingText,
-                                this._height,
-                                this._width,
-                                this._footerText,
-                                this._footerHeight,
-                                this._footerHAlignment,
-                                this._pageMargin,
+                                this._mainWindow.HeadingTitle,
+                                this._mainWindow.HeadingText,
+                                this._mainWindow.Height,
+                                this._mainWindow.Width,
+                                this._mainWindow.PageMargin,
+                                this._mainWindow.HeadingBgColor,
+                                this._mainWindow.HeadingTextColor,
                                 this);
                             currPage.IsFirst = true;
                         }
@@ -324,6 +274,8 @@ namespace TsGui
             //Debug.WriteLine("TestingMode: " + this._prodmode);
             if (this._prodmode != true)
             {
+                this._mainWindow.ShowGridLines = true;
+
                 foreach (TsPage page in this._pages)
                 { page.ShowGridLines = IsEnabled; }
             }
@@ -346,5 +298,7 @@ namespace TsGui
             if (result == MessageBoxResult.Yes) return true;
             else return false;
         }
+
+        
     }
 }
