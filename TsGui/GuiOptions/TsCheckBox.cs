@@ -18,6 +18,9 @@ namespace TsGui
             this._control = new CheckBox();
             base._control = this._control;
 
+            //setup the bindings
+            this._control.DataContext = this;
+
             this._hAlignment = HorizontalAlignment.Left;
             //this._labelcontrol = new Label();
             this._margin = new Thickness(0, 0, 0, 0);

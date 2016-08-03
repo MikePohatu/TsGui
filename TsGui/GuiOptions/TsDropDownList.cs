@@ -22,7 +22,7 @@ namespace TsGui
 
             //this._control.Style = ComboBoxStyle.DropDownList;
 
-            //this._control.DataContext = this;
+            this._control.DataContext = this;
             //this._control.SetBinding(ComboBox.HeightProperty, new Binding("Height"));
             //this._control.SetBinding(ComboBox.WidthProperty, new Binding("ControlWidth"));
 
