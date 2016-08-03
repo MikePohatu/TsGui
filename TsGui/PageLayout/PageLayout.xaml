@@ -17,8 +17,8 @@
         </Grid.RowDefinitions>
         <Grid x:Name="HeadingGrid" Grid.Row="0" Background="{Binding HeadingBgColor}" ShowGridLines="{Binding ShowGridLines}" >
             <StackPanel x:Name="HeadingStack" Margin="10,5,10,10" >
-                <TextBlock x:Name="HeadingTitle" Text="{Binding HeadingTitle}" Foreground="{Binding HeadingTextColor}" FontFamily="Segoe UI Semibold" FontSize="13.333" />
-                <TextBlock x:Name="HeadingText" Text="{Binding HeadingText}" Foreground="{Binding HeadingTextColor}" />
+                <TextBlock x:Name="HeadingTitle" Text="{Binding HeadingTitle}" Foreground="{Binding HeadinFontColor}" FontFamily="Segoe UI Semibold" FontSize="13.333" />
+                <TextBlock x:Name="HeadingText" Text="{Binding HeadingText}" Foreground="{Binding HeadinFontColor}" />
             </StackPanel>
         </Grid>
         <Grid x:Name="MainGrid" Grid.Row="1" Margin="10,5,10,5" ShowGridLines="{Binding ShowGridLines}"></Grid>

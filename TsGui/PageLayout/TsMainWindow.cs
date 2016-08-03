@@ -62,7 +62,7 @@ namespace TsGui
             }
         }
         public SolidColorBrush HeadingBgColor { get; set; }
-        public SolidColorBrush HeadingTextColor { get; set; }
+        public SolidColorBrush HeadingFontColor { get; set; }
 
         public double FooterHeight
         {
@@ -108,7 +108,7 @@ namespace TsGui
             this._width = Double.NaN;
             this._height = Double.NaN;
             this._headingHeight = 50;
-            this.HeadingTextColor = new SolidColorBrush(Colors.White);
+            this.HeadingFontColor = new SolidColorBrush(Colors.White);
             this.HeadingBgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF006AD4"));
             this.FooterText = "Powered by TsGui - www.20road.com";
             this.FooterHeight = 15;
@@ -148,16 +148,16 @@ namespace TsGui
                     x = headingX.Element("Height");
                     if (x != null) { this._headingHeight = Convert.ToInt32(x.Value); }
 
-                    x = headingX.Element("BgColor");
+                    x = headingX.Element("Bg-Color");
                     if (x != null)
                     {
                         this.HeadingBgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value));
                     }
 
-                    x = headingX.Element("TextColor");
+                    x = headingX.Element("Font-Color");
                     if (x != null)
                     {
-                        this.HeadingTextColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value));
+                        this.HeadingFontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value));
                     }
 
                 }

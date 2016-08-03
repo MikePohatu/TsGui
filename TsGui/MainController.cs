@@ -155,7 +155,7 @@ namespace TsGui
                                 this._mainWindow.Width, 
                                 this._mainWindow.PageMargin,
                                 this._mainWindow.HeadingBgColor,
-                                this._mainWindow.HeadingTextColor,
+                                this._mainWindow.HeadingFontColor,
                                 this);                                                     
                         }
                         else
@@ -168,7 +168,7 @@ namespace TsGui
                                 this._mainWindow.Width,
                                 this._mainWindow.PageMargin,
                                 this._mainWindow.HeadingBgColor,
-                                this._mainWindow.HeadingTextColor,
+                                this._mainWindow.HeadingFontColor,
                                 this);
                             currPage.IsFirst = true;
                         }

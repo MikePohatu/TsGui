@@ -19,7 +19,7 @@ namespace TsGui
         private string _headingTitle;
         private string _headingText;
         private SolidColorBrush _headingBgColor;
-        private SolidColorBrush _headingTextColor;
+        private SolidColorBrush _headingFontColor;
         private Thickness _margin = new Thickness(0, 0, 0, 0);
         private List<TsColumn> _columns = new List<TsColumn>();
         private List<IGuiOption> _options = new List<IGuiOption>();
@@ -90,13 +90,13 @@ namespace TsGui
                 this.OnPropertyChanged(this, "HeadingBgColor");
             }
         }
-        public SolidColorBrush HeadingTextColor
+        public SolidColorBrush HeadinFontColor
         {
-            get { return this._headingTextColor; }
+            get { return this._headingFontColor; }
             set
             {
-                this._headingTextColor = value;
-                this.OnPropertyChanged(this, "HeadingTextColor");
+                this._headingFontColor = value;
+                this.OnPropertyChanged(this, "HeadinFontColor");
             }
         }
 
@@ -170,7 +170,7 @@ namespace TsGui
             this.HeadingHeight = 40;
             this.HeadingTitle = HeadingTitle;
             this.HeadingText = HeadingText;
-            this.HeadingTextColor = HeadingTextColor;
+            this.HeadinFontColor = HeadingTextColor;
             this.HeadingBgColor = HeadingBgColor;
 
             this._pagelayout.DataContext = this;
@@ -221,7 +221,7 @@ namespace TsGui
                 x = headingX.Element("TextColor");
                 if (x != null)
                 {
-                    this.HeadingTextColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value));
+                    this.HeadinFontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value));
                 }
             }
 
