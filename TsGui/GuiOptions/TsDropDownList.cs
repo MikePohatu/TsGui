@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace TsGui
 {
-    public class TsDropDownList: TsBaseOption, IGuiOption, INotifyPropertyChanged
+    public class TsDropDownList: TsBaseOption, IGuiOption
     {
         new private ComboBox _control;
         
@@ -128,7 +128,7 @@ namespace TsGui
 
             //this._control.MinWidth = templabel.
 
-            this.OnPropertyChanged(this,"Control");
+            //this.OnPropertyChanged(this,"Control");
             //ToolTip.set
 
             //if (this._control.ToolTip == this._labelcontrol.ToolTip) { Debug.WriteLine("null tooltip on combobox"); }
