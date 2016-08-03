@@ -4,22 +4,32 @@ namespace TsGui
 {
     public class TsVariable
     {
-        private string name;
-        public string Value { get; set; }
+        private string _name;
+        private string _value;
+
+        public string Value
+        {
+            get { return this._value; }
+            set
+            {
+                if (value == null) { this._value = string.Empty; }
+                else { this._value = value; }
+            }
+        }
         public string Name 
         {
-            get { return this.name; } 
+            get { return this._name; } 
             set
             {
                 if (value == null) { throw new InvalidOperationException("TsVariable name cannot be null"); }
-                else { this.name = value; }
+                else { this._name = value; }
             }
         }
 
-        public TsVariable (string pName, string pValue)
+        public TsVariable (string Name, string Value)
         {
-            this.name = pName;
-            this.Value = pValue;
+            this._name = Name;
+            this.Value = Value;
         }
     }
 }

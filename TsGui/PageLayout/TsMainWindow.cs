@@ -23,10 +23,17 @@ namespace TsGui
         
 
         //Properties
-        public string HeadingTitle { get { return this._headingTitle; } }
         public string HeadingText { get { return this._headingText; } }
         public int HeadingHeight { get { return this._headingHeight; } }
-
+        public string HeadingTitle
+        {
+            get { return this._headingTitle; }
+            set
+            {
+                this._headingTitle = value;
+                this.OnPropertyChanged(this, "HeadingTitle");
+            }
+        }
         public double Height
         {
             get { return this._height; }

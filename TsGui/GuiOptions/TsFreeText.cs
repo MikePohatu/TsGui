@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Data;
 using System.Diagnostics;
 
@@ -17,6 +18,10 @@ namespace TsGui
         private bool _isvalid;
         private int _maxlength;
         private int _minlength;
+        private Color _textboxDefaultColor;
+        private Color _textboxHoverOverDefColor;
+        private SolidColorBrush _textboxBorderBrush;
+        private SolidColorBrush _textboxHoverOverBrush;
         new private TextBox _control;
         private ToolTip _validToolTip;
         #endregion
@@ -97,6 +102,7 @@ namespace TsGui
 
             //Subscribe to events           
             this._control.TextChanged += this.onChange;
+            this._control.LostFocus += this.onLoseFocus;
 
             //setup the bindings
             this._control.DataContext = this;
@@ -106,7 +112,13 @@ namespace TsGui
             this._control.SetBinding(TextBox.TextProperty, new Binding("Value"));
             this._control.SetBinding(TextBox.PaddingProperty, new Binding("Padding"));
 
-            this._control.MaxLines = 1;         
+            this._control.MaxLines = 1;
+            this._textboxDefaultColor = (Color)ColorConverter.ConvertFromString("#FFABADB3");
+            this._textboxHoverOverDefColor = (Color)ColorConverter.ConvertFromString("#FF3399FF");
+            this._textboxBorderBrush = new SolidColorBrush(_textboxDefaultColor);
+            this._textboxHoverOverBrush = new SolidColorBrush(_textboxHoverOverDefColor);
+
+            this._control.BorderBrush = this._textboxBorderBrush;  
         }
 
 
@@ -152,6 +164,7 @@ namespace TsGui
                 }
 
                 this.Value = this._controller.GetValueFromList(x);
+                if (this.Value == null) { this.Value = string.Empty; }
 
                 //if required, remove invalid characters and truncate
                 if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.Value = Checker.RemoveInvalid(this.Value, this.DisallowedCharacters); }
@@ -161,6 +174,11 @@ namespace TsGui
         }
 
         private void onChange(object sender, RoutedEventArgs e)
+        {
+            this.Validate();
+        }
+
+        private void onLoseFocus(object sender, RoutedEventArgs e)
         {
             this.Validate();
         }
@@ -200,10 +218,14 @@ namespace TsGui
 
                 this._validToolTip = TsWindowAlerts.ShowUnboundToolTip(this._validToolTip,this._control,s);
                 this._validToolTip.Placement = PlacementMode.Right;
+                this._textboxBorderBrush.Color = Colors.Red;
+                this._textboxHoverOverBrush.Color = Colors.Red;
             }
             else
             {
                 TsWindowAlerts.HideToolTip(this._validToolTip);
+                this._textboxBorderBrush.Color = _textboxDefaultColor;
+                this._textboxHoverOverBrush.Color = _textboxHoverOverDefColor;
             }
 
             this._isvalid = valid;

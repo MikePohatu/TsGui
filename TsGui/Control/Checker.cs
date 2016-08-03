@@ -69,7 +69,9 @@ namespace TsGui
         /// <returns></returns>
         public static string RemoveInvalid (string StringValue, string InvalidChars)
         {
-            if (string.IsNullOrEmpty(InvalidChars)) { return StringValue; }
+            if ((string.IsNullOrEmpty(StringValue)) || (string.IsNullOrEmpty(InvalidChars)))
+                { return StringValue; }
+
             //Debug.WriteLine("RemoveInvalid called");
             char[] invalidchars = InvalidChars.ToCharArray();
             string newstring = StringValue;

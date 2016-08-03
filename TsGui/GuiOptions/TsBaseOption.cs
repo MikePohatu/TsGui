@@ -68,16 +68,19 @@ namespace TsGui
                 if (!string.IsNullOrEmpty(value))
                 {
                     this._help = value;
-                    //Setup the tooltips
-                    this._tooltip = TsWindowAlerts.SetToolTipText(this._control, this._help);
                     this._labelcontrol.ToolTip = this._tooltip;
-
-                    //setup the binding
-                    TextBlock tb = this._tooltip.Content as TextBlock;
-                    tb.SetBinding(TextBlock.TextProperty, new Binding("HelpText"));
-
+                    this._control.ToolTip = this._tooltip;
                     OnPropertyChanged(this, "HelpText");
                 }
+            }
+        }
+        public ToolTip ToolTip
+        {
+            get { return this._tooltip; }
+            set
+            {
+                this._tooltip = value;
+                OnPropertyChanged(this, "ToolTip");
             }
         }
         //Setup the INotifyPropertyChanged interface 
@@ -101,11 +104,19 @@ namespace TsGui
             this._labelcontrol.DataContext = this;
             this._labelcontrol.SetBinding(Label.ContentProperty, new Binding("LabelText"));
             this._labelcontrol.SetBinding(Label.HeightProperty, new Binding("Height"));
-            this._labelcontrol.SetBinding(Label.WidthProperty, new Binding("LabelWidth"));
+            //this._labelcontrol.SetBinding(Label.WidthProperty, new Binding("LabelWidth"));
 
             this._labelcontrol.VerticalContentAlignment = VerticalAlignment.Center;
             this._labelpadding = new Thickness(5, 0, 0, 0);
             this._labelcontrol.Padding = this._labelpadding;
+
+            //Setup the tooltips
+            this._tooltip = new ToolTip();
+
+            //setup the binding
+            TextBlock tb = new TextBlock();
+            this._tooltip.Content = tb;
+            tb.SetBinding(TextBlock.TextProperty, new Binding("HelpText"));
 
             //Set defaults
             this.Height = 15;

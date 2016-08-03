@@ -16,8 +16,11 @@ namespace TsGui
 
         public TsDropDownList(XElement InputXml): base()
         {
+            Debug.WriteLine("TsDropDownList constructor called");
             this._control = new ComboBox();
             base._control = this._control;
+
+            //this._control.Style = ComboBoxStyle.DropDownList;
 
             //this._control.DataContext = this;
             //this._control.SetBinding(ComboBox.HeightProperty, new Binding("Height"));
@@ -126,6 +129,9 @@ namespace TsGui
             //this._control.MinWidth = templabel.
 
             this.OnPropertyChanged(this,"Control");
+            //ToolTip.set
+
+            //if (this._control.ToolTip == this._labelcontrol.ToolTip) { Debug.WriteLine("null tooltip on combobox"); }
         }
     }
 }

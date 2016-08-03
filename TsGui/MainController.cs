@@ -14,8 +14,6 @@ namespace TsGui
 {
     public class MainController
     {
-        
-
         private string _configpath;
         private bool _prodmode = false;
         private bool _finished = false;
@@ -63,7 +61,8 @@ namespace TsGui
         public void Startup()
         {
             this._mainWindow = new TsMainWindow();
-            this.ParentWindow.ContentWrapper.DataContext = this._mainWindow;
+            this.ParentWindow.DataContext = this._mainWindow;
+            //this.ParentWindow.ContentWrapper.DataContext = this._mainWindow;
 
             this._prodmode = this._envController.Init();
 
@@ -206,7 +205,6 @@ namespace TsGui
             this.UpdateWindow();
         }
 
-
         //move to the previous page and update the next/prev/finish buttons
         public void MovePrevious()
         {
@@ -218,7 +216,7 @@ namespace TsGui
         private void UpdateWindow()
         {
             this.ParentWindow.ContentArea.Navigate(this.CurrentPage.Page);
-            this.ParentWindow.DataContext = this.CurrentPage;
+            this.ParentWindow.ContentArea.DataContext = this.CurrentPage;
         }
 
         public void Finish()
@@ -298,7 +296,6 @@ namespace TsGui
             if (result == MessageBoxResult.Yes) return true;
             else return false;
         }
-
-        
+   
     }
 }
