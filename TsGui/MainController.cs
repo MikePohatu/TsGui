@@ -181,7 +181,7 @@ namespace TsGui
                         #endregion
                     }
 
-                    currPage.IsLast = true;
+                    //currPage.IsLast = true;
                 }
 
                 //Set show grid lines after pages and columns have been created.
@@ -201,14 +201,16 @@ namespace TsGui
         //move to the next page and update the next/prev/finish buttons
         public void MoveNext()
         {
-            this.CurrentPage = this.CurrentPage.NextPage;
+            this.CurrentPage = this.CurrentPage.NextActivePage;
+            this.CurrentPage.Update();         
             this.UpdateWindow();
         }
 
         //move to the previous page and update the next/prev/finish buttons
         public void MovePrevious()
         {
-            this.CurrentPage = this.CurrentPage.PreviousPage;
+            this.CurrentPage = this.CurrentPage.PreviousActivePage;
+            this.CurrentPage.Update();
             this.UpdateWindow();
         }
         
@@ -217,6 +219,7 @@ namespace TsGui
         {
             this.ParentWindow.ContentArea.Navigate(this.CurrentPage.Page);
             this.ParentWindow.ContentArea.DataContext = this.CurrentPage;
+            this.CurrentPage.Update();
         }
 
         public void Finish()

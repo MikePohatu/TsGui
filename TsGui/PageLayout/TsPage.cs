@@ -12,6 +12,7 @@ namespace TsGui
 {
     public class TsPage: ITsGuiElement, INotifyPropertyChanged
     {
+        private bool _enabled = true;
         private MainController _controller;
         private double _height;
         private double _width;
@@ -29,12 +30,45 @@ namespace TsGui
         private TsPage _previouspage;
         private TsPage _nextpage;
 
-        private bool _islast = false;
+        //private bool _islast = false;
         private bool _isfirst = false;
         private bool _gridlines = false;
 
         //Properties
         #region
+        public bool Enabled
+        {
+            get { return this._enabled; }
+            set
+            {
+                this._enabled = value;
+                this.OnPropertyChanged(this, "Enabled");
+            }
+        }
+        public TsPage NextActivePage
+        {
+            get
+            {
+                if (this.NextPage == null) { return null; }
+                else
+                {
+                    if (this.NextPage.Enabled == true) { return this.NextPage; }
+                    else { return this.NextPage.NextActivePage; }                    
+                }
+            }
+        }
+        public TsPage PreviousActivePage
+        {
+            get
+            {
+                if (this.PreviousPage == null) { return null; }
+                else
+                {
+                    if (this.PreviousPage.Enabled == true) { return this.PreviousPage; }
+                    else { return this.PreviousPage.PreviousActivePage; }
+                }
+            }
+        }
         public double Width
         {
             get { return this._width; }
@@ -116,7 +150,7 @@ namespace TsGui
             set
             {
                 this._previouspage = value;
-                this.UpdateButtons();
+                this.Update();
             }
         }
         public TsPage NextPage
@@ -125,17 +159,17 @@ namespace TsGui
             set
             {
                 this._nextpage = value;
-                this.UpdateButtons();
+                this.Update();
             }
         }
         public List<IGuiOption> Options { get { return this._options; } }
         public PageLayout Page { get { return this._pagelayout; } }
         //public Grid Panel { get { return this._pagepanel; } }
-        public bool IsLast
-        {
-            get { return this._islast; }
-            set { this._islast = value; }
-        }
+        //public bool IsLast
+        //{
+        //    get { return this._islast; }
+        //    set { this._islast = value; }
+        //}
         public bool IsFirst
         {
             get { return this._isfirst; }
@@ -233,6 +267,10 @@ namespace TsGui
             if (x != null)
             { this.Height = Convert.ToInt32(x.Value); }
 
+            x = InputXml.Element("Enabled");
+            if (x != null)
+            { this.Enabled = Convert.ToBoolean(x.Value); }
+
             this.PopulateOptions();
         }
 
@@ -257,7 +295,7 @@ namespace TsGui
                 colindex++;
             }
 
-            this.UpdateButtons();
+            this.Update();
         }
 
         //get all the options from the sub columns. this is parsed up the chain to generate the final
@@ -320,9 +358,9 @@ namespace TsGui
 
         //Update the prev, next, finish buttons according to the current pages 
         //place in the world
-        private void UpdateButtons()
+        public void Update()
         {
-            if (this.NextPage != null)
+            if (this.NextActivePage != null)
             {
                 this._pagelayout.buttonNext.Visibility = Visibility.Visible;
                 this._pagelayout.buttonNext.IsEnabled = true;
@@ -330,7 +368,7 @@ namespace TsGui
                 this._pagelayout.buttonFinish.IsEnabled = false;
             }
 
-            if (this.PreviousPage != null)
+            if (this.PreviousActivePage != null)
             {
                 this._pagelayout.buttonPrev.Visibility = Visibility.Visible;
                 this._pagelayout.buttonPrev.IsEnabled = true;
