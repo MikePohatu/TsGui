@@ -9,8 +9,10 @@ using System;
 
 namespace TsGui
 {
-    public class TsColumn: INotifyPropertyChanged
+    public class TsColumn: INotifyPropertyChanged,IGroupable
     {
+        private bool _enabled;
+        private bool _hidden;
         private List<IGuiOption> options = new List<IGuiOption>();
         private Grid _columnpanel;
         private Thickness _margin = new Thickness(2,2,2,2);
@@ -61,7 +63,24 @@ namespace TsGui
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this.options; } }
         public Panel Panel { get { return this._columnpanel; } }
-
+        public bool Enabled
+        {
+            get { return this._enabled; }
+            set
+            {
+                this.EnableDisable(value);
+                OnPropertyChanged(this, "Enabled");
+            }
+        }
+        public bool Hidden
+        {
+            get { return this._hidden; }
+            set
+            {
+                this.HideUnhide(value);
+                OnPropertyChanged(this, "Hidden");
+            }
+        }
 
         //constructor
         public TsColumn (XElement SourceXml,int PageIndex, MainController RootController)
@@ -173,6 +192,25 @@ namespace TsGui
 
             Debug.WriteLine("Column width: " + width);
             //this._coldefControls.Width = new GridLength(width);
+        }
+
+        protected void HideUnhide(bool Hidden)
+        {
+            this._hidden = Hidden;
+            if (Hidden == true)
+            {
+                this._columnpanel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                this._columnpanel.Visibility = Visibility.Visible;
+            }
+        }
+
+        protected void EnableDisable(bool Enabled)
+        {
+            this._enabled = Enabled;
+            this._columnpanel.IsEnabled = Enabled;
         }
     }
 }

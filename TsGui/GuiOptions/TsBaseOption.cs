@@ -8,8 +8,10 @@ using System.Diagnostics;
 
 namespace TsGui
 {
-    public abstract class TsBaseOption: INotifyPropertyChanged
+    public abstract class TsBaseOption: INotifyPropertyChanged, IGroupable
     {
+        protected bool _enabled;
+        protected bool _hidden;
         protected MainController _controller;
         protected string _value;
         protected string _help;
@@ -83,6 +85,24 @@ namespace TsGui
                 OnPropertyChanged(this, "ToolTip");
             }
         }
+        public bool Enabled
+        {
+            get { return this._enabled; }
+            set
+            {
+                this.EnableDisable(value);
+                OnPropertyChanged(this, "Enabled");
+            }
+        }
+        public bool Hidden
+        {
+            get { return this._hidden; }
+            set
+            {
+                this.HideUnhide(value);
+                OnPropertyChanged(this, "Hidden");
+            }
+        }
         //Setup the INotifyPropertyChanged interface 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -154,7 +174,37 @@ namespace TsGui
                 int padInt = Convert.ToInt32(x.Value);
                 this.Padding = new System.Windows.Thickness(padInt, padInt, padInt, padInt);
             }
+
+            x = InputXml.Element("Enabled");
+            if (x != null)
+            { this.Enabled = Convert.ToBoolean(x.Value); }
+
+            x = InputXml.Element("Hidden");
+            if (x != null)
+            { this.Hidden = Convert.ToBoolean(x.Value); }
             #endregion
+        }
+
+        protected void HideUnhide(bool Hidden)
+        {
+            this._hidden = Hidden;
+            if (Hidden == true)
+            {
+                this._control.Visibility = Visibility.Collapsed;
+                this._labelcontrol.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                this._control.Visibility = Visibility.Visible;
+                this._labelcontrol.Visibility = Visibility.Visible;
+            }
+        }
+
+        protected void EnableDisable(bool Enabled)
+        {
+            this._enabled = Enabled;
+            this._control.IsEnabled = Enabled;
+            this._labelcontrol.IsEnabled = Enabled;
         }
     }
 }
