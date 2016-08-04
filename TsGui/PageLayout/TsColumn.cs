@@ -155,6 +155,14 @@ namespace TsGui
             if (x != null)
             { this.Width = new GridLength(Convert.ToDouble(x.Value)); }
 
+            x = InputXml.Element("Enabled");
+            if (x != null)
+            { this.Enabled = Convert.ToBoolean(x.Value); }
+
+            x = InputXml.Element("Hidden");
+            if (x != null)
+            { this.Hidden = Convert.ToBoolean(x.Value); }
+
             GuiFactory.LoadMargins(InputXml, this._margin);
         }
 
