@@ -77,11 +77,11 @@
     <Compile Include="Control\Group.cs" />
     <Compile Include="Control\GuiFactory.cs" />
     <Compile Include="Control\IGroupable.cs" />
+    <Compile Include="Control\Toggle.cs" />
     <Compile Include="GuiOptions\TsBaseOption.cs" />
     <Compile Include="Control\HardwareEvaluator.cs" />
     <Compile Include="GuiOptions\IEditableGuiOption.cs" />
     <Compile Include="Control\ITsVariableOutput.cs" />
-    <Compile Include="GuiOptions\TsGroupToggle.cs" />
     <Compile Include="PageLayout\PageLayout.xaml.cs">
       <DependentUpon>PageLayout.xaml</DependentUpon>
     </Compile>

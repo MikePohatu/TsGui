@@ -94,7 +94,7 @@ namespace TsGui
             this._height = 20;
             this._maxlength = 0;
             this._minlength = 0;
-            this._padding = new Thickness(3, 2, 2, 2);
+            this._padding = new Thickness(3, 2, 2, 3);
             
             this._control = new TextBox();
             base._control = this._control;

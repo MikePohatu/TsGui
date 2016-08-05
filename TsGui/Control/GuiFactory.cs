@@ -13,7 +13,7 @@ namespace TsGui
             #region
             if (OptionXml.Attribute("Type").Value == "DropDownList")
             {
-                return new TsDropDownList(OptionXml);
+                return new TsDropDownList(OptionXml, RootController);
             }
 
             else if (OptionXml.Attribute("Type").Value == "ComputerName")
@@ -28,12 +28,12 @@ namespace TsGui
 
             else if (OptionXml.Attribute("Type").Value == "CheckBox")
             {
-                return new TsCheckBox(OptionXml);
+                return new TsCheckBox(OptionXml, RootController);
             }
 
             else if (OptionXml.Attribute("Type").Value == "Heading")
             {
-                return new TsHeading(OptionXml);
+                return new TsHeading(OptionXml, RootController);
             }
 
             else

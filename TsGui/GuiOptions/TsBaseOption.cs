@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -224,6 +225,32 @@ namespace TsGui
             x = InputXml.Element("Hidden");
             if (x != null)
             { this.Hidden = Convert.ToBoolean(x.Value); }
+
+            IEnumerable<XElement> groupsXml;
+            groupsXml = InputXml.Elements("Group");
+            if (groupsXml != null)
+            {
+                foreach (XElement xGroup in groupsXml)
+                {
+                    this._controller.AddToGroup(xGroup.Value, this);
+                }
+            }
+
+            IEnumerable<XElement> toggleXml;
+            toggleXml = InputXml.Elements("Toggle");
+            if (toggleXml != null)
+            {
+                foreach (XElement xToggle in toggleXml)
+                {
+                    Group g = this._controller.GetGroup(xToggle.Value);
+                    string valOn = xToggle.Element("ValueOn").Value;
+                    string valOff = xToggle.Element("ValueOff").Value;
+                    string mode = xToggle.Element("Mode").Value;
+                    bool hideMode = false;
+                    //if (mode.)
+                    Toggle t = new Toggle(g, valOn, valOff, hideMode, this);
+                }
+            }
             #endregion
         }
 
@@ -253,5 +280,7 @@ namespace TsGui
             this._control.IsEnabled = Enabled;
             this._labelcontrol.IsEnabled = Enabled;
         }
+
+        
     }
 }

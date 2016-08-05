@@ -3,6 +3,8 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Diagnostics;
 using System.Windows.Data;
+using System;
+using System.Collections.Generic;
 
 namespace TsGui
 {
@@ -13,8 +15,10 @@ namespace TsGui
         private string _valTrue;
         private string _valFalse;
 
-        public TsCheckBox(XElement SourceXml) : base()
+        public TsCheckBox(XElement SourceXml, MainController RootController) : base()
         {
+            this._controller = RootController;
+
             this._control = new CheckBox();
             base._control = this._control;
 
@@ -82,6 +86,11 @@ namespace TsGui
             Debug.WriteLine("CheckBox HAlignment: " + this._hAlignment.ToString());
             this._control.VerticalAlignment = VerticalAlignment.Center;
             this._control.HorizontalAlignment = this._hAlignment;
+        }
+
+        private void onValChange(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

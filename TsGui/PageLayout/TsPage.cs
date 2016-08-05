@@ -13,6 +13,7 @@ namespace TsGui
     public class TsPage: ITsGuiElement, INotifyPropertyChanged
     {
         private bool _enabled = true;
+        private bool _hidden = false;
         private MainController _controller;
         private double _height;
         private double _width;
@@ -45,6 +46,15 @@ namespace TsGui
                 this.OnPropertyChanged(this, "Enabled");
             }
         }
+        public bool Hidden
+        {
+            get { return this._hidden; }
+            set
+            {
+                this._hidden = value;
+                this.OnPropertyChanged(this, "Hidden");
+            }
+        }
         public TsPage NextActivePage
         {
             get
@@ -52,7 +62,7 @@ namespace TsGui
                 if (this.NextPage == null) { return null; }
                 else
                 {
-                    if (this.NextPage.Enabled == true) { return this.NextPage; }
+                    if (this.NextPage.Hidden == false) { return this.NextPage; }
                     else { return this.NextPage.NextActivePage; }                    
                 }
             }
@@ -64,7 +74,7 @@ namespace TsGui
                 if (this.PreviousPage == null) { return null; }
                 else
                 {
-                    if (this.PreviousPage.Enabled == true) { return this.PreviousPage; }
+                    if (this.PreviousPage.Hidden == true) { return this.PreviousPage; }
                     else { return this.PreviousPage.PreviousActivePage; }
                 }
             }
@@ -164,12 +174,6 @@ namespace TsGui
         }
         public List<IGuiOption> Options { get { return this._options; } }
         public PageLayout Page { get { return this._pagelayout; } }
-        //public Grid Panel { get { return this._pagepanel; } }
-        //public bool IsLast
-        //{
-        //    get { return this._islast; }
-        //    set { this._islast = value; }
-        //}
         public bool IsFirst
         {
             get { return this._isfirst; }
@@ -208,7 +212,7 @@ namespace TsGui
             this.HeadingBgColor = HeadingBgColor;
 
             this._pagelayout.DataContext = this;
-            //this._pagepanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridlines"));
+            this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("Enabled"));
 
             this.LoadXml(SourceXml);
             this.Build();
@@ -270,6 +274,10 @@ namespace TsGui
             x = InputXml.Element("Enabled");
             if (x != null)
             { this.Enabled = Convert.ToBoolean(x.Value); }
+
+            x = InputXml.Element("Hidden");
+            if (x != null)
+            { this.Hidden = Convert.ToBoolean(x.Value); }
 
             this.PopulateOptions();
         }

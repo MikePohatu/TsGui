@@ -21,6 +21,7 @@ namespace TsGui
         private XmlHandler _handler = new XmlHandler();
         private List<TsPage> _pages = new List<TsPage>();
         private EnvironmentController _envController = new EnvironmentController();
+        private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
         private OptionLibrary _optionlibrary = new OptionLibrary();
         private HardwareEvaluator _chassischeck;
 
@@ -214,6 +215,31 @@ namespace TsGui
             this.UpdateWindow();
         }
         
+        //add a groupable element to a group
+        public void AddToGroup (string ID, IGroupable Element)
+        {
+            Group group;
+            _groups.TryGetValue(ID, out group);
+            if (group != null) { group.Add(Element); }
+            else
+            {
+                group = new Group(ID);
+                group.Add(Element);
+                this._groups.Add(ID,group);
+            }
+        }
+
+        public Group GetGroup(string ID)
+        {
+            Group group;
+            _groups.TryGetValue(ID, out group);
+            if (group == null) 
+            {
+                group = new Group(ID);
+            }
+            return group;
+        }
+
         //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()
         {

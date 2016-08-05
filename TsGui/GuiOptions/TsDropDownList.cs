@@ -14,9 +14,11 @@ namespace TsGui
         //dictionary in format text description,value
         private Dictionary<string, string> _options = new Dictionary<string,string>();
 
-        public TsDropDownList(XElement InputXml): base()
+        public TsDropDownList(XElement InputXml, MainController RootController): base()
         {
             Debug.WriteLine("TsDropDownList constructor called");
+            this._controller = RootController;
+
             this._control = new ComboBox();
             base._control = this._control;
 
@@ -25,7 +27,7 @@ namespace TsGui
             this._control.SetBinding(Label.MarginProperty, new Binding("Margin"));
 
             this._control.VerticalAlignment = VerticalAlignment.Center;
-            this._visiblepadding = new Thickness(6, 2, 2, 2);
+            this._visiblepadding = new Thickness(6, 2, 2, 3);
             this.Padding = this._visiblepadding;
 
             this._visiblemargin = new Thickness(2, 2, 2, 2);
@@ -127,16 +129,6 @@ namespace TsGui
                 if (entry.Key.Length > longeststring.Length) { longeststring = entry.Key; }
                 index++;
             }
-
-            //Label templabel = new Label();
-            //templabel.Content = longeststring;
-
-            //this._control.MinWidth = templabel.
-
-            //this.OnPropertyChanged(this,"Control");
-            //ToolTip.set
-
-            //if (this._control.ToolTip == this._labelcontrol.ToolTip) { Debug.WriteLine("null tooltip on combobox"); }
         }
     }
 }
