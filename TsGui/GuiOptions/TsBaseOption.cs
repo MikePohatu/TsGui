@@ -9,17 +9,24 @@ using System.Diagnostics;
 namespace TsGui
 {
     public abstract class TsBaseOption: INotifyPropertyChanged, IGroupable
-    {
+    {      
         protected bool _enabled;
         protected bool _hidden;
         protected MainController _controller;
         protected string _value;
         protected string _help;
         protected int _height;
+        protected int _visibleHeight;
         protected ToolTip _tooltip;
         protected Label _labelcontrol;
         protected Control _control;
         protected string _labeltext;
+        protected Thickness _visiblemargin;
+        protected Thickness _visiblelabelmargin;
+        protected Thickness _visiblepadding;
+        protected Thickness _visiblelabelpadding;
+        protected Thickness _margin;
+        protected Thickness _labelmargin;
         protected Thickness _padding;
         protected Thickness _labelpadding;
 
@@ -44,6 +51,24 @@ namespace TsGui
                 this.OnPropertyChanged(this, "LabelText");
             }
         }
+        public Thickness Margin
+        {
+            get { return this._margin; }
+            set
+            {
+                this._margin = value;
+                this.OnPropertyChanged(this, "Margin");
+            }
+        }
+        public Thickness LabelMargin
+        {
+            get { return this._labelmargin; }
+            set
+            {
+                this._labelmargin = value;
+                this.OnPropertyChanged(this, "LabelMargin");
+            }
+        }
         public Thickness Padding
         {
             get { return this._padding; }
@@ -51,6 +76,15 @@ namespace TsGui
             {
                 this._padding = value;
                 this.OnPropertyChanged(this, "Padding");
+            }
+        }
+        public Thickness LabelPadding
+        {
+            get { return this._labelpadding; }
+            set
+            {
+                this._labelpadding = value;
+                this.OnPropertyChanged(this, "LabelPadding");
             }
         }
         public int Height
@@ -124,11 +158,15 @@ namespace TsGui
             this._labelcontrol.DataContext = this;
             this._labelcontrol.SetBinding(Label.ContentProperty, new Binding("LabelText"));
             this._labelcontrol.SetBinding(Label.HeightProperty, new Binding("Height"));
-            //this._labelcontrol.SetBinding(Label.WidthProperty, new Binding("LabelWidth"));
+            this._labelcontrol.SetBinding(Label.PaddingProperty, new Binding("LabelPadding"));
+            this._labelcontrol.SetBinding(Label.MarginProperty, new Binding("LabelMargin"));
 
-            this._labelcontrol.VerticalContentAlignment = VerticalAlignment.Center;
-            this._labelpadding = new Thickness(5, 0, 0, 0);
-            this._labelcontrol.Padding = this._labelpadding;
+            this._labelcontrol.VerticalAlignment = VerticalAlignment.Bottom;
+            this._visiblelabelpadding = new Thickness(3, 0, 0, 0);
+            this.LabelPadding = this._visiblelabelpadding;
+
+            this._visiblelabelmargin = new Thickness(2,2,2,2);
+            this.LabelMargin = this._visiblelabelmargin;
 
             //Setup the tooltips
             this._tooltip = new ToolTip();
@@ -139,7 +177,7 @@ namespace TsGui
             tb.SetBinding(TextBlock.TextProperty, new Binding("HelpText"));
 
             //Set defaults
-            this.Height = 15;
+            this.Height = 20;
             this._labelcontrol.HorizontalAlignment = HorizontalAlignment.Left;
         }
 
@@ -166,13 +204,17 @@ namespace TsGui
 
             x = InputXml.Element("Height");
             if (x != null)
-            { this.Height = Convert.ToInt32(x.Value); }
+            {
+                this._visibleHeight = Convert.ToInt32(x.Value);
+                this.Height = this._visibleHeight;
+            }
 
-            x = InputXml.Element("Padding");
+            x = InputXml.Element("LabelPadding");
             if (x != null)
             {
                 int padInt = Convert.ToInt32(x.Value);
-                this.Padding = new System.Windows.Thickness(padInt, padInt, padInt, padInt);
+                this._visiblelabelpadding = new System.Windows.Thickness(padInt, padInt, padInt, padInt);
+                this.LabelPadding = this._visiblelabelpadding;
             }
 
             x = InputXml.Element("Enabled");
@@ -190,13 +232,18 @@ namespace TsGui
             this._hidden = Hidden;
             if (Hidden == true)
             {
+                //(Grid)this._control.Parent.
                 this._control.Visibility = Visibility.Collapsed;
                 this._labelcontrol.Visibility = Visibility.Collapsed;
+                this.Height = 0;
+                this.Margin = new Thickness(0);
             }
             else
             {
                 this._control.Visibility = Visibility.Visible;
                 this._labelcontrol.Visibility = Visibility.Visible;
+                this.Height = this._visibleHeight;
+                this.Padding = this._visiblepadding;
             }
         }
 

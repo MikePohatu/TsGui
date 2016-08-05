@@ -91,10 +91,10 @@ namespace TsGui
         {
             this._caseSensValidate = false;
             this._isvalid = true;
-            this._height = 25;
+            this._height = 20;
             this._maxlength = 0;
             this._minlength = 0;
-            this._padding = new Thickness(3, 3, 5, 3);
+            this._padding = new Thickness(3, 2, 2, 2);
             
             this._control = new TextBox();
             base._control = this._control;
@@ -109,8 +109,7 @@ namespace TsGui
 
             this._control.SetBinding(TextBox.MaxLengthProperty, new Binding("MaxLength"));
             this._control.SetBinding(TextBox.HeightProperty, new Binding("Height"));
-            this._control.SetBinding(TextBox.TextProperty, new Binding("Value"));
-            this._control.SetBinding(TextBox.PaddingProperty, new Binding("Padding"));
+            this._control.SetBinding(TextBox.TextProperty, new Binding("Value"));;
 
             this._control.MaxLines = 1;
             this._textboxDefaultColor = (Color)ColorConverter.ConvertFromString("#FFABADB3");
@@ -118,7 +117,17 @@ namespace TsGui
             this._textboxBorderBrush = new SolidColorBrush(_textboxDefaultColor);
             this._textboxHoverOverBrush = new SolidColorBrush(_textboxHoverOverDefColor);
 
-            this._control.BorderBrush = this._textboxBorderBrush;  
+            this._control.SetBinding(Label.PaddingProperty, new Binding("Padding"));
+            this._control.SetBinding(Label.MarginProperty, new Binding("Margin"));
+
+            this._visiblepadding = new Thickness(3, 2, 2, 2);
+            this.Padding = this._visiblepadding;
+
+            this._visiblemargin = new Thickness(2, 2, 2, 2);
+            this.Margin = this._visiblemargin;
+
+            this._control.BorderBrush = this._textboxBorderBrush;
+            this._control.VerticalAlignment = VerticalAlignment.Center;
         }
 
 

@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Diagnostics;
-using System.ComponentModel;
+using System.Windows.Data;
 using System.Windows;
 
 namespace TsGui
@@ -20,19 +20,24 @@ namespace TsGui
             this._control = new ComboBox();
             base._control = this._control;
 
-            //this._control.Style = ComboBoxStyle.DropDownList;
-
             this._control.DataContext = this;
-            //this._control.SetBinding(ComboBox.HeightProperty, new Binding("Height"));
-            //this._control.SetBinding(ComboBox.WidthProperty, new Binding("ControlWidth"));
+            this._control.SetBinding(Label.PaddingProperty, new Binding("Padding"));
+            this._control.SetBinding(Label.MarginProperty, new Binding("Margin"));
 
-            //this._control.
-            this._padding = new Thickness(6, 3, 5, 3);
+            this._control.VerticalAlignment = VerticalAlignment.Center;
+            this._visiblepadding = new Thickness(6, 2, 2, 2);
+            this.Padding = this._visiblepadding;
+
+            this._visiblemargin = new Thickness(2, 2, 2, 2);
+            this.Margin = this._visiblemargin;
+
             this._control.DisplayMemberPath = "Key";
             this._control.SelectedValuePath = "Value";
 
+            this.Height = 20;
+
             this.LoadXml(InputXml);
-            this.Height = 25;
+            
         }
 
         //properties
@@ -73,7 +78,7 @@ namespace TsGui
                     }
                     else if (xdefoption.Name == "Query")
                     {
-
+                        //code to be added
                     }
                 }
                 
@@ -123,8 +128,8 @@ namespace TsGui
                 index++;
             }
 
-            Label templabel = new Label();
-            templabel.Content = longeststring;
+            //Label templabel = new Label();
+            //templabel.Content = longeststring;
 
             //this._control.MinWidth = templabel.
 

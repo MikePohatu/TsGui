@@ -2,12 +2,12 @@
 using System.Windows.Controls;
 using System.Windows;
 using System.Diagnostics;
+using System.Windows.Data;
 
 namespace TsGui
 {
     public class TsCheckBox: TsBaseOption, IGuiOption
     {
-        private Thickness _margin;
         new private CheckBox _control;
         private HorizontalAlignment _hAlignment;
         private string _valTrue;
@@ -21,13 +21,22 @@ namespace TsGui
             //setup the bindings
             this._control.DataContext = this;
 
+            this._control.SetBinding(Label.PaddingProperty, new Binding("Padding"));
+            this._control.SetBinding(Label.MarginProperty, new Binding("Margin"));
+
+            this._visiblepadding = new Thickness(0,0,0,0);
+            this.Padding = this._visiblepadding;
+
+            this._visiblemargin = new Thickness(2, 1, 2, 1);
+            this.Margin = this._visiblemargin;
+
+            this._control.VerticalContentAlignment = VerticalAlignment.Center;
             this._hAlignment = HorizontalAlignment.Left;
-            //this._labelcontrol = new Label();
-            this._margin = new Thickness(0, 0, 0, 0);
-            //this.Height = 15;
-            this._padding = new Thickness(5, 0, 0, 0);           
+          
             this._valTrue = "TRUE";
             this._valFalse = "FALSE";
+            this.Height = 17;
+
             this.LoadXml(SourceXml);
             this.Build();
         }
@@ -42,9 +51,6 @@ namespace TsGui
             }
         }
 
-        //public Label Label { get { return this._labelcontrol; } }
-        //public Control Control { get { return this._control; } }
-        //public int Height { get { return this.height; } }
         public void LoadXml(XElement InputXml)
         {
             #region

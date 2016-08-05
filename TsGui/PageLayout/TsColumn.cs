@@ -14,8 +14,8 @@ namespace TsGui
         private bool _enabled;
         private bool _hidden;
         private List<IGuiOption> options = new List<IGuiOption>();
-        private Grid _columnpanel;
-        private Thickness _margin = new Thickness(2,2,2,2);
+        private Grid _columngrid;
+        //private Thickness _margin = new Thickness(0,0,0,0);
         private bool _gridlines;
         private GridLength _labelwidth;
         private GridLength _controlwidth;
@@ -62,7 +62,7 @@ namespace TsGui
         }
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this.options; } }
-        public Panel Panel { get { return this._columnpanel; } }
+        public Panel Panel { get { return this._columngrid; } }
         public bool Enabled
         {
             get { return this._enabled; }
@@ -88,23 +88,24 @@ namespace TsGui
             this._controller = RootController;
             this.Index = PageIndex;
             
-            this._columnpanel = new Grid();          
+            this._columngrid = new Grid();
 
+            this._columngrid.Margin = new Thickness(0);
             this._coldefControls = new ColumnDefinition();
             this._coldefLabels = new ColumnDefinition();
 
-            this._columnpanel.DataContext = this;
-            this._columnpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
+            this._columngrid.DataContext = this;
+            this._columngrid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
 
             this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
             this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
             this._coldefControls.SetBinding(ColumnDefinition.WidthProperty, new Binding("ControlWidth"));
 
             //Set defaults
-            this._columnpanel.VerticalAlignment = VerticalAlignment.Top;
+            this._columngrid.VerticalAlignment = VerticalAlignment.Top;
 
-            this._columnpanel.ColumnDefinitions.Add(this._coldefLabels);
-            this._columnpanel.ColumnDefinitions.Add(this._coldefControls);
+            this._columngrid.ColumnDefinitions.Add(this._coldefLabels);
+            this._columngrid.ColumnDefinitions.Add(this._coldefControls);
             
             this.LoadXml(SourceXml);
             this.Build();
@@ -163,7 +164,7 @@ namespace TsGui
             if (x != null)
             { this.Hidden = Convert.ToBoolean(x.Value); }
 
-            GuiFactory.LoadMargins(InputXml, this._margin);
+            //GuiFactory.LoadMargins(InputXml, this._margin);
         }
 
 
@@ -174,20 +175,21 @@ namespace TsGui
 
             foreach (IGuiOption option in this.options)
             {
-                option.Control.Margin = this._margin;
-                option.Label.Margin = this._margin;
+                //option.Control.Margin = this._margin;
+                //option.Label.Margin = this._margin;
 
                 RowDefinition coldefRow = new RowDefinition();
-                coldefRow.Height = new GridLength(option.Height + this._margin.Top + this._margin.Bottom) ;
-                this._columnpanel.RowDefinitions.Add(coldefRow);
+                coldefRow.Height = new GridLength(option.Height + option.Margin.Top + option.Margin.Bottom) ;
+                this._columngrid.RowDefinitions.Add(coldefRow);
 
                 Grid.SetColumn(option.Label, 0);
                 Grid.SetColumn(option.Control, 1);
                 Grid.SetRow(option.Label, rowindex);
                 Grid.SetRow(option.Control, rowindex);
 
-                this._columnpanel.Children.Add(option.Label);
-                this._columnpanel.Children.Add(option.Control);
+                //this._columngrid.
+                this._columngrid.Children.Add(option.Label);
+                this._columngrid.Children.Add(option.Control);
 
                 Debug.WriteLine("Control width (" + option.Label.Content + "): " + width);
                 if (width < option.Control.Width)
@@ -207,18 +209,18 @@ namespace TsGui
             this._hidden = Hidden;
             if (Hidden == true)
             {
-                this._columnpanel.Visibility = Visibility.Collapsed;
+                this._columngrid.Visibility = Visibility.Collapsed;
             }
             else
             {
-                this._columnpanel.Visibility = Visibility.Visible;
+                this._columngrid.Visibility = Visibility.Visible;
             }
         }
 
         protected void EnableDisable(bool Enabled)
         {
             this._enabled = Enabled;
-            this._columnpanel.IsEnabled = Enabled;
+            this._columngrid.IsEnabled = Enabled;
         }
     }
 }
