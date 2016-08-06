@@ -88,14 +88,7 @@ namespace TsGui
 
         //Generic startup function to share between constructors
         private void Startup(MainController RootController)
-        {
-            this._caseSensValidate = false;
-            this._isvalid = true;
-            this._height = 20;
-            this._maxlength = 0;
-            this._minlength = 0;
-            this._padding = new Thickness(3, 2, 2, 3);
-            
+        {       
             this._control = new TextBox();
             base._control = this._control;
             this._controller = RootController;
@@ -120,7 +113,15 @@ namespace TsGui
             this._control.SetBinding(Label.PaddingProperty, new Binding("Padding"));
             this._control.SetBinding(Label.MarginProperty, new Binding("Margin"));
 
-            this._visiblepadding = new Thickness(3, 2, 2, 2);
+            //set defaults
+            this._caseSensValidate = false;
+            this._isvalid = true;
+
+            this.Height = 20;
+            this.MaxLength = 0;
+            this.MinLength = 0;
+
+            this._visiblepadding = new Thickness(3, 0,0,0);
             this.Padding = this._visiblepadding;
 
             this._visiblemargin = new Thickness(2, 2, 2, 2);
