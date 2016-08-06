@@ -43,6 +43,7 @@ namespace TsGui
                 this.OnPropertyChanged(this, "Value");
             }
         }
+        public string InactiveValue { get; set; }
         public string LabelText
         {
             get { return this._labeltext; }
@@ -140,6 +141,15 @@ namespace TsGui
                 OnPropertyChanged(this, "IsHidden");
             }
         }
+        public bool IsActive
+        {
+            get
+            {
+                if ((this.IsEnabled == true) && (this.IsHidden == false))
+                { return true; }
+                else { return false; }
+            }
+        }
         //Setup the INotifyPropertyChanged interface 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -183,7 +193,7 @@ namespace TsGui
 
             //Set defaults
             //this.Enabled = true;
-            //this.Hidden = false;
+            this.InactiveValue = "TSGUI_INACTIVE";
             this._visibleHeight = 20;
             this.Height = 20;
             this._labelcontrol.HorizontalAlignment = HorizontalAlignment.Left;
@@ -201,6 +211,10 @@ namespace TsGui
             x = InputXml.Element("Variable");
             if (x != null)
             { this.VariableName = x.Value; }
+
+            x = InputXml.Element("InactiveValue");
+            if (x != null)
+            { this.InactiveValue = x.Value; }
 
             x = InputXml.Element("HelpText");
             if (x != null)

@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace TsGui
 {
-    public class TsPage: ITsGuiElement, INotifyPropertyChanged, IGroupable
+    public class TsPage: TsParent, ITsGuiElement, INotifyPropertyChanged, IGroupable
     {
         private bool _enabled = true;
         private bool _hidden = false;
@@ -54,6 +54,15 @@ namespace TsGui
                 this._hidden = value;
                 this.OnPropertyChanged(this, "IsHidden");
                 this.UpdatePrevious();
+            }
+        }
+        public bool IsActive
+        {
+            get
+            {
+                if ((this.IsEnabled == true) && (this.IsHidden == false))
+                { return true; }
+                else { return false; }
             }
         }
         public TsPage NextActivePage
@@ -235,7 +244,7 @@ namespace TsGui
                 {
                     TsColumn c = new TsColumn(xColumn, colIndex,this._controller);
                     this._columns.Add(c);
-                    if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, c); }
+                    //if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, c); }
                     colIndex++;
                 }
             }
@@ -328,10 +337,13 @@ namespace TsGui
             //Debug.WriteLine("OptionsValid called");
             foreach (IEditableGuiOption option in this._editables)
             {
-                if (option.IsValid == false)
+                if (option.IsActive == true)
                 {
-                    //Debug.WriteLine("invalid option found");
-                    return false;
+                    if (option.IsValid == false)
+                    {
+                        //Debug.WriteLine("invalid option found");
+                        return false;
+                    }
                 }
             }
             return true;
@@ -344,10 +356,10 @@ namespace TsGui
 
         public void MovePrevious()
         {
-            if (this.OptionsValid() == true)
-            {
-                this._controller.MovePrevious();
-            }
+            foreach (IEditableGuiOption option in this._editables)
+            { option.ClearToolTips(); }
+
+            this._controller.MovePrevious();
         }
 
         public void MoveNext()

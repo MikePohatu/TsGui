@@ -193,6 +193,13 @@ namespace TsGui
             this.Validate();
         }
 
+        public void ClearToolTips()
+        {
+            TsWindowAlerts.HideToolTip(this._validToolTip);
+            this._textboxBorderBrush.Color = _textboxDefaultColor;
+            this._textboxHoverOverBrush.Color = _textboxHoverOverDefColor;
+        }
+
         public void Validate()
         {
             //Debug.WriteLine("Validate started. Text: " + this._control.Text);
@@ -233,9 +240,7 @@ namespace TsGui
             }
             else
             {
-                TsWindowAlerts.HideToolTip(this._validToolTip);
-                this._textboxBorderBrush.Color = _textboxDefaultColor;
-                this._textboxHoverOverBrush.Color = _textboxHoverOverDefColor;
+                this.ClearToolTips();
             }
 
             this._isvalid = valid;

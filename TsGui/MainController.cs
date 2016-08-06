@@ -276,7 +276,7 @@ namespace TsGui
                     if ((option.IsEnabled == true) && (option.IsHidden == false))
                     { this._envController.AddVariable(option.Variable); }
                     else
-                    { this._envController.AddVariable(new TsVariable(option.VariableName,"TSGUI_INACTIVE")); }
+                    { this._envController.AddVariable(new TsVariable(option.VariableName,option.InactiveValue)); }
                 }
             }
 

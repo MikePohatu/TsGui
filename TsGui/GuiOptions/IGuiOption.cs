@@ -7,6 +7,7 @@ namespace TsGui
     {
         TsVariable Variable { get; }
         string VariableName { get; }
+        string InactiveValue { get; }
         Label Label { get; }
         Control Control { get; }
         Thickness Padding { get; }

@@ -9,7 +9,7 @@ using System;
 
 namespace TsGui
 {
-    public class TsColumn: INotifyPropertyChanged,IGroupable
+    public class TsColumn: TsParent,INotifyPropertyChanged,IGroupable
     {
         private bool _enabled;
         private bool _hidden;
@@ -81,6 +81,15 @@ namespace TsGui
                 OnPropertyChanged(this, "IsHidden");
             }
         }
+        public bool IsActive
+        {
+            get
+            {
+                if ((this.IsEnabled == true) && (this.IsHidden == false))
+                { return true; }
+                else { return false; }
+            }
+        }
 
         //constructor
         public TsColumn (XElement SourceXml,int PageIndex, MainController RootController)
@@ -150,7 +159,7 @@ namespace TsGui
                     newOption = GuiFactory.CreateGuiOption(xOption,this._controller);
                     this.options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);
-                    if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, newOption); }
+                    //if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, newOption); }
                 }
             }
 
