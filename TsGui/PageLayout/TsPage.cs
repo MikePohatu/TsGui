@@ -53,30 +53,23 @@ namespace TsGui
             {
                 this._hidden = value;
                 this.OnPropertyChanged(this, "IsHidden");
+                this.UpdatePrevious();
             }
         }
         public TsPage NextActivePage
         {
             get
             {
-                if (this.NextPage == null) { return null; }
-                else
-                {
-                    if (this.NextPage.IsHidden == false) { return this.NextPage; }
-                    else { return this.NextPage.NextActivePage; }                    
-                }
+                if ((this.NextPage == null) || (this.NextPage.IsHidden == false)) { return this.NextPage; }
+                else { return this.NextPage.NextActivePage; }
             }
         }
         public TsPage PreviousActivePage
         {
             get
             {
-                if (this.PreviousPage == null) { return null; }
-                else
-                {
-                    if (this.PreviousPage.IsHidden == false) { return this.PreviousPage; }
-                    else { return this.PreviousPage.PreviousActivePage; }
-                }
+                if ((this.PreviousPage == null) || (this.PreviousPage.IsHidden == false)) { return this.PreviousPage; }
+                else { return this.PreviousPage.PreviousActivePage; }
             }
         }
         public double Width
@@ -373,6 +366,14 @@ namespace TsGui
             }
         }
 
+        private void UpdatePrevious()
+        {
+            TsPage tempPage;
+
+            tempPage = this.PreviousActivePage;
+            if (tempPage != null) { tempPage.Update(); }
+        }
+
         //Update the prev, next, finish buttons according to the current pages 
         //place in the world
         public void Update()
@@ -384,11 +385,23 @@ namespace TsGui
                 this._pagelayout.buttonFinish.Visibility = Visibility.Hidden;
                 this._pagelayout.buttonFinish.IsEnabled = false;
             }
+            else
+            {
+                this._pagelayout.buttonFinish.Visibility = Visibility.Visible;
+                this._pagelayout.buttonFinish.IsEnabled = true;
+                this._pagelayout.buttonNext.Visibility = Visibility.Hidden;
+                this._pagelayout.buttonNext.IsEnabled = false;
+            }
 
             if (this.PreviousActivePage != null)
             {
                 this._pagelayout.buttonPrev.Visibility = Visibility.Visible;
                 this._pagelayout.buttonPrev.IsEnabled = true;
+            }
+            else
+            {
+                this._pagelayout.buttonPrev.Visibility = Visibility.Hidden;
+                this._pagelayout.buttonPrev.IsEnabled = false;
             }
         }
     }

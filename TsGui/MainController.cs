@@ -124,7 +124,6 @@ namespace TsGui
             }
         }
 
-
         private void LoadXml(XElement SourceXml)
         {
             
@@ -265,16 +264,19 @@ namespace TsGui
             this.CurrentPage.Update();
         }
 
+        //finish and create the TS Variables
         public void Finish()
         {
             foreach (IGuiOption option in this._optionlibrary.Options)
             {
+                //first check for null option variables e.g. for headings
                 if (option.Variable != null)
                 {
+                    //now check if the option is active or not and variables created as required
                     if ((option.IsEnabled == true) && (option.IsHidden == false))
                     { this._envController.AddVariable(option.Variable); }
                     else
-                    { this._envController.AddVariable(new TsVariable(option.VariableName,"TSGUI_DISABLED")); }
+                    { this._envController.AddVariable(new TsVariable(option.VariableName,"TSGUI_INACTIVE")); }
                 }
             }
 

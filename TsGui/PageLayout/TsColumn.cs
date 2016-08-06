@@ -78,7 +78,7 @@ namespace TsGui
             set
             {
                 this.HideUnhide(value);
-                OnPropertyChanged(this, "Hidden");
+                OnPropertyChanged(this, "IsHidden");
             }
         }
 
