@@ -1,5 +1,5 @@
 ﻿using System.Xml.Linq;
-using System.Diagnostics;
+//using System.Diagnostics;
 using System;
 
 namespace TsGui
@@ -44,13 +44,13 @@ namespace TsGui
             string s = null;
             XAttribute xtype;
 
-            Debug.WriteLine(InputXml);
+            //Debug.WriteLine(InputXml);
 
             foreach (XElement x in InputXml.Elements())
             {
                 if (string.Equals(x.Name.ToString(), "Query", StringComparison.OrdinalIgnoreCase))
                 {
-                    Debug.WriteLine("Query requested");
+                    //Debug.WriteLine("Query requested");
                     xtype = x.Attribute("Type");
                     if (xtype == null) { throw new NullReferenceException("Missing Type attribute XML: " + Environment.NewLine + x); }
 

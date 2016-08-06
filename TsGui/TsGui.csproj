@@ -74,14 +74,15 @@
     </ApplicationDefinition>
     <Compile Include="Control\Checker.cs" />
     <Compile Include="Control\EnvironmentController.cs" />
-    <Compile Include="Control\Group.cs" />
+    <Compile Include="Grouping\Group.cs" />
     <Compile Include="Control\GuiFactory.cs" />
-    <Compile Include="Control\IGroupable.cs" />
-    <Compile Include="Control\Toggle.cs" />
+    <Compile Include="Grouping\IGroupable.cs" />
+    <Compile Include="Grouping\Toggle.cs" />
     <Compile Include="GuiOptions\TsBaseOption.cs" />
     <Compile Include="Control\HardwareEvaluator.cs" />
     <Compile Include="GuiOptions\IEditableGuiOption.cs" />
     <Compile Include="Control\ITsVariableOutput.cs" />
+    <Compile Include="Grouping\IToggleControl.cs" />
     <Compile Include="PageLayout\PageLayout.xaml.cs">
       <DependentUpon>PageLayout.xaml</DependentUpon>
     </Compile>

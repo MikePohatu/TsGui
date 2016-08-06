@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Management;
 
-using System.Diagnostics;
+//using System.Diagnostics;
 
 namespace TsGui
 {
@@ -57,7 +57,7 @@ namespace TsGui
             }
             catch
             {
-                Debug.WriteLine("Exception thrown in SystemConnector: GetWmiQuery");
+                //Debug.WriteLine("Exception thrown in SystemConnector: GetWmiQuery");
                 return null;
             }
             
@@ -74,7 +74,7 @@ namespace TsGui
             }
             catch
             {
-                Debug.WriteLine("Exception thrown in SystemConnector: GetWmiQuery");
+                //Debug.WriteLine("Exception thrown in SystemConnector: GetWmiQuery");
                 return null;
             }
         }

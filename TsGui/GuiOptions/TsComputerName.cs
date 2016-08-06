@@ -19,7 +19,7 @@
 
 using System;
 using System.Xml.Linq;
-using System.Diagnostics;
+//using System.Diagnostics;
 
 namespace TsGui
 {
@@ -78,12 +78,8 @@ namespace TsGui
                 def.Add(serial);
 
                 x.Add(def);
-                
 
-                Debug.WriteLine("TsComputerName XML: " + Environment.NewLine + x);
-
-                base.LoadXml(x);
-                
+                base.LoadXml(x);               
             }
             else { base.LoadXml(SourceXml); }
         }

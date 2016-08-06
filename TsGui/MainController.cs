@@ -7,7 +7,6 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Windows;
 using System.ComponentModel;
-
 using System.Diagnostics;
 
 namespace TsGui
@@ -22,6 +21,7 @@ namespace TsGui
         private List<TsPage> _pages = new List<TsPage>();
         private EnvironmentController _envController = new EnvironmentController();
         private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
+        private List<IToggleControl> _toggles = new List<IToggleControl>();
         private OptionLibrary _optionlibrary = new OptionLibrary();
         private HardwareEvaluator _chassischeck;
 
@@ -55,6 +55,7 @@ namespace TsGui
                 string msg = "Error message: " + exc.Message + Environment.NewLine + exc.ToString();
                 MessageBox.Show(msg, "Application Exception", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.ParentWindow.Closing -= this.OnWindowClosing;
+                this.ParentWindow.Close();
                 //this.CurrentPage.Window.Close();
             }
         }
@@ -88,6 +89,13 @@ namespace TsGui
 
             //now show the first page in the list
             this.CurrentPage = this._pages.First();
+
+            //update group settings to all controls
+            foreach (IToggleControl t in this._toggles)
+            {
+                t.InitialiseToggle();
+            }
+
             this.UpdateWindow();
         }
 
@@ -215,27 +223,35 @@ namespace TsGui
             this.UpdateWindow();
         }
         
+        public void AddToggleControl(IToggleControl ToogleControl)
+        {
+            this._toggles.Add(ToogleControl);
+        }
+
+        private Group CreateGroup(string ID)
+        {
+            Group group;
+            group = new Group(ID);
+            this._groups.Add(ID, group);
+            return group;
+        }
+        
         //add a groupable element to a group
         public void AddToGroup (string ID, IGroupable Element)
         {
             Group group;
-            _groups.TryGetValue(ID, out group);
-            if (group != null) { group.Add(Element); }
-            else
-            {
-                group = new Group(ID);
-                group.Add(Element);
-                this._groups.Add(ID,group);
-            }
+            this._groups.TryGetValue(ID, out group);
+            if (group == null) { group = this.CreateGroup(ID); }
+            group.Add(Element);
         }
 
         public Group GetGroup(string ID)
         {
             Group group;
-            _groups.TryGetValue(ID, out group);
-            if (group == null) 
+            this._groups.TryGetValue(ID, out group);
+            if (group == null)
             {
-                group = new Group(ID);
+                group = this.CreateGroup(ID);
             }
             return group;
         }

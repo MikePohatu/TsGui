@@ -4,7 +4,6 @@
 
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.ComponentModel;
 
 namespace TsGui
 {

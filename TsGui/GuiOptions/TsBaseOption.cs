@@ -5,14 +5,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Data;
-using System.Diagnostics;
+//using System.Diagnostics;
 
 namespace TsGui
 {
     public abstract class TsBaseOption: INotifyPropertyChanged, IGroupable
     {      
-        protected bool _enabled;
-        protected bool _hidden;
+        protected bool _isenabled = true;
+        protected bool _ishidden = false;
         protected MainController _controller;
         protected string _value;
         protected string _help;
@@ -120,22 +120,24 @@ namespace TsGui
                 OnPropertyChanged(this, "ToolTip");
             }
         }
-        public bool Enabled
+        public bool IsEnabled
         {
-            get { return this._enabled; }
+            get { return this._isenabled; }
             set
             {
-                this.EnableDisable(value);
-                OnPropertyChanged(this, "Enabled");
+                //Debug.WriteLine("Enabled property set: " + value);
+                //this.EnableDisable(value);
+                this._isenabled = value;
+                OnPropertyChanged(this, "IsEnabled");
             }
         }
-        public bool Hidden
+        public bool IsHidden
         {
-            get { return this._hidden; }
+            get { return this._ishidden; }
             set
             {
                 this.HideUnhide(value);
-                OnPropertyChanged(this, "Hidden");
+                OnPropertyChanged(this, "IsHidden");
             }
         }
         //Setup the INotifyPropertyChanged interface 
@@ -154,9 +156,11 @@ namespace TsGui
         //constructor
         protected TsBaseOption()
         {
-            Debug.WriteLine("TsBaseOption constructor called");
+            //Debug.WriteLine("TsBaseOption constructor called");
             this._labelcontrol = new Label();
             this._labelcontrol.DataContext = this;
+            this._labelcontrol.SetBinding(Label.IsEnabledProperty, new Binding("IsEnabled"));
+            //this._labelcontrol.SetBinding(Label.Is, new Binding("Enabled"));
             this._labelcontrol.SetBinding(Label.ContentProperty, new Binding("LabelText"));
             this._labelcontrol.SetBinding(Label.HeightProperty, new Binding("Height"));
             this._labelcontrol.SetBinding(Label.PaddingProperty, new Binding("LabelPadding"));
@@ -178,6 +182,9 @@ namespace TsGui
             tb.SetBinding(TextBlock.TextProperty, new Binding("HelpText"));
 
             //Set defaults
+            //this.Enabled = true;
+            //this.Hidden = false;
+            this._visibleHeight = 20;
             this.Height = 20;
             this._labelcontrol.HorizontalAlignment = HorizontalAlignment.Left;
         }
@@ -220,43 +227,24 @@ namespace TsGui
 
             x = InputXml.Element("Enabled");
             if (x != null)
-            { this.Enabled = Convert.ToBoolean(x.Value); }
+            { this.IsEnabled = Convert.ToBoolean(x.Value); }
 
             x = InputXml.Element("Hidden");
             if (x != null)
-            { this.Hidden = Convert.ToBoolean(x.Value); }
+            { this.IsHidden = Convert.ToBoolean(x.Value); }
 
-            IEnumerable<XElement> groupsXml;
-            groupsXml = InputXml.Elements("Group");
-            if (groupsXml != null)
+            x = InputXml.Element("Group");
+            if (x != null)
             {
-                foreach (XElement xGroup in groupsXml)
-                {
-                    this._controller.AddToGroup(xGroup.Value, this);
-                }
-            }
-
-            IEnumerable<XElement> toggleXml;
-            toggleXml = InputXml.Elements("Toggle");
-            if (toggleXml != null)
-            {
-                foreach (XElement xToggle in toggleXml)
-                {
-                    Group g = this._controller.GetGroup(xToggle.Value);
-                    string valOn = xToggle.Element("ValueOn").Value;
-                    string valOff = xToggle.Element("ValueOff").Value;
-                    string mode = xToggle.Element("Mode").Value;
-                    bool hideMode = false;
-                    //if (mode.)
-                    Toggle t = new Toggle(g, valOn, valOff, hideMode, this);
-                }
+                //Debug.WriteLine("Group: " + Environment.NewLine + xGroup);
+                this._controller.AddToGroup(x.Value, this);
             }
             #endregion
         }
 
         protected void HideUnhide(bool Hidden)
         {
-            this._hidden = Hidden;
+            this._ishidden = Hidden;
             if (Hidden == true)
             {
                 //(Grid)this._control.Parent.
@@ -264,6 +252,7 @@ namespace TsGui
                 this._labelcontrol.Visibility = Visibility.Collapsed;
                 this.Height = 0;
                 this.Margin = new Thickness(0);
+                this.LabelMargin = new Thickness(0);
             }
             else
             {
@@ -271,15 +260,17 @@ namespace TsGui
                 this._labelcontrol.Visibility = Visibility.Visible;
                 this.Height = this._visibleHeight;
                 this.Padding = this._visiblepadding;
+                this.Margin = this._visiblemargin;
+                this.LabelMargin = this._visiblelabelmargin;
             }
         }
 
-        protected void EnableDisable(bool Enabled)
-        {
-            this._enabled = Enabled;
-            this._control.IsEnabled = Enabled;
-            this._labelcontrol.IsEnabled = Enabled;
-        }
+        //protected void EnableDisable(bool Enabled)
+        //{
+        //    this._isenabled = Enabled;
+        //    _control.IsEnabled = Enabled;
+        //    this._labelcontrol.IsEnabled = Enabled;
+        //}
 
         
     }

@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
-using System.Diagnostics;
+//using System.Diagnostics;
 using System;
 
 namespace TsGui
@@ -63,16 +63,16 @@ namespace TsGui
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this.options; } }
         public Panel Panel { get { return this._columngrid; } }
-        public bool Enabled
+        public bool IsEnabled
         {
             get { return this._enabled; }
             set
             {
                 this.EnableDisable(value);
-                OnPropertyChanged(this, "Enabled");
+                OnPropertyChanged(this, "IsEnabled");
             }
         }
-        public bool Hidden
+        public bool IsHidden
         {
             get { return this._hidden; }
             set
@@ -95,6 +95,7 @@ namespace TsGui
             this._coldefLabels = new ColumnDefinition();
 
             this._columngrid.DataContext = this;
+            //this._columngrid.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
             this._columngrid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
 
             this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
@@ -158,12 +159,23 @@ namespace TsGui
 
             x = InputXml.Element("Enabled");
             if (x != null)
-            { this.Enabled = Convert.ToBoolean(x.Value); }
+            { this.IsEnabled = Convert.ToBoolean(x.Value); }
 
             x = InputXml.Element("Hidden");
             if (x != null)
-            { this.Hidden = Convert.ToBoolean(x.Value); }
+            { this.IsHidden = Convert.ToBoolean(x.Value); }
 
+            IEnumerable<XElement> groupsXml;
+            groupsXml = InputXml.Elements("Group");
+            if (groupsXml != null)
+            {
+
+                foreach (XElement xGroup in groupsXml)
+                {
+                    //Debug.WriteLine("Group: " + Environment.NewLine + xGroup);
+                    this._controller.AddToGroup(xGroup.Value, this);
+                }
+            }
             //GuiFactory.LoadMargins(InputXml, this._margin);
         }
 
@@ -179,7 +191,7 @@ namespace TsGui
                 //option.Label.Margin = this._margin;
 
                 RowDefinition coldefRow = new RowDefinition();
-                coldefRow.Height = new GridLength(option.Height + option.Margin.Top + option.Margin.Bottom) ;
+                //coldefRow.Height = new GridLength(option.Height + option.Margin.Top + option.Margin.Bottom) ;
                 this._columngrid.RowDefinitions.Add(coldefRow);
 
                 Grid.SetColumn(option.Label, 0);
@@ -187,11 +199,10 @@ namespace TsGui
                 Grid.SetRow(option.Label, rowindex);
                 Grid.SetRow(option.Control, rowindex);
 
-                //this._columngrid.
                 this._columngrid.Children.Add(option.Label);
                 this._columngrid.Children.Add(option.Control);
 
-                Debug.WriteLine("Control width (" + option.Label.Content + "): " + width);
+                //Debug.WriteLine("Control width (" + option.Label.Content + "): " + width);
                 if (width < option.Control.Width)
                 {                   
                     width = option.Control.Width;
@@ -199,9 +210,6 @@ namespace TsGui
 
                 rowindex++;
             }
-
-            Debug.WriteLine("Column width: " + width);
-            //this._coldefControls.Width = new GridLength(width);
         }
 
         protected void HideUnhide(bool Hidden)

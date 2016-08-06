@@ -1,15 +1,14 @@
 ﻿using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
-using System.Diagnostics;
 using System.Windows.Data;
-using System;
-using System.Collections.Generic;
 
 namespace TsGui
 {
-    public class TsCheckBox: TsBaseOption, IGuiOption
+    public class TsCheckBox: TsBaseOption, IGuiOption, IToggleControl
     {
+        public event ToggleEventHandler ValueChange;
+
         new private CheckBox _control;
         private HorizontalAlignment _hAlignment;
         private string _valTrue;
@@ -24,7 +23,7 @@ namespace TsGui
 
             //setup the bindings
             this._control.DataContext = this;
-
+            this._control.SetBinding(Label.IsEnabledProperty, new Binding("IsEnabled"));
             this._control.SetBinding(Label.PaddingProperty, new Binding("Padding"));
             this._control.SetBinding(Label.MarginProperty, new Binding("Margin"));
 
@@ -42,7 +41,7 @@ namespace TsGui
             this.Height = 17;
 
             this.LoadXml(SourceXml);
-            this.Build();
+            this.Build();            
         }
 
         public TsVariable Variable
@@ -50,11 +49,17 @@ namespace TsGui
             get
             {
                 //this.value = this.control.Text;
-                if (this._control.IsChecked == true) { return new TsVariable(this.VariableName, this._valTrue); }
-                else { return new TsVariable(this.VariableName, this._valFalse); }
+                return new TsVariable(this.VariableName, this.CurrentValue);
             }
         }
-
+        public string CurrentValue
+        {
+            get
+            {
+                if (this._control.IsChecked == true) { return this._valTrue; }
+                else { return this._valFalse; }
+            }
+        }
         public void LoadXml(XElement InputXml)
         {
             #region
@@ -75,6 +80,12 @@ namespace TsGui
             if (x != null)
             { this._valFalse = x.Value; }
 
+            x = InputXml.Element("Toggle");
+            if (x != null)
+            {
+                Toggle t = new Toggle(this, this._controller, x);
+                this._controller.AddToggleControl(this);
+            }
             GuiFactory.LoadHAlignment(InputXml, ref this._hAlignment);
             GuiFactory.LoadMargins(InputXml, this._margin);
 
@@ -83,14 +94,27 @@ namespace TsGui
 
         private void Build()
         {
-            Debug.WriteLine("CheckBox HAlignment: " + this._hAlignment.ToString());
             this._control.VerticalAlignment = VerticalAlignment.Center;
             this._control.HorizontalAlignment = this._hAlignment;
         }
 
-        private void onValChange(object sender, RoutedEventArgs e)
+        //setup event subscriptions between the toggle and the control
+        public void AttachToggle(Toggle Toggle)
         {
+            this._control.Click += this.OnChanged;
+            ValueChange += Toggle.OnToggle;
+        }
 
+        //fire an intial event to make sure things are set correctly. This is
+        //called by the controller once everything is loaded
+        public void InitialiseToggle()
+        {
+            ValueChange(this, new RoutedEventArgs());
+        }
+
+        public void OnChanged(object o, RoutedEventArgs e)
+        {
+            ValueChange(this, e);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+//using System.Diagnostics;
 using System.Xml.Linq;
 
 namespace TsGui
@@ -40,7 +40,7 @@ namespace TsGui
                 else
                 { toignore = Value.StartsWith(xignore.Value, StringComparison.OrdinalIgnoreCase); }
 
-                Debug.WriteLine("toignore value: " + toignore);
+                //Debug.WriteLine("toignore value: " + toignore);
                 if (toignore) { return true; }
             }
 

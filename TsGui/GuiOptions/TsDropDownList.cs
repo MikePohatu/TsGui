@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Controls;
-using System.Diagnostics;
+//using System.Diagnostics;
 using System.Windows.Data;
 using System.Windows;
 
@@ -16,15 +16,16 @@ namespace TsGui
 
         public TsDropDownList(XElement InputXml, MainController RootController): base()
         {
-            Debug.WriteLine("TsDropDownList constructor called");
+            //Debug.WriteLine("TsDropDownList constructor called");
             this._controller = RootController;
 
             this._control = new ComboBox();
             base._control = this._control;
 
             this._control.DataContext = this;
-            this._control.SetBinding(Label.PaddingProperty, new Binding("Padding"));
-            this._control.SetBinding(Label.MarginProperty, new Binding("Margin"));
+            this._control.SetBinding(ComboBox.IsEnabledProperty, new Binding("IsEnabled"));
+            this._control.SetBinding(ComboBox.PaddingProperty, new Binding("Padding"));
+            this._control.SetBinding(ComboBox.MarginProperty, new Binding("Margin"));
 
             this._control.VerticalAlignment = VerticalAlignment.Center;
             this._visiblepadding = new Thickness(6, 2, 2, 3);
@@ -39,7 +40,6 @@ namespace TsGui
             this.Height = 20;
 
             this.LoadXml(InputXml);
-            
         }
 
         //properties
@@ -74,7 +74,7 @@ namespace TsGui
                     defxCount++;
                     if (xdefoption.Name == "Value")
                     {
-                        Debug.WriteLine("LoadXml default: " + xdefoption.Value);
+                        //Debug.WriteLine("LoadXml default: " + xdefoption.Value);
                         this._value = xdefoption.Value;
                         break;
                     }
@@ -119,8 +119,8 @@ namespace TsGui
                 //default, select it by default in the list
                 if ((entry.Value == this._value) || (index == 0))
                 {
-                    if (index == 0) { Debug.WriteLine("0 index"); }
-                    else { Debug.WriteLine("Default value found " + entry.Value); }
+                    //if (index == 0) { Debug.WriteLine("0 index"); }
+                    //else { Debug.WriteLine("Default value found " + entry.Value); }
 
                     this._control.SelectedItem = entry;
                 }

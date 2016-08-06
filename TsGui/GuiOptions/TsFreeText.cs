@@ -5,7 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Data;
-using System.Diagnostics;
+//using System.Diagnostics;
 
 
 namespace TsGui
@@ -74,7 +74,7 @@ namespace TsGui
         #region
         protected TsFreeText(MainController RootController): base()
         {
-            Debug.WriteLine("TsFreeText: protected constructor called");
+            //Debug.WriteLine("TsFreeText: protected constructor called");
             this.Startup(RootController);
         }
 
@@ -106,7 +106,7 @@ namespace TsGui
 
             //setup the bindings
             this._control.DataContext = this;
-
+            this._control.SetBinding(TextBox.IsEnabledProperty, new Binding("IsEnabled"));
             this._control.SetBinding(TextBox.MaxLengthProperty, new Binding("MaxLength"));
             this._control.SetBinding(TextBox.HeightProperty, new Binding("Height"));
             this._control.SetBinding(TextBox.TextProperty, new Binding("Value"));;

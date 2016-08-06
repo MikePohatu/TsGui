@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System;
-using System.Diagnostics;
+//using System.Diagnostics;
 using System.ComponentModel;
 
 namespace TsGui
@@ -197,7 +197,7 @@ namespace TsGui
         //Constructors
         public TsPage(XElement SourceXml, string HeadingTitle, string HeadingText, double Height,double Width, Thickness Margin, SolidColorBrush HeadingBgColor, SolidColorBrush HeadingTextColor, MainController RootController)
         {
-            Debug.WriteLine("New page constructor");
+            //Debug.WriteLine("New page constructor");
             //Debug.WriteLine(SourceXml);
             this._controller = RootController;
             this._pagelayout = new PageLayout(this);
@@ -323,12 +323,12 @@ namespace TsGui
 
         public bool OptionsValid()
         {
-            Debug.WriteLine("OptionsValid called");
+            //Debug.WriteLine("OptionsValid called");
             foreach (IEditableGuiOption option in this._editables)
             {
                 if (option.IsValid == false)
                 {
-                    Debug.WriteLine("invalid option found");
+                    //Debug.WriteLine("invalid option found");
                     return false;
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace TsGui
 {
@@ -7,8 +8,11 @@ namespace TsGui
         private List<IGroupable> _elements;
         private bool _isEnabled;
         private bool _isHidden;
+
+        //public Toggle Toggle { get; set; }
         public string ID { get; set; }
-        public bool Enabled
+        public int Count { get { return this._elements.Count; } }
+        public bool IsEnabled
         {
             get { return this._isEnabled; }
             set
@@ -16,19 +20,20 @@ namespace TsGui
                 this._isEnabled = value;
                 foreach (IGroupable element in this._elements)
                 {
-                    element.Enabled = value;
+                    element.IsEnabled = value;
                 }
             }
         }
-        public bool Hidden
+        public bool IsHidden
         {
             get { return this._isHidden; }
             set
             {
+                Debug.WriteLine("Group Hidden set: " + this.ID + " - " + value);
                 this._isHidden = value;
                 foreach (IGroupable element in this._elements)
-                {
-                    element.Hidden = value;
+                {                    
+                    element.IsHidden = value;
                 }
             }
         }
@@ -37,11 +42,11 @@ namespace TsGui
         {
             this._elements = new List<IGroupable>();
             this.ID = ID;
-            this.Enabled = true;
-            this.Hidden = false;
+            this.IsEnabled = true;
+            this.IsHidden = false;
         }
 
-        public void Add (IGroupable GroupableElement)
+        public void Add(IGroupable GroupableElement)
         {
             this._elements.Add(GroupableElement);
         }
@@ -50,6 +55,5 @@ namespace TsGui
         {
             this._elements.Remove(GroupableElement);
         }
-
     }
 }
