@@ -1,14 +1,12 @@
 ﻿using System.Windows.Controls;
 using System.Windows;
-using System.ComponentModel;
 
 namespace TsGui
 {
-    public interface IGuiOption: ITsGuiElement
+    public interface IGuiOption: ITsGuiElement, IGroupable
     {
-        //event PropertyChangedEventHandler PropertyChanged;
-
         TsVariable Variable { get; }
+        string VariableName { get; }
         Label Label { get; }
         Control Control { get; }
         Thickness Padding { get; }
@@ -16,7 +14,5 @@ namespace TsGui
         Thickness LabelMargin { get; }
         Thickness LabelPadding { get; }
         int Height { get; }
-        //DataGridLength 
-        //string HelpText { get; set; }
     }
 }

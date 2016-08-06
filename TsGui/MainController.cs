@@ -245,6 +245,7 @@ namespace TsGui
             group.Add(Element);
         }
 
+        //return the Group object from a specified ID
         public Group GetGroup(string ID)
         {
             Group group;
@@ -268,22 +269,19 @@ namespace TsGui
         {
             foreach (IGuiOption option in this._optionlibrary.Options)
             {
-
                 if (option.Variable != null)
                 {
-                    //Debug.WriteLine(option.Variable.Name + ": " + option.Variable.Value);
-                    this._envController.AddVariable(option.Variable);
+                    if ((option.IsEnabled == true) && (option.IsHidden == false))
+                    { this._envController.AddVariable(option.Variable); }
+                    else
+                    { this._envController.AddVariable(new TsVariable(option.VariableName,"TSGUI_DISABLED")); }
                 }
-
             }
 
             if (this._chassischeck != null)
             {
                 foreach (TsVariable var in this._chassischeck.GetTsVariables)
-                {
-                    //Debug.WriteLine(var.Name + ": " + var.Value);
-                    this._envController.AddVariable(var);
-                }
+                { this._envController.AddVariable(var); }
             }
 
             this._finished = true;

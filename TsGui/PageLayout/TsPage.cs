@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace TsGui
 {
-    public class TsPage: ITsGuiElement, INotifyPropertyChanged
+    public class TsPage: ITsGuiElement, INotifyPropertyChanged, IGroupable
     {
         private bool _enabled = true;
         private bool _hidden = false;
@@ -37,22 +37,22 @@ namespace TsGui
 
         //Properties
         #region
-        public bool Enabled
+        public bool IsEnabled
         {
             get { return this._enabled; }
             set
             {
                 this._enabled = value;
-                this.OnPropertyChanged(this, "Enabled");
+                this.OnPropertyChanged(this, "IsEnabled");
             }
         }
-        public bool Hidden
+        public bool IsHidden
         {
             get { return this._hidden; }
             set
             {
                 this._hidden = value;
-                this.OnPropertyChanged(this, "Hidden");
+                this.OnPropertyChanged(this, "IsHidden");
             }
         }
         public TsPage NextActivePage
@@ -62,7 +62,7 @@ namespace TsGui
                 if (this.NextPage == null) { return null; }
                 else
                 {
-                    if (this.NextPage.Hidden == false) { return this.NextPage; }
+                    if (this.NextPage.IsHidden == false) { return this.NextPage; }
                     else { return this.NextPage.NextActivePage; }                    
                 }
             }
@@ -74,7 +74,7 @@ namespace TsGui
                 if (this.PreviousPage == null) { return null; }
                 else
                 {
-                    if (this.PreviousPage.Hidden == true) { return this.PreviousPage; }
+                    if (this.PreviousPage.IsHidden == false) { return this.PreviousPage; }
                     else { return this.PreviousPage.PreviousActivePage; }
                 }
             }
@@ -224,7 +224,15 @@ namespace TsGui
         {
             IEnumerable<XElement> columnsXml;
             XElement x;
+            string groupID = null;
             int colIndex = 0;
+
+            x = InputXml.Element("Group");
+            if (x != null)
+            {
+                groupID = x.Value;
+                this._controller.AddToGroup(groupID, this);
+            }
 
             //now read in the options and add to a dictionary for later use
             columnsXml = InputXml.Elements("Column");
@@ -234,6 +242,7 @@ namespace TsGui
                 {
                     TsColumn c = new TsColumn(xColumn, colIndex,this._controller);
                     this._columns.Add(c);
+                    if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, c); }
                     colIndex++;
                 }
             }
@@ -273,11 +282,11 @@ namespace TsGui
 
             x = InputXml.Element("Enabled");
             if (x != null)
-            { this.Enabled = Convert.ToBoolean(x.Value); }
+            { this.IsEnabled = Convert.ToBoolean(x.Value); }
 
             x = InputXml.Element("Hidden");
             if (x != null)
-            { this.Hidden = Convert.ToBoolean(x.Value); }
+            { this.IsHidden = Convert.ToBoolean(x.Value); }
 
             this.PopulateOptions();
         }

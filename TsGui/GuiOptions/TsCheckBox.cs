@@ -48,10 +48,10 @@ namespace TsGui
         {
             get
             {
-                //this.value = this.control.Text;
                 return new TsVariable(this.VariableName, this.CurrentValue);
             }
         }
+
         public string CurrentValue
         {
             get
@@ -60,6 +60,7 @@ namespace TsGui
                 else { return this._valFalse; }
             }
         }
+
         public void LoadXml(XElement InputXml)
         {
             #region

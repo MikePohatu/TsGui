@@ -130,8 +130,16 @@ namespace TsGui
         private void LoadXml(XElement InputXml)
         {
             XElement x;
+            string groupID = null;
             IEnumerable<XElement> optionsXml;
             IGuiOption newOption;
+
+            x = InputXml.Element("Group");
+            if (x != null)
+            {
+                groupID = x.Value;
+                this._controller.AddToGroup(groupID, this);
+            }
 
             //now read in the options and add to a dictionary for later use
             optionsXml = InputXml.Elements("GuiOption");
@@ -142,6 +150,7 @@ namespace TsGui
                     newOption = GuiFactory.CreateGuiOption(xOption,this._controller);
                     this.options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);
+                    if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, newOption); }
                 }
             }
 
@@ -164,19 +173,6 @@ namespace TsGui
             x = InputXml.Element("Hidden");
             if (x != null)
             { this.IsHidden = Convert.ToBoolean(x.Value); }
-
-            IEnumerable<XElement> groupsXml;
-            groupsXml = InputXml.Elements("Group");
-            if (groupsXml != null)
-            {
-
-                foreach (XElement xGroup in groupsXml)
-                {
-                    //Debug.WriteLine("Group: " + Environment.NewLine + xGroup);
-                    this._controller.AddToGroup(xGroup.Value, this);
-                }
-            }
-            //GuiFactory.LoadMargins(InputXml, this._margin);
         }
 
 
