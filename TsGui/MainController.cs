@@ -236,12 +236,13 @@ namespace TsGui
         }
         
         //add a groupable element to a group
-        public void AddToGroup (string ID, IGroupable Element)
+        public Group AddToGroup (string ID, IGroupable Element)
         {
             Group group;
             this._groups.TryGetValue(ID, out group);
             if (group == null) { group = this.CreateGroup(ID); }
             group.Add(Element);
+            return group;
         }
 
         //return the Group object from a specified ID

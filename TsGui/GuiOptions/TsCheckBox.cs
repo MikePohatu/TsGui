@@ -7,7 +7,7 @@ namespace TsGui
 {
     public class TsCheckBox: TsBaseOption, IGuiOption, IToggleControl
     {
-        public event ToggleEventHandler ValueChange;
+        public event ToggleEvent ValueChange;
 
         new private CheckBox _control;
         private HorizontalAlignment _hAlignment;

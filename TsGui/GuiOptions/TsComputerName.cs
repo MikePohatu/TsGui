@@ -25,7 +25,7 @@ namespace TsGui
 {
     public class TsComputerName: TsFreeText
     {
-        public TsComputerName(XElement SourceXml, MainController RootController):base (RootController)
+        public TsComputerName(XElement SourceXml, MainController RootController) : base(RootController)
         {
             this.VariableName = "OSDComputerName";
             this.LabelText = "Computer Name:";

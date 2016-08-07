@@ -4,18 +4,19 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
-//using System.Diagnostics;
 using System;
 
 namespace TsGui
 {
-    public class TsColumn: TsParent,INotifyPropertyChanged,IGroupable
+    public class TsColumn: IGroupParent, INotifyPropertyChanged,IGroupable
     {
+        
+
         private bool _enabled;
+        private Group _group;
         private bool _hidden;
         private List<IGuiOption> options = new List<IGuiOption>();
         private Grid _columngrid;
-        //private Thickness _margin = new Thickness(0,0,0,0);
         private bool _gridlines;
         private GridLength _labelwidth;
         private GridLength _controlwidth;
@@ -24,6 +25,8 @@ namespace TsGui
         private ColumnDefinition _coldefControls;
         private ColumnDefinition _coldefLabels;
 
+        //properties
+        #region
         public GridLength LabelWidth
         {
             get { return this._labelwidth; }
@@ -68,8 +71,11 @@ namespace TsGui
             get { return this._enabled; }
             set
             {
-                this.EnableDisable(value);
-                OnPropertyChanged(this, "IsEnabled");
+                this._enabled = value;
+                if (value == true) { this.ParentChanged?.Invoke(this, 0); }
+                else { this.ParentChanged?.Invoke(this, 1); }
+
+                this.OnPropertyChanged(this, "IsEnabled");
             }
         }
         public bool IsHidden
@@ -77,8 +83,10 @@ namespace TsGui
             get { return this._hidden; }
             set
             {
-                this.HideUnhide(value);
-                OnPropertyChanged(this, "IsHidden");
+                this._hidden = value;
+                if (value == true) { this.ParentChanged?.Invoke(this, 2); }
+                else { this.ParentChanged?.Invoke(this, 0); }
+                this.OnPropertyChanged(this, "IsHidden");
             }
         }
         public bool IsActive
@@ -90,8 +98,10 @@ namespace TsGui
                 else { return false; }
             }
         }
+        #endregion
 
         //constructor
+        #region
         public TsColumn (XElement SourceXml,int PageIndex, MainController RootController)
         {            
             this._controller = RootController;
@@ -104,7 +114,6 @@ namespace TsGui
             this._coldefLabels = new ColumnDefinition();
 
             this._columngrid.DataContext = this;
-            //this._columngrid.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
             this._columngrid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
 
             this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
@@ -120,6 +129,7 @@ namespace TsGui
             this.LoadXml(SourceXml);
             this.Build();
         }
+        #endregion
 
         //Setup the INotifyPropertyChanged interface 
         #region
@@ -132,6 +142,24 @@ namespace TsGui
             if (handler != null)
             {
                 handler(sender, new PropertyChangedEventArgs(name));
+            }
+        }
+
+        public event ParentToggleEvent ParentChanged;
+        //Only subscribed if member of a group. Registers changes to parent elements. 
+        public void OnParentChanged(IGroupParent p, int i)
+        {
+            if (i == 2) { this.HideUnhide(true); }
+            else if (i == 1) { this.IsEnabled = false; }
+            else if (this._group != null)
+            {
+                this.IsHidden = this._group.IsHidden;
+                this.IsEnabled = this._group.IsEnabled;
+            }
+            else
+            {
+                this.IsHidden = false;
+                this.IsEnabled = true;
             }
         }
         #endregion
@@ -147,7 +175,7 @@ namespace TsGui
             if (x != null)
             {
                 groupID = x.Value;
-                this._controller.AddToGroup(groupID, this);
+                this._group = this._controller.AddToGroup(groupID, this);
             }
 
             //now read in the options and add to a dictionary for later use
@@ -159,6 +187,7 @@ namespace TsGui
                     newOption = GuiFactory.CreateGuiOption(xOption,this._controller);
                     this.options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);
+                    if (this._group != null) { this.ParentChanged += newOption.OnParentChanged; }
                     //if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, newOption); }
                 }
             }
@@ -223,17 +252,21 @@ namespace TsGui
             if (Hidden == true)
             {
                 this._columngrid.Visibility = Visibility.Collapsed;
+                this.ParentChanged?.Invoke(this,2);
             }
             else
             {
                 this._columngrid.Visibility = Visibility.Visible;
-            }
+                this.ParentChanged?.Invoke(this, 0);
+            }          
         }
 
         protected void EnableDisable(bool Enabled)
         {
             this._enabled = Enabled;
             this._columngrid.IsEnabled = Enabled;
+            if (Enabled == true) { this.ParentChanged?.Invoke(this, 0); }
+            else { this.ParentChanged?.Invoke(this, 1); }
         }
     }
 }

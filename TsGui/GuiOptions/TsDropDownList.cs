@@ -14,7 +14,7 @@ namespace TsGui
         //dictionary in format text description,value
         private Dictionary<string, string> _options = new Dictionary<string,string>();
 
-        public TsDropDownList(XElement InputXml, MainController RootController): base()
+        public TsDropDownList(XElement SourceXml, MainController RootController) : base()
         {
             //Debug.WriteLine("TsDropDownList constructor called");
             this._controller = RootController;
@@ -39,7 +39,7 @@ namespace TsGui
 
             this.Height = 20;
 
-            this.LoadXml(InputXml);
+            this.LoadXml(SourceXml);
         }
 
         //properties

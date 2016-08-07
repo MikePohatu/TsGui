@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Management;
 
-//using System.Diagnostics;
-
 namespace TsGui
 {
     public static class SystemConnector
@@ -50,8 +48,6 @@ namespace TsGui
                     }                    
                 }
 
-                //ManagementObject m = new ManagementObject(WmiQuery);
-                //s = m.ToString();
                 if (String.IsNullOrEmpty(s)) { return null; }
                 else { return s; }
             }

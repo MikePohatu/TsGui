@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,10 +9,12 @@ using System.Windows.Data;
 namespace TsGui
 {
     public abstract class TsBaseOption: INotifyPropertyChanged, IGroupable
-    {      
+    {
+        protected Group _group;
         protected bool _isenabled = true;
         protected bool _ishidden = false;
         protected MainController _controller;
+        //protected TsColumn _parentColumn;
         protected string _value;
         protected string _help;
         protected int _height;
@@ -31,7 +32,10 @@ namespace TsGui
         protected Thickness _padding;
         protected Thickness _labelpadding;
 
+        //properties
+        #region
         public string VariableName { get; set; }
+        //public Group Group { get; set; }
         public Label Label { get { return this._labelcontrol; } }
         public Control Control { get { return this._control; } }
         public string Value
@@ -162,15 +166,15 @@ namespace TsGui
                 handler(sender, new PropertyChangedEventArgs(name));
             }
         }
+        #endregion
 
         //constructor
         protected TsBaseOption()
         {
-            //Debug.WriteLine("TsBaseOption constructor called");
+            //this._parentColumn = ParentColumn;
             this._labelcontrol = new Label();
             this._labelcontrol.DataContext = this;
             this._labelcontrol.SetBinding(Label.IsEnabledProperty, new Binding("IsEnabled"));
-            //this._labelcontrol.SetBinding(Label.Is, new Binding("Enabled"));
             this._labelcontrol.SetBinding(Label.ContentProperty, new Binding("LabelText"));
             this._labelcontrol.SetBinding(Label.HeightProperty, new Binding("Height"));
             this._labelcontrol.SetBinding(Label.PaddingProperty, new Binding("LabelPadding"));
@@ -192,7 +196,6 @@ namespace TsGui
             tb.SetBinding(TextBlock.TextProperty, new Binding("HelpText"));
 
             //Set defaults
-            //this.Enabled = true;
             this.InactiveValue = "TSGUI_INACTIVE";
             this._visibleHeight = 20;
             this.Height = 20;
@@ -251,7 +254,8 @@ namespace TsGui
             if (x != null)
             {
                 //Debug.WriteLine("Group: " + Environment.NewLine + xGroup);
-                this._controller.AddToGroup(x.Value, this);
+                this._group = this._controller.AddToGroup(x.Value, this);
+                //this._parentColumn.ParentChanged += this.OnParentChanged;
             }
             #endregion
         }
@@ -278,14 +282,22 @@ namespace TsGui
                 this.LabelMargin = this._visiblelabelmargin;
             }
         }
-
-        //protected void EnableDisable(bool Enabled)
-        //{
-        //    this._isenabled = Enabled;
-        //    _control.IsEnabled = Enabled;
-        //    this._labelcontrol.IsEnabled = Enabled;
-        //}
-
         
+        //Only subscribed if member of a group. Registers changes to parent elements. 
+        public void OnParentChanged(IGroupParent p, int i)
+        {
+            if (i == 2) { this.HideUnhide(true); }
+            else if (i == 1) { this.IsEnabled = false; }
+            else if (this._group != null)
+            {
+                this.IsHidden = this._group.IsHidden;
+                this.IsEnabled = this._group.IsEnabled;      
+            }
+            else
+            {
+                this.IsHidden = false;
+                this.IsEnabled = true;
+            }
+        }
     }
 }

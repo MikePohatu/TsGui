@@ -82,7 +82,7 @@ namespace TsGui
 
         private void Activate()
         {
-            Debug.WriteLine("Toggle Activate mode: " + this._hiddenMode);
+            //Debug.WriteLine("Toggle Activate mode: " + this._hiddenMode);
             if (this._hiddenMode == true) { this._group.IsHidden = true; }
             else { this._group.IsEnabled = false; }
         }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
+//using System.Diagnostics;
 
 namespace TsGui
 {
@@ -29,7 +29,7 @@ namespace TsGui
             get { return this._isHidden; }
             set
             {
-                Debug.WriteLine("Group Hidden set: " + this.ID + " - " + value);
+                //Debug.WriteLine("Group Hidden set: " + this.ID + " - " + value);
                 this._isHidden = value;
                 foreach (IGroupable element in this._elements)
                 {                    
@@ -37,7 +37,6 @@ namespace TsGui
                 }
             }
         }
-
         public Group (string ID)
         {
             this._elements = new List<IGroupable>();

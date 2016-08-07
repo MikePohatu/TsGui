@@ -78,7 +78,7 @@ namespace TsGui
             this.Startup(RootController);
         }
 
-        public TsFreeText (XElement SourceXml, MainController RootController): base()
+        public TsFreeText(XElement SourceXml, MainController RootController) : base()
         {
             this.Startup(RootController);
             this.LoadXml(SourceXml);

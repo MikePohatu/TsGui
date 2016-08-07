@@ -9,7 +9,7 @@ namespace TsGui
         new private Label _control;
         private bool _bold;
 
-        public TsHeading(XElement SourceXml, MainController RootController): base()
+        public TsHeading(XElement SourceXml, MainController RootController) : base()
         {
             this._controller = RootController;
 

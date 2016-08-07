@@ -15,5 +15,7 @@ namespace TsGui
         Thickness LabelMargin { get; }
         Thickness LabelPadding { get; }
         int Height { get; }
+
+        void OnParentChanged(IGroupParent Parent, int Visibilty);
     }
 }

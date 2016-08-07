@@ -5,13 +5,14 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System;
-//using System.Diagnostics;
 using System.ComponentModel;
 
 namespace TsGui
 {
-    public class TsPage: TsParent, ITsGuiElement, INotifyPropertyChanged, IGroupable
+    public class TsPage: IGroupParent, ITsGuiElement, INotifyPropertyChanged, IGroupable
     {
+
+        private Group _group;
         private bool _enabled = true;
         private bool _hidden = false;
         private MainController _controller;
@@ -43,6 +44,9 @@ namespace TsGui
             set
             {
                 this._enabled = value;
+                if (value == true) { this.ParentChanged?.Invoke(this, 0); }
+                else { this.ParentChanged?.Invoke(this, 1); }
+                
                 this.OnPropertyChanged(this, "IsEnabled");
             }
         }
@@ -52,6 +56,8 @@ namespace TsGui
             set
             {
                 this._hidden = value;
+                if (value == true) { this.ParentChanged?.Invoke(this, 2); }
+                else { this.ParentChanged?.Invoke(this, 0); }
                 this.OnPropertyChanged(this, "IsHidden");
                 this.UpdatePrevious();
             }
@@ -183,6 +189,8 @@ namespace TsGui
         }
         #endregion
 
+        //Events
+        #region
         //Setup the INotifyPropertyChanged interface 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -195,6 +203,9 @@ namespace TsGui
                 handler(sender, new PropertyChangedEventArgs(name));
             }
         }
+
+        public event ParentToggleEvent ParentChanged;
+        #endregion
 
         //Constructors
         public TsPage(XElement SourceXml, string HeadingTitle, string HeadingText, double Height,double Width, Thickness Margin, SolidColorBrush HeadingBgColor, SolidColorBrush HeadingTextColor, MainController RootController)
@@ -233,7 +244,8 @@ namespace TsGui
             if (x != null)
             {
                 groupID = x.Value;
-                this._controller.AddToGroup(groupID, this);
+                this._group = this._controller.AddToGroup(groupID, this);
+                
             }
 
             //now read in the options and add to a dictionary for later use
@@ -244,6 +256,7 @@ namespace TsGui
                 {
                     TsColumn c = new TsColumn(xColumn, colIndex,this._controller);
                     this._columns.Add(c);
+                    if (this._group != null) { this.ParentChanged += c.OnParentChanged; }
                     //if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, c); }
                     colIndex++;
                 }

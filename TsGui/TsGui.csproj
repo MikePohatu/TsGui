@@ -74,11 +74,12 @@
     </ApplicationDefinition>
     <Compile Include="Control\Checker.cs" />
     <Compile Include="Control\EnvironmentController.cs" />
+    <Compile Include="Control\GroupDelegates.cs" />
     <Compile Include="Grouping\Group.cs" />
     <Compile Include="Control\GuiFactory.cs" />
     <Compile Include="Grouping\IGroupable.cs" />
+    <Compile Include="Grouping\IGroupParent.cs" />
     <Compile Include="Grouping\Toggle.cs" />
-    <Compile Include="Grouping\TsParent.cs" />
     <Compile Include="GuiOptions\TsBaseOption.cs" />
     <Compile Include="Control\HardwareEvaluator.cs" />
     <Compile Include="GuiOptions\IEditableGuiOption.cs" />
