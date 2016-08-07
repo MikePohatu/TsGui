@@ -13,5 +13,5 @@ namespace TsGui
     /// </summary>
     /// <param name="Parent"></param>
     /// <param name="Visibility"></param>
-    public delegate void ParentToggleEvent(IGroupParent Parent, int Visibility);
+    public delegate void ParentToggleEvent(IGroupParent Parent, bool IsEnabled, bool IsHidden);
 }

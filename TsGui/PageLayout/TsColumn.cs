@@ -72,9 +72,7 @@ namespace TsGui
             set
             {
                 this._enabled = value;
-                if (value == true) { this.ParentChanged?.Invoke(this, 0); }
-                else { this.ParentChanged?.Invoke(this, 1); }
-
+                this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
                 this.OnPropertyChanged(this, "IsEnabled");
             }
         }
@@ -84,8 +82,7 @@ namespace TsGui
             set
             {
                 this._hidden = value;
-                if (value == true) { this.ParentChanged?.Invoke(this, 2); }
-                else { this.ParentChanged?.Invoke(this, 0); }
+                this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
                 this.OnPropertyChanged(this, "IsHidden");
             }
         }
@@ -147,10 +144,13 @@ namespace TsGui
 
         public event ParentToggleEvent ParentChanged;
         //Only subscribed if member of a group. Registers changes to parent elements. 
-        public void OnParentChanged(IGroupParent p, int i)
+        public void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden)
         {
-            if (i == 2) { this.HideUnhide(true); }
-            else if (i == 1) { this.IsEnabled = false; }
+            if (IsHidden || IsEnabled)
+            {
+                this.IsEnabled = IsEnabled;
+                this.IsHidden = IsHidden;
+            }
             else if (this._group != null)
             {
                 this.IsHidden = this._group.IsHidden;
@@ -161,6 +161,8 @@ namespace TsGui
                 this.IsHidden = false;
                 this.IsEnabled = true;
             }
+            //raise new event for child controls
+            this.ParentChanged?.Invoke(this, IsEnabled, IsHidden);
         }
         #endregion
 
@@ -252,21 +254,19 @@ namespace TsGui
             if (Hidden == true)
             {
                 this._columngrid.Visibility = Visibility.Collapsed;
-                this.ParentChanged?.Invoke(this,2);
             }
             else
             {
                 this._columngrid.Visibility = Visibility.Visible;
-                this.ParentChanged?.Invoke(this, 0);
-            }          
+            }
+            this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
         }
 
         protected void EnableDisable(bool Enabled)
         {
             this._enabled = Enabled;
             this._columngrid.IsEnabled = Enabled;
-            if (Enabled == true) { this.ParentChanged?.Invoke(this, 0); }
-            else { this.ParentChanged?.Invoke(this, 1); }
+            this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
         }
     }
 }

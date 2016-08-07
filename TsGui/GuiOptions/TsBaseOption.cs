@@ -202,8 +202,6 @@ namespace TsGui
             this._labelcontrol.HorizontalAlignment = HorizontalAlignment.Left;
         }
 
-        
-
         protected void LoadBaseXml(XElement InputXml)
         {
             //Load the XML
@@ -284,20 +282,35 @@ namespace TsGui
         }
         
         //Only subscribed if member of a group. Registers changes to parent elements. 
-        public void OnParentChanged(IGroupParent p, int i)
+        public void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden)
         {
-            if (i == 2) { this.HideUnhide(true); }
-            else if (i == 1) { this.IsEnabled = false; }
+            if ((IsHidden == true) || (IsEnabled == false))
+            {
+                this.IsEnabled = IsEnabled;
+                this.IsHidden = IsHidden;
+            }
             else if (this._group != null)
             {
                 this.IsHidden = this._group.IsHidden;
-                this.IsEnabled = this._group.IsEnabled;      
+                this.IsEnabled = this._group.IsEnabled;
             }
             else
             {
                 this.IsHidden = false;
                 this.IsEnabled = true;
             }
+            //if (i == 2) { this.HideUnhide(true); }
+            //else if (i == 1) { this.IsEnabled = false; }
+            //else if (this._group != null)
+            //{
+            //    this.IsHidden = this._group.IsHidden;
+            //    this.IsEnabled = this._group.IsEnabled;      
+            //}
+            //else
+            //{
+            //    this.IsHidden = false;
+            //    this.IsEnabled = true;
+            //}
         }
     }
 }

@@ -44,9 +44,8 @@ namespace TsGui
             set
             {
                 this._enabled = value;
-                if (value == true) { this.ParentChanged?.Invoke(this, 0); }
-                else { this.ParentChanged?.Invoke(this, 1); }
-                
+                this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
+
                 this.OnPropertyChanged(this, "IsEnabled");
             }
         }
@@ -56,10 +55,9 @@ namespace TsGui
             set
             {
                 this._hidden = value;
-                if (value == true) { this.ParentChanged?.Invoke(this, 2); }
-                else { this.ParentChanged?.Invoke(this, 0); }
-                this.OnPropertyChanged(this, "IsHidden");
+                this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
                 this.UpdatePrevious();
+                this.OnPropertyChanged(this, "IsHidden");
             }
         }
         public bool IsActive
