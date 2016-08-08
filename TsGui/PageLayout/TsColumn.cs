@@ -25,11 +25,10 @@ namespace TsGui
         private MainController _controller;
         private ColumnDefinition _coldefControls;
         private ColumnDefinition _coldefLabels;
-        private IGroupParent _parent;
 
         //properties
         #region
-        public Group Group { get {return this._group;} }
+        //public Group Group { get {return this._group;} }
         public GridLength LabelWidth
         {
             get { return this._labelwidth; }
@@ -104,11 +103,8 @@ namespace TsGui
 
         //constructor
         #region
-        public TsColumn (XElement SourceXml,int PageIndex, MainController RootController, IGroupParent Parent)
+        public TsColumn (XElement SourceXml,int PageIndex, MainController RootController)
         {
-            this._parent = Parent;
-            //register for events from the parent group if set
-            if (this._parent.Group != null) { this._parent.ParentChanged += this.OnParentChanged; }
 
             this._controller = RootController;
             this.Index = PageIndex;
@@ -200,10 +196,10 @@ namespace TsGui
                     newOption = GuiFactory.CreateGuiOption(xOption,this._controller);
                     this.options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);
-                    if ((this._group != null) || (this._parent.Group != null)) { this.ParentChanged += newOption.OnParentChanged; }
-                    //register for events from the parent group if set
-                    //if (this._parent.Group != null) { this._parent.ParentChanged += this.OnParentChanged; }
-                    //if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, newOption); }
+
+                    //register for events
+                    //if ((this._group != null) || (this._parent.Group != null)) { this.ParentChanged += newOption.OnParentChanged; }
+                    this.ParentChanged += newOption.OnParentChanged;
                 }
             }
 

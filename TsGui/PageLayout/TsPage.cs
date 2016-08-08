@@ -39,7 +39,6 @@ namespace TsGui
 
         //Properties
         #region
-        public Group Group { get { return this._group; } }
         public bool IsEnabled
         {
             get { return this._enabled; }
@@ -255,7 +254,7 @@ namespace TsGui
             {
                 foreach (XElement xColumn in columnsXml)
                 {
-                    TsColumn c = new TsColumn(xColumn, colIndex,this._controller, this);
+                    TsColumn c = new TsColumn(xColumn, colIndex,this._controller);
                     this._columns.Add(c);
                     if (this._group != null)
                     {
