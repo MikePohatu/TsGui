@@ -261,7 +261,7 @@ namespace TsGui
                         Debug.WriteLine("TsPage - Registering column");
                         this.ParentChanged += c.OnParentChanged;
                     }
-                    //if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, c); }
+                    
                     colIndex++;
                 }
             }

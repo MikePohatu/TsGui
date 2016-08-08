@@ -10,7 +10,7 @@ namespace TsGui
     {
         private Group _group;
         private MainController _controller;
-        private Dictionary<string, string> _toggleValMappings = new Dictionary<string, string>();
+        private Dictionary<string, bool> _toggleValMappings = new Dictionary<string, bool>();
         bool _hiddenMode = false;
         IToggleControl _option;
 
@@ -32,38 +32,38 @@ namespace TsGui
                 this._hiddenMode = true;
             }
 
-            x = InputXml.Element("GroupID");
-            if (x != null)
+            XAttribute xa;
+            xa = InputXml.Attribute("Group");
+            if (xa != null)
             {
-                if (!string.IsNullOrEmpty(x.Value))
+                if (!string.IsNullOrEmpty(xa.Value))
                 {
-                    this._group = this._controller.GetGroup(x.Value);
-                    //this._group.Toggle = this;
+                    this._group = this._controller.GetGroup(xa.Value);
                 }
                 else { throw new InvalidOperationException("Invalid Toggle configured in XML: " + InputXml); }
             }
-            else { throw new InvalidOperationException("No GroupID set in Toggle configured in XML: " + InputXml); }
+            else { throw new InvalidOperationException("No Group ID set in Toggle configured in XML: " + Environment.NewLine + InputXml); }
 
             IEnumerable<XElement> togglesX;
-            togglesX = InputXml.Elements("Activate");
+            togglesX = InputXml.Elements("Enabled");
             if (togglesX != null)
             {
                 foreach (XElement togglex in togglesX)
                 {
                     if (!string.IsNullOrEmpty(togglex.Value))
                     {
-                        this._toggleValMappings.Add(togglex.Value, "ACTIVATE");
+                        this._toggleValMappings.Add(togglex.Value, true);
                     }
                 }
             }
-            togglesX = InputXml.Elements("Deactivate");
+            togglesX = InputXml.Elements("Disabled");
             if (togglesX != null)
             {
                 foreach (XElement togglex in togglesX)
                 {
                     if (!string.IsNullOrEmpty(togglex.Value))
                     {
-                        this._toggleValMappings.Add(togglex.Value, "DEACTIVATE");
+                        this._toggleValMappings.Add(togglex.Value, false);
                     }
                 }
             }
@@ -72,26 +72,22 @@ namespace TsGui
         public void OnToggleEvent(object o, RoutedEventArgs e)
         {
             string val;
-            string action;
+            bool isenabled;
             val = (this._option.CurrentValue);
-            this._toggleValMappings.TryGetValue(val, out action);
+            this._toggleValMappings.TryGetValue(val, out isenabled);
 
-            if (string.Equals(action, "ACTIVATE")) { this.Activate(); }
-            else if (string.Equals(action, "DEACTIVATE")) { this.Deactivate(); }
+            if (isenabled == true) { this.EnableGroup(); }
+            else { this.DisableGroup(); }
         }
 
-        private void Activate()
+        private void DisableGroup()
         {
-            Debug.WriteLine("Toggle Activate called, hidden mode: " + this._hiddenMode);
-            Debug.WriteLine("  Group ID: " + this._group.ID);
             if (this._hiddenMode == true) { this._group.IsHidden = true; }
             else { this._group.IsEnabled = false; }
         }
 
-        private void Deactivate()
+        private void EnableGroup()
         {
-            Debug.WriteLine("Toggle Deactivate called, hidden mode: " + this._hiddenMode);
-            Debug.WriteLine("  Group ID: " + this._group.ID);
             this._group.IsHidden = false; 
             this._group.IsEnabled = true; 
         }

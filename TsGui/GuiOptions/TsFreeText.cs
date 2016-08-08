@@ -117,11 +117,11 @@ namespace TsGui
             this._caseSensValidate = false;
             this._isvalid = true;
 
-            this.Height = 20;
+            this.Height = 22;
             this.MaxLength = 0;
             this.MinLength = 0;
 
-            this._visiblepadding = new Thickness(3, 0,0,0);
+            this._visiblepadding = new Thickness(3, 2,3,2);
             this.Padding = this._visiblepadding;
 
             this._visiblemargin = new Thickness(2, 2, 2, 2);
