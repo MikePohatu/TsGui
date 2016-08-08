@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Data;
-using System.Diagnostics;
 
 namespace TsGui
 {
@@ -14,7 +13,6 @@ namespace TsGui
         protected bool _isenabled = true;
         protected bool _ishidden = false;
         protected MainController _controller;
-        //protected TsColumn _parentColumn;
         protected string _value;
         protected string _help;
         protected int _height;
@@ -130,8 +128,6 @@ namespace TsGui
             get { return this._isenabled; }
             set
             {
-                //Debug.WriteLine("Enabled property set: " + value);
-                //this.EnableDisable(value);
                 this._isenabled = value;
                 OnPropertyChanged(this, "IsEnabled");
             }
@@ -174,7 +170,7 @@ namespace TsGui
         //Only subscribed if member of a group. Registers changes to parent elements. 
         public void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden)
         {
-            Debug.WriteLine("    TsBaseOption: OnParentChanged called: IsEnabled, IsHidden:" + IsEnabled + IsHidden );
+            //Debug.WriteLine("    TsBaseOption: OnParentChanged called: IsEnabled, IsHidden:" + IsEnabled + IsHidden );
             if ((IsHidden == true) || (IsEnabled == false))
             {
                 this.IsEnabled = IsEnabled;
@@ -232,7 +228,6 @@ namespace TsGui
             //Load the XML
             #region
             XElement x;
-            //XAttribute attrib;
 
             x = InputXml.Element("Variable");
             if (x != null)
@@ -276,9 +271,7 @@ namespace TsGui
             x = InputXml.Element("Group");
             if (x != null)
             {
-                //Debug.WriteLine("Group: " + Environment.NewLine + xGroup);
                 this._group = this._controller.AddToGroup(x.Value, this);
-                //this._parentColumn.ParentChanged += this.OnParentChanged;
             }
             #endregion
         }
@@ -288,7 +281,6 @@ namespace TsGui
             this._ishidden = Hidden;
             if (Hidden == true)
             {
-                //(Grid)this._control.Parent.
                 this._control.Visibility = Visibility.Collapsed;
                 this._labelcontrol.Visibility = Visibility.Collapsed;
                 this.Height = 0;
@@ -305,7 +297,6 @@ namespace TsGui
                 this.LabelMargin = this._visiblelabelmargin;
             }
         }
-        
-        
+
     }
 }

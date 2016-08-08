@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
 using System;
-using System.Diagnostics;
+//using System.Diagnostics;
 
 namespace TsGui
 {
@@ -74,7 +74,7 @@ namespace TsGui
             set
             {
                 this._enabled = value;
-                Debug.WriteLine("TsColumn: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
+                //Debug.WriteLine("TsColumn: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
                 this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
                 this.OnPropertyChanged(this, "IsEnabled");
             }
@@ -85,7 +85,7 @@ namespace TsGui
             set
             {
                 this._hidden = value;
-                Debug.WriteLine("TsColumn: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
+                //Debug.WriteLine("TsColumn: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
                 this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
                 this.OnPropertyChanged(this, "IsHidden");
             }
@@ -151,7 +151,7 @@ namespace TsGui
         //Only subscribed if member of a group. Registers changes to parent elements. 
         public void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden)
         {
-            Debug.WriteLine("    TsColumn: OnParentChanged called: IsEnabled, IsHidden:" + IsEnabled + IsHidden);
+            //Debug.WriteLine("    TsColumn: OnParentChanged called: IsEnabled, IsHidden:" + IsEnabled + IsHidden);
 
             if ((IsHidden == true) || (IsEnabled == false))
             {

@@ -6,7 +6,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
+//using System.Diagnostics;
 
 namespace TsGui
 {
@@ -45,7 +45,7 @@ namespace TsGui
             set
             {
                 this._enabled = value;
-                Debug.WriteLine("TsPage: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
+                //Debug.WriteLine("TsPage: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
                 this.ParentChanged?.Invoke(this, value, this.IsHidden);
                 this.OnPropertyChanged(this, "IsEnabled");
             }
@@ -56,7 +56,7 @@ namespace TsGui
             set
             {
                 this._hidden = value;
-                Debug.WriteLine("TsPage: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
+                //Debug.WriteLine("TsPage: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
                 this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
                 this.UpdatePrevious();
                 this.OnPropertyChanged(this, "IsHidden");
@@ -258,7 +258,7 @@ namespace TsGui
                     this._columns.Add(c);
                     if (this._group != null)
                     {
-                        Debug.WriteLine("TsPage - Registering column");
+                        //Debug.WriteLine("TsPage - Registering column");
                         this.ParentChanged += c.OnParentChanged;
                     }
                     

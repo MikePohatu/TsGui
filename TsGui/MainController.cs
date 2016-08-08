@@ -7,7 +7,7 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Windows;
 using System.ComponentModel;
-using System.Diagnostics;
+//using System.Diagnostics;
 
 namespace TsGui
 {
