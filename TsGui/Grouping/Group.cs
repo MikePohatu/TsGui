@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 //using System.Diagnostics;
 
 namespace TsGui
@@ -8,6 +9,7 @@ namespace TsGui
         private List<IGroupable> _elements;
         private bool _isEnabled;
         private bool _isHidden;
+        //private Guid _guid = Guid.NewGuid();
 
         //public Toggle Toggle { get; set; }
         public string ID { get; set; }
@@ -47,6 +49,8 @@ namespace TsGui
 
         public void Add(IGroupable GroupableElement)
         {
+            //Debug.WriteLine("Adding element to group: " + this.ID);
+            //Debug.WriteLine(" Group guid: " + this._guid.ToString());
             this._elements.Add(GroupableElement);
         }
 

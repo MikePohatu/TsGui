@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Data;
-//using System.Diagnostics;
+using System.Diagnostics;
 
 namespace TsGui
 {
@@ -154,6 +154,10 @@ namespace TsGui
                 else { return false; }
             }
         }
+        #endregion
+
+        //Event handling
+        #region
         //Setup the INotifyPropertyChanged interface 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -164,6 +168,27 @@ namespace TsGui
             if (handler != null)
             {
                 handler(sender, new PropertyChangedEventArgs(name));
+            }
+        }        
+
+        //Only subscribed if member of a group. Registers changes to parent elements. 
+        public void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden)
+        {
+            Debug.WriteLine("    TsBaseOption: OnParentChanged called: IsEnabled, IsHidden:" + IsEnabled + IsHidden );
+            if ((IsHidden == true) || (IsEnabled == false))
+            {
+                this.IsEnabled = IsEnabled;
+                this.IsHidden = IsHidden;
+            }
+            else if (this._group != null)
+            {
+                this.IsHidden = this._group.IsHidden;
+                this.IsEnabled = this._group.IsEnabled;
+            }
+            else
+            {
+                this.IsHidden = false;
+                this.IsEnabled = true;
             }
         }
         #endregion
@@ -281,36 +306,6 @@ namespace TsGui
             }
         }
         
-        //Only subscribed if member of a group. Registers changes to parent elements. 
-        public void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden)
-        {
-            if ((IsHidden == true) || (IsEnabled == false))
-            {
-                this.IsEnabled = IsEnabled;
-                this.IsHidden = IsHidden;
-            }
-            else if (this._group != null)
-            {
-                this.IsHidden = this._group.IsHidden;
-                this.IsEnabled = this._group.IsEnabled;
-            }
-            else
-            {
-                this.IsHidden = false;
-                this.IsEnabled = true;
-            }
-            //if (i == 2) { this.HideUnhide(true); }
-            //else if (i == 1) { this.IsEnabled = false; }
-            //else if (this._group != null)
-            //{
-            //    this.IsHidden = this._group.IsHidden;
-            //    this.IsEnabled = this._group.IsEnabled;      
-            //}
-            //else
-            //{
-            //    this.IsHidden = false;
-            //    this.IsEnabled = true;
-            //}
-        }
+        
     }
 }

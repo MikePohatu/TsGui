@@ -5,12 +5,13 @@ using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
 using System;
+using System.Diagnostics;
 
 namespace TsGui
 {
-    public class TsColumn: IGroupParent, INotifyPropertyChanged,IGroupable
+    public class TsColumn : IGroupParent, INotifyPropertyChanged, IGroupable
     {
-        
+
 
         private bool _enabled;
         private Group _group;
@@ -24,9 +25,11 @@ namespace TsGui
         private MainController _controller;
         private ColumnDefinition _coldefControls;
         private ColumnDefinition _coldefLabels;
+        private IGroupParent _parent;
 
         //properties
         #region
+        public Group Group { get {return this._group;} }
         public GridLength LabelWidth
         {
             get { return this._labelwidth; }
@@ -72,6 +75,7 @@ namespace TsGui
             set
             {
                 this._enabled = value;
+                Debug.WriteLine("TsColumn: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
                 this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
                 this.OnPropertyChanged(this, "IsEnabled");
             }
@@ -82,6 +86,7 @@ namespace TsGui
             set
             {
                 this._hidden = value;
+                Debug.WriteLine("TsColumn: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
                 this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
                 this.OnPropertyChanged(this, "IsHidden");
             }
@@ -99,8 +104,12 @@ namespace TsGui
 
         //constructor
         #region
-        public TsColumn (XElement SourceXml,int PageIndex, MainController RootController)
-        {            
+        public TsColumn (XElement SourceXml,int PageIndex, MainController RootController, IGroupParent Parent)
+        {
+            this._parent = Parent;
+            //register for events from the parent group if set
+            if (this._parent.Group != null) { this._parent.ParentChanged += this.OnParentChanged; }
+
             this._controller = RootController;
             this.Index = PageIndex;
             
@@ -146,7 +155,9 @@ namespace TsGui
         //Only subscribed if member of a group. Registers changes to parent elements. 
         public void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden)
         {
-            if (IsHidden || IsEnabled)
+            Debug.WriteLine("    TsColumn: OnParentChanged called: IsEnabled, IsHidden:" + IsEnabled + IsHidden);
+
+            if ((IsHidden == true) || (IsEnabled == false))
             {
                 this.IsEnabled = IsEnabled;
                 this.IsHidden = IsHidden;
@@ -189,7 +200,9 @@ namespace TsGui
                     newOption = GuiFactory.CreateGuiOption(xOption,this._controller);
                     this.options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);
-                    if (this._group != null) { this.ParentChanged += newOption.OnParentChanged; }
+                    if ((this._group != null) || (this._parent.Group != null)) { this.ParentChanged += newOption.OnParentChanged; }
+                    //register for events from the parent group if set
+                    //if (this._parent.Group != null) { this._parent.ParentChanged += this.OnParentChanged; }
                     //if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, newOption); }
                 }
             }
@@ -220,7 +233,8 @@ namespace TsGui
         {
             int rowindex = 0;
             double width =0;
-
+            
+            
             foreach (IGuiOption option in this.options)
             {
                 //option.Control.Margin = this._margin;

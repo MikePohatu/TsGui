@@ -6,6 +6,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace TsGui
 {
@@ -38,14 +39,15 @@ namespace TsGui
 
         //Properties
         #region
+        public Group Group { get { return this._group; } }
         public bool IsEnabled
         {
             get { return this._enabled; }
             set
             {
                 this._enabled = value;
-                this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
-
+                Debug.WriteLine("TsPage: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
+                this.ParentChanged?.Invoke(this, value, this.IsHidden);
                 this.OnPropertyChanged(this, "IsEnabled");
             }
         }
@@ -55,6 +57,7 @@ namespace TsGui
             set
             {
                 this._hidden = value;
+                Debug.WriteLine("TsPage: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
                 this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
                 this.UpdatePrevious();
                 this.OnPropertyChanged(this, "IsHidden");
@@ -223,7 +226,7 @@ namespace TsGui
             this.HeadingBgColor = HeadingBgColor;
 
             this._pagelayout.DataContext = this;
-            this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("Enabled"));
+            this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
 
             this.LoadXml(SourceXml);
             this.Build();
@@ -252,9 +255,13 @@ namespace TsGui
             {
                 foreach (XElement xColumn in columnsXml)
                 {
-                    TsColumn c = new TsColumn(xColumn, colIndex,this._controller);
+                    TsColumn c = new TsColumn(xColumn, colIndex,this._controller, this);
                     this._columns.Add(c);
-                    if (this._group != null) { this.ParentChanged += c.OnParentChanged; }
+                    if (this._group != null)
+                    {
+                        Debug.WriteLine("TsPage - Registering column");
+                        this.ParentChanged += c.OnParentChanged;
+                    }
                     //if (!string.IsNullOrEmpty(groupID)) { this._controller.AddToGroup(groupID, c); }
                     colIndex++;
                 }

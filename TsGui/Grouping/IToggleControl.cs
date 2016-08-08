@@ -8,7 +8,7 @@ namespace TsGui
         string VariableName { get; }
         string CurrentValue { get; }
         void AttachToggle(Toggle Toggle);
-        event ToggleEvent ValueChange;
+        event ToggleEvent ToggleEvent;
         void InitialiseToggle();
     }
 }

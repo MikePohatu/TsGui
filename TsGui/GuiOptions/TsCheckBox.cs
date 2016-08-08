@@ -7,7 +7,7 @@ namespace TsGui
 {
     public class TsCheckBox: TsBaseOption, IGuiOption, IToggleControl
     {
-        public event ToggleEvent ValueChange;
+        public event ToggleEvent ToggleEvent;
 
         new private CheckBox _control;
         private HorizontalAlignment _hAlignment;
@@ -103,19 +103,19 @@ namespace TsGui
         public void AttachToggle(Toggle Toggle)
         {
             this._control.Click += this.OnChanged;
-            ValueChange += Toggle.OnToggle;
+            this.ToggleEvent += Toggle.OnToggleEvent;
         }
 
         //fire an intial event to make sure things are set correctly. This is
         //called by the controller once everything is loaded
         public void InitialiseToggle()
         {
-            ValueChange(this, new RoutedEventArgs());
+            this.ToggleEvent(this, new RoutedEventArgs());
         }
 
-        public void OnChanged(object o, RoutedEventArgs e)
+        private void OnChanged(object o, RoutedEventArgs e)
         {
-            ValueChange(this, e);
+            this.ToggleEvent(this, e);
         }
     }
 }

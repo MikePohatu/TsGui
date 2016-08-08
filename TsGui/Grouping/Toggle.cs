@@ -10,7 +10,7 @@ namespace TsGui
     {
         private Group _group;
         private MainController _controller;
-        private Dictionary<string, string> _toggles = new Dictionary<string, string>();
+        private Dictionary<string, string> _toggleValMappings = new Dictionary<string, string>();
         bool _hiddenMode = false;
         IToggleControl _option;
 
@@ -52,7 +52,7 @@ namespace TsGui
                 {
                     if (!string.IsNullOrEmpty(togglex.Value))
                     {
-                        this._toggles.Add(togglex.Value, "ACTIVATE");
+                        this._toggleValMappings.Add(togglex.Value, "ACTIVATE");
                     }
                 }
             }
@@ -63,18 +63,18 @@ namespace TsGui
                 {
                     if (!string.IsNullOrEmpty(togglex.Value))
                     {
-                        this._toggles.Add(togglex.Value, "DEACTIVATE");
+                        this._toggleValMappings.Add(togglex.Value, "DEACTIVATE");
                     }
                 }
             }
         }
 
-        public void OnToggle(object o, RoutedEventArgs e)
+        public void OnToggleEvent(object o, RoutedEventArgs e)
         {
             string val;
             string action;
             val = (this._option.CurrentValue);
-            this._toggles.TryGetValue(val, out action);
+            this._toggleValMappings.TryGetValue(val, out action);
 
             if (string.Equals(action, "ACTIVATE")) { this.Activate(); }
             else if (string.Equals(action, "DEACTIVATE")) { this.Deactivate(); }
@@ -82,13 +82,16 @@ namespace TsGui
 
         private void Activate()
         {
-            //Debug.WriteLine("Toggle Activate mode: " + this._hiddenMode);
+            Debug.WriteLine("Toggle Activate called, hidden mode: " + this._hiddenMode);
+            Debug.WriteLine("  Group ID: " + this._group.ID);
             if (this._hiddenMode == true) { this._group.IsHidden = true; }
             else { this._group.IsEnabled = false; }
         }
 
         private void Deactivate()
         {
+            Debug.WriteLine("Toggle Deactivate called, hidden mode: " + this._hiddenMode);
+            Debug.WriteLine("  Group ID: " + this._group.ID);
             this._group.IsHidden = false; 
             this._group.IsEnabled = true; 
         }
