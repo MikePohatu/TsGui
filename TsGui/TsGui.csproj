@@ -76,6 +76,7 @@
     <Compile Include="Grouping\GroupDelegates.cs" />
     <Compile Include="Grouping\Group.cs" />
     <Compile Include="Control\GuiFactory.cs" />
+    <Compile Include="Grouping\GroupingLogic.cs" />
     <Compile Include="Grouping\IGroupable.cs" />
     <Compile Include="Grouping\IGroupParent.cs" />
     <Compile Include="Grouping\Toggle.cs" />

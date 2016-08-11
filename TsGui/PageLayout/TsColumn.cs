@@ -31,7 +31,6 @@ namespace TsGui
 
 
         private bool _enabled;
-        private int _activeGroups = 0;
         private int _inactiveParents = 0;
         private Group _group;
         private bool _hidden;
@@ -47,7 +46,7 @@ namespace TsGui
 
         //properties
         #region
-        //public Group Group { get {return this._group;} }
+        public int ActiveGroupsCount { get; set; }
         public GridLength LabelWidth
         {
             get { return this._labelwidth; }
@@ -146,13 +145,15 @@ namespace TsGui
 
             this._columngrid.ColumnDefinitions.Add(this._coldefLabels);
             this._columngrid.ColumnDefinitions.Add(this._coldefControls);
-            
+
+            this.ActiveGroupsCount = 0;
+
             this.LoadXml(SourceXml);
             this.Build();
         }
         #endregion
 
-        //Setup the INotifyPropertyChanged interface 
+        //Setup events and handlers
         #region
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -190,6 +191,16 @@ namespace TsGui
             //raise new event for child controls
             this.ParentChanged?.Invoke(this, IsEnabled, IsHidden);
         }
+        public void OnGroupHide(bool Hide)
+        {
+            GroupingLogic.OnGroupHide(this, Hide);
+        }
+
+        public void OnGroupEnable(bool Enable)
+        {
+            GroupingLogic.OnGroupEnable(this, Enable);
+        }
+
         #endregion
 
         private void LoadXml(XElement InputXml)
@@ -297,34 +308,5 @@ namespace TsGui
             this._columngrid.IsEnabled = Enabled;
             this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
         }
-
-        public void OnGroupHide()
-        {
-            if (this._activeGroups > 0)
-            { this._activeGroups--; }
-
-            if (this._activeGroups == 0) { this.IsHidden = true; }
-        }
-
-        public void OnGroupUnhide()
-        {
-            this._activeGroups++;
-            this.IsHidden = false;
-        }
-
-        public void OnGroupEnable()
-        {
-            this._activeGroups++;
-            this.IsHidden = false;
-        }
-
-        public void OnGroupDisable()
-        {
-            if (this._activeGroups > 0)
-            { this._activeGroups--; }
-
-            if (this._activeGroups == 0) { this.IsEnabled = false; }
-        }
-
     }
 }

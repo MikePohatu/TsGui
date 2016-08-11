@@ -28,10 +28,8 @@ namespace TsGui
     /// <param name="IsHidden"></param>
     public delegate void ParentToggleEvent(IGroupParent Parent, bool IsEnabled, bool IsHidden);
 
-    public delegate void GroupHide();
-    public delegate void GroupUnhide();
-    public delegate void GroupEnable();
-    public delegate void GroupDisable();
+    public delegate void GroupHide(bool Hide);
+    public delegate void GroupEnable(bool Enable);
 
     public delegate void ParentHide();
     public delegate void ParentUnhide();

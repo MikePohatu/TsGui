@@ -33,7 +33,6 @@ namespace TsGui
         private Group _group;
         private bool _enabled = true;
         private bool _hidden = false;
-        private int _activeGroups = 0;
         private int _inactiveParents = 0;
         private MainController _controller;
         private double _height;
@@ -58,6 +57,7 @@ namespace TsGui
 
         //Properties
         #region
+        public int ActiveGroupsCount { get; set; }
         public bool IsEnabled
         {
             get { return this._enabled; }
@@ -246,6 +246,7 @@ namespace TsGui
             this._pagelayout.DataContext = this;
             this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
 
+            this.ActiveGroupsCount = 0;
             this.LoadXml(SourceXml);
             this.Build();
         }
@@ -450,32 +451,14 @@ namespace TsGui
             }
         }
 
-        public void OnGroupHide()
+        public void OnGroupHide(bool Hide)
         {
-            if (this._activeGroups > 0)
-            { this._activeGroups--; }
-
-            if (this._activeGroups == 0) { this.IsHidden = true; }
+            GroupingLogic.OnGroupHide(this, Hide);
         }
 
-        public void OnGroupUnhide()
+        public void OnGroupEnable(bool Enable)
         {
-            this._activeGroups++;
-            this.IsHidden = false;
-        }
-
-        public void OnGroupEnable()
-        {
-            this._activeGroups++;
-            this.IsHidden = false;
-        }
-
-        public void OnGroupDisable()
-        {
-            if (this._activeGroups > 0)
-            { this._activeGroups--; }
-
-            if (this._activeGroups == 0) { this.IsEnabled = false; }
+            GroupingLogic.OnGroupEnable(this, Enable);
         }
     }
 }

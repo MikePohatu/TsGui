@@ -22,10 +22,9 @@ namespace TsGui
         bool IsActive { get; }
         bool IsEnabled { get; set; }
         bool IsHidden { get; set; }
+        int ActiveGroupsCount { get; set; }
 
-        void OnGroupHide();
-        void OnGroupUnhide();
-        void OnGroupEnable();
-        void OnGroupDisable();
+        void OnGroupHide(bool Hide);
+        void OnGroupEnable(bool Enable);
     }
 }

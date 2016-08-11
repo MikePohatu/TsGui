@@ -25,9 +25,7 @@ namespace TsGui
     {
         //public event GroupToggleEvent GroupToggleEvent;
         public event GroupHide HideEvent;
-        public event GroupUnhide UnhideEvent;
         public event GroupEnable EnableEvent;
-        public event GroupDisable DisableEvent;
 
         private List<IGroupable> _elements;
         private bool _isEnabled;
@@ -45,8 +43,7 @@ namespace TsGui
                 if (this._isEnabled != value)
                 {
                     this._isEnabled = value;
-                    if (value == true) { EnableEvent?.Invoke(); }
-                    else { DisableEvent?.Invoke(); }
+                    EnableEvent?.Invoke(value);
                 }
             }
         }
@@ -58,8 +55,7 @@ namespace TsGui
                 if (this._isHidden != value )
                 {
                     this._isHidden = value;
-                    if (value == true) { HideEvent?.Invoke(); }
-                    else { UnhideEvent?.Invoke(); }
+                    HideEvent?.Invoke(value); 
                 }
             }
         }
@@ -80,21 +76,15 @@ namespace TsGui
         public void Add(IGroupable GroupableElement)
         {
             this._elements.Add(GroupableElement);
-            //this.GroupToggleEvent += GroupableElement.OnGroupToggle;
             this.HideEvent += GroupableElement.OnGroupHide;
-            this.UnhideEvent += GroupableElement.OnGroupUnhide;
             this.EnableEvent += GroupableElement.OnGroupEnable;
-            this.DisableEvent += GroupableElement.OnGroupDisable;
         }
 
         public void Remove(IGroupable GroupableElement)
         {
             this._elements.Remove(GroupableElement);
-            //this.GroupToggleEvent -= GroupableElement.OnGroupToggle;
             this.HideEvent -= GroupableElement.OnGroupHide;
-            this.UnhideEvent -= GroupableElement.OnGroupUnhide;
             this.EnableEvent -= GroupableElement.OnGroupEnable;
-            this.DisableEvent -= GroupableElement.OnGroupDisable;
         }
     }
 }

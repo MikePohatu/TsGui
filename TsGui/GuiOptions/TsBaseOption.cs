@@ -28,7 +28,6 @@ namespace TsGui
     {
 
         protected Group _group;
-        protected int _activeGroups = 0;
         protected int _inactiveParents = 0;
         protected bool _isenabled = true;
         protected bool _ishidden = false;
@@ -53,7 +52,7 @@ namespace TsGui
         //properties
         #region
         public string VariableName { get; set; }
-        //public Group Group { get; set; }
+        public int ActiveGroupsCount { get; set; }
         public Label Label { get { return this._labelcontrol; } }
         public Control Control { get { return this._control; } }
         public string Value
@@ -237,6 +236,7 @@ namespace TsGui
             tb.SetBinding(TextBlock.TextProperty, new Binding("HelpText"));
 
             //Set defaults
+            this.ActiveGroupsCount = 0;
             this.InactiveValue = "TSGUI_INACTIVE";
             this._visibleHeight = 20;
             this.Height = 20;
@@ -318,32 +318,14 @@ namespace TsGui
             }
         }
 
-        public void OnGroupHide()
+        public void OnGroupHide(bool Hide)
         {
-            if (this._activeGroups > 0)
-            { this._activeGroups--; }
-
-            if (this._activeGroups == 0) { this.IsHidden = true; }
+            GroupingLogic.OnGroupHide(this, Hide);
         }
 
-        public void OnGroupUnhide()
+        public void OnGroupEnable(bool Enable)
         {
-            this._activeGroups++;
-            this.IsHidden = false; 
-        }
-
-        public void OnGroupEnable()
-        {
-            this._activeGroups++;
-            this.IsHidden = false;
-        }
-
-        public void OnGroupDisable()
-        {
-            if (this._activeGroups > 0)
-            { this._activeGroups--; }
-
-            if (this._activeGroups == 0) { this.IsEnabled = false; }
+            GroupingLogic.OnGroupEnable(this, Enable);
         }
     }
 }
