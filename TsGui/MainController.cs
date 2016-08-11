@@ -258,6 +258,7 @@ namespace TsGui
             this._groups.TryGetValue(ID, out group);
             if (group == null) { group = this.CreateGroup(ID); }
             group.Add(Element);
+            
             return group;
         }
 

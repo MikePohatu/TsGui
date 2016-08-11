@@ -127,12 +127,12 @@ namespace TsGui
         //called by the controller once everything is loaded
         public void InitialiseToggle()
         {
-            this.ToggleEvent(this, new RoutedEventArgs());
+            this.ToggleEvent();
         }
 
         private void OnChanged(object o, RoutedEventArgs e)
         {
-            this.ToggleEvent(this, e);
+            this.ToggleEvent();
         }
     }
 }

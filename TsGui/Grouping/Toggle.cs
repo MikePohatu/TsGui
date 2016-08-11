@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using System.Windows;
+//using System.Windows;
 
 namespace TsGui
 {
@@ -86,7 +86,7 @@ namespace TsGui
             }
         }
 
-        public void OnToggleEvent(object o, RoutedEventArgs e)
+        public void OnToggleEvent()
         {
             string val;
             bool isenabled;

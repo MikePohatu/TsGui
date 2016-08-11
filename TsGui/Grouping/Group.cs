@@ -23,12 +23,18 @@ namespace TsGui
 {
     public class Group
     {
+        //public event GroupToggleEvent GroupToggleEvent;
+        public event GroupHide HideEvent;
+        public event GroupUnhide UnhideEvent;
+        public event GroupEnable EnableEvent;
+        public event GroupDisable DisableEvent;
+
         private List<IGroupable> _elements;
         private bool _isEnabled;
         private bool _isHidden;
-        //private Guid _guid = Guid.NewGuid();
+        private bool _purge;
 
-        //public Toggle Toggle { get; set; }
+        #region
         public string ID { get; set; }
         public int Count { get { return this._elements.Count; } }
         public bool IsEnabled
@@ -36,10 +42,11 @@ namespace TsGui
             get { return this._isEnabled; }
             set
             {
-                this._isEnabled = value;
-                foreach (IGroupable element in this._elements)
+                if (this._isEnabled != value)
                 {
-                    element.IsEnabled = value;
+                    this._isEnabled = value;
+                    if (value == true) { EnableEvent?.Invoke(); }
+                    else { DisableEvent?.Invoke(); }
                 }
             }
         }
@@ -48,32 +55,46 @@ namespace TsGui
             get { return this._isHidden; }
             set
             {
-                //Debug.WriteLine("Group Hidden set: " + this.ID + " - " + value);
-                this._isHidden = value;
-                foreach (IGroupable element in this._elements)
-                {                    
-                    element.IsHidden = value;
+                if (this._isHidden != value )
+                {
+                    this._isHidden = value;
+                    if (value == true) { HideEvent?.Invoke(); }
+                    else { UnhideEvent?.Invoke(); }
                 }
             }
         }
+        #endregion
+
+        //constructor
         public Group (string ID)
         {
             this._elements = new List<IGroupable>();
             this.ID = ID;
             this.IsEnabled = true;
             this.IsHidden = false;
+            this._purge = false;
         }
 
+
+        //method
         public void Add(IGroupable GroupableElement)
         {
-            //Debug.WriteLine("Adding element to group: " + this.ID);
-            //Debug.WriteLine(" Group guid: " + this._guid.ToString());
             this._elements.Add(GroupableElement);
+            //this.GroupToggleEvent += GroupableElement.OnGroupToggle;
+            this.HideEvent += GroupableElement.OnGroupHide;
+            this.UnhideEvent += GroupableElement.OnGroupUnhide;
+            this.EnableEvent += GroupableElement.OnGroupEnable;
+            this.DisableEvent += GroupableElement.OnGroupDisable;
         }
 
         public void Remove(IGroupable GroupableElement)
         {
             this._elements.Remove(GroupableElement);
+            //this.GroupToggleEvent -= GroupableElement.OnGroupToggle;
+            this.HideEvent -= GroupableElement.OnGroupHide;
+            this.UnhideEvent -= GroupableElement.OnGroupUnhide;
+            this.EnableEvent -= GroupableElement.OnGroupEnable;
+            this.DisableEvent -= GroupableElement.OnGroupDisable;
         }
     }
 }

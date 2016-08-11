@@ -26,7 +26,10 @@ namespace TsGui
 {
     public abstract class TsBaseOption: INotifyPropertyChanged, IGroupable
     {
+
         protected Group _group;
+        protected int _activeGroups = 0;
+        protected int _inactiveParents = 0;
         protected bool _isenabled = true;
         protected bool _ishidden = false;
         protected MainController _controller;
@@ -315,5 +318,32 @@ namespace TsGui
             }
         }
 
+        public void OnGroupHide()
+        {
+            if (this._activeGroups > 0)
+            { this._activeGroups--; }
+
+            if (this._activeGroups == 0) { this.IsHidden = true; }
+        }
+
+        public void OnGroupUnhide()
+        {
+            this._activeGroups++;
+            this.IsHidden = false; 
+        }
+
+        public void OnGroupEnable()
+        {
+            this._activeGroups++;
+            this.IsHidden = false;
+        }
+
+        public void OnGroupDisable()
+        {
+            if (this._activeGroups > 0)
+            { this._activeGroups--; }
+
+            if (this._activeGroups == 0) { this.IsEnabled = false; }
+        }
     }
 }

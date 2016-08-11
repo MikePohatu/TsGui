@@ -18,12 +18,23 @@ using System.Windows;
 
 namespace TsGui
 {
-    public delegate void ToggleEvent(IToggleControl c, RoutedEventArgs e);
+    public delegate void ToggleEvent();
 
     /// <summary>
     /// Event for notifying sub controls that the parents visibility has changed.
     /// </summary>
     /// <param name="Parent"></param>
-    /// <param name="Visibility"></param>
+    /// <param name="IsEnabled"></param>
+    /// <param name="IsHidden"></param>
     public delegate void ParentToggleEvent(IGroupParent Parent, bool IsEnabled, bool IsHidden);
+
+    public delegate void GroupHide();
+    public delegate void GroupUnhide();
+    public delegate void GroupEnable();
+    public delegate void GroupDisable();
+
+    public delegate void ParentHide();
+    public delegate void ParentUnhide();
+    public delegate void ParentEnable();
+    public delegate void ParentDisable();
 }

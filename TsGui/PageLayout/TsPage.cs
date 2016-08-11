@@ -33,6 +33,8 @@ namespace TsGui
         private Group _group;
         private bool _enabled = true;
         private bool _hidden = false;
+        private int _activeGroups = 0;
+        private int _inactiveParents = 0;
         private MainController _controller;
         private double _height;
         private double _width;
@@ -374,10 +376,7 @@ namespace TsGui
                 if (option.IsActive == true)
                 {
                     if (option.IsValid == false)
-                    {
-                        //Debug.WriteLine("invalid option found");
-                        return false;
-                    }
+                    { return false; }
                 }
             }
             return true;
@@ -449,6 +448,34 @@ namespace TsGui
                 this._pagelayout.buttonPrev.Visibility = Visibility.Hidden;
                 this._pagelayout.buttonPrev.IsEnabled = false;
             }
+        }
+
+        public void OnGroupHide()
+        {
+            if (this._activeGroups > 0)
+            { this._activeGroups--; }
+
+            if (this._activeGroups == 0) { this.IsHidden = true; }
+        }
+
+        public void OnGroupUnhide()
+        {
+            this._activeGroups++;
+            this.IsHidden = false;
+        }
+
+        public void OnGroupEnable()
+        {
+            this._activeGroups++;
+            this.IsHidden = false;
+        }
+
+        public void OnGroupDisable()
+        {
+            if (this._activeGroups > 0)
+            { this._activeGroups--; }
+
+            if (this._activeGroups == 0) { this.IsEnabled = false; }
         }
     }
 }

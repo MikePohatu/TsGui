@@ -31,6 +31,8 @@ namespace TsGui
 
 
         private bool _enabled;
+        private int _activeGroups = 0;
+        private int _inactiveParents = 0;
         private Group _group;
         private bool _hidden;
         private List<IGuiOption> options = new List<IGuiOption>();
@@ -275,7 +277,7 @@ namespace TsGui
             }
         }
 
-        protected void HideUnhide(bool Hidden)
+        private void HideUnhide(bool Hidden)
         {
             this._hidden = Hidden;
             if (Hidden == true)
@@ -289,11 +291,40 @@ namespace TsGui
             this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
         }
 
-        protected void EnableDisable(bool Enabled)
+        private void EnableDisable(bool Enabled)
         {
             this._enabled = Enabled;
             this._columngrid.IsEnabled = Enabled;
             this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
         }
+
+        public void OnGroupHide()
+        {
+            if (this._activeGroups > 0)
+            { this._activeGroups--; }
+
+            if (this._activeGroups == 0) { this.IsHidden = true; }
+        }
+
+        public void OnGroupUnhide()
+        {
+            this._activeGroups++;
+            this.IsHidden = false;
+        }
+
+        public void OnGroupEnable()
+        {
+            this._activeGroups++;
+            this.IsHidden = false;
+        }
+
+        public void OnGroupDisable()
+        {
+            if (this._activeGroups > 0)
+            { this._activeGroups--; }
+
+            if (this._activeGroups == 0) { this.IsEnabled = false; }
+        }
+
     }
 }
