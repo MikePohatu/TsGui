@@ -65,7 +65,10 @@ namespace TsGui
         {
             get
             {
-                return new TsVariable(this.VariableName, this.CurrentValue);
+                if ((this.IsActive == false) && (this.PurgeInactive == true))
+                { return null; }
+                else
+                { return new TsVariable(this.VariableName, this.CurrentValue); }
             }
         }
 

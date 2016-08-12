@@ -16,11 +16,6 @@
 // GroupingLogic.cs - handles the logic for dealing with grouping operations for 
 // IGroupAbleElement objects
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace TsGui
 {
     internal static class GroupingLogic

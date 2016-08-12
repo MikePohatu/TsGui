@@ -51,6 +51,7 @@ namespace TsGui
 
         //properties
         #region
+        public bool PurgeInactive { get; set; }
         public string VariableName { get; set; }
         public int ActiveGroupsCount { get; set; }
         public Label Label { get { return this._labelcontrol; } }
@@ -236,6 +237,7 @@ namespace TsGui
             tb.SetBinding(TextBlock.TextProperty, new Binding("HelpText"));
 
             //Set defaults
+            this.PurgeInactive = false;
             this.ActiveGroupsCount = 0;
             this.InactiveValue = "TSGUI_INACTIVE";
             this._visibleHeight = 20;
@@ -248,6 +250,7 @@ namespace TsGui
             //Load the XML
             #region
             XElement x;
+            XAttribute xAttrib;
 
             x = InputXml.Element("Variable");
             if (x != null)
@@ -255,7 +258,12 @@ namespace TsGui
 
             x = InputXml.Element("InactiveValue");
             if (x != null)
-            { this.InactiveValue = x.Value; }
+            {
+                xAttrib = x.Attribute("PurgeInactive");
+                if (xAttrib != null)
+                { this.PurgeInactive = Convert.ToBoolean(xAttrib.Value); }
+                this.InactiveValue = x.Value;
+            }
 
             x = InputXml.Element("HelpText");
             if (x != null)
