@@ -280,7 +280,6 @@ namespace TsGui
                 foreach (XElement xColumn in columnsXml)
                 {
                     TsColumn c = new TsColumn(xColumn, colIndex,this._controller, this.PurgeInactive);
-                    c.PurgeInactive = this.PurgeInactive;
                     this._columns.Add(c);
                     if (this._group != null)
                     {
