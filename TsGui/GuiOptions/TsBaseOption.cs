@@ -21,14 +21,17 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Collections.Generic;
 
 namespace TsGui
 {
     public abstract class TsBaseOption: INotifyPropertyChanged, IGroupable
     {
 
-        protected Group _group;
+        protected List<Group> _groups = new List<Group>();
         protected int _inactiveParents = 0;
+        protected int _hiddenParents = 0;
+        protected int _disabledParents = 0;
         protected bool _isenabled = true;
         protected bool _ishidden = false;
         protected MainController _controller;
@@ -197,10 +200,11 @@ namespace TsGui
                 this.IsEnabled = IsEnabled;
                 this.IsHidden = IsHidden;
             }
-            else if (this._group != null)
+            else if (this._groups.Count != 0)
             {
-                this.IsHidden = this._group.IsHidden;
-                this.IsEnabled = this._group.IsEnabled;
+                //code required
+                //this.IsHidden = this._group.IsHidden;
+                //this.IsEnabled = this._group.IsEnabled;
             }
             else
             {
@@ -296,10 +300,11 @@ namespace TsGui
             if (x != null)
             { this.IsHidden = Convert.ToBoolean(x.Value); }
 
-            x = InputXml.Element("Group");
-            if (x != null)
+            IEnumerable<XElement> xGroups = InputXml.Elements("Group");
+            if (xGroups != null)
             {
-                this._group = this._controller.AddToGroup(x.Value, this);
+                foreach (XElement xGroup in xGroups)
+                { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
             }
             #endregion
         }
@@ -329,6 +334,7 @@ namespace TsGui
         public void OnGroupHide(bool Hide)
         {
             GroupingLogic.OnGroupHide(this, Hide);
+
         }
 
         public void OnGroupEnable(bool Enable)
