@@ -190,6 +190,7 @@ namespace TsGui
         //Only subscribed if member of a group. Registers changes to parent elements. 
         public void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden)
         {
+
             //Debug.WriteLine("    TsBaseOption: OnParentChanged called: IsEnabled, IsHidden:" + IsEnabled + IsHidden );
             if ((IsHidden == true) || (IsEnabled == false))
             {
@@ -252,18 +253,17 @@ namespace TsGui
             XElement x;
             XAttribute xAttrib;
 
+            xAttrib = InputXml.Attribute("PurgeInactive");
+            if (xAttrib != null)
+            { this.PurgeInactive = Convert.ToBoolean(xAttrib.Value); }
+
             x = InputXml.Element("Variable");
             if (x != null)
             { this.VariableName = x.Value; }
 
             x = InputXml.Element("InactiveValue");
             if (x != null)
-            {
-                xAttrib = x.Attribute("PurgeInactive");
-                if (xAttrib != null)
-                { this.PurgeInactive = Convert.ToBoolean(xAttrib.Value); }
-                this.InactiveValue = x.Value;
-            }
+            { this.InactiveValue = x.Value; }
 
             x = InputXml.Element("HelpText");
             if (x != null)

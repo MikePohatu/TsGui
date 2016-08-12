@@ -33,7 +33,6 @@ namespace TsGui
         private Group _group;
         private bool _enabled = true;
         private bool _hidden = false;
-        private int _inactiveParents = 0;
         private MainController _controller;
         private double _height;
         private double _width;
@@ -57,6 +56,7 @@ namespace TsGui
 
         //Properties
         #region
+        public bool PurgeInactive { get; set; }
         public int ActiveGroupsCount { get; set; }
         public bool IsEnabled
         {
@@ -259,6 +259,11 @@ namespace TsGui
             XElement x;
             string groupID = null;
             int colIndex = 0;
+            XAttribute xAttrib;
+
+            xAttrib = InputXml.Attribute("PurgeInactive");
+            if (xAttrib != null)
+            { this.PurgeInactive = Convert.ToBoolean(xAttrib.Value); }
 
             x = InputXml.Element("Group");
             if (x != null)
@@ -274,7 +279,8 @@ namespace TsGui
             {
                 foreach (XElement xColumn in columnsXml)
                 {
-                    TsColumn c = new TsColumn(xColumn, colIndex,this._controller);
+                    TsColumn c = new TsColumn(xColumn, colIndex,this._controller, this.PurgeInactive);
+                    c.PurgeInactive = this.PurgeInactive;
                     this._columns.Add(c);
                     if (this._group != null)
                     {

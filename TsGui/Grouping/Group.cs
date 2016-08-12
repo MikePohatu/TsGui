@@ -30,9 +30,9 @@ namespace TsGui
         private List<IGroupable> _elements;
         private bool _isEnabled;
         private bool _isHidden;
-        private bool _purge;
 
         #region
+        public bool PurgeInactive { get; set; }
         public string ID { get; set; }
         public int Count { get { return this._elements.Count; } }
         public bool IsEnabled
@@ -68,7 +68,7 @@ namespace TsGui
             this.ID = ID;
             this.IsEnabled = true;
             this.IsHidden = false;
-            this._purge = false;
+            this.PurgeInactive = false;
         }
 
 

@@ -31,7 +31,7 @@ namespace TsGui
 
 
         private bool _enabled;
-        private int _inactiveParents = 0;
+        private bool _purgeInactive;
         private Group _group;
         private bool _hidden;
         private List<IGuiOption> options = new List<IGuiOption>();
@@ -46,6 +46,16 @@ namespace TsGui
 
         //properties
         #region
+        public bool PurgeInactive
+        {
+            get { return this._purgeInactive; }
+            set
+            {
+                this._purgeInactive = value;
+                foreach (IGuiOption option in this.options)
+                { option.PurgeInactive = value; }
+            }
+        }
         public int ActiveGroupsCount { get; set; }
         public GridLength LabelWidth
         {
@@ -121,12 +131,12 @@ namespace TsGui
 
         //constructor
         #region
-        public TsColumn (XElement SourceXml,int PageIndex, MainController RootController)
+        public TsColumn (XElement SourceXml,int PageIndex, MainController RootController, bool PurgeInactive)
         {
 
             this._controller = RootController;
             this.Index = PageIndex;
-            
+            this._purgeInactive = PurgeInactive;
             this._columngrid = new Grid();
 
             this._columngrid.Margin = new Thickness(0);
@@ -209,6 +219,11 @@ namespace TsGui
             string groupID = null;
             IEnumerable<XElement> optionsXml;
             IGuiOption newOption;
+            XAttribute xAttrib;
+
+            xAttrib = InputXml.Attribute("PurgeInactive");
+            if (xAttrib != null)
+            { this.PurgeInactive = Convert.ToBoolean(xAttrib.Value); }
 
             x = InputXml.Element("Group");
             if (x != null)
@@ -224,6 +239,7 @@ namespace TsGui
                 foreach (XElement xOption in optionsXml)
                 {
                     newOption = GuiFactory.CreateGuiOption(xOption,this._controller);
+                    newOption.PurgeInactive = this._purgeInactive;
                     this.options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);
 
