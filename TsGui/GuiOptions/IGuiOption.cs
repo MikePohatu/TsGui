@@ -34,6 +34,7 @@ namespace TsGui
         int Height { get; }
         bool PurgeInactive { get; set; }
 
-        void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden);
+        void OnParentHide(bool Hide);
+        void OnParentEnable(bool Enable);
     }
 }

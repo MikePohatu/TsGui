@@ -26,13 +26,11 @@ namespace TsGui
     /// <param name="Parent"></param>
     /// <param name="IsEnabled"></param>
     /// <param name="IsHidden"></param>
-    public delegate void ParentToggleEvent(IGroupParent Parent, bool IsEnabled, bool IsHidden);
+    //public delegate void ParentToggleEvent(IGroupParent Parent, bool IsEnabled, bool IsHidden);
 
-    public delegate void GroupHide(bool Hide);
+    public delegate void GroupDisplay(bool Display);
     public delegate void GroupEnable(bool Enable);
 
-    public delegate void ParentHide();
-    public delegate void ParentUnhide();
-    public delegate void ParentEnable();
-    public delegate void ParentDisable();
+    public delegate void ParentHide(bool Hide);
+    public delegate void ParentEnable(bool Enable);
 }

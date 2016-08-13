@@ -27,10 +27,9 @@ using System.ComponentModel;
 
 namespace TsGui
 {
-    public class TsPage: IGroupParent, ITsGuiElement, INotifyPropertyChanged, IGroupable
+    public class TsPage: IGroupParent, ITsGuiElement, INotifyPropertyChanged
     {
-
-        private Group _group;
+        private List<Group> _groups = new List<Group>();
         private bool _enabled = true;
         private bool _hidden = false;
         private MainController _controller;
@@ -56,16 +55,19 @@ namespace TsGui
 
         //Properties
         #region
+        public int GroupCount { get { return this._groups.Count; } }
+        public int DisabledParentCount { get; set; }
+        public int HiddenParentCount { get; set; }
         public bool PurgeInactive { get; set; }
-        public int ActiveGroupsCount { get; set; }
+        public int EnabledGroupsCount { get; set; }
+        public int DisplayedGroupsCount { get; set; }
         public bool IsEnabled
         {
             get { return this._enabled; }
             set
             {
                 this._enabled = value;
-                //Debug.WriteLine("TsPage: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
-                this.ParentChanged?.Invoke(this, value, this.IsHidden);
+                this.ParentEnable?.Invoke(value);
                 this.OnPropertyChanged(this, "IsEnabled");
             }
         }
@@ -75,8 +77,7 @@ namespace TsGui
             set
             {
                 this._hidden = value;
-                //Debug.WriteLine("TsPage: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
-                this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
+                this.ParentHide?.Invoke(value);
                 this.UpdatePrevious();
                 this.OnPropertyChanged(this, "IsHidden");
             }
@@ -223,7 +224,18 @@ namespace TsGui
             }
         }
 
-        public event ParentToggleEvent ParentChanged;
+        public event ParentHide ParentHide;
+        public event ParentEnable ParentEnable;
+
+        public void OnGroupDisplay(bool Hide)
+        {
+            GroupingLogic.OnGroupDisplay(this, Hide);
+        }
+
+        public void OnGroupEnable(bool Enable)
+        {
+            GroupingLogic.OnGroupEnable(this, Enable);
+        }
         #endregion
 
         //Constructors
@@ -246,7 +258,8 @@ namespace TsGui
             this._pagelayout.DataContext = this;
             this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
 
-            this.ActiveGroupsCount = 0;
+            this.EnabledGroupsCount = 999;
+            this.DisplayedGroupsCount = 999;
             this.LoadXml(SourceXml);
             this.Build();
         }
@@ -257,7 +270,6 @@ namespace TsGui
         {
             IEnumerable<XElement> columnsXml;
             XElement x;
-            string groupID = null;
             int colIndex = 0;
             XAttribute xAttrib;
 
@@ -265,12 +277,11 @@ namespace TsGui
             if (xAttrib != null)
             { this.PurgeInactive = Convert.ToBoolean(xAttrib.Value); }
 
-            x = InputXml.Element("Group");
-            if (x != null)
+            IEnumerable<XElement> xGroups = InputXml.Elements("Group");
+            if (xGroups != null)
             {
-                groupID = x.Value;
-                this._group = this._controller.AddToGroup(groupID, this);
-                
+                foreach (XElement xGroup in xGroups)
+                { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
             }
 
             //now read in the options and add to a dictionary for later use
@@ -281,11 +292,10 @@ namespace TsGui
                 {
                     TsColumn c = new TsColumn(xColumn, colIndex,this._controller, this.PurgeInactive);
                     this._columns.Add(c);
-                    if (this._group != null)
-                    {
-                        //Debug.WriteLine("TsPage - Registering column");
-                        this.ParentChanged += c.OnParentChanged;
-                    }
+
+                    //Debug.WriteLine("TsPage - Registering column");
+                    this.ParentHide += c.OnParentHide;
+                    this.ParentEnable += c.OnParentEnable;
                     
                     colIndex++;
                 }
@@ -454,16 +464,6 @@ namespace TsGui
                 this._pagelayout.buttonPrev.Visibility = Visibility.Hidden;
                 this._pagelayout.buttonPrev.IsEnabled = false;
             }
-        }
-
-        public void OnGroupHide(bool Hide)
-        {
-            GroupingLogic.OnGroupHide(this, Hide);
-        }
-
-        public void OnGroupEnable(bool Enable)
-        {
-            GroupingLogic.OnGroupEnable(this, Enable);
         }
     }
 }

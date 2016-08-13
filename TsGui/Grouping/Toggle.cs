@@ -90,10 +90,15 @@ namespace TsGui
         {
             string val;
             bool isenabled;
-            val = (this._option.CurrentValue);
-            this._toggleValMappings.TryGetValue(val, out isenabled);
 
-            if (isenabled == true) { this.EnableGroup(); }
+            if (this._option.IsActive == true)
+            {
+                val = (this._option.CurrentValue);
+                this._toggleValMappings.TryGetValue(val, out isenabled);
+
+                if (isenabled == true) { this.EnableGroup(); }
+                else { this.DisableGroup(); }
+            }
             else { this.DisableGroup(); }
         }
 

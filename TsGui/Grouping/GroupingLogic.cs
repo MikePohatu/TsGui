@@ -15,64 +15,90 @@
 
 // GroupingLogic.cs - handles the logic for dealing with grouping operations for 
 // IGroupAbleElement objects
+using System.Diagnostics;
 
 namespace TsGui
 {
     internal static class GroupingLogic
     {
-        //public event ParentToggleEvent ParentChanged;
-        ////Only subscribed if member of a group. Registers changes to parent elements. 
-        //public  static void OnParentChanged(IGroupable GroupElement, IGroupParent p, bool IsEnabled, bool IsHidden)
-        //{
-        //    //Debug.WriteLine("    TsColumn: OnParentChanged called: IsEnabled, IsHidden:" + IsEnabled + IsHidden);
-
-        //    if ((IsHidden == true) || (IsEnabled == false))
-        //    {
-        //        GroupElement.IsEnabled = IsEnabled;
-        //        GroupElement.IsHidden = IsHidden;
-        //    }
-        //    else if (GroupElement._group != null)
-        //    {
-        //        GroupElement.IsHidden = GroupElement._group.IsHidden;
-        //        GroupElement.IsEnabled = GroupElement._group.IsEnabled;
-        //    }
-        //    else
-        //    {
-        //        GroupElement.IsHidden = false;
-        //        GroupElement.IsEnabled = true;
-        //    }
-        //    //raise new event for child controls
-        //    GroupElement.ParentChanged?.Invoke(GroupElement, IsEnabled, IsHidden);
-        //}
-        public static void OnGroupHide(IGroupable GroupElement, bool Hide)
+        public static void OnGroupDisplay(IGroupable Element, bool Display)
         {
-            if (Hide == true)
+            if (Display == true)
             {
-                if (GroupElement.ActiveGroupsCount > 0)
-                { GroupElement.ActiveGroupsCount--; }
-
-                if (GroupElement.ActiveGroupsCount == 0) { GroupElement.IsHidden = true; }
+                Element.DisplayedGroupsCount++;
+                Element.IsHidden = false;
+                Element.IsEnabled = true;
             }
             else
             {
-                GroupElement.ActiveGroupsCount++;
-                GroupElement.IsHidden = false;
+                if (Element.DisplayedGroupsCount > 0) { Element.DisplayedGroupsCount--; }
+                if (Element.DisplayedGroupsCount == 0) { Element.IsHidden = true; }
             }
         }
 
-        public static void OnGroupEnable(IGroupable GroupElement, bool Enable)
+        public static void OnGroupEnable(IGroupable Element, bool Enable)
         {
             if (Enable == true)
             {
-                GroupElement.ActiveGroupsCount++;
-                GroupElement.IsEnabled = true;
+                Element.EnabledGroupsCount++;
+
+                //Enable and unhide the element unless the parent elements contradict 
+                if (Element.HiddenParentCount == 0)
+                { Element.IsHidden = false; }
+
+                if (Element.DisabledParentCount == 0)
+                { Element.IsEnabled = true; }                
             }
             else
             {
-                if (GroupElement.ActiveGroupsCount > 0)
-                { GroupElement.ActiveGroupsCount--; }
+                if (Element.EnabledGroupsCount > 0) { Element.EnabledGroupsCount--; }
+                if (Element.EnabledGroupsCount == 0)
+                {
+                    Element.IsEnabled = false;
+                    //If the remaining groups are set to hide, hide the element
+                    if (Element.DisplayedGroupsCount == 0) { Element.IsHidden = true; }
+                }
+            }
+        }
 
-                if (GroupElement.ActiveGroupsCount == 0) { GroupElement.IsEnabled = false; }
+        public static void OnParentHide(IGroupChild Element, bool Hide)
+        {
+            if (Hide == true)
+            {                
+                Element.HiddenParentCount++;
+                Element.IsHidden = true;
+            }
+            else
+            {
+                if (Element.HiddenParentCount > 0) { Element.HiddenParentCount--; }  
+                    
+                if (Element.HiddenParentCount == 0 )
+                {
+                    if (Element.DisplayedGroupsCount > 0)
+                    { Element.IsHidden = false; }
+                }
+            }
+        }
+
+        public static void OnParentEnable(IGroupChild Element, bool Enable)
+        {
+            if (Enable == true)
+            {
+                if (Element.DisabledParentCount > 0) { Element.DisabledParentCount--; }
+
+                if (Element.DisabledParentCount == 0 )
+                {
+                    if (Element.DisplayedGroupsCount > 0)
+                    { Element.IsHidden = false; }
+
+                    if (Element.EnabledGroupsCount > 0)
+                    { Element.IsEnabled = true; }
+                }
+            }
+            else
+            {
+                Element.DisabledParentCount++;
+                Element.IsEnabled = false;
             }
         }
     }

@@ -81,6 +81,27 @@ namespace TsGui
             }
         }
 
+        new public bool IsEnabled
+        {
+            get { return base._isenabled; }
+            set
+            {
+                base._isenabled = value;
+                OnPropertyChanged(this, "IsEnabled");
+                this.ToggleEvent?.Invoke();
+            }
+        }
+        new public bool IsHidden
+        {
+            get { return base._ishidden; }
+            set
+            {
+                base.HideUnhide(value);
+                OnPropertyChanged(this, "IsHidden");
+                this.ToggleEvent?.Invoke();
+            }
+        }
+
         public void LoadXml(XElement InputXml)
         {
             #region
@@ -130,12 +151,12 @@ namespace TsGui
         //called by the controller once everything is loaded
         public void InitialiseToggle()
         {
-            this.ToggleEvent();
+            this.ToggleEvent?.Invoke();
         }
 
         private void OnChanged(object o, RoutedEventArgs e)
         {
-            this.ToggleEvent();
+            this.ToggleEvent?.Invoke();
         }
     }
 }

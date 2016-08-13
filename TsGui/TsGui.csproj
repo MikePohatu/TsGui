@@ -78,6 +78,7 @@
     <Compile Include="Control\GuiFactory.cs" />
     <Compile Include="Grouping\GroupingLogic.cs" />
     <Compile Include="Grouping\IGroupable.cs" />
+    <Compile Include="Grouping\IGroupChild.cs" />
     <Compile Include="Grouping\IGroupParent.cs" />
     <Compile Include="Grouping\Toggle.cs" />
     <Compile Include="GuiOptions\TsBaseOption.cs" />

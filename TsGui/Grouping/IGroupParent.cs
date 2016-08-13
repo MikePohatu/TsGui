@@ -13,12 +13,13 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// IGroupParent.cs - don't really think this is required right now  :)
+// IGroupParent.cs - interface for parent elements i.e. columns and pages. 
 
 namespace TsGui
 {
-    public interface IGroupParent
+    public interface IGroupParent: IGroupable
     {
-        event ParentToggleEvent ParentChanged;
+        event ParentHide ParentHide;
+        event ParentEnable ParentEnable;
     }
 }

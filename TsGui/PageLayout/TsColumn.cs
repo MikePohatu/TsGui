@@ -26,13 +26,11 @@ using System;
 
 namespace TsGui
 {
-    public class TsColumn : IGroupParent, INotifyPropertyChanged, IGroupable
+    public class TsColumn : IGroupParent, IGroupChild, INotifyPropertyChanged
     {
-
-
         private bool _enabled;
         private bool _purgeInactive;
-        private Group _group;
+        private List<Group> _groups = new List<Group>();
         private bool _hidden;
         private List<IGuiOption> options = new List<IGuiOption>();
         private Grid _columngrid;
@@ -46,6 +44,9 @@ namespace TsGui
 
         //properties
         #region
+        public int GroupCount { get { return this._groups.Count; } }
+        public int DisabledParentCount { get; set; }
+        public int HiddenParentCount { get; set; }
         public bool PurgeInactive
         {
             get { return this._purgeInactive; }
@@ -56,7 +57,8 @@ namespace TsGui
                 { option.PurgeInactive = value; }
             }
         }
-        public int ActiveGroupsCount { get; set; }
+        public int DisplayedGroupsCount { get; set; }
+        public int EnabledGroupsCount { get; set; }
         public GridLength LabelWidth
         {
             get { return this._labelwidth; }
@@ -103,7 +105,7 @@ namespace TsGui
             {
                 this._enabled = value;
                 //Debug.WriteLine("TsColumn: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
-                this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
+                this.ParentEnable?.Invoke(value);
                 this.OnPropertyChanged(this, "IsEnabled");
             }
         }
@@ -114,7 +116,7 @@ namespace TsGui
             {
                 this._hidden = value;
                 //Debug.WriteLine("TsColumn: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
-                this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
+                this.ParentHide?.Invoke(value);
                 this.OnPropertyChanged(this, "IsHidden");
             }
         }
@@ -156,7 +158,10 @@ namespace TsGui
             this._columngrid.ColumnDefinitions.Add(this._coldefLabels);
             this._columngrid.ColumnDefinitions.Add(this._coldefControls);
 
-            this.ActiveGroupsCount = 0;
+            this.DisabledParentCount = 0;
+            this.HiddenParentCount = 0;
+            this.EnabledGroupsCount = 999;
+            this.DisplayedGroupsCount = 999;
 
             this.LoadXml(SourceXml);
             this.Build();
@@ -177,33 +182,12 @@ namespace TsGui
             }
         }
 
-        public event ParentToggleEvent ParentChanged;
-        //Only subscribed if member of a group. Registers changes to parent elements. 
-        public void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden)
-        {
-            //Debug.WriteLine("    TsColumn: OnParentChanged called: IsEnabled, IsHidden:" + IsEnabled + IsHidden);
+        public event ParentHide ParentHide;
+        public event ParentEnable ParentEnable;
 
-            if ((IsHidden == true) || (IsEnabled == false))
-            {
-                this.IsEnabled = IsEnabled;
-                this.IsHidden = IsHidden;
-            }
-            else if (this._group != null)
-            {
-                this.IsHidden = this._group.IsHidden;
-                this.IsEnabled = this._group.IsEnabled;
-            }
-            else
-            {
-                this.IsHidden = false;
-                this.IsEnabled = true;
-            }
-            //raise new event for child controls
-            this.ParentChanged?.Invoke(this, IsEnabled, IsHidden);
-        }
-        public void OnGroupHide(bool Hide)
+        public void OnGroupDisplay(bool Display)
         {
-            GroupingLogic.OnGroupHide(this, Hide);
+            GroupingLogic.OnGroupDisplay(this, Display);
         }
 
         public void OnGroupEnable(bool Enable)
@@ -211,12 +195,20 @@ namespace TsGui
             GroupingLogic.OnGroupEnable(this, Enable);
         }
 
+        public void OnParentHide(bool Hide)
+        {
+            GroupingLogic.OnParentHide(this, Hide);
+        }
+
+        public void OnParentEnable(bool Enable)
+        {
+            GroupingLogic.OnParentEnable(this, Enable);
+        }
         #endregion
 
         private void LoadXml(XElement InputXml)
         {
             XElement x;
-            string groupID = null;
             IEnumerable<XElement> optionsXml;
             IGuiOption newOption;
             XAttribute xAttrib;
@@ -225,11 +217,11 @@ namespace TsGui
             if (xAttrib != null)
             { this.PurgeInactive = Convert.ToBoolean(xAttrib.Value); }
 
-            x = InputXml.Element("Group");
-            if (x != null)
+            IEnumerable<XElement> xGroups = InputXml.Elements("Group");
+            if (xGroups != null)
             {
-                groupID = x.Value;
-                this._group = this._controller.AddToGroup(groupID, this);
+                foreach (XElement xGroup in xGroups)
+                { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
             }
 
             //now read in the options and add to a dictionary for later use
@@ -244,8 +236,8 @@ namespace TsGui
                     this._controller.AddOptionToLibary(newOption);
 
                     //register for events
-                    //if ((this._group != null) || (this._parent.Group != null)) { this.ParentChanged += newOption.OnParentChanged; }
-                    this.ParentChanged += newOption.OnParentChanged;
+                    this.ParentEnable += newOption.OnParentEnable;
+                    this.ParentHide += newOption.OnParentHide;
                 }
             }
 
@@ -302,27 +294,6 @@ namespace TsGui
 
                 rowindex++;
             }
-        }
-
-        private void HideUnhide(bool Hidden)
-        {
-            this._hidden = Hidden;
-            if (Hidden == true)
-            {
-                this._columngrid.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                this._columngrid.Visibility = Visibility.Visible;
-            }
-            this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
-        }
-
-        private void EnableDisable(bool Enabled)
-        {
-            this._enabled = Enabled;
-            this._columngrid.IsEnabled = Enabled;
-            this.ParentChanged?.Invoke(this, this.IsEnabled, this.IsHidden);
         }
     }
 }

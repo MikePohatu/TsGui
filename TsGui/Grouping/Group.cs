@@ -24,13 +24,14 @@ namespace TsGui
     public class Group
     {
         //public event GroupToggleEvent GroupToggleEvent;
-        public event GroupHide HideEvent;
+        public event GroupDisplay DisplayEvent;
         public event GroupEnable EnableEvent;
 
         private List<IGroupable> _elements;
         private bool _isEnabled;
         private bool _isHidden;
 
+        //properties
         #region
         public bool PurgeInactive { get; set; }
         public string ID { get; set; }
@@ -55,7 +56,7 @@ namespace TsGui
                 if (this._isHidden != value )
                 {
                     this._isHidden = value;
-                    HideEvent?.Invoke(value); 
+                    DisplayEvent?.Invoke(!value); 
                 }
             }
         }
@@ -76,15 +77,32 @@ namespace TsGui
         public void Add(IGroupable GroupableElement)
         {
             this._elements.Add(GroupableElement);
-            this.HideEvent += GroupableElement.OnGroupHide;
+            this.DisplayEvent += GroupableElement.OnGroupDisplay;
             this.EnableEvent += GroupableElement.OnGroupEnable;
+
+            //if this is the first group the element has been added to, re-initialise it
+            if (GroupableElement.EnabledGroupsCount == 999) { GroupableElement.EnabledGroupsCount = 0; }
+            if (GroupableElement.DisplayedGroupsCount == 999) { GroupableElement.DisplayedGroupsCount = 0; }
+
+            if (this.IsEnabled == true) { GroupableElement.EnabledGroupsCount++; }
+            if (this.IsHidden == false) { GroupableElement.DisplayedGroupsCount++; }
+
         }
 
         public void Remove(IGroupable GroupableElement)
         {
             this._elements.Remove(GroupableElement);
-            this.HideEvent -= GroupableElement.OnGroupHide;
+            this.DisplayEvent -= GroupableElement.OnGroupDisplay;
             this.EnableEvent -= GroupableElement.OnGroupEnable;
+
+            if (this.IsEnabled == true)
+            {
+                if (GroupableElement.EnabledGroupsCount > 0) { GroupableElement.EnabledGroupsCount--; }
+            }
+            if (this.IsHidden == false)
+            {
+                if (GroupableElement.DisplayedGroupsCount > 0) { GroupableElement.DisplayedGroupsCount--; }
+            }
         }
     }
 }
