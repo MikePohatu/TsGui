@@ -79,30 +79,8 @@ namespace TsGui
             this._elements.Add(GroupableElement);
             this.DisplayEvent += GroupableElement.OnGroupDisplay;
             this.EnableEvent += GroupableElement.OnGroupEnable;
-
-            //if this is the first group the element has been added to, re-initialise it
-            if (GroupableElement.EnabledGroupsCount == 999) { GroupableElement.EnabledGroupsCount = 0; }
-            if (GroupableElement.DisplayedGroupsCount == 999) { GroupableElement.DisplayedGroupsCount = 0; }
-
-            if (this.IsEnabled == true) { GroupableElement.EnabledGroupsCount++; }
-            if (this.IsHidden == false) { GroupableElement.DisplayedGroupsCount++; }
-
-        }
-
-        public void Remove(IGroupable GroupableElement)
-        {
-            this._elements.Remove(GroupableElement);
-            this.DisplayEvent -= GroupableElement.OnGroupDisplay;
-            this.EnableEvent -= GroupableElement.OnGroupEnable;
-
-            if (this.IsEnabled == true)
-            {
-                if (GroupableElement.EnabledGroupsCount > 0) { GroupableElement.EnabledGroupsCount--; }
-            }
-            if (this.IsHidden == false)
-            {
-                if (GroupableElement.DisplayedGroupsCount > 0) { GroupableElement.DisplayedGroupsCount--; }
-            }
+            GroupableElement.DisplayedGroupsCount=0;
+            GroupableElement.EnabledGroupsCount=0;
         }
     }
 }

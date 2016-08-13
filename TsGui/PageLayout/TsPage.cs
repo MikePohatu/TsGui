@@ -258,8 +258,8 @@ namespace TsGui
             this._pagelayout.DataContext = this;
             this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
 
-            this.EnabledGroupsCount = 999;
-            this.DisplayedGroupsCount = 999;
+            this.EnabledGroupsCount = -1;
+            this.DisplayedGroupsCount = -1;
             this.LoadXml(SourceXml);
             this.Build();
         }

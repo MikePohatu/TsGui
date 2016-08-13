@@ -16,6 +16,7 @@
 // GroupingLogic.cs - handles the logic for dealing with grouping operations for 
 // IGroupAbleElement objects
 using System.Diagnostics;
+using System;
 
 namespace TsGui
 {
@@ -26,8 +27,12 @@ namespace TsGui
             if (Display == true)
             {
                 Element.DisplayedGroupsCount++;
-                Element.IsHidden = false;
-                Element.IsEnabled = true;
+                //Enable and unhide the element unless the parent elements contradict 
+                if (Element.HiddenParentCount == 0)
+                { Element.IsHidden = false; }
+
+                if (Element.DisabledParentCount == 0)
+                { Element.IsEnabled = true; }
             }
             else
             {
@@ -41,7 +46,7 @@ namespace TsGui
             if (Enable == true)
             {
                 Element.EnabledGroupsCount++;
-
+                Element.DisplayedGroupsCount++;
                 //Enable and unhide the element unless the parent elements contradict 
                 if (Element.HiddenParentCount == 0)
                 { Element.IsHidden = false; }
@@ -74,7 +79,7 @@ namespace TsGui
                     
                 if (Element.HiddenParentCount == 0 )
                 {
-                    if (Element.DisplayedGroupsCount > 0)
+                    if (Math.Abs(Element.DisplayedGroupsCount) > 0)
                     { Element.IsHidden = false; }
                 }
             }
@@ -88,10 +93,10 @@ namespace TsGui
 
                 if (Element.DisabledParentCount == 0 )
                 {
-                    if (Element.DisplayedGroupsCount > 0)
+                    if (Math.Abs(Element.DisplayedGroupsCount) > 0)
                     { Element.IsHidden = false; }
 
-                    if (Element.EnabledGroupsCount > 0)
+                    if (Math.Abs(Element.EnabledGroupsCount) > 0)
                     { Element.IsEnabled = true; }
                 }
             }

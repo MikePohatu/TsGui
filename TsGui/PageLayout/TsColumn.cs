@@ -160,8 +160,8 @@ namespace TsGui
 
             this.DisabledParentCount = 0;
             this.HiddenParentCount = 0;
-            this.EnabledGroupsCount = 999;
-            this.DisplayedGroupsCount = 999;
+            this.EnabledGroupsCount = -1;
+            this.DisplayedGroupsCount = -1;
 
             this.LoadXml(SourceXml);
             this.Build();

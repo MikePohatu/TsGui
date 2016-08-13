@@ -243,10 +243,11 @@ namespace TsGui
 
             //Set defaults
             this.PurgeInactive = false;
-            this.EnabledGroupsCount = 999;
-            this.DisplayedGroupsCount = 999;
+            this.EnabledGroupsCount = -1;
+            this.DisplayedGroupsCount = -1;
             this.DisabledParentCount = 0;
             this.HiddenParentCount = 0;
+
             this.InactiveValue = "TSGUI_INACTIVE";
             this._visibleHeight = 20;
             this.Height = 20;
