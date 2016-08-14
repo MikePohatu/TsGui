@@ -23,43 +23,25 @@ namespace TsGui
 {
     public class Group
     {
-        //public event GroupToggleEvent GroupToggleEvent;
-        public event GroupDisplay DisplayEvent;
-        public event GroupEnable EnableEvent;
-
+        public event GroupStateChange StateEvent;
+        
         private List<IGroupable> _elements;
-        private bool _isEnabled;
-        private bool _isHidden;
+        private GroupState _state;
 
         //properties
         #region
+        public GroupState State
+        {
+            get { return this._state; }
+            set
+            {
+                this._state = value;
+                StateEvent?.Invoke();
+            }
+        }
         public bool PurgeInactive { get; set; }
         public string ID { get; set; }
         public int Count { get { return this._elements.Count; } }
-        public bool IsEnabled
-        {
-            get { return this._isEnabled; }
-            set
-            {
-                if (this._isEnabled != value)
-                {
-                    this._isEnabled = value;
-                    EnableEvent?.Invoke(value);
-                }
-            }
-        }
-        public bool IsHidden
-        {
-            get { return this._isHidden; }
-            set
-            {
-                if (this._isHidden != value )
-                {
-                    this._isHidden = value;
-                    DisplayEvent?.Invoke(!value); 
-                }
-            }
-        }
         #endregion
 
         //constructor
@@ -67,20 +49,15 @@ namespace TsGui
         {
             this._elements = new List<IGroupable>();
             this.ID = ID;
-            this.IsEnabled = true;
-            this.IsHidden = false;
+            this.State = GroupState.Enabled;
             this.PurgeInactive = false;
         }
-
 
         //method
         public void Add(IGroupable GroupableElement)
         {
             this._elements.Add(GroupableElement);
-            this.DisplayEvent += GroupableElement.OnGroupDisplay;
-            this.EnableEvent += GroupableElement.OnGroupEnable;
-            GroupableElement.DisplayedGroupsCount=0;
-            GroupableElement.EnabledGroupsCount=0;
+            this.StateEvent += GroupableElement.OnGroupStateChange;
         }
     }
 }

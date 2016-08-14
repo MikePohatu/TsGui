@@ -14,6 +14,7 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 // IGroupable.cs - interface defines elements that can be added to a Group object
+using System.Collections.Generic;
 
 namespace TsGui
 {
@@ -22,13 +23,13 @@ namespace TsGui
         bool IsActive { get; }
         bool IsEnabled { get; set; }
         bool IsHidden { get; set; }
-        int DisplayedGroupsCount { get; set; }
-        int EnabledGroupsCount { get; set; }
+        List<Group> Groups { get; }
         int DisabledParentCount { get; set; }
         int HiddenParentCount { get; set; }
         int GroupCount { get; }
 
-        void OnGroupDisplay(bool Display);
-        void OnGroupEnable(bool Enable);
+        void OnGroupStateChange();
+        //void OnGroupDisplay(bool Display);
+        //void OnGroupEnable(bool Enable);
     }
 }

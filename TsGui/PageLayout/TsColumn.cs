@@ -44,6 +44,7 @@ namespace TsGui
 
         //properties
         #region
+        public List<Group> Groups { get { return this._groups; } }
         public int GroupCount { get { return this._groups.Count; } }
         public int DisabledParentCount { get; set; }
         public int HiddenParentCount { get; set; }
@@ -57,8 +58,6 @@ namespace TsGui
                 { option.PurgeInactive = value; }
             }
         }
-        public int DisplayedGroupsCount { get; set; }
-        public int EnabledGroupsCount { get; set; }
         public GridLength LabelWidth
         {
             get { return this._labelwidth; }
@@ -104,7 +103,6 @@ namespace TsGui
             set
             {
                 this._enabled = value;
-                //Debug.WriteLine("TsColumn: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
                 this.ParentEnable?.Invoke(value);
                 this.OnPropertyChanged(this, "IsEnabled");
             }
@@ -115,7 +113,6 @@ namespace TsGui
             set
             {
                 this._hidden = value;
-                //Debug.WriteLine("TsColumn: ParentChanged raised: IsEnabled, IsHidden: " + IsEnabled + IsHidden);
                 this.ParentHide?.Invoke(value);
                 this.OnPropertyChanged(this, "IsHidden");
             }
@@ -160,8 +157,6 @@ namespace TsGui
 
             this.DisabledParentCount = 0;
             this.HiddenParentCount = 0;
-            this.EnabledGroupsCount = -1;
-            this.DisplayedGroupsCount = -1;
 
             this.LoadXml(SourceXml);
             this.Build();
@@ -175,24 +170,15 @@ namespace TsGui
         // OnPropertyChanged method to raise the event
         protected void OnPropertyChanged(object sender, string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(sender, new PropertyChangedEventArgs(name));
-            }
+            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
 
         public event ParentHide ParentHide;
         public event ParentEnable ParentEnable;
 
-        public void OnGroupDisplay(bool Display)
+        public void OnGroupStateChange()
         {
-            GroupingLogic.OnGroupDisplay(this, Display);
-        }
-
-        public void OnGroupEnable(bool Enable)
-        {
-            GroupingLogic.OnGroupEnable(this, Enable);
+            GroupingLogic.EvaluateGroups(this);
         }
 
         public void OnParentHide(bool Hide)

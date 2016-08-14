@@ -55,12 +55,11 @@ namespace TsGui
 
         //Properties
         #region
+        public List<Group> Groups { get { return this._groups; } }
         public int GroupCount { get { return this._groups.Count; } }
         public int DisabledParentCount { get; set; }
         public int HiddenParentCount { get; set; }
         public bool PurgeInactive { get; set; }
-        public int EnabledGroupsCount { get; set; }
-        public int DisplayedGroupsCount { get; set; }
         public bool IsEnabled
         {
             get { return this._enabled; }
@@ -227,14 +226,9 @@ namespace TsGui
         public event ParentHide ParentHide;
         public event ParentEnable ParentEnable;
 
-        public void OnGroupDisplay(bool Hide)
+        public void OnGroupStateChange()
         {
-            GroupingLogic.OnGroupDisplay(this, Hide);
-        }
-
-        public void OnGroupEnable(bool Enable)
-        {
-            GroupingLogic.OnGroupEnable(this, Enable);
+            GroupingLogic.EvaluateGroups(this);
         }
         #endregion
 
@@ -258,8 +252,6 @@ namespace TsGui
             this._pagelayout.DataContext = this;
             this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
 
-            this.EnabledGroupsCount = -1;
-            this.DisplayedGroupsCount = -1;
             this.LoadXml(SourceXml);
             this.Build();
         }

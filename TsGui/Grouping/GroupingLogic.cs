@@ -15,74 +15,36 @@
 
 // GroupingLogic.cs - handles the logic for dealing with grouping operations for 
 // IGroupAbleElement objects
-using System.Diagnostics;
-using System;
+
 
 namespace TsGui
 {
     internal static class GroupingLogic
     {
+        //group logic
         public static void OnGroupDisplay(IGroupable Element, bool Display)
         {
-            if (Display == true)
-            {
-                Element.DisplayedGroupsCount++;
-                //Enable and unhide the element unless the parent elements contradict 
-                if (Element.HiddenParentCount == 0)
-                { Element.IsHidden = false; }
-
-                if (Element.DisabledParentCount == 0)
-                { Element.IsEnabled = true; }
-            }
-            else
-            {
-                if (Element.DisplayedGroupsCount > 0) { Element.DisplayedGroupsCount--; }
-                if (Element.DisplayedGroupsCount == 0) { Element.IsHidden = true; }
-            }
+            GroupingLogic.EvaluateGroups(Element);
         }
 
         public static void OnGroupEnable(IGroupable Element, bool Enable)
         {
-            if (Enable == true)
-            {
-                Element.EnabledGroupsCount++;
-                Element.DisplayedGroupsCount++;
-                //Enable and unhide the element unless the parent elements contradict 
-                if (Element.HiddenParentCount == 0)
-                { Element.IsHidden = false; }
-
-                if (Element.DisabledParentCount == 0)
-                { Element.IsEnabled = true; }                
-            }
-            else
-            {
-                if (Element.EnabledGroupsCount > 0) { Element.EnabledGroupsCount--; }
-                if (Element.EnabledGroupsCount == 0)
-                {
-                    Element.IsEnabled = false;
-                    //If the remaining groups are set to hide, hide the element
-                    if (Element.DisplayedGroupsCount == 0) { Element.IsHidden = true; }
-                }
-            }
+            GroupingLogic.EvaluateGroups(Element);
         }
 
+
+        //Parent/child logic
         public static void OnParentHide(IGroupChild Element, bool Hide)
         {
             if (Hide == true)
             {                
                 Element.HiddenParentCount++;
-                Element.IsHidden = true;
             }
             else
-            {
+            {               
                 if (Element.HiddenParentCount > 0) { Element.HiddenParentCount--; }  
-                    
-                if (Element.HiddenParentCount == 0 )
-                {
-                    if (Math.Abs(Element.DisplayedGroupsCount) > 0)
-                    { Element.IsHidden = false; }
-                }
             }
+            EvaluateGroups(Element);
         }
 
         public static void OnParentEnable(IGroupChild Element, bool Enable)
@@ -90,21 +52,68 @@ namespace TsGui
             if (Enable == true)
             {
                 if (Element.DisabledParentCount > 0) { Element.DisabledParentCount--; }
-
-                if (Element.DisabledParentCount == 0 )
-                {
-                    if (Math.Abs(Element.DisplayedGroupsCount) > 0)
-                    { Element.IsHidden = false; }
-
-                    if (Math.Abs(Element.EnabledGroupsCount) > 0)
-                    { Element.IsEnabled = true; }
-                }
             }
             else
             {
                 Element.DisabledParentCount++;
-                Element.IsEnabled = false;
             }
+            EvaluateGroups(Element);
+        }
+
+        public static void EvaluateGroups(IGroupable Element)
+        {       
+            bool hiddenset = false;
+            bool enabledset = false;
+            GroupState state = GroupState.Disabled;
+
+            if (Element.DisabledParentCount > 0)
+            {
+                if (Element.IsEnabled == true) { Element.IsEnabled = false; }
+                enabledset = true;
+            }
+            if (Element.HiddenParentCount > 0)
+            {
+                if (Element.IsHidden == false) { Element.IsHidden = true; }
+                hiddenset = true;
+            }
+
+            if (hiddenset && enabledset) { return; } //done
+
+            //Parents checked, now check groups
+            if (Element.GroupCount > 0)
+            {
+                foreach (Group g in Element.Groups)
+                {
+                    if (g.State == GroupState.Enabled)
+                    {
+                        state = GroupState.Enabled;
+                        break;
+                    }
+
+                    if (g.State == GroupState.Hidden) { state = GroupState.Hidden; }
+                }
+            }
+            else
+            {
+                state = GroupState.Enabled;
+            }
+
+            //now set things based on what is there
+            if (state == GroupState.Enabled)
+            {
+                if (!hiddenset) { Element.IsHidden = false; }
+                if (!enabledset) { Element.IsEnabled = true; }
+            }
+            else if (state == GroupState.Disabled)
+            {
+                if (!hiddenset) { Element.IsHidden = false; }
+                if (!enabledset) { Element.IsEnabled = false; }
+            }
+            else
+            {
+                if (!hiddenset) { Element.IsHidden = true; }
+                if (!enabledset) { Element.IsEnabled = false; }
+            }  
         }
     }
 }

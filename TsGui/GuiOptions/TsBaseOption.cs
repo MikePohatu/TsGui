@@ -53,13 +53,12 @@ namespace TsGui
 
         //properties
         #region
+        public List<Group> Groups { get { return this._groups; } }
         public int GroupCount { get { return this._groups.Count; } }
         public int DisabledParentCount { get; set; }
         public int HiddenParentCount { get; set; }
         public bool PurgeInactive { get; set; }
         public string VariableName { get; set; }
-        public int EnabledGroupsCount { get; set; }
-        public int DisplayedGroupsCount { get; set; }
         public Label Label { get { return this._labelcontrol; } }
         public Control Control { get { return this._control; } }
         public string Value
@@ -186,21 +185,12 @@ namespace TsGui
         // OnPropertyChanged method to raise the event
         protected void OnPropertyChanged(object sender, string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(sender, new PropertyChangedEventArgs(name));
-            }
+            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
 
-        public void OnGroupDisplay(bool Hide)
+        public void OnGroupStateChange()
         {
-            GroupingLogic.OnGroupDisplay(this, Hide);
-        }
-
-        public void OnGroupEnable(bool Enable)
-        {
-            GroupingLogic.OnGroupEnable(this, Enable);
+            GroupingLogic.EvaluateGroups(this);
         }
 
         public void OnParentHide(bool Hide)
@@ -243,8 +233,6 @@ namespace TsGui
 
             //Set defaults
             this.PurgeInactive = false;
-            this.EnabledGroupsCount = -1;
-            this.DisplayedGroupsCount = -1;
             this.DisabledParentCount = 0;
             this.HiddenParentCount = 0;
 

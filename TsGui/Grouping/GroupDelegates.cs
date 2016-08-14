@@ -18,6 +18,8 @@ using System.Windows;
 
 namespace TsGui
 {
+
+    public enum GroupState { Hidden, Disabled, Enabled };
     public delegate void ToggleEvent();
 
     /// <summary>
@@ -27,9 +29,7 @@ namespace TsGui
     /// <param name="IsEnabled"></param>
     /// <param name="IsHidden"></param>
     //public delegate void ParentToggleEvent(IGroupParent Parent, bool IsEnabled, bool IsHidden);
-
-    public delegate void GroupDisplay(bool Display);
-    public delegate void GroupEnable(bool Enable);
+    public delegate void GroupStateChange();
 
     public delegate void ParentHide(bool Hide);
     public delegate void ParentEnable(bool Enable);
