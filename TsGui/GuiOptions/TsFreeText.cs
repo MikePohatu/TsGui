@@ -66,7 +66,10 @@ namespace TsGui
         {
             get
             {
-                return new TsVariable(this.VariableName, this.Value);
+                if ((this.IsActive == false) && (this.PurgeInactive == true))
+                { return null; }
+                else
+                { return new TsVariable(this.VariableName, this.Value); }
             }
         }
         public int MaxLength

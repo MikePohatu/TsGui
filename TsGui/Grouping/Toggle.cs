@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using System.Windows;
 
 namespace TsGui
 {
@@ -86,27 +85,37 @@ namespace TsGui
             }
         }
 
-        public void OnToggleEvent(object o, RoutedEventArgs e)
+        public void OnToggleEvent()
         {
             string val;
             bool isenabled;
-            val = (this._option.CurrentValue);
-            this._toggleValMappings.TryGetValue(val, out isenabled);
 
-            if (isenabled == true) { this.EnableGroup(); }
+            if (this._option.IsActive == true)
+            {
+                val = (this._option.CurrentValue);
+                this._toggleValMappings.TryGetValue(val, out isenabled);
+
+                if (isenabled == true) { this.EnableGroup(); }
+                else { this.DisableGroup(); }
+            }
             else { this.DisableGroup(); }
         }
 
         private void DisableGroup()
         {
-            if (this._hiddenMode == true) { this._group.IsHidden = true; }
-            else { this._group.IsEnabled = false; }
+            if (this._hiddenMode == false)
+            {
+                this._group.State = GroupState.Disabled;
+            }
+            else
+            {
+                this._group.State = GroupState.Hidden;
+            }
         }
 
         private void EnableGroup()
         {
-            this._group.IsHidden = false; 
-            this._group.IsEnabled = true; 
+            this._group.State = GroupState.Enabled;
         }
     }
 }

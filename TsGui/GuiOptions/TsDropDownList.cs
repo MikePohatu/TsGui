@@ -62,14 +62,19 @@ namespace TsGui
         //properties
         public TsVariable Variable 
         { 
-                get 
+            get
+            {
+                if ((this.IsActive == false) && (this.PurgeInactive == true))
+                { return null; }
+                else
                 {
                     //get the current value from the combobox
                     KeyValuePair<string, string> selected = (KeyValuePair<string, string>)this._control.SelectedItem;
                     this._value = selected.Value;
 
-                    return new TsVariable(this.VariableName, this._value); 
-                } 
+                    return new TsVariable(this.VariableName, this._value);
+                }
+            }
         }
 
         public void LoadXml(XElement InputXml)

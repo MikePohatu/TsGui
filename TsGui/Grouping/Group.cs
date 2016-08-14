@@ -23,57 +23,41 @@ namespace TsGui
 {
     public class Group
     {
+        public event GroupStateChange StateEvent;
+        
         private List<IGroupable> _elements;
-        private bool _isEnabled;
-        private bool _isHidden;
-        //private Guid _guid = Guid.NewGuid();
+        private GroupState _state;
 
-        //public Toggle Toggle { get; set; }
+        //properties
+        #region
+        public GroupState State
+        {
+            get { return this._state; }
+            set
+            {
+                this._state = value;
+                StateEvent?.Invoke();
+            }
+        }
+        public bool PurgeInactive { get; set; }
         public string ID { get; set; }
         public int Count { get { return this._elements.Count; } }
-        public bool IsEnabled
-        {
-            get { return this._isEnabled; }
-            set
-            {
-                this._isEnabled = value;
-                foreach (IGroupable element in this._elements)
-                {
-                    element.IsEnabled = value;
-                }
-            }
-        }
-        public bool IsHidden
-        {
-            get { return this._isHidden; }
-            set
-            {
-                //Debug.WriteLine("Group Hidden set: " + this.ID + " - " + value);
-                this._isHidden = value;
-                foreach (IGroupable element in this._elements)
-                {                    
-                    element.IsHidden = value;
-                }
-            }
-        }
+        #endregion
+
+        //constructor
         public Group (string ID)
         {
             this._elements = new List<IGroupable>();
             this.ID = ID;
-            this.IsEnabled = true;
-            this.IsHidden = false;
+            this.State = GroupState.Enabled;
+            this.PurgeInactive = false;
         }
 
+        //method
         public void Add(IGroupable GroupableElement)
         {
-            //Debug.WriteLine("Adding element to group: " + this.ID);
-            //Debug.WriteLine(" Group guid: " + this._guid.ToString());
             this._elements.Add(GroupableElement);
-        }
-
-        public void Remove(IGroupable GroupableElement)
-        {
-            this._elements.Remove(GroupableElement);
+            this.StateEvent += GroupableElement.OnGroupStateChange;
         }
     }
 }

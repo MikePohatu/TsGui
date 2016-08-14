@@ -21,12 +21,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Collections.Generic;
 
 namespace TsGui
 {
-    public abstract class TsBaseOption: INotifyPropertyChanged, IGroupable
+    public abstract class TsBaseOption: INotifyPropertyChanged, IGroupChild
     {
-        protected Group _group;
+
+        protected List<Group> _groups = new List<Group>();
+        protected int _hiddenParents = 0;
+        protected int _disabledParents = 0;
         protected bool _isenabled = true;
         protected bool _ishidden = false;
         protected MainController _controller;
@@ -49,8 +53,12 @@ namespace TsGui
 
         //properties
         #region
+        public List<Group> Groups { get { return this._groups; } }
+        public int GroupCount { get { return this._groups.Count; } }
+        public int DisabledParentCount { get; set; }
+        public int HiddenParentCount { get; set; }
+        public bool PurgeInactive { get; set; }
         public string VariableName { get; set; }
-        //public Group Group { get; set; }
         public Label Label { get { return this._labelcontrol; } }
         public Control Control { get { return this._control; } }
         public string Value
@@ -177,32 +185,22 @@ namespace TsGui
         // OnPropertyChanged method to raise the event
         protected void OnPropertyChanged(object sender, string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(sender, new PropertyChangedEventArgs(name));
-            }
-        }        
+            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
+        }
 
-        //Only subscribed if member of a group. Registers changes to parent elements. 
-        public void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden)
+        public void OnGroupStateChange()
         {
-            //Debug.WriteLine("    TsBaseOption: OnParentChanged called: IsEnabled, IsHidden:" + IsEnabled + IsHidden );
-            if ((IsHidden == true) || (IsEnabled == false))
-            {
-                this.IsEnabled = IsEnabled;
-                this.IsHidden = IsHidden;
-            }
-            else if (this._group != null)
-            {
-                this.IsHidden = this._group.IsHidden;
-                this.IsEnabled = this._group.IsEnabled;
-            }
-            else
-            {
-                this.IsHidden = false;
-                this.IsEnabled = true;
-            }
+            GroupingLogic.EvaluateGroups(this);
+        }
+
+        public void OnParentHide(bool Hide)
+        {
+            GroupingLogic.OnParentHide(this, Hide);
+        }
+
+        public void OnParentEnable(bool Enable)
+        {
+            GroupingLogic.OnParentEnable(this, Enable);
         }
         #endregion
 
@@ -234,6 +232,10 @@ namespace TsGui
             tb.SetBinding(TextBlock.TextProperty, new Binding("HelpText"));
 
             //Set defaults
+            this.PurgeInactive = false;
+            this.DisabledParentCount = 0;
+            this.HiddenParentCount = 0;
+
             this.InactiveValue = "TSGUI_INACTIVE";
             this._visibleHeight = 20;
             this.Height = 20;
@@ -245,6 +247,11 @@ namespace TsGui
             //Load the XML
             #region
             XElement x;
+            XAttribute xAttrib;
+
+            xAttrib = InputXml.Attribute("PurgeInactive");
+            if (xAttrib != null)
+            { this.PurgeInactive = Convert.ToBoolean(xAttrib.Value); }
 
             x = InputXml.Element("Variable");
             if (x != null)
@@ -285,10 +292,11 @@ namespace TsGui
             if (x != null)
             { this.IsHidden = Convert.ToBoolean(x.Value); }
 
-            x = InputXml.Element("Group");
-            if (x != null)
+            IEnumerable<XElement> xGroups = InputXml.Elements("Group");
+            if (xGroups != null)
             {
-                this._group = this._controller.AddToGroup(x.Value, this);
+                foreach (XElement xGroup in xGroups)
+                { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
             }
             #endregion
         }
@@ -314,6 +322,5 @@ namespace TsGui
                 this.LabelMargin = this._visiblelabelmargin;
             }
         }
-
     }
 }

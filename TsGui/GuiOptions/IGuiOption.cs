@@ -32,7 +32,9 @@ namespace TsGui
         Thickness LabelMargin { get; }
         Thickness LabelPadding { get; }
         int Height { get; }
+        bool PurgeInactive { get; set; }
 
-        void OnParentChanged(IGroupParent p, bool IsEnabled, bool IsHidden);
+        void OnParentHide(bool Hide);
+        void OnParentEnable(bool Enable);
     }
 }

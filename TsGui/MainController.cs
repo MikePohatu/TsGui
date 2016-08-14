@@ -108,9 +108,7 @@ namespace TsGui
 
             //update group settings to all controls
             foreach (IToggleControl t in this._toggles)
-            {
-                t.InitialiseToggle();
-            }
+            { t.InitialiseToggle(); }
 
             this.UpdateWindow();
         }
@@ -258,6 +256,7 @@ namespace TsGui
             this._groups.TryGetValue(ID, out group);
             if (group == null) { group = this.CreateGroup(ID); }
             group.Add(Element);
+            
             return group;
         }
 

@@ -65,7 +65,10 @@ namespace TsGui
         {
             get
             {
-                return new TsVariable(this.VariableName, this.CurrentValue);
+                if ((this.IsActive == false) && (this.PurgeInactive == true))
+                { return null; }
+                else
+                { return new TsVariable(this.VariableName, this.CurrentValue); }
             }
         }
 
@@ -75,6 +78,27 @@ namespace TsGui
             {
                 if (this._control.IsChecked == true) { return this._valTrue; }
                 else { return this._valFalse; }
+            }
+        }
+
+        new public bool IsEnabled
+        {
+            get { return base._isenabled; }
+            set
+            {
+                base._isenabled = value;
+                OnPropertyChanged(this, "IsEnabled");
+                this.ToggleEvent?.Invoke();
+            }
+        }
+        new public bool IsHidden
+        {
+            get { return base._ishidden; }
+            set
+            {
+                base.HideUnhide(value);
+                OnPropertyChanged(this, "IsHidden");
+                this.ToggleEvent?.Invoke();
             }
         }
 
@@ -127,12 +151,12 @@ namespace TsGui
         //called by the controller once everything is loaded
         public void InitialiseToggle()
         {
-            this.ToggleEvent(this, new RoutedEventArgs());
+            this.ToggleEvent?.Invoke();
         }
 
         private void OnChanged(object o, RoutedEventArgs e)
         {
-            this.ToggleEvent(this, e);
+            this.ToggleEvent?.Invoke();
         }
     }
 }
