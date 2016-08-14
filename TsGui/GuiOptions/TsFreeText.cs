@@ -32,6 +32,7 @@ namespace TsGui
     {
         //fields
         #region
+        private bool _validateempty;
         private bool _caseSensValidate;
         private bool _isvalid;
         private int _maxlength;
@@ -137,7 +138,7 @@ namespace TsGui
             //set defaults
             this._caseSensValidate = false;
             this._isvalid = true;
-
+            this._validateempty = true;
             this.Height = 22;
             this.MaxLength = 0;
             this.MinLength = 0;
@@ -161,6 +162,10 @@ namespace TsGui
 
             //load the xml for the base class stuff
             this.LoadBaseXml(InputXml);
+
+            attrib = InputXml.Attribute("ValidateEmpty");
+            if (attrib != null)
+            { this._validateempty = Convert.ToBoolean(attrib.Value); }
 
             attrib = InputXml.Attribute("MaxLength");
             if (attrib != null)
@@ -227,20 +232,25 @@ namespace TsGui
             string s = "";
             bool valid = true;
 
-            if (Checker.ValidCharacters(this._control.Text,this.DisallowedCharacters, this.CaseSensitive) != true)
+            if ((this._validateempty == false) && (string.IsNullOrEmpty(this._control.Text)))
+            { valid = true; }
+            else
             {
-                s = "Invalid characters: " + this.DisallowedCharacters + Environment.NewLine;
-                valid = false;
-            }
+                if (Checker.ValidCharacters(this._control.Text, this.DisallowedCharacters, this.CaseSensitive) != true)
+                {
+                    s = "Invalid characters: " + this.DisallowedCharacters + Environment.NewLine;
+                    valid = false;
+                }
 
-            if (Checker.ValidMinLength(this._control.Text, this.MinLength) == false)
-            {
-                string charWord;
-                if (this.MinLength == 1) { charWord = " character"; }
-                else { charWord = " characters"; }
+                if (Checker.ValidMinLength(this._control.Text, this.MinLength) == false)
+                {
+                    string charWord;
+                    if (this.MinLength == 1) { charWord = " character"; }
+                    else { charWord = " characters"; }
 
-                s = s + "Minimum length: " + this.MinLength + charWord + Environment.NewLine;
-                valid = false;
+                    s = s + "Minimum length: " + this.MinLength + charWord + Environment.NewLine;
+                    valid = false;
+                }
             }
 
             if (valid == false)
