@@ -248,7 +248,9 @@ namespace TsGui
                     if (this.MinLength == 1) { charWord = " character"; }
                     else { charWord = " characters"; }
 
-                    s = s + "Minimum length: " + this.MinLength + charWord + Environment.NewLine;
+                    s = s + "Minimum length";
+                    if (this._validateempty == false) { s = s + " if entered"; }
+                    s = s + ": " + this.MinLength + charWord + Environment.NewLine;
                     valid = false;
                 }
             }
