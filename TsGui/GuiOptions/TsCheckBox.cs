@@ -58,7 +58,9 @@ namespace TsGui
             this.Height = 17;
 
             this.LoadXml(SourceXml);
-            this.Build();            
+            this.Build();
+
+            this._control.Click += this.OnChanged;
         }
 
         public TsVariable Variable
@@ -141,11 +143,11 @@ namespace TsGui
         }
 
         //setup event subscriptions between the toggle and the control
-        public void AttachToggle(Toggle Toggle)
-        {
-            this._control.Click += this.OnChanged;
-            this.ToggleEvent += Toggle.OnToggleEvent;
-        }
+        //public void AttachToggle(Toggle Toggle)
+        //{
+            
+        //    this.ToggleEvent += Toggle.OnToggleEvent;
+        //}
 
         //fire an intial event to make sure things are set correctly. This is
         //called by the controller once everything is loaded

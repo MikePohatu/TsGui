@@ -24,10 +24,13 @@ using System.Windows;
 
 namespace TsGui
 {
-    public class TsDropDownList: TsBaseOption, IGuiOption
+    public class TsDropDownList: TsBaseOption, IGuiOption, IToggleControl
     {
+        public event ToggleEvent ToggleEvent;
+
         new private ComboBox _control;
-        
+        private bool _istoggle = false;
+
         //dictionary in format text description,value
         private Dictionary<string, string> _options = new Dictionary<string,string>();
 
@@ -57,6 +60,7 @@ namespace TsGui
             this.Height = 20;
 
             this.LoadXml(SourceXml);
+            this._control.SelectionChanged += this.OnChanged;
         }
 
         //properties
@@ -69,11 +73,17 @@ namespace TsGui
                 else
                 {
                     //get the current value from the combobox
-                    KeyValuePair<string, string> selected = (KeyValuePair<string, string>)this._control.SelectedItem;
-                    this._value = selected.Value;
-
+                    this.UpdateSelected();
                     return new TsVariable(this.VariableName, this._value);
                 }
+            }
+        }
+        public string CurrentValue
+        {
+            get
+            {
+                this.UpdateSelected();
+                return this._value;
             }
         }
 
@@ -115,15 +125,37 @@ namespace TsGui
             {  
                 foreach (XElement xOption in optionsXml)
                 {
-                    this._options.Add(xOption.Element("Text").Value, xOption.Element("Value").Value);
+                    string optval = xOption.Element("Value").Value;
+                    this._options.Add(xOption.Element("Text").Value, optval);
+
+                    x = xOption.Element("Toggle");
+                    if (x != null)
+                    {
+                        x.Add(new XElement("Enabled", optval));
+                        Toggle t = new Toggle(this, this._controller, x);
+                        this._istoggle = true;
+                    }
                 }         
             }
 
+            x = InputXml.Element("Toggle");
+            if (x != null)
+            {
+                Toggle t = new Toggle(this, this._controller, x);
+                this._istoggle = true;
+            }
+
+            if (this._istoggle == true) { this._controller.AddToggleControl(this); }
             //finished reading xml now build the control
             this.Build();
             #endregion
         }
 
+        private void UpdateSelected()
+        {
+            KeyValuePair<string, string> selected = (KeyValuePair<string, string>)this._control.SelectedItem;
+            this._value = selected.Value;
+        }
 
         //build the actual display control
         private void Build()
@@ -151,6 +183,24 @@ namespace TsGui
                 if (entry.Key.Length > longeststring.Length) { longeststring = entry.Key; }
                 index++;
             }
+        }
+
+        //setup event subscriptions between the toggle and the control
+        //public void AttachToggle(Toggle Toggle)
+        //{
+            
+        //}
+
+        //fire an intial event to make sure things are set correctly. This is
+        //called by the controller once everything is loaded
+        public void InitialiseToggle()
+        {
+            this.ToggleEvent?.Invoke();
+        }
+
+        private void OnChanged(object o, RoutedEventArgs e)
+        {
+            this.ToggleEvent?.Invoke();
         }
     }
 }

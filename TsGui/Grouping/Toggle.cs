@@ -27,15 +27,17 @@ namespace TsGui
         private Group _group;
         private MainController _controller;
         private Dictionary<string, bool> _toggleValMappings = new Dictionary<string, bool>();
-        bool _hiddenMode = false;
-        IToggleControl _option;
+        private bool _hiddenMode = false;
+        private bool _inverse = false;
+        private IToggleControl _option;
 
         public Toggle(IToggleControl GuiOption, MainController MainController, XElement InputXml)
         {
             this._controller = MainController;
             this._option = GuiOption;
             this.LoadXml(InputXml);
-            this._option.AttachToggle(this);
+            //this._option.AttachToggle(this);
+            this._option.ToggleEvent += this.OnToggleEvent;
         }
 
         private void LoadXml(XElement InputXml)
@@ -59,6 +61,12 @@ namespace TsGui
                 else { throw new InvalidOperationException("Invalid Toggle configured in XML: " + InputXml); }
             }
             else { throw new InvalidOperationException("No Group ID set in Toggle configured in XML: " + Environment.NewLine + InputXml); }
+
+            xa = InputXml.Attribute("Invert");
+            if (xa != null)
+            {
+                this._inverse = Convert.ToBoolean(xa.Value);
+            }
 
             IEnumerable<XElement> togglesX;
             togglesX = InputXml.Elements("Enabled");
@@ -95,7 +103,7 @@ namespace TsGui
                 val = (this._option.CurrentValue);
                 this._toggleValMappings.TryGetValue(val, out isenabled);
 
-                if (isenabled == true) { this.EnableGroup(); }
+                if ((isenabled == true) && !this._inverse) { this.EnableGroup(); }
                 else { this.DisableGroup(); }
             }
             else { this.DisableGroup(); }
@@ -115,7 +123,7 @@ namespace TsGui
 
         private void EnableGroup()
         {
-            this._group.State = GroupState.Enabled;
+            this._group.State = GroupState.Enabled;          
         }
     }
 }
