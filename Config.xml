@@ -36,6 +36,7 @@
 				<Label>PC Type:</Label>
 				<DefaultValue>STDPC</DefaultValue>
 				<Option>
+					<Toggle Group="ID_3" />
 					<Text>Standard Desktop</Text>
 					<Value>STDPC</Value>
 				</Option>
@@ -53,6 +54,14 @@
 				<Label></Label>
 				<Bold />
 				<Height>30</Height>
+			</GuiOption>
+			
+			<GuiOption Type="FreeText" MinLength="2" MaxLength="20" ValidateEmpty="FALSE">
+				<Disallowed>
+					<Characters>1234567890`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
+				</Disallowed>
+				<Variable>VAR_TestTextBox</Variable>
+				<Label>TestTextBox:</Label>
 			</GuiOption>
 		</Column>
 	</Page>
@@ -72,6 +81,11 @@
 				-->
 				<HAlign>right</HAlign>
 				<Checked />
+				<Toggle Group="ID_1">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+					<Hide/>
+				</Toggle>
 			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
@@ -83,6 +97,11 @@
 				<Checked />
 				-->
 				<HAlign>right</HAlign>
+				<Toggle Group="ID_2" Invert="TRUE">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+					<Hide/>
+				</Toggle>
 			</GuiOption>
 		</Column>
 	</Page>
