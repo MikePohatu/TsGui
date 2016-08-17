@@ -103,8 +103,16 @@ namespace TsGui
                 val = (this._option.CurrentValue);
                 this._toggleValMappings.TryGetValue(val, out isenabled);
 
-                if ((isenabled == true) && !this._inverse) { this.EnableGroup(); }
-                else { this.DisableGroup(); }
+                if (!this._inverse)
+                {
+                    if (isenabled == true) { this.EnableGroup(); }
+                    else { this.DisableGroup(); }
+                }
+                else
+                {
+                    if (isenabled == true) { this.DisableGroup(); }
+                    else { this.EnableGroup(); }
+                }
             }
             else { this.DisableGroup(); }
         }
