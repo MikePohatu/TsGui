@@ -1,107 +1,189 @@
 <TsGui>
-  <Height>250</Height>
-  <Width>300</Width>
-  <Margin>20</Margin>
-  <ShowGridLines />
+	<!-- The showgridlines option is used for assisting with layout design
+	<ShowGridLines /> 
+	-->
+	<Height>250</Height>
+	<Width>600</Width>
+	
+	<HardwareEval />
+	
 	<Heading>
-		<Title>Welcome to Task Sequence Gui</Title>
-		<Text>Do whatever you want. I don't care.</Text>
+		<Title>Title Text</Title>
+		<Text>Text</Text>
+		<Bg-Color>#FF006AD4</Bg-Color>
+		<Font-Color>#FFFFFF</Font-Color>
 	</Heading>
+	
+
+	<Footer>
+		<Text>Powered by TsGui - www.20road.com</Text>
+		<Height>17</Height>
+		<HAlign>right</HAlign>
+	</Footer>
+
+	<!-- ***** Simple config example **** -->
 	<Page>
 		<Column>
-			<!--
-			<Margin>2</Margin>
-			-->
-			<!--
+			<LabelWidth>110</LabelWidth>
+			<ControlWidth>160</ControlWidth>
+			
+			<!-- GuiOptions -->
+			<GuiOption Type="ComputerName" />
+			
+			<GuiOption Type="FreeText">
+				<Variable>User</Variable>
+				<Label>User name:</Label>
+				<DefaultValue>
+					<Value>John Doe</Value>
+				</DefaultValue>
+				<HelpText>Enter the user to be using this device</HelpText>
+			</GuiOption>
+			
+			<GuiOption Type="DropDownList">
+				<Variable>Department</Variable>
+				<Label>Department:</Label>
+				<DefaultValue>Finance</DefaultValue>
+				<Option>
+					<Text>Finance</Text>
+					<Value>Finance</Value>
+				</Option>
+				<Option>
+					<Text>Information Technology</Text>
+					<Value>IT</Value>
+				</Option>
+				<Option>
+					<Text>Human Resources</Text>
+					<Value>HR</Value>
+				</Option>
+			</GuiOption>	
+			
+		</Column>		
+	</Page>
+	
+	
+	
+	<!-- **** Advanced config options  **** -->
+	<Page>
+		<Heading>
+			<Title>Title text override</Title>
+			<Text>Text override</Text>
+		</Heading>
+		
+		<Column>
+			<Width>300</Width>
+			<LabelWidth>110</LabelWidth>
+			<ControlWidth>160</ControlWidth>
+			
+			<!-- GuiOptions -->
+			
+			<!-- Advanced freetext with queries. This one is the equivalent of the ComputerName GuiOption type-->
 			<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
 				<Disallowed>
-					<Characters>/\[]":;|&lt;>+=,?* _</Characters>
+					<Characters>`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
 				</Disallowed>
-				<Variable>OSDComputerName</Variable>
-				<Label>Computer name:</Label>
+				<Variable>OSDComputerName2</Variable>
+				<Label>Computer Name:</Label>
+				<HelpText>Enter a computer name for the device</HelpText>
+				
+				<!-- Query for the default value. Return the first valid value. Note
+				the Ignore values for evaluating the value returned by the query -->
 				<DefaultValue>
-					<EnvironmentVariable>
+					<Query Type="EnvironmentVariable">
+						<Variable>OSDComputerName</Variable>
 						<Ignore>MINNT</Ignore>
-						_SMSTSMachineName
-					</EnvironmentVariable>
-					<WmiQuery>
-						<Query>SELECT SerialNumber FROM Win32_BIOS</Query>
-					</WmiQuery>
+						<Ignore>MINWIN</Ignore>						
+					</Query>				
+					<Query Type="EnvironmentVariable">
+						<Variable>_SMSTSMachineName</Variable>
+						<Ignore>MINNT</Ignore>
+						<Ignore>MINWIN</Ignore>					
+					</Query>					
+					<Query Type="EnvironmentVariable">
+						<Variable>ComputerName</Variable>
+						<Ignore>MINNT</Ignore>
+						<Ignore>MINWIN</Ignore>						
+					</Query>					
+					<Query Type="Wmi">
+						<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
+						<Ignore>No Asset Tag</Ignore>
+					</Query>					
+					<Query Type="Wmi">
+						<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
+					</Query>
 				</DefaultValue>
+			</GuiOption>			
+			
+			<GuiOption Type="FreeText">
+				<Variable>User2</Variable>
+				<Label>User name:</Label>
+				<DefaultValue>
+					<Value>John Doe</Value>
+				</DefaultValue>
+				<HelpText>Enter the user to be using this device</HelpText>
 			</GuiOption>
-			-->
-			<GuiOption Type="ComputerName" />
+			
 			<GuiOption Type="DropDownList">
-				<Variable>PCType</Variable>
-				<Label>PC Type:</Label>
-				<DefaultValue>STDPC</DefaultValue>
+				<Variable>Department2</Variable>
+				<Label>Department:</Label>
+				<DefaultValue>Finance</DefaultValue>
 				<Option>
-					<Toggle Group="ID_3" />
-					<Text>Standard Desktop</Text>
-					<Value>STDPC</Value>
+					<Toggle Group="Group2" />
+					<Text>Finance</Text>
+					<Value>Finance</Value>
 				</Option>
 				<Option>
-					<Text>Standard Laptop</Text>
-					<Value>STDLT</Value>
+					<Text>Information Technology</Text>
+					<Value>IT</Value>
 				</Option>
 				<Option>
-					<Text>Clinical PC</Text>
-					<Value>ClinicalPC</Value>
+					<Text>Human Resources</Text>
+					<Value>HR</Value>
 				</Option>
 			</GuiOption>
 			
-			<GuiOption Type="Heading">
-				<Label></Label>
-				<Bold />
-				<Height>30</Height>
-			</GuiOption>
-			
-			<GuiOption Type="FreeText" MinLength="2" MaxLength="20" ValidateEmpty="FALSE">
-				<Disallowed>
-					<Characters>1234567890`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
-				</Disallowed>
-				<Variable>VAR_TestTextBox</Variable>
-				<Label>TestTextBox:</Label>
+			<GuiOption Type="CheckBox">
+				<Variable>TOGGLE_1</Variable>
+				<Label>Additional applications</Label>
+				<HAlign>left</HAlign>
+				
+				<Toggle Group="Group1">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+					<Hide/>
+				</Toggle>
 			</GuiOption>
 		</Column>
-	</Page>
-	<Page>
+
 		<Column>
+			<Group>Group1</Group>
+			<Width>300</Width>
+			<LabelWidth>120</LabelWidth>
+			<ControlWidth>140</ControlWidth>
+			
+			<!-- GuiOptions -->
 			<GuiOption Type="Heading">
 				<Label>Applications</Label>
-				<Bold />
+				<Bold /> 
 			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
-				<Variable>AdminApps</Variable>
-				<Label>Admin applications</Label>
-				<!--
-				<TrueValue>YES</TrueValue>
-				<FalseValue>NO</FalseValue>
-				-->
+				<Group>Group2</Group>
+				<Variable>App_MsOffice</Variable>
+				<Label>Microsoft Office</Label>
 				<HAlign>right</HAlign>
 				<Checked />
-				<Toggle Group="ID_1">
-					<Enabled>TRUE</Enabled>
-					<Disabled>FALSE</Disabled>
-					<Hide/>
-				</Toggle>
 			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
-				<Variable>OfficeApps</Variable>
-				<Label>Office applications</Label>
-				<!--
-				<TrueValue>YES</TrueValue>
-				<FalseValue>NO</FalseValue>
-				<Checked />
-				-->
+				<Variable>App_MsProject</Variable>
+				<Label>Microsoft Project</Label>
 				<HAlign>right</HAlign>
-				<Toggle Group="ID_2" Invert="TRUE">
-					<Enabled>TRUE</Enabled>
-					<Disabled>FALSE</Disabled>
-					<Hide/>
-				</Toggle>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>App_MsVisio</Variable>
+				<Label>Microsoft Visio</Label>
+				<HAlign>right</HAlign>
 			</GuiOption>
 		</Column>
 	</Page>

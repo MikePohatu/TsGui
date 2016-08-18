@@ -23,8 +23,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Data;
-//using System.Diagnostics;
-
 
 namespace TsGui
 {
