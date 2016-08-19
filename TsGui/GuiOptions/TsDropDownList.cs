@@ -137,6 +137,20 @@ namespace TsGui
                 }         
             }
 
+            optionsXml = InputXml.Elements("MultiOption");
+            if (optionsXml != null)
+            {
+                foreach (XElement mo in optionsXml)
+                {
+                    Dictionary<string, string> d = this._controller.GetDictionaryFromList(mo);
+
+                    foreach (KeyValuePair<string, string> kv in d)
+                    {
+                        this._options.Add(kv.Key,kv.Value);
+                    }
+                }
+            }
+
             x = InputXml.Element("Toggle");
             if (x != null)
             {

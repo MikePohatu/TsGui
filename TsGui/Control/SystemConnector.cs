@@ -17,7 +17,10 @@
 // environment variables. 
 
 using System;
+using System.Xml.Linq;
+using System.Collections.Generic;
 using System.Management;
+using System.Diagnostics;
 
 namespace TsGui
 {
@@ -75,6 +78,78 @@ namespace TsGui
                 return null;
             }
             
+        }
+
+        //get a key value pair from WMI. first value returned is the key, the remaining values are concatenated
+        public static Dictionary<string,string> GetWmiPair(XElement InputXml)
+        {
+            string s1;
+            string s2;
+            Dictionary<string, string> options = new Dictionary<string, string>();
+            int i = 0;
+            XElement x;
+            string keyproperty = null;
+            string wmiclass = null;
+            string WmiQuery = null;
+            //string properties = null;
+            IEnumerable<XElement> properties;
+            string propertiesString = null;
+
+            //first read and process the XML
+            x = (InputXml.Element("KeyProperty"));
+            if (x!=null)
+            {
+                keyproperty = x.Value;
+            }
+            x = (InputXml.Element("Class"));
+            if (x != null)
+            {
+                wmiclass = x.Value;
+            }
+            properties = InputXml.Elements("Property");
+            if (properties != null)
+            {
+                foreach (string s in properties)
+                {
+                    propertiesString = propertiesString + "," + s;
+                }
+            }
+
+            if ((string.IsNullOrEmpty(wmiclass)) || (string.IsNullOrEmpty(propertiesString)) || (string.IsNullOrEmpty(keyproperty)))
+            { throw new InvalidOperationException("Missing WMI class or properties"); }
+
+            WmiQuery = "select " + keyproperty + "," + propertiesString + " FROM " + wmiclass;
+
+            //now process
+            try
+            {
+                WqlObjectQuery wqlQuery = new WqlObjectQuery(WmiQuery);
+                //wqlQuery.
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery);
+                //ManagementObjectCollection searchercollection = searcher.Get();
+                
+                foreach (ManagementObject m in searcher.Get())
+                {
+                    Debug.WriteLine(m.ToString());
+                    s1 = null;
+                    s2 = null;
+                    foreach (PropertyData propdata in m.Properties)
+                    {
+                        if (i == 0) { s1 = propdata.Value.ToString(); }
+                        else if (i == 1) { s2 = propdata.Value.ToString(); }
+                        else { s2 = s2 + ", " + propdata.Value.ToString(); }
+                        i++;
+                    }
+                    options.Add(s1, s2);
+                }
+
+                return options;
+            }
+            catch
+            {
+                throw new InvalidOperationException("Error running WMI query: " + WmiQuery + Environment.NewLine);
+            }
+
         }
 
         public static ManagementObjectCollection GetWmiManagementObjects(string WmiQuery)

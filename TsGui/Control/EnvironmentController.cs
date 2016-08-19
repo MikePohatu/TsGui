@@ -14,6 +14,7 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using System.Xml.Linq;
+using System.Collections.Generic;
 //using System.Diagnostics;
 using System;
 
@@ -80,8 +81,7 @@ namespace TsGui
                         string wql = x.Element("Wql").Value;
                         if (!string.IsNullOrEmpty(wql))
                         { s = SystemConnector.GetWmiString(wql); }
-                        else { throw new InvalidOperationException("Invalid config file. Missing Wql from WMI query"); }
-                        
+                        else { throw new InvalidOperationException("Invalid config file. Missing Wql from WMI query"); }                        
                     }
 
                     //now check any return value is valid before returning from method. 
@@ -103,6 +103,13 @@ namespace TsGui
             return s;
         }
 
+
+        //input a list of options as xml. Return the value of the first one that exists. 
+        //return null if nothing is found. 
+        public Dictionary<string, string> GetDictionaryFromList(XElement InputXml)
+        {
+            return SystemConnector.GetWmiPair(InputXml);
+        }
 
         //get and environmental variable, trying the sccm ts variables first
         public string GetEnvVar(string VariableName)
