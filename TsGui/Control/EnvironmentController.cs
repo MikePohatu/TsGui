@@ -108,7 +108,32 @@ namespace TsGui
         //return null if nothing is found. 
         public Dictionary<string, string> GetDictionaryFromList(XElement InputXml)
         {
-            return SystemConnector.GetWmiPair(InputXml);
+            Dictionary<string, string> dss = new Dictionary<string, string>();
+            XAttribute xtype;
+
+            //Debug.WriteLine(InputXml);
+
+            foreach (XElement x in InputXml.Elements())
+            {
+                if (string.Equals(x.Name.ToString(), "Query", StringComparison.OrdinalIgnoreCase))
+                {
+                    //Debug.WriteLine("Query requested");
+                    xtype = x.Attribute("Type");
+                    if (xtype == null) { throw new NullReferenceException("Missing Type attribute XML: " + Environment.NewLine + x); }
+
+                    if (string.Equals(xtype.Value, "WmiPair", StringComparison.OrdinalIgnoreCase))
+                    {
+                        string wql = x.Element("Wql").Value;
+                        string keyprop = x.Element("KeyProperty").Value;
+                        if ((string.IsNullOrEmpty(wql)) || (string.IsNullOrEmpty(keyprop)))
+                        { throw new InvalidOperationException("Invalid config file. Missing Wql or KeyProperty from WMI query"); }
+                        else
+                        { dss = SystemConnector.GetWmiPair(wql,keyprop); }                        
+                    }
+                }
+            }
+
+            return dss;
         }
 
         //get and environmental variable, trying the sccm ts variables first

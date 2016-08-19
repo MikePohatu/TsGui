@@ -81,46 +81,15 @@ namespace TsGui
         }
 
         //get a key value pair from WMI. first value returned is the key, the remaining values are concatenated
-        public static Dictionary<string,string> GetWmiPair(XElement InputXml)
+        public static Dictionary<string,string> GetWmiPair(string WmiQuery, string KeyPropery)
         {
             string s1;
             string s2;
+            string tempval;
+            string tempname;
             Dictionary<string, string> options = new Dictionary<string, string>();
             int i = 0;
-            XElement x;
-            string keyproperty = null;
-            string wmiclass = null;
-            string WmiQuery = null;
-            //string properties = null;
-            IEnumerable<XElement> properties;
-            string propertiesString = null;
 
-            //first read and process the XML
-            x = (InputXml.Element("KeyProperty"));
-            if (x!=null)
-            {
-                keyproperty = x.Value;
-            }
-            x = (InputXml.Element("Class"));
-            if (x != null)
-            {
-                wmiclass = x.Value;
-            }
-            properties = InputXml.Elements("Property");
-            if (properties != null)
-            {
-                foreach (string s in properties)
-                {
-                    propertiesString = propertiesString + "," + s;
-                }
-            }
-
-            if ((string.IsNullOrEmpty(wmiclass)) || (string.IsNullOrEmpty(propertiesString)) || (string.IsNullOrEmpty(keyproperty)))
-            { throw new InvalidOperationException("Missing WMI class or properties"); }
-
-            WmiQuery = "select " + keyproperty + "," + propertiesString + " FROM " + wmiclass;
-
-            //now process
             try
             {
                 WqlObjectQuery wqlQuery = new WqlObjectQuery(WmiQuery);
@@ -133,12 +102,22 @@ namespace TsGui
                     Debug.WriteLine(m.ToString());
                     s1 = null;
                     s2 = null;
+                    tempval = null;
+                    tempname = null;
+
+
                     foreach (PropertyData propdata in m.Properties)
                     {
-                        if (i == 0) { s1 = propdata.Value.ToString(); }
-                        else if (i == 1) { s2 = propdata.Value.ToString(); }
-                        else { s2 = s2 + ", " + propdata.Value.ToString(); }
-                        i++;
+                        tempval = propdata.Value.ToString();
+                        tempname = propdata.Name;
+
+                        if (string.Equals(tempname, KeyPropery, StringComparison.OrdinalIgnoreCase)) { s1 = tempval; }
+                        else
+                        {
+                            if (i == 0) { s2 = tempval; }
+                            else { s2 = s2 + ", " + tempval; }
+                            i++;
+                        }
                     }
                     options.Add(s1, s2);
                 }

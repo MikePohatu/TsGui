@@ -146,7 +146,7 @@ namespace TsGui
 
                     foreach (KeyValuePair<string, string> kv in d)
                     {
-                        this._options.Add(kv.Key,kv.Value);
+                        this._options.Add(kv.Value,kv.Key);
                     }
                 }
             }
