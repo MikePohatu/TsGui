@@ -67,7 +67,7 @@ namespace TsGui
         {
             get
             {
-                if ((this.IsActive == false) && (this.PurgeInactive == true))
+                if ((this.IsActive == false) && (PurgeInactive == true))
                 { return null; }
                 else
                 { return new TsVariable(this.VariableName, this.CurrentValue); }
@@ -88,8 +88,7 @@ namespace TsGui
             get { return base._isenabled; }
             set
             {
-                base._isenabled = value;
-                OnPropertyChanged(this, "IsEnabled");
+                base.IsEnabled = value;
                 this.ToggleEvent?.Invoke();
             }
         }
@@ -98,8 +97,7 @@ namespace TsGui
             get { return base._ishidden; }
             set
             {
-                base.HideUnhide(value);
-                OnPropertyChanged(this, "IsHidden");
+                base.IsHidden = value;
                 this.ToggleEvent?.Invoke();
             }
         }

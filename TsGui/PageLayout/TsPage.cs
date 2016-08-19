@@ -264,10 +264,14 @@ namespace TsGui
             XElement x;
             int colIndex = 0;
             XAttribute xAttrib;
+            bool purgeset = false;
 
             xAttrib = InputXml.Attribute("PurgeInactive");
             if (xAttrib != null)
-            { this.PurgeInactive = Convert.ToBoolean(xAttrib.Value); }
+            {
+                purgeset = true;
+                this.PurgeInactive = Convert.ToBoolean(xAttrib.Value);
+            }
 
             IEnumerable<XElement> xGroups = InputXml.Elements("Group");
             if (xGroups != null)
@@ -282,8 +286,9 @@ namespace TsGui
             {
                 foreach (XElement xColumn in columnsXml)
                 {
-                    TsColumn c = new TsColumn(xColumn, colIndex,this._controller, this.PurgeInactive);
-                    this._columns.Add(c);
+                    TsColumn c = new TsColumn(xColumn, colIndex,this._controller);
+                    if (purgeset == true) { c.PurgeInactive = this.PurgeInactive; }
+                        this._columns.Add(c);
 
                     //Debug.WriteLine("TsPage - Registering column");
                     this.ParentHide += c.OnParentHide;

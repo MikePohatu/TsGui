@@ -130,12 +130,11 @@ namespace TsGui
 
         //constructor
         #region
-        public TsColumn (XElement SourceXml,int PageIndex, MainController RootController, bool PurgeInactive)
+        public TsColumn (XElement SourceXml,int PageIndex, MainController RootController)
         {
 
             this._controller = RootController;
             this.Index = PageIndex;
-            this._purgeInactive = PurgeInactive;
             this._columngrid = new Grid();
 
             this._columngrid.Margin = new Thickness(0);
@@ -155,6 +154,7 @@ namespace TsGui
             this._columngrid.ColumnDefinitions.Add(this._coldefLabels);
             this._columngrid.ColumnDefinitions.Add(this._coldefControls);
 
+            this._purgeInactive = false;
             this.DisabledParentCount = 0;
             this.HiddenParentCount = 0;
 
@@ -198,10 +198,14 @@ namespace TsGui
             IEnumerable<XElement> optionsXml;
             IGuiOption newOption;
             XAttribute xAttrib;
+            bool purgeset = false;
 
             xAttrib = InputXml.Attribute("PurgeInactive");
             if (xAttrib != null)
-            { this.PurgeInactive = Convert.ToBoolean(xAttrib.Value); }
+            {
+                purgeset = true;
+                this.PurgeInactive = Convert.ToBoolean(xAttrib.Value);
+            }
 
             IEnumerable<XElement> xGroups = InputXml.Elements("Group");
             if (xGroups != null)
@@ -217,7 +221,7 @@ namespace TsGui
                 foreach (XElement xOption in optionsXml)
                 {
                     newOption = GuiFactory.CreateGuiOption(xOption,this._controller);
-                    newOption.PurgeInactive = this._purgeInactive;
+                    if (purgeset == true) { newOption.PurgeInactive = this.PurgeInactive; }
                     this.options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);
 
