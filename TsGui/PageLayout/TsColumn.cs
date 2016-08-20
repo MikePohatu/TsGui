@@ -40,7 +40,6 @@ namespace TsGui
         private MainController _controller;
         private ColumnDefinition _coldefControls;
         private ColumnDefinition _coldefLabels;
-        private Guid _guid = Guid.NewGuid();
 
         //properties
         #region

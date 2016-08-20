@@ -29,7 +29,6 @@ namespace TsGui
 
         new private ComboBox _control;
         private bool _istoggle = false;
-        private Toggle _currenttoggle;
 
         //dictionary in format text description,value
         private Dictionary<string, string> _options = new Dictionary<string,string>();
