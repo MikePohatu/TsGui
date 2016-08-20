@@ -22,7 +22,6 @@ using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
 using System;
-//using System.Diagnostics;
 
 namespace TsGui
 {
@@ -41,6 +40,7 @@ namespace TsGui
         private MainController _controller;
         private ColumnDefinition _coldefControls;
         private ColumnDefinition _coldefLabels;
+        private Guid _guid = Guid.NewGuid();
 
         //properties
         #region
@@ -183,6 +183,7 @@ namespace TsGui
 
         public void OnParentHide(bool Hide)
         {
+            
             GroupingLogic.OnParentHide(this, Hide);
         }
 

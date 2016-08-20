@@ -29,6 +29,7 @@ namespace TsGui
 
         new private ComboBox _control;
         private bool _istoggle = false;
+        private Toggle _currenttoggle;
 
         //dictionary in format text description,value
         private Dictionary<string, string> _options = new Dictionary<string,string>();
@@ -184,11 +185,6 @@ namespace TsGui
             }
         }
 
-        //setup event subscriptions between the toggle and the control
-        //public void AttachToggle(Toggle Toggle)
-        //{
-            
-        //}
 
         //fire an intial event to make sure things are set correctly. This is
         //called by the controller once everything is loaded

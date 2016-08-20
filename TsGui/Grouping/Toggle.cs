@@ -30,13 +30,13 @@ namespace TsGui
         private bool _hiddenMode = false;
         private bool _inverse = false;
         private IToggleControl _option;
+        private bool _isenabled = true;
 
         public Toggle(IToggleControl GuiOption, MainController MainController, XElement InputXml)
         {
             this._controller = MainController;
             this._option = GuiOption;
             this.LoadXml(InputXml);
-            //this._option.AttachToggle(this);
             this._option.ToggleEvent += this.OnToggleEvent;
         }
 
@@ -96,26 +96,31 @@ namespace TsGui
         public void OnToggleEvent()
         {
             string val;
-            bool isenabled;
+            bool newenabled;
 
-            if (this._option.IsActive == true)
+            val = (this._option.CurrentValue);
+            this._toggleValMappings.TryGetValue(val, out newenabled);
+
+            if (newenabled != this._isenabled)
             {
-                val = (this._option.CurrentValue);
-                this._toggleValMappings.TryGetValue(val, out isenabled);
-
-
-                if (!this._inverse)
+                if (this._option.IsActive == true)
                 {
-                    if (isenabled == true) { this.EnableGroup(); }
-                    else { this.DisableGroup(); }
+                    if (!this._inverse)
+                    {
+                        if (newenabled == true) { this.EnableGroup(); }
+                        else { this.DisableGroup(); }
+                    }
+                    else
+                    {
+                        if (newenabled == true) { this.DisableGroup(); }
+                        else { this.EnableGroup(); }
+                    }
                 }
-                else
-                {
-                    if (isenabled == true) { this.DisableGroup(); }
-                    else { this.EnableGroup(); }
-                }
+                else { this.DisableGroup(); }
+
+                this._isenabled = newenabled;
             }
-            else { this.DisableGroup(); }
+
         }
 
         private void DisableGroup()
