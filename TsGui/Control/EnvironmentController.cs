@@ -109,32 +109,35 @@ namespace TsGui
         public Dictionary<string, string> GetDictionaryFromList(XElement InputXml)
         {
             Dictionary<string, string> dss = new Dictionary<string, string>();
-            XAttribute xtype;
+            string type;
 
-            //Debug.WriteLine(InputXml);
+            type = InputXml.Attribute("Type")?.Value;
+            
+            if (string.IsNullOrEmpty(type)) { throw new InvalidOperationException("No type specified: " + Environment.NewLine + InputXml + Environment.NewLine); }
 
-            foreach (XElement x in InputXml.Elements())
+            if (string.Equals(type, "WmiQuery", StringComparison.OrdinalIgnoreCase))
             {
-                if (string.Equals(x.Name.ToString(), "Query", StringComparison.OrdinalIgnoreCase))
-                {
-                    //Debug.WriteLine("Query requested");
-                    xtype = x.Attribute("Type");
-                    if (xtype == null) { throw new NullReferenceException("Missing Type attribute XML: " + Environment.NewLine + x); }
+                
+                string wql = InputXml.Element("Wql")?.Value;
+                string keyprop = InputXml.Element("KeyProperty")?.Attribute("Name")?.Value;
+                string separator = InputXml.Element("Separator")?.Value;
 
-                    if (string.Equals(xtype.Value, "WmiPair", StringComparison.OrdinalIgnoreCase))
-                    {
-                        string wql = x.Element("Wql").Value;
-                        string keyprop = x.Element("KeyProperty").Value;
-                        if ((string.IsNullOrEmpty(wql)) || (string.IsNullOrEmpty(keyprop)))
-                        { throw new InvalidOperationException("Invalid config file. Missing Wql or KeyProperty from WMI query"); }
-                        else
-                        { dss = SystemConnector.GetWmiPair(wql,keyprop); }                        
-                    }
+                if ((string.IsNullOrEmpty(wql)) || (string.IsNullOrEmpty(keyprop)))
+                { throw new InvalidOperationException("Invalid config file. Missing Wql or KeyProperty from WMI query"); }
+                else
+                {
+                    List<string> properties = new List<string>();
+                    foreach (string prop in InputXml.Elements("Property")) { properties.Add(prop); }
+
+                    dss = SystemConnector.GetWmiDictionary(wql, keyprop, separator, properties);
+
                 }
             }
-
             return dss;
         }
+
+        
+
 
         //get and environmental variable, trying the sccm ts variables first
         public string GetEnvVar(string VariableName)

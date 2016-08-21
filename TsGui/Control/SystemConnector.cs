@@ -17,7 +17,6 @@
 // environment variables. 
 
 using System;
-using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Management;
 using System.Diagnostics;
@@ -80,55 +79,58 @@ namespace TsGui
             
         }
 
-        //get a key value pair from WMI. first value returned is the key, the remaining values are concatenated
-        public static Dictionary<string,string> GetWmiPair(string WmiQuery, string KeyPropery)
+        //get a dictionary of names,values from WMI. 
+        public static Dictionary<string,string> GetWmiDictionary(string WmiQuery, string KeyProperty, string Separator, List<string> Properties)
         {
-            string s1;
-            string s2;
-            string tempval;
-            string tempname;
-            Dictionary<string, string> options = new Dictionary<string, string>();
-            int i = 0;
-
+            Dictionary<string, string> values = new Dictionary<string, string>();
+ 
             try
             {
                 WqlObjectQuery wqlQuery = new WqlObjectQuery(WmiQuery);
-                //wqlQuery.
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery);
-                //ManagementObjectCollection searchercollection = searcher.Get();
                 
                 foreach (ManagementObject m in searcher.Get())
                 {
-                    Debug.WriteLine(m.ToString());
-                    s1 = null;
-                    s2 = null;
-                    tempval = null;
-                    tempname = null;
-
-
-                    foreach (PropertyData propdata in m.Properties)
-                    {
-                        tempval = propdata.Value.ToString();
-                        tempname = propdata.Name;
-
-                        if (string.Equals(tempname, KeyPropery, StringComparison.OrdinalIgnoreCase)) { s1 = tempval; }
-                        else
-                        {
-                            if (i == 0) { s2 = tempval; }
-                            else { s2 = s2 + ", " + tempval; }
-                            i++;
-                        }
-                    }
-                    options.Add(s1, s2);
+                    KeyValuePair<string, string> kv = ConcatenatePropertyData(m, KeyProperty, Separator, Properties);
+                    values.Add(kv.Key,kv.Value);                 
                 }
 
-                return options;
+                return values;
             }
             catch
             {
                 throw new InvalidOperationException("Error running WMI query: " + WmiQuery + Environment.NewLine);
             }
 
+        }
+
+        //return a key,value pair from a dictionary. keyproperty does to key, specified properties are concatenated together with the separator
+        private static KeyValuePair<string, string> ConcatenatePropertyData(ManagementObject Input, string KeyProperty, string Separator, List<string> Properties)
+        {
+            string s1 = null;
+            string s2 = null;
+            string tempval = null;
+            string name = null;
+            int i = 0;
+            foreach (PropertyData propdata in Input.Properties)
+            {
+                name = propdata.Name;
+                Debug.WriteLine("ProData Name: " + propdata.Name.ToString() + " Value: " + propdata.Value.ToString());
+                //if it is the key property, assign it to the key
+                if (string.Equals(name, KeyProperty, StringComparison.OrdinalIgnoreCase)) { s1 = propdata.Value.ToString(); }
+                else
+                {
+                    if (Properties.Contains(name))
+                    {
+                        tempval = propdata.Value.ToString();
+                        if (i == 0) { s2 = tempval; }
+                        else { s2 = s2 + Separator + tempval; }
+                        i++;
+                    }
+                }
+            }
+            Debug.WriteLine("New KV pair: " + s1 + "," + s2);
+            return new KeyValuePair<string, string>(s1, s2);
         }
 
         public static ManagementObjectCollection GetWmiManagementObjects(string WmiQuery)
