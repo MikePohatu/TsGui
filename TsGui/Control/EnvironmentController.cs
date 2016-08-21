@@ -110,6 +110,7 @@ namespace TsGui
         {
             Dictionary<string, string> dss = new Dictionary<string, string>();
             string type;
+            XElement x;
 
             type = InputXml.Attribute("Type")?.Value;
             
@@ -117,10 +118,13 @@ namespace TsGui
 
             if (string.Equals(type, "WmiQuery", StringComparison.OrdinalIgnoreCase))
             {
-                
+
+                string separator = ", ";
                 string wql = InputXml.Element("Wql")?.Value;
                 string keyprop = InputXml.Element("KeyProperty")?.Attribute("Name")?.Value;
-                string separator = InputXml.Element("Separator")?.Value;
+                x = InputXml.Element("Separator");
+
+                if (x != null) { separator = x.Value; }
 
                 if ((string.IsNullOrEmpty(wql)) || (string.IsNullOrEmpty(keyprop)))
                 { throw new InvalidOperationException("Invalid config file. Missing Wql or KeyProperty from WMI query"); }
