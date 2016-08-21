@@ -22,7 +22,6 @@ using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
 using System;
-//using System.Diagnostics;
 
 namespace TsGui
 {
@@ -183,6 +182,7 @@ namespace TsGui
 
         public void OnParentHide(bool Hide)
         {
+            
             GroupingLogic.OnParentHide(this, Hide);
         }
 
@@ -265,6 +265,7 @@ namespace TsGui
                 //option.Label.Margin = this._margin;
 
                 RowDefinition coldefRow = new RowDefinition();
+                coldefRow.Height = GridLength.Auto;
                 //coldefRow.Height = new GridLength(option.Height + option.Margin.Top + option.Margin.Bottom) ;
                 this._columngrid.RowDefinitions.Add(coldefRow);
 
