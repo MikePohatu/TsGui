@@ -43,6 +43,7 @@ namespace TsGui
             this._control.SetBinding(Label.IsEnabledProperty, new Binding("IsEnabled"));
             this._control.SetBinding(Label.PaddingProperty, new Binding("Padding"));
             this._control.SetBinding(Label.MarginProperty, new Binding("Margin"));
+            this._control.SetBinding(TextBox.HeightProperty, new Binding("Height"));
 
             this._visiblepadding = new Thickness(0,0,0,0);
             this.Padding = this._visiblepadding;

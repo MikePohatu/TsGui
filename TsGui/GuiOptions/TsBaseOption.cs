@@ -306,18 +306,22 @@ namespace TsGui
             this._ishidden = Hidden;
             if (Hidden == true)
             {
+                Thickness zerothick = new Thickness(0);
                 this._control.Visibility = Visibility.Collapsed;
                 this._labelcontrol.Visibility = Visibility.Collapsed;
-                this.Height = 0;
-                this.Margin = new Thickness(0);
-                this.LabelMargin = new Thickness(0);
+                //this.Height = 0;
+                this.Margin = zerothick;
+                this.LabelMargin = zerothick;
+                this.Padding = zerothick;
+                this.LabelPadding = zerothick;
             }
             else
             {
                 this._control.Visibility = Visibility.Visible;
                 this._labelcontrol.Visibility = Visibility.Visible;
-                this.Height = this._visibleHeight;
+                //this.Height = this._visibleHeight;
                 this.Padding = this._visiblepadding;
+                this.LabelPadding = this._visiblelabelpadding;
                 this.Margin = this._visiblemargin;
                 this.LabelMargin = this._visiblelabelmargin;
             }

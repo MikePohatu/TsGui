@@ -45,8 +45,9 @@ namespace TsGui
             this._control.SetBinding(ComboBox.IsEnabledProperty, new Binding("IsEnabled"));
             this._control.SetBinding(ComboBox.PaddingProperty, new Binding("Padding"));
             this._control.SetBinding(ComboBox.MarginProperty, new Binding("Margin"));
+            this._control.SetBinding(ComboBox.HeightProperty, new Binding("Height"));
 
-            this._control.VerticalAlignment = VerticalAlignment.Center;
+            this._control.VerticalAlignment = VerticalAlignment.Bottom;
             this._visiblepadding = new Thickness(6, 2, 2, 3);
             this.Padding = this._visiblepadding;
 

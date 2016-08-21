@@ -265,6 +265,7 @@ namespace TsGui
                 //option.Label.Margin = this._margin;
 
                 RowDefinition coldefRow = new RowDefinition();
+                coldefRow.Height = GridLength.Auto;
                 //coldefRow.Height = new GridLength(option.Height + option.Margin.Top + option.Margin.Bottom) ;
                 this._columngrid.RowDefinitions.Add(coldefRow);
 
