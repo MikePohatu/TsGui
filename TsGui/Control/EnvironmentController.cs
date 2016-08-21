@@ -127,7 +127,7 @@ namespace TsGui
                 else
                 {
                     List<string> properties = new List<string>();
-                    foreach (string prop in InputXml.Elements("Property")) { properties.Add(prop); }
+                    foreach (XElement prop in InputXml.Elements("Property")) { properties.Add(prop.Attribute("Name").Value); }
 
                     dss = SystemConnector.GetWmiDictionary(wql, keyprop, separator, properties);
 

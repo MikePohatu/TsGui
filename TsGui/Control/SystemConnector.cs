@@ -99,7 +99,8 @@ namespace TsGui
             }
             catch
             {
-                throw new InvalidOperationException("Error running WMI query: " + WmiQuery + Environment.NewLine);
+                return null;
+                //throw new InvalidOperationException("Error running WMI query: " + WmiQuery + Environment.NewLine);
             }
 
         }
@@ -107,29 +108,25 @@ namespace TsGui
         //return a key,value pair from a dictionary. keyproperty does to key, specified properties are concatenated together with the separator
         private static KeyValuePair<string, string> ConcatenatePropertyData(ManagementObject Input, string KeyProperty, string Separator, List<string> Properties)
         {
-            string s1 = null;
-            string s2 = null;
+            string s1 = "";
+            string s2 = "";
             string tempval = null;
-            string name = null;
             int i = 0;
-            foreach (PropertyData propdata in Input.Properties)
+
+            s1 = Input.GetPropertyValue(KeyProperty).ToString();
+
+            foreach (string prop in Properties)
             {
-                name = propdata.Name;
-                Debug.WriteLine("ProData Name: " + propdata.Name.ToString() + " Value: " + propdata.Value.ToString());
-                //if it is the key property, assign it to the key
-                if (string.Equals(name, KeyProperty, StringComparison.OrdinalIgnoreCase)) { s1 = propdata.Value.ToString(); }
-                else
+                if (!string.IsNullOrEmpty(prop))
                 {
-                    if (Properties.Contains(name))
-                    {
-                        tempval = propdata.Value.ToString();
-                        if (i == 0) { s2 = tempval; }
-                        else { s2 = s2 + Separator + tempval; }
-                        i++;
-                    }
+                    tempval = Input.GetPropertyValue(prop).ToString();
+                    if (i == 0) { s2 = tempval; }
+                    else { s2 = s2 + Separator + tempval; }
+                    i++;
                 }
             }
             Debug.WriteLine("New KV pair: " + s1 + "," + s2);
+
             return new KeyValuePair<string, string>(s1, s2);
         }
 
