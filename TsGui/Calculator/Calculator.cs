@@ -40,6 +40,8 @@ namespace TsGui.Math
                         closebracecount++;
                         if (openbracecount == closebracecount)
                         {
+                            //we have to convert the result of the substring back to a string.
+                            //the remaining function is expecting a string to work with. 
                             valstring = CalculateString(substring).ToString();
 
                             //reset everything
@@ -54,8 +56,12 @@ namespace TsGui.Math
                         substring = substring + s;
                     }
 
+                    
                     else if (new string[] {"+","-","/","*","^"}.Contains(s))
                     {
+                        //if this is an operator, new one need to be created and added to the appropriate
+                        //list
+                        #region
                         Operator newoperator = new Operator();
                         if (s == "+")
                         {
@@ -82,12 +88,13 @@ namespace TsGui.Math
                             newoperator.Type = OperatorType.Exponent;
                             expOperators.Add(newoperator);
                         }
+                        #endregion
+
+                        //now create the new operand and setup the mappings
                         Operand o = new Operand();
                         o.Value = Double.Parse(valstring);
                         o.Prev = currOperator;
                         if (currOperator != null) { currOperator.B = o; }
-
-                        
                         o.Next = newoperator;
                         o.Next.A = o;
                         currOperator = o.Next;
@@ -97,6 +104,7 @@ namespace TsGui.Math
                 }
             }
 
+            //now capture the last operand
             Operand lastop = new Operand();
             lastop.Value = Double.Parse(valstring);
             lastop.Prev = currOperator;
@@ -109,39 +117,6 @@ namespace TsGui.Math
 
             return result;
         }
-
-
-        //private Operator NewOperator(string TypeString)
-        //{
-        //    Operator o = new Operator();
-        //    if (TypeString == "+")
-        //    {
-        //        o.Type = OperatorType.Add;
-        //        asOperators.Add(o);
-        //    }
-        //    else if (TypeString == "-")
-        //    {
-        //        o.Type = OperatorType.Subtract;
-        //        asOperators.Add(o);
-        //    }
-        //    else if (TypeString == "/")
-        //    {
-        //        o.Type = OperatorType.Divide;
-        //        dmOperators.Add(o);
-        //    }
-        //    else if (TypeString == "*")
-        //    {
-        //        o.Type = OperatorType.Multiply;
-        //        dmOperators.Add(o);
-        //    }
-        //    else if (TypeString == "^")
-        //    {
-        //        o.Type = OperatorType.Exponent;
-        //        expOperators.Add(o);
-        //    }
-
-        //    return o;
-        //}
 
         private static double ProcessOperator(Operator O)
         {
