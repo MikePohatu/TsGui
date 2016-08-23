@@ -13,23 +13,25 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-namespace TsGui.Calculator
+using System.Diagnostics;
+
+namespace TsGui.Math
 {
     public class Operator
     {
-        public Operand Operand { get; set; }
-        public double A { get; set; }
-        public double B { get; set; }
-
-        public double Result() { return this.Calc(); }
-
+        public OperatorType Type { get; set; }
+        public Operand A { get; set; }
+        public Operand B { get; set; }
+        public double Result { get { return this.Calc(); } }
 
         private double Calc()
         {
-            if (this.Operand == Operand.Add) { return (A + B); }
-            else if (this.Operand == Operand.Divide) { return (A / B); }
-            else if (this.Operand == Operand.Multiply) { return (A * B); }
-            else if (this.Operand == Operand.Subtract) { return (A - B); }
+            if ((A == null) || (B == null)) { Debug.WriteLine("null A or B"); }
+            if (this.Type == OperatorType.Add) { return (A.Value + B.Value); }
+            else if (this.Type == OperatorType.Divide) { return (A.Value / B.Value); }
+            else if (this.Type == OperatorType.Multiply) { return (A.Value * B.Value); }
+            else if (this.Type == OperatorType.Subtract) { return (A.Value - B.Value); }
+            else if (this.Type == OperatorType.Exponent) { return System.Math.Pow(A.Value, B.Value); }
             else { return 0; }
         }
     }

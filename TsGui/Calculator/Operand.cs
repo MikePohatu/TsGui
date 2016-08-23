@@ -15,5 +15,10 @@
 
 namespace TsGui.Math
 {
-    public enum OperatorType { Add, Subtract, Multiply, Divide, Exponent };
+    public class Operand
+    {
+        public Operator Prev { get; set; }
+        public Operator Next { get; set; }
+        public double Value { get; set; }
+    }
 }
