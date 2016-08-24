@@ -21,9 +21,10 @@ namespace TsGui.Tests
     [TestFixture]
     public class CalculatorTests
     {
-        [Test]
-        [TestCase("2*4", ExpectedResult = 8)]
+        [Test]        
         [TestCase("7/2", ExpectedResult = 3.5)]
+        [TestCase("8/2", ExpectedResult = 4)]
+        [TestCase("2+4", ExpectedResult = 6)]
         [TestCase("2+4", ExpectedResult = 6)]
         [TestCase("2^3", ExpectedResult = 8)]
         [TestCase("2+4*7", ExpectedResult = 30)]
@@ -34,7 +35,7 @@ namespace TsGui.Tests
         [TestCase("(2+4)*(8/2)", ExpectedResult = 24)]
         [TestCase("( 2.5 + 14 ) * ( 118 / 2 )", ExpectedResult = 973.5)]
         [TestCase("( 2.5 + 14.7 ) * ( -115 ^ 2 )", ExpectedResult = 227470)]
-        [TestCase("( 2.5 + 14.7 ) * -( 115 ^ 2 )", ExpectedResult = -227470)]
+        [TestCase("( 2.5 + 14.7 ) * -( 115.3 ^ 2 )", ExpectedResult = -228658.348)]
         [TestCase("((2+4)*(8/2))", ExpectedResult = 24)]
         [TestCase("((2+4)*7)/2", ExpectedResult = 21)]
         [TestCase("((2+4)*7)/-2", ExpectedResult = -21)]

@@ -8,9 +8,9 @@ namespace TsGui.Tests
     public class CheckerTests
     {
         [Test]
+        [TestCase("MINIT", ExpectedResult = true)]
         [TestCase("MINIT_Test",ExpectedResult = true)]
-        [TestCase("MINI", ExpectedResult = false)]
-        [TestCase("MINIT",ExpectedResult = true)]
+        [TestCase("MINI", ExpectedResult = false)]       
         [TestCase(null, ExpectedResult = true)]
         public bool ShouldIgnoreTest_Def(string TestString)
         {

@@ -15,6 +15,7 @@
 
 using System;
 using System.Linq;
+using System.Text;
 using System.Collections.Generic;
 //using System.Diagnostics;
 
@@ -29,6 +30,8 @@ namespace TsGui.Math
             //Debug.WriteLine("Calculate string: " + Input);
             if (string.IsNullOrEmpty(Input)) { return 0; }
 
+            StringBuilder strbuilderVal = new StringBuilder();
+            StringBuilder strbuilderSub = new StringBuilder();
             List<Operator> asOperators = new List<Operator>();
             List<Operator> dmOperators = new List<Operator>();
             List<Operator> expOperators = new List<Operator>();
@@ -36,8 +39,8 @@ namespace TsGui.Math
             Operator currOperator = null;
             string s;
             bool subequation = false;
-            string substring = "";
-            string valstring = "";
+            //string substring = "";
+            //string valstring = "";
             int openParenCount = 0;
 
             for (int i = 0; i < Input.Length; i++)
@@ -48,7 +51,7 @@ namespace TsGui.Math
                     if (s == "(")
                     {
                         openParenCount++;
-                        if (subequation == true) { substring = substring + s; }
+                        if (subequation == true) { strbuilderSub.Append(s); }
                         else { subequation = true; }  
                     }
 
@@ -60,17 +63,18 @@ namespace TsGui.Math
                             //we have to convert the result of the substring back to a string.
                             //the remaining function is expecting a string to work with. keep the
                             //existing valstring in case there is a sign there
-                            valstring = valstring + (CalculateString(substring).ToString());
+                            strbuilderVal.Append((CalculateString(strbuilderSub.ToString()).ToString()));
 
                             //reset everything
                             subequation = false;
-                            substring = "";
+                            //substring = "";
+                            strbuilderSub.Clear();
                         }
-                        else { substring = substring + s; }
+                        else { strbuilderSub.Append(s); }
                     }
                     else if (subequation == true)
                     {
-                        substring = substring + s;
+                        strbuilderSub.Append(s);
                     }
                   
                     else if (new string[] {"+","-","/","*","^"}.Contains(s))
@@ -78,8 +82,8 @@ namespace TsGui.Math
                         //if this is an operator, new one need to be created and added to the appropriate
                         //list
                         
-                        if (string.IsNullOrEmpty(valstring))
-                        { valstring = valstring + s; }
+                        if (strbuilderVal.Length == 0)
+                        { strbuilderVal.Append(s); }
                         else
                         #region
                         {
@@ -113,22 +117,22 @@ namespace TsGui.Math
 
                             //now create the new operand and setup the mappings
                             Operand o = new Operand();
-                            o.Value = Double.Parse(valstring);
+                            o.Value = Double.Parse(strbuilderVal.ToString());
                             o.Prev = currOperator;
                             if (currOperator != null) { currOperator.B = o; }
                             o.Next = newoperator;
                             o.Next.A = o;
                             currOperator = o.Next;
-                            valstring = "";
+                            strbuilderVal.Clear();
                         }
                     }
-                    else { valstring = valstring + s; }
+                    else { strbuilderVal.Append(s); }
                 }
             }
 
             //now capture the last operand
             Operand lastop = new Operand();
-            lastop.Value = Double.Parse(valstring);
+            lastop.Value = Double.Parse(strbuilderVal.ToString());
             lastop.Prev = currOperator;
             if (currOperator != null) { currOperator.B = lastop; }
 
