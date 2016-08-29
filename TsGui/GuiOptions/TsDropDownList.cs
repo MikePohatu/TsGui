@@ -141,9 +141,9 @@ namespace TsGui
             optionsXml = InputXml.Elements("MultiOption");
             if (optionsXml != null)
             {
-                foreach (XElement mo in optionsXml)
+                foreach (XElement xmo in optionsXml)
                 {
-                    Dictionary<string, string> d = this._controller.GetDictionaryFromList(mo);
+                    Dictionary<string, string> d = this._controller.GetDictionaryFromList(xmo);
 
                     foreach (KeyValuePair<string, string> kv in d)
                     {

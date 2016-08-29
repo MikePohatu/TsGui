@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Management;
+using System.Xml.Linq;
 using System.Diagnostics;
 
 namespace TsGui
@@ -82,20 +83,21 @@ namespace TsGui
         //get a dictionary of names,values from WMI. 
         public static Dictionary<string,string> GetWmiDictionary(string WmiQuery, string KeyProperty, string Separator, List<string> Properties)
         {
-            Dictionary<string, string> values = new Dictionary<string, string>();
+            Dictionary<string, string> results = new Dictionary<string, string>();
  
             try
             {
-                WqlObjectQuery wqlQuery = new WqlObjectQuery(WmiQuery);
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery);
-                
-                foreach (ManagementObject m in searcher.Get())
+                foreach (ManagementObject m in GetWmiManagementObjects(WmiQuery))
                 {
-                    KeyValuePair<string, string> kv = ConcatenatePropertyData(m, KeyProperty, Separator, Properties);
-                    values.Add(kv.Key,kv.Value);                 
+                    string key = m.GetPropertyValue(KeyProperty).ToString();
+                    if (!string.IsNullOrEmpty(key))
+                    {
+                        KeyValuePair<string, string> kv = new KeyValuePair<string, string>(key, ConcatenateWmiValues(m, Properties, Separator));
+                        results.Add(kv.Key, kv.Value);
+                    }           
                 }
 
-                return values;
+                return results;
             }
             catch
             {
@@ -105,30 +107,33 @@ namespace TsGui
 
         }
 
-        //return a key,value pair from a dictionary. keyproperty does to key, specified properties are concatenated together with the separator
-        private static KeyValuePair<string, string> ConcatenatePropertyData(ManagementObject Input, string KeyProperty, string Separator, List<string> Properties)
+
+
+        // Current DEV work. needs tidying. 
+        
+        //return a string from a managementobject.
+        //specified properties are concatenated together with the separator
+        private static string ConcatenateWmiValues(ManagementObject Input, List<string> Properties, string Separator)
         {
-            string s1 = "";
-            string s2 = "";
+            string s = "";
             string tempval = null;
             int i = 0;
-
-            s1 = Input.GetPropertyValue(KeyProperty).ToString();
 
             foreach (string prop in Properties)
             {
                 if (!string.IsNullOrEmpty(prop))
                 {
                     tempval = Input.GetPropertyValue(prop).ToString();
-                    if (i == 0) { s2 = tempval; }
-                    else { s2 = s2 + Separator + tempval; }
+                    if (i == 0) { s = tempval; }
+                    else { s = s + Separator + tempval; }
                     i++;
                 }
             }
-            Debug.WriteLine("New KV pair: " + s1 + "," + s2);
+            //Debug.WriteLine("New KV pair: " + s1 + "," + s2);
 
-            return new KeyValuePair<string, string>(s1, s2);
+            return s;
         }
+
 
         public static ManagementObjectCollection GetWmiManagementObjects(string WmiQuery)
         {

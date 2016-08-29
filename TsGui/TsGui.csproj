@@ -77,6 +77,7 @@
     <Compile Include="Control\Checker.cs" />
     <Compile Include="Control\EnvironmentController.cs" />
     <Compile Include="Calculator\Calculator.cs" />
+    <Compile Include="Control\ResultFormatter.cs" />
     <Compile Include="Grouping\GroupDelegates.cs" />
     <Compile Include="Grouping\Group.cs" />
     <Compile Include="Control\GuiFactory.cs" />

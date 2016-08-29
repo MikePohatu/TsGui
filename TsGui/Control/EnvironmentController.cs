@@ -122,16 +122,25 @@ namespace TsGui
                 string separator = ", ";
                 string wql = InputXml.Element("Wql")?.Value;
                 string keyprop = InputXml.Element("KeyProperty")?.Attribute("Name")?.Value;
-                x = InputXml.Element("Separator");
+                ResultFormatter keyProp;
 
+                x = InputXml.Element("KeyProperty");
+                if (x != null) { keyProp = new ResultFormatter(x); }
+
+                x = InputXml.Element("Separator");
                 if (x != null) { separator = x.Value; }
 
                 if ((string.IsNullOrEmpty(wql)) || (string.IsNullOrEmpty(keyprop)))
                 { throw new InvalidOperationException("Invalid config file. Missing Wql or KeyProperty from WMI query"); }
                 else
                 {
-                    List<string> properties = new List<string>();
-                    foreach (XElement prop in InputXml.Elements("Property")) { properties.Add(prop.Attribute("Name").Value); }
+                    List<ResultFormatter> properties = new List<ResultFormatter>();
+                    foreach (XElement prop in InputXml.Elements("Property"))
+                    {
+                        ResultFormatter propvalue = prop.Attribute("Name").Value;
+
+                        properties.Add(propvalue);
+                    }
 
                     dss = SystemConnector.GetWmiDictionary(wql, keyprop, separator, properties);
 
