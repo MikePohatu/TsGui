@@ -49,10 +49,10 @@ PageLayout.xaml - main layout for each page.
                     <ColumnDefinition Width="80"></ColumnDefinition>
                     <ColumnDefinition Width="80"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="buttonNext" IsEnabled="False" Visibility="Hidden" Content="Next" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Width="75" Height="30" Click="buttonNext_Click"/>
-                <Button x:Name="buttonFinish" Content="Finish" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Width="75" Height="30" Click="buttonFinish_Click"/>
-                <Button x:Name="buttonPrev" IsEnabled="False" Visibility="Hidden" Content="Back" HorizontalAlignment="Left" Margin="0,0,5,0" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="75" Height="30" Click="buttonPrev_Click"/>
-                <Button x:Name="buttonCancel" Content="Cancel" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Width="75" Height="30" Click="buttonCancel_Click"/>
+                <Button x:Name="buttonNext" IsEnabled="False" Visibility="Hidden" Content="{Binding ButtonTextNext}" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Width="75" Height="30" Click="buttonNext_Click"/>
+                <Button x:Name="buttonFinish" Content="{Binding ButtonTextFinish}" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Width="75" Height="30" Click="buttonFinish_Click"/>
+                <Button x:Name="buttonPrev" IsEnabled="False" Visibility="Hidden" Content="{Binding ButtonTextBack}" HorizontalAlignment="Left" Margin="0,0,5,0" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="75" Height="30" Click="buttonPrev_Click"/>
+                <Button x:Name="buttonCancel" Content="{Binding ButtonTextCancel}" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Width="75" Height="30" Click="buttonCancel_Click"/>
             </Grid>
         </Grid>
     </Grid>

@@ -37,7 +37,7 @@ namespace TsGui
         private double _width;
         private double _headingHeight;
         private string _headingTitle;
-        private string _headingText;
+        private string _headingText;        
         private SolidColorBrush _headingBgColor;
         private SolidColorBrush _headingFontColor;
         private Thickness _margin = new Thickness(0, 0, 0, 0);
@@ -198,7 +198,7 @@ namespace TsGui
                 this._nextpage = value;
                 this.Update();
             }
-        }
+        }        
         public List<IGuiOption> Options { get { return this._options; } }
         public PageLayout Page { get { return this._pagelayout; } }
         public bool IsFirst
@@ -233,7 +233,7 @@ namespace TsGui
         #endregion
 
         //Constructors
-        public TsPage(XElement SourceXml, string HeadingTitle, string HeadingText, double Height,double Width, Thickness Margin, SolidColorBrush HeadingBgColor, SolidColorBrush HeadingTextColor, MainController RootController)
+        public TsPage(XElement SourceXml, string HeadingTitle, string HeadingText, double Height,double Width, Thickness Margin, SolidColorBrush HeadingBgColor, SolidColorBrush HeadingTextColor, TsButtons Buttons, MainController RootController)
         {
             //Debug.WriteLine("New page constructor");
             //Debug.WriteLine(SourceXml);
@@ -247,10 +247,11 @@ namespace TsGui
             this.HeadingTitle = HeadingTitle;
             this.HeadingText = HeadingText;
             this.HeadinFontColor = HeadingTextColor;
-            this.HeadingBgColor = HeadingBgColor;
+            this.HeadingBgColor = HeadingBgColor;          
 
             this._pagelayout.DataContext = this;
             this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
+            this._pagelayout.ButtonGrid.DataContext = Buttons;
 
             this.LoadXml(SourceXml);
             this.Build();
@@ -436,31 +437,7 @@ namespace TsGui
         //place in the world
         public void Update()
         {
-            if (this.NextActivePage != null)
-            {
-                this._pagelayout.buttonNext.Visibility = Visibility.Visible;
-                this._pagelayout.buttonNext.IsEnabled = true;
-                this._pagelayout.buttonFinish.Visibility = Visibility.Hidden;
-                this._pagelayout.buttonFinish.IsEnabled = false;
-            }
-            else
-            {
-                this._pagelayout.buttonFinish.Visibility = Visibility.Visible;
-                this._pagelayout.buttonFinish.IsEnabled = true;
-                this._pagelayout.buttonNext.Visibility = Visibility.Hidden;
-                this._pagelayout.buttonNext.IsEnabled = false;
-            }
-
-            if (this.PreviousActivePage != null)
-            {
-                this._pagelayout.buttonPrev.Visibility = Visibility.Visible;
-                this._pagelayout.buttonPrev.IsEnabled = true;
-            }
-            else
-            {
-                this._pagelayout.buttonPrev.Visibility = Visibility.Hidden;
-                this._pagelayout.buttonPrev.IsEnabled = false;
-            }
+            TsButtons.Update(this, this._pagelayout);
         }
     }
 }

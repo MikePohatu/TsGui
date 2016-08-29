@@ -32,6 +32,7 @@ namespace TsGui
         private string _configpath;
         private bool _prodmode = false;
         private bool _finished = false;
+        private TsButtons _buttons = new TsButtons();
         private TsMainWindow _mainWindow;
         private XmlHandler _handler = new XmlHandler();
         private List<TsPage> _pages = new List<TsPage>();
@@ -156,6 +157,10 @@ namespace TsGui
                 if (x != null)
                 { this._chassischeck = new HardwareEvaluator(); }
 
+                x = SourceXml.Element("Buttons");
+                if (x != null)
+                { this._buttons.LoadXml(x); }
+
                 //now read in the options and add to a dictionary for later use
                 pagesXml = SourceXml.Elements("Page");
                 if (pagesXml != null)
@@ -170,14 +175,15 @@ namespace TsGui
                             //record the last page as the prevPage
                             prevPage = currPage;
                             currPage = new TsPage(
-                                xPage, 
-                                this._mainWindow.HeadingTitle, 
-                                this._mainWindow.HeadingText, 
-                                this._mainWindow.Height, 
-                                this._mainWindow.Width, 
+                                xPage,
+                                this._mainWindow.HeadingTitle,
+                                this._mainWindow.HeadingText,
+                                this._mainWindow.Height,
+                                this._mainWindow.Width,
                                 this._mainWindow.PageMargin,
                                 this._mainWindow.HeadingBgColor,
                                 this._mainWindow.HeadingFontColor,
+                                this._buttons,
                                 this);                                                     
                         }
                         else
@@ -191,6 +197,7 @@ namespace TsGui
                                 this._mainWindow.PageMargin,
                                 this._mainWindow.HeadingBgColor,
                                 this._mainWindow.HeadingFontColor,
+                                this._buttons,
                                 this);
                             currPage.IsFirst = true;
                         }
