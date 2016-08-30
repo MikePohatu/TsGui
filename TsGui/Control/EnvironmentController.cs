@@ -13,9 +13,12 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+// EnvironmentController.cs - responsible for getting the right information from the right connector
+// in the right format so it can be passed back to the MainController. 
+
 using System.Xml.Linq;
 using System.Collections.Generic;
-//using System.Diagnostics;
+using System.Management;
 using System;
 
 namespace TsGui
@@ -104,11 +107,10 @@ namespace TsGui
         }
 
 
-        //input a list of options as xml. Return the value of the first one that exists. 
-        //return null if nothing is found. 
+        //input a list of options as xml. Return a dictionary of results 
         public Dictionary<string, string> GetDictionaryFromList(XElement InputXml)
         {
-            Dictionary<string, string> dss = new Dictionary<string, string>();
+            Dictionary<string, string> returnDic = new Dictionary<string, string>();
             string type;
             XElement x;
 
@@ -118,38 +120,64 @@ namespace TsGui
 
             if (string.Equals(type, "WmiQuery", StringComparison.OrdinalIgnoreCase))
             {
-
+                ResultWrangler wrangler = new ResultWrangler();
+                Dictionary<string, XElement> propertyTemplates = new Dictionary<string, XElement>(); 
                 string separator = ", ";
+                string keyproperty = null;               
                 string wql = InputXml.Element("Wql")?.Value;
-                string keyprop = InputXml.Element("KeyProperty")?.Attribute("Name")?.Value;
-                ResultFormatter keyProp;
-
-                x = InputXml.Element("KeyProperty");
-                if (x != null) { keyProp = new ResultFormatter(x); }
 
                 x = InputXml.Element("Separator");
-                if (x != null) { separator = x.Value; }
+                if (x != null)
+                { separator = x.Value; }
+                
 
-                if ((string.IsNullOrEmpty(wql)) || (string.IsNullOrEmpty(keyprop)))
-                { throw new InvalidOperationException("Invalid config file. Missing Wql or KeyProperty from WMI query"); }
-                else
+
+                //make sure there is some WQL to query
+                if (string.IsNullOrEmpty(wql)) { throw new InvalidOperationException("Empty WQL query in XML: " + Environment.NewLine + InputXml); }
+
+                ManagementObjectCollection wmiObjects = SystemConnector.GetWmiManagementObjects(wql);
+                
+                //first import the properties from the XML to the templates dictionary
+                foreach (XElement propx in InputXml.Elements("Property"))
                 {
-                    List<ResultFormatter> properties = new List<ResultFormatter>();
-                    foreach (XElement prop in InputXml.Elements("Property"))
-                    {
-                        ResultFormatter propvalue = prop.Attribute("Name").Value;
+                    string name = propx.Attribute("Name")?.Value;
+                    //make sure there is a name set
+                    if (string.IsNullOrEmpty(name)) { throw new InvalidOperationException("Missing name attribute in XML: " + Environment.NewLine + propx); }
 
-                        properties.Add(propvalue);
-                    }
+                    //if property is keyproperty record it
+                    XAttribute xattrib = propx.Attribute("Key");
+                    if ((xattrib != null) && (xattrib.Value == "TRUE")) { keyproperty = name; }
 
-                    dss = SystemConnector.GetWmiDictionary(wql, keyprop, separator, properties);
-
+                    //add it to the templates dictionary
+                    propertyTemplates.Add(name, propx);
                 }
-            }
-            return dss;
-        }
 
-        
+                //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
+                //New sublists are created for each management object in the wrangler. 
+                foreach (ManagementObject m in SystemConnector.GetWmiManagementObjects(wql))
+                {
+                    wrangler.NewSubList();
+
+                    foreach (string propname in propertyTemplates.Keys)
+                    {
+                        XElement template;
+                        ResultFormatter rf;
+                        string input = m.GetPropertyValue(propname).ToString();
+
+                        if (propertyTemplates.TryGetValue(propname, out template))
+                        {
+                            rf = new ResultFormatter(template);
+                            rf.Input = input;
+                            if (rf.PropertyName == keyproperty) { wrangler.AddKeyResultFormatter(rf); }
+                            else { wrangler.AddResultFormatter(rf); }
+                        }
+                    }
+                }
+                returnDic = wrangler.GetDictionary(separator);
+            }
+
+            return returnDic;
+        }
 
 
         //get and environmental variable, trying the sccm ts variables first

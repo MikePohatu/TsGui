@@ -17,10 +17,7 @@
 // environment variables. 
 
 using System;
-using System.Collections.Generic;
 using System.Management;
-using System.Xml.Linq;
-using System.Diagnostics;
 
 namespace TsGui
 {
@@ -80,61 +77,6 @@ namespace TsGui
             
         }
 
-        //get a dictionary of names,values from WMI. 
-        public static Dictionary<string,string> GetWmiDictionary(string WmiQuery, string KeyProperty, string Separator, List<string> Properties)
-        {
-            Dictionary<string, string> results = new Dictionary<string, string>();
- 
-            try
-            {
-                foreach (ManagementObject m in GetWmiManagementObjects(WmiQuery))
-                {
-                    string key = m.GetPropertyValue(KeyProperty).ToString();
-                    if (!string.IsNullOrEmpty(key))
-                    {
-                        KeyValuePair<string, string> kv = new KeyValuePair<string, string>(key, ConcatenateWmiValues(m, Properties, Separator));
-                        results.Add(kv.Key, kv.Value);
-                    }           
-                }
-
-                return results;
-            }
-            catch
-            {
-                return null;
-                //throw new InvalidOperationException("Error running WMI query: " + WmiQuery + Environment.NewLine);
-            }
-
-        }
-
-
-
-        // Current DEV work. needs tidying. 
-        
-        //return a string from a managementobject.
-        //specified properties are concatenated together with the separator
-        private static string ConcatenateWmiValues(ManagementObject Input, List<string> Properties, string Separator)
-        {
-            string s = "";
-            string tempval = null;
-            int i = 0;
-
-            foreach (string prop in Properties)
-            {
-                if (!string.IsNullOrEmpty(prop))
-                {
-                    tempval = Input.GetPropertyValue(prop).ToString();
-                    if (i == 0) { s = tempval; }
-                    else { s = s + Separator + tempval; }
-                    i++;
-                }
-            }
-            //Debug.WriteLine("New KV pair: " + s1 + "," + s2);
-
-            return s;
-        }
-
-
         public static ManagementObjectCollection GetWmiManagementObjects(string WmiQuery)
         {
             try
@@ -146,7 +88,6 @@ namespace TsGui
             }
             catch
             {
-                //Debug.WriteLine("Exception thrown in SystemConnector: GetWmiQuery");
                 return null;
             }
         }

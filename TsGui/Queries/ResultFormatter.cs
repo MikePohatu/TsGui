@@ -13,16 +13,20 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ResultFormatter.cs - provides additional formatting/processing for a query e.g.
+// ResultFormatter.cs - provides additional formatting/processing for a query result e.g.
 // processing math on the result, prefix and postfix
+
 using TsGui.Math;
 using System.Xml.Linq;
+using System;
 
 namespace TsGui
 {
     public class ResultFormatter
     {
+        public string PropertyName { get; set; }
         public string Input { get; set; }
+        public int DecimalPlaces { get; set; }
         public string Calculation { get; set; }
         public string Append { get; set; }
         public string Prefix { get; set; }
@@ -30,6 +34,7 @@ namespace TsGui
 
         public ResultFormatter(XElement InputXml)
         {
+            this.DecimalPlaces = -1;
             this.LoadXml(InputXml);
         }
 
@@ -37,39 +42,42 @@ namespace TsGui
         private void LoadXml(XElement InputXml)
         {
             XElement x;
+            XAttribute xattrib;
+
+            xattrib = InputXml.Attribute("Name");
+            if (xattrib != null) { this.PropertyName = xattrib.Value; }
+
 
             x = InputXml.Element("Calculate");
-            if (x != null)
-            {
-                this.Calculation = x.Value;
-            }
+            if (x != null) { this.Calculation = x.Value; }
+
+            x = InputXml.Element("DecimalPlaces");
+            if (x != null) { this.DecimalPlaces = Convert.ToInt32(x.Value); }
 
             x = InputXml.Element("Append");
-            if (x != null)
-            {
-                this.Append = x.Value;
-            }
+            if (x != null) { this.Append = x.Value; }
 
             x = InputXml.Element("Prefix");
-            if (x != null)
-            {
-                this.Prefix = x.Value;
-            }
+            if (x != null) { this.Prefix = x.Value; }
         }
 
         private string Process()
         {
-            string s = null;
+            string s = this.Input;
 
-            if (string.IsNullOrEmpty(this.Input)) { s = null; }
-            else
+            if (!string.IsNullOrEmpty(this.Calculation))
             {
-                if (!string.IsNullOrEmpty(this.Calculation))
-                {
-                    s = Calculation.Replace("VALUE", this.Input);
-                    s = Calculator.CalculateString(s).ToString();
-                }
+                double result;
+                s = Calculation.Replace("VALUE", this.Input);
+                result = Calculator.CalculateString(s);
+
+                if (this.DecimalPlaces != -1)
+                { result = System.Math.Round(result, this.DecimalPlaces); }
+
+                s = result.ToString();
             }
+
+            
             return this.Prefix + s + this.Append;
         }
     }
