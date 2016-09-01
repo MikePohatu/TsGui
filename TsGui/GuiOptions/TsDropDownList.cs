@@ -143,9 +143,9 @@ namespace TsGui
             {
                 foreach (XElement xmo in optionsXml)
                 {
-                    Dictionary<string, string> d = this._controller.GetDictionaryFromList(xmo);
-
-                    foreach (KeyValuePair<string, string> kv in d)
+                    //Dictionary<string, string> d = this._controller.GetDictionaryFromList(xmo);
+                    List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(xmo);
+                    foreach (KeyValuePair<string, string> kv in kvlist)
                     {
                         this._options.Add(kv.Value,kv.Key);
                     }
@@ -187,9 +187,6 @@ namespace TsGui
                 //default, select it by default in the list
                 if ((entry.Value == this._value) || (index == 0))
                 {
-                    //if (index == 0) { Debug.WriteLine("0 index"); }
-                    //else { Debug.WriteLine("Default value found " + entry.Value); }
-
                     this._control.SelectedItem = entry;
                 }
 

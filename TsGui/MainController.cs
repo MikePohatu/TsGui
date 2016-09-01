@@ -335,6 +335,12 @@ namespace TsGui
             return this._envController.GetDictionaryFromList(InputXml);
         }
 
+        public List<KeyValuePair<string, string>> GetKeyValueListFromList(XElement InputXml)
+        {
+            return this._envController.GetKeyValueListFromList(InputXml);
+        }
+            
+
         public String GetEnvVar(string VariableName)
         {
             return this._envController.GetEnvVar(VariableName);

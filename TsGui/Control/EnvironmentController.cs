@@ -107,35 +107,52 @@ namespace TsGui
         }
 
 
+
+
+
+
         //input a list of options as xml. Return a dictionary of results 
         public Dictionary<string, string> GetDictionaryFromList(XElement InputXml)
         {
-            Dictionary<string, string> returnDic = new Dictionary<string, string>();
+            return this.ProcessQueryList(InputXml).GetDictionary();
+        }
+
+
+        public List<KeyValuePair<string,string>> GetKeyValueListFromList(XElement InputXml)
+        {
+            return this.ProcessQueryList(InputXml).GetKeyValueList();
+        }
+
+
+        //worker method for the public getdictionary and getkeyvaluelist methods above. builds and returns the wrangler that
+        //can return the data in the right format. 
+        private ResultWrangler ProcessQueryList(XElement InputXml)
+        {
+            ResultWrangler wrangler = new ResultWrangler();
             string type;
             XElement x;
 
             type = InputXml.Attribute("Type")?.Value;
-            
+
             if (string.IsNullOrEmpty(type)) { throw new InvalidOperationException("No type specified: " + Environment.NewLine + InputXml + Environment.NewLine); }
 
             if (string.Equals(type, "WmiQuery", StringComparison.OrdinalIgnoreCase))
             {
-                ResultWrangler wrangler = new ResultWrangler();
-                Dictionary<string, XElement> propertyTemplates = new Dictionary<string, XElement>(); 
-                string separator = ", ";             
+
+                Dictionary<string, XElement> propertyTemplates = new Dictionary<string, XElement>();
                 string wql = InputXml.Element("Wql")?.Value;
 
                 x = InputXml.Element("Separator");
                 if (x != null)
-                { separator = x.Value; }
-                
+                { wrangler.Separator = x.Value; }
+
 
 
                 //make sure there is some WQL to query
                 if (string.IsNullOrEmpty(wql)) { throw new InvalidOperationException("Empty WQL query in XML: " + Environment.NewLine + InputXml); }
 
                 ManagementObjectCollection wmiObjects = SystemConnector.GetWmiManagementObjects(wql);
-                
+
                 //first import the properties from the XML to the templates dictionary
                 foreach (XElement propx in InputXml.Elements("Property"))
                 {
@@ -143,7 +160,8 @@ namespace TsGui
                     //make sure there is a name set
                     if (string.IsNullOrEmpty(name)) { throw new InvalidOperationException("Missing name attribute in XML: " + Environment.NewLine + propx); }
 
-                    //add it to the templates dictionary
+                    //add it to the templates dictionary or throw error if it already exists. 
+                    if (propertyTemplates.ContainsKey(name)) { throw new InvalidOperationException("Property name " + name + " already exists in XML" + Environment.NewLine + propx); }
                     propertyTemplates.Add(name, propx);
                 }
 
@@ -167,10 +185,9 @@ namespace TsGui
                         }
                     }
                 }
-                returnDic = wrangler.GetDictionary(separator);
             }
 
-            return returnDic;
+            return wrangler;
         }
 
 
