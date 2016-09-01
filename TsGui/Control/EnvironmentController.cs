@@ -122,8 +122,7 @@ namespace TsGui
             {
                 ResultWrangler wrangler = new ResultWrangler();
                 Dictionary<string, XElement> propertyTemplates = new Dictionary<string, XElement>(); 
-                string separator = ", ";
-                string keyproperty = null;               
+                string separator = ", ";             
                 string wql = InputXml.Element("Wql")?.Value;
 
                 x = InputXml.Element("Separator");
@@ -143,10 +142,6 @@ namespace TsGui
                     string name = propx.Attribute("Name")?.Value;
                     //make sure there is a name set
                     if (string.IsNullOrEmpty(name)) { throw new InvalidOperationException("Missing name attribute in XML: " + Environment.NewLine + propx); }
-
-                    //if property is keyproperty record it
-                    XAttribute xattrib = propx.Attribute("Key");
-                    if ((xattrib != null) && (xattrib.Value == "TRUE")) { keyproperty = name; }
 
                     //add it to the templates dictionary
                     propertyTemplates.Add(name, propx);
@@ -168,8 +163,7 @@ namespace TsGui
                         {
                             rf = new ResultFormatter(template);
                             rf.Input = input;
-                            if (rf.PropertyName == keyproperty) { wrangler.AddKeyResultFormatter(rf); }
-                            else { wrangler.AddResultFormatter(rf); }
+                            wrangler.AddResultFormatter(rf);
                         }
                     }
                 }

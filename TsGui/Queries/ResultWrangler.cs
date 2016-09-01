@@ -21,18 +21,31 @@ namespace TsGui
 {
     public class ResultWrangler
     {
-        private List<List<ResultFormatter>> _results;
-        private List<ResultFormatter> _currentList;
+        private Dictionary<int,List<ResultFormatter>> _lists;
+        private Dictionary<int, ResultFormatter> _keys;
+        private int _currentResultIndex;    //current index in the current list
+        private int _currentResult;         //current result in the lists
+
+
+        public ResultWrangler()
+        {
+            this._lists = new Dictionary<int, List<ResultFormatter>>();
+            this._keys = new Dictionary<int, ResultFormatter>();
+            this._currentResult = -1;
+            this._currentResultIndex = 0;
+        }
+
 
         /// <summary>
         /// Create a new List<ResultFormatter> and set it as current
         /// </summary>
         public void NewSubList()
         {
-            if (this._results == null) { this._results = new List<List<ResultFormatter>>(); }
+            this._currentResult++;
+            this._currentResultIndex = 0;     //reset the current index
+
             List<ResultFormatter> newlist = new List<ResultFormatter>();
-            this._results.Add(newlist);
-            this._currentList = newlist;
+            this._lists.Add(this._currentResult, newlist);
         }
 
         /// <summary>
@@ -41,17 +54,15 @@ namespace TsGui
         /// <param name="Formatter"></param>
         public void AddResultFormatter(ResultFormatter Formatter)
         {
-            this._currentList.Add(Formatter);
-        }
+            if (this._currentResultIndex == 0) { this._keys.Add(this._currentResult, Formatter); }
+            else
+            {
+                List<ResultFormatter> currentlist;
+                this._lists.TryGetValue(this._currentResult, out currentlist);
+                currentlist.Add(Formatter);
+            }
 
-        /// <summary>
-        /// Add a ResultFormatter to the start ResultWrangler's current list 
-        /// This will be used as the key when a dictionary is returned
-        /// </summary>
-        /// <param name="Formatter"></param>
-        public void AddKeyResultFormatter(ResultFormatter Formatter)
-        {
-            this._currentList.Insert(0,Formatter);
+            this._currentResultIndex++;
         }
 
         /// <summary>
@@ -84,17 +95,28 @@ namespace TsGui
         /// Get the _results list in dictionary format. First item in the list is the key, remainder is 
         /// concatenated with the separator
         /// </summary>
+        /// <param name="Separator"></param>
         /// <returns></returns>
         public Dictionary<string,string> GetDictionary(string Separator)
         {
+            //first check to make sure a new sublist has actually been created. if not reutrn null
+            if (_currentResult == -1) { return null; }
+
             Dictionary<string, string> returndic = new Dictionary<string, string>();
+            ResultFormatter _tempRF;
+            List<ResultFormatter> _tempRFList;
 
-            foreach (List<ResultFormatter> sublist in this._results)
+            for (int i = 0; i==this._currentResult; i++)
             {
-                string concatList = ConcatenateResultValues(sublist.GetRange(1, sublist.Count - 1), Separator);
-                string key = sublist[0].Value;
+                string concatlist;
+                string key;
 
-                returndic.Add(key, concatList);
+                this._keys.TryGetValue(i, out _tempRF);
+                key = _tempRF.Value;
+
+                this._lists.TryGetValue(i, out _tempRFList);
+                concatlist = this.ConcatenateResultValues(_tempRFList, Separator);
+                returndic.Add(key, concatlist);
             }
 
             return returndic;

@@ -49,7 +49,8 @@ namespace TsGui
 
 
             x = InputXml.Element("Calculate");
-            if (x != null) { this.Calculation = x.Value; }
+            if (x != null)
+            { this.Calculation = x.Value; }
 
             x = InputXml.Element("DecimalPlaces");
             if (x != null) { this.DecimalPlaces = Convert.ToInt32(x.Value); }
