@@ -114,19 +114,19 @@ namespace TsGui
         //input a list of options as xml. Return a dictionary of results 
         public Dictionary<string, string> GetDictionaryFromList(XElement InputXml)
         {
-            return this.ProcessQueryList(InputXml).GetDictionary();
+            return this.ProcessQuery(InputXml).GetDictionary();
         }
 
 
         public List<KeyValuePair<string,string>> GetKeyValueListFromList(XElement InputXml)
         {
-            return this.ProcessQueryList(InputXml).GetKeyValueList();
+            return this.ProcessQuery(InputXml).GetKeyValueList();
         }
 
 
         //worker method for the public getdictionary and getkeyvaluelist methods above. builds and returns the wrangler that
         //can return the data in the right format. 
-        private ResultWrangler ProcessQueryList(XElement InputXml)
+        private ResultWrangler ProcessQuery(XElement InputXml)
         {
             ResultWrangler wrangler = new ResultWrangler();
             string type;
@@ -136,7 +136,7 @@ namespace TsGui
 
             if (string.IsNullOrEmpty(type)) { throw new InvalidOperationException("No type specified: " + Environment.NewLine + InputXml + Environment.NewLine); }
 
-            if (string.Equals(type, "WmiQuery", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(type, "Wmi", StringComparison.OrdinalIgnoreCase))
             {
 
                 Dictionary<string, XElement> propertyTemplates = new Dictionary<string, XElement>();

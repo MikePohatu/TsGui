@@ -138,7 +138,7 @@ namespace TsGui
                 }         
             }
 
-            optionsXml = InputXml.Elements("MultiOption");
+            optionsXml = InputXml.Elements("Query");
             if (optionsXml != null)
             {
                 foreach (XElement xmo in optionsXml)
