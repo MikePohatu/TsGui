@@ -68,20 +68,25 @@ namespace TsGui
             //if the input is empty, return 
             if (string.IsNullOrEmpty(s)) { return s; }
 
-            if (!string.IsNullOrEmpty(this.Calculation))
+            try
             {
-                double result;
-                s = Calculation.Replace("VALUE", this.Input);
-                result = Calculator.CalculateString(s);
+                if (!string.IsNullOrEmpty(this.Calculation))
+                {
+                    double result;
+                    s = Calculation.Replace("VALUE", this.Input);
+                    result = Calculator.CalculateString(s);
 
-                if (this.DecimalPlaces != -1)
-                { result = System.Math.Round(result, this.DecimalPlaces); }
+                    if (this.DecimalPlaces != -1)
+                    { result = System.Math.Round(result, this.DecimalPlaces); }
 
-                s = result.ToString();
+                    s = result.ToString();
+                }
+
+                s = this.Prefix + s + this.Append;
             }
+            catch { s = string.Empty; }
 
-            
-            return this.Prefix + s + this.Append;
+            return s;
         }
     }
 }
