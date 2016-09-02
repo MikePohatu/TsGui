@@ -19,7 +19,7 @@ using System.Xml.Linq;
 
 namespace TsGui
 {
-    public static class Checker
+    public static class ResultValidator
     {
         /// <summary>
         /// Check xml value against ignore strings. Return true if the value should be ignored

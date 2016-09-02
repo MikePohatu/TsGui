@@ -18,7 +18,7 @@ namespace TsGui.Tests
             x.Add(new XElement("Ignore", "MINIT"));
             x.Add(new XElement("Ignore", "MINWIN"));
 
-            bool result = Checker.ShouldIgnore(x, TestString);
+            bool result = ResultValidator.ShouldIgnore(x, TestString);
             // TODO: Add your test code here
             return result;
         }
@@ -43,7 +43,7 @@ namespace TsGui.Tests
             xignore.Add(new XAttribute("SearchType", SearchType));
             x.Add(xignore);
 
-            bool result = Checker.ShouldIgnore(x, TestString);
+            bool result = ResultValidator.ShouldIgnore(x, TestString);
             // TODO: Add your test code here
             return result;
         }
@@ -55,7 +55,7 @@ namespace TsGui.Tests
         [TestCase("Testing", 45, ExpectedResult = "Testing")]
         public string TruncateTest(string StringValue, int Length)
         {
-            return Checker.Truncate(StringValue, Length);
+            return ResultValidator.Truncate(StringValue, Length);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace TsGui.Tests
         [TestCase("MINIT_Test", "M", true, ExpectedResult = false)]
         public bool ValidCharactersTest(string StringValue, string InvalidChars, bool CaseSensitive)
         {
-            return Checker.ValidCharacters(StringValue, InvalidChars, CaseSensitive);
+            return ResultValidator.ValidCharacters(StringValue, InvalidChars, CaseSensitive);
             
         }
 
@@ -78,7 +78,7 @@ namespace TsGui.Tests
         [TestCase(null, 10, ExpectedResult = false)]
         public bool ValidMaxLengthTest(string StringValue, int MaxLength)
         {
-            return Checker.ValidMaxLength(StringValue, MaxLength);
+            return ResultValidator.ValidMaxLength(StringValue, MaxLength);
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace TsGui.Tests
         [TestCase(null, 10, ExpectedResult = false)]
         public bool ValidMinLengthTest(string StringValue, int MinLength)
         {
-            return Checker.ValidMinLength(StringValue, MinLength);
+            return ResultValidator.ValidMinLength(StringValue, MinLength);
         }
     }
 }

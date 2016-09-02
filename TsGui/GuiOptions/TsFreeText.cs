@@ -201,8 +201,8 @@ namespace TsGui
                 if (this.Value == null) { this.Value = string.Empty; }
 
                 //if required, remove invalid characters and truncate
-                if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.Value = Checker.RemoveInvalid(this.Value, this.DisallowedCharacters); }
-                if (this._maxlength > 0) { this.Value = Checker.Truncate(this.Value, this._maxlength); }
+                if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.Value = ResultValidator.RemoveInvalid(this.Value, this.DisallowedCharacters); }
+                if (this._maxlength > 0) { this.Value = ResultValidator.Truncate(this.Value, this._maxlength); }
             }
             #endregion
         }
@@ -234,13 +234,13 @@ namespace TsGui
             { valid = true; }
             else
             {
-                if (Checker.ValidCharacters(this._control.Text, this.DisallowedCharacters, this.CaseSensitive) != true)
+                if (ResultValidator.ValidCharacters(this._control.Text, this.DisallowedCharacters, this.CaseSensitive) != true)
                 {
                     s = "Invalid characters: " + this.DisallowedCharacters + Environment.NewLine;
                     valid = false;
                 }
 
-                if (Checker.ValidMinLength(this._control.Text, this.MinLength) == false)
+                if (ResultValidator.ValidMinLength(this._control.Text, this.MinLength) == false)
                 {
                     string charWord;
                     if (this.MinLength == 1) { charWord = " character"; }

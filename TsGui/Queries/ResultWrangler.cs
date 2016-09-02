@@ -27,11 +27,13 @@ namespace TsGui
         private int _currentResult;         //current result in the lists
 
         public string Separator { get; set; }
+
+
         public ResultWrangler()
         {
             this._lists = new Dictionary<int, List<ResultFormatter>>();
             this._keys = new Dictionary<int, ResultFormatter>();
-            this.Separator = " '";
+            this.Separator = " ,";
             this._currentResult = -1;
             this._currentResultIndex = 0;
         }
@@ -92,38 +94,6 @@ namespace TsGui
             return s;
         }
 
-        /// <summary>
-        /// Get the _results list in dictionary format. First item in the list is the key, remainder is 
-        /// concatenated with the specified separator
-        /// </summary>
-        /// <param name="Separator"></param>
-        /// <returns></returns>
-        public Dictionary<string,string> GetDictionary(string Separator)
-        {
-            //first check to make sure a new sublist has actually been created. if not reutrn null
-            if (_currentResult == -1) { return null; }
-
-            Dictionary<string, string> returndic = new Dictionary<string, string>();
-            ResultFormatter _tempRF;
-            List<ResultFormatter> _tempRFList;
-
-            for (int i = 0; i==this._currentResult; i++)
-            {
-                string concatlist = "";
-                string value = "";
-
-                if (this._keys.TryGetValue(i, out _tempRF))
-                { value = _tempRF.Value; }
-                
-                if (this._lists.TryGetValue(i, out _tempRFList))
-                { concatlist = this.ConcatenateResultValues(_tempRFList, Separator); }
-
-                
-                returndic.Add(value, concatlist);
-            }
-
-            return returndic;
-        }
 
         /// <summary>
         /// Get the _results list in dictionary format. First item in the list is the key, remainder is 
@@ -144,6 +114,8 @@ namespace TsGui
         { return this.GetKeyValueList(this.Separator); }
 
 
+        public string GetString()
+        { return this.GetString(this.Separator); }
 
         /// <summary>
         /// Get the _results list in a list of Key/Value pair format. First item in the list is the key, remainder is 
@@ -171,11 +143,74 @@ namespace TsGui
                 if (this._lists.TryGetValue(i, out _tempRFList))
                 { concatlist = this.ConcatenateResultValues(_tempRFList, Separator); }
 
-
                 returnkvlist.Add(new KeyValuePair<string,string>( value, concatlist));
             }
 
             return returnkvlist;
+        }
+
+        /// <summary>
+        /// Get the _results list in dictionary format. First item in the list is the key, remainder is 
+        /// concatenated with the specified separator
+        /// </summary>
+        /// <param name="Separator"></param>
+        /// <returns></returns>
+        public Dictionary<string, string> GetDictionary(string Separator)
+        {
+            //first check to make sure a new sublist has actually been created. if not reutrn null
+            if (_currentResult == -1) { return null; }
+
+            Dictionary<string, string> returndic = new Dictionary<string, string>();
+            ResultFormatter _tempRF;
+            List<ResultFormatter> _tempRFList;
+
+            for (int i = 0; i == this._currentResult; i++)
+            {
+                string concatlist = "";
+                string value = "";
+
+                if (this._keys.TryGetValue(i, out _tempRF))
+                { value = _tempRF.Value; }
+
+                if (this._lists.TryGetValue(i, out _tempRFList))
+                { concatlist = this.ConcatenateResultValues(_tempRFList, Separator); }
+
+                returndic.Add(value, concatlist);
+            }
+
+            return returndic;
+        }
+
+        /// <summary>
+        /// Get the _results list as a single string
+        /// </summary>
+        /// <param name="Separator"></param>
+        /// <returns></returns>
+        public string GetString(string Separator)
+        {
+            string s = null;
+
+            //first check to make sure a new sublist has actually been created. if not reutrn null
+            if (_currentResult == -1) { return null; }
+
+            ResultFormatter _tempRF;
+            List<ResultFormatter> _tempRFListMain = new List<ResultFormatter>();
+            List<ResultFormatter> _tempRFList;
+
+            for (int i = 0; i == this._currentResult; i++)
+            {
+
+                if (this._keys.TryGetValue(i, out _tempRF))
+                { _tempRFListMain.Add(_tempRF); }
+
+                if (this._lists.TryGetValue(i, out _tempRFList))
+                { _tempRFListMain.AddRange(_tempRFList); }
+
+                if (i == 0) { s = this.ConcatenateResultValues(_tempRFListMain, Separator); }
+                else { s = s + Separator + this.ConcatenateResultValues(_tempRFListMain, Separator); }
+            }
+
+            return s;
         }
     }
 }

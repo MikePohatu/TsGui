@@ -24,7 +24,7 @@ namespace TsGui
 {
     public class ResultFormatter
     {
-        public string PropertyName { get; set; }
+        public string Name { get; set; }
         public string Input { get; set; }
         public int DecimalPlaces { get; set; }
         public string Calculation { get; set; }
@@ -45,8 +45,7 @@ namespace TsGui
             XAttribute xattrib;
 
             xattrib = InputXml.Attribute("Name");
-            if (xattrib != null) { this.PropertyName = xattrib.Value; }
-
+            if (xattrib != null) { this.Name = xattrib.Value; }
 
             x = InputXml.Element("Calculate");
             if (x != null)
@@ -65,6 +64,9 @@ namespace TsGui
         private string Process()
         {
             string s = this.Input;
+
+            //if the input is empty, return 
+            if (string.IsNullOrEmpty(s)) { return s; }
 
             if (!string.IsNullOrEmpty(this.Calculation))
             {

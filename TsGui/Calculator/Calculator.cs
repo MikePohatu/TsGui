@@ -17,7 +17,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
-//using System.Diagnostics;
+using System.Diagnostics;
 
 namespace TsGui.Math
 {
@@ -132,6 +132,7 @@ namespace TsGui.Math
 
             //now capture the last operand
             Operand lastop = new Operand();
+
             lastop.Value = Double.Parse(strbuilderVal.ToString());
             lastop.Prev = currOperator;
             if (currOperator != null) { currOperator.B = lastop; }
