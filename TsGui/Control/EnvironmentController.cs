@@ -182,7 +182,7 @@ namespace TsGui
             XElement x;
             bool selectProperties = false;
 
-            Dictionary<string, XElement> propertyTemplates = new Dictionary<string, XElement>();
+            List<KeyValuePair<string, XElement>> propertyTemplates = new List<KeyValuePair<string, XElement>>();
             string wql = InputXml.Element("Wql")?.Value;
 
             x = InputXml.Element("Separator");
@@ -192,8 +192,6 @@ namespace TsGui
             //make sure there is some WQL to query
             if (string.IsNullOrEmpty(wql)) { throw new InvalidOperationException("Empty WQL query in XML: " + Environment.NewLine + InputXml); }
 
-            ManagementObjectCollection wmiObjects = SystemConnector.GetWmiManagementObjects(wql);
-
             //first import the properties from the XML to the templates dictionary
             foreach (XElement propx in InputXml.Elements("Property"))
             {
@@ -202,9 +200,8 @@ namespace TsGui
                 //make sure there is a name set
                 if (string.IsNullOrEmpty(name)) { throw new InvalidOperationException("Missing name attribute in XML: " + Environment.NewLine + propx); }
 
-                //add it to the templates dictionary or throw error if it already exists. 
-                if (propertyTemplates.ContainsKey(name)) { throw new InvalidOperationException("Property name " + name + " already exists in XML" + Environment.NewLine + propx); }
-                propertyTemplates.Add(name, propx);
+                //add it to the templates list
+                propertyTemplates.Add(new KeyValuePair<string,XElement>( name, propx));
             }
 
             //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
@@ -218,13 +215,11 @@ namespace TsGui
                 //if properties have been specified in the xml, query them directly in order
                 if (selectProperties == true)
                 {
-                    foreach (string propname in propertyTemplates.Keys)
+                    foreach (KeyValuePair<string, XElement> template in propertyTemplates)
                     {
-                        XElement template;
-                        input = m.GetPropertyValue(propname).ToString();
+                        input = m.GetPropertyValue(template.Key).ToString();
 
-                        propertyTemplates.TryGetValue(propname, out template);
-                        rf = new ResultFormatter(template);
+                        rf = new ResultFormatter(template.Value);
                         rf.Input = input;
                         wrangler.AddResultFormatter(rf);
                     }
@@ -241,9 +236,7 @@ namespace TsGui
                             wrangler.AddResultFormatter(rf);
                         }
                     }
-                }
-
-                
+                } 
             }
 
             return wrangler;
