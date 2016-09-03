@@ -31,7 +31,8 @@ namespace TsGui
         private bool _istoggle = false;
 
         //dictionary in format text description,value
-        private Dictionary<string, string> _options = new Dictionary<string,string>();
+        //private Dictionary<string, string> _options = new Dictionary<string,string>();
+        private List<KeyValuePair<string, string>> _options = new List<KeyValuePair<string, string>>();
 
         public TsDropDownList(XElement SourceXml, MainController RootController) : base()
         {
@@ -90,76 +91,69 @@ namespace TsGui
         public void LoadXml(XElement InputXml)
         {
             #region
-            XElement x;
             //load the xml for the base class stuff
             this.LoadBaseXml(InputXml);
 
-            IEnumerable<XElement> optionsXml;
+            IEnumerable<XElement> inputElements = InputXml.Elements();
 
-            x = InputXml.Element("DefaultValue");
-            if (x != null)
+            foreach (XElement x in inputElements)
             {
-                IEnumerable<XElement> defx = x.Elements();
-                int defxCount = 0;
-                foreach (XElement xdefoption in defx)
+                if (x.Name == "DefaultValue")
                 {
-                    defxCount++;
-                    if (xdefoption.Name == "Value")
+                    IEnumerable<XElement> defx = x.Elements();
+                    int defxCount = 0;
+                    foreach (XElement xdefoption in defx)
                     {
-                        //Debug.WriteLine("LoadXml default: " + xdefoption.Value);
-                        this._value = xdefoption.Value;
-                        break;
+                        defxCount++;
+                        if (xdefoption.Name == "Value")
+                        {
+                            //Debug.WriteLine("LoadXml default: " + xdefoption.Value);
+                            this._value = xdefoption.Value;
+                            break;
+                        }
+                        else if (xdefoption.Name == "Query")
+                        {
+                            //code to be added
+                        }
                     }
-                    else if (xdefoption.Name == "Query")
-                    {
-                        //code to be added
-                    }
+
+                    if (defxCount == 0) { this._value = x.Value.Trim(); }
                 }
-                
-                if (defxCount == 0) { this._value = x.Value.Trim(); }
-            }
 
-            //now read in the options and add to a dictionary for later use
-            optionsXml = InputXml.Elements("Option");        
-            if (optionsXml != null)
-            {  
-                foreach (XElement xOption in optionsXml)
+                //now read in an option and add to a dictionary for later use
+                if (x.Name == "Option")
                 {
-                    string optval = xOption.Element("Value").Value;
-                    this._options.Add(xOption.Element("Text").Value, optval);
+                    string optval = x.Element("Value").Value;
+                    string opttext = x.Element("Text").Value;
+                    this._options.Add(new KeyValuePair<string, string>(opttext, optval));
 
-                    x = xOption.Element("Toggle");
-                    if (x != null)
+                    XElement togglex = x.Element("Toggle");
+                    if (togglex != null)
                     {
-                        x.Add(new XElement("Enabled", optval));
-                        Toggle t = new Toggle(this, this._controller, x);
+                        togglex.Add(new XElement("Enabled", optval));
+                        Toggle t = new Toggle(this, this._controller, togglex);
                         this._istoggle = true;
                     }
-                }         
-            }
+                }
 
-            optionsXml = InputXml.Elements("Query");
-            if (optionsXml != null)
-            {
-                foreach (XElement xmo in optionsXml)
+                if (x.Name == "Query")
                 {
-                    //Dictionary<string, string> d = this._controller.GetDictionaryFromList(xmo);
-                    List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(xmo);
+                    List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        this._options.Add(kv.Value,kv.Key);
+                        this._options.Add(new KeyValuePair<string, string>(kv.Value,kv.Key));
                     }
                 }
+
+                if (x.Name == "Toggle")                  
+                {
+                    Toggle t = new Toggle(this, this._controller, x);
+                    this._istoggle = true;
+                }
+
+                if (this._istoggle == true) { this._controller.AddToggleControl(this); }
             }
 
-            x = InputXml.Element("Toggle");
-            if (x != null)
-            {
-                Toggle t = new Toggle(this, this._controller, x);
-                this._istoggle = true;
-            }
-
-            if (this._istoggle == true) { this._controller.AddToggleControl(this); }
             //finished reading xml now build the control
             this.Build();
             #endregion
