@@ -32,6 +32,11 @@ namespace TsGui
         public string Prefix { get; set; }
         public string Value { get { return this.Process(); } }
 
+        public ResultFormatter()
+        {
+            this.DecimalPlaces = -1;
+        }
+
         public ResultFormatter(XElement InputXml)
         {
             this.DecimalPlaces = -1;
@@ -49,10 +54,12 @@ namespace TsGui
 
             x = InputXml.Element("Calculate");
             if (x != null)
-            { this.Calculation = x.Value; }
+            {
+                this.Calculation = x.Value;
 
-            x = InputXml.Element("DecimalPlaces");
-            if (x != null) { this.DecimalPlaces = Convert.ToInt32(x.Value); }
+                xattrib = x.Attribute("DecimalPlaces");
+                if (xattrib != null) { this.DecimalPlaces = Convert.ToInt32(xattrib.Value); }
+            }
 
             x = InputXml.Element("Append");
             if (x != null) { this.Append = x.Value; }
@@ -68,6 +75,7 @@ namespace TsGui
             //if the input is empty, return 
             if (string.IsNullOrEmpty(s)) { return s; }
 
+            //try any calculations
             try
             {
                 if (!string.IsNullOrEmpty(this.Calculation))
@@ -81,10 +89,12 @@ namespace TsGui
 
                     s = result.ToString();
                 }
-
-                s = this.Prefix + s + this.Append;
             }
-            catch { s = string.Empty; }
+            // if there is an error in the calculation e.g. if a non-numeric string is the input, set
+            // s to the input value
+            catch { s = this.Input; }
+
+            s = this.Prefix + s + this.Append;
 
             return s;
         }

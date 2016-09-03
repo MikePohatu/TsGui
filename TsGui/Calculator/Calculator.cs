@@ -17,7 +17,6 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace TsGui.Math
 {
@@ -27,7 +26,6 @@ namespace TsGui.Math
 
         public static double CalculateString(string Input)
         {
-            //Debug.WriteLine("Calculate string: " + Input);
             if (string.IsNullOrEmpty(Input)) { return 0; }
 
             StringBuilder strbuilderVal = new StringBuilder();
@@ -39,8 +37,6 @@ namespace TsGui.Math
             Operator currOperator = null;
             string s;
             bool subequation = false;
-            //string substring = "";
-            //string valstring = "";
             int openParenCount = 0;
 
             for (int i = 0; i < Input.Length; i++)

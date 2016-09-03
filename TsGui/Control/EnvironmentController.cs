@@ -150,16 +150,28 @@ namespace TsGui
             ResultWrangler wrangler = new ResultWrangler();
             ResultFormatter rf;
             XElement x;
+            XAttribute xattrib;
 
             wrangler.NewSubList();
 
             x = InputXml.Element("Variable");
             if (x!= null )
             {
-                rf = new ResultFormatter(x);
+                //check for new xml syntax. If the name attribute doesn't exist, setup for the 
+                //legacy layout.
+                xattrib = x.Attribute("Name");
+                if (xattrib == null)
+                {
+                    rf = new ResultFormatter();
+                    rf.Name = x.Value;
+                }
+                else
+                {
+                    rf = new ResultFormatter(x);                                     
+                }
+
                 rf.Input = this.GetEnvVar(rf.Name.Trim());
                 wrangler.AddResultFormatter(rf);
-
                 //Debug.WriteLine("rf.Input: " + rf.Input);
                 //Debug.WriteLine("env: " + wrangler.GetString());
             }
