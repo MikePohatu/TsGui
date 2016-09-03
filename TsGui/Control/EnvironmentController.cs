@@ -38,7 +38,7 @@ namespace TsGui
             try
             {
                 this._sccmconnector = new SccmConnector();
-                this._sccmconnector.Hide();
+                this._sccmconnector.Hide(); //hide the tsprogessui window
                 return true;
             }
             catch
@@ -106,7 +106,11 @@ namespace TsGui
             return this.ProcessQuery(InputXml).GetDictionary();
         }
 
-
+        /// <summary>
+        /// Input a list of options as xml. Return a List<KeyValuePair<string,<string>> of results 
+        /// </summary>
+        /// <param name="InputXml"></param>
+        /// <returns></returns>
         public List<KeyValuePair<string,string>> GetKeyValueListFromList(XElement InputXml)
         {
             return this.ProcessQuery(InputXml).GetKeyValueList();
@@ -137,7 +141,11 @@ namespace TsGui
             return wrangler;
         }
 
-
+        /// <summary>
+        /// Process a <Query Type="EnvironmentVariable"> block and return the ResultWrangler
+        /// </summary>
+        /// <param name="InputXml"></param>
+        /// <returns></returns>
         private ResultWrangler ProcessEnvironmentVariableQuery(XElement InputXml)
         {
             ResultWrangler wrangler = new ResultWrangler();
