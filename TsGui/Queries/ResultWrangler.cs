@@ -33,7 +33,7 @@ namespace TsGui
         {
             this._lists = new Dictionary<int, List<ResultFormatter>>();
             this._keys = new Dictionary<int, ResultFormatter>();
-            this.Separator = " ,";
+            this.Separator = ", ";
             this._currentResult = -1;
             this._currentResultIndex = 0;
         }

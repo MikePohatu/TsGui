@@ -20,7 +20,6 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Management;
 using System;
-using System.Diagnostics;
 
 namespace TsGui
 {
@@ -56,15 +55,16 @@ namespace TsGui
             else { this._testconnector.AddVariable(Variable); }
         }
 
-
-        //input a list of options as xml. Return the value of the first one that exists. 
-        //return null if nothing is found. 
+        /// <summary>
+        /// Input a list of options as xml. Return the value of the first one that exists. 
+        /// Return null if nothing is found. 
+        /// </summary>
+        /// <param name="InputXml"></param>
+        /// <returns></returns>
         public string GetValueFromList(XElement InputXml)
         {
             string s = null;
             XAttribute xtype;
-
-            //Debug.WriteLine(InputXml);
 
             foreach (XElement x in InputXml.Elements())
             {
@@ -74,21 +74,10 @@ namespace TsGui
                     xtype = x.Attribute("Type");
                     if (xtype == null) { throw new NullReferenceException("Missing Type attribute XML: " + Environment.NewLine + x); }
 
-                    //if (string.Equals(xtype.Value, "EnvironmentVariable", StringComparison.OrdinalIgnoreCase))
-                    //{
-                    //    s = this.ProcessQuery(x).GetString();
-                    //    Debug.WriteLine("EnvironmentVariableQuery: " + x);
-                    //}
-                    //else if (string.Equals(xtype.Value, "Wmi", StringComparison.OrdinalIgnoreCase))
-                    //{
-                    //    s = this.ProcessWmiQuery(x).GetString();                     
-                    //}
-
                     s = this.ProcessQuery(x).GetString();
 
-                    Debug.WriteLine("s: " + s);
                     //now check any return value is valid before returning from method. 
-                    if (!string.IsNullOrEmpty(s))
+                    if (!string.IsNullOrEmpty(s.Trim()))
                     {
                         //if it shouldn't be ignored, return the value. Otherwise, carry on
                         if (ResultValidator.ShouldIgnore(x, s) == false) { return s; }
@@ -107,7 +96,11 @@ namespace TsGui
         }
 
 
-        //input a list of options as xml. Return a dictionary of results 
+        /// <summary>
+        /// Input a list of options as xml. Return a dictionary of results 
+        /// </summary>
+        /// <param name="InputXml"></param>
+        /// <returns></returns>
         public Dictionary<string, string> GetDictionaryFromList(XElement InputXml)
         {
             return this.ProcessQuery(InputXml).GetDictionary();
@@ -172,17 +165,22 @@ namespace TsGui
 
                 rf.Input = this.GetEnvVar(rf.Name.Trim());
                 wrangler.AddResultFormatter(rf);
-                //Debug.WriteLine("rf.Input: " + rf.Input);
-                //Debug.WriteLine("env: " + wrangler.GetString());
             }
 
             return wrangler;
         }
 
+
+        /// <summary>
+        /// Process a <Query Type="Wmi"> block and return the ResultWrangler
+        /// </summary>
+        /// <param name="InputXml"></param>
+        /// <returns></returns>
         private ResultWrangler ProcessWmiQuery(XElement InputXml)
         {
             ResultWrangler wrangler = new ResultWrangler();
             XElement x;
+            bool selectProperties = false;
 
             Dictionary<string, XElement> propertyTemplates = new Dictionary<string, XElement>();
             string wql = InputXml.Element("Wql")?.Value;
@@ -199,6 +197,7 @@ namespace TsGui
             //first import the properties from the XML to the templates dictionary
             foreach (XElement propx in InputXml.Elements("Property"))
             {
+                selectProperties = true;
                 string name = propx.Attribute("Name")?.Value;
                 //make sure there is a name set
                 if (string.IsNullOrEmpty(name)) { throw new InvalidOperationException("Missing name attribute in XML: " + Environment.NewLine + propx); }
@@ -213,20 +212,38 @@ namespace TsGui
             foreach (ManagementObject m in SystemConnector.GetWmiManagementObjects(wql))
             {
                 wrangler.NewSubList();
+                ResultFormatter rf = null;
+                string input = null;
 
-                foreach (string propname in propertyTemplates.Keys)
+                //if properties have been specified in the xml, query them directly in order
+                if (selectProperties == true)
                 {
-                    XElement template;
-                    ResultFormatter rf;
-                    string input = m.GetPropertyValue(propname).ToString();
-
-                    if (propertyTemplates.TryGetValue(propname, out template))
+                    foreach (string propname in propertyTemplates.Keys)
                     {
+                        XElement template;
+                        input = m.GetPropertyValue(propname).ToString();
+
+                        propertyTemplates.TryGetValue(propname, out template);
                         rf = new ResultFormatter(template);
                         rf.Input = input;
                         wrangler.AddResultFormatter(rf);
                     }
                 }
+                //if properties not set, add them all 
+                else
+                {
+                    foreach (PropertyData property in m.Properties)
+                    {
+                        if (property.Value != null)
+                        {
+                            rf = new ResultFormatter();
+                            rf.Input = property.Value.ToString();
+                            wrangler.AddResultFormatter(rf);
+                        }
+                    }
+                }
+
+                
             }
 
             return wrangler;
