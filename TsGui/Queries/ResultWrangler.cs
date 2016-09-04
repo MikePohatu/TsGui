@@ -21,21 +21,25 @@ namespace TsGui
 {
     public class ResultWrangler
     {
-        private Dictionary<int,List<ResultFormatter>> _lists;
-        private Dictionary<int, ResultFormatter> _keys;
-        private int _currentResultIndex;    //current index in the current list
-        private int _currentResult;         //current result in the lists
+        //two dictionaries, one for the keys i.e. the first value, and another for the values as a list. 
+        //the two have matching keys to link the keys dictionary to the lists dictionary. 
+        private Dictionary<int,List<ResultFormatter>> _valuelists;
+        private Dictionary<int, ResultFormatter> _keyvalues;
+
+        //the following two variables track the lists and position in the lists.
+        private int _currentIndex;    //current index in the current list
+        private int _currentValue;         //current result in the lists
 
         public string Separator { get; set; }
 
 
         public ResultWrangler()
         {
-            this._lists = new Dictionary<int, List<ResultFormatter>>();
-            this._keys = new Dictionary<int, ResultFormatter>();
+            this._valuelists = new Dictionary<int, List<ResultFormatter>>();
+            this._keyvalues = new Dictionary<int, ResultFormatter>();
             this.Separator = ", ";
-            this._currentResult = -1;
-            this._currentResultIndex = 0;
+            this._currentValue = -1;
+            this._currentIndex = 0;
         }
 
 
@@ -44,11 +48,11 @@ namespace TsGui
         /// </summary>
         public void NewSubList()
         {
-            this._currentResult++;
-            this._currentResultIndex = 0;     //reset the current index
+            this._currentValue++;
+            this._currentIndex = 0;     //reset the current index
 
             List<ResultFormatter> newlist = new List<ResultFormatter>();
-            this._lists.Add(this._currentResult, newlist);
+            this._valuelists.Add(this._currentValue, newlist);
         }
 
         /// <summary>
@@ -57,15 +61,15 @@ namespace TsGui
         /// <param name="Formatter"></param>
         public void AddResultFormatter(ResultFormatter Formatter)
         {
-            if (this._currentResultIndex == 0) { this._keys.Add(this._currentResult, Formatter); }
+            if (this._currentIndex == 0) { this._keyvalues.Add(this._currentValue, Formatter); }
             else
             {
                 List<ResultFormatter> currentlist;
-                this._lists.TryGetValue(this._currentResult, out currentlist);
+                this._valuelists.TryGetValue(this._currentValue, out currentlist);
                 currentlist.Add(Formatter);
             }
 
-            this._currentResultIndex++;
+            this._currentIndex++;
         }
 
         /// <summary>
@@ -126,21 +130,21 @@ namespace TsGui
         public List<KeyValuePair<string, string>> GetKeyValueList(string Separator)
         {
             //first check to make sure a new sublist has actually been created. if not reutrn null
-            if (_currentResult == -1) { return null; }
+            if (_currentValue == -1) { return null; }
 
             List<KeyValuePair<string, string>> returnkvlist = new List<KeyValuePair<string, string>>();
             ResultFormatter _tempRF;
             List<ResultFormatter> _tempRFList;
 
-            for (int i = 0; i <= this._currentResult; i++)
+            for (int i = 0; i <= this._currentValue; i++)
             {
                 string concatlist = "";
                 string value = "";
 
-                if (this._keys.TryGetValue(i, out _tempRF))
+                if (this._keyvalues.TryGetValue(i, out _tempRF))
                 { value = _tempRF.Value; }
 
-                if (this._lists.TryGetValue(i, out _tempRFList))
+                if (this._valuelists.TryGetValue(i, out _tempRFList))
                 { concatlist = this.ConcatenateResultValues(_tempRFList, Separator); }
 
                 returnkvlist.Add(new KeyValuePair<string,string>( value, concatlist));
@@ -158,21 +162,21 @@ namespace TsGui
         public Dictionary<string, string> GetDictionary(string Separator)
         {
             //first check to make sure a new sublist has actually been created. if not reutrn null
-            if (_currentResult == -1) { return null; }
+            if (_currentValue == -1) { return null; }
 
             Dictionary<string, string> returndic = new Dictionary<string, string>();
             ResultFormatter _tempRF;
             List<ResultFormatter> _tempRFList;
 
-            for (int i = 0; i == this._currentResult; i++)
+            for (int i = 0; i == this._currentValue; i++)
             {
                 string concatlist = "";
                 string value = "";
 
-                if (this._keys.TryGetValue(i, out _tempRF))
+                if (this._keyvalues.TryGetValue(i, out _tempRF))
                 { value = _tempRF.Value; }
 
-                if (this._lists.TryGetValue(i, out _tempRFList))
+                if (this._valuelists.TryGetValue(i, out _tempRFList))
                 { concatlist = this.ConcatenateResultValues(_tempRFList, Separator); }
 
                 returndic.Add(value, concatlist);
@@ -191,19 +195,19 @@ namespace TsGui
             string s = null;
 
             //first check to make sure a new sublist has actually been created. if not reutrn null
-            if (_currentResult == -1) { return null; }
+            if (_currentValue == -1) { return null; }
 
             ResultFormatter _tempRF;
             List<ResultFormatter> _tempRFListMain = new List<ResultFormatter>();
             List<ResultFormatter> _tempRFList;
 
-            for (int i = 0; i == this._currentResult; i++)
+            for (int i = 0; i == this._currentValue; i++)
             {
 
-                if (this._keys.TryGetValue(i, out _tempRF))
+                if (this._keyvalues.TryGetValue(i, out _tempRF))
                 { _tempRFListMain.Add(_tempRF); }
 
-                if (this._lists.TryGetValue(i, out _tempRFList))
+                if (this._valuelists.TryGetValue(i, out _tempRFList))
                 { _tempRFListMain.AddRange(_tempRFList); }
 
                 if (i == 0) { s = this.ConcatenateResultValues(_tempRFListMain, Separator); }

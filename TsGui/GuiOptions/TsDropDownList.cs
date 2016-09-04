@@ -31,7 +31,6 @@ namespace TsGui
         private bool _istoggle = false;
 
         //dictionary in format text description,value
-        //private Dictionary<string, string> _options = new Dictionary<string,string>();
         private List<KeyValuePair<string, string>> _options = new List<KeyValuePair<string, string>>();
 
         public TsDropDownList(XElement SourceXml, MainController RootController) : base()
@@ -55,8 +54,8 @@ namespace TsGui
             this._visiblemargin = new Thickness(2, 2, 2, 2);
             this.Margin = this._visiblemargin;
 
-            this._control.DisplayMemberPath = "Key";
-            this._control.SelectedValuePath = "Value";
+            this._control.DisplayMemberPath = "Value";
+            this._control.SelectedValuePath = "Key";
 
             this.Height = 20;
 
@@ -125,7 +124,7 @@ namespace TsGui
                 {
                     string optval = x.Element("Value").Value;
                     string opttext = x.Element("Text").Value;
-                    this._options.Add(new KeyValuePair<string, string>(opttext, optval));
+                    this._options.Add(new KeyValuePair<string, string>(optval, opttext));
 
                     XElement togglex = x.Element("Toggle");
                     if (togglex != null)
@@ -141,7 +140,7 @@ namespace TsGui
                     List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        this._options.Add(new KeyValuePair<string, string>(kv.Value,kv.Key));
+                        this._options.Add(kv);
                     }
                 }
 
@@ -162,7 +161,7 @@ namespace TsGui
         private void UpdateSelected()
         {
             KeyValuePair<string, string> selected = (KeyValuePair<string, string>)this._control.SelectedItem;
-            this._value = selected.Value;
+            this._value = selected.Key;
         }
 
         //build the actual display control
@@ -176,16 +175,14 @@ namespace TsGui
             {
                 //Debug.WriteLine(entry.Value);
                 this._control.Items.Add(entry);
-
+                
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list
-                if ((entry.Value == this._value) || (index == 0))
-                {
-                    this._control.SelectedItem = entry;
-                }
+                if ((entry.Key == this._value) || (index == 0))
+                { this._control.SelectedItem = entry; }
 
                 //figure out if this is the longest item in the dropdownlist. 
-                if (entry.Key.Length > longeststring.Length) { longeststring = entry.Key; }
+                if (entry.Value.Length > longeststring.Length) { longeststring = entry.Value; }
                 index++;
             }
         }
