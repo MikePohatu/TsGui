@@ -206,7 +206,7 @@ namespace TsGui
                 selectProperties = true;
                 string name = propx.Attribute("Name")?.Value;
                 //make sure there is a name set
-                if (string.IsNullOrEmpty(name)) { throw new InvalidOperationException("Missing name attribute in XML: " + Environment.NewLine + propx); }
+                if (string.IsNullOrEmpty(name)) { throw new InvalidOperationException("Missing Name attribute in XML: " + Environment.NewLine + propx); }
 
                 //add it to the templates list
                 propertyTemplates.Add(new KeyValuePair<string,XElement>( name, propx));

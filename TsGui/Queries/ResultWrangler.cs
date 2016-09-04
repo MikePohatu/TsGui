@@ -132,7 +132,7 @@ namespace TsGui
             ResultFormatter _tempRF;
             List<ResultFormatter> _tempRFList;
 
-            for (int i = 0; i == this._currentResult; i++)
+            for (int i = 0; i <= this._currentResult; i++)
             {
                 string concatlist = "";
                 string value = "";
