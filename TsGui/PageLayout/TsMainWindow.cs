@@ -124,6 +124,7 @@ namespace TsGui
             this._width = Double.NaN;
             this._height = Double.NaN;
             this._headingHeight = 50;
+            this.HeadingTitle = "TsGui";
             this.HeadingFontColor = new SolidColorBrush(Colors.White);
             this.HeadingBgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF006AD4"));
             this.FooterText = "Powered by TsGui - www.20road.com";
@@ -156,7 +157,7 @@ namespace TsGui
                 if (headingX != null)
                 {
                     x = headingX.Element("Title");
-                    if (x != null) { this._headingTitle = x.Value; }
+                    if (x != null) { this.HeadingTitle = x.Value; }
 
                     x = headingX.Element("Text");
                     if (x != null) { this._headingText = x.Value; }
