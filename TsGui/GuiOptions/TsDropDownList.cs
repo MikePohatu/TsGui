@@ -42,6 +42,7 @@ namespace TsGui
             base._control = this._control;
 
             this._control.DataContext = this;
+            
             this._control.SetBinding(ComboBox.IsEnabledProperty, new Binding("IsEnabled"));
             this._control.SetBinding(ComboBox.PaddingProperty, new Binding("Padding"));
             this._control.SetBinding(ComboBox.MarginProperty, new Binding("Margin"));
@@ -60,6 +61,9 @@ namespace TsGui
             this.Height = 20;
 
             this.LoadXml(SourceXml);
+            this._control.ItemsSource = this._options;
+            this.SetDefault();
+
             this._control.SelectionChanged += this.OnChanged;
         }
 
@@ -152,9 +156,6 @@ namespace TsGui
 
                 if (this._istoggle == true) { this._controller.AddToggleControl(this); }
             }
-
-            //finished reading xml now build the control
-            this.Build();
             #endregion
         }
 
@@ -165,24 +166,17 @@ namespace TsGui
         }
 
         //build the actual display control
-        private void Build()
+        private void SetDefault()
         {
-            //Debug.WriteLine("TsDropDownList build started");
             int index = 0;
-            string longeststring = "";
 
             foreach (KeyValuePair<string, string> entry in this._options)
             {
-                //Debug.WriteLine(entry.Value);
-                this._control.Items.Add(entry);
-                
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list
                 if ((entry.Key == this._value) || (index == 0))
                 { this._control.SelectedItem = entry; }
 
-                //figure out if this is the longest item in the dropdownlist. 
-                if (entry.Value.Length > longeststring.Length) { longeststring = entry.Value; }
                 index++;
             }
         }
@@ -198,6 +192,13 @@ namespace TsGui
         private void OnChanged(object o, RoutedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
+        }
+
+        private void OnIsEnabledChanged(object o, DependencyPropertyChangedEventArgs e)
+        {
+            //this.ToggleEvent?.Invoke();
+            //if (this._control.IsEnabled ==true
+            ((ComboBoxItem)this._control.SelectedItem).IsEnabled = this._control.IsEnabled;
         }
     }
 }
