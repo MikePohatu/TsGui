@@ -31,7 +31,8 @@ namespace TsGui
         private bool _istoggle = false;
 
         //dictionary in format text description,value
-        private List<KeyValuePair<string, string>> _options = new List<KeyValuePair<string, string>>();
+        //private List<KeyValuePair<string, string>> _options = new List<KeyValuePair<string, string>>();
+        private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
 
         public TsDropDownList(XElement SourceXml, MainController RootController) : base()
         {
@@ -55,13 +56,13 @@ namespace TsGui
             this._visiblemargin = new Thickness(2, 2, 2, 2);
             this.Margin = this._visiblemargin;
 
-            this._control.DisplayMemberPath = "Value";
-            this._control.SelectedValuePath = "Key";
+            this._control.ItemsSource = this._options;
+            //this._control.DisplayMemberPath = "Value";
+            //this._control.SelectedValuePath = "Key";
 
             this.Height = 20;
 
-            this.LoadXml(SourceXml);
-            this._control.ItemsSource = this._options;
+            this.LoadXml(SourceXml);       
             this.SetDefault();
 
             this._control.SelectionChanged += this.OnChanged;
@@ -128,7 +129,8 @@ namespace TsGui
                 {
                     string optval = x.Element("Value").Value;
                     string opttext = x.Element("Text").Value;
-                    this._options.Add(new KeyValuePair<string, string>(optval, opttext));
+                    //this._options.Add(new KeyValuePair<string, string>(optval, opttext));
+                    this._options.Add(new TsDropDownListItem(optval, opttext));
 
                     XElement togglex = x.Element("Toggle");
                     if (togglex != null)
@@ -144,7 +146,7 @@ namespace TsGui
                     List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        this._options.Add(kv);
+                        this._options.Add(new TsDropDownListItem(kv.Key,kv.Value));
                     }
                 }
 
@@ -161,8 +163,9 @@ namespace TsGui
 
         private void UpdateSelected()
         {
-            KeyValuePair<string, string> selected = (KeyValuePair<string, string>)this._control.SelectedItem;
-            this._value = selected.Key;
+            //KeyValuePair<string, string> selected = (KeyValuePair<string, string>)this._control.SelectedItem;
+            TsDropDownListItem selected = (TsDropDownListItem)this._control.SelectedItem;
+            this._value = selected.Value;
         }
 
         //build the actual display control
@@ -170,11 +173,11 @@ namespace TsGui
         {
             int index = 0;
 
-            foreach (KeyValuePair<string, string> entry in this._options)
+            foreach (TsDropDownListItem entry in this._options)
             {
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list
-                if ((entry.Key == this._value) || (index == 0))
+                if ((entry.Value == this._value) || (index == 0))
                 { this._control.SelectedItem = entry; }
 
                 index++;

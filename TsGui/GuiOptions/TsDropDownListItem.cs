@@ -6,22 +6,20 @@ namespace TsGui
 {
     public class TsDropDownListItem: ComboBoxItem
     {
-        public string Key { get; set; }
         public string Value { get; set; }
+        public string Text { get; set; }
 
-        public TsDropDownListItem(string Key, string Value)
+        public TsDropDownListItem(string Value, string Text)
         {
             Label control = new Label();
-            this.Key = Key;
             this.Value = Value;
+            this.Text = Text;
+            this.Content = control;
             
-            control.Content = this.Value;
+            control.Content = this.Text;
             control.Padding = new Thickness(0);
             control.Margin = new Thickness(0);
-            //control.SetBinding(Label.ContentProperty, new Binding("Value"));
             control.SetBinding(IsEnabledProperty, new Binding("IsEnabled"));
-            //control.DataContext = this;
-            this.Content = control;
         }
     }
 }
