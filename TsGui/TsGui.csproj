@@ -74,6 +74,7 @@
     <Compile Include="Calculator\CalculatorEnums.cs" />
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
+    <Compile Include="GuiOptions\TsDropDownListItem.cs" />
     <Compile Include="Queries\ResultValidator.cs" />
     <Compile Include="Control\EnvironmentController.cs" />
     <Compile Include="Calculator\Calculator.cs" />
