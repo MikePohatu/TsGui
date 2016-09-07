@@ -29,10 +29,23 @@ namespace TsGui
 
         new private ComboBox _control;
         private bool _istoggle = false;
+        //private Style _comboitemstyle;
 
         //dictionary in format text description,value
         //private List<KeyValuePair<string, string>> _options = new List<KeyValuePair<string, string>>();
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
+
+        new public bool IsEnabled
+        {
+            get { return this._isenabled; }
+            set
+            {
+                this._isenabled = value;
+                this._control.IsDropDownOpen = true;
+                this._control.IsDropDownOpen = false;
+                OnPropertyChanged(this, "IsEnabled");
+            }
+        }
 
         public TsDropDownList(XElement SourceXml, MainController RootController) : base()
         {
@@ -57,14 +70,15 @@ namespace TsGui
             this.Margin = this._visiblemargin;
 
             this._control.ItemsSource = this._options;
-            //this._control.DisplayMemberPath = "Value";
-            //this._control.SelectedValuePath = "Key";
+            //this._control.DisplayMemberPath = "Text";
+            //this._control.SelectedValuePath = "Value";
 
             this.Height = 20;
 
-            this.LoadXml(SourceXml);       
+            this.LoadXml(SourceXml);
             this.SetDefault();
-
+            
+            
             this._control.SelectionChanged += this.OnChanged;
         }
 
@@ -83,6 +97,7 @@ namespace TsGui
                 }
             }
         }
+
         public string CurrentValue
         {
             get
@@ -146,7 +161,9 @@ namespace TsGui
                     List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        this._options.Add(new TsDropDownListItem(kv.Key,kv.Value));
+                        //this._options.Add(kv);
+                        TsDropDownListItem item = new TsDropDownListItem(kv.Key, kv.Value);
+                        this._options.Add(item);
                     }
                 }
 
@@ -174,6 +191,8 @@ namespace TsGui
             int index = 0;
 
             foreach (TsDropDownListItem entry in this._options)
+            //foreach (TsDropDownListItem entry in this._control.Items)
+            //foreach (KeyValuePair<string,string> entry in this._options)
             {
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list
@@ -195,13 +214,6 @@ namespace TsGui
         private void OnChanged(object o, RoutedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
-        }
-
-        private void OnIsEnabledChanged(object o, DependencyPropertyChangedEventArgs e)
-        {
-            //this.ToggleEvent?.Invoke();
-            //if (this._control.IsEnabled ==true
-            ((ComboBoxItem)this._control.SelectedItem).IsEnabled = this._control.IsEnabled;
         }
     }
 }
