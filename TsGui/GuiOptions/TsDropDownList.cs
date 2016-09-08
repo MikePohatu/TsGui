@@ -54,10 +54,10 @@ namespace TsGui
             this.Margin = this._visiblemargin;
             this.Height = 20;
 
-            this._control.ItemsSource = this._options;
-
             this.LoadXml(SourceXml);
             this.SetDefault();
+
+            this._control.ItemsSource = this._options;
 
             this._controller.MainWindowLoaded += this.OnMainWindowLoaded;
             this._control.SelectionChanged += this.OnChanged;
