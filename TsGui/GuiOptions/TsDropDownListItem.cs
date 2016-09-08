@@ -39,6 +39,8 @@ namespace TsGui
             this.Control.Content = this.Text;
             this.Control.Padding = new Thickness(0);
             this.Control.Margin = new Thickness(0);
+            this.HorizontalContentAlignment = HorizontalAlignment.Left;
+            this.VerticalContentAlignment = VerticalAlignment.Bottom;
             this.Control.SetBinding(Label.IsEnabledProperty, new Binding("IsEnabled"));
         }
     }
