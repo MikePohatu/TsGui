@@ -29,27 +29,11 @@ namespace TsGui
 
         new private ComboBox _control;
         private bool _istoggle = false;
-        //private Style _comboitemstyle;
 
-        //dictionary in format text description,value
-        //private List<KeyValuePair<string, string>> _options = new List<KeyValuePair<string, string>>();
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
-
-        new public bool IsEnabled
-        {
-            get { return this._isenabled; }
-            set
-            {
-                this._isenabled = value;
-                this._control.IsDropDownOpen = true;
-                this._control.IsDropDownOpen = false;
-                OnPropertyChanged(this, "IsEnabled");
-            }
-        }
 
         public TsDropDownList(XElement SourceXml, MainController RootController) : base()
         {
-            //Debug.WriteLine("TsDropDownList constructor called");
             this._controller = RootController;
 
             this._control = new ComboBox();
@@ -68,17 +52,14 @@ namespace TsGui
 
             this._visiblemargin = new Thickness(2, 2, 2, 2);
             this.Margin = this._visiblemargin;
+            this.Height = 20;
 
             this._control.ItemsSource = this._options;
-            //this._control.DisplayMemberPath = "Text";
-            //this._control.SelectedValuePath = "Value";
-
-            this.Height = 20;
 
             this.LoadXml(SourceXml);
             this.SetDefault();
-            
-            
+
+            this._controller.MainWindowLoaded += this.OnMainWindowLoaded;
             this._control.SelectionChanged += this.OnChanged;
         }
 
@@ -126,7 +107,6 @@ namespace TsGui
                         defxCount++;
                         if (xdefoption.Name == "Value")
                         {
-                            //Debug.WriteLine("LoadXml default: " + xdefoption.Value);
                             this._value = xdefoption.Value;
                             break;
                         }
@@ -144,7 +124,6 @@ namespace TsGui
                 {
                     string optval = x.Element("Value").Value;
                     string opttext = x.Element("Text").Value;
-                    //this._options.Add(new KeyValuePair<string, string>(optval, opttext));
                     this._options.Add(new TsDropDownListItem(optval, opttext));
 
                     XElement togglex = x.Element("Toggle");
@@ -161,7 +140,6 @@ namespace TsGui
                     List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        //this._options.Add(kv);
                         TsDropDownListItem item = new TsDropDownListItem(kv.Key, kv.Value);
                         this._options.Add(item);
                     }
@@ -180,7 +158,6 @@ namespace TsGui
 
         private void UpdateSelected()
         {
-            //KeyValuePair<string, string> selected = (KeyValuePair<string, string>)this._control.SelectedItem;
             TsDropDownListItem selected = (TsDropDownListItem)this._control.SelectedItem;
             this._value = selected.Value;
         }
@@ -191,8 +168,6 @@ namespace TsGui
             int index = 0;
 
             foreach (TsDropDownListItem entry in this._options)
-            //foreach (TsDropDownListItem entry in this._control.Items)
-            //foreach (KeyValuePair<string,string> entry in this._options)
             {
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list
@@ -214,6 +189,14 @@ namespace TsGui
         private void OnChanged(object o, RoutedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
+        }
+
+        //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
+        //and closes the dropdown so it initialises proeprly
+        private void OnMainWindowLoaded()
+        {
+            this._control.IsDropDownOpen = true;
+            this._control.IsDropDownOpen = false;
         }
     }
 }

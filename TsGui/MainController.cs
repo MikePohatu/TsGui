@@ -13,9 +13,8 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-//'Root' class from which to spin everything off. TsGui creates this
-//class to do the actual work. 
+// 'Root' class from which to spin everything off. TsGui creates this
+// class to do the actual work. 
 
 using System;
 using System.Collections.Generic;
@@ -23,7 +22,6 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Windows;
 using System.ComponentModel;
-//using System.Diagnostics;
 
 namespace TsGui
 {
@@ -45,6 +43,8 @@ namespace TsGui
         //properties
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
+
+        public event WindowLoadedandler MainWindowLoaded;
 
         //constructors
         public MainController(MainWindow ParentWindow)
@@ -73,7 +73,6 @@ namespace TsGui
                 MessageBox.Show(msg, "Application Exception", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.ParentWindow.Closing -= this.OnWindowClosing;
                 this.ParentWindow.Close();
-                //this.CurrentPage.Window.Close();
             }
         }
 
@@ -85,7 +84,7 @@ namespace TsGui
 
             this._prodmode = this._envController.Init();
 
-            //if testingmode is true, the envcontroller couldn't connect to sccm
+            //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
             if (this._prodmode != true)
             {
@@ -98,6 +97,8 @@ namespace TsGui
             
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
+
+            this.ParentWindow.Loaded += this.OnWindowLoaded;
 
             this.LoadXml(x);
 
@@ -255,8 +256,13 @@ namespace TsGui
             this._groups.Add(ID, group);
             return group;
         }
-        
-        //add a groupable element to a group
+
+        /// <summary>
+        /// Add a groupable element to a group
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="Element"></param>
+        /// <returns></returns>
         public Group AddToGroup (string ID, IGroupable Element)
         {
             Group group;
@@ -267,7 +273,11 @@ namespace TsGui
             return group;
         }
 
-        //return the Group object from a specified ID
+        /// <summary>
+        /// Return the Group object from a specified ID. Creates a new one if it doesn't already exist
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public Group GetGroup(string ID)
         {
             Group group;
@@ -323,6 +333,16 @@ namespace TsGui
             if (_finished) { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE")); }
             else { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "TRUE")); }
             this._envController.Release();
+        }
+
+        /// <summary>
+        /// Method to handle when content has finished rendering on the window
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
+        public void OnWindowLoaded(object o, RoutedEventArgs e)
+        {
+            this.MainWindowLoaded?.Invoke();
         }
 
         public String GetValueFromList(XElement InputXml)
