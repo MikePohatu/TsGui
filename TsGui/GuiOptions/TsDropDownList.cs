@@ -59,7 +59,7 @@ namespace TsGui
 
             this._control.ItemsSource = this._options;
 
-            this._controller.MainWindowLoaded += this.OnMainWindowLoaded;
+            //this._controller.MainWindowLoaded += this.OnMainWindowLoaded;
             this._control.SelectionChanged += this.OnChanged;
         }
 
@@ -193,7 +193,7 @@ namespace TsGui
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
         //and closes the dropdown so it initialises proeprly
-        private void OnMainWindowLoaded()
+        public void OnParentWindowLoaded()
         {
             this._control.IsDropDownOpen = true;
             this._control.IsDropDownOpen = false;

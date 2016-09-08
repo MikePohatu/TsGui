@@ -40,6 +40,7 @@ namespace TsGui
         private MainController _controller;
         private ColumnDefinition _coldefControls;
         private ColumnDefinition _coldefLabels;
+        private TsPage _parent;
 
         //properties
         #region
@@ -129,10 +130,11 @@ namespace TsGui
 
         //constructor
         #region
-        public TsColumn (XElement SourceXml,int PageIndex, MainController RootController)
+        public TsColumn (XElement SourceXml,int PageIndex, TsPage ParentPage, MainController RootController)
         {
 
             this._controller = RootController;
+            this._parent = ParentPage;
             this.Index = PageIndex;
             this._columngrid = new Grid();
 
@@ -220,7 +222,7 @@ namespace TsGui
             {
                 foreach (XElement xOption in optionsXml)
                 {
-                    newOption = GuiFactory.CreateGuiOption(xOption,this._controller);
+                    newOption = GuiFactory.CreateGuiOption(xOption,this._parent,this._controller);
                     if (purgeset == true) { newOption.PurgeInactive = this.PurgeInactive; }
                     this.options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);

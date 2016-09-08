@@ -24,12 +24,15 @@ namespace TsGui
 {
     public static class GuiFactory
     {
-        public static IGuiOption CreateGuiOption(XElement OptionXml,MainController RootController)
+        public static IGuiOption CreateGuiOption(XElement OptionXml,TsPage ParentPage, MainController RootController)
         {
             #region
             if (OptionXml.Attribute("Type").Value == "DropDownList")
             {
-                return new TsDropDownList(OptionXml, RootController);
+                TsDropDownList ddl = new TsDropDownList(OptionXml, RootController);
+                ParentPage.PageWindowLoaded += ddl.OnParentWindowLoaded;
+                return ddl;
+
             }
 
             else if (OptionXml.Attribute("Type").Value == "ComputerName")

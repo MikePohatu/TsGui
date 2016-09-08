@@ -29,7 +29,7 @@ namespace TsGui
         public string Text { get; set; }
         public Label Control { get; set; }
 
-        public TsDropDownListItem(string Value, string Text)
+        public TsDropDownListItem(string Value, string Text):base ()
         {
             this.Control = new Label();
             this.Value = Value;

@@ -230,6 +230,18 @@ namespace TsGui
         {
             GroupingLogic.EvaluateGroups(this);
         }
+
+        public event WindowLoadedandler PageWindowLoaded;
+
+        /// <summary>
+        /// Method to handle when content has finished rendering on the window
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
+        public void OnWindowLoaded(object o, RoutedEventArgs e)
+        {
+            this.PageWindowLoaded?.Invoke();
+        }
         #endregion
 
         //Constructors
@@ -239,6 +251,7 @@ namespace TsGui
             //Debug.WriteLine(SourceXml);
             this._controller = RootController;
             this._pagelayout = new PageLayout(this);
+            this._pagelayout.Loaded += this.OnWindowLoaded;
             this._pagepanel = this._pagelayout.MainGrid;
             this.Height = Height;
             this.Width = Width;
@@ -287,9 +300,10 @@ namespace TsGui
             {
                 foreach (XElement xColumn in columnsXml)
                 {
-                    TsColumn c = new TsColumn(xColumn, colIndex,this._controller);
+                    TsColumn c = new TsColumn(xColumn, colIndex,this,this._controller);
                     if (purgeset == true) { c.PurgeInactive = this.PurgeInactive; }
-                        this._columns.Add(c);
+
+                    this._columns.Add(c);
 
                     //Debug.WriteLine("TsPage - Registering column");
                     this.ParentHide += c.OnParentHide;
