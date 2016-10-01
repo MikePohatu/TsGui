@@ -238,7 +238,7 @@ namespace TsGui
 
             this.InactiveValue = "TSGUI_INACTIVE";
             this._visibleHeight = 20;
-            this.Height = 20;
+            this.Height = _visibleHeight;
             this._labelcontrol.HorizontalAlignment = HorizontalAlignment.Left;
         }
 

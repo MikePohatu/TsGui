@@ -122,7 +122,7 @@ namespace TsGui
             this._control.SetBinding(TextBox.IsEnabledProperty, new Binding("IsEnabled"));
             this._control.SetBinding(TextBox.MaxLengthProperty, new Binding("MaxLength"));
             this._control.SetBinding(TextBox.HeightProperty, new Binding("Height"));
-            this._control.SetBinding(TextBox.TextProperty, new Binding("Value"));;
+            this._control.SetBinding(TextBox.TextProperty, new Binding("Value"));
 
             this._control.MaxLines = 1;
             this._textboxDefaultColor = (Color)ColorConverter.ConvertFromString("#FFABADB3");
