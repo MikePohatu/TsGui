@@ -21,9 +21,9 @@ using System.Xml.Linq;
 
 namespace TsGui
 {
-    public class XmlHandler
+    public static class XmlHandler
     {
-        public void Write(string pPath, XElement pElement)
+        public static void Write(string pPath, XElement pElement)
         {
             XDocument xDoc = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), pElement);
             string dirPath = Path.GetDirectoryName(pPath);
@@ -31,7 +31,7 @@ namespace TsGui
             xDoc.Save(pPath);
         }
 
-        public XElement Read(string pPath)
+        public static XElement Read(string pPath)
         {
             //LoadOptions options = new LoadOptions;
             //LoadOptions.PreserveWhitespace = true;

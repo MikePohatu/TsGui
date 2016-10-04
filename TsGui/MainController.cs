@@ -32,7 +32,7 @@ namespace TsGui
         private bool _finished = false;
         private TsButtons _buttons = new TsButtons();
         private TsMainWindow _mainWindow;
-        private XmlHandler _handler = new XmlHandler();
+        //private XmlHandler _handler = new XmlHandler();
         private List<TsPage> _pages = new List<TsPage>();
         private EnvironmentController _envController = new EnvironmentController();
         private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
@@ -122,7 +122,7 @@ namespace TsGui
             //code to be added to make sure config file exists
             try
             {
-                x = _handler.Read(this._configpath);
+                x = XmlHandler.Read(this._configpath);
                 return x;
             }
             catch (System.IO.FileNotFoundException e)
