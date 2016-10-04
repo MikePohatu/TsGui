@@ -246,51 +246,22 @@ namespace TsGui
         {
             //Load the XML
             #region
-            XElement x;
-            XAttribute xAttrib;
+            this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
 
-            xAttrib = InputXml.Attribute("PurgeInactive");
-            if (xAttrib != null)
-            { this.PurgeInactive = Convert.ToBoolean(xAttrib.Value); }
+            this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
+            this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
+            this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", this.HelpText);
+            this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
 
-            x = InputXml.Element("Variable");
-            if (x != null)
-            { this.VariableName = x.Value; }
+            this._visibleHeight = XmlHandler.GetIntFromXElement(InputXml, "Height", this.Height);
+            this.Height = this._visibleHeight;
 
-            x = InputXml.Element("InactiveValue");
-            if (x != null)
-            { this.InactiveValue = x.Value; }
+            int padInt = XmlHandler.GetIntFromXElement(InputXml, "LabelPadding", 0);
+            this._visiblelabelpadding = new System.Windows.Thickness(padInt, padInt, padInt, padInt);
+            this.LabelPadding = this._visiblelabelpadding;
 
-            x = InputXml.Element("HelpText");
-            if (x != null)
-            { this.HelpText = x.Value; }
-
-            x = InputXml.Element("Label");
-            if (x != null)
-            { this.LabelText = x.Value; }
-
-            x = InputXml.Element("Height");
-            if (x != null)
-            {
-                this._visibleHeight = Convert.ToInt32(x.Value);
-                this.Height = this._visibleHeight;
-            }
-
-            x = InputXml.Element("LabelPadding");
-            if (x != null)
-            {
-                int padInt = Convert.ToInt32(x.Value);
-                this._visiblelabelpadding = new System.Windows.Thickness(padInt, padInt, padInt, padInt);
-                this.LabelPadding = this._visiblelabelpadding;
-            }
-
-            x = InputXml.Element("Enabled");
-            if (x != null)
-            { this.IsEnabled = Convert.ToBoolean(x.Value); }
-
-            x = InputXml.Element("Hidden");
-            if (x != null)
-            { this.IsHidden = Convert.ToBoolean(x.Value); }
+            this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
+            this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
 
             IEnumerable<XElement> xGroups = InputXml.Elements("Group");
             if (xGroups != null)

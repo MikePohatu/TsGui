@@ -43,5 +43,63 @@ namespace TsGui
 
             return temp;
         }
+
+
+        //XElement functions
+        public static string GetStringFromXElement(XElement InputXml, string XName, string DefaultValue)
+        {
+            XElement x;
+
+            x = InputXml.Element(XName);
+            if (x != null) { return x.Value; }
+            else { return DefaultValue; }
+        }
+
+        public static int GetIntFromXElement(XElement InputXml, string XName, int DefaultValue)
+        {
+            XElement x;
+
+            x = InputXml.Element(XName);
+            if (x != null) { return Convert.ToInt32(x.Value); }
+            else { return DefaultValue; }
+        }
+
+        public static bool GetBoolFromXElement(XElement InputXml, string XName, bool DefaultValue)
+        {
+            XElement x;
+
+            x = InputXml.Element(XName);
+            if (x != null) { return Convert.ToBoolean(x.Value); }
+            else { return DefaultValue; }
+        }
+
+
+        //XAttribute functions
+        public static string GetStringFromXAttribute(XElement InputXml, string XName, string DefaultValue)
+        {
+            XAttribute x;
+
+            x = InputXml.Attribute(XName);
+            if (x != null) { return x.Value; }
+            else { return DefaultValue; }
+        }
+
+        public static int GetIntFromXAttribute(XElement InputXml, string XName, int DefaultValue)
+        {
+            XAttribute x;
+
+            x = InputXml.Attribute(XName);
+            if (x != null) { return Convert.ToInt32(x.Value); }
+            else { return DefaultValue; }
+        }
+
+        public static bool GetBoolFromXAttribute(XElement InputXml, string XName, bool DefaultValue)
+        {
+            XAttribute x;
+
+            x = InputXml.Attribute(XName);
+            if (x != null) { return Convert.ToBoolean(x.Value); }
+            else { return DefaultValue; }
+        }
     }
 }
