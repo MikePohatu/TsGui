@@ -95,6 +95,8 @@ namespace TsGui
 
         public void LoadXml(XElement InputXml)
         {
+            if (InputXml == null) { return; }
+
             XElement x;
             x = InputXml.Element("Next");
             if (x != null) { this.ButtonTextNext = x.Value; }

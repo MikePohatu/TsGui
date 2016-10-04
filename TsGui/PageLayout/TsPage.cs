@@ -245,26 +245,26 @@ namespace TsGui
         #endregion
 
         //Constructors
-        public TsPage(XElement SourceXml, string HeadingTitle, string HeadingText, double Height,double Width, Thickness Margin, SolidColorBrush HeadingBgColor, SolidColorBrush HeadingTextColor, TsButtons Buttons, MainController RootController)
+        public TsPage(XElement SourceXml, PageDefaults Defaults)
         {
             //Debug.WriteLine("New page constructor");
             //Debug.WriteLine(SourceXml);
-            this._controller = RootController;
+            this._controller = Defaults.RootController;
             this._pagelayout = new PageLayout(this);
             this._pagelayout.Loaded += this.OnWindowLoaded;
             this._pagepanel = this._pagelayout.MainGrid;
-            this.Height = Height;
-            this.Width = Width;
-            this._margin = Margin;
+            this.Height = Defaults.Height;
+            this.Width = Defaults.Width;
+            this._margin = Defaults.PageMargin;
             this.HeadingHeight = 40;
-            this.HeadingTitle = HeadingTitle;
-            this.HeadingText = HeadingText;
-            this.HeadinFontColor = HeadingTextColor;
-            this.HeadingBgColor = HeadingBgColor;          
+            this.HeadingTitle = Defaults.HeadingTitle;
+            this.HeadingText = Defaults.HeadingText;
+            this.HeadinFontColor = Defaults.HeadingFontColor;
+            this.HeadingBgColor = Defaults.HeadingBgColor;          
 
             this._pagelayout.DataContext = this;
             this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
-            this._pagelayout.ButtonGrid.DataContext = Buttons;
+            this._pagelayout.ButtonGrid.DataContext = Defaults.Buttons;
 
             this.LoadXml(SourceXml);
             this.Build();

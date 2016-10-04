@@ -32,7 +32,6 @@ namespace TsGui
         private bool _finished = false;
         private TsButtons _buttons = new TsButtons();
         private TsMainWindow _mainWindow;
-        //private XmlHandler _handler = new XmlHandler();
         private List<TsPage> _pages = new List<TsPage>();
         private EnvironmentController _envController = new EnvironmentController();
         private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
@@ -80,7 +79,6 @@ namespace TsGui
         {
             this._mainWindow = new TsMainWindow();
             this.ParentWindow.DataContext = this._mainWindow;
-            //this.ParentWindow.ContentWrapper.DataContext = this._mainWindow;
 
             this._prodmode = this._envController.Init();
 
@@ -158,9 +156,18 @@ namespace TsGui
                 if (x != null)
                 { this._chassischeck = new HardwareEvaluator(); }
 
-                x = SourceXml.Element("Buttons");
-                if (x != null)
-                { this._buttons.LoadXml(x); }
+                this._buttons.LoadXml(SourceXml.Element("Buttons"));
+
+                PageDefaults pagedef = new PageDefaults();
+                pagedef.HeadingTitle = this._mainWindow.HeadingTitle;
+                pagedef.HeadingText = this._mainWindow.HeadingText;
+                pagedef.Height = this._mainWindow.Height;
+                pagedef.Width = this._mainWindow.Width;
+                pagedef.PageMargin = this._mainWindow.PageMargin;
+                pagedef.HeadingBgColor = this._mainWindow.HeadingBgColor;
+                pagedef.HeadingFontColor = this._mainWindow.HeadingFontColor;
+                pagedef.Buttons = this._buttons;
+                pagedef.RootController = this;
 
                 //now read in the options and add to a dictionary for later use
                 pagesXml = SourceXml.Elements("Page");
@@ -175,31 +182,11 @@ namespace TsGui
                         {
                             //record the last page as the prevPage
                             prevPage = currPage;
-                            currPage = new TsPage(
-                                xPage,
-                                this._mainWindow.HeadingTitle,
-                                this._mainWindow.HeadingText,
-                                this._mainWindow.Height,
-                                this._mainWindow.Width,
-                                this._mainWindow.PageMargin,
-                                this._mainWindow.HeadingBgColor,
-                                this._mainWindow.HeadingFontColor,
-                                this._buttons,
-                                this);                                                     
+                            currPage = new TsPage(xPage,pagedef);                                                     
                         }
                         else
                         {
-                            currPage = new TsPage(
-                                xPage,
-                                this._mainWindow.HeadingTitle,
-                                this._mainWindow.HeadingText,
-                                this._mainWindow.Height,
-                                this._mainWindow.Width,
-                                this._mainWindow.PageMargin,
-                                this._mainWindow.HeadingBgColor,
-                                this._mainWindow.HeadingFontColor,
-                                this._buttons,
-                                this);
+                            currPage = new TsPage( xPage,pagedef);
                             currPage.IsFirst = true;
                         }
 
