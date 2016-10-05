@@ -150,6 +150,8 @@ namespace TsGui
             this._coldefControls.SetBinding(ColumnDefinition.WidthProperty, new Binding("ControlWidth"));
 
             //Set defaults
+            this.IsEnabled = true;
+            this.IsHidden = false;
             this._columngrid.VerticalAlignment = VerticalAlignment.Top;
 
             this._columngrid.ColumnDefinitions.Add(this._coldefLabels);
@@ -196,18 +198,16 @@ namespace TsGui
 
         private void LoadXml(XElement InputXml)
         {
-            XElement x;
             IEnumerable<XElement> optionsXml;
             IGuiOption newOption;
-            XAttribute xAttrib;
             bool purgeset = false;
 
-            xAttrib = InputXml.Attribute("PurgeInactive");
-            if (xAttrib != null)
-            {
-                purgeset = true;
-                this.PurgeInactive = Convert.ToBoolean(xAttrib.Value);
-            }
+            this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
+            this.LabelWidth = XmlHandler.GetGridLengthFromXElement(InputXml, "LabelWidth", this.LabelWidth);
+            this.ControlWidth = XmlHandler.GetGridLengthFromXElement(InputXml, "ControlWidth", this.ControlWidth);
+            this.Width = XmlHandler.GetGridLengthFromXElement(InputXml, "Width", this.Width);
+            this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
+            this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
 
             IEnumerable<XElement> xGroups = InputXml.Elements("Group");
             if (xGroups != null)
@@ -217,6 +217,8 @@ namespace TsGui
             }
 
             //now read in the options and add to a dictionary for later use
+            //do this last so the event subscriptions don't get setup too early (no toggles fired 
+            //until everything is loaded.
             optionsXml = InputXml.Elements("GuiOption");
             if (optionsXml != null)
             {
@@ -233,25 +235,6 @@ namespace TsGui
                 }
             }
 
-            x = InputXml.Element("LabelWidth");
-            if (x != null)
-            { this.LabelWidth = new GridLength(Convert.ToDouble(x.Value)); }
-
-            x = InputXml.Element("ControlWidth");
-            if (x != null)
-            { this.ControlWidth = new GridLength(Convert.ToDouble(x.Value)); }
-
-            x = InputXml.Element("Width");
-            if (x != null)
-            { this.Width = new GridLength(Convert.ToDouble(x.Value)); }
-
-            x = InputXml.Element("Enabled");
-            if (x != null)
-            { this.IsEnabled = Convert.ToBoolean(x.Value); }
-
-            x = InputXml.Element("Hidden");
-            if (x != null)
-            { this.IsHidden = Convert.ToBoolean(x.Value); }
         }
 
 

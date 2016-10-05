@@ -18,6 +18,7 @@
 using System;
 using System.IO;
 using System.Xml.Linq;
+using System.Windows;
 
 namespace TsGui
 {
@@ -64,6 +65,24 @@ namespace TsGui
             else { return DefaultValue; }
         }
 
+        public static double GetDoubleFromXElement(XElement InputXml, string XName, double DefaultValue)
+        {
+            XElement x;
+
+            x = InputXml.Element(XName);
+            if (x != null) { return Convert.ToDouble(x.Value); }
+            else { return DefaultValue; }
+        }
+
+        public static GridLength GetGridLengthFromXElement(XElement InputXml, string XName, GridLength DefaultValue)
+        {
+            XElement x;
+
+            x = InputXml.Element(XName);
+            if (x != null) { return new GridLength(Convert.ToDouble(x.Value)); }
+            else { return DefaultValue; }
+        }
+
         public static bool GetBoolFromXElement(XElement InputXml, string XName, bool DefaultValue)
         {
             XElement x;
@@ -90,6 +109,15 @@ namespace TsGui
 
             x = InputXml.Attribute(XName);
             if (x != null) { return Convert.ToInt32(x.Value); }
+            else { return DefaultValue; }
+        }
+
+        public static double GetDoubleFromXAttribute(XElement InputXml, string XName, double DefaultValue)
+        {
+            XAttribute x;
+
+            x = InputXml.Attribute(XName);
+            if (x != null) { return Convert.ToDouble(x.Value); }
             else { return DefaultValue; }
         }
 
