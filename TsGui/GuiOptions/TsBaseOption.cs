@@ -15,7 +15,6 @@
 
 // TsBaseOption.cs - base class for the rest of the gui options to inherit
 
-using System;
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,7 +41,7 @@ namespace TsGui
         protected Label _labelcontrol;
         protected Control _control;
         protected string _labeltext;
-        protected Grid _grid;
+        protected OptionGrid _grid;
         protected Thickness _visiblemargin;
         protected Thickness _visiblelabelmargin;
         protected Thickness _visiblepadding;
@@ -54,7 +53,7 @@ namespace TsGui
 
         //properties
         #region
-        public Grid Grid { get { return this._grid; } }
+        public OptionGrid OptionGrid { get { return this._grid; } }
         public List<Group> Groups { get { return this._groups; } }
         public int GroupCount { get { return this._groups.Count; } }
         public int DisabledParentCount { get; set; }
@@ -276,14 +275,10 @@ namespace TsGui
 
         protected void BuildGrid()
         {
-            RowDefinition coldefRow = new RowDefinition();
-            coldefRow.Height = GridLength.Auto;
-            this._grid.RowDefinitions.Add(coldefRow);
-
             Grid.SetColumn(this.Label, 0);
             Grid.SetColumn(this.Control, 1);
-            this._grid.Children.Add(this.Label);
-            this._grid.Children.Add(this.Control);
+            this._grid.Grid.Children.Add(this.Label);
+            this._grid.Grid.Children.Add(this.Control);
         }
 
         protected void HideUnhide(bool Hidden)

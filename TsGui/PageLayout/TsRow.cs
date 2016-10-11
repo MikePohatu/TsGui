@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsColumn.cs - class for columns in the gui window
+// TsRow.cs - class for rows in the gui window
 
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -21,29 +21,29 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
-using System;
 
 namespace TsGui
 {
-    public class TsColumn : IGroupParent, IGroupChild, INotifyPropertyChanged
+    public class TsRow : IGroupParent, IGroupChild, INotifyPropertyChanged
     {
         private bool _enabled;
         private bool _purgeInactive;
         private List<Group> _groups = new List<Group>();
         private bool _hidden;
-        private List<IGuiOption> options = new List<IGuiOption>();
         private Grid _columngrid;
         private bool _gridlines;
         private GridLength _labelwidth;
         private GridLength _controlwidth;
         private GridLength _fullwidth;
         private MainController _controller;
+        private List<TsColumn> _columns = new List<TsColumn>();
         private ColumnDefinition _coldefControls;
         private ColumnDefinition _coldefLabels;
-        private TsRow _parent;
+        private TsPage _parent;
 
         //properties
         #region
+        public TsPage Parent { get { return this._parent; } }
         public List<Group> Groups { get { return this._groups; } }
         public int GroupCount { get { return this._groups.Count; } }
         public int DisabledParentCount { get; set; }
@@ -54,35 +54,8 @@ namespace TsGui
             set
             {
                 this._purgeInactive = value;
-                foreach (IGuiOption option in this.options)
-                { option.PurgeInactive = value; }
-            }
-        }
-        public GridLength LabelWidth
-        {
-            get { return this._labelwidth; }
-            set
-            {
-                this._labelwidth = value;
-                this.OnPropertyChanged(this, "LabelWidth");
-            }
-        }
-        public GridLength ControlWidth
-        {
-            get { return this._controlwidth; }
-            set
-            {
-                this._controlwidth = value;
-                this.OnPropertyChanged(this, "ControlWidth");
-            }
-        }
-        public GridLength Width
-        {
-            get { return this._fullwidth; }
-            set
-            {
-                this._fullwidth = value;
-                this.OnPropertyChanged(this, "Width");
+                foreach (TsColumn column in this._columns)
+                { column.PurgeInactive = value; }
             }
         }
         public bool ShowGridLines
@@ -95,7 +68,7 @@ namespace TsGui
             }
         }
         public int Index { get; set; }
-        public List<IGuiOption> Options { get { return this.options; } }
+        //public List<IGuiOption> Options { get { return this.options; } }
         public Panel Panel { get { return this._columngrid; } }
         public bool IsEnabled
         {
@@ -130,11 +103,11 @@ namespace TsGui
 
         //constructor
         #region
-        public TsColumn (XElement SourceXml,int PageIndex, TsRow Parent, MainController RootController)
+        public TsRow (XElement SourceXml,int PageIndex, TsPage ParentPage, MainController RootController)
         {
 
             this._controller = RootController;
-            this._parent = Parent;
+            this._parent = ParentPage;
             this.Index = PageIndex;
             this._columngrid = new Grid();
 
@@ -199,13 +172,10 @@ namespace TsGui
         private void LoadXml(XElement InputXml)
         {
             IEnumerable<XElement> xlist;
-            IGuiOption newOption;
+            int colIndex = 0;
             bool purgeset = false;
 
             this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
-            this.LabelWidth = XmlHandler.GetGridLengthFromXElement(InputXml, "LabelWidth", this.LabelWidth);
-            this.ControlWidth = XmlHandler.GetGridLengthFromXElement(InputXml, "ControlWidth", this.ControlWidth);
-            this.Width = XmlHandler.GetGridLengthFromXElement(InputXml, "Width", this.Width);
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
 
@@ -216,59 +186,45 @@ namespace TsGui
                 { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
             }
 
-            //now read in the options and add to a dictionary for later use
-            //do this last so the event subscriptions don't get setup too early (no toggles fired 
-            //until everything is loaded.
             xlist = InputXml.Elements("Column");
             if (xlist != null)
             {
-                foreach (XElement xOption in xlist)
+                foreach (XElement xColumn in xlist)
                 {
-                    newOption = GuiFactory.CreateGuiOption(xOption,this._parent.Parent,this._controller);
-                    if (purgeset == true) { newOption.PurgeInactive = this.PurgeInactive; }
-                    this.options.Add(newOption);
-                    this._controller.AddOptionToLibary(newOption);
+                    TsColumn c = new TsColumn(xColumn, colIndex, this, this._controller);
+                    if (purgeset == true) { c.PurgeInactive = this.PurgeInactive; }
 
-                    //register for events
-                    this.ParentEnable += newOption.OnParentEnable;
-                    this.ParentHide += newOption.OnParentHide;
+                    this._columns.Add(c);
+
+                    //Debug.WriteLine("TsPage - Registering column");
+                    this.ParentHide += c.OnParentHide;
+                    this.ParentEnable += c.OnParentEnable;
+
+                    colIndex++;
                 }
             }
-
         }
-
 
         public void Build()
         {
-            int rowindex = 0;
-            double width =0;
+            int index = 0;
             
             
-            foreach (IGuiOption option in this.options)
+            foreach (TsColumn column in this._columns)
             {
                 //option.Control.Margin = this._margin;
                 //option.Label.Margin = this._margin;
 
-                RowDefinition coldefRow = new RowDefinition();
-                coldefRow.Height = GridLength.Auto;
+                ColumnDefinition coldef = new ColumnDefinition();
+                coldef.Width = GridLength.Auto;
                 //coldefRow.Height = new GridLength(option.Height + option.Margin.Top + option.Margin.Bottom) ;
-                this._columngrid.RowDefinitions.Add(coldefRow);
+                this._columngrid.ColumnDefinitions.Add(coldef);
 
-                Grid.SetColumn(option.Label, 0);
-                Grid.SetColumn(option.Control, 1);
-                Grid.SetRow(option.Label, rowindex);
-                Grid.SetRow(option.Control, rowindex);
+                Grid.SetColumn(column.Panel, index);
 
-                this._columngrid.Children.Add(option.Label);
-                this._columngrid.Children.Add(option.Control);
+                this._columngrid.Children.Add(column.Panel);
 
-                //Debug.WriteLine("Control width (" + option.Label.Content + "): " + width);
-                if (width < option.Control.Width)
-                {                   
-                    width = option.Control.Width;
-                }
-
-                rowindex++;
+                index++;
             }
         }
     }

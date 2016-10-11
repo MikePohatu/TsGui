@@ -41,7 +41,7 @@ namespace TsGui
         private SolidColorBrush _headingBgColor;
         private SolidColorBrush _headingFontColor;
         private Thickness _margin = new Thickness(0, 0, 0, 0);
-        private List<TsColumn> _columns = new List<TsColumn>();
+        private List<TsRow> _rows = new List<TsRow>();
         private List<IGuiOption> _options = new List<IGuiOption>();
         private List<IEditableGuiOption> _editables = new List<IEditableGuiOption>();
         private Grid _pagepanel;
@@ -178,7 +178,7 @@ namespace TsGui
             {
                 this._gridlines = value;
                 this.OnPropertyChanged(this, "ShowGridLines");
-                foreach (TsColumn c in this._columns) { c.ShowGridLines = value; }
+                foreach (TsRow r in this._rows) { r.ShowGridLines = value; }
             }
         }
         public TsPage PreviousPage
@@ -274,9 +274,9 @@ namespace TsGui
         //Methods
         public void LoadXml(XElement InputXml)
         {
-            IEnumerable<XElement> columnsXml;
+            IEnumerable<XElement> xlist;
             XElement x;
-            int colIndex = 0;
+            int index;
             XAttribute xAttrib;
             bool purgeset = false;
 
@@ -295,35 +295,35 @@ namespace TsGui
             }
 
             //now read in the options and add to a dictionary for later use
-            columnsXml = InputXml.Elements("Column");
-            if (columnsXml != null)
+            xlist = InputXml.Elements("Row");
+            if (xlist != null)
             {
-                foreach (XElement xColumn in columnsXml)
+                index = 0;
+                foreach (XElement xrow in xlist)
                 {
-                    TsColumn c = new TsColumn(xColumn, colIndex,this,this._controller);
-                    if (purgeset == true) { c.PurgeInactive = this.PurgeInactive; }
-
-                    this._columns.Add(c);
-
-                    //Debug.WriteLine("TsPage - Registering column");
-                    this.ParentHide += c.OnParentHide;
-                    this.ParentEnable += c.OnParentEnable;
-                    
-                    colIndex++;
+                    this.CreateRow(xrow, index, purgeset);                    
+                    index++;
                 }
+            }
+            else
+            {
+                //legacy support i.e. no row in config.xml. create a new row and add the columns 
+                //to it
+                xlist = InputXml.Elements("Column");
+                x = null;
+                foreach (XElement xColumn in xlist)
+                {
+                    x.Add(xColumn);
+                }
+                if (x != null) { this.CreateRow(x, 0, purgeset); }            
             }
 
             XElement headingX = InputXml.Element("Heading");
             if (headingX != null)
             {
-                x = headingX.Element("Title");
-                if (x != null) { this._headingTitle = x.Value; }
-
-                x = headingX.Element("Text");
-                if (x != null) { this._headingText = x.Value; }
-
-                x = headingX.Element("Height");
-                if (x != null) { this._headingHeight = Convert.ToInt32(x.Value); }
+                this._headingTitle = XmlHandler.GetStringFromXElement(headingX, "Title", this._headingTitle);
+                this._headingText = XmlHandler.GetStringFromXElement(headingX, "Text", this._headingText);
+                this._headingHeight = XmlHandler.GetDoubleFromXElement(headingX, "Height", this._headingHeight);
 
                 x = headingX.Element("BgColor");
                 if (x != null)
@@ -338,44 +338,45 @@ namespace TsGui
                 }
             }
 
-            x = InputXml.Element("Width");
-            if (x != null)
-            { this.Width = Convert.ToInt32(x.Value); }
-
-            x = InputXml.Element("Height");
-            if (x != null)
-            { this.Height = Convert.ToInt32(x.Value); }
-
-            x = InputXml.Element("Enabled");
-            if (x != null)
-            { this.IsEnabled = Convert.ToBoolean(x.Value); }
-
-            x = InputXml.Element("Hidden");
-            if (x != null)
-            { this.IsHidden = Convert.ToBoolean(x.Value); }
+            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
+            this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
+            this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
+            this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
 
             this.PopulateOptions();
+        }
+
+        private void CreateRow(XElement InputXml, int Index, bool Purge)
+        {
+            TsRow r = new TsRow(InputXml, Index, this, this._controller);
+            if (Purge == true) { r.PurgeInactive = this.PurgeInactive; }
+
+            this._rows.Add(r);
+
+            //Debug.WriteLine("TsPage - Registering column");
+            this.ParentHide += r.OnParentHide;
+            this.ParentEnable += r.OnParentEnable;
         }
 
         //build the gui controls.
         public void Build()
         {
-            int colindex = 0;
+            int index = 0;
 
             this._pagepanel.VerticalAlignment = VerticalAlignment.Top;
             this._pagepanel.HorizontalAlignment = HorizontalAlignment.Left;
 
-            foreach (TsColumn col in this._columns)
+            foreach (TsRow row in this._rows)
             {
-                ColumnDefinition coldef = new ColumnDefinition();
-                coldef.DataContext = col;
-                coldef.SetBinding(ColumnDefinition.WidthProperty, new Binding("Width"));
+                RowDefinition rowdef = new RowDefinition();
+                rowdef.DataContext = row;
+                rowdef.SetBinding(RowDefinition.HeightProperty, new Binding("Height"));
 
-                this._pagepanel.ColumnDefinitions.Add(coldef);
+                this._pagepanel.RowDefinitions.Add(rowdef);
 
-                Grid.SetColumn(col.Panel, colindex);
-                this._pagepanel.Children.Add(col.Panel);
-                colindex++;
+                Grid.SetRow(row.Panel, index);
+                this._pagepanel.Children.Add(row.Panel);
+                index++;
             }
 
             this.Update();
@@ -385,10 +386,10 @@ namespace TsGui
         //list of ts variables to set at the end. 
         private void PopulateOptions()
         {
-            foreach (TsColumn col in this._columns)
-            {
-                this._options.AddRange(col.Options);
-            }
+            //foreach (TsRow row in this._rows)
+            //{
+            //    this._options.AddRange(row.Options);
+            //}
 
             foreach (IGuiOption option in this._options)
             {

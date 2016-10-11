@@ -75,9 +75,13 @@
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
     <Compile Include="Control\ControlDelegates.cs" />
+    <Compile Include="GuiOptions\OptionGrid.xaml.cs">
+      <DependentUpon>OptionGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GuiOptions\TsDropDownListItem.cs" />
     <Compile Include="GuiOptions\TsInfoBox.cs" />
     <Compile Include="PageLayout\PageDefaults.cs" />
+    <Compile Include="PageLayout\TsRow.cs" />
     <Compile Include="Queries\ResultValidator.cs" />
     <Compile Include="Control\EnvironmentController.cs" />
     <Compile Include="Calculator\Calculator.cs" />
@@ -115,6 +119,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="GuiOptions\OptionGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PageLayout\PageLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
