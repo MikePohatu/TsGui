@@ -23,9 +23,9 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System;
 using System.ComponentModel;
-//using System.Diagnostics;
+using TsGui;
 
-namespace TsGui
+namespace TsGui.View.Layout
 {
     public class TsPage: IGroupParent, ITsGuiElement, INotifyPropertyChanged
     {

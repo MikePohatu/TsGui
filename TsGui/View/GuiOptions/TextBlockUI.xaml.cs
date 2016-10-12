@@ -12,14 +12,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TsGui
+namespace TsGui.View.GuiOptions
 {
     /// <summary>
-    /// Interaction logic for OptionGrid.xaml
+    /// Interaction logic for TextBlock.xaml
     /// </summary>
-    public partial class OptionGrid : UserControl
+    public partial class TextBlockUI : UserControl
     {
-        public OptionGrid()
+        public TextBlockUI()
         {
             InitializeComponent();
         }

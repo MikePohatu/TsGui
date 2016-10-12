@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace TsGui
+namespace TsGui.View.Layout
 {
     /// <summary>
     /// Interaction logic for PageLayout.xaml

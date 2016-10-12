@@ -21,8 +21,9 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
+using TsGui;
 
-namespace TsGui
+namespace TsGui.View.Layout
 {
     public class TsRow : IGroupParent, IGroupChild, INotifyPropertyChanged
     {
@@ -32,9 +33,9 @@ namespace TsGui
         private bool _hidden;
         private Grid _columngrid;
         private bool _gridlines;
-        private GridLength _labelwidth;
-        private GridLength _controlwidth;
-        private GridLength _fullwidth;
+        private int _labelwidth;
+        private int _controlwidth;
+        private int _width;
         private MainController _controller;
         private List<TsColumn> _columns = new List<TsColumn>();
         private ColumnDefinition _coldefControls;

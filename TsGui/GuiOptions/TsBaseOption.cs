@@ -41,7 +41,6 @@ namespace TsGui
         protected Label _labelcontrol;
         protected Control _control;
         protected string _labeltext;
-        protected OptionGrid _grid;
         protected Thickness _visiblemargin;
         protected Thickness _visiblelabelmargin;
         protected Thickness _visiblepadding;
@@ -53,7 +52,6 @@ namespace TsGui
 
         //properties
         #region
-        public OptionGrid OptionGrid { get { return this._grid; } }
         public List<Group> Groups { get { return this._groups; } }
         public int GroupCount { get { return this._groups.Count; } }
         public int DisabledParentCount { get; set; }
@@ -271,14 +269,6 @@ namespace TsGui
                 { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
             }
             #endregion
-        }
-
-        protected void BuildGrid()
-        {
-            Grid.SetColumn(this.Label, 0);
-            Grid.SetColumn(this.Control, 1);
-            this._grid.Grid.Children.Add(this.Label);
-            this._grid.Grid.Children.Add(this.Control);
         }
 
         protected void HideUnhide(bool Hidden)

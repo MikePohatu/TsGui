@@ -18,6 +18,7 @@
 using System.Windows;
 using System.ComponentModel;
 using System.Xml.Linq;
+using TsGui.View.Layout;
 
 namespace TsGui
 {

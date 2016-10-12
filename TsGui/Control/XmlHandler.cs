@@ -92,7 +92,19 @@ namespace TsGui
             else { return DefaultValue; }
         }
 
+        public static Thickness GetThicknessFromXElement(XElement InputXml, string XName, int DefaultValue)
+        {
+            XElement x;
+            int i;
 
+            x = InputXml.Element(XName);
+            if (x != null) { i = Convert.ToInt32(x.Value); }
+            else { i = DefaultValue; }
+
+            return new Thickness(i, i, i, i);
+        }
+
+        
         //XAttribute functions
         public static string GetStringFromXAttribute(XElement InputXml, string XName, string DefaultValue)
         {

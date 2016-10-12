@@ -81,7 +81,7 @@
     <Compile Include="GuiOptions\TsDropDownListItem.cs" />
     <Compile Include="GuiOptions\TsInfoBox.cs" />
     <Compile Include="PageLayout\PageDefaults.cs" />
-    <Compile Include="PageLayout\TsRow.cs" />
+    <Compile Include="View\Layout\TsRow.cs" />
     <Compile Include="Queries\ResultValidator.cs" />
     <Compile Include="Control\EnvironmentController.cs" />
     <Compile Include="Calculator\Calculator.cs" />
@@ -119,6 +119,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
+    <Compile Include="View\GuiOptions\TextBlockUI.xaml.cs">
+      <DependentUpon>TextBlockUI.xaml</DependentUpon>
+    </Compile>
     <Page Include="GuiOptions\OptionGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -133,17 +137,21 @@
     </Page>
     <Compile Include="MainController.cs" />
     <Compile Include="PageLayout\TsButtons.cs" />
-    <Compile Include="PageLayout\TsColumn.cs" />
+    <Compile Include="View\Layout\TsColumn.cs" />
     <Compile Include="GuiOptions\IGuiOption.cs" />
     <Compile Include="GuiOptions\ITsGuiElement.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\GuiOptions\TextBlockUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PageLayout\TsMainWindow.cs" />
-    <Compile Include="PageLayout\TsPage.cs" />
+    <Compile Include="View\Layout\TsPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
