@@ -33,17 +33,16 @@ namespace TsGui.View.Layout
         private bool _hidden;
         private Grid _columngrid;
         private bool _gridlines;
-        private int _labelwidth;
-        private int _controlwidth;
-        private int _width;
         private MainController _controller;
         private List<TsColumn> _columns = new List<TsColumn>();
         private ColumnDefinition _coldefControls;
         private ColumnDefinition _coldefLabels;
         private TsPage _parent;
+        private List<IGuiOption> _options;
 
         //properties
         #region
+        public List<IGuiOption> Options { get { return this._options; } }
         public TsPage Parent { get { return this._parent; } }
         public List<Group> Groups { get { return this._groups; } }
         public int GroupCount { get { return this._groups.Count; } }
@@ -136,6 +135,7 @@ namespace TsGui.View.Layout
             this.HiddenParentCount = 0;
 
             this.LoadXml(SourceXml);
+            this.PopulateOptions();
             this.Build();
         }
         #endregion
@@ -226,6 +226,16 @@ namespace TsGui.View.Layout
                 this._columngrid.Children.Add(column.Panel);
 
                 index++;
+            }
+        }
+
+        private void PopulateOptions()
+        {
+            this._options = new List<IGuiOption>();
+
+            foreach (TsColumn col in this._columns)
+            {
+                this._options.AddRange(col.Options);
             }
         }
     }

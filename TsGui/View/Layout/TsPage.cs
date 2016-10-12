@@ -267,6 +267,7 @@ namespace TsGui.View.Layout
             this._pagelayout.ButtonGrid.DataContext = Defaults.Buttons;
 
             this.LoadXml(SourceXml);
+            this.PopulateOptions();
             this.Build();
         }
 
@@ -310,7 +311,8 @@ namespace TsGui.View.Layout
                 //legacy support i.e. no row in config.xml. create a new row and add the columns 
                 //to it
                 xlist = InputXml.Elements("Column");
-                x = null;
+                x = new XElement("Row");
+
                 foreach (XElement xColumn in xlist)
                 {
                     x.Add(xColumn);
@@ -342,8 +344,6 @@ namespace TsGui.View.Layout
             this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
-
-            this.PopulateOptions();
         }
 
         private void CreateRow(XElement InputXml, int Index, bool Purge)
@@ -386,10 +386,10 @@ namespace TsGui.View.Layout
         //list of ts variables to set at the end. 
         private void PopulateOptions()
         {
-            //foreach (TsRow row in this._rows)
-            //{
-            //    this._options.AddRange(row.Options);
-            //}
+            foreach (TsRow row in this._rows)
+            {
+                this._options.AddRange(row.Options);
+            }
 
             foreach (IGuiOption option in this._options)
             {
