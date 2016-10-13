@@ -22,7 +22,7 @@ namespace TsGui
     internal static class GroupingLogic
     {
         //group logic
-        public static void OnGroupDisplay(IGroupable Element, bool Display)
+        public static void OnGroupUnhide(IGroupable Element, bool Display)
         {
             GroupingLogic.EvaluateGroups(Element);
         }

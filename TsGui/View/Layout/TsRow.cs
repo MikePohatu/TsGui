@@ -21,7 +21,6 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
-using TsGui;
 
 namespace TsGui.View.Layout
 {
@@ -35,10 +34,9 @@ namespace TsGui.View.Layout
         private bool _gridlines;
         private MainController _controller;
         private List<TsColumn> _columns = new List<TsColumn>();
-        private ColumnDefinition _coldefControls;
-        private ColumnDefinition _coldefLabels;
         private TsPage _parent;
-        private List<IGuiOption> _options;
+        private List<IGuiOption> _options = new List<IGuiOption>();
+        private double _height;
 
         //properties
         #region
@@ -61,14 +59,15 @@ namespace TsGui.View.Layout
         public bool ShowGridLines
         {
             get { return this._gridlines; }
-            set
-            {
-                this._gridlines = value;
-                this.OnPropertyChanged(this, "ShowGridLines");
-            }
+            set { this._gridlines = value; this.OnPropertyChanged(this, "ShowGridLines"); }
+        }
+
+        public double Height
+        {
+            get { return this._height; }
+            set { this._height = value; this.OnPropertyChanged(this, "Height"); }
         }
         public int Index { get; set; }
-        //public List<IGuiOption> Options { get { return this.options; } }
         public Panel Panel { get { return this._columngrid; } }
         public bool IsEnabled
         {
@@ -111,31 +110,22 @@ namespace TsGui.View.Layout
             this.Index = PageIndex;
             this._columngrid = new Grid();
 
-            this._columngrid.Margin = new Thickness(0);
-            this._coldefControls = new ColumnDefinition();
-            this._coldefLabels = new ColumnDefinition();
-
             this._columngrid.DataContext = this;
             this._columngrid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
-
-            this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
-            this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
-            this._coldefControls.SetBinding(ColumnDefinition.WidthProperty, new Binding("ControlWidth"));
 
             //Set defaults
             this.IsEnabled = true;
             this.IsHidden = false;
-            this._columngrid.VerticalAlignment = VerticalAlignment.Top;
+            this.Height = this.Parent.Height;
 
-            this._columngrid.ColumnDefinitions.Add(this._coldefLabels);
-            this._columngrid.ColumnDefinitions.Add(this._coldefControls);
+            this._columngrid.VerticalAlignment = VerticalAlignment.Top;
 
             this._purgeInactive = false;
             this.DisabledParentCount = 0;
             this.HiddenParentCount = 0;
 
             this.LoadXml(SourceXml);
-            this.PopulateOptions();
+            //this.PopulateOptions();
             this.Build();
         }
         #endregion
@@ -196,8 +186,8 @@ namespace TsGui.View.Layout
                     if (purgeset == true) { c.PurgeInactive = this.PurgeInactive; }
 
                     this._columns.Add(c);
-
-                    //Debug.WriteLine("TsPage - Registering column");
+                    this._options.AddRange(c.Options);
+                    //Debug.WriteLine("TsRow- Registering column");
                     this.ParentHide += c.OnParentHide;
                     this.ParentEnable += c.OnParentEnable;
 
@@ -226,16 +216,6 @@ namespace TsGui.View.Layout
                 this._columngrid.Children.Add(column.Panel);
 
                 index++;
-            }
-        }
-
-        private void PopulateOptions()
-        {
-            this._options = new List<IGuiOption>();
-
-            foreach (TsColumn col in this._columns)
-            {
-                this._options.AddRange(col.Options);
             }
         }
     }

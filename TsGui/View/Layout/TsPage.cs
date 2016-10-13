@@ -23,7 +23,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System;
 using System.ComponentModel;
-using TsGui;
+using System.Diagnostics;
 
 namespace TsGui.View.Layout
 {
@@ -281,6 +281,11 @@ namespace TsGui.View.Layout
             XAttribute xAttrib;
             bool purgeset = false;
 
+            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
+            this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
+            this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
+            this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
+
             xAttrib = InputXml.Attribute("PurgeInactive");
             if (xAttrib != null)
             {
@@ -295,30 +300,7 @@ namespace TsGui.View.Layout
                 { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
             }
 
-            //now read in the options and add to a dictionary for later use
-            xlist = InputXml.Elements("Row");
-            if (xlist != null)
-            {
-                index = 0;
-                foreach (XElement xrow in xlist)
-                {
-                    this.CreateRow(xrow, index, purgeset);                    
-                    index++;
-                }
-            }
-            else
-            {
-                //legacy support i.e. no row in config.xml. create a new row and add the columns 
-                //to it
-                xlist = InputXml.Elements("Column");
-                x = new XElement("Row");
-
-                foreach (XElement xColumn in xlist)
-                {
-                    x.Add(xColumn);
-                }
-                if (x != null) { this.CreateRow(x, 0, purgeset); }            
-            }
+            
 
             XElement headingX = InputXml.Element("Heading");
             if (headingX != null)
@@ -340,10 +322,35 @@ namespace TsGui.View.Layout
                 }
             }
 
-            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
-            this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
-            this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
-            this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
+            //now read in the options and add to a dictionary for later use
+            int i = 0;
+            xlist = InputXml.Elements("Row");
+            if (xlist != null)
+            {
+                index = 0;
+                foreach (XElement xrow in xlist)
+                {
+                    this.CreateRow(xrow, index, purgeset);
+                    index++;
+                    i++;
+                }
+            }
+
+            //legacy support i.e. no row in config.xml. create a new row and add the columns 
+            //to it
+            if (0 == i)
+            {
+
+                xlist = InputXml.Elements("Column");
+                x = new XElement("Row");
+
+                foreach (XElement xColumn in xlist)
+                {
+                    x.Add(xColumn);
+                }
+                if (x != null) { this.CreateRow(x, 0, purgeset); }
+            }
+
         }
 
         private void CreateRow(XElement InputXml, int Index, bool Purge)
@@ -368,6 +375,7 @@ namespace TsGui.View.Layout
 
             foreach (TsRow row in this._rows)
             {
+                Debug.WriteLine("TsPage - Build - Adding row");
                 RowDefinition rowdef = new RowDefinition();
                 rowdef.DataContext = row;
                 rowdef.SetBinding(RowDefinition.HeightProperty, new Binding("Height"));

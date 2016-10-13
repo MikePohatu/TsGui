@@ -21,8 +21,6 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
-using System;
-using TsGui;
 
 using TsGui.View.Layout;
 
@@ -30,11 +28,11 @@ namespace TsGui
 {
     public class TsColumn : IGroupParent, IGroupChild, INotifyPropertyChanged
     {
-        private bool _enabled;
+        private bool _enabled = true;
         private bool _purgeInactive;
         private List<Group> _groups = new List<Group>();
-        private bool _hidden;
-        private List<IGuiOption> options = new List<IGuiOption>();
+        private bool _hidden = false;
+        private List<IGuiOption> _options = new List<IGuiOption>();
         private Grid _columngrid;
         private bool _gridlines;
         private GridLength _labelwidth;
@@ -57,7 +55,7 @@ namespace TsGui
             set
             {
                 this._purgeInactive = value;
-                foreach (IGuiOption option in this.options)
+                foreach (IGuiOption option in this._options)
                 { option.PurgeInactive = value; }
             }
         }
@@ -98,7 +96,7 @@ namespace TsGui
             }
         }
         public int Index { get; set; }
-        public List<IGuiOption> Options { get { return this.options; } }
+        public List<IGuiOption> Options { get { return this._options; } }
         public Panel Panel { get { return this._columngrid; } }
         public bool IsEnabled
         {
@@ -153,8 +151,6 @@ namespace TsGui
             this._coldefControls.SetBinding(ColumnDefinition.WidthProperty, new Binding("ControlWidth"));
 
             //Set defaults
-            this.IsEnabled = true;
-            this.IsHidden = false;
             this._columngrid.VerticalAlignment = VerticalAlignment.Top;
 
             this._columngrid.ColumnDefinitions.Add(this._coldefLabels);
@@ -188,8 +184,7 @@ namespace TsGui
         }
 
         public void OnParentHide(bool Hide)
-        {
-            
+        {           
             GroupingLogic.OnParentHide(this, Hide);
         }
 
@@ -222,14 +217,14 @@ namespace TsGui
             //now read in the options and add to a dictionary for later use
             //do this last so the event subscriptions don't get setup too early (no toggles fired 
             //until everything is loaded.
-            xlist = InputXml.Elements("Column");
+            xlist = InputXml.Elements("GuiOption");
             if (xlist != null)
             {
                 foreach (XElement xOption in xlist)
                 {
                     newOption = GuiFactory.CreateGuiOption(xOption,this._parent.Parent,this._controller);
                     if (purgeset == true) { newOption.PurgeInactive = this.PurgeInactive; }
-                    this.options.Add(newOption);
+                    this._options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);
 
                     //register for events
@@ -243,11 +238,11 @@ namespace TsGui
 
         public void Build()
         {
-            int rowindex = 0;
+            int index = 0;
             double width =0;
             
             
-            foreach (IGuiOption option in this.options)
+            foreach (IGuiOption option in this._options)
             {
                 //option.Control.Margin = this._margin;
                 //option.Label.Margin = this._margin;
@@ -259,8 +254,8 @@ namespace TsGui
 
                 Grid.SetColumn(option.Label, 0);
                 Grid.SetColumn(option.Control, 1);
-                Grid.SetRow(option.Label, rowindex);
-                Grid.SetRow(option.Control, rowindex);
+                Grid.SetRow(option.Label, index);
+                Grid.SetRow(option.Control, index);
 
                 this._columngrid.Children.Add(option.Label);
                 this._columngrid.Children.Add(option.Control);
@@ -271,7 +266,7 @@ namespace TsGui
                     width = option.Control.Width;
                 }
 
-                rowindex++;
+                index++;
             }
         }
     }

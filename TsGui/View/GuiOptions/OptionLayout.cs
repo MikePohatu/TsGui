@@ -13,16 +13,16 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// GuiOptionBase.cs - base class for the rest of the gui options to inherit
+// OptionLayout.cs - view model for the layout of GuiOptions. Controls the layout and 
+// formatting options for the associated controls
 
 using System.Windows;
 using System.Xml.Linq;
-using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class GuiOptionBase: INotifyPropertyChanged, IGroupChild, IGroupable
+    public abstract class OptionLayout: INotifyPropertyChanged
     {
         //Fields
         #region
@@ -43,20 +43,10 @@ namespace TsGui.View.GuiOptions
         protected bool _isenabled = true;
         protected bool _ishidden = false;
         protected Visibility _visibility = Visibility.Visible;
-
-        protected List<Group> _groups = new List<Group>();
-        protected int _hiddenParents = 0;
-        protected int _disabledParents = 0;
         #endregion
 
         //Properties
         #region 
-
-        public List<Group> Groups { get { return this._groups; } }
-        public int GroupCount { get { return this._groups.Count; } }
-        public int DisabledParentCount { get; set; }
-        public int HiddenParentCount { get; set; }
-
         public bool IsEnabled
         {
             get { return this._isenabled; }
@@ -160,21 +150,6 @@ namespace TsGui.View.GuiOptions
         {
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
-
-        public void OnGroupStateChange()
-        {
-            GroupingLogic.EvaluateGroups(this);
-        }
-
-        public void OnParentHide(bool Hide)
-        {
-            GroupingLogic.OnParentHide(this, Hide);
-        }
-
-        public void OnParentEnable(bool Enable)
-        {
-            GroupingLogic.OnParentEnable(this, Enable);
-        }
         #endregion
 
         protected void LoadXml(XElement InputXml)
@@ -191,13 +166,6 @@ namespace TsGui.View.GuiOptions
 
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
-
-            IEnumerable<XElement> xGroups = InputXml.Elements("Group");
-            if (xGroups != null)
-            {
-                //foreach (XElement xGroup in xGroups)
-                //{ this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
-            }
             #endregion
         }
 

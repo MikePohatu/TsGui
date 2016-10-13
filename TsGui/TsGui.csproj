@@ -119,7 +119,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
+    <Compile Include="View\GuiOptions\OptionLayout.cs" />
     <Compile Include="View\GuiOptions\TextBlockUI.xaml.cs">
       <DependentUpon>TextBlockUI.xaml</DependentUpon>
     </Compile>
