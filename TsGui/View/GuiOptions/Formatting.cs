@@ -22,7 +22,7 @@ using System.ComponentModel;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class Formatting: INotifyPropertyChanged
+    public class Formatting: INotifyPropertyChanged
     {
         //Fields
         #region
@@ -110,19 +110,20 @@ namespace TsGui.View.GuiOptions
         public event PropertyChangedEventHandler PropertyChanged;
 
         // OnPropertyChanged method to raise the event
-        protected void OnPropertyChanged(object sender, string name)
+        public void OnPropertyChanged(object sender, string name)
         {
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
         #endregion
 
-        protected void LoadXml(XElement InputXml)
+        public void LoadXml(XElement InputXml)
         {
             //Load the XML
             #region
             this.Height = XmlHandler.GetIntFromXElement(InputXml, "Height", this.Height);
             this.Width = XmlHandler.GetIntFromXElement(InputXml, "Width", this.Width);
             this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", 0);
+            this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", 0);
 
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);

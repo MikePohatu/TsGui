@@ -44,7 +44,7 @@ namespace TsGui.View.GuiOptions
 
         //public TsColumn Parent { get; set; }
 
-        public TsTextBlock (XElement InputXml, MainController MainController)
+        public TsTextBlock (XElement InputXml, MainController MainController): base ()
         {
             this._controller = MainController;
             this._ui = new TsTextBlockUI();
@@ -53,9 +53,9 @@ namespace TsGui.View.GuiOptions
         }
 
 
-        new public void LoadXml(XElement InputXml)
+        public void LoadXml(XElement InputXml)
         {
-            base.LoadXml(InputXml);
+            base.LoadBaseXml(InputXml);
             XElement x;
 
             this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", 32760);

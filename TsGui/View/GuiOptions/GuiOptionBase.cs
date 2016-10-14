@@ -23,10 +23,10 @@ namespace TsGui.View.GuiOptions
 {
     public abstract class GuiOptionBase : INotifyPropertyChanged
     {
-        private MainController _controller;
+        protected MainController _controller;
 
-        private string _labeltext;
-        private string _helptext;
+        protected string _labeltext;
+        protected string _helptext;
 
         //standard stuff
         public string LabelText
@@ -41,13 +41,39 @@ namespace TsGui.View.GuiOptions
         }
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
+        public Formatting GridFormatting { get; set; }
         public string VariableName { get; set; }
 
-        public void LoadXml(XElement InputXml)
+        public GuiOptionBase()
         {
+            this.LabelFormatting = new Formatting();
+            this.ControlFormatting = new Formatting();
+            this.GridFormatting = new Formatting();
+        }
+
+        protected void LoadBaseXml(XElement InputXml)
+        {
+            XElement x;
+            
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", null);
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", null);
+
+            x = InputXml.Element("Formatting");
+            if (x != null)
+            {
+                x = x.Element("Label");
+                if (x != null)
+                { this.LabelFormatting.LoadXml(x); }
+
+                x = x.Element("Control");
+                if (x != null)
+                { this.ControlFormatting.LoadXml(x); }
+
+                x = x.Element("Grid");
+                if (x != null)
+                { this.GridFormatting.LoadXml(x); }
+            }
         }
 
         //Event handling
@@ -56,7 +82,7 @@ namespace TsGui.View.GuiOptions
         public event PropertyChangedEventHandler PropertyChanged;
 
         // OnPropertyChanged method to raise the event
-        protected void OnPropertyChanged(object sender, string name)
+        public void OnPropertyChanged(object sender, string name)
         {
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
