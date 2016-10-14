@@ -17,9 +17,9 @@ namespace TsGui.View.GuiOptions
     /// <summary>
     /// Interaction logic for TextBlock.xaml
     /// </summary>
-    public partial class TextBlockUI : UserControl
+    public partial class TsTextBlockUI : UserControl
     {
-        public TextBlockUI()
+        public TsTextBlockUI()
         {
             InitializeComponent();
         }

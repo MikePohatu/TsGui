@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="TsGui.View.GuiOptions.TsTextBlockUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TsGui.View.GuiOptions"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="200">
+    <Grid x:Name="MainGrid" Height="{Binding Height}" Width="{Binding Width}" Visibility="{Binding Visibility}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="LabelColumn" Width="{Binding Width}"/>
+            <ColumnDefinition x:Name="ControlColumn" Width="{Binding Width}"/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="Label" Content="{Binding LabelText}" Grid.Column="0" HorizontalAlignment="Left" Margin="{Binding LabelFormatting.Margin}" VerticalAlignment="{Binding LabelFormatting.VerticalAlign}" Padding="{Binding LabelFormatting.Padding}"/>
+        <TextBlock x:Name="Control" Text="{Binding Value}" Grid.Column="1" HorizontalAlignment="Left" Margin="{Binding ControlFormatting.Margin}" TextWrapping="Wrap" VerticalAlignment="{Binding ControlFormatting.VerticalAlign}" Padding="{Binding ControlFormatting.Padding}" Height="Auto" Width="Auto"/>
+    </Grid>
+</UserControl>

@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// OptionLayout.cs - view model for the layout of GuiOptions. Controls the layout and 
+// Formatting.cs - view model for the layout of GuiOptions. Controls the layout and 
 // formatting options for the associated controls
 
 using System.Windows;
@@ -22,27 +22,21 @@ using System.ComponentModel;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class OptionLayout: INotifyPropertyChanged
+    public abstract class Formatting: INotifyPropertyChanged
     {
         //Fields
         #region
-        protected int _height;
-        protected int _width;
+        private int _height;
+        private int _width;
 
-        protected int _controlwidth;
-        protected Thickness _controlmargin;
-        protected Thickness _controlpadding;
-        protected VerticalAlignment _controlverticalalign;        
+        private Thickness _margin;
+        private Thickness _padding;
+        private VerticalAlignment _verticalalign;
+        private HorizontalAlignment _horizontalalign;
 
-        protected string _labeltext;
-        protected int _labelwidth;
-        protected Thickness _labelmargin;
-        protected Thickness _labelpadding;
-        protected VerticalAlignment _labelverticalalign;        
-
-        protected bool _isenabled = true;
-        protected bool _ishidden = false;
-        protected Visibility _visibility = Visibility.Visible;
+        private bool _isenabled = true;
+        private bool _ishidden = false;
+        private Visibility _visibility = Visibility.Visible;
         #endregion
 
         //Properties
@@ -84,58 +78,28 @@ namespace TsGui.View.GuiOptions
             set { this._width = value; this.OnPropertyChanged(this, "Width"); }
         }
 
-        public int LabelWidth
+        public Thickness Margin
         {
-            get { return this._labelwidth; }
-            set { this._labelwidth = value; this.OnPropertyChanged(this, "LabelWidth"); }
+            get { return this._margin; }
+            set { this._margin = value; this.OnPropertyChanged(this, "Margin"); }
         }
 
-        public string LabelText
+        public Thickness Padding
         {
-            get { return this._labeltext; }
-            set { this._labeltext = value; this.OnPropertyChanged(this, "LabelText"); }
+            get { return this._padding; }
+            set { this._padding = value; this.OnPropertyChanged(this, "Padding"); }
         }
 
-        public Thickness LabelMargin
+        public VerticalAlignment VerticalAlign
         {
-            get { return this._labelmargin; }
-            set { this._labelmargin = value; this.OnPropertyChanged(this, "LabelMargin"); }
+            get { return this._verticalalign; }
+            set { this._verticalalign = value; this.OnPropertyChanged(this, "VerticalAlign"); }
         }
 
-        public Thickness LabelPadding
+        public HorizontalAlignment HorizontalAlign
         {
-            get { return this._labelpadding; }
-            set { this._labelpadding = value; this.OnPropertyChanged(this, "LabelPadding"); }
-        }
-
-        public VerticalAlignment LabelVerticalAlign
-        {
-            get { return this._labelverticalalign; }
-            set { this._labelverticalalign = value; this.OnPropertyChanged(this, "LabelVerticalAlign"); }
-        }
-
-        public VerticalAlignment ControlVerticalAlign
-        {
-            get { return this._controlverticalalign; }
-            set { this._controlverticalalign = value; this.OnPropertyChanged(this, "ControlVerticalAlign"); }
-        }
-
-        public int ControlWidth
-        {
-            get { return this._controlwidth; }
-            set { this._controlwidth = value; this.OnPropertyChanged(this, "ControlWidth"); }
-        }
-
-        public Thickness ControlPadding
-        {
-            get { return this._controlpadding; }
-            set { this._controlpadding = value; this.OnPropertyChanged(this, "ControlPadding"); }
-        }
-
-        public Thickness ControlMargin
-        {
-            get { return this._controlmargin; }
-            set { this._controlmargin = value; this.OnPropertyChanged(this, "ControlMargin"); }
+            get { return this._horizontalalign; }
+            set { this._horizontalalign = value; this.OnPropertyChanged(this, "HorizontalAlign"); }
         }
         #endregion
 
@@ -156,13 +120,9 @@ namespace TsGui.View.GuiOptions
         {
             //Load the XML
             #region
-            this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
             this.Height = XmlHandler.GetIntFromXElement(InputXml, "Height", this.Height);
             this.Width = XmlHandler.GetIntFromXElement(InputXml, "Width", this.Width);
-            this.ControlWidth = XmlHandler.GetIntFromXElement(InputXml, "ControlWidth", this.ControlWidth);
-            this.ControlPadding = XmlHandler.GetThicknessFromXElement(InputXml, "ControlPadding", 0);
-            this.LabelWidth = XmlHandler.GetIntFromXElement(InputXml, "LabelWidth", this.LabelWidth);
-            this.LabelPadding = XmlHandler.GetThicknessFromXElement(InputXml, "LabelPadding", 0);
+            this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", 0);
 
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
