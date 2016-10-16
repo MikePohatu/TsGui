@@ -75,6 +75,7 @@
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
     <Compile Include="Control\ControlDelegates.cs" />
+    <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="GuiOptions\OptionGrid.xaml.cs">
       <DependentUpon>OptionGrid.xaml</DependentUpon>
     </Compile>
