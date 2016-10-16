@@ -18,10 +18,11 @@
 
 using System.ComponentModel;
 using System.Xml.Linq;
+using TsGui.Grouping;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class GuiOptionBase : INotifyPropertyChanged
+    public abstract class GuiOptionBase : GroupableBase, INotifyPropertyChanged
     {
         protected MainController _controller;
 
@@ -46,9 +47,9 @@ namespace TsGui.View.GuiOptions
 
         public GuiOptionBase()
         {
-            this.LabelFormatting = new Formatting();
-            this.ControlFormatting = new Formatting();
-            this.GridFormatting = new Formatting();
+            this.LabelFormatting = new Formatting(this);
+            this.ControlFormatting = new Formatting(this);
+            this.GridFormatting = new Formatting(this);
         }
 
         protected void LoadBaseXml(XElement InputXml)
@@ -75,18 +76,5 @@ namespace TsGui.View.GuiOptions
                 { this.GridFormatting.LoadXml(x); }
             }
         }
-
-        //Event handling
-        #region
-        //Setup the INotifyPropertyChanged interface 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // OnPropertyChanged method to raise the event
-        public void OnPropertyChanged(object sender, string name)
-        {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-        }
-        #endregion
-
     }
 }

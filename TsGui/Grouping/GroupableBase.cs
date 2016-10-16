@@ -15,11 +15,12 @@
 
 // GroupableBase.cs - base class for grouable objects
 
+using System.ComponentModel;
 using System.Collections.Generic;
 
 namespace TsGui.Grouping
 {
-    public abstract class GroupableBase: IGroupable
+    public abstract class GroupableBase: IGroupable, INotifyPropertyChanged
     {
         protected bool _enabled = true;
         protected bool _hidden = false;
@@ -34,12 +35,12 @@ namespace TsGui.Grouping
         public bool IsEnabled
         {
             get { return this._enabled; }
-            set {this._enabled = value;  }
+            set {this._enabled = value; this.OnPropertyChanged(this, "IsEnabled"); }
         }
         public bool IsHidden
         {
             get { return this._hidden; }
-            set { this._hidden = value;}
+            set { this._hidden = value; this.OnPropertyChanged(this, "IsHidden"); }
         }
         public bool IsActive
         {
@@ -54,12 +55,12 @@ namespace TsGui.Grouping
         //Events
         #region
         //Setup the INotifyPropertyChanged interface 
-        //public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        //protected void OnPropertyChanged(object sender, string name)
-        //{
-        //    PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-        //}
+        protected void OnPropertyChanged(object sender, string name)
+        {
+            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
+        }
 
         //public event ParentHide ParentHide;
         //public event ParentEnable ParentEnable;

@@ -26,6 +26,7 @@ namespace TsGui.View.GuiOptions
     {
         //Fields
         #region
+        private IGroupable _parent;
         private int _height;
         private int _width;
 
@@ -38,6 +39,14 @@ namespace TsGui.View.GuiOptions
         private bool _ishidden = false;
         private Visibility _visibility = Visibility.Visible;
         #endregion
+
+        //constructors
+        public Formatting(IGroupable Parent)
+        {
+            //register for property changes in the parent. 
+            this._parent = Parent;
+            this._parent.PropertyChanged += this.OnParentPropertyChanged;
+        }
 
         //Properties
         #region 
@@ -137,6 +146,25 @@ namespace TsGui.View.GuiOptions
             { this.Visibility = Visibility.Collapsed; }
             else
             { this.Visibility = Visibility.Visible; }
+        }
+
+        //handle changes to properties from the parent object. required to handle
+        //group change events
+        public void OnParentPropertyChanged(object o, PropertyChangedEventArgs e)
+        {
+            //PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
+            IGroupable option = (IGroupable)o;
+            switch (e.PropertyName)
+            {
+                case "IsEnabled":
+                    this.IsEnabled = option.IsEnabled;
+                    break;
+                case "IsHidden":
+                    this.IsHidden = option.IsHidden;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

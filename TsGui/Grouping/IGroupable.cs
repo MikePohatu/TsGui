@@ -15,6 +15,7 @@
 
 // IGroupable.cs - interface defines elements that can be added to a Group object
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace TsGui
 {
@@ -29,6 +30,7 @@ namespace TsGui
         int GroupCount { get; }
 
         void OnGroupStateChange();
+        event PropertyChangedEventHandler PropertyChanged;
         //void OnGroupDisplay(bool Display);
         //void OnGroupEnable(bool Enable);
     }
