@@ -20,6 +20,7 @@ using System;
 using System.Xml.Linq;
 using System.Windows;
 using TsGui.View.Layout;
+using TsGui.View.GuiOptions;
 
 namespace TsGui
 {
@@ -66,6 +67,20 @@ namespace TsGui
             #endregion
         }
 
+
+        public static IGuiOption_2 CreateGuiOption_2(XElement OptionXml, MainController RootController)
+        {
+            #region
+            if (OptionXml.Attribute("Type").Value == "TextBlock")
+            {
+                TsTextBlock tb = new TsTextBlock(OptionXml, RootController);
+                return tb;
+            }
+
+            else
+            { return null; }
+            #endregion
+        }
 
         //pass in the xml and set the thickness according to the xml values
         public static void LoadMargins(XElement InputXml, Thickness Margin)

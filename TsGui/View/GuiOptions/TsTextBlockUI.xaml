@@ -8,10 +8,10 @@
              d:DesignHeight="40" d:DesignWidth="200">
     <Grid x:Name="MainGrid" Height="{Binding Height}" Width="{Binding Width}" Visibility="{Binding Visibility}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="LabelColumn" Width="{Binding Width}"/>
-            <ColumnDefinition x:Name="ControlColumn" Width="{Binding Width}"/>
+            <ColumnDefinition x:Name="LabelColumn" Width="{Binding LabelFormatting.Width}"/>
+            <ColumnDefinition x:Name="ControlColumn" Width="{Binding ControlFormatting.Width}"/>
         </Grid.ColumnDefinitions>
         <Label x:Name="Label" Content="{Binding LabelText}" Grid.Column="0" HorizontalAlignment="Left" Margin="{Binding LabelFormatting.Margin}" VerticalAlignment="{Binding LabelFormatting.VerticalAlign}" Padding="{Binding LabelFormatting.Padding}"/>
-        <TextBlock x:Name="Control" Text="{Binding Value}" Grid.Column="1" HorizontalAlignment="Left" Margin="{Binding ControlFormatting.Margin}" TextWrapping="Wrap" VerticalAlignment="{Binding ControlFormatting.VerticalAlign}" Padding="{Binding ControlFormatting.Padding}" Height="Auto" Width="Auto"/>
+        <TextBlock x:Name="Control" Text="{Binding ControlText}" Grid.Column="1" HorizontalAlignment="Left" Margin="{Binding ControlFormatting.Margin}" TextWrapping="Wrap" VerticalAlignment="{Binding ControlFormatting.VerticalAlign}" Padding="{Binding ControlFormatting.Padding}" Height="Auto" Width="Auto"/>
     </Grid>
 </UserControl>

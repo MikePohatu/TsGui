@@ -104,7 +104,6 @@ namespace TsGui
             return new Thickness(i, i, i, i);
         }
 
-        
         //XAttribute functions
         public static string GetStringFromXAttribute(XElement InputXml, string XName, string DefaultValue)
         {

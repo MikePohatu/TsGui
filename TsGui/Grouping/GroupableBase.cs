@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace TsGui.Grouping
 {
-    public abstract class GroupableBase: IGroupable, INotifyPropertyChanged
+    public abstract class GroupableBase: IGroupable, IGroupChild, INotifyPropertyChanged
     {
         protected bool _enabled = true;
         protected bool _hidden = false;
@@ -62,6 +62,15 @@ namespace TsGui.Grouping
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
 
+        public void OnParentHide(bool Hide)
+        {
+            GroupingLogic.OnParentHide(this, Hide);
+        }
+
+        public void OnParentEnable(bool Enable)
+        {
+            GroupingLogic.OnParentEnable(this, Enable);
+        }
         //public event ParentHide ParentHide;
         //public event ParentEnable ParentEnable;
         #endregion

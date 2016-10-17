@@ -23,6 +23,7 @@ using System.Linq;
 using System.Windows;
 using System.ComponentModel;
 using TsGui.View.Layout;
+using TsGui.View.GuiOptions;
 
 namespace TsGui
 {
@@ -211,7 +212,7 @@ namespace TsGui
 
         //add options from sub classes to the main library. used to generate the final list of 
         //tsvariables
-        public void AddOptionToLibary(IGuiOption Option)
+        public void AddOptionToLibary(IGuiOption_2 Option)
         {
             this._optionlibrary.Add(Option);
         }
@@ -288,7 +289,7 @@ namespace TsGui
         //finish and create the TS Variables
         public void Finish()
         {
-            foreach (IGuiOption option in this._optionlibrary.Options)
+            foreach (IGuiOption_2 option in this._optionlibrary.Options)
             {
                 //first check for null option variables e.g. for headings
                 if (option.Variable != null)

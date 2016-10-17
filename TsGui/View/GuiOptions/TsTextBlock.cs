@@ -16,31 +16,28 @@
 // TsTextBlock.cs - multi-line textblock for user input
 
 
-using System.ComponentModel;
 using System.Xml.Linq;
 using System.Windows.Controls;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsTextBlock: GuiOptionBase
+    public class TsTextBlock: GuiOptionBase, IGuiOption_2
     {
-        private MainController _controller;
         private TsTextBlockUI _ui;
-        private string _value;
-        private string _labeltext;
-        private string _helptext;
+        private string _controltext;
 
         //standard stuff
-        public Grid Grid { get { return this._ui.MainGrid; } }
+        public UserControl Control { get { return this._ui; } }
 
         //Custom stuff for control
-        public string Value
+        public string ControlText
         {
-            get { return this._value; }
-            set { this._value = value; this.OnPropertyChanged(this, "Value"); }
+            get { return this._controltext; }
+            set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
         }
         public int MaxLength { get; set; }
         public string DisallowedCharacters { get; set; }
+        public TsVariable Variable { get { return null; } }
 
         //public TsColumn Parent { get; set; }
 
@@ -59,6 +56,7 @@ namespace TsGui.View.GuiOptions
             XElement x;
 
             this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", 32760);
+            this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
 
             x = InputXml.Element("Disallowed");
             if (x != null)
@@ -69,12 +67,12 @@ namespace TsGui.View.GuiOptions
             x = InputXml.Element("DisplayValue");
             if (x != null)
             {
-                this.Value = this._controller.GetValueFromList(x);
-                if (this.Value == null) { this.Value = string.Empty; }
+                this.ControlText = this._controller.GetValueFromList(x);
+                if (this.ControlText == null) { this.ControlText = string.Empty; }
 
                 //if required, remove invalid characters and truncate
-                if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.Value = ResultValidator.RemoveInvalid(this.Value, this.DisallowedCharacters); }
-                if (this.MaxLength > 0) { this.Value = ResultValidator.Truncate(this.Value, this.MaxLength); }
+                if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this.DisallowedCharacters); }
+                if (this.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
             }
         }
     }

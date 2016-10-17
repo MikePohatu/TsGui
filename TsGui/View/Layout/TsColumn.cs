@@ -23,6 +23,7 @@ using System.Windows.Data;
 using System.ComponentModel;
 
 using TsGui.View.Layout;
+using TsGui.View.GuiOptions;
 
 namespace TsGui
 {
@@ -32,15 +33,17 @@ namespace TsGui
         private bool _purgeInactive;
         private List<Group> _groups = new List<Group>();
         private bool _hidden = false;
-        private List<IGuiOption> _options = new List<IGuiOption>();
-        private Grid _columngrid;
+        //private List<IGuiOption> _options = new List<IGuiOption>();
+        private List<IGuiOption_2> _options = new List<IGuiOption_2>();
+        //private Grid _columngrid;
+        private StackPanel _columnpanel;
         private bool _gridlines;
         private GridLength _labelwidth;
         private GridLength _controlwidth;
         private GridLength _fullwidth;
         private MainController _controller;
-        private ColumnDefinition _coldefControls;
-        private ColumnDefinition _coldefLabels;
+        //private ColumnDefinition _coldefControls;
+        //private ColumnDefinition _coldefLabels;
         private TsRow _parent;
 
         //properties
@@ -96,8 +99,8 @@ namespace TsGui
             }
         }
         public int Index { get; set; }
-        public List<IGuiOption> Options { get { return this._options; } }
-        public Panel Panel { get { return this._columngrid; } }
+        public List<IGuiOption_2> Options { get { return this._options; } }
+        public Panel Panel { get { return this._columnpanel; } }
         public bool IsEnabled
         {
             get { return this._enabled; }
@@ -137,31 +140,32 @@ namespace TsGui
             this._controller = RootController;
             this._parent = Parent;
             this.Index = PageIndex;
-            this._columngrid = new Grid();
+            //this._columngrid = new Grid();
+            this._columnpanel = new StackPanel();
 
-            this._columngrid.Margin = new Thickness(0);
-            this._coldefControls = new ColumnDefinition();
-            this._coldefLabels = new ColumnDefinition();
+            //this._columngrid.Margin = new Thickness(0);
+            //this._coldefControls = new ColumnDefinition();
+            //this._coldefLabels = new ColumnDefinition();
 
-            this._columngrid.DataContext = this;
-            this._columngrid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
+            //this._columngrid.DataContext = this;
+            //this._columngrid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
 
-            this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
-            this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
-            this._coldefControls.SetBinding(ColumnDefinition.WidthProperty, new Binding("ControlWidth"));
+            //this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
+            //this._coldefLabels.SetBinding(ColumnDefinition.WidthProperty, new Binding("LabelWidth"));
+            //this._coldefControls.SetBinding(ColumnDefinition.WidthProperty, new Binding("ControlWidth"));
 
             //Set defaults
-            this._columngrid.VerticalAlignment = VerticalAlignment.Top;
+            //this._columngrid.VerticalAlignment = VerticalAlignment.Top;
 
-            this._columngrid.ColumnDefinitions.Add(this._coldefLabels);
-            this._columngrid.ColumnDefinitions.Add(this._coldefControls);
+            //this._columngrid.ColumnDefinitions.Add(this._coldefLabels);
+            //this._columngrid.ColumnDefinitions.Add(this._coldefControls);
 
             this._purgeInactive = false;
             this.DisabledParentCount = 0;
             this.HiddenParentCount = 0;
 
             this.LoadXml(SourceXml);
-            this.Build();
+            //this.Build();
         }
         #endregion
 
@@ -197,7 +201,7 @@ namespace TsGui
         private void LoadXml(XElement InputXml)
         {
             IEnumerable<XElement> xlist;
-            IGuiOption newOption;
+            IGuiOption_2 newOption;
             bool purgeset = false;
 
             this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
@@ -222,10 +226,11 @@ namespace TsGui
             {
                 foreach (XElement xOption in xlist)
                 {
-                    newOption = GuiFactory.CreateGuiOption(xOption,this._parent.Parent,this._controller);
+                    newOption = GuiFactory.CreateGuiOption_2(xOption,this._controller);
                     if (purgeset == true) { newOption.PurgeInactive = this.PurgeInactive; }
                     this._options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);
+                    this._columnpanel.Children.Add(newOption.Control);
 
                     //register for events
                     this.ParentEnable += newOption.OnParentEnable;
@@ -236,38 +241,38 @@ namespace TsGui
         }
 
 
-        public void Build()
-        {
-            int index = 0;
-            double width =0;
+        //public void Build()
+        //{
+        //    int index = 0;
+        //    double width =0;
             
             
-            foreach (IGuiOption option in this._options)
-            {
-                //option.Control.Margin = this._margin;
-                //option.Label.Margin = this._margin;
+        //    foreach (IGuiOption option in this._options)
+        //    {
+        //        //option.Control.Margin = this._margin;
+        //        //option.Label.Margin = this._margin;
 
-                RowDefinition coldefRow = new RowDefinition();
-                coldefRow.Height = GridLength.Auto;
-                //coldefRow.Height = new GridLength(option.Height + option.Margin.Top + option.Margin.Bottom) ;
-                this._columngrid.RowDefinitions.Add(coldefRow);
+        //        RowDefinition coldefRow = new RowDefinition();
+        //        coldefRow.Height = GridLength.Auto;
+        //        //coldefRow.Height = new GridLength(option.Height + option.Margin.Top + option.Margin.Bottom) ;
+        //        this._columngrid.RowDefinitions.Add(coldefRow);
 
-                Grid.SetColumn(option.Label, 0);
-                Grid.SetColumn(option.Control, 1);
-                Grid.SetRow(option.Label, index);
-                Grid.SetRow(option.Control, index);
+        //        Grid.SetColumn(option.Label, 0);
+        //        Grid.SetColumn(option.Control, 1);
+        //        Grid.SetRow(option.Label, index);
+        //        Grid.SetRow(option.Control, index);
 
-                this._columngrid.Children.Add(option.Label);
-                this._columngrid.Children.Add(option.Control);
+        //        this._columngrid.Children.Add(option.Label);
+        //        this._columngrid.Children.Add(option.Control);
 
-                //Debug.WriteLine("Control width (" + option.Label.Content + "): " + width);
-                if (width < option.Control.Width)
-                {                   
-                    width = option.Control.Width;
-                }
+        //        //Debug.WriteLine("Control width (" + option.Label.Content + "): " + width);
+        //        if (width < option.Control.Width)
+        //        {                   
+        //            width = option.Control.Width;
+        //        }
 
-                index++;
-            }
-        }
+        //        index++;
+        //    }
+        //}
     }
 }

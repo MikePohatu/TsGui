@@ -83,6 +83,7 @@
     <Compile Include="GuiOptions\TsInfoBox.cs" />
     <Compile Include="PageLayout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
+    <Compile Include="View\GuiOptions\IGuiOption_2.cs" />
     <Compile Include="View\GuiOptions\TsTextBlock.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
     <Compile Include="Queries\ResultValidator.cs" />

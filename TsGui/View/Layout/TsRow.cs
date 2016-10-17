@@ -22,6 +22,8 @@ using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
 
+using TsGui.View.GuiOptions;
+
 namespace TsGui.View.Layout
 {
     public class TsRow : IGroupParent, IGroupChild, INotifyPropertyChanged
@@ -35,12 +37,12 @@ namespace TsGui.View.Layout
         private MainController _controller;
         private List<TsColumn> _columns = new List<TsColumn>();
         private TsPage _parent;
-        private List<IGuiOption> _options = new List<IGuiOption>();
+        private List<IGuiOption_2> _options = new List<IGuiOption_2>();
         private double _height;
 
         //properties
         #region
-        public List<IGuiOption> Options { get { return this._options; } }
+        public List<IGuiOption_2> Options { get { return this._options; } }
         public TsPage Parent { get { return this._parent; } }
         public List<Group> Groups { get { return this._groups; } }
         public int GroupCount { get { return this._groups.Count; } }

@@ -25,6 +25,8 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 
+using TsGui.View.GuiOptions;
+
 namespace TsGui.View.Layout
 {
     public class TsPage: IGroupParent, ITsGuiElement, INotifyPropertyChanged
@@ -42,7 +44,7 @@ namespace TsGui.View.Layout
         private SolidColorBrush _headingFontColor;
         private Thickness _margin = new Thickness(0, 0, 0, 0);
         private List<TsRow> _rows = new List<TsRow>();
-        private List<IGuiOption> _options = new List<IGuiOption>();
+        private List<IGuiOption_2> _options = new List<IGuiOption_2>();
         private List<IEditableGuiOption> _editables = new List<IEditableGuiOption>();
         private Grid _pagepanel;
         private PageLayout _pagelayout;
@@ -199,7 +201,7 @@ namespace TsGui.View.Layout
                 this.Update();
             }
         }        
-        public List<IGuiOption> Options { get { return this._options; } }
+        public List<IGuiOption_2> Options { get { return this._options; } }
         public PageLayout Page { get { return this._pagelayout; } }
         public bool IsFirst
         {
@@ -399,7 +401,7 @@ namespace TsGui.View.Layout
                 this._options.AddRange(row.Options);
             }
 
-            foreach (IGuiOption option in this._options)
+            foreach (IGuiOption_2 option in this._options)
             {
                 if (option is IEditableGuiOption) { this._editables.Add((IEditableGuiOption)option); }
             }

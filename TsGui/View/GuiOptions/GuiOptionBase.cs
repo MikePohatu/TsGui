@@ -43,7 +43,9 @@ namespace TsGui.View.GuiOptions
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
         public Formatting GridFormatting { get; set; }
+        public string InactiveValue { get; set; }
         public string VariableName { get; set; }
+        public bool PurgeInactive { get; set; }
 
         public GuiOptionBase()
         {

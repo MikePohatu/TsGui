@@ -17,16 +17,17 @@
 // the app
 
 using System.Collections.Generic;
+using TsGui.View.GuiOptions;
 
 namespace TsGui
 {
     class OptionLibrary
     {
-        private List<IGuiOption> _options = new List<IGuiOption>();
+        private List<IGuiOption_2> _options = new List<IGuiOption_2>();
 
-        public List<IGuiOption> Options { get { return this._options; } }
+        public List<IGuiOption_2> Options { get { return this._options; } }
 
-        public void Add(IGuiOption Option)
+        public void Add(IGuiOption_2 Option)
         {
             this._options.Add(Option);
         }

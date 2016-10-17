@@ -13,13 +13,19 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// IGroupChild.cs - interface for child elements i.e. columns and TSGuiOptions. 
+// IGuiOption_2.cs - controls to apply to the gui. 
 
-namespace TsGui
+using System.Windows.Controls;
+using System.Windows;
+
+namespace TsGui.View.GuiOptions
 {
-    public interface IGroupChild: IGroupable
+    public interface IGuiOption_2: IGroupChild
     {
-        void OnParentHide(bool Hide);
-        void OnParentEnable(bool Enable);
+        TsVariable Variable { get; }
+        string VariableName { get; }
+        string InactiveValue { get; }
+        UserControl Control { get; }
+        bool PurgeInactive { get; set; }
     }
 }

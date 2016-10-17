@@ -27,8 +27,8 @@ namespace TsGui.View.GuiOptions
         //Fields
         #region
         private IGroupable _parent;
-        private int _height;
-        private int _width;
+        private GridLength _height = GridLength.Auto;
+        private GridLength _width = GridLength.Auto;
 
         private Thickness _margin;
         private Thickness _padding;
@@ -75,13 +75,13 @@ namespace TsGui.View.GuiOptions
             get { return this._visibility; }
             set { this._visibility = value; this.OnPropertyChanged(this, "Visibility"); }
         }
-        public int Height
+        public GridLength Height
         {
             get { return this._height; }
             set { this._height = value; this.OnPropertyChanged(this, "Height"); }
         }
 
-        public int Width
+        public GridLength Width
         {
             get { return this._width; }
             set { this._width = value; this.OnPropertyChanged(this, "Width"); }
@@ -129,8 +129,8 @@ namespace TsGui.View.GuiOptions
         {
             //Load the XML
             #region
-            this.Height = XmlHandler.GetIntFromXElement(InputXml, "Height", this.Height);
-            this.Width = XmlHandler.GetIntFromXElement(InputXml, "Width", this.Width);
+            this.Height = XmlHandler.GetGridLengthFromXElement(InputXml, "Height", this.Height);
+            this.Width = XmlHandler.GetGridLengthFromXElement(InputXml, "Width", this.Width);
             this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", 0);
             this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", 0);
 
