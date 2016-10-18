@@ -26,7 +26,6 @@ namespace TsGui.View.GuiOptions
     {
         //Fields
         #region
-        private IGroupable _parent;
         private GridLength _height = GridLength.Auto;
         private GridLength _width = GridLength.Auto;
 
@@ -44,8 +43,7 @@ namespace TsGui.View.GuiOptions
         public Formatting(IGroupable Parent)
         {
             //register for property changes in the parent. 
-            this._parent = Parent;
-            this._parent.PropertyChanged += this.OnParentPropertyChanged;
+            Parent.PropertyChanged += this.OnParentPropertyChanged;
         }
 
         //Properties

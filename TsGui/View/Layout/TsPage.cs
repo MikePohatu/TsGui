@@ -50,6 +50,7 @@ namespace TsGui.View.Layout
         private PageLayout _pagelayout;
         private TsPage _previouspage;
         private TsPage _nextpage;
+        private TsMainWindow _parent;
 
         //private bool _islast = false;
         private bool _isfirst = false;
@@ -57,6 +58,7 @@ namespace TsGui.View.Layout
 
         //Properties
         #region
+        public TsMainWindow Parent { get { return this._parent; } }
         public List<Group> Groups { get { return this._groups; } }
         public int GroupCount { get { return this._groups.Count; } }
         public int DisabledParentCount { get; set; }
@@ -251,6 +253,7 @@ namespace TsGui.View.Layout
         {
             //Debug.WriteLine("New page constructor");
             //Debug.WriteLine(SourceXml);
+            this._parent = Defaults.Parent;
             this._controller = Defaults.RootController;
             this._pagelayout = new PageLayout(this);
             this._pagelayout.Loaded += this.OnWindowLoaded;
@@ -287,6 +290,7 @@ namespace TsGui.View.Layout
             this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
+            this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this._parent.ShowGridLines);
 
             xAttrib = InputXml.Attribute("PurgeInactive");
             if (xAttrib != null)

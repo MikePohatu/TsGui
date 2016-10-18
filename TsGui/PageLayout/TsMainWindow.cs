@@ -21,9 +21,11 @@ using System.Windows;
 using System.Windows.Media;
 using System.ComponentModel;
 
+using TsGui.View.GuiOptions;
+
 namespace TsGui
 {
-    class TsMainWindow : INotifyPropertyChanged
+    public class TsMainWindow : INotifyPropertyChanged
     {
         private double _height;        //default page height for the window
         private double _width;         //default page width for the window

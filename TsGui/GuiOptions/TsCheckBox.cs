@@ -20,6 +20,8 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
 
+using TsGui.View.GuiOptions;
+
 namespace TsGui
 {
     public class TsCheckBox: TsBaseOption, IGuiOption, IToggleControl

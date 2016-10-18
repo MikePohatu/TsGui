@@ -169,6 +169,7 @@ namespace TsGui
                 pagedef.HeadingBgColor = this._mainWindow.HeadingBgColor;
                 pagedef.HeadingFontColor = this._mainWindow.HeadingFontColor;
                 pagedef.Buttons = this._buttons;
+                pagedef.Parent = this._mainWindow;
                 pagedef.RootController = this;
 
                 //now read in the options and add to a dictionary for later use

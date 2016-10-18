@@ -20,9 +20,8 @@ using System;
 using System.Xml.Linq;
 using System.Windows;
 using TsGui.View.Layout;
-using TsGui.View.GuiOptions;
 
-namespace TsGui
+namespace TsGui.View.GuiOptions
 {
     public static class GuiFactory
     {
@@ -68,12 +67,12 @@ namespace TsGui
         }
 
 
-        public static IGuiOption_2 CreateGuiOption_2(XElement OptionXml, MainController RootController)
+        public static IGuiOption_2 CreateGuiOption_2(XElement OptionXml, TsColumn Parent, MainController RootController)
         {
             #region
             if (OptionXml.Attribute("Type").Value == "TextBlock")
             {
-                TsTextBlock tb = new TsTextBlock(OptionXml, RootController);
+                TsTextBlock tb = new TsTextBlock(OptionXml, Parent, RootController);
                 return tb;
             }
 

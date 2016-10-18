@@ -28,8 +28,10 @@ namespace TsGui.View.GuiOptions
 
         protected string _labeltext;
         protected string _helptext;
+        protected bool _showgridlines;
 
         //standard stuff
+        public TsColumn Parent { get; set; }
         public string LabelText
         {
             get { return this._labeltext; }
@@ -40,6 +42,11 @@ namespace TsGui.View.GuiOptions
             get { return this._helptext; }
             set { this._helptext = value; this.OnPropertyChanged(this, "HelpText"); }
         }
+        public bool ShowGridLines
+        {
+            get { return this._showgridlines; }
+            set { this._showgridlines = value; this.OnPropertyChanged(this, "ShowGridLines"); }
+        }
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
         public Formatting GridFormatting { get; set; }
@@ -47,8 +54,9 @@ namespace TsGui.View.GuiOptions
         public string VariableName { get; set; }
         public bool PurgeInactive { get; set; }
 
-        public GuiOptionBase()
+        public GuiOptionBase(TsColumn Parent)
         {
+            this.Parent = Parent;
             this.LabelFormatting = new Formatting(this);
             this.ControlFormatting = new Formatting(this);
             this.GridFormatting = new Formatting(this);
@@ -62,6 +70,7 @@ namespace TsGui.View.GuiOptions
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", null);
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", null);
+            this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
 
             x = InputXml.Element("Formatting");
             if (x != null)
