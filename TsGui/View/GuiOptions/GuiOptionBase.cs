@@ -57,6 +57,7 @@ namespace TsGui.View.GuiOptions
         protected void LoadBaseXml(XElement InputXml)
         {
             XElement x;
+            XElement subx;
             
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", null);
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
@@ -65,17 +66,17 @@ namespace TsGui.View.GuiOptions
             x = InputXml.Element("Formatting");
             if (x != null)
             {
-                x = x.Element("Label");
-                if (x != null)
-                { this.LabelFormatting.LoadXml(x); }
+                subx = x.Element("Label");
+                if (subx != null)
+                { this.LabelFormatting.LoadXml(subx); }
 
-                x = x.Element("Control");
-                if (x != null)
-                { this.ControlFormatting.LoadXml(x); }
+                subx = x.Element("Control");
+                if (subx != null)
+                { this.ControlFormatting.LoadXml(subx); }
 
-                x = x.Element("Grid");
-                if (x != null)
-                { this.GridFormatting.LoadXml(x); }
+                subx = x.Element("Grid");
+                if (subx != null)
+                { this.GridFormatting.LoadXml(subx); }
             }
         }
     }
