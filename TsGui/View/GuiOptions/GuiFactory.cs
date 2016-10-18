@@ -30,7 +30,7 @@ namespace TsGui.View.GuiOptions
             #region
             if (OptionXml.Attribute("Type").Value == "DropDownList")
             {
-                TsDropDownList ddl = new TsDropDownList(OptionXml, RootController);
+                TsGui.TsDropDownList ddl = new TsGui.TsDropDownList(OptionXml, RootController);
                 ParentPage.PageWindowLoaded += ddl.OnParentWindowLoaded;
                 return ddl;
 
@@ -74,6 +74,12 @@ namespace TsGui.View.GuiOptions
             {
                 TsTextBlock tb = new TsTextBlock(OptionXml, Parent, RootController);
                 return tb;
+            }
+
+            if (OptionXml.Attribute("Type").Value == "DropDownList")
+            {
+                TsDropDownList ddl = new TsDropDownList(OptionXml, Parent, RootController);
+                return ddl;
             }
 
             else

@@ -21,7 +21,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows;
 
-namespace TsGui
+namespace TsGui.View.GuiOptions
 {
     public class TsDropDownListItem: ComboBoxItem
     {

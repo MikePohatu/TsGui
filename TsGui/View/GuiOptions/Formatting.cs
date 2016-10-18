@@ -31,6 +31,7 @@ namespace TsGui.View.GuiOptions
 
         private Thickness _margin;
         private Thickness _padding;
+        
         private VerticalAlignment _verticalalign;
         private HorizontalAlignment _horizontalalign;
 
@@ -129,8 +130,8 @@ namespace TsGui.View.GuiOptions
             #region
             this.Height = XmlHandler.GetGridLengthFromXElement(InputXml, "Height", this.Height);
             this.Width = XmlHandler.GetGridLengthFromXElement(InputXml, "Width", this.Width);
-            this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", 0);
-            this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", 0);
+            this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", 2);
+            this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", 2);
 
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);

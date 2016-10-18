@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="TsGui.View.GuiOptions.TsTextBlockUI"
+﻿<UserControl x:Class="TsGui.View.GuiOptions.TsDropDownListUI"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="200">
+             d:DesignHeight="20" d:DesignWidth="300">
     <Grid x:Name="MainGrid" Height="{Binding GridFormatting.Height}" Width="{Binding GridFormatting.Width}" Visibility="{Binding GridFormatting.Visibility}" ShowGridLines="{Binding ShowGridLines}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,6 +15,6 @@
             <ColumnDefinition x:Name="ControlColumn" Width="{Binding ControlFormatting.Width}"/>
         </Grid.ColumnDefinitions>
         <Label x:Name="Label" Content="{Binding LabelText}" Grid.Column="0" Margin="{Binding LabelFormatting.Margin}" VerticalAlignment="{Binding LabelFormatting.VerticalAlign}" Padding="{Binding LabelFormatting.Padding}" HorizontalAlignment="Stretch" />
-        <TextBlock x:Name="Control" Text="{Binding ControlText}" Grid.Column="1" Margin="{Binding ControlFormatting.Margin}" TextWrapping="Wrap" VerticalAlignment="{Binding ControlFormatting.VerticalAlign}" Padding="{Binding ControlFormatting.Padding}" HorizontalAlignment="Stretch" />
+        <ComboBox x:Name="Control" ItemsSource="{Binding Options}" Grid.Column="1" Margin="{Binding ControlFormatting.Margin}" VerticalAlignment="{Binding ControlFormatting.VerticalAlign}" Padding="{Binding ControlFormatting.Padding}" HorizontalAlignment="Stretch" />
     </Grid>
 </UserControl>

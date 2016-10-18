@@ -32,6 +32,12 @@ namespace TsGui.View.GuiOptions
 
         //standard stuff
         public TsColumn Parent { get; set; }
+        public Formatting LabelFormatting { get; set; }
+        public Formatting ControlFormatting { get; set; }
+        public Formatting GridFormatting { get; set; }
+        public string InactiveValue { get; set; }
+        public string VariableName { get; set; }
+        public bool PurgeInactive { get; set; }
         public string LabelText
         {
             get { return this._labeltext; }
@@ -47,19 +53,14 @@ namespace TsGui.View.GuiOptions
             get { return this._showgridlines; }
             set { this._showgridlines = value; this.OnPropertyChanged(this, "ShowGridLines"); }
         }
-        public Formatting LabelFormatting { get; set; }
-        public Formatting ControlFormatting { get; set; }
-        public Formatting GridFormatting { get; set; }
-        public string InactiveValue { get; set; }
-        public string VariableName { get; set; }
-        public bool PurgeInactive { get; set; }
-
+        
         public GuiOptionBase(TsColumn Parent)
         {
             this.Parent = Parent;
             this.LabelFormatting = new Formatting(this);
             this.ControlFormatting = new Formatting(this);
             this.GridFormatting = new Formatting(this);
+            this.SetDefaults();
         }
 
         protected void LoadBaseXml(XElement InputXml)
@@ -71,6 +72,7 @@ namespace TsGui.View.GuiOptions
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", null);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
+            this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", string.Empty);
 
             x = InputXml.Element("Formatting");
             if (x != null)
@@ -87,6 +89,12 @@ namespace TsGui.View.GuiOptions
                 if (subx != null)
                 { this.GridFormatting.LoadXml(subx); }
             }
+        }
+
+        protected void SetDefaults()
+        {
+            this.ControlFormatting.Width = this.Parent.ControlWidth;
+            this.LabelFormatting.Width = this.Parent.LabelWidth;
         }
     }
 }

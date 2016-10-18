@@ -13,88 +13,59 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsDropDownList.cs - dropdownlist. code to be added to be able to use this as a toggle
+// TsDropDownList.cs - combobox control for user input
 
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows;
 
-using TsGui.View.GuiOptions;
-
-namespace TsGui
+namespace TsGui.View.GuiOptions
 {
-    public class TsDropDownList: TsBaseOption, IGuiOption, IToggleControl
+    public class TsDropDownList: GuiOptionBase, IGuiOption_2, IToggleControl
     {
         public event ToggleEvent ToggleEvent;
 
-        new private ComboBox _control;
+        private TsDropDownListUI _ui;
+        private string _value;
+        private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private bool _istoggle = false;
 
-        private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
+        //standard stuff
+        public UserControl Control { get { return this._ui; } }
 
-        public TsDropDownList(XElement SourceXml, MainController RootController) : base()
+
+        //Custom stuff for control
+        public List<TsDropDownListItem> Options { get { return this._options; } }
+        public TsVariable Variable
         {
-            this._controller = RootController;
-
-            this._control = new ComboBox();
-            base._control = this._control;
-
-            this._control.DataContext = this;
-            
-            this._control.SetBinding(ComboBox.IsEnabledProperty, new Binding("IsEnabled"));
-            this._control.SetBinding(ComboBox.PaddingProperty, new Binding("Padding"));
-            this._control.SetBinding(ComboBox.MarginProperty, new Binding("Margin"));
-            this._control.SetBinding(ComboBox.HeightProperty, new Binding("Height"));
-
-            this._control.VerticalAlignment = VerticalAlignment.Bottom;
-            this._visiblepadding = new Thickness(6, 2, 2, 3);
-            this.Padding = this._visiblepadding;
-
-            this._visiblemargin = new Thickness(2, 2, 2, 2);
-            this.Margin = this._visiblemargin;
-            this.Height = 20;
-
-            this.LoadXml(SourceXml);
-            this.SetDefault();
-
-            this._control.ItemsSource = this._options;
-
-            //this._controller.MainWindowLoaded += this.OnMainWindowLoaded;
-            this._control.SelectionChanged += this.OnChanged;
-        }
-
-        //properties
-        public TsVariable Variable 
-        { 
             get
             {
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                {
-                    //get the current value from the combobox
-                    this.UpdateSelected();
-                    return new TsVariable(this.VariableName, this._value);
-                }
+                { return new TsVariable(this.VariableName, this.UpdateSelected()); }
             }
         }
+        public string CurrentValue { get { return this.UpdateSelected(); } }
 
-        public string CurrentValue
+
+        //Constructor
+        public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent)
         {
-            get
-            {
-                this.UpdateSelected();
-                return this._value;
-            }
+            this._controller = MainController;
+            this._ui = new TsDropDownListUI();
+            this._ui.DataContext = this;
+            this.LoadXml(InputXml);
+            this.SetDefault();
         }
 
+
+        //Methods
         public void LoadXml(XElement InputXml)
         {
+            base.LoadBaseXml(InputXml);
             #region
-            //load the xml for the base class stuff
-            this.LoadBaseXml(InputXml);
 
             IEnumerable<XElement> inputElements = InputXml.Elements();
 
@@ -147,7 +118,7 @@ namespace TsGui
                     }
                 }
 
-                if (x.Name == "Toggle")                  
+                if (x.Name == "Toggle")
                 {
                     Toggle t = new Toggle(this, this._controller, x);
                     this._istoggle = true;
@@ -158,13 +129,14 @@ namespace TsGui
             #endregion
         }
 
-        private void UpdateSelected()
+        private string UpdateSelected()
         {
-            TsDropDownListItem selected = (TsDropDownListItem)this._control.SelectedItem;
+            TsDropDownListItem selected = (TsDropDownListItem)this._ui.Control.SelectedItem;
             this._value = selected.Value;
+            return this._value;
         }
 
-        //build the actual display control
+        //iterate through the list and set the default if found
         private void SetDefault()
         {
             int index = 0;
@@ -174,12 +146,11 @@ namespace TsGui
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list
                 if ((entry.Value == this._value) || (index == 0))
-                { this._control.SelectedItem = entry; }
+                { this._ui.Control.SelectedItem = entry; }
 
                 index++;
             }
         }
-
 
         //fire an intial event to make sure things are set correctly. This is
         //called by the controller once everything is loaded
@@ -197,8 +168,8 @@ namespace TsGui
         //and closes the dropdown so it initialises proeprly
         public void OnParentWindowLoaded()
         {
-            this._control.IsDropDownOpen = true;
-            this._control.IsDropDownOpen = false;
+            this._ui.Control.IsDropDownOpen = true;
+            this._ui.Control.IsDropDownOpen = false;
         }
     }
 }

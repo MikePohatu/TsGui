@@ -59,10 +59,7 @@ namespace TsGui.View.GuiOptions
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
 
             x = InputXml.Element("Disallowed");
-            if (x != null)
-            {
-                this.DisallowedCharacters = XmlHandler.GetStringFromXElement(x, "Characters", null);
-            }
+            if (x != null) { this.DisallowedCharacters = XmlHandler.GetStringFromXElement(x, "Characters", null); }
 
             x = InputXml.Element("DisplayValue");
             if (x != null)

@@ -57,7 +57,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -79,11 +81,15 @@
     <Compile Include="GuiOptions\OptionGrid.xaml.cs">
       <DependentUpon>OptionGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GuiOptions\TsDropDownListItem.cs" />
+    <Compile Include="View\GuiOptions\TsDropDownListItem.cs" />
     <Compile Include="GuiOptions\TsInfoBox.cs" />
     <Compile Include="PageLayout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\IGuiOption_2.cs" />
+    <Compile Include="View\GuiOptions\TsDropDownList.cs" />
+    <Compile Include="View\GuiOptions\TsDropDownListUI.xaml.cs">
+      <DependentUpon>TsDropDownListUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GuiOptions\TsTextBlock.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
     <Compile Include="Queries\ResultValidator.cs" />
@@ -148,6 +154,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\GuiOptions\TsDropDownListUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\GuiOptions\TsTextBlockUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
