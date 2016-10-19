@@ -65,6 +65,7 @@ namespace TsGui.View.GuiOptions
 
         protected void SetDefaults()
         {
+            this.GridFormatting.Width = this.Parent.Width;
             this.ControlFormatting.Width = this.Parent.ControlWidth;
             this.LabelFormatting.Width = this.Parent.LabelWidth;
         }

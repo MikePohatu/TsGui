@@ -16,6 +16,7 @@
 // Formatting.cs - view model for the layout of GuiOptions. Controls the layout and 
 // formatting options for the associated controls
 
+using System;
 using System.Windows;
 using System.Xml.Linq;
 using System.ComponentModel;
@@ -26,14 +27,14 @@ namespace TsGui.View.GuiOptions
     {
         //Fields
         #region
-        private double _height = 20;
+        private double _height = Double.NaN;
         private double _width = 100;
 
-        private Thickness _margin;
-        private Thickness _padding;
+        private Thickness _margin = new Thickness(0,0,0,0);
+        private Thickness _padding = new Thickness(2,2,2,2);
         
-        private VerticalAlignment _verticalalign;
-        private HorizontalAlignment _horizontalalign;
+        private VerticalAlignment _verticalalign = VerticalAlignment.Bottom;
+        private HorizontalAlignment _horizontalalign = HorizontalAlignment.Left;
 
         
         #endregion

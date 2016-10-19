@@ -33,9 +33,7 @@ namespace TsGui
         private bool _purgeInactive;
         private List<Group> _groups = new List<Group>();
         private bool _hidden = false;
-        //private List<IGuiOption> _options = new List<IGuiOption>();
         private List<IGuiOption_2> _options = new List<IGuiOption_2>();
-        //private Grid _columngrid;
         private StackPanel _columnpanel;
         private bool _gridlines;
         private double _labelwidth;
@@ -145,7 +143,7 @@ namespace TsGui
             this._columnpanel = new StackPanel();
             this._columnpanel.DataContext = this;
             this._columnpanel.SetBinding(StackPanel.WidthProperty, new Binding("Width"));
-            this._columnpanel.HorizontalAlignment = HorizontalAlignment.Left;
+            //this._columnpanel.HorizontalAlignment = HorizontalAlignment.Left;
 
             this._purgeInactive = false;
             this.DisabledParentCount = 0;
@@ -227,5 +225,34 @@ namespace TsGui
             }
 
         }
+
+        //public void Build()
+        //{
+        //    int rowindex = 0;
+        //    double width = 0;
+
+
+        //    foreach (IGuiOption_2 option in this._options)
+        //    {
+        //        //option.Control.Margin = this._margin;
+        //        //option.Label.Margin = this._margin;
+
+        //        RowDefinition coldefRow = new RowDefinition();
+        //        coldefRow.Height = GridLength.Auto;
+        //        //coldefRow.Height = new GridLength(option.Height + option.Margin.Top + option.Margin.Bottom) ;
+        //        this._columnpanel.RowDefinitions.Add(coldefRow);
+
+        //        Grid.SetRow(option.Control, rowindex);
+        //        this._columnpanel.Children.Add(option.Control);
+
+        //        //Debug.WriteLine("Control width (" + option.Label.Content + "): " + width);
+        //        if (width < option.Control.Width)
+        //        {
+        //            width = option.Control.Width;
+        //        }
+
+        //        rowindex++;
+        //    }
+        //}
     }
 }
