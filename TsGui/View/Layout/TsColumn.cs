@@ -38,9 +38,9 @@ namespace TsGui
         //private Grid _columngrid;
         private StackPanel _columnpanel;
         private bool _gridlines;
-        private GridLength _labelwidth;
-        private GridLength _controlwidth;
-        private GridLength _fullwidth;
+        private double _labelwidth;
+        private double _controlwidth;
+        private double _fullwidth;
         private MainController _controller;
         //private ColumnDefinition _coldefControls;
         //private ColumnDefinition _coldefLabels;
@@ -63,7 +63,7 @@ namespace TsGui
                 { option.PurgeInactive = value; }
             }
         }
-        public GridLength LabelWidth
+        public double LabelWidth
         {
             get { return this._labelwidth; }
             set
@@ -72,7 +72,7 @@ namespace TsGui
                 this.OnPropertyChanged(this, "LabelWidth");
             }
         }
-        public GridLength ControlWidth
+        public double ControlWidth
         {
             get { return this._controlwidth; }
             set
@@ -81,7 +81,7 @@ namespace TsGui
                 this.OnPropertyChanged(this, "ControlWidth");
             }
         }
-        public GridLength Width
+        public double Width
         {
             get { return this._fullwidth; }
             set
@@ -143,6 +143,9 @@ namespace TsGui
             this.Index = PageIndex;
             //this._columngrid = new Grid();
             this._columnpanel = new StackPanel();
+            this._columnpanel.DataContext = this;
+            this._columnpanel.SetBinding(StackPanel.WidthProperty, new Binding("Width"));
+            this._columnpanel.HorizontalAlignment = HorizontalAlignment.Left;
 
             this._purgeInactive = false;
             this.DisabledParentCount = 0;
@@ -189,9 +192,9 @@ namespace TsGui
             bool purgeset = false;
 
             this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
-            this.LabelWidth = XmlHandler.GetGridLengthFromXElement(InputXml, "LabelWidth", this.LabelWidth);
-            this.ControlWidth = XmlHandler.GetGridLengthFromXElement(InputXml, "ControlWidth", this.ControlWidth);
-            this.Width = XmlHandler.GetGridLengthFromXElement(InputXml, "Width", this.Width);
+            this.LabelWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LabelWidth);
+            this.ControlWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.ControlWidth);
+            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);

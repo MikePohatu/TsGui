@@ -81,6 +81,10 @@
     <Compile Include="GuiOptions\OptionGrid.xaml.cs">
       <DependentUpon>OptionGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\GuiOptions\TsCheckBox.cs" />
+    <Compile Include="View\GuiOptions\TsCheckBoxUI.xaml.cs">
+      <DependentUpon>TsCheckBoxUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GuiOptions\TsDropDownListItem.cs" />
     <Compile Include="GuiOptions\TsInfoBox.cs" />
     <Compile Include="PageLayout\PageDefaults.cs" />
@@ -154,6 +158,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\GuiOptions\TsCheckBoxUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\GuiOptions\TsDropDownListUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

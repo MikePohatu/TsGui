@@ -48,7 +48,7 @@ namespace TsGui.View.GuiOptions
 
             else if (OptionXml.Attribute("Type").Value == "CheckBox")
             {
-                return new TsCheckBox(OptionXml, RootController);
+                return new TsGui.TsCheckBox(OptionXml, RootController);
             }
 
             else if (OptionXml.Attribute("Type").Value == "Heading")
@@ -76,10 +76,16 @@ namespace TsGui.View.GuiOptions
                 return tb;
             }
 
-            if (OptionXml.Attribute("Type").Value == "DropDownList")
+            else if (OptionXml.Attribute("Type").Value == "DropDownList")
             {
                 TsDropDownList ddl = new TsDropDownList(OptionXml, Parent, RootController);
                 return ddl;
+            }
+
+            else if (OptionXml.Attribute("Type").Value == "CheckBox")
+            {
+                TsCheckBox cb = new TsCheckBox(OptionXml, Parent, RootController);
+                return cb;
             }
 
             else

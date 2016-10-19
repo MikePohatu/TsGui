@@ -64,7 +64,7 @@ namespace TsGui.View.GuiOptions
         //Methods
         public void LoadXml(XElement InputXml)
         {
-            base.LoadBaseXml(InputXml);
+            this.LoadBaseXml(InputXml);
             #region
 
             IEnumerable<XElement> inputElements = InputXml.Elements();

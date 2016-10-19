@@ -15,6 +15,7 @@
 
 // GroupableBase.cs - base class for grouable objects
 
+using System.Windows;
 using System.ComponentModel;
 using System.Collections.Generic;
 
@@ -22,36 +23,40 @@ namespace TsGui.Grouping
 {
     public abstract class GroupableBase: IGroupable, IGroupChild, INotifyPropertyChanged
     {
-        protected bool _enabled = true;
-        protected bool _hidden = false;
+        protected bool _isenabled = true;
+        protected bool _ishidden = false;
         protected List<Group> _groups = new List<Group>();
-
+        protected Visibility _visibility = Visibility.Visible;
 
         public int GroupCount { get { return this._groups.Count; } }
         public int DisabledParentCount { get; set; }
         public int HiddenParentCount { get; set; }
 
         public List<Group> Groups { get { return this._groups; } }
-        public bool IsEnabled
-        {
-            get { return this._enabled; }
-            set {this._enabled = value; this.OnPropertyChanged(this, "IsEnabled"); }
-        }
-        public bool IsHidden
-        {
-            get { return this._hidden; }
-            set { this._hidden = value; this.OnPropertyChanged(this, "IsHidden"); }
-        }
+
         public bool IsActive
         {
             get
             {
-                if ((this.IsEnabled == true) && (this.IsHidden == false))
-                { return true; }
+                if ((this.IsEnabled == true) && (this.IsHidden == false)) { return true; }
                 else { return false; }
             }
         }
-
+        public bool IsEnabled
+        {
+            get { return this._isenabled; }
+            set { this._isenabled = value; this.OnPropertyChanged(this, "IsEnabled"); }
+        }
+        public bool IsHidden
+        {
+            get { return this._ishidden; }
+            set { this.HideUnhide(value); this.OnPropertyChanged(this, "IsHidden"); }
+        }
+        public Visibility Visibility
+        {
+            get { return this._visibility; }
+            set { this._visibility = value; this.OnPropertyChanged(this, "Visibility"); }
+        }
         //Events
         #region
         //Setup the INotifyPropertyChanged interface 
@@ -71,14 +76,21 @@ namespace TsGui.Grouping
         {
             GroupingLogic.OnParentEnable(this, Enable);
         }
-        //public event ParentHide ParentHide;
-        //public event ParentEnable ParentEnable;
         #endregion
 
 
         public void OnGroupStateChange()
         {
             GroupingLogic.EvaluateGroups(this);
+        }
+
+        protected void HideUnhide(bool Hidden)
+        {
+            this._ishidden = Hidden;
+            if (Hidden == true)
+            { this.Visibility = Visibility.Collapsed; }
+            else
+            { this.Visibility = Visibility.Visible; }
         }
     }
 }

@@ -57,17 +57,23 @@ namespace TsGui.View.GuiOptions
         public GuiOptionBase(TsColumn Parent)
         {
             this.Parent = Parent;
-            this.LabelFormatting = new Formatting(this);
-            this.ControlFormatting = new Formatting(this);
-            this.GridFormatting = new Formatting(this);
+            this.LabelFormatting = new Formatting();
+            this.ControlFormatting = new Formatting();
+            this.GridFormatting = new Formatting();
             this.SetDefaults();
+        }
+
+        protected void SetDefaults()
+        {
+            this.ControlFormatting.Width = this.Parent.ControlWidth;
+            this.LabelFormatting.Width = this.Parent.LabelWidth;
         }
 
         protected void LoadBaseXml(XElement InputXml)
         {
             XElement x;
             XElement subx;
-            
+
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", null);
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", null);
@@ -89,12 +95,6 @@ namespace TsGui.View.GuiOptions
                 if (subx != null)
                 { this.GridFormatting.LoadXml(subx); }
             }
-        }
-
-        protected void SetDefaults()
-        {
-            this.ControlFormatting.Width = this.Parent.ControlWidth;
-            this.LabelFormatting.Width = this.Parent.LabelWidth;
         }
     }
 }

@@ -26,8 +26,8 @@ namespace TsGui.View.GuiOptions
     {
         //Fields
         #region
-        private GridLength _height = GridLength.Auto;
-        private GridLength _width = GridLength.Auto;
+        private double _height = 20;
+        private double _width = 100;
 
         private Thickness _margin;
         private Thickness _padding;
@@ -35,52 +35,19 @@ namespace TsGui.View.GuiOptions
         private VerticalAlignment _verticalalign;
         private HorizontalAlignment _horizontalalign;
 
-        private bool _isenabled = true;
-        private bool _ishidden = false;
-        private Visibility _visibility = Visibility.Visible;
+        
         #endregion
-
-        //constructors
-        public Formatting(IGroupable Parent)
-        {
-            //register for property changes in the parent. 
-            Parent.PropertyChanged += this.OnParentPropertyChanged;
-        }
 
         //Properties
         #region 
-        public bool IsEnabled
-        {
-            get { return this._isenabled; }
-            set { this._isenabled = value; this.OnPropertyChanged(this, "IsEnabled"); }
-        }
 
-        public bool IsHidden
-        {
-            get { return this._ishidden; }
-            set { this.HideUnhide(value); this.OnPropertyChanged(this, "IsHidden"); }
-        }
-
-        public bool IsActive
-        {
-            get
-            {
-                if ((this.IsEnabled == true) && (this.IsHidden == false)) { return true; }
-                else { return false; }
-            }
-        }
-        public Visibility Visibility
-        {
-            get { return this._visibility; }
-            set { this._visibility = value; this.OnPropertyChanged(this, "Visibility"); }
-        }
-        public GridLength Height
+        public double Height
         {
             get { return this._height; }
             set { this._height = value; this.OnPropertyChanged(this, "Height"); }
         }
 
-        public GridLength Width
+        public double Width
         {
             get { return this._width; }
             set { this._width = value; this.OnPropertyChanged(this, "Width"); }
@@ -98,16 +65,16 @@ namespace TsGui.View.GuiOptions
             set { this._padding = value; this.OnPropertyChanged(this, "Padding"); }
         }
 
-        public VerticalAlignment VerticalAlign
+        public VerticalAlignment VerticalAlignment
         {
             get { return this._verticalalign; }
-            set { this._verticalalign = value; this.OnPropertyChanged(this, "VerticalAlign"); }
+            set { this._verticalalign = value; this.OnPropertyChanged(this, "VerticalAlignment"); }
         }
 
-        public HorizontalAlignment HorizontalAlign
+        public HorizontalAlignment HorizontalAlignment
         {
             get { return this._horizontalalign; }
-            set { this._horizontalalign = value; this.OnPropertyChanged(this, "HorizontalAlign"); }
+            set { this._horizontalalign = value; this.OnPropertyChanged(this, "HorizontalAlignment"); }
         }
         #endregion
 
@@ -128,42 +95,11 @@ namespace TsGui.View.GuiOptions
         {
             //Load the XML
             #region
-            this.Height = XmlHandler.GetGridLengthFromXElement(InputXml, "Height", this.Height);
-            this.Width = XmlHandler.GetGridLengthFromXElement(InputXml, "Width", this.Width);
+            this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
+            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
             this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", 2);
             this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", 2);
-
-            this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
-            this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
             #endregion
-        }
-
-        private void HideUnhide(bool Hidden)
-        {
-            this._ishidden = Hidden;
-            if (Hidden == true)
-            { this.Visibility = Visibility.Collapsed; }
-            else
-            { this.Visibility = Visibility.Visible; }
-        }
-
-        //handle changes to properties from the parent object. required to handle
-        //group change events
-        public void OnParentPropertyChanged(object o, PropertyChangedEventArgs e)
-        {
-            //PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-            IGroupable option = (IGroupable)o;
-            switch (e.PropertyName)
-            {
-                case "IsEnabled":
-                    this.IsEnabled = option.IsEnabled;
-                    break;
-                case "IsHidden":
-                    this.IsHidden = option.IsHidden;
-                    break;
-                default:
-                    break;
-            }
         }
     }
 }
