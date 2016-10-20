@@ -17,7 +17,7 @@
 
 using System.Collections.Generic;
 
-namespace TsGui
+namespace TsGui.Queries
 {
     public class ResultWrangler
     {

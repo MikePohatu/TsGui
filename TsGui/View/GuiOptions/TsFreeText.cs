@@ -16,7 +16,7 @@
 // TsFreeText.cs - TextBox control for entering text. Can be configured to 
 // check for the validity of the entered text
 
-using TsGui.Queries;
+using TsGui.Validation;
 
 using System;
 using System.Windows;

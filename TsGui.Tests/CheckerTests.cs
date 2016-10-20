@@ -2,6 +2,8 @@
 using System.Xml.Linq;
 using System.Diagnostics;
 
+using TsGui.Validation;
+
 namespace TsGui.Tests
 {
     [TestFixture]

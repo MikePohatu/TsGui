@@ -54,7 +54,7 @@ namespace TsGui.View.GuiOptions
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
             this._controller = MainController;
-            this._controller.MainWindowLoaded += this.OnFinishedStartup;
+            this._controller.MainWindowLoaded += this.OnWindowLoad;
             this._ui = new TsDropDownListUI();
             this._ui.DataContext = this;
             this.LoadXml(InputXml);
@@ -167,7 +167,7 @@ namespace TsGui.View.GuiOptions
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
         //and closes the dropdown so it initialises proeprly
-        public void OnFinishedStartup()
+        public void OnWindowLoad()
         {
             this._ui.Control.IsDropDownOpen = true;
             this._ui.Control.IsDropDownOpen = false;

@@ -21,6 +21,9 @@ using System.Collections.Generic;
 using System.Management;
 using System;
 
+using TsGui.Queries;
+using TsGui.Validation;
+
 namespace TsGui
 {
     public class EnvironmentController

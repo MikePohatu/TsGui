@@ -32,8 +32,6 @@ namespace TsGui.View.Layout
 {
     public class TsPage: GroupableBase, IGroupParent, ITsGuiElement, INotifyPropertyChanged
     {
-        private bool _enabled = true;
-        private bool _hidden = false;
         private double _height;
         private double _width;
         private double _headingHeight;

@@ -77,12 +77,14 @@
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
     <Compile Include="Control\ControlDelegates.cs" />
-    <Compile Include="Queries\StringValidation.cs" />
+    <Compile Include="Validation\StringValidation.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="GuiOptions\OptionGrid.xaml.cs">
       <DependentUpon>OptionGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Validation\ValidationEnums.cs" />
+    <Compile Include="Validation\StringValidationRule.cs" />
     <Compile Include="View\GuiOptions\TsCheckBox.cs" />
     <Compile Include="View\GuiOptions\TsCheckBoxUI.xaml.cs">
       <DependentUpon>TsCheckBoxUI.xaml</DependentUpon>
@@ -102,7 +104,7 @@
     <Compile Include="View\GuiOptions\TsFreeText.cs" />
     <Compile Include="View\GuiOptions\TsTextBlock.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
-    <Compile Include="Queries\ResultValidator.cs" />
+    <Compile Include="Validation\ResultValidator.cs" />
     <Compile Include="Control\EnvironmentController.cs" />
     <Compile Include="Calculator\Calculator.cs" />
     <Compile Include="Queries\ResultWrangler.cs" />

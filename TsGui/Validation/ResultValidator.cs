@@ -17,7 +17,7 @@ using System;
 //using System.Diagnostics;
 using System.Xml.Linq;
 
-namespace TsGui
+namespace TsGui.Validation
 {
     public static class ResultValidator
     {

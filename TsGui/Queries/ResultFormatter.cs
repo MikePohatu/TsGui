@@ -20,7 +20,7 @@ using TsGui.Math;
 using System.Xml.Linq;
 using System;
 
-namespace TsGui
+namespace TsGui.Queries
 {
     public class ResultFormatter
     {

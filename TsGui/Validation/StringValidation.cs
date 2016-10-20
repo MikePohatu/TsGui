@@ -15,8 +15,10 @@
 
 // Validation.cs - responsible for storing rules that a string can be validated against
 using System;
+using System.Xml.Linq;
+using System.Collections.Generic;
 
-namespace TsGui.Queries
+namespace TsGui.Validation
 {
     public class StringValidation
     {
@@ -24,6 +26,7 @@ namespace TsGui.Queries
         private bool _caseSensValidate;
         private int _maxlength;
         private int _minlength;
+        private List<StringValidationRule> _rules;
 
         //Properties
 
@@ -51,6 +54,17 @@ namespace TsGui.Queries
             { this._maxlength = value; }
         }
         #endregion
+
+        public void LoadXml(XElement InputXml)
+        {
+            //Load the XML
+            #region
+            this._validateempty = XmlHandler.GetBoolFromXElement(InputXml, "ValidateEmpty", this._validateempty);
+            this._caseSensValidate = XmlHandler.GetBoolFromXElement(InputXml, "CaseSensitive", this._caseSensValidate);
+            this._maxlength = XmlHandler.GetIntFromXElement(InputXml, "MaxLength", this._maxlength);
+            this._minlength = XmlHandler.GetIntFromXElement(InputXml, "MinLength", this._minlength);
+            #endregion
+        }
 
         public bool IsValidString(string Text)
         {

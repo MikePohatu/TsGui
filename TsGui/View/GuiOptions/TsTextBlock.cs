@@ -18,6 +18,7 @@
 
 using System.Xml.Linq;
 using System.Windows.Controls;
+using TsGui.Validation;
 
 namespace TsGui.View.GuiOptions
 {

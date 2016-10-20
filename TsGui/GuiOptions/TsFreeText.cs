@@ -24,6 +24,8 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Data;
 
+using TsGui.Validation;
+
 namespace TsGui
 {
     public class TsFreeText: TsBaseOption, IGuiOption, IEditableGuiOption

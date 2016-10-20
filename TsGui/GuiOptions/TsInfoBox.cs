@@ -22,6 +22,8 @@ using System.Windows;
 using System.Windows.Data;
 using System;
 
+using TsGui.Validation;
+
 namespace TsGui
 {
     public class TsInfoBox : TsBaseOption, IGuiOption
