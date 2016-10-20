@@ -145,6 +145,7 @@ namespace TsGui
                 foreach (XElement xOption in xlist)
                 {
                     newOption = GuiFactory.CreateGuiOption_2(xOption,this,this._controller);
+                    if (newOption ==null) { continue; }
                     if (purgeset == true) { newOption.PurgeInactive = this.PurgeInactive; }
                     this._options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);

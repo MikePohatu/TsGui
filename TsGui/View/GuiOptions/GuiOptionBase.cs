@@ -80,7 +80,7 @@ namespace TsGui.View.GuiOptions
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", null);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
-            this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", string.Empty);
+            this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", "TSGUI_INACTIVE");
 
             x = InputXml.Element("Formatting");
             if (x != null)

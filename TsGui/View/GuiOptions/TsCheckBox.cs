@@ -41,7 +41,12 @@ namespace TsGui.View.GuiOptions
         public bool IsChecked
         {
             get { return this._value; }
-            set { this._value = value; this.OnPropertyChanged(this, "IsChecked"); }
+            set
+            {
+                this._value = value;
+                this.OnPropertyChanged(this, "IsChecked");
+                this.ToggleEvent?.Invoke();
+            }
         }
         public string CurrentValue
         {
@@ -107,7 +112,7 @@ namespace TsGui.View.GuiOptions
 
         private void OnChanged(object o, RoutedEventArgs e)
         {
-            this.ToggleEvent?.Invoke();
+            
         }
     }
 }
