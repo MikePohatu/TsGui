@@ -43,7 +43,7 @@ namespace TsGui.View.GuiOptions
 
             else if (OptionXml.Attribute("Type").Value == "FreeText")
             {
-                return new TsFreeText(OptionXml,RootController);
+                return new TsGui.TsFreeText(OptionXml,RootController);
             }
 
             else if (OptionXml.Attribute("Type").Value == "CheckBox")
@@ -86,6 +86,11 @@ namespace TsGui.View.GuiOptions
             {
                 TsCheckBox cb = new TsCheckBox(OptionXml, Parent, RootController);
                 return cb;
+            }
+            else if (OptionXml.Attribute("Type").Value == "FreeText")
+            {
+                TsFreeText ft = new TsFreeText(OptionXml, Parent, RootController);
+                return ft;
             }
 
             else

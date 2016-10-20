@@ -76,6 +76,7 @@ namespace TsGui.View.GuiOptions
 
             this.LoadGroupingXml(InputXml);
 
+            this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", false);
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", null);
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", null);

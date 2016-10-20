@@ -29,6 +29,8 @@ namespace TsGui
 {
     public class MainController
     {
+        public event WindowLoadedandler MainWindowLoaded;
+
         private string _configpath;
         private bool _prodmode = false;
         private bool _finished = false;
@@ -44,8 +46,6 @@ namespace TsGui
         //properties
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
-
-        public event WindowLoadedandler MainWindowLoaded;
 
         //constructors
         public MainController(MainWindow ParentWindow)
@@ -185,11 +185,11 @@ namespace TsGui
                         {
                             //record the last page as the prevPage
                             prevPage = currPage;
-                            currPage = new TsPage(xPage,pagedef);                                                     
+                            currPage = new TsPage(xPage,pagedef, this);                                                     
                         }
                         else
                         {
-                            currPage = new TsPage( xPage,pagedef);
+                            currPage = new TsPage( xPage,pagedef,this);
                             currPage.IsFirst = true;
                         }
 
@@ -385,6 +385,5 @@ namespace TsGui
             if (result == MessageBoxResult.Yes) return true;
             else return false;
         }
-   
     }
 }

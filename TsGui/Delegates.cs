@@ -13,23 +13,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// GroupDelegates.cs - Delegates for the Grouping namespace
+// Delegates.cs - Delegates for the TsGui namespace
 
 namespace TsGui
 {
-
-    public enum GroupState { Hidden, Disabled, Enabled };
-    public delegate void ToggleEvent();
-
-    /// <summary>
-    /// Event for notifying sub controls that the parents visibility has changed.
-    /// </summary>
-    /// <param name="Parent"></param>
-    /// <param name="IsEnabled"></param>
-    /// <param name="IsHidden"></param>
-    //public delegate void ParentToggleEvent(IGroupParent Parent, bool IsEnabled, bool IsHidden);
-    public delegate void GroupStateChange();
-
-    public delegate void ParentHide(bool Hide);
-    public delegate void ParentEnable(bool Enable);
+    public delegate void NotificationEvent();
 }

@@ -30,12 +30,11 @@ namespace TsGui.View.GuiOptions
         private double _height = Double.NaN;
         private double _width = Double.NaN;
 
-        private Thickness _margin = new Thickness(0,0,0,0);
+        private Thickness _margin = new Thickness(2,2,2,2);
         private Thickness _padding = new Thickness(2,2,2,2);
         
         private VerticalAlignment _verticalalign = VerticalAlignment.Bottom;
         private HorizontalAlignment _horizontalalign = HorizontalAlignment.Left;
-
         
         #endregion
 
@@ -78,7 +77,6 @@ namespace TsGui.View.GuiOptions
             set { this._horizontalalign = value; this.OnPropertyChanged(this, "HorizontalAlignment"); }
         }
         #endregion
-
 
         //Event handling
         #region

@@ -77,6 +77,8 @@
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
     <Compile Include="Control\ControlDelegates.cs" />
+    <Compile Include="Queries\StringValidation.cs" />
+    <Compile Include="Delegates.cs" />
     <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="GuiOptions\OptionGrid.xaml.cs">
       <DependentUpon>OptionGrid.xaml</DependentUpon>
@@ -94,6 +96,10 @@
     <Compile Include="View\GuiOptions\TsDropDownListUI.xaml.cs">
       <DependentUpon>TsDropDownListUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\GuiOptions\TsFreeTextUI.xaml.cs">
+      <DependentUpon>TsFreeTextUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GuiOptions\TsFreeText.cs" />
     <Compile Include="View\GuiOptions\TsTextBlock.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
     <Compile Include="Queries\ResultValidator.cs" />
@@ -138,6 +144,10 @@
       <DependentUpon>TsTextBlockUI.xaml</DependentUpon>
     </Compile>
     <Page Include="GuiOptions\OptionGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GuiOptions\TsFreeTextUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

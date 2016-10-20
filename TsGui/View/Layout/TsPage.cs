@@ -25,16 +25,15 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 
+using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsPage: IGroupParent, ITsGuiElement, INotifyPropertyChanged
+    public class TsPage: GroupableBase, IGroupParent, ITsGuiElement, INotifyPropertyChanged
     {
-        private List<Group> _groups = new List<Group>();
         private bool _enabled = true;
         private bool _hidden = false;
-        private MainController _controller;
         private double _height;
         private double _width;
         private double _headingHeight;
@@ -59,41 +58,7 @@ namespace TsGui.View.Layout
         //Properties
         #region
         public TsMainWindow Parent { get { return this._parent; } }
-        public List<Group> Groups { get { return this._groups; } }
-        public int GroupCount { get { return this._groups.Count; } }
-        public int DisabledParentCount { get; set; }
-        public int HiddenParentCount { get; set; }
         public bool PurgeInactive { get; set; }
-        public bool IsEnabled
-        {
-            get { return this._enabled; }
-            set
-            {
-                this._enabled = value;
-                this.ParentEnable?.Invoke(value);
-                this.OnPropertyChanged(this, "IsEnabled");
-            }
-        }
-        public bool IsHidden
-        {
-            get { return this._hidden; }
-            set
-            {
-                this._hidden = value;
-                this.ParentHide?.Invoke(value);
-                this.UpdatePrevious();
-                this.OnPropertyChanged(this, "IsHidden");
-            }
-        }
-        public bool IsActive
-        {
-            get
-            {
-                if ((this.IsEnabled == true) && (this.IsHidden == false))
-                { return true; }
-                else { return false; }
-            }
-        }
         public TsPage NextActivePage
         {
             get
@@ -215,25 +180,6 @@ namespace TsGui.View.Layout
         //Events
         #region
         //Setup the INotifyPropertyChanged interface 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // OnPropertyChanged method to raise the event
-        protected void OnPropertyChanged(object sender, string name)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(sender, new PropertyChangedEventArgs(name));
-            }
-        }
-
-        public event ParentHide ParentHide;
-        public event ParentEnable ParentEnable;
-
-        public void OnGroupStateChange()
-        {
-            GroupingLogic.EvaluateGroups(this);
-        }
 
         public event WindowLoadedandler PageWindowLoaded;
 
@@ -249,7 +195,7 @@ namespace TsGui.View.Layout
         #endregion
 
         //Constructors
-        public TsPage(XElement SourceXml, PageDefaults Defaults)
+        public TsPage(XElement SourceXml, PageDefaults Defaults, MainController MainController):base (MainController)
         {
             //Debug.WriteLine("New page constructor");
             //Debug.WriteLine(SourceXml);
