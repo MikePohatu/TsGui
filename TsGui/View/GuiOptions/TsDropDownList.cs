@@ -51,7 +51,7 @@ namespace TsGui.View.GuiOptions
 
 
         //Constructor
-        public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent)
+        public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
             this._controller = MainController;
             this._ui = new TsDropDownListUI();

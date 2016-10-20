@@ -24,8 +24,6 @@ namespace TsGui.View.GuiOptions
 {
     public abstract class GuiOptionBase : GroupableBase, INotifyPropertyChanged
     {
-        protected MainController _controller;
-
         protected string _labeltext;
         protected string _helptext;
         protected bool _showgridlines;
@@ -54,7 +52,7 @@ namespace TsGui.View.GuiOptions
             set { this._showgridlines = value; this.OnPropertyChanged(this, "ShowGridLines"); }
         }
         
-        public GuiOptionBase(TsColumn Parent)
+        public GuiOptionBase(TsColumn Parent, MainController MainController):base(MainController)
         {
             this.Parent = Parent;
             this.LabelFormatting = new Formatting();
@@ -68,12 +66,15 @@ namespace TsGui.View.GuiOptions
             this.GridFormatting.Width = this.Parent.Width;
             this.ControlFormatting.Width = this.Parent.ControlWidth;
             this.LabelFormatting.Width = this.Parent.LabelWidth;
+            this.ShowGridLines = this.Parent.ShowGridLines;
         }
 
         protected void LoadBaseXml(XElement InputXml)
         {
             XElement x;
             XElement subx;
+
+            this.LoadGroupingXml(InputXml);
 
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", null);
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);

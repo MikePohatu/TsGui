@@ -18,11 +18,13 @@
 using System.Windows;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace TsGui.Grouping
 {
     public abstract class GroupableBase: IGroupable, IGroupChild, INotifyPropertyChanged
     {
+        protected MainController _controller;
         protected bool _isenabled = true;
         protected bool _ishidden = false;
         protected List<Group> _groups = new List<Group>();
@@ -45,22 +47,42 @@ namespace TsGui.Grouping
         public bool IsEnabled
         {
             get { return this._isenabled; }
-            set { this._isenabled = value; this.OnPropertyChanged(this, "IsEnabled"); }
+            set
+            {
+                this._isenabled = value;
+                this.OnPropertyChanged(this, "IsEnabled");
+                this.ParentEnable?.Invoke(value);
+            }
         }
         public bool IsHidden
         {
             get { return this._ishidden; }
-            set { this.HideUnhide(value); this.OnPropertyChanged(this, "IsHidden"); }
+            set
+            {
+                this.HideUnhide(value);
+                this.OnPropertyChanged(this, "IsHidden");
+                this.ParentHide?.Invoke(value);
+            }
         }
         public Visibility Visibility
         {
             get { return this._visibility; }
             set { this._visibility = value; this.OnPropertyChanged(this, "Visibility"); }
         }
+        
+
+        //Constructor
+        public GroupableBase(MainController MainController)
+        {
+            this._controller = MainController;
+        }
+        
         //Events
         #region
         //Setup the INotifyPropertyChanged interface 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event ParentHide ParentHide;
+        public event ParentEnable ParentEnable;
 
         protected void OnPropertyChanged(object sender, string name)
         {
@@ -91,6 +113,16 @@ namespace TsGui.Grouping
             { this.Visibility = Visibility.Collapsed; }
             else
             { this.Visibility = Visibility.Visible; }
+        }
+
+        protected void LoadGroupingXml(XElement InputXml)
+        {
+            IEnumerable<XElement> xGroups = InputXml.Elements("Group");
+            if (xGroups != null)
+            {
+                foreach (XElement xGroup in xGroups)
+                { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
+            }
         }
     }
 }

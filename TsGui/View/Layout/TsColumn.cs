@@ -19,38 +19,30 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
+using System;
 using System.Windows.Data;
 using System.ComponentModel;
 
+using TsGui.Grouping;
 using TsGui.View.Layout;
 using TsGui.View.GuiOptions;
 
 namespace TsGui
 {
-    public class TsColumn : IGroupParent, IGroupChild, INotifyPropertyChanged
+    public class TsColumn : GroupableBase, IGroupParent, INotifyPropertyChanged
     {
-        private bool _enabled = true;
         private bool _purgeInactive;
-        private List<Group> _groups = new List<Group>();
-        private bool _hidden = false;
         private List<IGuiOption_2> _options = new List<IGuiOption_2>();
         private StackPanel _columnpanel;
         private bool _gridlines;
-        private double _labelwidth;
-        private double _controlwidth;
-        private double _fullwidth;
-        private MainController _controller;
-        //private ColumnDefinition _coldefControls;
-        //private ColumnDefinition _coldefLabels;
+        private double _labelwidth = Double.NaN;
+        private double _controlwidth = Double.NaN;
+        private double _fullwidth = Double.NaN;
         private TsRow _parent;
 
         //properties
         #region
         public TsRow Parent { get { return this._parent; } }
-        public List<Group> Groups { get { return this._groups; } }
-        public int GroupCount { get { return this._groups.Count; } }
-        public int DisabledParentCount { get; set; }
-        public int HiddenParentCount { get; set; }
         public bool PurgeInactive
         {
             get { return this._purgeInactive; }
@@ -100,40 +92,12 @@ namespace TsGui
         public int Index { get; set; }
         public List<IGuiOption_2> Options { get { return this._options; } }
         public Panel Panel { get { return this._columnpanel; } }
-        public bool IsEnabled
-        {
-            get { return this._enabled; }
-            set
-            {
-                this._enabled = value;
-                this.ParentEnable?.Invoke(value);
-                this.OnPropertyChanged(this, "IsEnabled");
-            }
-        }
-        public bool IsHidden
-        {
-            get { return this._hidden; }
-            set
-            {
-                this._hidden = value;
-                this.ParentHide?.Invoke(value);
-                this.OnPropertyChanged(this, "IsHidden");
-            }
-        }
-        public bool IsActive
-        {
-            get
-            {
-                if ((this.IsEnabled == true) && (this.IsHidden == false))
-                { return true; }
-                else { return false; }
-            }
-        }
+        
         #endregion
 
         //constructor
         #region
-        public TsColumn (XElement SourceXml,int PageIndex, TsRow Parent, MainController RootController)
+        public TsColumn (XElement SourceXml,int PageIndex, TsRow Parent, MainController RootController):base (RootController)
         {
 
             this._controller = RootController;
@@ -141,6 +105,7 @@ namespace TsGui
             this.Index = PageIndex;
             //this._columngrid = new Grid();
             this._columnpanel = new StackPanel();
+            this._columnpanel.Name = "_columnpanel";
             this._columnpanel.DataContext = this;
             this._columnpanel.SetBinding(StackPanel.WidthProperty, new Binding("Width"));
             //this._columnpanel.HorizontalAlignment = HorizontalAlignment.Left;
@@ -154,40 +119,14 @@ namespace TsGui
         }
         #endregion
 
-        //Setup events and handlers
-        #region
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // OnPropertyChanged method to raise the event
-        protected void OnPropertyChanged(object sender, string name)
-        {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-        }
-
-        public event ParentHide ParentHide;
-        public event ParentEnable ParentEnable;
-
-        public void OnGroupStateChange()
-        {
-            GroupingLogic.EvaluateGroups(this);
-        }
-
-        public void OnParentHide(bool Hide)
-        {           
-            GroupingLogic.OnParentHide(this, Hide);
-        }
-
-        public void OnParentEnable(bool Enable)
-        {
-            GroupingLogic.OnParentEnable(this, Enable);
-        }
-        #endregion
 
         private void LoadXml(XElement InputXml)
         {
             IEnumerable<XElement> xlist;
             IGuiOption_2 newOption;
             bool purgeset = false;
+
+            this.LoadGroupingXml(InputXml);
 
             this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
             this.LabelWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LabelWidth);
@@ -196,13 +135,6 @@ namespace TsGui
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
-
-            IEnumerable<XElement> xGroups = InputXml.Elements("Group");
-            if (xGroups != null)
-            {
-                foreach (XElement xGroup in xGroups)
-                { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
-            }
 
             //now read in the options and add to a dictionary for later use
             //do this last so the event subscriptions don't get setup too early (no toggles fired 
@@ -225,34 +157,5 @@ namespace TsGui
             }
 
         }
-
-        //public void Build()
-        //{
-        //    int rowindex = 0;
-        //    double width = 0;
-
-
-        //    foreach (IGuiOption_2 option in this._options)
-        //    {
-        //        //option.Control.Margin = this._margin;
-        //        //option.Label.Margin = this._margin;
-
-        //        RowDefinition coldefRow = new RowDefinition();
-        //        coldefRow.Height = GridLength.Auto;
-        //        //coldefRow.Height = new GridLength(option.Height + option.Margin.Top + option.Margin.Bottom) ;
-        //        this._columnpanel.RowDefinitions.Add(coldefRow);
-
-        //        Grid.SetRow(option.Control, rowindex);
-        //        this._columnpanel.Children.Add(option.Control);
-
-        //        //Debug.WriteLine("Control width (" + option.Label.Content + "): " + width);
-        //        if (width < option.Control.Width)
-        //        {
-        //            width = option.Control.Width;
-        //        }
-
-        //        rowindex++;
-        //    }
-        //}
     }
 }

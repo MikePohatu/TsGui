@@ -114,7 +114,7 @@
     <Compile Include="GuiOptions\IEditableGuiOption.cs" />
     <Compile Include="Control\ITsVariableOutput.cs" />
     <Compile Include="Grouping\IToggleControl.cs" />
-    <Compile Include="PageLayout\PageLayout.xaml.cs">
+    <Compile Include="View\Layout\PageLayout.xaml.cs">
       <DependentUpon>PageLayout.xaml</DependentUpon>
     </Compile>
     <Compile Include="GuiOptions\OptionLibrary.cs" />
@@ -141,7 +141,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PageLayout\PageLayout.xaml">
+    <Page Include="View\Layout\PageLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

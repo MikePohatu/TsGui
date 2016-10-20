@@ -41,7 +41,7 @@ namespace TsGui.View.GuiOptions
 
         //public TsColumn Parent { get; set; }
 
-        public TsTextBlock (XElement InputXml, TsColumn Parent, MainController MainController): base (Parent)
+        public TsTextBlock (XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
             this._controller = MainController;
             this._ui = new TsTextBlockUI();

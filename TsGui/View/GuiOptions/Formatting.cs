@@ -28,7 +28,7 @@ namespace TsGui.View.GuiOptions
         //Fields
         #region
         private double _height = Double.NaN;
-        private double _width = 100;
+        private double _width = Double.NaN;
 
         private Thickness _margin = new Thickness(0,0,0,0);
         private Thickness _padding = new Thickness(2,2,2,2);

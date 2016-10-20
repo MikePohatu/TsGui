@@ -32,7 +32,7 @@ namespace TsGui.View.Layout
         private bool _purgeInactive;
         private List<Group> _groups = new List<Group>();
         private bool _hidden;
-        private Grid _columngrid;
+        private Grid _rowpanel;
         private bool _gridlines;
         private MainController _controller;
         private List<TsColumn> _columns = new List<TsColumn>();
@@ -70,7 +70,7 @@ namespace TsGui.View.Layout
             set { this._height = value; this.OnPropertyChanged(this, "Height"); }
         }
         public int Index { get; set; }
-        public Panel Panel { get { return this._columngrid; } }
+        public Panel Panel { get { return this._rowpanel; } }
         public bool IsEnabled
         {
             get { return this._enabled; }
@@ -110,17 +110,17 @@ namespace TsGui.View.Layout
             this._controller = RootController;
             this._parent = ParentPage;
             this.Index = PageIndex;
-            this._columngrid = new Grid();
-
-            this._columngrid.DataContext = this;
-            this._columngrid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
+            this._rowpanel = new Grid();
+            this._rowpanel.Name = "_rowpanel";
+            this._rowpanel.DataContext = this;
+            this._rowpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
 
             //Set defaults
             this.IsEnabled = true;
             this.IsHidden = false;
             this.Height = this.Parent.Height;
 
-            this._columngrid.VerticalAlignment = VerticalAlignment.Top;
+            this._rowpanel.VerticalAlignment = VerticalAlignment.Top;
 
             this._purgeInactive = false;
             this.DisabledParentCount = 0;
@@ -212,11 +212,11 @@ namespace TsGui.View.Layout
                 ColumnDefinition coldef = new ColumnDefinition();
                 coldef.Width = GridLength.Auto;
                 //coldefRow.Height = new GridLength(option.Height + option.Margin.Top + option.Margin.Bottom) ;
-                this._columngrid.ColumnDefinitions.Add(coldef);
+                this._rowpanel.ColumnDefinitions.Add(coldef);
 
                 Grid.SetColumn(column.Panel, index);
 
-                this._columngrid.Children.Add(column.Panel);
+                this._rowpanel.Children.Add(column.Panel);
 
                 index++;
             }
