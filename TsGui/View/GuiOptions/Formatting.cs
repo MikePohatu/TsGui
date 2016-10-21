@@ -100,5 +100,18 @@ namespace TsGui.View.GuiOptions
             this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", 2);
             #endregion
         }
+
+        public Formatting Clone()
+        {
+            Formatting f = new Formatting();
+            f.Width = this.Width;
+            f.Height = this.Height;
+            f.Padding = this.Padding;
+            f.Margin = this.Margin;
+            f.HorizontalAlignment = this.HorizontalAlignment;
+            f.VerticalAlignment = this.VerticalAlignment;
+
+            return f;
+        }
     }
 }
