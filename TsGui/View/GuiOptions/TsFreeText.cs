@@ -31,7 +31,8 @@ namespace TsGui.View.GuiOptions
         private ToolTip _validationtooltip;
         private TsFreeTextUI _ui;
         private string _controltext;
-        private StringValidation _validator = new StringValidation();
+        private StringValidation _stringvalidation = new StringValidation();
+        private bool _isvalid;
 
         //Properties
         #region
@@ -44,7 +45,7 @@ namespace TsGui.View.GuiOptions
             get { return this._controltext; }
             set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
         }
-        public bool IsValid { get { return this._validator.IsValidString(this.ControlText); } }
+        public bool IsValid { get { return this._isvalid; } }
         public int MaxLength { get; set; }
         public int MinLength { get; set; }
         public string DisallowedCharacters { get; set; }
@@ -80,6 +81,12 @@ namespace TsGui.View.GuiOptions
             this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", 32760);
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
 
+            x = InputXml.Element("Validation");
+            if (x != null)
+            {
+                this._stringvalidation.LoadXml(x);
+            }
+
             x = InputXml.Element("DefaultValue");
             if (x != null)
             {
@@ -101,9 +108,11 @@ namespace TsGui.View.GuiOptions
                 if (this.ControlText == null) { this.ControlText = string.Empty; }
 
                 //if required, remove invalid characters and truncate
-                if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this.DisallowedCharacters); }
-                if (this.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
+                //if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this.DisallowedCharacters); }
+                //if (this.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
             }
+
+            this.Validate();
         }
 
         //Handle UI events
@@ -122,8 +131,8 @@ namespace TsGui.View.GuiOptions
 
         private void Validate()
         {
-            bool valid = this._validator.IsValidString(this.ControlText);
-            string s = this._validator.ValidationMessage;
+            bool valid = this._stringvalidation.IsValid(this.ControlText);
+            string s = this._stringvalidation.ValidationMessage;
             
             if (valid == false)
             {
@@ -143,11 +152,13 @@ namespace TsGui.View.GuiOptions
             {
                 this.ClearToolTips();
             }
+
+            this._isvalid = valid;
         }
 
         public void ClearToolTips()
         {
-        //    TsWindowAlerts.HideToolTip(this._validToolTip);
+            TsWindowAlerts.HideToolTip(this._validationtooltip);
         //    this._textboxBorderBrush.Color = _textboxDefaultColor;
         //    this._textboxHoverOverBrush.Color = _textboxHoverOverDefColor;
         }

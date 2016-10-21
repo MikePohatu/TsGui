@@ -15,6 +15,8 @@
 
 // ValidationRule.cs - holds the rule evaluation and type
 
+using System.Xml.Linq;
+
 namespace TsGui.Validation
 {
     public class StringValidationRule
@@ -22,5 +24,37 @@ namespace TsGui.Validation
         public StringValidationRuleType Type { get; set; }
         public string Content { get; set; }
         public bool IsCaseSensitive { get; set; }
+
+        public void LoadXml(XElement InputXml)
+        {
+            if (InputXml == null) { return; }
+            this.SetType(InputXml.Name);
+            this.Content = InputXml.Value;
+            this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(InputXml, "CaseSensitive", false);
+        }
+
+        private void SetType(XName XName)
+        {
+            switch (XName.ToString())
+            {
+                case "StartsWith":
+                    this.Type = StringValidationRuleType.StartsWith;
+                    break;
+                case "EndsWith":
+                    this.Type = StringValidationRuleType.EndsWith;
+                    break;
+                case "Contains":
+                    this.Type = StringValidationRuleType.Contains;
+                    break;
+                case "Characters":
+                    this.Type = StringValidationRuleType.Characters;
+                    break;
+                case "RegEx":
+                    this.Type = StringValidationRuleType.RegEx;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

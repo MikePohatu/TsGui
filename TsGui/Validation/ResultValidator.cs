@@ -120,15 +120,15 @@ namespace TsGui.Validation
             {
                 if (CaseSensitive == false)
                 {
-                    if (SourceString.ToUpper().Contains(c.ToString().ToUpper())) { return false; }
+                    if (SourceString.ToUpper().Contains(c.ToString().ToUpper())) { return true; }
                 }
                 else
                 {
-                    if (SourceString.Contains(c.ToString())) { return false; }
+                    if (SourceString.Contains(c.ToString())) { return true; }
                 }             
             }
 
-            return true;
+            return false;
         }
 
         /// <summary>

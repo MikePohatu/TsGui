@@ -23,22 +23,17 @@ namespace TsGui.Validation
     public class StringValidation
     {
         private bool _validateempty;
-        private bool _caseSensValidate;
         private int _maxlength;
         private int _minlength;
-        private List<StringValidationRule> _rules;
+        private List<StringValidationRule> _validrules = new List<StringValidationRule>();
+        private List<StringValidationRule> _invalidrules = new List<StringValidationRule>();
+
 
         //Properties
 
         #region
         public string ValidationMessage { get; set; }
-        public string DisallowedCharacters { get; set; }
-        public bool CaseSensitive
-        {
-            get { return this._caseSensValidate; }
-            set { this._caseSensValidate = value; }
-        }
-        protected int MinLength
+        public int MinLength
         {
             get { return this._minlength; }
             set
@@ -58,58 +53,72 @@ namespace TsGui.Validation
         public void LoadXml(XElement InputXml)
         {
             //Load the XML
+            XElement x;
+
             #region
-            this._validateempty = XmlHandler.GetBoolFromXElement(InputXml, "ValidateEmpty", this._validateempty);
-            this._caseSensValidate = XmlHandler.GetBoolFromXElement(InputXml, "CaseSensitive", this._caseSensValidate);
-            this._maxlength = XmlHandler.GetIntFromXElement(InputXml, "MaxLength", this._maxlength);
-            this._minlength = XmlHandler.GetIntFromXElement(InputXml, "MinLength", this._minlength);
+            this.ValidationMessage = XmlHandler.GetStringFromXElement(InputXml, "Message", string.Empty);
+            this._validateempty = XmlHandler.GetBoolFromXAttribute(InputXml, "ValidateEmpty", true);
+            this._maxlength = XmlHandler.GetIntFromXElement(InputXml, "MaxLength", int.MaxValue);
+            this._minlength = XmlHandler.GetIntFromXElement(InputXml, "MinLength", 0);
+
+            x = InputXml.Element("Valid");
+            if (x != null)
+            {
+                foreach (XElement subx in x.Elements())
+                {
+                    StringValidationRule newrule = new StringValidationRule();
+                    newrule.LoadXml(subx);
+                    this._validrules.Add(newrule);
+                }
+            }
+
+            x = InputXml.Element("Invalid");
+            if (x != null)
+            {
+                foreach (XElement subx in x.Elements())
+                {
+                    StringValidationRule newrule = new StringValidationRule();
+                    newrule.LoadXml(subx);
+                    this._invalidrules.Add(newrule);
+                }
+            }
             #endregion
         }
 
-        public bool IsValidString(string Text)
+
+        public bool IsValid(string Input)
         {
-            //Debug.WriteLine("Validate started. Text: " + this._control.Text);
-            string input = Text;
-            string s = "";
-            bool valid = true;
+            int length = Input.Length;
+            if ((Input.Length == 0) && (this._validateempty == false)) { return true; }
+            if ((Input.Length < this.MinLength)) { return false; }
+            if (Input.Length > this.MaxLength) { return false; }
+            if (IsValidMatched(Input) == false) { return false; }
+            if (IsInvalidMatched(Input) == true) { return false; }            
+            
+            return true;
+        }
 
-            if ((this._validateempty == false) && (string.IsNullOrEmpty(input)))
-            { valid = true; }
-            else
+
+        private bool IsInvalidMatched(string Input)
+        {
+            foreach (StringValidationRule rule in this._invalidrules)
             {
-                if (ResultValidator.DoesStringContainCharacters(input, this.DisallowedCharacters, this.CaseSensitive) != true)
-                {
-                    s = "Invalid characters: " + this.DisallowedCharacters + Environment.NewLine;
-                    valid = false;
-                }
-
-                if (ResultValidator.ValidMinLength(input, this.MinLength) == false)
-                {
-                    string charWord;
-                    if (this.MinLength == 1) { charWord = " character"; }
-                    else { charWord = " characters"; }
-
-                    s = s + "Minimum length";
-                    if (this._validateempty == false) { s = s + " if entered"; }
-                    s = s + ": " + this.MinLength + charWord + Environment.NewLine;
-                    valid = false;
-                }
+                if (ResultValidator.DoesStringMatchRule(rule, Input) == true) { return true; }
             }
+            
+            return false;
+        }
 
-            if (valid == false)
+
+        private bool IsValidMatched(string Input)
+        {
+            if (this._validrules.Count == 0) { return true; }
+
+            foreach (StringValidationRule rule in this._validrules)
             {
-                if (input.Length == 0)
-                {
-                    s = "Required" + Environment.NewLine + Environment.NewLine + s;
-                }
-                else
-                {
-                    s = "\"" + input + "\" is invalid:" + Environment.NewLine + Environment.NewLine + s;
-                }
+                if (ResultValidator.DoesStringMatchRule(rule, Input) == true) { return true; }
             }
-
-            this.ValidationMessage = s;
-            return valid;
+            return false;
         }
     }
 }
