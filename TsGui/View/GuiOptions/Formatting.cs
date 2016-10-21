@@ -20,6 +20,7 @@ using System;
 using System.Windows;
 using System.Xml.Linq;
 using System.ComponentModel;
+using System.Windows.Media;
 
 namespace TsGui.View.GuiOptions
 {
@@ -27,15 +28,14 @@ namespace TsGui.View.GuiOptions
     {
         //Fields
         #region
-        private double _height = Double.NaN;
-        private double _width = Double.NaN;
-
-        private Thickness _margin = new Thickness(2,2,2,2);
-        private Thickness _padding = new Thickness(2,2,2,2);
-        
-        private VerticalAlignment _verticalalign = VerticalAlignment.Bottom;
-        private HorizontalAlignment _horizontalalign = HorizontalAlignment.Left;
-        
+        private double _height;
+        private double _width;
+        private Thickness _margin;
+        private Thickness _padding;        
+        private VerticalAlignment _verticalalign;
+        private HorizontalAlignment _horizontalalign;
+        private SolidColorBrush _bordercolor;
+        private SolidColorBrush _hoverovercolor;
         #endregion
 
         //Properties
@@ -76,6 +76,16 @@ namespace TsGui.View.GuiOptions
             get { return this._horizontalalign; }
             set { this._horizontalalign = value; this.OnPropertyChanged(this, "HorizontalAlignment"); }
         }
+        public SolidColorBrush BorderColorBrush
+        {
+            get { return this._bordercolor; }
+            set { this._bordercolor = value; this.OnPropertyChanged(this, "BorderColor"); }
+        }
+        public SolidColorBrush HoverOverColorBrush
+        {
+            get { return this._hoverovercolor; }
+            set { this._hoverovercolor = value; this.OnPropertyChanged(this, "HoverOverColor"); }
+        }
         #endregion
 
         //Event handling
@@ -89,6 +99,26 @@ namespace TsGui.View.GuiOptions
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
         #endregion
+
+        //Constructor 
+        public Formatting()
+        {
+            this.SetDefaults();
+        }
+
+        private void SetDefaults()
+        {
+            this._height = Double.NaN;
+            this._width = Double.NaN;
+            this._margin = new Thickness(2, 2, 2, 2);
+            this._padding = new Thickness(2, 2, 2, 2);
+            this._verticalalign = VerticalAlignment.Bottom;
+            this._horizontalalign = HorizontalAlignment.Left;
+            this._bordercolor = new SolidColorBrush();
+            this._hoverovercolor = new SolidColorBrush();
+            this.BorderColorBrush.Color = (Color)ColorConverter.ConvertFromString("#FFABADB3");
+            this.HoverOverColorBrush.Color = (Color)ColorConverter.ConvertFromString("#FF3399FF");
+        }
 
         public void LoadXml(XElement InputXml)
         {

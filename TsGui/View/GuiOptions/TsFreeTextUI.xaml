@@ -15,6 +15,6 @@
             <ColumnDefinition x:Name="ControlColumn" Width="{Binding ControlFormatting.Width}"/>
         </Grid.ColumnDefinitions>
         <Label x:Name="Label" Content="{Binding LabelText}" Grid.Column="0" Margin="{Binding LabelFormatting.Margin}" VerticalAlignment="{Binding LabelFormatting.VerticalAlignment}" Padding="{Binding LabelFormatting.Padding}" HorizontalAlignment="Stretch" />
-        <TextBox x:Name="Control" Text="{Binding ControlText}" Grid.Column="1" Margin="{Binding ControlFormatting.Margin}" VerticalAlignment="{Binding ControlFormatting.VerticalAlignment}" Padding="{Binding ControlFormatting.Padding}" HorizontalAlignment="Stretch" />
+        <TextBox x:Name="Control" Text="{Binding ControlText}" Grid.Column="1" BorderBrush="{Binding ControlFormatting.BorderColor}" Margin="{Binding ControlFormatting.Margin}" VerticalAlignment="{Binding ControlFormatting.VerticalAlignment}" Padding="{Binding ControlFormatting.Padding}" HorizontalAlignment="Stretch" />
     </Grid>
 </UserControl>
