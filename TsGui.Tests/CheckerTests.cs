@@ -68,7 +68,7 @@ namespace TsGui.Tests
         [TestCase("MINIT_Test", "M", true, ExpectedResult = false)]
         public bool ValidCharactersTest(string StringValue, string InvalidChars, bool CaseSensitive)
         {
-            return ResultValidator.ValidCharacters(StringValue, InvalidChars, CaseSensitive);
+            return ResultValidator.DoesStringContainCharacters(StringValue, InvalidChars, CaseSensitive);
             
         }
 

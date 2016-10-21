@@ -236,7 +236,7 @@ namespace TsGui
             { valid = true; }
             else
             {
-                if (ResultValidator.ValidCharacters(this._control.Text, this.DisallowedCharacters, this.CaseSensitive) != true)
+                if (!ResultValidator.DoesStringContainCharacters(this._control.Text, this.DisallowedCharacters, this.CaseSensitive) != true)
                 {
                     s = "Invalid characters: " + this.DisallowedCharacters + Environment.NewLine;
                     valid = false;

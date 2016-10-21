@@ -77,7 +77,7 @@ namespace TsGui.Validation
             { valid = true; }
             else
             {
-                if (ResultValidator.ValidCharacters(input, this.DisallowedCharacters, this.CaseSensitive) != true)
+                if (ResultValidator.DoesStringContainCharacters(input, this.DisallowedCharacters, this.CaseSensitive) != true)
                 {
                     s = "Invalid characters: " + this.DisallowedCharacters + Environment.NewLine;
                     valid = false;

@@ -21,5 +21,6 @@ namespace TsGui.Validation
     {
         public StringValidationRuleType Type { get; set; }
         public string Content { get; set; }
+        public bool IsCaseSensitive { get; set; }
     }
 }

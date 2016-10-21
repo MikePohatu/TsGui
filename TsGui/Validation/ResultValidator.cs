@@ -100,31 +100,31 @@ namespace TsGui.Validation
         }
 
         /// <summary>
-        /// Find if StringValue contains invalid characters. 
-        /// Returns true if StringValue contains no invalid characters
-        /// Returns false if String value is null, or if contains invalid characters
+        /// Find if StringValue contains specified characters. 
+        /// Returns false if StringValue contains no invalid characters
+        /// Returns true if String value is null, or if contains invalid characters
         /// </summary>
-        /// <param name="StringValue"></param>
-        /// <param name="InvalidChars"></param>
+        /// <param name="Input"></param>
+        /// <param name="Characters"></param>
         /// <param name="CaseSensitive"></param>
         /// <returns></returns>
-        public static bool ValidCharacters( string StringValue, string InvalidChars, bool CaseSensitive)
+        public static bool DoesStringContainCharacters(string SourceString, string Characters, bool CaseSensitive)
         {
-            if (StringValue == null) { return false; }
-            if (string.IsNullOrEmpty(InvalidChars)) { return true; }
+            if (SourceString == null) { return false; }
+            if (string.IsNullOrEmpty(Characters)) { return true; }
             
             //Debug.WriteLine("RemoveInvalid called");
-            char[] invalidchars = InvalidChars.ToCharArray();
+            char[] invalidchars = Characters.ToCharArray();
 
             foreach (char c in invalidchars)
             {
-                if (CaseSensitive == true)
+                if (CaseSensitive == false)
                 {
-                    if (StringValue.ToUpper().Contains(c.ToString().ToUpper())) { return false; }
+                    if (SourceString.ToUpper().Contains(c.ToString().ToUpper())) { return false; }
                 }
                 else
                 {
-                    if (StringValue.Contains(c.ToString())) { return false; }
+                    if (SourceString.Contains(c.ToString())) { return false; }
                 }             
             }
 
@@ -162,5 +162,40 @@ namespace TsGui.Validation
             if (StringValue.Length >= MinLength) { return true; }
             else { return false; }
         } 
+
+
+        public static bool DoesStringMatchRule(StringValidationRule Rule, string Input)
+        {
+            bool result = false;
+            string rulestring = Rule.Content;
+            string inputstring = Input;
+            
+            if (Rule.IsCaseSensitive == false)
+            {
+                rulestring = rulestring.ToUpper();
+                inputstring = inputstring.ToUpper();
+            }
+
+            switch (Rule.Type)
+            {
+                case StringValidationRuleType.Characters:
+                    result = DoesStringContainCharacters(Input, Rule.Content, Rule.IsCaseSensitive);
+                    break;
+                case StringValidationRuleType.Contains:
+                    result = inputstring.Contains(rulestring); 
+                    break;
+                case StringValidationRuleType.EndsWith:
+                    result = inputstring.EndsWith(rulestring);          
+                    break;
+                case StringValidationRuleType.StartsWith:
+                    result = inputstring.StartsWith(rulestring);
+                    break;
+                case StringValidationRuleType.RegEx:
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
     }
 }
