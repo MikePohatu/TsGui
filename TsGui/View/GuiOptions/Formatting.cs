@@ -79,12 +79,12 @@ namespace TsGui.View.GuiOptions
         public SolidColorBrush BorderColorBrush
         {
             get { return this._bordercolor; }
-            set { this._bordercolor = value; this.OnPropertyChanged(this, "BorderColor"); }
+            set { this._bordercolor = value; this.OnPropertyChanged(this, "BorderColorBrush"); }
         }
         public SolidColorBrush HoverOverColorBrush
         {
             get { return this._hoverovercolor; }
-            set { this._hoverovercolor = value; this.OnPropertyChanged(this, "HoverOverColor"); }
+            set { this._hoverovercolor = value; this.OnPropertyChanged(this, "HoverOverColorBrush"); }
         }
         #endregion
 

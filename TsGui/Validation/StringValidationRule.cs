@@ -24,6 +24,7 @@ namespace TsGui.Validation
         public StringValidationRuleType Type { get; set; }
         public string Content { get; set; }
         public bool IsCaseSensitive { get; set; }
+        public string Message { get; set; }
 
         public void LoadXml(XElement InputXml)
         {
@@ -31,6 +32,7 @@ namespace TsGui.Validation
             this.SetType(InputXml.Name);
             this.Content = InputXml.Value;
             this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(InputXml, "CaseSensitive", false);
+            this.Message = this.Type.ToString() + " \"" + this.Content + "\"";
         }
 
         private void SetType(XName XName)

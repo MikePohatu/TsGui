@@ -46,7 +46,12 @@ namespace TsGui.View.GuiOptions
         public string ControlText
         {
             get { return this._controltext; }
-            set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
+            set
+            {
+                this._controltext = value;
+                this.OnPropertyChanged(this, "ControlText");
+                this.Validate();
+            }
         }
         public bool IsValid { get { return this._isvalid; } }
         public int MaxLength { get; set; }
@@ -70,8 +75,7 @@ namespace TsGui.View.GuiOptions
             this._controller = MainController;
             this._ui = new TsFreeTextUI();
             this._ui.DataContext = this;
-            this._ui.Control.TextChanged += this.onChange;
-            this._ui.LostFocus += this.onLoseFocus;
+            this._ui.Control.LostFocus += this.onLoseFocus;
             this.LoadXml(InputXml);
         }
 
@@ -82,6 +86,10 @@ namespace TsGui.View.GuiOptions
 
             this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", 32760);
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
+            
+            //record the colors
+            this._bordercolor = this.ControlFormatting.BorderColorBrush.Color;
+            this._hoveroverbordercolor = this.ControlFormatting.HoverOverColorBrush.Color;
 
             x = InputXml.Element("Validation");
             if (x != null)
@@ -111,27 +119,15 @@ namespace TsGui.View.GuiOptions
 
                 //if required, remove invalid characters and truncate
                 //if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this.DisallowedCharacters); }
-                //if (this.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
+                if (this.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
             }
-
-            //record the colors
-            this._bordercolor = this.ControlFormatting.BorderColorBrush.Color;
-            this._hoveroverbordercolor = this.ControlFormatting.HoverOverColorBrush.Color;
-
-            this.Validate();
         }
 
         //Handle UI events
         #region
-        public void onChange(object sender, RoutedEventArgs e)
-        {
-            this.Validate();
-        }
 
         public void onLoseFocus(object sender, RoutedEventArgs e)
-        {
-            this.Validate();
-        }
+        { this.Validate(); }
         #endregion
 
 
@@ -142,41 +138,28 @@ namespace TsGui.View.GuiOptions
             
             if (valid == false)
             {
-                if (this.ControlText.Length == 0)
-                {
-                    s = "Required" + Environment.NewLine + Environment.NewLine + s;
-                }
-                else
-                {
-                    s = "\"" + this.ControlText + "\" is invalid:" + Environment.NewLine + Environment.NewLine + s;
-                }
-
-                this.ShowInvalidToolTip(s);
-                
+                if (string.IsNullOrEmpty(s)) { s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine + Environment.NewLine + _stringvalidation.FailedValidationMessage; }
+                //{ s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine; }
+                this.ShowInvalidToolTip(s);               
             }
-            else
-            {
-                this.ClearToolTips();
-            }
+            else { this.ClearToolTips(); }
 
             this._isvalid = valid;
         }
 
+
         public void ClearToolTips()
         {
             TsWindowAlerts.HideToolTip(this._validationtooltip);
-            this.ControlFormatting.BorderColorBrush.Color = _bordercolor;
-            this.ControlFormatting.HoverOverColorBrush.Color = _hoveroverbordercolor;
+            this.ControlFormatting.BorderColorBrush.Color = this._bordercolor;
+            this.ControlFormatting.HoverOverColorBrush.Color = this._hoveroverbordercolor;
         }
+
 
         public void ShowInvalidToolTip(string Message)
         {
             this._validationtooltip = TsWindowAlerts.ShowUnboundToolTip(this._validationtooltip, this._ui.Control, Message);
             this._validationtooltip.Placement = PlacementMode.Right;
-
-            //record the current colors
-            this._bordercolor = this.ControlFormatting.BorderColorBrush.Color;
-            this._hoveroverbordercolor = this.ControlFormatting.BorderColorBrush.Color;
 
             //update the colors to red. 
             this.ControlFormatting.BorderColorBrush.Color = Colors.Red;

@@ -33,6 +33,7 @@ namespace TsGui.Validation
 
         #region
         public string ValidationMessage { get; set; }
+        public string FailedValidationMessage { get; set; }
         public int MinLength
         {
             get { return this._minlength; }
@@ -88,22 +89,47 @@ namespace TsGui.Validation
 
         public bool IsValid(string Input)
         {
-            int length = Input.Length;
+            bool result = true;
+            this.FailedValidationMessage = string.Empty;
+
             if ((Input.Length == 0) && (this._validateempty == false)) { return true; }
-            if ((Input.Length < this.MinLength)) { return false; }
-            if (Input.Length > this.MaxLength) { return false; }
-            if (IsValidMatched(Input) == false) { return false; }
-            if (IsInvalidMatched(Input) == true) { return false; }            
-            
-            return true;
+            if (IsShorterThanMinLength(Input)) { result = false; }
+            if (IsLongerThanMaxLength(Input)) { result = false; }
+            if (IsValidMatched(Input) == false) { result = false; }
+            if (IsInvalidMatched(Input) == true) { result = false; }            
+
+            return result;
         }
 
+        private bool IsShorterThanMinLength(string Input)
+        {
+            if ((Input.Length < this.MinLength))
+            {
+                this.FailedValidationMessage = this.FailedValidationMessage + "Minimum length: " + this.MinLength + " characters" + Environment.NewLine + Environment.NewLine;
+                return true;
+            }
+            else { return false; }
+        }
+
+        private bool IsLongerThanMaxLength(string Input)
+        {
+            if ((Input.Length > this.MaxLength))
+            {
+                this.FailedValidationMessage = this.FailedValidationMessage + "Maximum length: " + this.MaxLength + " characters" + Environment.NewLine + Environment.NewLine;
+                return true;
+            }
+            else { return false; }
+        }
 
         private bool IsInvalidMatched(string Input)
         {
             foreach (StringValidationRule rule in this._invalidrules)
             {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true) { return true; }
+                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
+                {
+                    this.FailedValidationMessage = this.FailedValidationMessage + "Invalid text rule matched: " + Environment.NewLine + rule.Message + Environment.NewLine + Environment.NewLine;
+                    return true;
+                }
             }
             
             return false;
@@ -114,10 +140,15 @@ namespace TsGui.Validation
         {
             if (this._validrules.Count == 0) { return true; }
 
+            string s = string.Empty;
             foreach (StringValidationRule rule in this._validrules)
             {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true) { return true; }
+                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
+                { return true; }
+                else { s = s + rule.Message + Environment.NewLine; }               
             }
+
+            this.FailedValidationMessage = this.FailedValidationMessage + "Must match one of: " + Environment.NewLine +  s + Environment.NewLine;
             return false;
         }
     }
