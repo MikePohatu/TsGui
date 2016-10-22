@@ -14,6 +14,7 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using System;
+using System.Text.RegularExpressions;
 //using System.Diagnostics;
 using System.Xml.Linq;
 
@@ -163,6 +164,11 @@ namespace TsGui.Validation
             else { return false; }
         } 
 
+        public static bool DoesRegexMatch(string Input, string Pattern, bool IsCaseSensitvie)
+        {
+            if (IsCaseSensitvie == true) { return Regex.IsMatch(Input, Pattern); }
+            else { return Regex.IsMatch(Input, Pattern, RegexOptions.IgnoreCase); }
+        }
 
         public static bool DoesStringMatchRule(StringValidationRule Rule, string Input)
         {
@@ -191,6 +197,7 @@ namespace TsGui.Validation
                     result = inputstring.StartsWith(rulestring);
                     break;
                 case StringValidationRuleType.RegEx:
+                    result = DoesRegexMatch(Input, Rule.Content, Rule.IsCaseSensitive);
                     break;
                 default:
                     break;

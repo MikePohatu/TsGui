@@ -47,7 +47,10 @@ namespace TsGui.Validation
 
         private void GenerateMessage()
         {
-            this.Message = this.Type.ToString() + ": \"" + this.Content + "\"";
+            string s;
+            s = this.Type.ToString() + ": \"" + this.Content + "\"";
+            if (this.IsCaseSensitive == true) { s = s + " (case sensitive)"; }
+            this.Message = s;
         }
 
         private void SetType(XAttribute Type)
