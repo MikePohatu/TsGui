@@ -53,7 +53,6 @@ namespace TsGui.Validation
 
         public void LoadXml(XElement InputXml)
         {
-            //Load the XML
             XElement x;
 
             #region
@@ -65,10 +64,9 @@ namespace TsGui.Validation
             x = InputXml.Element("Valid");
             if (x != null)
             {
-                foreach (XElement subx in x.Elements())
+                foreach (XElement subx in x.Elements("Rule"))
                 {
-                    StringValidationRule newrule = new StringValidationRule();
-                    newrule.LoadXml(subx);
+                    StringValidationRule newrule = new StringValidationRule(subx);
                     this._validrules.Add(newrule);
                 }
             }
@@ -76,16 +74,29 @@ namespace TsGui.Validation
             x = InputXml.Element("Invalid");
             if (x != null)
             {
-                foreach (XElement subx in x.Elements())
+                foreach (XElement subx in x.Elements("Rule"))
                 {
-                    StringValidationRule newrule = new StringValidationRule();
-                    newrule.LoadXml(subx);
+                    StringValidationRule newrule = new StringValidationRule(subx);
                     this._invalidrules.Add(newrule);
                 }
             }
             #endregion
         }
 
+        //load options from old Xml e.g. pre-0.9.5.0
+        public void LoadLegacyXml(XElement InputXml)
+        {
+            XElement x;
+            if (InputXml.Name == "Disallowed")
+            {
+                x = InputXml.Element("Characters");
+                if (x != null)
+                {
+                    StringValidationRule newrule = new StringValidationRule(StringValidationRuleType.Characters,x.Value);
+                    this._invalidrules.Add(newrule);
+                }
+            }
+        }
 
         public bool IsValid(string Input)
         {
@@ -123,16 +134,26 @@ namespace TsGui.Validation
 
         private bool IsInvalidMatched(string Input)
         {
+            bool result = false;
+            string s = string.Empty;
+
             foreach (StringValidationRule rule in this._invalidrules)
             {
                 if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
                 {
-                    this.FailedValidationMessage = this.FailedValidationMessage + "Invalid text rule matched: " + Environment.NewLine + rule.Message + Environment.NewLine + Environment.NewLine;
-                    return true;
+                    s = s + rule.Message + Environment.NewLine;
+                    result = true;
                 }
             }
+
+            if (result == true)
+            {
+                s = this.FailedValidationMessage +  "Invalid text rule matched: " + Environment.NewLine + s;
+                this.FailedValidationMessage = s;
+            }
             
-            return false;
+
+            return result;
         }
 
 

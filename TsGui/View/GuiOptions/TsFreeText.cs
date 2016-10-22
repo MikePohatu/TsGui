@@ -97,6 +97,12 @@ namespace TsGui.View.GuiOptions
                 this._stringvalidation.LoadXml(x);
             }
 
+            x = InputXml.Element("Disallowed");
+            if (x != null)
+            {
+                this._stringvalidation.LoadLegacyXml(x);
+            }
+
             x = InputXml.Element("DefaultValue");
             if (x != null)
             {

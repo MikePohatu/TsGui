@@ -26,36 +26,55 @@ namespace TsGui.Validation
         public bool IsCaseSensitive { get; set; }
         public string Message { get; set; }
 
+        public StringValidationRule() { }
+        public StringValidationRule(XElement InputXml) { this.LoadXml(InputXml); }
+        public StringValidationRule(StringValidationRuleType Type, string Content)
+        {
+            this.Type = Type;
+            this.Content = Content;
+            this.GenerateMessage();
+        }
+
         public void LoadXml(XElement InputXml)
         {
             if (InputXml == null) { return; }
-            this.SetType(InputXml.Name);
+
+            this.SetType(InputXml.Attribute("Type"));
             this.Content = InputXml.Value;
             this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(InputXml, "CaseSensitive", false);
-            this.Message = this.Type.ToString() + " \"" + this.Content + "\"";
+            this.GenerateMessage();
         }
 
-        private void SetType(XName XName)
+        private void GenerateMessage()
         {
-            switch (XName.ToString())
+            this.Message = this.Type.ToString() + ": \"" + this.Content + "\"";
+        }
+
+        private void SetType(XAttribute Type)
+        {
+            if (Type == null) { this.Type = StringValidationRuleType.StartsWith; }
+            else
             {
-                case "StartsWith":
-                    this.Type = StringValidationRuleType.StartsWith;
-                    break;
-                case "EndsWith":
-                    this.Type = StringValidationRuleType.EndsWith;
-                    break;
-                case "Contains":
-                    this.Type = StringValidationRuleType.Contains;
-                    break;
-                case "Characters":
-                    this.Type = StringValidationRuleType.Characters;
-                    break;
-                case "RegEx":
-                    this.Type = StringValidationRuleType.RegEx;
-                    break;
-                default:
-                    break;
+                switch (Type.Value)
+                {
+                    case "StartsWith":
+                        this.Type = StringValidationRuleType.StartsWith;
+                        break;
+                    case "EndsWith":
+                        this.Type = StringValidationRuleType.EndsWith;
+                        break;
+                    case "Contains":
+                        this.Type = StringValidationRuleType.Contains;
+                        break;
+                    case "Characters":
+                        this.Type = StringValidationRuleType.Characters;
+                        break;
+                    case "RegEx":
+                        this.Type = StringValidationRuleType.RegEx;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
