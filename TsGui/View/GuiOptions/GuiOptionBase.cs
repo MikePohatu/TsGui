@@ -24,18 +24,28 @@ namespace TsGui.View.GuiOptions
 {
     public abstract class GuiOptionBase : GroupableBase, INotifyPropertyChanged
     {
-        protected string _labeltext;
-        protected string _helptext;
-        protected bool _showgridlines;
+        protected string _labeltext = string.Empty;
+        protected string _helptext = string.Empty;
+        protected bool _showgridlines = false;
+        protected bool _purgeinactive = false;
+        protected string _inactivevalue = "TSGUI_INACTIVE";
 
         //standard stuff
         public TsColumn Parent { get; set; }
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
         public Formatting GridFormatting { get; set; }
-        public string InactiveValue { get; set; }
+        public string InactiveValue
+        {
+            get { return this._inactivevalue; }
+            set { this._inactivevalue = value; }
+        }
         public string VariableName { get; set; }
-        public bool PurgeInactive { get; set; }
+        public bool PurgeInactive
+        {
+            get { return this._purgeinactive; }
+            set { this._purgeinactive = value; }
+        }
         public string LabelText
         {
             get { return this._labeltext; }
@@ -76,12 +86,12 @@ namespace TsGui.View.GuiOptions
 
             this.LoadGroupingXml(InputXml);
 
-            this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", false);
-            this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", null);
-            this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
-            this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", null);
+            this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
+            this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
+            this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
+            this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", this.HelpText);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
-            this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", "TSGUI_INACTIVE");
+            this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
 
             x = InputXml.Element("Formatting");
             if (x != null)

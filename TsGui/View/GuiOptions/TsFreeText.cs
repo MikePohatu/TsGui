@@ -32,7 +32,7 @@ namespace TsGui.View.GuiOptions
         private ToolTip _validationtooltip;
         private TsFreeTextUI _ui;
         private string _controltext;
-        private StringValidation _stringvalidation = new StringValidation();
+        private StringValidation _stringvalidation;
         private bool _isvalid;
         private Color _bordercolor;
         private Color _hoveroverbordercolor;
@@ -54,9 +54,11 @@ namespace TsGui.View.GuiOptions
             }
         }
         public bool IsValid { get { return this._isvalid; } }
-        public int MaxLength { get; set; }
-        public int MinLength { get; set; }
-        public string DisallowedCharacters { get; set; }
+        public int MaxLength
+        {
+            get { return this._stringvalidation.MaxLength; }
+            set { this._stringvalidation.MaxLength = value; this.OnPropertyChanged(this, "MaxLength"); }
+        }
         public TsVariable Variable
         {
             get
@@ -72,36 +74,47 @@ namespace TsGui.View.GuiOptions
         //Constructor
         public TsFreeText(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
+            this.Init(MainController);
+            this.LoadXml(InputXml);
+        }
+
+        protected TsFreeText(TsColumn Parent, MainController MainController): base(Parent, MainController)
+        {
+            this.Init(MainController);
+        }
+
+        private void Init(MainController MainController)
+        {
             this._controller = MainController;
+            this._stringvalidation = new StringValidation();
             this._ui = new TsFreeTextUI();
             this._ui.DataContext = this;
             this._ui.Control.LostFocus += this.onLoseFocus;
-            this.LoadXml(InputXml);
+            this._stringvalidation.MaxLength = 32760;
+            this._stringvalidation.MinLength = 0;
         }
 
         public void LoadXml(XElement InputXml)
         {
-            this.LoadBaseXml(InputXml);
+            base.LoadBaseXml(InputXml);
             XElement x;
 
-            this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", 32760);
-            this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
+            //load legacy options
+            x = InputXml.Element("Disallowed");
+            if (x != null) { this._stringvalidation.LoadLegacyXml(x); }
+            this._stringvalidation.MinLength = XmlHandler.GetIntFromXAttribute(InputXml, "MinLength", this._stringvalidation.MinLength);
+            this._stringvalidation.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", this._stringvalidation.MaxLength);
+
+            
             
             //record the colors
             this._bordercolor = this.ControlFormatting.BorderColorBrush.Color;
             this._hoveroverbordercolor = this.ControlFormatting.HoverOverColorBrush.Color;
 
-            x = InputXml.Element("Validation");
-            if (x != null)
-            {
-                this._stringvalidation.LoadXml(x);
-            }
+            //this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
 
-            x = InputXml.Element("Disallowed");
-            if (x != null)
-            {
-                this._stringvalidation.LoadLegacyXml(x);
-            }
+            x = InputXml.Element("Validation");
+            if (x != null) { this._stringvalidation.LoadXml(x); }
 
             x = InputXml.Element("DefaultValue");
             if (x != null)
@@ -109,9 +122,8 @@ namespace TsGui.View.GuiOptions
                 XAttribute xusecurrent = x.Attribute("UseCurrent");
                 if (xusecurrent != null)
                 {
-                    //default behaviour is to check if the ts variable is already set. If it is, set
-                    //that as the default i.e. add a query for an environment variable to the start
-                    //of the query list. 
+                    //default behaviour is to check if the ts variable is already set. If it is, set that as the default i.e. add a query for 
+                    //an environment variable to the start of the query list. 
                     if (!string.Equals(xusecurrent.Value, "false", StringComparison.OrdinalIgnoreCase))
                     {
                         XElement xcurrentquery = new XElement("Query", new XElement("Variable", this.VariableName));

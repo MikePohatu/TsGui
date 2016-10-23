@@ -27,7 +27,6 @@ namespace TsGui.Grouping
         protected MainController _controller;
         protected bool _isenabled = true;
         protected bool _ishidden = false;
-        protected string _inactivevalue = string.Empty;
         protected List<Group> _groups = new List<Group>();
         protected Visibility _visibility = Visibility.Visible;
 

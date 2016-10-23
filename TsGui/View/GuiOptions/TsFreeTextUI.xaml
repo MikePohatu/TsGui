@@ -24,6 +24,7 @@
                  Margin="{Binding ControlFormatting.Margin}" 
                  VerticalAlignment="{Binding ControlFormatting.VerticalAlignment}" 
                  Padding="{Binding ControlFormatting.Padding}" 
+                 MaxLength="{Binding MaxLength}"
                  HorizontalAlignment="Stretch" />
     </Grid>
 </UserControl>

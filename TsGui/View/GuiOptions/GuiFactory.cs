@@ -38,7 +38,7 @@ namespace TsGui.View.GuiOptions
 
             else if (OptionXml.Attribute("Type").Value == "ComputerName")
             {
-                return new TsComputerName(OptionXml, RootController);
+                return new TsGui.TsComputerName(OptionXml, RootController);
             }
 
             else if (OptionXml.Attribute("Type").Value == "FreeText")
@@ -93,6 +93,11 @@ namespace TsGui.View.GuiOptions
                 return ft;
             }
 
+            else if (OptionXml.Attribute("Type").Value == "ComputerName")
+            {
+                TsComputerName cn = new TsComputerName(OptionXml, Parent, RootController);
+                return cn;
+            }
             else
             { return null; }
             #endregion

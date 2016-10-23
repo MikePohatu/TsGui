@@ -89,6 +89,7 @@
     <Compile Include="View\GuiOptions\TsCheckBoxUI.xaml.cs">
       <DependentUpon>TsCheckBoxUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\GuiOptions\TsComputerName.cs" />
     <Compile Include="View\GuiOptions\TsDropDownListItem.cs" />
     <Compile Include="GuiOptions\TsInfoBox.cs" />
     <Compile Include="PageLayout\PageDefaults.cs" />
@@ -125,7 +126,7 @@
     <Compile Include="View\Layout\PageLayout.xaml.cs">
       <DependentUpon>PageLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GuiOptions\OptionLibrary.cs" />
+    <Compile Include="Control\OptionLibrary.cs" />
     <Compile Include="Control\SccmConnector.cs" />
     <Compile Include="Control\SystemConnector.cs" />
     <Compile Include="Control\TestingConnector.cs" />

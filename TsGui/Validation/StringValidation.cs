@@ -22,9 +22,9 @@ namespace TsGui.Validation
 {
     public class StringValidation
     {
-        private bool _validateempty;
-        private int _maxlength;
-        private int _minlength;
+        private bool _validateempty = true;
+        private int _maxlength = int.MaxValue;
+        private int _minlength = 0;
         private List<StringValidationRule> _validrules = new List<StringValidationRule>();
         private List<StringValidationRule> _invalidrules = new List<StringValidationRule>();
 
@@ -56,10 +56,10 @@ namespace TsGui.Validation
             XElement x;
 
             #region
-            this.ValidationMessage = XmlHandler.GetStringFromXElement(InputXml, "Message", string.Empty);
-            this._validateempty = XmlHandler.GetBoolFromXAttribute(InputXml, "ValidateEmpty", true);
-            this._maxlength = XmlHandler.GetIntFromXElement(InputXml, "MaxLength", int.MaxValue);
-            this._minlength = XmlHandler.GetIntFromXElement(InputXml, "MinLength", 0);
+            this.ValidationMessage = XmlHandler.GetStringFromXElement(InputXml, "Message", this.ValidationMessage);
+            this._validateempty = XmlHandler.GetBoolFromXAttribute(InputXml, "ValidateEmpty", this._validateempty);
+            this._maxlength = XmlHandler.GetIntFromXElement(InputXml, "MaxLength", this._maxlength);
+            this._minlength = XmlHandler.GetIntFromXElement(InputXml, "MinLength", this._minlength);
 
             x = InputXml.Element("Valid");
             if (x != null)
@@ -84,9 +84,11 @@ namespace TsGui.Validation
         }
 
         //load options from old Xml e.g. pre-0.9.5.0
+        #region
         public void LoadLegacyXml(XElement InputXml)
         {
             XElement x;
+
             if (InputXml.Name == "Disallowed")
             {
                 x = InputXml.Element("Characters");
@@ -97,6 +99,7 @@ namespace TsGui.Validation
                 }
             }
         }
+        #endregion
 
         public bool IsValid(string Input)
         {
@@ -155,7 +158,6 @@ namespace TsGui.Validation
 
             return result;
         }
-
 
         private bool IsValidMatched(string Input)
         {
