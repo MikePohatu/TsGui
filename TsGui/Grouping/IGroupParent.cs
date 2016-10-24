@@ -19,7 +19,7 @@ namespace TsGui.Grouping
 {
     public interface IGroupParent: IGroupable
     {
-        event ParentHide ParentHide;
-        event ParentEnable ParentEnable;
+        event GroupableHide ParentHide;
+        event GroupableEnable ParentEnable;
     }
 }

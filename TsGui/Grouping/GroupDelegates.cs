@@ -30,6 +30,6 @@ namespace TsGui.Grouping
     //public delegate void ParentToggleEvent(IGroupParent Parent, bool IsEnabled, bool IsHidden);
     public delegate void GroupStateChange();
 
-    public delegate void ParentHide(bool Hide);
-    public delegate void ParentEnable(bool Enable);
+    public delegate void GroupableHide(bool Hide);
+    public delegate void GroupableEnable(bool Enable);
 }

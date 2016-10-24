@@ -84,8 +84,8 @@ namespace TsGui.View.Layout
 
                     this._rowpanel.Children.Add(c.Panel);
                     this._options.AddRange(c.Options);
-                    this.ParentHide += c.OnParentHide;
-                    this.ParentEnable += c.OnParentEnable;
+                    this.GroupableHide += c.OnParentHide;
+                    this.GroupableEnable += c.OnParentEnable;
 
                     colIndex++;
                 }

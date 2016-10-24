@@ -27,7 +27,7 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsPage: BaseLayoutElement, IGroupable
+    public class TsPage: BaseLayoutElement
     {
         private double _headingHeight;
         private string _headingTitle;
@@ -49,16 +49,6 @@ namespace TsGui.View.Layout
         //Properties
         #region
         public TsMainWindow Parent { get { return this._parent; } }
-        public new bool IsHidden
-        {
-            get { return this._ishidden; }
-            set
-            {
-                this.HideUnhide(value);
-                this.UpdatePrevious();
-                this.OnPropertyChanged(this, "IsHidden");
-            }
-        }
         public TsPage NextActivePage
         {
             get
@@ -124,20 +114,12 @@ namespace TsGui.View.Layout
         public TsPage PreviousPage
         {
             get { return this._previouspage; }
-            set
-            {
-                this._previouspage = value;
-                this.Update();
-            }
+            set { this.ConnectPrevPage(value); }
         }
         public TsPage NextPage
         {
             get { return this._nextpage; }
-            set
-            {
-                this._nextpage = value;
-                this.Update();
-            }
+            set { this.ConnectNextPage(value); }
         }        
         public List<IGuiOption_2> Options { get { return this._options; } }
         public PageLayout Page { get { return this._pagelayout; } }
@@ -264,8 +246,8 @@ namespace TsGui.View.Layout
             this._rows.Add(r);
 
             //Debug.WriteLine("TsPage - Registering column");
-            this.ParentHide += r.OnParentHide;
-            this.ParentEnable += r.OnParentEnable;
+            this.GroupableHide += r.OnParentHide;
+            this.GroupableEnable += r.OnParentEnable;
         }
 
         //build the gui controls.
@@ -364,5 +346,33 @@ namespace TsGui.View.Layout
         {
             TsButtons.Update(this, this._pagelayout);
         }
+
+        public void OnSurroundingPageHide(bool Hide)
+        {
+            this.Update();
+        }
+        
+        private void ConnectNextPage(TsPage NewNextPage)
+        {
+            if (this.NextPage != null)
+            {
+                this.NextPage.GroupableHide -= this.OnSurroundingPageHide;
+            }
+            this._nextpage = NewNextPage;
+            if (NewNextPage != null) { this._nextpage.GroupableHide += this.OnSurroundingPageHide; }
+        }
+
+        private void ConnectPrevPage(TsPage NewPrevPage)
+        {
+            
+            if (this.PreviousPage != null)
+            {
+                this.PreviousPage.GroupableHide -= this.OnSurroundingPageHide;
+            }
+
+            this._previouspage = NewPrevPage;
+            if (NewPrevPage != null) { this._previouspage.GroupableHide += this.OnSurroundingPageHide; }
+        }
+
     }
 }

@@ -52,7 +52,7 @@ namespace TsGui.Grouping
             {
                 this._isenabled = value;
                 this.OnPropertyChanged(this, "IsEnabled");
-                this.ParentEnable?.Invoke(value);
+                this.GroupableEnable?.Invoke(value);
             }
         }
         public bool IsHidden
@@ -85,8 +85,8 @@ namespace TsGui.Grouping
         #region
         //Setup the INotifyPropertyChanged interface 
         public event PropertyChangedEventHandler PropertyChanged;
-        public event ParentHide ParentHide;
-        public event ParentEnable ParentEnable;
+        public event GroupableHide GroupableHide;
+        public event GroupableEnable GroupableEnable;
 
         protected void OnPropertyChanged(object sender, string name)
         {
@@ -118,7 +118,7 @@ namespace TsGui.Grouping
             else
             { this.Visibility = Visibility.Visible; }
 
-            this.ParentHide?.Invoke(Hidden);
+            this.GroupableHide?.Invoke(Hidden);
         }
 
         protected void LoadXml(XElement InputXml)

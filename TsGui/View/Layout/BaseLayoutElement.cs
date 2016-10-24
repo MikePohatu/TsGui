@@ -49,8 +49,8 @@ namespace TsGui.View.Layout
             this.ShowGridLines = Parent.ShowGridLines;
 
             //register grouping events from the parent element
-            Parent.ParentEnable += this.OnParentEnable;
-            Parent.ParentHide += this.OnParentHide;
+            Parent.GroupableEnable += this.OnParentEnable;
+            Parent.GroupableHide += this.OnParentHide;
         }
 
         protected new void LoadXml(XElement InputXml)
