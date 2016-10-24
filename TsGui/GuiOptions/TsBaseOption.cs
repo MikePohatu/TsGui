@@ -22,6 +22,8 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Collections.Generic;
 
+using TsGui.Grouping;
+
 namespace TsGui
 {
     public abstract class TsBaseOption: INotifyPropertyChanged, IGroupChild

@@ -28,7 +28,7 @@ using TsGui.Validation;
 
 namespace TsGui
 {
-    public class TsFreeText: TsBaseOption, IGuiOption, IEditableGuiOption
+    public class TsFreeText: TsBaseOption, IEditableGuiOption
     {
         //fields
         #region

@@ -28,6 +28,7 @@ namespace TsGui.View.Layout
     {
         //Fields
         #region
+        private FontWeight _fontweight;
         private double _height;
         private double _width;
         private Thickness _margin;
@@ -40,7 +41,11 @@ namespace TsGui.View.Layout
 
         //Properties
         #region 
-
+        public FontWeight FontWeight
+        {
+            get { return this._fontweight; }
+            set { this._fontweight = value; this.OnPropertyChanged(this, "Bold"); }
+        }
         public double Height
         {
             get { return this._height; }
@@ -108,6 +113,7 @@ namespace TsGui.View.Layout
 
         private void SetDefaults()
         {
+            //this._bold = ;
             this._height = Double.NaN;
             this._width = Double.NaN;
             this._margin = new Thickness(2, 2, 2, 2);
@@ -124,6 +130,7 @@ namespace TsGui.View.Layout
         {
             //Load the XML
             #region
+            //this.Bold = XmlHandler.GetBoolFromXElement(InputXml, "Bold", this.Bold);
             this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
             this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
             this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", 2);
@@ -134,6 +141,7 @@ namespace TsGui.View.Layout
         public Formatting Clone()
         {
             Formatting f = new Formatting();
+            f.FontWeight = this.FontWeight;
             f.Width = this.Width;
             f.Height = this.Height;
             f.Padding = this.Padding;

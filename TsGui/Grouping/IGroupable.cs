@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace TsGui
+namespace TsGui.Grouping
 {
     public interface IGroupable
     {

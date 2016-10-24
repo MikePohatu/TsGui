@@ -15,7 +15,7 @@
 
 // IToggleControl.cs - defines TsGuiElements that can trigger a toggle object
 
-namespace TsGui
+namespace TsGui.Grouping
 {
     public interface IToggleControl
     {

@@ -40,7 +40,7 @@ namespace TsGui.View.GuiOptions
         //Properties
         #region
         //standard stuff
-        public UserControl Control { get { return this._ui; } }
+        public UserControl UserControl { get { return this._ui; } }
 
         //Custom stuff for control
         public string ControlText

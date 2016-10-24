@@ -22,7 +22,7 @@ using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class GuiOptionBase : BaseLayoutElement, INotifyPropertyChanged
+    public abstract class GuiOptionBase : BaseLayoutElement
     {
         private string _labeltext = string.Empty;
         private string _helptext = string.Empty;
@@ -51,6 +51,7 @@ namespace TsGui.View.GuiOptions
         public GuiOptionBase(TsColumn Parent, MainController MainController):base(Parent,MainController)
         {
             this.Parent = Parent;
+            
         }
 
         protected new void LoadXml(XElement InputXml)

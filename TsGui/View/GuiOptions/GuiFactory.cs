@@ -25,49 +25,7 @@ namespace TsGui.View.GuiOptions
 {
     public static class GuiFactory
     {
-        public static IGuiOption CreateGuiOption(XElement OptionXml,TsPage ParentPage, MainController RootController)
-        {
-            #region
-            if (OptionXml.Attribute("Type").Value == "DropDownList")
-            {
-                TsGui.TsDropDownList ddl = new TsGui.TsDropDownList(OptionXml, RootController);
-                ParentPage.PageWindowLoaded += ddl.OnParentWindowLoaded;
-                return ddl;
-
-            }
-
-            else if (OptionXml.Attribute("Type").Value == "ComputerName")
-            {
-                return new TsGui.TsComputerName(OptionXml, RootController);
-            }
-
-            else if (OptionXml.Attribute("Type").Value == "FreeText")
-            {
-                return new TsGui.TsFreeText(OptionXml,RootController);
-            }
-
-            else if (OptionXml.Attribute("Type").Value == "CheckBox")
-            {
-                return new TsGui.TsCheckBox(OptionXml, RootController);
-            }
-
-            else if (OptionXml.Attribute("Type").Value == "Heading")
-            {
-                return new TsHeading(OptionXml, RootController);
-            }
-
-            else if (OptionXml.Attribute("Type").Value == "InfoBox")
-            {
-                return new TsInfoBox(OptionXml, RootController);
-            }
-
-            else
-            { return null; }
-            #endregion
-        }
-
-
-        public static IGuiOption_2 CreateGuiOption_2(XElement OptionXml, TsColumn Parent, MainController RootController)
+        public static IGuiOption_2 CreateGuiOption(XElement OptionXml, TsColumn Parent, MainController RootController)
         {
             #region
             if (OptionXml.Attribute("Type").Value == "TextBlock")
@@ -97,6 +55,11 @@ namespace TsGui.View.GuiOptions
             {
                 TsComputerName cn = new TsComputerName(OptionXml, Parent, RootController);
                 return cn;
+            }
+            else if (OptionXml.Attribute("Type").Value == "Heading")
+            {
+                TsHeading h = new TsHeading(OptionXml, Parent, RootController);
+                return h;
             }
             else
             { return null; }

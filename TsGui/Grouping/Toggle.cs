@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace TsGui
+namespace TsGui.Grouping
 {
     public class Toggle
     {

@@ -20,6 +20,8 @@ using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
 
+using TsGui.Grouping;
+
 namespace TsGui.View.GuiOptions
 {
     public class TsDropDownList: GuiOptionBase, IGuiOption_2, IToggleControl
@@ -32,7 +34,7 @@ namespace TsGui.View.GuiOptions
         private bool _istoggle = false;
 
         //standard stuff
-        public UserControl Control { get { return this._ui; } }
+        public UserControl UserControl { get { return this._ui; } }
 
 
         //Custom stuff for control

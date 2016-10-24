@@ -15,7 +15,7 @@
 
 // IGroupChild.cs - interface for child elements i.e. columns and TSGuiOptions. 
 
-namespace TsGui
+namespace TsGui.Grouping
 {
     public interface IGroupChild: IGroupable
     {

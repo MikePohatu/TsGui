@@ -21,11 +21,12 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows;
 
+using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 
 namespace TsGui
 {
-    public class TsDropDownList: TsBaseOption, IGuiOption, IToggleControl
+    public class TsDropDownList: TsBaseOption, IToggleControl
     {
         public event ToggleEvent ToggleEvent;
 

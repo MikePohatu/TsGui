@@ -17,7 +17,7 @@
 // IGroupAbleElement objects
 
 
-namespace TsGui
+namespace TsGui.Grouping
 {
     internal static class GroupingLogic
     {

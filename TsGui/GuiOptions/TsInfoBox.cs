@@ -26,7 +26,7 @@ using TsGui.Validation;
 
 namespace TsGui
 {
-    public class TsInfoBox : TsBaseOption, IGuiOption
+    public class TsInfoBox : TsBaseOption
     {
         new private Label _control;
         private int _maxlength;

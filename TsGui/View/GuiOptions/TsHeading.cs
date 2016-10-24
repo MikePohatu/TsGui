@@ -13,19 +13,21 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsTextBlock.cs - multi-line textblock for user input
-
+// TsHeading.cs - Label with no control. Used to add headings and text only 
+// amongst the other options. 
 
 using System.Xml.Linq;
 using System.Windows.Controls;
-using TsGui.Validation;
+using System.Windows;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsTextBlock: GuiOptionBase, IGuiOption_2
+    public class TsHeading : GuiOptionBase, IGuiOption_2
     {
-        private TsTextBlockUI _ui;
         private string _controltext;
+        private TsHeadingUI _ui;
+        
+        //Properties
 
         //standard stuff
         public UserControl UserControl { get { return this._ui; } }
@@ -36,42 +38,23 @@ namespace TsGui.View.GuiOptions
             get { return this._controltext; }
             set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
         }
-        public int MaxLength { get; set; }
-        public string DisallowedCharacters { get; set; }
         public TsVariable Variable { get { return null; } }
 
-        //public TsColumn Parent { get; set; }
-
-        public TsTextBlock (XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
+        //constructor
+        public TsHeading(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
         {
+            this.ControlText = string.Empty;
             this._controller = MainController;
-            this._ui = new TsTextBlockUI();
+            this._ui = new TsHeadingUI();
             this._ui.DataContext = this;
             this.LoadXml(InputXml);
         }
 
-
         public new void LoadXml(XElement InputXml)
         {
+            //load legacy
             base.LoadXml(InputXml);
-            XElement x;
-
-            this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", 32760);
-            this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
-
-            x = InputXml.Element("Disallowed");
-            if (x != null) { this.DisallowedCharacters = XmlHandler.GetStringFromXElement(x, "Characters", null); }
-
-            x = InputXml.Element("DisplayValue");
-            if (x != null)
-            {
-                this.ControlText = this._controller.GetValueFromList(x);
-                if (this.ControlText == null) { this.ControlText = string.Empty; }
-
-                //if required, remove invalid characters and truncate
-                if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this.DisallowedCharacters); }
-                if (this.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
-            }
+            this.ControlText = XmlHandler.GetStringFromXElement(InputXml, "RightLabel", this.ControlText);
         }
     }
 }

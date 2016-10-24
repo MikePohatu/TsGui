@@ -20,11 +20,12 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
 
+using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 
 namespace TsGui
 {
-    public class TsCheckBox: TsBaseOption, IGuiOption, IToggleControl
+    public class TsCheckBox: TsBaseOption, IToggleControl
     {
         public event ToggleEvent ToggleEvent;
 

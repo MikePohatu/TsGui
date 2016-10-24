@@ -83,7 +83,7 @@ namespace TsGui
             {
                 foreach (XElement xOption in xlist)
                 {
-                    newOption = GuiFactory.CreateGuiOption_2(xOption,this,this._controller);
+                    newOption = GuiFactory.CreateGuiOption(xOption,this,this._controller);
                     if (newOption ==null) { continue; }
                     this._options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);
@@ -91,13 +91,11 @@ namespace TsGui
                     RowDefinition rowdef = new RowDefinition();
                     rowdef.Height = GridLength.Auto;
                     this._columnpanel.RowDefinitions.Add(rowdef);
-                    Grid.SetRow(newOption.Control, index);
+                    Grid.SetRow(newOption.UserControl, index);
 
-                    this._columnpanel.Children.Add(newOption.Control);
+                    this._columnpanel.Children.Add(newOption.UserControl);
 
-                    //register for events
-                    this.ParentEnable += newOption.OnParentEnable;
-                    this.ParentHide += newOption.OnParentHide;
+                    
                     index++;
                 }
             }

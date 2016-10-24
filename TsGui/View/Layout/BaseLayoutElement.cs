@@ -47,9 +47,11 @@ namespace TsGui.View.Layout
             this.ControlFormatting = Parent.ControlFormatting.Clone();
             this.GridFormatting = Parent.GridFormatting.Clone();
             this.ShowGridLines = Parent.ShowGridLines;
-        }
 
-        
+            //register grouping events from the parent element
+            Parent.ParentEnable += this.OnParentEnable;
+            Parent.ParentHide += this.OnParentHide;
+        }
 
         protected new void LoadXml(XElement InputXml)
         {

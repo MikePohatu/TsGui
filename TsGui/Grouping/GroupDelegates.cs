@@ -15,7 +15,7 @@
 
 // GroupDelegates.cs - Delegates for the Grouping namespace
 
-namespace TsGui
+namespace TsGui.Grouping
 {
 
     public enum GroupState { Hidden, Disabled, Enabled };

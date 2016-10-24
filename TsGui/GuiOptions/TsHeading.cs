@@ -22,7 +22,7 @@ using System.Windows;
 
 namespace TsGui
 {
-    public class TsHeading: TsBaseOption,IGuiOption
+    public class TsHeading: TsBaseOption
     {
         new private Label _control;
         private bool _bold;

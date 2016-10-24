@@ -16,7 +16,7 @@
 // IGuiOption_2.cs - controls to apply to the gui. 
 
 using System.Windows.Controls;
-using System.Windows;
+using TsGui.Grouping;
 
 namespace TsGui.View.GuiOptions
 {
@@ -25,7 +25,7 @@ namespace TsGui.View.GuiOptions
         TsVariable Variable { get; }
         string VariableName { get; }
         string InactiveValue { get; }
-        UserControl Control { get; }
+        UserControl UserControl { get; }
         bool PurgeInactive { get; set; }
     }
 }

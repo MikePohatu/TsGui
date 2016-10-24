@@ -15,7 +15,7 @@
 
 // IGroupParent.cs - interface for parent elements i.e. columns and pages. 
 
-namespace TsGui
+namespace TsGui.Grouping
 {
     public interface IGroupParent: IGroupable
     {

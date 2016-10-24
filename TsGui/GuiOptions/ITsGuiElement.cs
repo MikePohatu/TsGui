@@ -19,7 +19,7 @@ using System.Xml.Linq;
 
 namespace TsGui
 {
-    public interface ITsGuiElement
+    public interface ITsGuiElement_2
     {
         void LoadXml(XElement Xml);
     }

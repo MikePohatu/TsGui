@@ -103,6 +103,10 @@
       <DependentUpon>TsFreeTextUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsFreeText.cs" />
+    <Compile Include="View\GuiOptions\TsHeading.cs" />
+    <Compile Include="View\GuiOptions\TsHeadingUI.xaml.cs">
+      <DependentUpon>TsHeadingUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GuiOptions\TsTextBlock.cs" />
     <Compile Include="View\Layout\BaseLayoutElement.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
@@ -121,7 +125,7 @@
     <Compile Include="Grouping\Toggle.cs" />
     <Compile Include="GuiOptions\TsBaseOption.cs" />
     <Compile Include="Control\HardwareEvaluator.cs" />
-    <Compile Include="GuiOptions\IEditableGuiOption.cs" />
+    <Compile Include="View\GuiOptions\IEditableGuiOption.cs" />
     <Compile Include="Control\ITsVariableOutput.cs" />
     <Compile Include="Grouping\IToggleControl.cs" />
     <Compile Include="View\Layout\PageLayout.xaml.cs">
@@ -152,6 +156,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\GuiOptions\TsFreeTextUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GuiOptions\TsHeadingUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

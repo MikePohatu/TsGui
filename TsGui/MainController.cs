@@ -25,6 +25,8 @@ using System.ComponentModel;
 using TsGui.View.Layout;
 using TsGui.View.GuiOptions;
 
+using TsGui.Grouping;
+
 namespace TsGui
 {
     public class MainController

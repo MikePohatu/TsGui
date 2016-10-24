@@ -81,7 +81,7 @@ namespace TsGui.Grouping
         {
             this._controller = MainController;
         }
-        
+
         //Events
         #region
         //Setup the INotifyPropertyChanged interface 

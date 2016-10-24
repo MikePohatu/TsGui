@@ -18,9 +18,11 @@
 using System.Windows.Controls;
 using System.Windows;
 
+using TsGui.Grouping;
+
 namespace TsGui
 {
-    public interface IGuiOption: ITsGuiElement, IGroupable
+    public interface IGuiOption: IGroupable
     {
         TsVariable Variable { get; }
         string VariableName { get; }

@@ -28,8 +28,6 @@ namespace TsGui.View.Layout
 {
     public class TsPage: BaseLayoutElement
     {
-        private double _height;
-        private double _width;
         private double _headingHeight;
         private string _headingTitle;
         private string _headingText;        
