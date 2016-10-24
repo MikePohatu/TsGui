@@ -21,16 +21,12 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
 
-using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsPage: BaseLayoutElement, IGroupParent, ITsGuiElement, INotifyPropertyChanged
+    public class TsPage: BaseLayoutElement
     {
         private double _height;
         private double _width;
@@ -39,7 +35,6 @@ namespace TsGui.View.Layout
         private string _headingText;        
         private SolidColorBrush _headingBgColor;
         private SolidColorBrush _headingFontColor;
-        private Thickness _margin = new Thickness(0, 0, 0, 0);
         private List<TsRow> _rows = new List<TsRow>();
         private List<IGuiOption_2> _options = new List<IGuiOption_2>();
         private List<IEditableGuiOption> _editables = new List<IEditableGuiOption>();
@@ -55,7 +50,6 @@ namespace TsGui.View.Layout
         //Properties
         #region
         public TsMainWindow Parent { get { return this._parent; } }
-        public bool PurgeInactive { get; set; }
         public TsPage NextActivePage
         {
             get
@@ -70,24 +64,6 @@ namespace TsGui.View.Layout
             {
                 if ((this.PreviousPage == null) || (this.PreviousPage.IsHidden == false)) { return this.PreviousPage; }
                 else { return this.PreviousPage.PreviousActivePage; }
-            }
-        }
-        public double Width
-        {
-            get { return this._width; }
-            set
-            {
-                this._width = value;
-                this.OnPropertyChanged(this, "Width");
-            }
-        }
-        public double Height
-        {
-            get { return this._height; }
-            set
-            {
-                this._height = value;
-                this.OnPropertyChanged(this, "Height");
             }
         }
         public string HeadingTitle
@@ -190,14 +166,12 @@ namespace TsGui.View.Layout
             this._pagelayout = new PageLayout(this);
             this._pagelayout.Loaded += this.OnWindowLoaded;
             this._pagepanel = this._pagelayout.MainGrid;
-            this.Height = Defaults.Height;
-            this.Width = Defaults.Width;
-            this._margin = Defaults.PageMargin;
             this.HeadingHeight = 40;
             this.HeadingTitle = Defaults.HeadingTitle;
             this.HeadingText = Defaults.HeadingText;
             this.HeadinFontColor = Defaults.HeadingFontColor;
-            this.HeadingBgColor = Defaults.HeadingBgColor;          
+            this.HeadingBgColor = Defaults.HeadingBgColor;
+            this.ShowGridLines = MainController.ShowGridLines;      
 
             this._pagelayout.DataContext = this;
             this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
@@ -210,35 +184,18 @@ namespace TsGui.View.Layout
 
 
         //Methods
-        public void LoadXml(XElement InputXml)
+        public new void LoadXml(XElement InputXml)
         {
+            base.LoadXml(InputXml);
             IEnumerable<XElement> xlist;
             XElement x;
             int index;
-            XAttribute xAttrib;
-            bool purgeset = false;
 
-            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
-            this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
+            this.GridFormatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.GridFormatting.Width);
+            this.GridFormatting.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.GridFormatting.Height);
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this._parent.ShowGridLines);
-
-            xAttrib = InputXml.Attribute("PurgeInactive");
-            if (xAttrib != null)
-            {
-                purgeset = true;
-                this.PurgeInactive = Convert.ToBoolean(xAttrib.Value);
-            }
-
-            IEnumerable<XElement> xGroups = InputXml.Elements("Group");
-            if (xGroups != null)
-            {
-                foreach (XElement xGroup in xGroups)
-                { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
-            }
-
-            
 
             XElement headingX = InputXml.Element("Heading");
             if (headingX != null)
@@ -268,7 +225,7 @@ namespace TsGui.View.Layout
                 index = 0;
                 foreach (XElement xrow in xlist)
                 {
-                    this.CreateRow(xrow, index, purgeset);
+                    this.CreateRow(xrow, index);
                     index++;
                     i++;
                 }
@@ -286,15 +243,14 @@ namespace TsGui.View.Layout
                 {
                     x.Add(xColumn);
                 }
-                if (x != null) { this.CreateRow(x, 0, purgeset); }
+                if (x != null) { this.CreateRow(x, 0); }
             }
 
         }
 
-        private void CreateRow(XElement InputXml, int Index, bool Purge)
+        private void CreateRow(XElement InputXml, int Index)
         {
             TsRow r = new TsRow(InputXml, Index, this, this._controller);
-            if (Purge == true) { r.PurgeInactive = this.PurgeInactive; }
 
             this._rows.Add(r);
 

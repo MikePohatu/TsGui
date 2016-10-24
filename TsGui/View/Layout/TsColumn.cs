@@ -18,67 +18,23 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Controls;
-using System.Windows;
-using System;
 using System.Windows.Data;
-using System.ComponentModel;
+using System.Windows;
 
-using TsGui.Grouping;
 using TsGui.View.Layout;
 using TsGui.View.GuiOptions;
 
 namespace TsGui
 {
-    public class TsColumn : BaseLayoutElement, IGroupParent, INotifyPropertyChanged
+    public class TsColumn : BaseLayoutElement
     {
-        private bool _purgeInactive;
         private List<IGuiOption_2> _options = new List<IGuiOption_2>();
-        private StackPanel _columnpanel;
-        private double _labelwidth = Double.NaN;
-        private double _controlwidth = Double.NaN;
-        private double _fullwidth = Double.NaN;
+        private Grid _columnpanel;
         private TsRow _parent;
 
         //properties
         #region
         public TsRow Parent { get { return this._parent; } }
-        public bool PurgeInactive
-        {
-            get { return this._purgeInactive; }
-            set
-            {
-                this._purgeInactive = value;
-                foreach (IGuiOption option in this._options)
-                { option.PurgeInactive = value; }
-            }
-        }
-        public double LabelWidth
-        {
-            get { return this._labelwidth; }
-            set
-            {
-                this._labelwidth = value;
-                this.OnPropertyChanged(this, "LabelWidth");
-            }
-        }
-        public double ControlWidth
-        {
-            get { return this._controlwidth; }
-            set
-            {
-                this._controlwidth = value;
-                this.OnPropertyChanged(this, "ControlWidth");
-            }
-        }
-        public double Width
-        {
-            get { return this._fullwidth; }
-            set
-            {
-                this._fullwidth = value;
-                this.OnPropertyChanged(this, "Width");
-            }
-        }
         public int Index { get; set; }
         public List<IGuiOption_2> Options { get { return this._options; } }
         public Panel Panel { get { return this._columnpanel; } }
@@ -87,44 +43,37 @@ namespace TsGui
 
         //constructor
         #region
-        public TsColumn (XElement SourceXml,int PageIndex, TsRow Parent, MainController RootController):base (RootController)
+        public TsColumn (XElement SourceXml,int PageIndex, TsRow Parent, MainController MainController) :base (Parent, MainController)
         {
 
-            this._controller = RootController;
+            this._controller = MainController;
             this._parent = Parent;
             this.Index = PageIndex;
-            //this._columngrid = new Grid();
-            this._columnpanel = new StackPanel();
+            this._columnpanel = new Grid();
             this._columnpanel.Name = "_columnpanel";
             this._columnpanel.DataContext = this;
-            this._columnpanel.SetBinding(StackPanel.WidthProperty, new Binding("Width"));
-            //this._columnpanel.HorizontalAlignment = HorizontalAlignment.Left;
+            this._columnpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
+            this._columnpanel.SetBinding(StackPanel.WidthProperty, new Binding("GridFormatting.Width"));
 
-            this._purgeInactive = false;
-            this.DisabledParentCount = 0;
-            this.HiddenParentCount = 0;
+            this.ShowGridLines = Parent.ShowGridLines;
 
             this.LoadXml(SourceXml);
-            //this.Build();
         }
         #endregion
 
 
-        private void LoadXml(XElement InputXml)
+        private new void LoadXml(XElement InputXml)
         {
             IEnumerable<XElement> xlist;
             IGuiOption_2 newOption;
-            bool purgeset = false;
+            int index = 0;
 
-            this.LoadGroupingXml(InputXml);
+            //legacy options
+            this.GridFormatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.GridFormatting.Width);
+            this.LabelFormatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LabelFormatting.Width);
+            this.ControlFormatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.ControlFormatting.Width);
 
-            this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
-            this.LabelWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LabelWidth);
-            this.ControlWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.ControlWidth);
-            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
-            this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
-            this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
-            this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
+            base.LoadXml(InputXml);
 
             //now read in the options and add to a dictionary for later use
             //do this last so the event subscriptions don't get setup too early (no toggles fired 
@@ -136,14 +85,20 @@ namespace TsGui
                 {
                     newOption = GuiFactory.CreateGuiOption_2(xOption,this,this._controller);
                     if (newOption ==null) { continue; }
-                    if (purgeset == true) { newOption.PurgeInactive = this.PurgeInactive; }
                     this._options.Add(newOption);
                     this._controller.AddOptionToLibary(newOption);
+
+                    RowDefinition rowdef = new RowDefinition();
+                    rowdef.Height = GridLength.Auto;
+                    this._columnpanel.RowDefinitions.Add(rowdef);
+                    Grid.SetRow(newOption.Control, index);
+
                     this._columnpanel.Children.Add(newOption.Control);
 
                     //register for events
                     this.ParentEnable += newOption.OnParentEnable;
                     this.ParentHide += newOption.OnParentHide;
+                    index++;
                 }
             }
 

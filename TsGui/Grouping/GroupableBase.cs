@@ -25,10 +25,11 @@ namespace TsGui.Grouping
     public abstract class GroupableBase: IGroupable, IGroupChild, INotifyPropertyChanged
     {
         protected MainController _controller;
-        protected bool _isenabled = true;
-        protected bool _ishidden = false;
-        protected List<Group> _groups = new List<Group>();
-        protected Visibility _visibility = Visibility.Visible;
+        private bool _isenabled = true;
+        private bool _ishidden = false;
+        private List<Group> _groups = new List<Group>();
+        private Visibility _visibility = Visibility.Visible;
+        private bool _purgeinactive = false;
 
         public int GroupCount { get { return this._groups.Count; } }
         public int DisabledParentCount { get; set; }
@@ -69,7 +70,11 @@ namespace TsGui.Grouping
             get { return this._visibility; }
             set { this._visibility = value; this.OnPropertyChanged(this, "Visibility"); }
         }
-        
+        public bool PurgeInactive
+        {
+            get { return this._purgeinactive; }
+            set { this._purgeinactive = value; }
+        }
 
         //Constructor
         public GroupableBase(MainController MainController)
@@ -115,8 +120,10 @@ namespace TsGui.Grouping
             { this.Visibility = Visibility.Visible; }
         }
 
-        protected void LoadGroupingXml(XElement InputXml)
+        protected void LoadXml(XElement InputXml)
         {
+            this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
+
             IEnumerable<XElement> xGroups = InputXml.Elements("Group");
             if (xGroups != null)
             {

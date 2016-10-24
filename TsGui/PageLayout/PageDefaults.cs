@@ -24,9 +24,6 @@ namespace TsGui
     {
         public string HeadingTitle { get; set; }
         public string HeadingText { get; set; }
-        public double Height { get; set; }
-        public double Width { get; set; }
-        public Thickness PageMargin { get; set; }
         public SolidColorBrush HeadingBgColor { get; set; }
         public SolidColorBrush HeadingFontColor { get; set; }
         public TsButtons Buttons { get; set; }

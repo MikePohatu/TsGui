@@ -13,29 +13,67 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsColumn.cs - class for columns in the gui window
+// BaseLayoutElement.cs - base class for elements in the UI tree (page, row, column, guioptions
 
 using TsGui.Grouping;
+using System.Xml.Linq;
 
 namespace TsGui.View.Layout
 {
     public abstract class BaseLayoutElement: GroupableBase
     {
-        protected bool _showgridlines = false;
+        private bool _showgridlines = false;
 
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
         public Formatting GridFormatting { get; set; }
-
-        public BaseLayoutElement(MainController MainController):base (MainController)
-        {
-
-        }
-
         public bool ShowGridLines
         {
             get { return this._showgridlines; }
             set { this._showgridlines = value; this.OnPropertyChanged(this, "ShowGridLines"); }
+        }
+
+        //constructors
+        public BaseLayoutElement(MainController MainController):base (MainController)
+        {
+            this.LabelFormatting = new Formatting();
+            this.ControlFormatting = new Formatting();
+            this.GridFormatting = new Formatting();
+        }
+
+        public BaseLayoutElement(BaseLayoutElement Parent, MainController MainController):base (MainController)
+        {
+            this.LabelFormatting = Parent.LabelFormatting.Clone();
+            this.ControlFormatting = Parent.ControlFormatting.Clone();
+            this.GridFormatting = Parent.GridFormatting.Clone();
+            this.ShowGridLines = Parent.ShowGridLines;
+        }
+
+        
+
+        protected new void LoadXml(XElement InputXml)
+        {
+            base.LoadXml(InputXml);
+            this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
+
+            XElement x;
+            XElement subx;
+            
+            x = InputXml.Element("Formatting");
+            if (x != null)
+            {
+                subx = x.Element("Label");
+                if (subx != null)
+                { this.LabelFormatting.LoadXml(subx); }
+
+                subx = x.Element("Control");
+                if (subx != null)
+                { this.ControlFormatting.LoadXml(subx); }
+
+                subx = x.Element("Grid");
+                if (subx != null)
+                { this.GridFormatting.LoadXml(subx); }
+            }
         }
     }
 }

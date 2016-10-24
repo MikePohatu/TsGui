@@ -18,17 +18,15 @@
 
 using System.ComponentModel;
 using System.Xml.Linq;
-using TsGui.Grouping;
 using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
     public abstract class GuiOptionBase : BaseLayoutElement, INotifyPropertyChanged
     {
-        protected string _labeltext = string.Empty;
-        protected string _helptext = string.Empty;
-        protected bool _purgeinactive = false;
-        protected string _inactivevalue = "TSGUI_INACTIVE";
+        private string _labeltext = string.Empty;
+        private string _helptext = string.Empty;
+        private string _inactivevalue = "TSGUI_INACTIVE";
 
         //standard stuff
         public TsColumn Parent { get; set; }
@@ -38,11 +36,6 @@ namespace TsGui.View.GuiOptions
             set { this._inactivevalue = value; }
         }
         public string VariableName { get; set; }
-        public bool PurgeInactive
-        {
-            get { return this._purgeinactive; }
-            set { this._purgeinactive = value; }
-        }
         public string LabelText
         {
             get { return this._labeltext; }
@@ -55,52 +48,23 @@ namespace TsGui.View.GuiOptions
         }
         
         
-        public GuiOptionBase(TsColumn Parent, MainController MainController):base(MainController)
+        public GuiOptionBase(TsColumn Parent, MainController MainController):base(Parent,MainController)
         {
             this.Parent = Parent;
-            this.LabelFormatting = new Formatting();
-            this.ControlFormatting = new Formatting();
-            this.GridFormatting = new Formatting();
-            this.SetDefaults();
         }
 
-        protected void SetDefaults()
+        protected new void LoadXml(XElement InputXml)
         {
-            this.GridFormatting.Width = this.Parent.Width;
-            this.ControlFormatting.Width = this.Parent.ControlWidth;
-            this.LabelFormatting.Width = this.Parent.LabelWidth;
-            this.ShowGridLines = this.Parent.ShowGridLines;
-        }
+            base.LoadXml(InputXml);
 
-        protected void LoadXml(XElement InputXml)
-        {
-            XElement x;
-            XElement subx;
-
-            this.LoadGroupingXml(InputXml);
-
-            this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
+            
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", this.HelpText);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
 
-            x = InputXml.Element("Formatting");
-            if (x != null)
-            {
-                subx = x.Element("Label");
-                if (subx != null)
-                { this.LabelFormatting.LoadXml(subx); }
-
-                subx = x.Element("Control");
-                if (subx != null)
-                { this.ControlFormatting.LoadXml(subx); }
-
-                subx = x.Element("Grid");
-                if (subx != null)
-                { this.GridFormatting.LoadXml(subx); }
-            }
+            
         }
     }
 }

@@ -46,6 +46,7 @@ namespace TsGui
         //properties
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
+        public bool ShowGridLines { get; set; }
 
         //constructors
         public MainController(MainWindow ParentWindow)
@@ -153,6 +154,11 @@ namespace TsGui
 
             if (SourceXml != null)
             {
+                //Set show grid lines after pages and columns have been created.
+                x = SourceXml.Element("ShowGridLines");
+                if ((x != null) && (this._prodmode = false))
+                { this.ShowGridLines = true; }
+
                 //turn hardware eval on or off
                 x = SourceXml.Element("HardwareEval");
                 if (x != null)
@@ -163,9 +169,6 @@ namespace TsGui
                 PageDefaults pagedef = new PageDefaults();
                 pagedef.HeadingTitle = this._mainWindow.HeadingTitle;
                 pagedef.HeadingText = this._mainWindow.HeadingText;
-                pagedef.Height = this._mainWindow.Height;
-                pagedef.Width = this._mainWindow.Width;
-                pagedef.PageMargin = this._mainWindow.PageMargin;
                 pagedef.HeadingBgColor = this._mainWindow.HeadingBgColor;
                 pagedef.HeadingFontColor = this._mainWindow.HeadingFontColor;
                 pagedef.Buttons = this._buttons;
@@ -203,11 +206,6 @@ namespace TsGui
 
                     //currPage.IsLast = true;
                 }
-
-                //Set show grid lines after pages and columns have been created.
-                x = SourceXml.Element("ShowGridLines");
-                if (x != null)
-                { this.ShowGridLines(true); }
             }
         }
 
@@ -354,18 +352,6 @@ namespace TsGui
         public String GetEnvVar(string VariableName)
         {
             return this._envController.GetEnvVar(VariableName);
-        }
-
-        private void ShowGridLines(bool IsEnabled)
-        {
-            //Debug.WriteLine("TestingMode: " + this._prodmode);
-            if (this._prodmode != true)
-            {
-                this._mainWindow.ShowGridLines = true;
-
-                foreach (TsPage page in this._pages)
-                { page.ShowGridLines = IsEnabled; }
-            }
         }
 
         private bool PromptTestMode()
