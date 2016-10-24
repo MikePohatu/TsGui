@@ -325,10 +325,9 @@ namespace TsGui.View.Layout
 
             foreach (TsRow row in this._rows)
             {
-                Debug.WriteLine("TsPage - Build - Adding row");
+                //Debug.WriteLine("TsPage - Build - Adding row");
                 RowDefinition rowdef = new RowDefinition();
-                rowdef.DataContext = row;
-                rowdef.SetBinding(RowDefinition.HeightProperty, new Binding("Height"));
+                rowdef.Height = GridLength.Auto;
 
                 this._pagepanel.RowDefinitions.Add(rowdef);
 

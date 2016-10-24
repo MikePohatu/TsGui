@@ -33,7 +33,7 @@ namespace TsGui.View.GuiOptions
         private TsFreeTextUI _ui;
         private string _controltext;
         private StringValidation _stringvalidation;
-        private bool _isvalid;
+        //private bool _isvalid;
         private Color _bordercolor;
         private Color _hoveroverbordercolor;
 
@@ -53,7 +53,7 @@ namespace TsGui.View.GuiOptions
                 this.Validate();
             }
         }
-        public bool IsValid { get { return this._isvalid; } }
+        public bool IsValid { get { return this.Validate(); } }
         public int MaxLength
         {
             get { return this._stringvalidation.MaxLength; }
@@ -149,7 +149,7 @@ namespace TsGui.View.GuiOptions
         #endregion
 
 
-        private void Validate()
+        private bool Validate()
         {
             bool valid = this._stringvalidation.IsValid(this.ControlText);
             string s = this._stringvalidation.ValidationMessage;
@@ -162,7 +162,7 @@ namespace TsGui.View.GuiOptions
             }
             else { this.ClearToolTips(); }
 
-            this._isvalid = valid;
+            return valid;
         }
 
 

@@ -63,11 +63,14 @@ namespace TsGui.View.Layout
             get { return this._gridlines; }
             set { this._gridlines = value; this.OnPropertyChanged(this, "ShowGridLines"); }
         }
-
         public double Height
         {
             get { return this._height; }
-            set { this._height = value; this.OnPropertyChanged(this, "Height"); }
+            set
+            {
+                this._height = value;
+                this.OnPropertyChanged(this, "Height");
+            }
         }
         public int Index { get; set; }
         public Panel Panel { get { return this._rowpanel; } }
@@ -118,7 +121,7 @@ namespace TsGui.View.Layout
             //Set defaults
             this.IsEnabled = true;
             this.IsHidden = false;
-            this.Height = this.Parent.Height;
+            this.Height = double.NaN;
 
             this._rowpanel.VerticalAlignment = VerticalAlignment.Top;
 
@@ -172,6 +175,7 @@ namespace TsGui.View.Layout
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
+            this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
 
             IEnumerable<XElement> xGroups = InputXml.Elements("Group");
             if (xGroups != null)
