@@ -354,24 +354,16 @@ namespace TsGui.View.Layout
         
         private void ConnectNextPage(TsPage NewNextPage)
         {
-            if (this.NextPage != null)
-            {
-                this.NextPage.GroupableHide -= this.OnSurroundingPageHide;
-            }
+            if (this.NextPage != null) { this.NextPage.GroupableHide -= this.OnSurroundingPageHide; }
             this._nextpage = NewNextPage;
-            if (NewNextPage != null) { this._nextpage.GroupableHide += this.OnSurroundingPageHide; }
+            if (this._nextpage != null) { this._nextpage.GroupableHide += this.OnSurroundingPageHide; }
         }
 
         private void ConnectPrevPage(TsPage NewPrevPage)
-        {
-            
-            if (this.PreviousPage != null)
-            {
-                this.PreviousPage.GroupableHide -= this.OnSurroundingPageHide;
-            }
-
+        {           
+            if (this.PreviousPage != null) { this.PreviousPage.GroupableHide -= this.OnSurroundingPageHide; }
             this._previouspage = NewPrevPage;
-            if (NewPrevPage != null) { this._previouspage.GroupableHide += this.OnSurroundingPageHide; }
+            if (this._previouspage != null) { this._previouspage.GroupableHide += this.OnSurroundingPageHide; }
         }
 
     }
