@@ -19,22 +19,19 @@
 using System.ComponentModel;
 using System.Xml.Linq;
 using TsGui.Grouping;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class GuiOptionBase : GroupableBase, INotifyPropertyChanged
+    public abstract class GuiOptionBase : BaseLayoutElement, INotifyPropertyChanged
     {
         protected string _labeltext = string.Empty;
         protected string _helptext = string.Empty;
-        protected bool _showgridlines = false;
         protected bool _purgeinactive = false;
         protected string _inactivevalue = "TSGUI_INACTIVE";
 
         //standard stuff
         public TsColumn Parent { get; set; }
-        public Formatting LabelFormatting { get; set; }
-        public Formatting ControlFormatting { get; set; }
-        public Formatting GridFormatting { get; set; }
         public string InactiveValue
         {
             get { return this._inactivevalue; }
@@ -56,11 +53,7 @@ namespace TsGui.View.GuiOptions
             get { return this._helptext; }
             set { this._helptext = value; this.OnPropertyChanged(this, "HelpText"); }
         }
-        public bool ShowGridLines
-        {
-            get { return this._showgridlines; }
-            set { this._showgridlines = value; this.OnPropertyChanged(this, "ShowGridLines"); }
-        }
+        
         
         public GuiOptionBase(TsColumn Parent, MainController MainController):base(MainController)
         {
@@ -79,7 +72,7 @@ namespace TsGui.View.GuiOptions
             this.ShowGridLines = this.Parent.ShowGridLines;
         }
 
-        protected void LoadBaseXml(XElement InputXml)
+        protected void LoadXml(XElement InputXml)
         {
             XElement x;
             XElement subx;

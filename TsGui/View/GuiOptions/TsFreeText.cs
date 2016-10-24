@@ -94,9 +94,9 @@ namespace TsGui.View.GuiOptions
             this._stringvalidation.MinLength = 0;
         }
 
-        public void LoadXml(XElement InputXml)
+        public new void LoadXml(XElement InputXml)
         {
-            base.LoadBaseXml(InputXml);
+            base.LoadXml(InputXml);
             XElement x;
 
             //load legacy options

@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="View\GuiOptions\TsFreeText.cs" />
     <Compile Include="View\GuiOptions\TsTextBlock.cs" />
+    <Compile Include="View\Layout\BaseLayoutElement.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
     <Compile Include="Validation\ResultValidator.cs" />
     <Compile Include="Control\EnvironmentController.cs" />
@@ -142,7 +143,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="View\GuiOptions\Formatting.cs" />
+    <Compile Include="View\Layout\Formatting.cs" />
     <Compile Include="View\GuiOptions\TsTextBlockUI.xaml.cs">
       <DependentUpon>TsTextBlockUI.xaml</DependentUpon>
     </Compile>

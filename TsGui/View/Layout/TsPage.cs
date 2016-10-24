@@ -30,7 +30,7 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsPage: GroupableBase, IGroupParent, ITsGuiElement, INotifyPropertyChanged
+    public class TsPage: BaseLayoutElement, IGroupParent, ITsGuiElement, INotifyPropertyChanged
     {
         private double _height;
         private double _width;
@@ -51,7 +51,6 @@ namespace TsGui.View.Layout
 
         //private bool _islast = false;
         private bool _isfirst = false;
-        private bool _gridlines = false;
 
         //Properties
         #region
@@ -135,17 +134,6 @@ namespace TsGui.View.Layout
             {
                 this._headingFontColor = value;
                 this.OnPropertyChanged(this, "HeadinFontColor");
-            }
-        }
-
-        public bool ShowGridLines
-        {
-            get { return this._gridlines; }
-            set
-            {
-                this._gridlines = value;
-                this.OnPropertyChanged(this, "ShowGridLines");
-                foreach (TsRow r in this._rows) { r.ShowGridLines = value; }
             }
         }
         public TsPage PreviousPage

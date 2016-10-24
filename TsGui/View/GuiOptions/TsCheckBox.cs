@@ -79,13 +79,13 @@ namespace TsGui.View.GuiOptions
 
 
         //Methods
-        public void LoadXml(XElement InputXml)
+        public new void LoadXml(XElement InputXml)
         {
             #region
             XElement x;
 
             //load the xml for the base class stuff
-            this.LoadBaseXml(InputXml);
+            base.LoadXml(InputXml);
 
             this._valTrue = XmlHandler.GetStringFromXElement(InputXml, "TrueValue", this._valTrue);
             this._valFalse = XmlHandler.GetStringFromXElement(InputXml, "FalseValue", this._valFalse);

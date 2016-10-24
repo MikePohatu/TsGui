@@ -22,7 +22,7 @@ using System.Xml.Linq;
 using System.ComponentModel;
 using System.Windows.Media;
 
-namespace TsGui.View.GuiOptions
+namespace TsGui.View.Layout
 {
     public class Formatting: INotifyPropertyChanged
     {

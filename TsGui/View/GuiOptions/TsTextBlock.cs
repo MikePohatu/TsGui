@@ -51,9 +51,9 @@ namespace TsGui.View.GuiOptions
         }
 
 
-        public void LoadXml(XElement InputXml)
+        public new void LoadXml(XElement InputXml)
         {
-            this.LoadBaseXml(InputXml);
+            base.LoadXml(InputXml);
             XElement x;
 
             this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", 32760);

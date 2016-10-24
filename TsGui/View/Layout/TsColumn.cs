@@ -29,12 +29,11 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui
 {
-    public class TsColumn : GroupableBase, IGroupParent, INotifyPropertyChanged
+    public class TsColumn : BaseLayoutElement, IGroupParent, INotifyPropertyChanged
     {
         private bool _purgeInactive;
         private List<IGuiOption_2> _options = new List<IGuiOption_2>();
         private StackPanel _columnpanel;
-        private bool _gridlines;
         private double _labelwidth = Double.NaN;
         private double _controlwidth = Double.NaN;
         private double _fullwidth = Double.NaN;
@@ -78,15 +77,6 @@ namespace TsGui
             {
                 this._fullwidth = value;
                 this.OnPropertyChanged(this, "Width");
-            }
-        }
-        public bool ShowGridLines
-        {
-            get { return this._gridlines; }
-            set
-            {
-                this._gridlines = value;
-                this.OnPropertyChanged(this, "ShowGridLines");
             }
         }
         public int Index { get; set; }
