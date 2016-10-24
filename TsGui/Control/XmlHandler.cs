@@ -140,5 +140,26 @@ namespace TsGui
             if (x != null) { return Convert.ToBoolean(x.Value); }
             else { return DefaultValue; }
         }
+
+        //public static FontWeight GetFontWeightFromXElement(XElement InputXml, string XName, FontWeight DefaultValue)
+        //{
+        //    XElement x;
+        //    FontWeight f;
+
+        //    x = InputXml.Element(XName);
+        //    if (x != null)
+        //    {
+        //        switch (x.Value)
+        //        {
+        //            case "Normal":
+        //                return f = new FontWeight(); FontWeights.Normal;
+        //            case "Bold":
+        //                return FontWeights.Bold;
+        //            default:
+        //                throw new InvalidDataException("Font weight not supported: " + x.Value);
+        //        }
+        //    }
+        //    else { return DefaultValue; }
+        //}
     }
 }

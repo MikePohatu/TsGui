@@ -4,23 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
+             xmlns:Layout="clr-namespace:TsGui.View.Layout"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Layout:FontWeightConverter x:Key="FontWeight"/>
+    </UserControl.Resources>
+    
     <Grid x:Name="MainGrid" Width="{Binding GridFormatting.Width}" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}" ShowGridLines="{Binding ShowGridLines}">
         <Grid.RowDefinitions>
             <RowDefinition Height="{Binding GridFormatting.Height}" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="LabelColumn" Width="{Binding LabelFormatting.Width}"/>
-            <ColumnDefinition x:Name="ControlColumn" Width="{Binding ControlFormatting.Width}"/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="Label" Content="{Binding LabelText}" Grid.Column="0" Margin="{Binding LabelFormatting.Margin}" VerticalAlignment="{Binding LabelFormatting.VerticalAlignment}" Padding="{Binding LabelFormatting.Padding}" HorizontalAlignment="Stretch" />
-        <Label x:Name="Control" Content="{Binding ControlText}" Grid.Column="1" 
-               Margin="{Binding ControlFormatting.Margin}" 
-               VerticalAlignment="{Binding ControlFormatting.VerticalAlignment}" 
-               Padding="{Binding ControlFormatting.Padding}" 
-               HorizontalAlignment="Stretch" 
-               FontWeight="{Binding LabelFormatting.Bold}"
-               />
+        <Label x:Name="Label" Content="{Binding LabelText}" 
+               Grid.Column="0" 
+               Margin="{Binding LabelFormatting.Margin}" 
+               VerticalAlignment="{Binding LabelFormatting.VerticalAlignment}" 
+               Padding="{Binding LabelFormatting.Padding}" 
+               FontWeight="{Binding Path=LabelFormatting.FontWeight, Converter={StaticResource FontWeight}}"
+               HorizontalAlignment="Stretch" />
     </Grid>
 </UserControl>

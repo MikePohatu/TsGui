@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="View\GuiOptions\TsTextBlock.cs" />
     <Compile Include="View\Layout\BaseLayoutElement.cs" />
+    <Compile Include="View\Layout\FontWeightConverter.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
     <Compile Include="Validation\ResultValidator.cs" />
     <Compile Include="Control\EnvironmentController.cs" />
