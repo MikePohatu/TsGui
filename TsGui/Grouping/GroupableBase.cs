@@ -25,8 +25,8 @@ namespace TsGui.Grouping
     public abstract class GroupableBase: IGroupable, IGroupChild, INotifyPropertyChanged
     {
         protected MainController _controller;
-        private bool _isenabled = true;
-        private bool _ishidden = false;
+        protected bool _isenabled = true;
+        protected bool _ishidden = false;
         private List<Group> _groups = new List<Group>();
         private Visibility _visibility = Visibility.Visible;
         private bool _purgeinactive = false;
@@ -62,7 +62,6 @@ namespace TsGui.Grouping
             {
                 this.HideUnhide(value);
                 this.OnPropertyChanged(this, "IsHidden");
-                this.ParentHide?.Invoke(value);
             }
         }
         public Visibility Visibility
@@ -118,6 +117,8 @@ namespace TsGui.Grouping
             { this.Visibility = Visibility.Collapsed; }
             else
             { this.Visibility = Visibility.Visible; }
+
+            this.ParentHide?.Invoke(Hidden);
         }
 
         protected void LoadXml(XElement InputXml)

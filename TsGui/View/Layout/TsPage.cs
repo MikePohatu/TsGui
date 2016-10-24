@@ -48,6 +48,16 @@ namespace TsGui.View.Layout
         //Properties
         #region
         public TsMainWindow Parent { get { return this._parent; } }
+        public new bool IsHidden
+        {
+            get { return this._ishidden; }
+            set
+            {
+                this.HideUnhide(value);
+                this.UpdatePrevious();
+                this.OnPropertyChanged(this, "IsHidden");
+            }
+        }
         public TsPage NextActivePage
         {
             get
