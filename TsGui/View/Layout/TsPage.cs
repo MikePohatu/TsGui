@@ -22,11 +22,12 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
+using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsPage: BaseLayoutElement
+    public class TsPage: BaseLayoutElement, IGroupable
     {
         private double _headingHeight;
         private string _headingTitle;
