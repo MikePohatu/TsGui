@@ -19,7 +19,7 @@ using System.Windows.Data;
 using System.Windows;
 using System;
 
-namespace TsGui.View.Layout
+namespace TsGui.View.Layout.Converters
 {
     public class FontWeightConverter: IValueConverter
     {
@@ -27,15 +27,15 @@ namespace TsGui.View.Layout
         {
             if (value != null)
             {
-                switch (value.ToString())
+                switch (value.ToString().ToUpper())
                 {
-                    case "Bold":
+                    case "BOLD":
                         return FontWeights.Bold;
-                    case "ExtraBold":
+                    case "EXTRABOLD":
                         return FontWeights.ExtraBold;
-                    case "Normal":
+                    case "NORMAL":
                         return FontWeights.Normal;
-                    case "Light":
+                    case "LIGHT":
                         return FontWeights.Light;
                     default:
                         return FontWeights.Normal;

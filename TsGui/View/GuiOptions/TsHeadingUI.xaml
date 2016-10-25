@@ -4,11 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
-             xmlns:Layout="clr-namespace:TsGui.View.Layout"
+             xmlns:Converters="clr-namespace:TsGui.View.Layout.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
     <UserControl.Resources>
-        <Layout:FontWeightConverter x:Key="FontWeight"/>
+        <Converters:FontWeightConverter x:Key="FontWeight"/>
+        <Converters:FontStyleConverter x:Key="FontStyle"/>
     </UserControl.Resources>
     
     <Grid x:Name="MainGrid" Width="{Binding GridFormatting.Width}" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}" ShowGridLines="{Binding ShowGridLines}">
@@ -24,6 +25,8 @@
                VerticalAlignment="{Binding LabelFormatting.VerticalAlignment}" 
                Padding="{Binding LabelFormatting.Padding}" 
                FontWeight="{Binding Path=LabelFormatting.FontWeight, Converter={StaticResource FontWeight}}"
-               HorizontalAlignment="Stretch" />
+               FontStyle="{Binding Path=LabelFormatting.FontStyle, Converter={StaticResource FontStyle}}"
+               FontSize="{Binding LabelFormatting.FontSize}"
+               HorizontalAlignment="Stretch"/>
     </Grid>
 </UserControl>

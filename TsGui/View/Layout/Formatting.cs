@@ -29,6 +29,8 @@ namespace TsGui.View.Layout
         //Fields
         #region
         private string _fontweight;
+        private string _fontstyle;
+        private double _fontsize;
         private double _height;
         private double _width;
         private Thickness _margin;
@@ -45,6 +47,16 @@ namespace TsGui.View.Layout
         {
             get { return this._fontweight; }
             set { this._fontweight = value; this.OnPropertyChanged(this, "FontWeight"); }
+        }
+        public string FontStyle
+        {
+            get { return this._fontstyle; }
+            set { this._fontstyle = value; this.OnPropertyChanged(this, "FontStyle"); }
+        }
+        public double FontSize
+        {
+            get { return this._fontsize; }
+            set { this._fontsize = value; this.OnPropertyChanged(this, "FontSize"); }
         }
         public double Height
         {
@@ -113,7 +125,9 @@ namespace TsGui.View.Layout
 
         private void SetDefaults()
         {
-            //this._bold = ;
+            this._fontstyle = "Normal";
+            this._fontweight = "Normal";
+            this._fontsize = 11;
             this._height = Double.NaN;
             this._width = Double.NaN;
             this._margin = new Thickness(2, 2, 2, 2);
@@ -140,6 +154,8 @@ namespace TsGui.View.Layout
             if (x != null)
             {
                 this.FontWeight = XmlHandler.GetStringFromXElement(x, "Weight", this.FontWeight);
+                this.FontStyle = XmlHandler.GetStringFromXElement(x, "Style", this.FontStyle);
+                this.FontSize = XmlHandler.GetDoubleFromXElement(x, "Size", this.FontSize);
             }
             #endregion
         }
@@ -148,6 +164,7 @@ namespace TsGui.View.Layout
         {
             Formatting f = new Formatting();
             f.FontWeight = this.FontWeight;
+            f.FontStyle = this.FontStyle;
             f.Width = this.Width;
             f.Height = this.Height;
             f.Padding = this.Padding;
