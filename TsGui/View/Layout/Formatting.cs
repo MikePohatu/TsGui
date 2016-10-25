@@ -37,6 +37,7 @@ namespace TsGui.View.Layout
         private Thickness _padding;        
         private VerticalAlignment _verticalalign;
         private HorizontalAlignment _horizontalalign;
+        private TextAlignment _textalign;
         private SolidColorBrush _bordercolor;
         private SolidColorBrush _hoverovercolor;
         #endregion
@@ -93,6 +94,11 @@ namespace TsGui.View.Layout
             get { return this._horizontalalign; }
             set { this._horizontalalign = value; this.OnPropertyChanged(this, "HorizontalAlignment"); }
         }
+        public TextAlignment TextAlignment
+        {
+            get { return this._textalign; }
+            set { this._textalign = value; this.OnPropertyChanged(this, "TextAlignment"); }
+        }
         public SolidColorBrush BorderColorBrush
         {
             get { return this._bordercolor; }
@@ -134,10 +140,11 @@ namespace TsGui.View.Layout
             this._padding = new Thickness(2, 2, 2, 2);
             this._verticalalign = VerticalAlignment.Bottom;
             this._horizontalalign = HorizontalAlignment.Left;
+            this.TextAlignment = TextAlignment.Left;
             this._bordercolor = new SolidColorBrush();
             this._hoverovercolor = new SolidColorBrush();
             this.BorderColorBrush.Color = (Color)ColorConverter.ConvertFromString("#FFABADB3");
-            this.HoverOverColorBrush.Color = (Color)ColorConverter.ConvertFromString("#FF3399FF");
+            this.HoverOverColorBrush.Color = (Color)ColorConverter.ConvertFromString("#FF3399FF");           
         }
 
         public void LoadXml(XElement InputXml)
@@ -149,6 +156,9 @@ namespace TsGui.View.Layout
             this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
             this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", 2);
             this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", 2);
+            this.VerticalAlignment = XmlHandler.GetVerticalAlignmentFromXElement(InputXml, "VerticalAlignment", this.VerticalAlignment);
+            this.HorizontalAlignment = XmlHandler.GetHorizontalAlignmentFromXElement(InputXml, "HorizontalAlignment", this.HorizontalAlignment);
+            this.TextAlignment = XmlHandler.GetTextAlignmentFromXElement(InputXml, "TextAlignment", this.TextAlignment);
 
             x = InputXml.Element("Font");
             if (x != null)
@@ -171,6 +181,7 @@ namespace TsGui.View.Layout
             f.Margin = this.Margin;
             f.HorizontalAlignment = this.HorizontalAlignment;
             f.VerticalAlignment = this.VerticalAlignment;
+            f.TextAlignment = this.TextAlignment;
 
             return f;
         }

@@ -13,5 +13,5 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <TextBox x:Name="Control" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ControlStyle}"/>
+    <TextBox x:Name="Control" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ControlStyle}" TextAlignment="{Binding ControlFormatting.TextAlignment}"/>
 </UserControl>

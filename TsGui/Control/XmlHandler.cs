@@ -141,25 +141,71 @@ namespace TsGui
             else { return DefaultValue; }
         }
 
-        //public static FontWeight GetFontWeightFromXElement(XElement InputXml, string XName, FontWeight DefaultValue)
-        //{
-        //    XElement x;
-        //    FontWeight f;
+        public static VerticalAlignment GetVerticalAlignmentFromXElement(XElement InputXml, string XName, VerticalAlignment DefaultValue)
+        {
+            XElement x;
+            x = InputXml.Element(XName);
+            if (x != null)
+            {
+                switch (x.Value.ToUpper())
+                {
+                    case "TOP":
+                        return VerticalAlignment.Top;
+                    case "BOTTOM":
+                        return VerticalAlignment.Bottom;
+                    case "CENTER":
+                        return VerticalAlignment.Center;
+                    case "STRETCH":
+                        return VerticalAlignment.Stretch;
+                    default:
+                        return VerticalAlignment.Bottom;
+                }
+            }
+            else { return DefaultValue; }
+        }
 
-        //    x = InputXml.Element(XName);
-        //    if (x != null)
-        //    {
-        //        switch (x.Value)
-        //        {
-        //            case "Normal":
-        //                return f = new FontWeight(); FontWeights.Normal;
-        //            case "Bold":
-        //                return FontWeights.Bold;
-        //            default:
-        //                throw new InvalidDataException("Font weight not supported: " + x.Value);
-        //        }
-        //    }
-        //    else { return DefaultValue; }
-        //}
+        public static HorizontalAlignment GetHorizontalAlignmentFromXElement(XElement InputXml, string XName, HorizontalAlignment DefaultValue)
+        {
+            XElement x;
+            x = InputXml.Element(XName);
+            if (x != null)
+            {
+                switch (x.Value.ToUpper())
+                {
+                    case "LEFT":
+                        return HorizontalAlignment.Left;
+                    case "RIGHT":
+                        return HorizontalAlignment.Right;
+                    case "CENTER":
+                        return HorizontalAlignment.Center;
+                    case "STRETCH":
+                        return HorizontalAlignment.Stretch;
+                    default:
+                        return HorizontalAlignment.Left;
+                }
+            }
+            else { return DefaultValue; }
+        }
+
+        public static TextAlignment GetTextAlignmentFromXElement(XElement InputXml, string XName, TextAlignment DefaultValue)
+        {
+            XElement x;
+            x = InputXml.Element(XName);
+            if (x != null)
+            {
+                switch (x.Value.ToUpper())
+                {
+                    case "LEFT":
+                        return TextAlignment.Left;
+                    case "RIGHT":
+                        return TextAlignment.Right;
+                    case "CENTER":
+                        return TextAlignment.Center;
+                    default:
+                        return TextAlignment.Left;
+                }
+            }
+            else { return DefaultValue; }
+        }
     }
 }
