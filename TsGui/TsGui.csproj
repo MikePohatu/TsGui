@@ -80,9 +80,6 @@
     <Compile Include="Validation\StringValidation.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Grouping\GroupableBase.cs" />
-    <Compile Include="GuiOptions\OptionGrid.xaml.cs">
-      <DependentUpon>OptionGrid.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Validation\ValidationEnums.cs" />
     <Compile Include="Validation\StringValidationRule.cs" />
     <Compile Include="View\GuiOptions\TsCheckBox.cs" />
@@ -91,8 +88,7 @@
     </Compile>
     <Compile Include="View\GuiOptions\TsComputerName.cs" />
     <Compile Include="View\GuiOptions\TsDropDownListItem.cs" />
-    <Compile Include="GuiOptions\TsInfoBox.cs" />
-    <Compile Include="PageLayout\PageDefaults.cs" />
+    <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\IGuiOption_2.cs" />
     <Compile Include="View\GuiOptions\TsDropDownList.cs" />
@@ -132,7 +128,6 @@
     <Compile Include="Grouping\IGroupChild.cs" />
     <Compile Include="Grouping\IGroupParent.cs" />
     <Compile Include="Grouping\Toggle.cs" />
-    <Compile Include="GuiOptions\TsBaseOption.cs" />
     <Compile Include="Control\HardwareEvaluator.cs" />
     <Compile Include="View\GuiOptions\IEditableGuiOption.cs" />
     <Compile Include="Control\ITsVariableOutput.cs" />
@@ -144,11 +139,6 @@
     <Compile Include="Control\SccmConnector.cs" />
     <Compile Include="Control\SystemConnector.cs" />
     <Compile Include="Control\TestingConnector.cs" />
-    <Compile Include="GuiOptions\TsComputerName.cs" />
-    <Compile Include="GuiOptions\TsHeading.cs" />
-    <Compile Include="GuiOptions\TsDropDownList.cs" />
-    <Compile Include="GuiOptions\TsCheckBox.cs" />
-    <Compile Include="GuiOptions\TsFreeText.cs" />
     <Compile Include="Control\TsVariable.cs" />
     <Compile Include="Control\TsWindowAlerts.cs" />
     <Compile Include="Control\XmlHandler.cs" />
@@ -160,10 +150,6 @@
     <Compile Include="View\GuiOptions\TsTextBlockUI.xaml.cs">
       <DependentUpon>TsTextBlockUI.xaml</DependentUpon>
     </Compile>
-    <Page Include="GuiOptions\OptionGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\GuiOptions\GuiOptionStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -189,10 +175,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="MainController.cs" />
-    <Compile Include="PageLayout\TsButtons.cs" />
+    <Compile Include="View\Layout\TsButtons.cs" />
     <Compile Include="View\Layout\TsColumn.cs" />
-    <Compile Include="GuiOptions\IGuiOption.cs" />
-    <Compile Include="GuiOptions\ITsGuiElement.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -215,7 +199,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PageLayout\TsMainWindow.cs" />
+    <Compile Include="View\Layout\TsMainWindow.cs" />
     <Compile Include="View\Layout\TsPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

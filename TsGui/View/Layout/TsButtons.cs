@@ -20,7 +20,7 @@ using System.ComponentModel;
 using System.Xml.Linq;
 using TsGui.View.Layout;
 
-namespace TsGui
+namespace TsGui.View.Layout
 {
     public class TsButtons : INotifyPropertyChanged
     {

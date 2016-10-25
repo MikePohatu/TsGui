@@ -18,7 +18,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace TsGui
+namespace TsGui.View.Layout
 {
     public class PageDefaults
     {

@@ -23,7 +23,7 @@ using System.ComponentModel;
 
 using TsGui.View.GuiOptions;
 
-namespace TsGui
+namespace TsGui.View.Layout
 {
     public class TsMainWindow : INotifyPropertyChanged
     {
