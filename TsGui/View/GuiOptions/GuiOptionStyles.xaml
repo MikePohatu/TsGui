@@ -17,6 +17,7 @@
     </Style>
     
     <Style x:Key="LabelStyle">
+        <Setter Property="Control.Height" Value="{Binding LabelFormatting.Height}"/>
         <Setter Property="Control.Margin" Value="{Binding LabelFormatting.Margin}"/>
         <Setter Property="Control.VerticalAlignment" Value="{Binding LabelFormatting.VerticalAlignment}"/>
         <Setter Property="Control.HorizontalAlignment" Value="{Binding LabelFormatting.HorizontalAlignment}"/>
@@ -27,6 +28,7 @@
     </Style>
     
     <Style x:Key="ControlStyle">
+        <Setter Property="Control.Height" Value="{Binding ControlFormatting.Height}"/>
         <Setter Property="Control.Margin" Value="{Binding ControlFormatting.Margin}"/>
         <Setter Property="Control.VerticalAlignment" Value="{Binding ControlFormatting.VerticalAlignment}"/>
         <Setter Property="Control.HorizontalAlignment" Value="{Binding ControlFormatting.HorizontalAlignment}"/>

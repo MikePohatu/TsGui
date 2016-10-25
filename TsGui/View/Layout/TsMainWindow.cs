@@ -21,6 +21,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.ComponentModel;
 
+using TsGui;
 using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
@@ -193,14 +194,8 @@ namespace TsGui.View.Layout
                     GuiFactory.LoadHAlignment(footerX, ref this._footerHAlignment);
                 }
 
-                x = SourceXml.Element("Width");
-                if (x != null)
-                { this.Width = Convert.ToInt32(x.Value); }
-
-                x = SourceXml.Element("Height");
-                if (x != null)
-                { this.Height = Convert.ToInt32(x.Value); }
-
+                this.Width = XmlHandler.GetDoubleFromXElement(SourceXml, "Width", this.Width);
+                this.Height = XmlHandler.GetDoubleFromXElement(SourceXml, "Height", this.Height);
                 GuiFactory.LoadMargins(SourceXml, this._pageMargin);
 
                 //Set show grid lines after pages and columns have been created.

@@ -88,8 +88,14 @@ namespace TsGui.View.GuiOptions
             this.UserControl.ControlPresenter.Content = this._textbox;
             this.UserControl.DataContext = this;
             this._textbox.Control.LostFocus += this.onLoseFocus;
+            this.SetDefaults();
+        }
+
+        private void SetDefaults()
+        {
             this._stringvalidation.MaxLength = 32760;
             this._stringvalidation.MinLength = 0;
+            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
 
         public new void LoadXml(XElement InputXml)

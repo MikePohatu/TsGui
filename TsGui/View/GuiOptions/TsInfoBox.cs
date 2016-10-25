@@ -28,9 +28,6 @@ namespace TsGui.View.GuiOptions
 
         //Properties
 
-        //standard stuff
-        
-
         //Custom stuff for control
         public string ControlText
         {
@@ -43,7 +40,7 @@ namespace TsGui.View.GuiOptions
         public TsInfoBox(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
         {
             this.ControlText = string.Empty;
-            
+            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.UserControl.ControlPresenter.Content = new TsInfoBoxUI();
             this.UserControl.DataContext = this;
             this.LoadXml(InputXml);

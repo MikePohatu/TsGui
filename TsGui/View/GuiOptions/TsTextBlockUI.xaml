@@ -13,5 +13,5 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <TextBlock x:Name="Control" Text="{Binding ControlText}" Style="{StaticResource ControlStyle}" />
+    <TextBlock x:Name="Control" Text="{Binding ControlText}" Style="{StaticResource ControlStyle}" TextWrapping="Wrap"/>
 </UserControl>
