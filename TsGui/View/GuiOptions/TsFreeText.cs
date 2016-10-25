@@ -29,8 +29,8 @@ namespace TsGui.View.GuiOptions
 {
     public class TsFreeText: GuiOptionBase, IGuiOption_2, IEditableGuiOption
     {
+        private TsFreeTextUI _textbox;
         private ToolTip _validationtooltip;
-        private TsFreeTextUI _ui;
         private string _controltext;
         private StringValidation _stringvalidation;
         //private bool _isvalid;
@@ -39,9 +39,6 @@ namespace TsGui.View.GuiOptions
 
         //Properties
         #region
-        //standard stuff
-        public UserControl UserControl { get { return this._ui; } }
-
         //Custom stuff for control
         public string ControlText
         {
@@ -87,9 +84,10 @@ namespace TsGui.View.GuiOptions
         {
             this._controller = MainController;
             this._stringvalidation = new StringValidation();
-            this._ui = new TsFreeTextUI();
-            this._ui.DataContext = this;
-            this._ui.Control.LostFocus += this.onLoseFocus;
+            this._textbox = new TsFreeTextUI();
+            this.UserControl.ControlPresenter.Content = this._textbox;
+            this.UserControl.DataContext = this;
+            this._textbox.Control.LostFocus += this.onLoseFocus;
             this._stringvalidation.MaxLength = 32760;
             this._stringvalidation.MinLength = 0;
         }
@@ -176,7 +174,7 @@ namespace TsGui.View.GuiOptions
 
         public void ShowInvalidToolTip(string Message)
         {
-            this._validationtooltip = TsWindowAlerts.ShowUnboundToolTip(this._validationtooltip, this._ui.Control, Message);
+            this._validationtooltip = TsWindowAlerts.ShowUnboundToolTip(this._validationtooltip, this._textbox.Control, Message);
             this._validationtooltip.Placement = PlacementMode.Right;
 
             //update the colors to red. 

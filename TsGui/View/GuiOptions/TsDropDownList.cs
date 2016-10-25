@@ -28,13 +28,10 @@ namespace TsGui.View.GuiOptions
     {
         public event ToggleEvent ToggleEvent;
 
-        private TsDropDownListUI _ui;
+        private TsDropDownListUI _combobox;
         private string _value;
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private bool _istoggle = false;
-
-        //standard stuff
-        public UserControl UserControl { get { return this._ui; } }
 
 
         //Custom stuff for control
@@ -55,10 +52,10 @@ namespace TsGui.View.GuiOptions
         //Constructor
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
-            this._controller = MainController;
             this._controller.MainWindowLoaded += this.OnWindowLoad;
-            this._ui = new TsDropDownListUI();
-            this._ui.DataContext = this;
+            this._combobox = new TsDropDownListUI();
+            this.UserControl.ControlPresenter.Content = this._combobox;
+            this.UserControl.DataContext = this;
             this.LoadXml(InputXml);
             this.SetDefault();
         }
@@ -134,7 +131,7 @@ namespace TsGui.View.GuiOptions
 
         private string UpdateSelected()
         {
-            TsDropDownListItem selected = (TsDropDownListItem)this._ui.Control.SelectedItem;
+            TsDropDownListItem selected = (TsDropDownListItem)this._combobox.Control.SelectedItem;
             this._value = selected.Value;
             return this._value;
         }
@@ -149,7 +146,7 @@ namespace TsGui.View.GuiOptions
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list
                 if ((entry.Value == this._value) || (index == 0))
-                { this._ui.Control.SelectedItem = entry; }
+                { this._combobox.Control.SelectedItem = entry; }
 
                 index++;
             }
@@ -171,8 +168,8 @@ namespace TsGui.View.GuiOptions
         //and closes the dropdown so it initialises proeprly
         public void OnWindowLoad()
         {
-            this._ui.Control.IsDropDownOpen = true;
-            this._ui.Control.IsDropDownOpen = false;
+            this._combobox.Control.IsDropDownOpen = true;
+            this._combobox.Control.IsDropDownOpen = false;
         }
     }
 }

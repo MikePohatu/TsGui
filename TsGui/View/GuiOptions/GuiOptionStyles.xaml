@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:TsGui.View.GuiOptions"
+                    xmlns:Converters="clr-namespace:TsGui.View.Layout.Converters"
+                    >
+    <Converters:FontWeightConverter x:Key="FontWeight"/>
+    <Converters:FontStyleConverter x:Key="FontStyle"/>
+
+    <Style x:Key="GridStyle">
+        <Setter Property="Grid.Margin" Value="{Binding GridFormatting.Margin}"/>
+        <Setter Property="Grid.VerticalAlignment" Value="{Binding GridFormatting.VerticalAlignment}"/>
+        <Setter Property="Grid.HorizontalAlignment" Value="{Binding GridFormatting.HorizontalAlignment}"/>
+        <Setter Property="Grid.Width" Value="{Binding GridFormatting.Width}"/>
+        <Setter Property="Grid.IsEnabled" Value="{Binding IsEnabled}"/>
+        <Setter Property="Grid.Visibility" Value="{Binding Visibility}"/>
+        <Setter Property="Grid.ShowGridLines" Value="{Binding ShowGridLines}"/>
+    </Style>
+    
+    <Style x:Key="LabelStyle">
+        <Setter Property="Control.Margin" Value="{Binding LabelFormatting.Margin}"/>
+        <Setter Property="Control.VerticalAlignment" Value="{Binding LabelFormatting.VerticalAlignment}"/>
+        <Setter Property="Control.HorizontalAlignment" Value="{Binding LabelFormatting.HorizontalAlignment}"/>
+        <Setter Property="Control.Padding" Value="{Binding LabelFormatting.Padding}"/>
+        <Setter Property="Control.FontWeight" Value="{Binding Path=LabelFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
+        <Setter Property="Control.FontStyle" Value="{Binding Path=LabelFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
+        <Setter Property="Control.FontSize" Value="{Binding LabelFormatting.FontSize}"/>
+    </Style>
+    
+    <Style x:Key="ControlStyle">
+        <Setter Property="Control.Margin" Value="{Binding ControlFormatting.Margin}"/>
+        <Setter Property="Control.VerticalAlignment" Value="{Binding ControlFormatting.VerticalAlignment}"/>
+        <Setter Property="Control.HorizontalAlignment" Value="{Binding ControlFormatting.HorizontalAlignment}"/>
+        <Setter Property="Control.Padding" Value="{Binding ControlFormatting.Padding}"/>
+        <Setter Property="Control.FontWeight" Value="{Binding Path=ControlFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
+        <Setter Property="Control.FontStyle" Value="{Binding Path=ControlFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
+        <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
+    </Style>
+    
+    <Style x:Key="RowDefinitionStyle">
+        <Setter Property="RowDefinition.Height" Value="{Binding GridFormatting.Height}"/>
+    </Style>
+    
+    <Style x:Key="LabelColumnStyle">
+        <Setter Property="ColumnDefinition.Width" Value="{Binding LabelFormatting.Width}"/>
+    </Style>
+    
+    <Style x:Key="ControlColumnStyle">
+        <Setter Property="ColumnDefinition.Width" Value="{Binding ControlFormatting.Width}"/>
+    </Style>
+</ResourceDictionary>

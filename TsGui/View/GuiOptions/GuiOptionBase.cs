@@ -19,6 +19,7 @@
 using System.ComponentModel;
 using System.Xml.Linq;
 using TsGui.View.Layout;
+using System.Windows.Controls;
 
 namespace TsGui.View.GuiOptions
 {
@@ -27,9 +28,15 @@ namespace TsGui.View.GuiOptions
         private string _labeltext = string.Empty;
         private string _helptext = string.Empty;
         private string _inactivevalue = "TSGUI_INACTIVE";
+        private GuiOptionBaseUI _ui;
 
         //standard stuff
         public TsColumn Parent { get; set; }
+        public GuiOptionBaseUI UserControl
+        {
+            get { return this._ui; }
+            set { this._ui = value; }
+        }
         public string InactiveValue
         {
             get { return this._inactivevalue; }
@@ -51,7 +58,8 @@ namespace TsGui.View.GuiOptions
         public GuiOptionBase(TsColumn Parent, MainController MainController):base(Parent,MainController)
         {
             this.Parent = Parent;
-            
+            this._controller = MainController;
+            this.UserControl = new GuiOptionBaseUI();
         }
 
         protected new void LoadXml(XElement InputXml)

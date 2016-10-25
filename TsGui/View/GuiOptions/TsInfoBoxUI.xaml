@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="TsGui.View.GuiOptions.TsCheckBoxUI"
+﻿<UserControl x:Class="TsGui.View.GuiOptions.TsInfoBoxUI"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
-             d:DesignHeight="20" d:DesignWidth="20">
+             d:DesignHeight="20" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,6 +13,5 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <CheckBox x:Name="Control" IsChecked="{Binding IsChecked}" Style="{StaticResource ControlStyle}" />
-
+    <Label x:Name="Control" Content="{Binding ControlText}" Style="{StaticResource ControlStyle}"/>
 </UserControl>

@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="TsGui.View.GuiOptions.GuiOptionBaseUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TsGui.View.GuiOptions"
+             mc:Ignorable="d" 
+             d:DesignHeight="20" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="GuiOptionStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl>
+        <Grid x:Name="MainGrid" Style="{StaticResource GridStyle}">
+            <Grid.RowDefinitions>
+                <RowDefinition Style="{StaticResource RowDefinitionStyle}"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LabelColumn" Style="{StaticResource LabelColumnStyle}"/>
+                <ColumnDefinition x:Name="ControlColumn" Style="{StaticResource ControlColumnStyle}"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" x:Name="Label" Content="{Binding LabelText}"  Style="{StaticResource LabelStyle}"/>
+            <ContentPresenter Grid.Column="1" x:Name="ControlPresenter"/>
+
+        </Grid>
+    </UserControl>
+</UserControl>

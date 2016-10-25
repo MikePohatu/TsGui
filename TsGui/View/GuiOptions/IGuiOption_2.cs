@@ -25,7 +25,7 @@ namespace TsGui.View.GuiOptions
         TsVariable Variable { get; }
         string VariableName { get; }
         string InactiveValue { get; }
-        UserControl UserControl { get; }
+        GuiOptionBaseUI UserControl { get; }
         bool PurgeInactive { get; set; }
     }
 }

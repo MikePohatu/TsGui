@@ -61,6 +61,11 @@ namespace TsGui.View.GuiOptions
                 TsHeading h = new TsHeading(OptionXml, Parent, RootController);
                 return h;
             }
+            else if (OptionXml.Attribute("Type").Value == "InfoBox")
+            {
+                TsInfoBox ib = new TsInfoBox(OptionXml, Parent, RootController);
+                return ib;
+            }
             else
             { return null; }
             #endregion

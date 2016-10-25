@@ -7,26 +7,5 @@
              xmlns:Converters="clr-namespace:TsGui.View.Layout.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
-    <UserControl.Resources>
-        <Converters:FontWeightConverter x:Key="FontWeight"/>
-        <Converters:FontStyleConverter x:Key="FontStyle"/>
-    </UserControl.Resources>
     
-    <Grid x:Name="MainGrid" Width="{Binding GridFormatting.Width}" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}" ShowGridLines="{Binding ShowGridLines}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="{Binding GridFormatting.Height}" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="LabelColumn" Width="{Binding LabelFormatting.Width}"/>
-        </Grid.ColumnDefinitions>
-        <Label x:Name="Label" Content="{Binding LabelText}" 
-               Grid.Column="0" 
-               Margin="{Binding LabelFormatting.Margin}" 
-               VerticalAlignment="{Binding LabelFormatting.VerticalAlignment}" 
-               Padding="{Binding LabelFormatting.Padding}" 
-               FontWeight="{Binding Path=LabelFormatting.FontWeight, Converter={StaticResource FontWeight}}"
-               FontStyle="{Binding Path=LabelFormatting.FontStyle, Converter={StaticResource FontStyle}}"
-               FontSize="{Binding LabelFormatting.FontSize}"
-               HorizontalAlignment="Stretch"/>
-    </Grid>
 </UserControl>

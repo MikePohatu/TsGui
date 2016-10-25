@@ -22,11 +22,14 @@ using System.Windows;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsHeading : GuiOptionBase, IGuiOption_2
+    public class TsInfoBox : GuiOptionBase, IGuiOption_2
     {
         private string _controltext;
-        
+
         //Properties
+
+        //standard stuff
+        
 
         //Custom stuff for control
         public string ControlText
@@ -37,10 +40,11 @@ namespace TsGui.View.GuiOptions
         public TsVariable Variable { get { return null; } }
 
         //constructor
-        public TsHeading(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
+        public TsInfoBox(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
         {
             this.ControlText = string.Empty;
-            this.UserControl.ControlPresenter.Content = new TsHeadingUI();
+            
+            this.UserControl.ControlPresenter.Content = new TsInfoBoxUI();
             this.UserControl.DataContext = this;
             this.LoadXml(InputXml);
         }
@@ -53,7 +57,17 @@ namespace TsGui.View.GuiOptions
             if (x != null) { this.LabelFormatting.FontWeight = "Bold"; }
 
             base.LoadXml(InputXml);
-            this.ControlText = XmlHandler.GetStringFromXElement(InputXml, "RightLabel", this.ControlText);
+
+            x = InputXml.Element("DisplayValue");
+            if (x != null)
+            {
+                this.ControlText = this._controller.GetValueFromList(x);
+                if (this.ControlText == null) { this.ControlText = string.Empty; }
+
+                ////if required, remove invalid characters and truncate
+                //if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.Value = ResultValidator.RemoveInvalid(this.Value, this.DisallowedCharacters); }
+                //if (this._maxlength > 0) { this.Value = ResultValidator.Truncate(this.Value, this._maxlength); }
+            }
         }
     }
 }

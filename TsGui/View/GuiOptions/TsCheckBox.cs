@@ -28,15 +28,10 @@ namespace TsGui.View.GuiOptions
     {
         public event ToggleEvent ToggleEvent;
 
-        private TsCheckBoxUI _ui;
         private bool _value;
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private string _valTrue = "TRUE";
         private string _valFalse = "FALSE";
-
-        //standard stuff
-        public UserControl UserControl { get { return this._ui; } }
-
 
         //Custom stuff for control
         public List<TsDropDownListItem> Options { get { return this._options; } }
@@ -73,9 +68,8 @@ namespace TsGui.View.GuiOptions
         //Constructor
         public TsCheckBox(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent,MainController)
         {
-            this._controller = MainController;
-            this._ui = new TsCheckBoxUI();
-            this._ui.DataContext = this;
+            this.UserControl.ControlPresenter.Content = new TsCheckBoxUI();
+            this.UserControl.DataContext = this;
             this.LoadXml(InputXml);
         }
 

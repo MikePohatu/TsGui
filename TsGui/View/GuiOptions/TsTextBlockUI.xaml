@@ -6,15 +6,12 @@
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
              d:DesignHeight="40" d:DesignWidth="200">
-    <Grid x:Name="MainGrid" Width="{Binding GridFormatting.Width}" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}" ShowGridLines="{Binding ShowGridLines}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="{Binding GridFormatting.Height}" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="LabelColumn" Width="{Binding LabelFormatting.Width}"/>
-            <ColumnDefinition x:Name="ControlColumn" Width="{Binding ControlFormatting.Width}"/>
-        </Grid.ColumnDefinitions>
-        <Label x:Name="Label" Content="{Binding LabelText}" Grid.Column="0" Margin="{Binding LabelFormatting.Margin}" VerticalAlignment="{Binding LabelFormatting.VerticalAlignment}" Padding="{Binding LabelFormatting.Padding}" HorizontalAlignment="Stretch" />
-        <TextBlock x:Name="Control" Text="{Binding ControlText}" Grid.Column="1" Margin="{Binding ControlFormatting.Margin}" TextWrapping="Wrap" VerticalAlignment="{Binding ControlFormatting.VerticalAlignment}" Padding="{Binding ControlFormatting.Padding}" HorizontalAlignment="Stretch" />
-    </Grid>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="GuiOptionStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <TextBlock x:Name="Control" Text="{Binding ControlText}" Style="{StaticResource ControlStyle}" />
 </UserControl>

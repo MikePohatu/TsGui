@@ -17,18 +17,14 @@
 
 
 using System.Xml.Linq;
-using System.Windows.Controls;
 using TsGui.Validation;
 
 namespace TsGui.View.GuiOptions
 {
     public class TsTextBlock: GuiOptionBase, IGuiOption_2
     {
-        private TsTextBlockUI _ui;
         private string _controltext;
-
-        //standard stuff
-        public UserControl UserControl { get { return this._ui; } }
+        private StringValidation _stringvalidation;
 
         //Custom stuff for control
         public string ControlText
@@ -36,31 +32,40 @@ namespace TsGui.View.GuiOptions
             get { return this._controltext; }
             set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
         }
-        public int MaxLength { get; set; }
-        public string DisallowedCharacters { get; set; }
         public TsVariable Variable { get { return null; } }
 
         //public TsColumn Parent { get; set; }
 
         public TsTextBlock (XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
-            this._controller = MainController;
-            this._ui = new TsTextBlockUI();
-            this._ui.DataContext = this;
+            this.UserControl.ControlPresenter.Content = new TsTextBlockUI();
+            this.UserControl.DataContext = this;
+            this._stringvalidation = new StringValidation();
+            this.SetDefaults();
             this.LoadXml(InputXml);
         }
 
+        private void SetDefaults()
+        {
+            this._stringvalidation.MaxLength = 32760;
+            this.LabelText = string.Empty;
+        }
 
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
             XElement x;
 
-            this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", 32760);
-            this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", string.Empty);
+            this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
 
+            //load legacy options
             x = InputXml.Element("Disallowed");
-            if (x != null) { this.DisallowedCharacters = XmlHandler.GetStringFromXElement(x, "Characters", null); }
+            if (x != null) { this._stringvalidation.LoadLegacyXml(x); }
+            this._stringvalidation.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", this._stringvalidation.MaxLength);
+
+
+            x = InputXml.Element("Validation");
+            if (x != null) { this._stringvalidation.LoadXml(x); }
 
             x = InputXml.Element("DisplayValue");
             if (x != null)
@@ -69,8 +74,8 @@ namespace TsGui.View.GuiOptions
                 if (this.ControlText == null) { this.ControlText = string.Empty; }
 
                 //if required, remove invalid characters and truncate
-                if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this.DisallowedCharacters); }
-                if (this.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
+                //if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this.DisallowedCharacters); }
+                if (this._stringvalidation.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this._stringvalidation.MaxLength); }
             }
         }
     }
