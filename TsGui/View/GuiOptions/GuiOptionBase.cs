@@ -29,8 +29,6 @@ namespace TsGui.View.GuiOptions
         private string _helptext = string.Empty;
         private string _inactivevalue = "TSGUI_INACTIVE";
         private GuiOptionBaseUI _ui;
-        private ContentPresenter _controlpresenter;
-        private ContentPresenter _labelpresenter;
         private bool _invertlayout = false;
 
         //standard stuff
@@ -40,8 +38,8 @@ namespace TsGui.View.GuiOptions
             get { return this._invertlayout; }
             set { this.SetLayoutRightLeft(value); }
         }
-        public ContentPresenter ControlPresenter { get { return this._controlpresenter; } }
-        public ContentPresenter LabelPresenter { get { return this._labelpresenter; } }
+        public UserControl Control { get; set; }
+        public UserControl Label { get; set; }
         public GuiOptionBaseUI UserControl
         {
             get { return this._ui; }
@@ -70,7 +68,6 @@ namespace TsGui.View.GuiOptions
             this.Parent = Parent;
             this._controller = MainController;
             this.UserControl = new GuiOptionBaseUI();
-            this.SetLayoutRightLeft(true);
         }
 
         protected new void LoadXml(XElement InputXml)
@@ -82,7 +79,7 @@ namespace TsGui.View.GuiOptions
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", this.HelpText);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
-            this.InvertLayout = XmlHandler.GetBoolFromXElement(InputXml, "InvertLayout", this._invertlayout);
+            this.InvertLayout = XmlHandler.GetBoolFromXAttribute(InputXml, "InvertLayout", this.InvertLayout);
         }
 
         private void SetLayoutRightLeft(bool InvertLayout)
@@ -90,13 +87,13 @@ namespace TsGui.View.GuiOptions
             this._invertlayout = InvertLayout;
             if (InvertLayout == false)
             {
-                this._labelpresenter = this.UserControl.LeftPresenter;
-                this._controlpresenter = this.UserControl.RightPresenter;
+                this.UserControl.RightPresenter.Content = this.Control;
+                this.UserControl.LeftPresenter.Content = this.Label;
             }
             else
             {
-                this._labelpresenter = this.UserControl.RightPresenter;
-                this._controlpresenter = this.UserControl.LeftPresenter;
+                this.UserControl.RightPresenter.Content = this.Label;
+                this.UserControl.LeftPresenter.Content = this.Control;
             }
         }
     }

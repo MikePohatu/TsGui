@@ -42,10 +42,9 @@ namespace TsGui.View.GuiOptions
             this.ControlText = string.Empty;
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.UserControl.DataContext = this;
-
+            this.Control = new TsInfoBoxUI();
+            this.Label = new TsLabelUI();
             this.LoadXml(InputXml);
-            this.ControlPresenter.Content = new TsInfoBoxUI();
-            this.LabelPresenter.Content = new TsLabelUI();
         }
 
         public new void LoadXml(XElement InputXml)

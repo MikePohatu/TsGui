@@ -54,11 +54,11 @@ namespace TsGui.View.GuiOptions
         {
             this._controller.MainWindowLoaded += this.OnWindowLoad;
             this._combobox = new TsDropDownListUI();           
-            this.UserControl.DataContext = this;
+            this.UserControl.DataContext = this;           
+            this.Control = this._combobox;
+            this.Label = new TsLabelUI();
             this.LoadXml(InputXml);
-            this.ControlPresenter.Content = this._combobox;
-            this.LabelPresenter.Content = new TsLabelUI();
-            this.SetDefault();
+            this.SetComboBoxDefault();
         }
 
 
@@ -138,7 +138,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //iterate through the list and set the default if found
-        private void SetDefault()
+        private void SetComboBoxDefault()
         {
             int index = 0;
 

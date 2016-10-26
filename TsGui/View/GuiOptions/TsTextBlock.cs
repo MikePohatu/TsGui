@@ -42,9 +42,9 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;
             this._stringvalidation = new StringValidation();
             this.SetDefaults();
+            this.Control = new TsTextBlockUI();
+            this.Label = new TsLabelUI();
             this.LoadXml(InputXml);
-            this.ControlPresenter.Content = new TsTextBlockUI();
-            this.LabelPresenter.Content = new TsLabelUI();
         }
 
         private void SetDefaults()
