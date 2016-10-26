@@ -17,8 +17,6 @@
 // amongst the other options. 
 
 using System.Xml.Linq;
-using System.Windows.Controls;
-using System.Windows;
 
 namespace TsGui.View.GuiOptions
 {
@@ -54,7 +52,7 @@ namespace TsGui.View.GuiOptions
             if (x != null) { this.LabelFormatting.FontWeight = "Bold"; }
 
             base.LoadXml(InputXml);
-            this.ControlText = XmlHandler.GetStringFromXElement(InputXml, "RightLabel", this.ControlText);
+            this.ControlText = XmlHandler.GetStringFromXElement(InputXml, "AltLabel", this.ControlText);
         }
     }
 }

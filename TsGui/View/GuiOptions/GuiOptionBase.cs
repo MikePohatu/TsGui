@@ -15,8 +15,6 @@
 
 // GuiOptionBase.cs - base parts for all GuiOptions
 
-
-using System.ComponentModel;
 using System.Xml.Linq;
 using TsGui.View.Layout;
 using System.Windows.Controls;
