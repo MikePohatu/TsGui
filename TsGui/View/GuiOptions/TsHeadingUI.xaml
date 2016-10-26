@@ -25,5 +25,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:Converters="clr-namespace:TsGui.View.Layout.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
-    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="GuiOptionStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Label x:Name="Control" Content="{Binding ControlText}"  Style="{StaticResource ControlStyle}"/>
 </UserControl>
