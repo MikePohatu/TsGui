@@ -85,7 +85,8 @@ namespace TsGui.View.GuiOptions
             this._controller = MainController;
             this._stringvalidation = new StringValidation();
             this._textbox = new TsFreeTextUI();
-            this.UserControl.ControlPresenter.Content = this._textbox;
+            this.ControlPresenter.Content = this._textbox;
+            this.LabelPresenter.Content = new TsLabelUI();
             this.UserControl.DataContext = this;
             this._textbox.Control.LostFocus += this.onLoseFocus;
             this.SetDefaults();

@@ -88,6 +88,9 @@
     </Compile>
     <Compile Include="View\GuiOptions\TsComputerName.cs" />
     <Compile Include="View\GuiOptions\TsDropDownListItem.cs" />
+    <Compile Include="View\GuiOptions\TsLabelUI.xaml.cs">
+      <DependentUpon>TsLabelUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\IGuiOption_2.cs" />
@@ -161,6 +164,10 @@
     <Page Include="View\GuiOptions\TsHeadingUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GuiOptions\TsLabelUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\GuiOptions\TsInfoBoxUI.xaml">
       <SubType>Designer</SubType>

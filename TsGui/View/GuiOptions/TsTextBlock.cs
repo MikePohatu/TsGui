@@ -38,11 +38,13 @@ namespace TsGui.View.GuiOptions
 
         public TsTextBlock (XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
-            this.UserControl.ControlPresenter.Content = new TsTextBlockUI();
+            
             this.UserControl.DataContext = this;
             this._stringvalidation = new StringValidation();
             this.SetDefaults();
             this.LoadXml(InputXml);
+            this.ControlPresenter.Content = new TsTextBlockUI();
+            this.LabelPresenter.Content = new TsLabelUI();
         }
 
         private void SetDefaults()

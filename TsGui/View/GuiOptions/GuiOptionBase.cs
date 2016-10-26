@@ -29,9 +29,19 @@ namespace TsGui.View.GuiOptions
         private string _helptext = string.Empty;
         private string _inactivevalue = "TSGUI_INACTIVE";
         private GuiOptionBaseUI _ui;
+        private ContentPresenter _controlpresenter;
+        private ContentPresenter _labelpresenter;
+        private bool _invertlayout = false;
 
         //standard stuff
         public TsColumn Parent { get; set; }
+        public bool InvertLayout
+        {
+            get { return this._invertlayout; }
+            set { this.SetLayoutRightLeft(value); }
+        }
+        public ContentPresenter ControlPresenter { get { return this._controlpresenter; } }
+        public ContentPresenter LabelPresenter { get { return this._labelpresenter; } }
         public GuiOptionBaseUI UserControl
         {
             get { return this._ui; }
@@ -60,20 +70,34 @@ namespace TsGui.View.GuiOptions
             this.Parent = Parent;
             this._controller = MainController;
             this.UserControl = new GuiOptionBaseUI();
+            this.SetLayoutRightLeft(true);
         }
 
         protected new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-
             
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", this.HelpText);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
+            this.InvertLayout = XmlHandler.GetBoolFromXElement(InputXml, "InvertLayout", this._invertlayout);
+        }
 
-            
+        private void SetLayoutRightLeft(bool InvertLayout)
+        {
+            this._invertlayout = InvertLayout;
+            if (InvertLayout == false)
+            {
+                this._labelpresenter = this.UserControl.LeftPresenter;
+                this._controlpresenter = this.UserControl.RightPresenter;
+            }
+            else
+            {
+                this._labelpresenter = this.UserControl.RightPresenter;
+                this._controlpresenter = this.UserControl.LeftPresenter;
+            }
         }
     }
 }

@@ -53,10 +53,11 @@ namespace TsGui.View.GuiOptions
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
             this._controller.MainWindowLoaded += this.OnWindowLoad;
-            this._combobox = new TsDropDownListUI();
-            this.UserControl.ControlPresenter.Content = this._combobox;
+            this._combobox = new TsDropDownListUI();           
             this.UserControl.DataContext = this;
             this.LoadXml(InputXml);
+            this.ControlPresenter.Content = this._combobox;
+            this.LabelPresenter.Content = new TsLabelUI();
             this.SetDefault();
         }
 

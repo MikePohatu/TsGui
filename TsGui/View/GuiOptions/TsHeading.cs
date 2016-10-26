@@ -40,7 +40,8 @@ namespace TsGui.View.GuiOptions
         public TsHeading(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
         {
             this.ControlText = string.Empty;
-            this.UserControl.ControlPresenter.Content = new TsHeadingUI();
+            this.ControlPresenter.Content = new TsHeadingUI();
+            this.LabelPresenter.Content = new TsLabelUI();
             this.UserControl.DataContext = this;
             this.LoadXml(InputXml);
         }
