@@ -64,8 +64,26 @@ with this program; if not, write to the Free Software Foundation, Inc.,
     <Style x:Key="LabelColumnStyle">
         <Setter Property="ColumnDefinition.Width" Value="{Binding LabelFormatting.Width}"/>
     </Style>
-    
+
     <Style x:Key="ControlColumnStyle">
         <Setter Property="ColumnDefinition.Width" Value="{Binding ControlFormatting.Width}"/>
+    </Style>
+
+    <Style x:Key="FreeTextStyle" TargetType="TextBox" BasedOn="{StaticResource ControlStyle}">
+        <Setter Property="TextAlignment" Value="{Binding ControlFormatting.TextAlignment}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border Name="ControlBorder" BorderBrush="{Binding ControlFormatting.BorderBrush}" BorderThickness="1" >
+                        <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="TextBox.IsMouseOver" Value="True">
+                            <Setter TargetName="ControlBorder" Property="BorderBrush" Value="{Binding ControlFormatting.MouseOverBorderBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

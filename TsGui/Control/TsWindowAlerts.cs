@@ -89,14 +89,15 @@ namespace TsGui
         /// <returns></returns>
         public static ToolTip ShowUnboundToolTip(ToolTip ToolTip, Control TargetControl, string Message)
         {
-            if (ToolTip == null) { ToolTip = CreateToolTip(Message); }        
-            else { UpdateToolTipMessage(ToolTip, Message); }
-            ToolTip.PlacementTarget = TargetControl;
-            
-            ToolTip.StaysOpen = true;
-            ToolTip.IsOpen = true;
+            ToolTip tt = ToolTip;
+            if (tt == null) { tt = CreateToolTip(Message); }        
+            else { UpdateToolTipMessage(tt, Message); }
+            tt.PlacementTarget = TargetControl;
 
-            return ToolTip;
+            tt.StaysOpen = true;
+            tt.IsOpen = true;
+
+            return tt;
         }
 
 

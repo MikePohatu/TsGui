@@ -38,8 +38,9 @@ namespace TsGui.View.Layout
         private VerticalAlignment _verticalalign;
         private HorizontalAlignment _horizontalalign;
         private TextAlignment _textalign;
-        private SolidColorBrush _bordercolor;
-        private SolidColorBrush _hoverovercolor;
+        private SolidColorBrush _bordercolorbrush;
+        private SolidColorBrush _focusedcolorbrush;
+        private SolidColorBrush _mouseovercolorbrush;
         #endregion
 
         //Properties
@@ -99,15 +100,20 @@ namespace TsGui.View.Layout
             get { return this._textalign; }
             set { this._textalign = value; this.OnPropertyChanged(this, "TextAlignment"); }
         }
-        public SolidColorBrush BorderColorBrush
+        public SolidColorBrush BorderBrush
         {
-            get { return this._bordercolor; }
-            set { this._bordercolor = value; this.OnPropertyChanged(this, "BorderColorBrush"); }
+            get { return this._bordercolorbrush; }
+            set { this._bordercolorbrush = value; this.OnPropertyChanged(this, "BorderBrush"); }
         }
-        public SolidColorBrush HoverOverColorBrush
+        public SolidColorBrush FocusedBorderBrush
         {
-            get { return this._hoverovercolor; }
-            set { this._hoverovercolor = value; this.OnPropertyChanged(this, "HoverOverColorBrush"); }
+            get { return this._focusedcolorbrush; }
+            set { this._focusedcolorbrush = value; this.OnPropertyChanged(this, "FocusedBorderBrush"); }
+        }
+        public SolidColorBrush MouseOverBorderBrush
+        {
+            get { return this._mouseovercolorbrush; }
+            set { this._mouseovercolorbrush = value; this.OnPropertyChanged(this, "MouseOverBorderBrush"); }
         }
         #endregion
 
@@ -141,10 +147,12 @@ namespace TsGui.View.Layout
             this._verticalalign = VerticalAlignment.Bottom;
             this._horizontalalign = HorizontalAlignment.Left;
             this.TextAlignment = TextAlignment.Left;
-            this._bordercolor = new SolidColorBrush();
-            this._hoverovercolor = new SolidColorBrush();
-            this.BorderColorBrush.Color = (Color)ColorConverter.ConvertFromString("#FFABADB3");
-            this.HoverOverColorBrush.Color = (Color)ColorConverter.ConvertFromString("#FF3399FF");           
+            this._bordercolorbrush = new SolidColorBrush();
+            this._mouseovercolorbrush = new SolidColorBrush();
+            this._focusedcolorbrush = new SolidColorBrush();
+            this.BorderBrush.Color = Colors.Gray; 
+            this.MouseOverBorderBrush.Color = Colors.DarkGray;
+            this.FocusedBorderBrush.Color = Colors.LightBlue;  
         }
 
         public void LoadXml(XElement InputXml)
@@ -182,6 +190,9 @@ namespace TsGui.View.Layout
             f.HorizontalAlignment = this.HorizontalAlignment;
             f.VerticalAlignment = this.VerticalAlignment;
             f.TextAlignment = this.TextAlignment;
+            f.BorderBrush = this.BorderBrush.Clone();
+            f.FocusedBorderBrush = this.FocusedBorderBrush.Clone();
+            f.MouseOverBorderBrush = this.MouseOverBorderBrush.Clone();
 
             return f;
         }

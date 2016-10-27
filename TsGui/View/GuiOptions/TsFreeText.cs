@@ -29,13 +29,13 @@ namespace TsGui.View.GuiOptions
 {
     public class TsFreeText: GuiOptionBase, IGuiOption_2, IEditableGuiOption
     {
-        private TsFreeTextUI _textbox;
-        private ToolTip _validationtooltip;
-        private string _controltext;
-        private StringValidation _stringvalidation;
-        //private bool _isvalid;
-        private Color _bordercolor;
-        private Color _hoveroverbordercolor;
+        protected TsFreeTextUI _textbox;
+        protected ToolTip _validationtooltip;
+        protected string _controltext;
+        protected StringValidation _stringvalidation;
+        protected Color _bordercolor;
+        protected Color _mouseoverbordercolor;
+        protected Color _focusbordercolor;
 
         //Properties
         #region
@@ -97,6 +97,11 @@ namespace TsGui.View.GuiOptions
             this._stringvalidation.MaxLength = 32760;
             this._stringvalidation.MinLength = 0;
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            //record the default colors
+            this._bordercolor = this.ControlFormatting.BorderBrush.Color;
+            this._mouseoverbordercolor = this.ControlFormatting.MouseOverBorderBrush.Color;
+            this._focusbordercolor = this.ControlFormatting.FocusedBorderBrush.Color;
         }
 
         public new void LoadXml(XElement InputXml)
@@ -109,12 +114,6 @@ namespace TsGui.View.GuiOptions
             if (x != null) { this._stringvalidation.LoadLegacyXml(x); }
             this._stringvalidation.MinLength = XmlHandler.GetIntFromXAttribute(InputXml, "MinLength", this._stringvalidation.MinLength);
             this._stringvalidation.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", this._stringvalidation.MaxLength);
-
-            
-            
-            //record the colors
-            this._bordercolor = this.ControlFormatting.BorderColorBrush.Color;
-            this._hoveroverbordercolor = this.ControlFormatting.HoverOverColorBrush.Color;
 
             //this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
 
@@ -137,13 +136,15 @@ namespace TsGui.View.GuiOptions
                     }
                 }
 
-                this.ControlText = this._controller.GetValueFromList(x);
-                if (this.ControlText == null) { this.ControlText = string.Empty; }
+                this._controltext = this._controller.GetValueFromList(x);
+                if (this._controltext == null) { this._controltext = string.Empty; }
 
                 //if required, remove invalid characters and truncate
                 //if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this.DisallowedCharacters); }
-                if (this.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
+                if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
             }
+
+            this.Validate();
         }
 
         //Handle UI events
@@ -174,8 +175,9 @@ namespace TsGui.View.GuiOptions
         public void ClearToolTips()
         {
             TsWindowAlerts.HideToolTip(this._validationtooltip);
-            this.ControlFormatting.BorderColorBrush.Color = this._bordercolor;
-            this.ControlFormatting.HoverOverColorBrush.Color = this._hoveroverbordercolor;
+            this.ControlFormatting.BorderBrush.Color = this._bordercolor;
+            this.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
+            this.ControlFormatting.FocusedBorderBrush.Color = this._focusbordercolor;
         }
 
 
@@ -183,10 +185,12 @@ namespace TsGui.View.GuiOptions
         {
             this._validationtooltip = TsWindowAlerts.ShowUnboundToolTip(this._validationtooltip, this._textbox.Control, Message);
             this._validationtooltip.Placement = PlacementMode.Right;
+            //this._validationtooltip.hor = TextAlignment
 
             //update the colors to red. 
-            this.ControlFormatting.BorderColorBrush.Color = Colors.Red;
-            this.ControlFormatting.HoverOverColorBrush.Color = Colors.Red;
+            this.ControlFormatting.BorderBrush.Color = Colors.Red;
+            this.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
+            this.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;
         }
     }
 }

@@ -35,7 +35,6 @@
 //	</Query>
 //</DefaultValue>
 
-using System;
 using System.Xml.Linq;
 
 namespace TsGui.View.GuiOptions

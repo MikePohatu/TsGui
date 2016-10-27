@@ -32,5 +32,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <TextBox x:Name="Control" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ControlStyle}" TextAlignment="{Binding ControlFormatting.TextAlignment}"/>
+
+    <TextBox x:Name="Control" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+            Style="{StaticResource FreeTextStyle}"  />
 </UserControl>
