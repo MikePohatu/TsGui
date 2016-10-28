@@ -106,7 +106,7 @@ namespace TsGui.Validation
             bool result = true;
             this.FailedValidationMessage = string.Empty;
 
-            if ((Input.Length == 0) && (this._validateempty == false)) { return true; }
+            if (string.IsNullOrEmpty(Input) && (this._validateempty == false)) { return true; }
             if (IsShorterThanMinLength(Input)) { result = false; }
             if (IsLongerThanMaxLength(Input)) { result = false; }
             if (IsValidMatched(Input) == false) { result = false; }
@@ -117,6 +117,13 @@ namespace TsGui.Validation
 
         private bool IsShorterThanMinLength(string Input)
         {
+            if (string.IsNullOrEmpty(Input))
+            {
+                if (this.MinLength > 0) { return true; }
+                else { return false; }
+            }
+            
+
             if ((Input.Length < this.MinLength))
             {
                 this.FailedValidationMessage = this.FailedValidationMessage + "Minimum length: " + this.MinLength + " characters" + Environment.NewLine + Environment.NewLine;
@@ -127,6 +134,8 @@ namespace TsGui.Validation
 
         private bool IsLongerThanMaxLength(string Input)
         {
+            if (string.IsNullOrEmpty(Input)) { return false; }
+
             if ((Input.Length > this.MaxLength))
             {
                 this.FailedValidationMessage = this.FailedValidationMessage + "Maximum length: " + this.MaxLength + " characters" + Environment.NewLine + Environment.NewLine;

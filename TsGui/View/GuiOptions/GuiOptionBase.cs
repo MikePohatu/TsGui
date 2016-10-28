@@ -24,7 +24,7 @@ namespace TsGui.View.GuiOptions
     public abstract class GuiOptionBase : BaseLayoutElement
     {
         private string _labeltext = string.Empty;
-        private string _helptext = string.Empty;
+        private string _helptext = null;
         private string _inactivevalue = "TSGUI_INACTIVE";
         private GuiOptionBaseUI _ui;
         private bool _invertlayout = false;

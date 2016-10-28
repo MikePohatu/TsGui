@@ -69,13 +69,15 @@ namespace TsGui
         /// </summary>
         /// <param name="control"></param>
         /// <param name="Message"></param>
-        public static void ShowToolTip(Control Control, string Message)
+        public static ToolTip ShowToolTip(Control Control, string Message)
         {
-            if (string.IsNullOrEmpty(Message)) { return; }
+            if (string.IsNullOrEmpty(Message)) { return null; }
             ToolTip tt = SetToolTipText(Control, Message);
+            tt.PlacementTarget = Control;
 
             tt.StaysOpen = true;
             tt.IsOpen = true;
+            return tt;
         }
 
         /// <summary>
