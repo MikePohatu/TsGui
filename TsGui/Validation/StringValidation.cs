@@ -28,10 +28,10 @@ namespace TsGui.Validation
         private List<StringValidationRule> _validrules = new List<StringValidationRule>();
         private List<StringValidationRule> _invalidrules = new List<StringValidationRule>();
 
-
         //Properties
 
         #region
+        public string AllInvalidCharacters { get { return this.GetAllInvalidCharacters(); } }
         public string ValidationMessage { get; set; }
         public string FailedValidationMessage { get; set; }
         public int MinLength
@@ -163,7 +163,6 @@ namespace TsGui.Validation
                 s = this.FailedValidationMessage +  "Invalid text rule matched: " + Environment.NewLine + s;
                 this.FailedValidationMessage = s;
             }
-            
 
             return result;
         }
@@ -182,6 +181,16 @@ namespace TsGui.Validation
 
             this.FailedValidationMessage = this.FailedValidationMessage + "Must match one of: " + Environment.NewLine +  s + Environment.NewLine;
             return false;
+        }
+
+        private string GetAllInvalidCharacters()
+        {
+            string s = string.Empty;
+            foreach (StringValidationRule rule in this._invalidrules)
+            {
+                if (rule.Type == StringValidationRuleType.Characters) { s = s + rule.Content; }
+            }
+            return s;
         }
     }
 }
