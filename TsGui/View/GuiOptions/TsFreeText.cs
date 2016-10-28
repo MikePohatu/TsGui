@@ -194,6 +194,8 @@ namespace TsGui.View.GuiOptions
         public void ClearToolTips()
         {
             //this.ControlToolTipContent = null;
+            this._controltooltip.IsOpen = false;
+            this._controltooltip.StaysOpen = false;
             this._freetextui.ToolTip = null;
             this.ControlFormatting.BorderBrush.Color = this._bordercolor;
             this.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
