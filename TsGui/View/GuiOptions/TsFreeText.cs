@@ -176,18 +176,17 @@ namespace TsGui.View.GuiOptions
         {
             bool newvalid = this._stringvalidation.IsValid(this.ControlText);
 
-            if (this._isvalidcurrentvalue != newvalid)
-            {
-                this._isvalidcurrentvalue = newvalid;
-                string s = this._stringvalidation.ValidationMessage;
+            this._isvalidcurrentvalue = newvalid;
+            string s = this._stringvalidation.ValidationMessage;
 
-                if (_isvalidcurrentvalue == false)
-                {
-                    if (string.IsNullOrEmpty(s)) { s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine + Environment.NewLine + _stringvalidation.FailedValidationMessage; }
-                    this.ShowInvalidToolTip(s);
-                }
-                else { this.ClearToolTips(); }
+            if (_isvalidcurrentvalue == false)
+            {
+                if (string.IsNullOrEmpty(s)) { s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine + Environment.NewLine + _stringvalidation.FailedValidationMessage; }
+                this.ValidationText = s;
+                this.ShowInvalidToolTip();
             }
+            else { this.ClearToolTips(); }
+
             return _isvalidcurrentvalue;
         }
 
@@ -202,9 +201,8 @@ namespace TsGui.View.GuiOptions
         }
 
 
-        public void ShowInvalidToolTip(string Message)
-        {
-            this.ValidationText = Message;
+        public void ShowInvalidToolTip()
+        {         
             this._freetextui.ToolTip = this._controltooltip;
             this._controltooltip.PlacementTarget = this._freetextui;
             this._controltooltip.Placement = PlacementMode.Right;
