@@ -41,6 +41,7 @@ namespace TsGui.View.GuiOptions
         protected Color _focusbordercolor;
         private ToolTip _controltooltip;
         private ValidationErrorToolTip _validationerrortooltip;
+        private bool _isvalidcurrentvalue;
 
         //Properties
         #region
@@ -55,7 +56,7 @@ namespace TsGui.View.GuiOptions
                 this.Validate();
             }
         }
-        public bool IsValid { get { return this.Validate(); } }
+        public bool IsValid { get { return _isvalidcurrentvalue; } }
         public int MaxLength
         {
             get { return this._stringvalidation.MaxLength; }
@@ -109,6 +110,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
+            this._isvalidcurrentvalue = true;
             this._stringvalidation.MaxLength = 32760;
             this._stringvalidation.MinLength = 0;
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -172,17 +174,21 @@ namespace TsGui.View.GuiOptions
 
         private bool Validate()
         {
-            bool valid = this._stringvalidation.IsValid(this.ControlText);
-            string s = this._stringvalidation.ValidationMessage;
-            
-            if (valid == false)
-            {
-                if (string.IsNullOrEmpty(s)) { s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine + Environment.NewLine + _stringvalidation.FailedValidationMessage; }
-                this.ShowInvalidToolTip(s);               
-            }
-            else { this.ClearToolTips(); }
+            bool newvalid = this._stringvalidation.IsValid(this.ControlText);
 
-            return valid;
+            if (this._isvalidcurrentvalue != newvalid)
+            {
+                this._isvalidcurrentvalue = newvalid;
+                string s = this._stringvalidation.ValidationMessage;
+
+                if (_isvalidcurrentvalue == false)
+                {
+                    if (string.IsNullOrEmpty(s)) { s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine + Environment.NewLine + _stringvalidation.FailedValidationMessage; }
+                    this.ShowInvalidToolTip(s);
+                }
+                else { this.ClearToolTips(); }
+            }
+            return _isvalidcurrentvalue;
         }
 
 
