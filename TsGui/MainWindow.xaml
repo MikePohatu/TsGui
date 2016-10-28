@@ -17,7 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 MainWindow.xaml - wrapper window for the app. Includes footer.  
     
 -->
-    
+
 <Window x:Class="TsGui.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -32,7 +32,6 @@ MainWindow.xaml - wrapper window for the app. Includes footer.
         Left="40" Top="40" WindowStyle="None"
         MouseLeftButtonDown="windowDrag" ResizeMode="NoResize"
         AllowsTransparency="True">
-
     <Grid Name="ContentWrapper">
         <Grid.RowDefinitions>
             <RowDefinition Height="100*" />

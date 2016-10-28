@@ -30,11 +30,25 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="GuiOptionStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="ToolTip">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToolTip">
+                            <ContentPresenter />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <TextBox x:Name="Control" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-            Style="{StaticResource FreeTextStyle}" 
-             ToolTip="{Binding ValidationText}"
-             />
+            Style="{StaticResource FreeTextStyle}">
+        <!--<TextBox.ToolTip>
+            <ToolTip>
+                <ContentPresenter Content="{Binding ControlToolTipContent}" />
+            </ToolTip>
+        </TextBox.ToolTip>-->
+    </TextBox>
+    
 </UserControl>

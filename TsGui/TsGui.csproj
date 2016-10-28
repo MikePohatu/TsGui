@@ -82,6 +82,9 @@
     <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="Validation\ValidationEnums.cs" />
     <Compile Include="Validation\StringValidationRule.cs" />
+    <Compile Include="Validation\ValidationErrorToolTip.xaml.cs">
+      <DependentUpon>ValidationErrorToolTip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GuiOptions\TsCheckBox.cs" />
     <Compile Include="View\GuiOptions\TsCheckBoxUI.xaml.cs">
       <DependentUpon>TsCheckBoxUI.xaml</DependentUpon>
@@ -153,6 +156,10 @@
     <Compile Include="View\GuiOptions\TsTextBlockUI.xaml.cs">
       <DependentUpon>TsTextBlockUI.xaml</DependentUpon>
     </Compile>
+    <Page Include="Validation\ValidationErrorToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\GuiOptions\GuiOptionStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

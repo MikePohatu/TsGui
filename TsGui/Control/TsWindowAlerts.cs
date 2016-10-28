@@ -102,6 +102,28 @@ namespace TsGui
             return tt;
         }
 
+        /// <summary>
+        /// Display a ToolTip and keep it open, but don't assign it to the control
+        /// Will create a new ToolTip if parameter is null. 
+        /// Returns the ToolTip
+        /// </summary>
+        /// <param name="ToolTip"></param>
+        /// <param name="TargetControl"></param>
+        /// <param name="Message"></param>
+        /// <returns></returns>
+        public static ToolTip ShowUnboundToolTip(ToolTip ToolTip, Control TargetControl)
+        {
+            ToolTip tt = ToolTip;
+            if (tt == null) { tt = new ToolTip(); }
+            tt.PlacementTarget = TargetControl;
+            tt.Placement = PlacementMode.Right;
+
+            tt.StaysOpen = true;
+            tt.IsOpen = true;
+
+            return tt;
+        }
+
 
         /// <summary>
         /// Hide a control's ToolTip. If a ToolTip is not set, does nothing
