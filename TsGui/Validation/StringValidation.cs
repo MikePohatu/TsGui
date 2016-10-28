@@ -31,7 +31,6 @@ namespace TsGui.Validation
         //Properties
 
         #region
-        public string AllInvalidCharacters { get { return this.GetAllInvalidCharacters(); } }
         public string ValidationMessage { get; set; }
         public string FailedValidationMessage { get; set; }
         public int MinLength
@@ -183,7 +182,7 @@ namespace TsGui.Validation
             return false;
         }
 
-        private string GetAllInvalidCharacters()
+        public string GetAllInvalidCharacters()
         {
             string s = string.Empty;
             foreach (StringValidationRule rule in this._invalidrules)
