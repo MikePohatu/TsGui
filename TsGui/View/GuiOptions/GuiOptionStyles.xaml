@@ -44,6 +44,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         <Setter Property="Control.FontWeight" Value="{Binding Path=LabelFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
         <Setter Property="Control.FontStyle" Value="{Binding Path=LabelFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
         <Setter Property="Control.FontSize" Value="{Binding LabelFormatting.FontSize}"/>
+        <Setter Property="Control.IsEnabled" Value="{Binding IsEnabled}"/>
     </Style>
     
     <Style x:Key="ControlStyle">
@@ -55,6 +56,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         <Setter Property="Control.FontWeight" Value="{Binding Path=ControlFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
         <Setter Property="Control.FontStyle" Value="{Binding Path=ControlFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
         <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
+        <Setter Property="Control.IsEnabled" Value="{Binding IsEnabled}"/>
     </Style>
     
     <Style x:Key="RowDefinitionStyle">
@@ -74,14 +76,20 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border Name="ControlBorder" BorderBrush="{Binding ControlFormatting.BorderBrush}" BorderThickness="1" >
+                    <Border Name="Border" BorderBrush="{Binding ControlFormatting.BorderBrush}" BorderThickness="1" >
                         <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="TextBox.IsMouseOver" Value="True">
-                            <Setter TargetName="ControlBorder" Property="BorderBrush" Value="{Binding ControlFormatting.MouseOverBorderBrush}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding ControlFormatting.MouseOverBorderBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.InactiveCaptionTextColor}}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.InactiveBorderBrush}}"/>
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static SystemColors.InactiveCaptionBrush}}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
+                    
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

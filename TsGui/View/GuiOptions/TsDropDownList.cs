@@ -95,11 +95,14 @@ namespace TsGui.View.GuiOptions
                 }
 
                 //now read in an option and add to a dictionary for later use
+                double longestoptionwidth = 0;
                 if (x.Name == "Option")
                 {
                     string optval = x.Element("Value").Value;
                     string opttext = x.Element("Text").Value;
-                    this._options.Add(new TsDropDownListItem(optval, opttext));
+                    TsDropDownListItem newoption = new TsDropDownListItem(optval, opttext);
+                    this._options.Add(newoption);
+                    if (newoption.Width > longestoptionwidth) { longestoptionwidth = newoption.Width; }
 
                     XElement togglex = x.Element("Toggle");
                     if (togglex != null)
@@ -109,6 +112,7 @@ namespace TsGui.View.GuiOptions
                         this._istoggle = true;
                     }
                 }
+                if (this.ControlFormatting.Width == double.NaN) { this.ControlFormatting.Width = longestoptionwidth; }
 
                 if (x.Name == "Query")
                 {

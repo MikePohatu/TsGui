@@ -42,6 +42,7 @@ namespace TsGui.View.GuiOptions
             this.HorizontalContentAlignment = HorizontalAlignment.Left;
             this.VerticalContentAlignment = VerticalAlignment.Bottom;
             this.Control.SetBinding(Label.IsEnabledProperty, new Binding("IsEnabled"));
+            this.Control.SetBinding(Label.WidthProperty, new Binding("ControlFormatting.Width"));
         }
     }
 }
