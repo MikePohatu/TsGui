@@ -31,21 +31,25 @@ MainWindow.xaml - wrapper window for the app. Includes footer.
         Topmost="True"
         Left="40" Top="40" WindowStyle="None"
         MouseLeftButtonDown="windowDrag" ResizeMode="NoResize"
-        AllowsTransparency="True">
+        AllowsTransparency="True" Background="Transparent" >
     <Grid Name="ContentWrapper">
         <Grid.RowDefinitions>
             <RowDefinition Height="100*" />
             <RowDefinition x:Name="FooterRow" Height="{Binding FooterHeight}" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" >
-            <Frame Name="ContentArea" NavigationUIVisibility="Hidden">
+            <Frame Name="ContentArea" Background="Transparent" NavigationUIVisibility="Hidden">
 
             </Frame>
         </Grid>
-        <Grid x:Name="FooterGrid" Grid.Row="1" Background="#FFE5E5E5" Margin="0,0,0,0" ShowGridLines="{Binding ShowGridLines}">
-            <StackPanel >
-                <TextBlock Text="{Binding FooterText}" HorizontalAlignment="{Binding FooterHAlignment}" FontStyle="Italic" FontSize="10" Padding="3,1,12,1" />
-            </StackPanel>
+        
+        <Grid x:Name="FooterGrid" Grid.Row="1" Margin="0,0,0,0" ShowGridLines="{Binding ShowGridLines}">
+            <Border Background="#FFE5E5E5" CornerRadius="0,0,7,7"  Height="{Binding FooterHeight}" >
+                <StackPanel>
+                    <TextBlock Text="{Binding FooterText}" HorizontalAlignment="{Binding FooterHAlignment}" FontStyle="Italic" FontSize="10" Padding="3,1,12,1" />
+                </StackPanel>
+            </Border>
         </Grid>
+       
     </Grid>
 </Window>

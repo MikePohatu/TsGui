@@ -10,7 +10,7 @@
         <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
             <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                     Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" Margin="{TemplateBinding Margin}"
-                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
+                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0,7,0,7">
                 <ScrollViewer x:Name="PART_ContentHost"/>
             </Border>
         </ControlTemplate>
@@ -20,7 +20,7 @@
              BorderBrush="Red"
              Margin="0" Width="Auto" Height="Auto" 
              BorderThickness="0.5" 
-             Padding="5" HorizontalContentAlignment="Left"
+             Padding="10,5,10,5" HorizontalContentAlignment="Left"
              Template="{StaticResource TextBoxBaseControlTemplate}"
              Text="{Binding ValidationText}"/>
 </UserControl>
