@@ -84,9 +84,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding ControlFormatting.MouseOverBorderBrush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.InactiveCaptionTextColor}}"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.InactiveBorderBrush}}"/>
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static SystemColors.InactiveCaptionBrush}}"/>
+                            <Setter Property="Opacity" TargetName="Border" Value="0.56"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                     
