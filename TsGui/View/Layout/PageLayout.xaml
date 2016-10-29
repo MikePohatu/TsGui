@@ -35,7 +35,7 @@ PageLayout.xaml - main layout for each page.
             <RowDefinition x:Name="MainRow" Height="100*"/>
             <RowDefinition x:Name="ButtonRow" Height="50" />
         </Grid.RowDefinitions>
-        <Border CornerRadius="7,7,0,0" Background="{Binding HeadingBgColor}" >
+        <Border CornerRadius="5,5,0,0" Background="{Binding HeadingBgColor}" >
             <Grid x:Name="HeadingGrid" Grid.Row="0" ShowGridLines="{Binding ShowGridLines}" >
                 <StackPanel x:Name="HeadingStack" Margin="10,5,10,10" >
                     <TextBlock x:Name="HeadingTitle" Text="{Binding HeadingTitle}" Foreground="{Binding HeadinFontColor}" FontFamily="Segoe UI Semibold" FontSize="13.333" />

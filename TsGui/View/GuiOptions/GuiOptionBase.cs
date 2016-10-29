@@ -18,6 +18,7 @@
 using System.Xml.Linq;
 using TsGui.View.Layout;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace TsGui.View.GuiOptions
 {
@@ -78,6 +79,11 @@ namespace TsGui.View.GuiOptions
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
             this.InvertLayout = XmlHandler.GetBoolFromXAttribute(InputXml, "InvertLayout", this.InvertLayout);
+        }
+
+        private void SetDefaults()
+        {
+            this.LabelFormatting.Padding = new Thickness(3, 0, 0, 0);
         }
 
         private void SetLayoutRightLeft(bool InvertLayout)

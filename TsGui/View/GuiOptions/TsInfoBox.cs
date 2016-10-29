@@ -44,6 +44,7 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;
             this.Control = new TsInfoBoxUI();
             this.Label = new TsLabelUI();
+            this.SetDefaults();
             this.LoadXml(InputXml);
         }
 
@@ -61,11 +62,12 @@ namespace TsGui.View.GuiOptions
             {
                 this.ControlText = this._controller.GetValueFromList(x);
                 if (this.ControlText == null) { this.ControlText = string.Empty; }
-
-                ////if required, remove invalid characters and truncate
-                //if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.Value = ResultValidator.RemoveInvalid(this.Value, this.DisallowedCharacters); }
-                //if (this._maxlength > 0) { this.Value = ResultValidator.Truncate(this.Value, this._maxlength); }
             }
+        }
+
+        private void SetDefaults()
+        {
+            this.ControlFormatting.Padding = new Thickness(3, 0, 0, 0);
         }
     }
 }

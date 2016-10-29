@@ -71,6 +71,7 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;           
             this.Control = new TsCheckBoxUI();
             this.Label = new TsLabelUI();
+            this.SetDefaults();
             this.LoadXml(InputXml);
         }
 
@@ -107,9 +108,11 @@ namespace TsGui.View.GuiOptions
             this.ToggleEvent?.Invoke();
         }
 
-        private void OnChanged(object o, RoutedEventArgs e)
+        private void SetDefaults()
         {
-            
+            this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
+            this.ControlFormatting.Margin = new Thickness(2, 1, 2, 1);
+            this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
         }
     }
 }

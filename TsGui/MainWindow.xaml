@@ -44,7 +44,7 @@ MainWindow.xaml - wrapper window for the app. Includes footer.
         </Grid>
         
         <Grid x:Name="FooterGrid" Grid.Row="1" Margin="0,0,0,0" ShowGridLines="{Binding ShowGridLines}">
-            <Border Background="#FFE5E5E5" CornerRadius="0,0,7,7"  Height="{Binding FooterHeight}" >
+            <Border Background="#FFE5E5E5" CornerRadius="0,0,5,5"  Height="{Binding FooterHeight}" >
                 <StackPanel>
                     <TextBlock Text="{Binding FooterText}" HorizontalAlignment="{Binding FooterHAlignment}" FontStyle="Italic" FontSize="10" Padding="3,1,12,1" />
                 </StackPanel>

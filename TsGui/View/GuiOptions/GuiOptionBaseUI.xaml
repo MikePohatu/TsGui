@@ -33,7 +33,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl>
-        <Grid x:Name="MainGrid" Style="{StaticResource GridStyle}" ToolTip="{Binding HelpText}">
+        <Grid x:Name="MainGrid" Style="{StaticResource GridStyle}" ToolTip="{Binding HelpText}" Margin="0">
             <Grid.RowDefinitions>
                 <RowDefinition Style="{StaticResource RowDefinitionStyle}"/>
             </Grid.RowDefinitions>

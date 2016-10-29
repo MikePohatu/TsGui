@@ -57,6 +57,7 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;           
             this.Control = this._combobox;
             this.Label = new TsLabelUI();
+            this.SetDefaults();
             this.LoadXml(InputXml);
             this.SetComboBoxDefault();
         }
@@ -171,6 +172,11 @@ namespace TsGui.View.GuiOptions
         {
             this._combobox.Control.IsDropDownOpen = true;
             this._combobox.Control.IsDropDownOpen = false;
+        }
+
+        private void SetDefaults()
+        {
+            this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
         }
     }
 }

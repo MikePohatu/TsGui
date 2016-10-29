@@ -114,7 +114,7 @@ namespace TsGui.View.GuiOptions
             this._stringvalidation.MaxLength = 32760;
             this._stringvalidation.MinLength = 0;
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
-
+            this.ControlFormatting.Padding = new Thickness(3, 2, 3, 2);
             //record the default colors
             this._bordercolor = this.ControlFormatting.BorderBrush.Color;
             this._mouseoverbordercolor = this.ControlFormatting.MouseOverBorderBrush.Color;
