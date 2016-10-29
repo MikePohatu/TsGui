@@ -13,13 +13,13 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// IGroupable.cs - interface defines elements that can be added to a Group object
+// IGroupableUIElement.cs - interface defines elements that can be added to a Group object
 using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace TsGui.Grouping
 {
-    public interface IGroupable
+    public interface IGroupableUIElement
     {
         bool IsActive { get; }
         bool IsEnabled { get; set; }

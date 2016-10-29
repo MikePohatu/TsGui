@@ -17,6 +17,7 @@
 using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using TsGui.Grouping;
 
 namespace TsGui.Validation
 {
@@ -27,10 +28,13 @@ namespace TsGui.Validation
         private int _minlength = 0;
         private List<StringValidationRule> _validrules = new List<StringValidationRule>();
         private List<StringValidationRule> _invalidrules = new List<StringValidationRule>();
+        private MainController _controller;
+        private List<Group> _groups = new List<Group>();
 
         //Properties
 
         #region
+        public bool IsActive { get; set; }
         public string ValidationMessage { get; set; }
         public string FailedValidationMessage { get; set; }
         public int MinLength
@@ -50,9 +54,15 @@ namespace TsGui.Validation
         }
         #endregion
 
+        public StringValidation(MainController MainController)
+        {
+            this._controller = MainController;
+        }
+
         public void LoadXml(XElement InputXml)
         {
             XElement x;
+            IEnumerable<XElement> xlist;
 
             #region
             this.ValidationMessage = XmlHandler.GetStringFromXElement(InputXml, "Message", this.ValidationMessage);
@@ -78,6 +88,17 @@ namespace TsGui.Validation
                     StringValidationRule newrule = new StringValidationRule(subx);
                     this._invalidrules.Add(newrule);
                 }
+            }
+
+            xlist = InputXml.Elements("Group");
+            if (xlist != null)
+            {
+                foreach (XElement groupx in xlist)
+                {
+                    Group g = this._controller.GetGroupFromID(groupx.Value);
+                    this._groups.Add(g);
+                    g.StateEvent += this.OnGroupStateChange;
+;               }
             }
             #endregion
         }
@@ -190,6 +211,14 @@ namespace TsGui.Validation
                 if (rule.Type == StringValidationRuleType.Characters) { s = s + rule.Content; }
             }
             return s;
+        }
+
+        public void OnGroupStateChange()
+        {
+            foreach (Group g in this._groups)
+            { if (g.State == GroupState.Enabled) { this.IsActive = true; return; } }
+
+            this.IsActive = false;
         }
     }
 }

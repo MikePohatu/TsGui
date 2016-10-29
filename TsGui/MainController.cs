@@ -253,13 +253,25 @@ namespace TsGui
         /// <param name="ID"></param>
         /// <param name="Element"></param>
         /// <returns></returns>
-        public Group AddToGroup (string ID, IGroupable Element)
+        public Group AddToGroup (string ID, IGroupableUIElement Element)
+        {
+            Group group = this.GetGroupFromID(ID);
+            group.Add(Element);
+            
+            return group;
+        }
+
+        /// <summary>
+        /// Get a group object, create if doesn't exist
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public Group GetGroupFromID(string ID)
         {
             Group group;
             this._groups.TryGetValue(ID, out group);
             if (group == null) { group = this.CreateGroup(ID); }
-            group.Add(Element);
-            
+
             return group;
         }
 

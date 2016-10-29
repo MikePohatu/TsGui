@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// GroupableBase.cs - base class for grouable objects
+// GroupableUIElementBase.cs - base class for grouable UI objects
 
 using System.Windows;
 using System.ComponentModel;
@@ -22,7 +22,7 @@ using System.Xml.Linq;
 
 namespace TsGui.Grouping
 {
-    public abstract class GroupableBase: IGroupable, IGroupChild, INotifyPropertyChanged
+    public abstract class GroupableUIElementBase: IGroupableUIElement, IGroupChild, INotifyPropertyChanged
     {
         protected MainController _controller;
         protected bool _isenabled = true;
@@ -76,7 +76,7 @@ namespace TsGui.Grouping
         }
 
         //Constructor
-        public GroupableBase(MainController MainController)
+        public GroupableUIElementBase(MainController MainController)
         {
             this._controller = MainController;
         }

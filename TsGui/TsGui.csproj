@@ -79,7 +79,7 @@
     <Compile Include="Control\ControlDelegates.cs" />
     <Compile Include="Validation\StringValidation.cs" />
     <Compile Include="Delegates.cs" />
-    <Compile Include="Grouping\GroupableBase.cs" />
+    <Compile Include="Grouping\GroupableUIElementBase.cs" />
     <Compile Include="Validation\ValidationEnums.cs" />
     <Compile Include="Validation\StringValidationRule.cs" />
     <Compile Include="Validation\ValidationErrorToolTip.xaml.cs">
@@ -130,7 +130,7 @@
     <Compile Include="Grouping\Group.cs" />
     <Compile Include="View\GuiOptions\GuiFactory.cs" />
     <Compile Include="Grouping\GroupingLogic.cs" />
-    <Compile Include="Grouping\IGroupable.cs" />
+    <Compile Include="Grouping\IGroupableUIElement.cs" />
     <Compile Include="Grouping\IGroupChild.cs" />
     <Compile Include="Grouping\IGroupParent.cs" />
     <Compile Include="Grouping\Toggle.cs" />

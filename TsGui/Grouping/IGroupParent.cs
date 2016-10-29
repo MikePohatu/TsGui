@@ -17,7 +17,7 @@
 
 namespace TsGui.Grouping
 {
-    public interface IGroupParent: IGroupable
+    public interface IGroupParent: IGroupableUIElement
     {
         event GroupableHide ParentHide;
         event GroupableEnable ParentEnable;

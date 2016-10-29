@@ -40,7 +40,7 @@ namespace TsGui.View.GuiOptions
         {
             
             this.UserControl.DataContext = this;
-            this._stringvalidation = new StringValidation();
+            this._stringvalidation = new StringValidation(MainController);
             this.SetDefaults();
             this.Control = new TsTextBlockUI();
             this.Label = new TsLabelUI();

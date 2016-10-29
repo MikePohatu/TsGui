@@ -20,7 +20,7 @@ using System.Xml.Linq;
 
 namespace TsGui.View.Layout
 {
-    public abstract class BaseLayoutElement: GroupableBase
+    public abstract class BaseLayoutElement: GroupableUIElementBase
     {
         private bool _showgridlines = false;
 

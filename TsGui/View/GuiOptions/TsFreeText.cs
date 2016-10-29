@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -42,6 +43,7 @@ namespace TsGui.View.GuiOptions
         private ToolTip _controltooltip;
         private ValidationErrorToolTip _validationerrortooltip;
         private bool _isvalidcurrentvalue;
+        private List<StringValidation> _validations;
 
         //Properties
         #region
@@ -98,7 +100,7 @@ namespace TsGui.View.GuiOptions
             this._controltooltip = new ToolTip();
             this._controltooltip.Content = _validationerrortooltip;
 
-            this._stringvalidation = new StringValidation();
+            this._stringvalidation = new StringValidation(MainController);
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
             this.Label = new TsLabelUI();

@@ -22,12 +22,12 @@ namespace TsGui.Grouping
     internal static class GroupingLogic
     {
         //group logic
-        public static void OnGroupUnhide(IGroupable Element, bool Display)
+        public static void OnGroupUnhide(IGroupableUIElement Element, bool Display)
         {
             GroupingLogic.EvaluateGroups(Element);
         }
 
-        public static void OnGroupEnable(IGroupable Element, bool Enable)
+        public static void OnGroupEnable(IGroupableUIElement Element, bool Enable)
         {
             GroupingLogic.EvaluateGroups(Element);
         }
@@ -60,7 +60,7 @@ namespace TsGui.Grouping
             EvaluateGroups(Element);
         }
 
-        public static void EvaluateGroups(IGroupable Element)
+        public static void EvaluateGroups(IGroupableUIElement Element)
         {       
             bool hiddenset = false;
             bool enabledset = false;
