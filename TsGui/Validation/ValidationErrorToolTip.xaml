@@ -10,7 +10,7 @@
         <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
             <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                     Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" Margin="{TemplateBinding Margin}"
-                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0,7,0,7">
+                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5,5,5,5">
                 <ScrollViewer x:Name="PART_ContentHost"/>
             </Border>
         </ControlTemplate>

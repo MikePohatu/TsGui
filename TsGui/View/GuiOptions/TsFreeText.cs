@@ -167,7 +167,6 @@ namespace TsGui.View.GuiOptions
         { this.Validate(); }
         #endregion
 
-
         public bool Validate()
         {
             bool newvalid = this._validationhandler.IsValid(this.ControlText);
@@ -176,7 +175,7 @@ namespace TsGui.View.GuiOptions
 
             if (newvalid == false)
             {
-                if (string.IsNullOrEmpty(s)) { s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine + Environment.NewLine + _validationhandler.FailedValidationMessage; }
+                if (string.IsNullOrEmpty(s)) { s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine + _validationhandler.FailedValidationMessage; }
                 this.ValidationText = s;
                 this.ShowInvalidToolTip();
             }
@@ -184,7 +183,6 @@ namespace TsGui.View.GuiOptions
 
             return newvalid;
         }
-
 
         public void ClearToolTips()
         {
@@ -195,7 +193,6 @@ namespace TsGui.View.GuiOptions
             this.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
             this.ControlFormatting.FocusedBorderBrush.Color = this._focusbordercolor;
         }
-
 
         public void ShowInvalidToolTip()
         {         
