@@ -17,7 +17,6 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
-using System.Windows.Controls;
 using System.Windows;
 
 using TsGui.Grouping;
@@ -28,10 +27,12 @@ namespace TsGui.View.GuiOptions
     {
         public event ToggleEvent ToggleEvent;
 
-        private TsDropDownListUI _combobox;
-        private string _value;
+        private TsDropDownListUI _dropdownlistui;
+        private string _currentvalue;
+        private TsDropDownListItem _currentitem;
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private bool _istoggle = false;
+        private double _biggestwidth;
 
 
         //Custom stuff for control
@@ -43,19 +44,29 @@ namespace TsGui.View.GuiOptions
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.UpdateSelected()); }
+                { return new TsVariable(this.VariableName, this.CurrentValue); }
             }
         }
-        public string CurrentValue { get { return this.UpdateSelected(); } }
+        public string CurrentValue
+        {
+            get { return this._currentitem.Value; }
+        }
+        public TsDropDownListItem CurrentItem
+        {
+            get { return this._currentitem; }
+            set { this._currentitem = value; this.OnPropertyChanged(this, "CurrentItem"); }
+        }
+
+        //{ get { return this.UpdateSelected(); } }
 
 
         //Constructor
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
             this._controller.MainWindowLoaded += this.OnWindowLoad;
-            this._combobox = new TsDropDownListUI();           
+            this._dropdownlistui = new TsDropDownListUI();           
             this.UserControl.DataContext = this;           
-            this.Control = this._combobox;
+            this.Control = this._dropdownlistui;
             this.Label = new TsLabelUI();
             this.SetDefaults();
             this.LoadXml(InputXml);
@@ -82,7 +93,7 @@ namespace TsGui.View.GuiOptions
                         defxCount++;
                         if (xdefoption.Name == "Value")
                         {
-                            this._value = xdefoption.Value;
+                            this._currentvalue = xdefoption.Value;
                             break;
                         }
                         else if (xdefoption.Name == "Query")
@@ -91,18 +102,17 @@ namespace TsGui.View.GuiOptions
                         }
                     }
 
-                    if (defxCount == 0) { this._value = x.Value.Trim(); }
+                    if (defxCount == 0) { this._currentvalue = x.Value.Trim(); }
                 }
 
                 //now read in an option and add to a dictionary for later use
-                double longestoptionwidth = 0;
                 if (x.Name == "Option")
                 {
                     string optval = x.Element("Value").Value;
                     string opttext = x.Element("Text").Value;
                     TsDropDownListItem newoption = new TsDropDownListItem(optval, opttext);
                     this._options.Add(newoption);
-                    if (newoption.Width > longestoptionwidth) { longestoptionwidth = newoption.Width; }
+                    if (newoption.Width > this._biggestwidth) { this._biggestwidth = newoption.Width; }
 
                     XElement togglex = x.Element("Toggle");
                     if (togglex != null)
@@ -112,7 +122,6 @@ namespace TsGui.View.GuiOptions
                         this._istoggle = true;
                     }
                 }
-                if (this.ControlFormatting.Width == double.NaN) { this.ControlFormatting.Width = longestoptionwidth; }
 
                 if (x.Name == "Query")
                 {
@@ -135,14 +144,28 @@ namespace TsGui.View.GuiOptions
             #endregion
         }
 
-        private string UpdateSelected()
-        {
-            TsDropDownListItem selected = (TsDropDownListItem)this._combobox.Control.SelectedItem;
-            this._value = selected.Value;
-            return this._value;
-        }
+        //private string UpdateSelected()
+        //{
+        //    TsDropDownListItem selected = (TsDropDownListItem)this._dropdownlistui.Control.SelectedItem;
+        //    this._value = selected.Value;
+        //    return this._value;
+        //}
 
         //iterate through the list and set the default if found
+        //private void SetComboBoxDefault()
+        //{
+        //    int index = 0;
+
+        //    foreach (TsDropDownListItem entry in this._options)
+        //    {
+        //        //if this entry is the default, or is the first in the list (in case there is no
+        //        //default, select it by default in the list
+        //        if ((entry.Value == this.) || (index == 0))
+        //        { this._dropdownlistui.Control.SelectedItem = entry; }
+
+        //        index++;
+        //    }
+        //}
         private void SetComboBoxDefault()
         {
             int index = 0;
@@ -151,8 +174,8 @@ namespace TsGui.View.GuiOptions
             {
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list
-                if ((entry.Value == this._value) || (index == 0))
-                { this._combobox.Control.SelectedItem = entry; }
+                if ((entry.Value == this._currentvalue) || (index == 0))
+                { this.CurrentItem = entry; }
 
                 index++;
             }
@@ -174,8 +197,9 @@ namespace TsGui.View.GuiOptions
         //and closes the dropdown so it initialises proeprly
         public void OnWindowLoad()
         {
-            this._combobox.Control.IsDropDownOpen = true;
-            this._combobox.Control.IsDropDownOpen = false;
+            this._dropdownlistui.Control.IsDropDownOpen = true;
+            this._dropdownlistui.Control.IsDropDownOpen = false;
+            if (this.ControlFormatting.Width == double.NaN) { this.ControlFormatting.Width = this._biggestwidth; }
         }
 
         private void SetDefaults()
