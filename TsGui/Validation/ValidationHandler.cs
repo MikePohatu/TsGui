@@ -61,9 +61,6 @@ namespace TsGui.Validation
 
             x = InputXml.Element("MinLength");
             if (x != null) { this._legacyxml.Add(x); }
-
-            x = InputXml.Element("MaxLength");
-            if (x != null) { this._legacyxml.Add(x); }
         }
 
         public bool IsValid(string Input)
