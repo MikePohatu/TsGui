@@ -17,5 +17,5 @@
 
 namespace TsGui
 {
-    public delegate void WindowLoadedandler();
+    public delegate void WindowLoadedHandler();
 }

@@ -134,7 +134,7 @@ namespace TsGui.View.Layout
         #region
         //Setup the INotifyPropertyChanged interface 
 
-        public event WindowLoadedandler PageWindowLoaded;
+        public event WindowLoadedHandler PageWindowLoaded;
 
         /// <summary>
         /// Method to handle when content has finished rendering on the window

@@ -7,5 +7,11 @@ namespace TsGui
     /// </summary>
     public partial class App : Application
     {
+
+        private void OnApplicationStartup(object sender, StartupEventArgs e)
+        {
+            string msg = "Test startup";
+            MessageBox.Show(msg, "Startup test", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 }

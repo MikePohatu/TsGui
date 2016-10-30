@@ -31,7 +31,7 @@ namespace TsGui
 {
     public class MainController
     {
-        public event WindowLoadedandler MainWindowLoaded;
+        public event WindowLoadedHandler MainWindowLoaded;
 
         private string _configpath;
         private bool _prodmode = false;
@@ -55,22 +55,42 @@ namespace TsGui
         public MainController(MainWindow ParentWindow)
         {
             this.ParentWindow = ParentWindow;
-            string exefolder = AppDomain.CurrentDomain.BaseDirectory;
-            this._configpath = exefolder + @"Config.xml";
             this.Init();          
         }
 
-        public MainController(MainWindow ParentWindow, string ConfigPath)
+        private void ProcessArguments()
         {
-            this.ParentWindow = ParentWindow;
-            this._configpath = ConfigPath;
-            this.Init();          
+            string[] args = Environment.GetCommandLineArgs();
+            Dictionary<string, string> argdic = new Dictionary<string, string>();
+            if (args.Length > 0)
+            {
+                for (int index = 1; index < args.Length; index += 2)
+                {
+                    if (args.Length < index) { throw new InvalidOperationException("Missing command line paramter after \"" + args[index] + "\""); }
+                    argdic.Add(args[index], args[index + 1]);
+                }
+            }
+
+            if (string.IsNullOrEmpty(this._configpath))
+            {
+                string exefolder = AppDomain.CurrentDomain.BaseDirectory;
+                this._configpath = exefolder + @"Config.xml";
+            }
         }
 
         //Wrap a generic exception handler to get some useful information in the event of a 
         //crash. 
         private void Init()
         {
+            try { this.ProcessArguments(); }
+            catch (Exception exc)
+            {
+                string msg = exc.Message + Environment.NewLine;
+                MessageBox.Show(msg, "Command Line Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.ParentWindow.Closing -= this.OnWindowClosing;
+                this.ParentWindow.Close();
+            }
+
             try { this.Startup(); }
             catch (Exception exc)
             {
@@ -101,8 +121,6 @@ namespace TsGui
             
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
-
-            this.ParentWindow.Loaded += this.OnWindowLoaded;
 
             this.LoadXml(x);
 
@@ -206,6 +224,7 @@ namespace TsGui
                         if (prevPage != null) { prevPage.NextPage = currPage; }
 
                         this._pages.Add(currPage);
+                        currPage.Page.Loaded += this.OnWindowLoaded;
                         #endregion
                     }
 
