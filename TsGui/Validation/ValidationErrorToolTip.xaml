@@ -20,7 +20,7 @@
              BorderBrush="Red"
              Margin="0" Width="Auto" Height="Auto" 
              BorderThickness="0.5" 
-             Padding="10,5,10,5" HorizontalContentAlignment="Left"
+             Padding="7,5,5,5" HorizontalContentAlignment="Left"
              Template="{StaticResource TextBoxBaseControlTemplate}"
              Text="{Binding ValidationText}"/>
 </UserControl>

@@ -16,10 +16,8 @@
 // ValidationHandler.cs - maintains a list of stringvalidation objects. returns correct values taking
 // into account group membership
 
-using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using TsGui.Grouping;
 
 namespace TsGui.Validation
 {
@@ -28,6 +26,7 @@ namespace TsGui.Validation
         private MainController _controller;
         private List<StringValidation> _validations = new List<StringValidation>();
         private XElement _legacyxml = new XElement("Legacy");
+        private IValidationOwner _owner;
         //Properties
 
         #region
@@ -37,8 +36,9 @@ namespace TsGui.Validation
         public int MaxLength { get { return this.GetMaxLength(); } }
         #endregion
 
-        public ValidationHandler(MainController MainController)
+        public ValidationHandler(IValidationOwner Owner, MainController MainController)
         {
+            this._owner = Owner;
             this._controller = MainController;
         }
 
@@ -49,6 +49,7 @@ namespace TsGui.Validation
             sv.LoadLegacyXml(this._legacyxml);
             sv.LoadXml(InputXml);
             this._validations.Add(sv);
+            sv.RevalidationRequired += this._owner.OnValidationChange;
         }
 
         public void LoadLegacyXml(XElement InputXml)
@@ -139,7 +140,5 @@ namespace TsGui.Validation
             }
             return null;
         }
-
-        
     }
 }

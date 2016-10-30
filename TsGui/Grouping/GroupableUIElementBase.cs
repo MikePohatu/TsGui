@@ -102,13 +102,12 @@ namespace TsGui.Grouping
         {
             GroupingLogic.OnParentEnable(this, Enable);
         }
-        #endregion
-
 
         public void OnGroupStateChange()
         {
             GroupingLogic.EvaluateGroups(this);
         }
+        #endregion
 
         protected void HideUnhide(bool Hidden)
         {

@@ -42,7 +42,6 @@ namespace TsGui.View.GuiOptions
         protected Color _focusbordercolor;
         private ToolTip _controltooltip;
         private ValidationErrorToolTip _validationerrortooltip;
-        private bool _isvalidcurrentvalue;
         private ValidationHandler _validationhandler;
 
         //Properties
@@ -58,7 +57,7 @@ namespace TsGui.View.GuiOptions
                 this.Validate();
             }
         }
-        public bool IsValid { get { return _isvalidcurrentvalue; } }
+        public bool IsValid { get { return this.Validate(); } }
         public int MaxLength
         {
             get { return this._maxlength; }
@@ -100,7 +99,7 @@ namespace TsGui.View.GuiOptions
             this._controltooltip = new ToolTip();
             this._controltooltip.Content = _validationerrortooltip;
 
-            this._validationhandler = new ValidationHandler(MainController);
+            this._validationhandler = new ValidationHandler(this,MainController);
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
             this.Label = new TsLabelUI();
@@ -112,8 +111,6 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this._isvalidcurrentvalue = true;
-
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.ControlFormatting.Padding = new Thickness(3, 2, 3, 2);
             //record the default colors
@@ -175,10 +172,9 @@ namespace TsGui.View.GuiOptions
         {
             bool newvalid = this._validationhandler.IsValid(this.ControlText);
 
-            this._isvalidcurrentvalue = newvalid;
             string s = this._validationhandler.ValidationMessage;
 
-            if (_isvalidcurrentvalue == false)
+            if (newvalid == false)
             {
                 if (string.IsNullOrEmpty(s)) { s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine + Environment.NewLine + _validationhandler.FailedValidationMessage; }
                 this.ValidationText = s;
@@ -186,13 +182,12 @@ namespace TsGui.View.GuiOptions
             }
             else { this.ClearToolTips(); }
 
-            return _isvalidcurrentvalue;
+            return newvalid;
         }
 
 
         public void ClearToolTips()
         {
-            //this.ControlToolTipContent = null;
             this._controltooltip.IsOpen = false;
             this._controltooltip.StaysOpen = false;
             this._freetextui.ToolTip = null;
@@ -214,6 +209,11 @@ namespace TsGui.View.GuiOptions
             this.ControlFormatting.BorderBrush.Color = Colors.Red;
             this.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
             this.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;
+        }
+
+        public void OnValidationChange()
+        {
+            this.Validate();
         }
     }
 }

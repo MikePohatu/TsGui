@@ -77,6 +77,7 @@
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
     <Compile Include="Control\ControlDelegates.cs" />
+    <Compile Include="Validation\IValidationOwner.cs" />
     <Compile Include="Validation\StringValidation.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Grouping\GroupableUIElementBase.cs" />

@@ -153,7 +153,7 @@ namespace TsGui.Validation
 
             if ((Input.Length < this.MinLength))
             {
-                this.FailedValidationMessage = this.FailedValidationMessage + "Minimum length: " + this.MinLength + " characters" + Environment.NewLine + Environment.NewLine;
+                this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Minimum length: " + this.MinLength + " characters" + Environment.NewLine;
                 return true;
             }
             else { return false; }
@@ -166,7 +166,7 @@ namespace TsGui.Validation
 
             if ((Input.Length > this.MaxLength))
             {
-                this.FailedValidationMessage = this.FailedValidationMessage + "Maximum length: " + this.MaxLength + " characters" + Environment.NewLine + Environment.NewLine;
+                this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Maximum length: " + this.MaxLength + " characters" + Environment.NewLine;
                 return true;
             }
             else { return false; }
@@ -189,7 +189,7 @@ namespace TsGui.Validation
 
             if (result == true)
             {
-                s = this.FailedValidationMessage +  "Invalid text rule matched: " + Environment.NewLine + s + Environment.NewLine;
+                s = this.FailedValidationMessage + Environment.NewLine +  "Invalid text rule matched: " + Environment.NewLine + s;
                 this.FailedValidationMessage = s;
             }
 
@@ -209,7 +209,7 @@ namespace TsGui.Validation
                 else { s = s + rule.Message + Environment.NewLine; }               
             }
 
-            this.FailedValidationMessage = this.FailedValidationMessage + "Must match one of: " + Environment.NewLine +  s + Environment.NewLine;
+            this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Must match one of: " + Environment.NewLine + s;
             return false;
         }
 
@@ -224,12 +224,16 @@ namespace TsGui.Validation
             return s;
         }
 
+        //Grouping 
+        public GroupStateChange RevalidationRequired;
         public void OnGroupStateChange()
         {
+            bool result = false;
             foreach (Group g in this._groups)
-            { if (g.State == GroupState.Enabled) { this.IsActive = true; return; } }
+            { if (g.State == GroupState.Enabled) { result = true; break; } }
 
-            this.IsActive = false;
+            this.IsActive = result;
+            this.RevalidationRequired?.Invoke();
         }
     }
 }
