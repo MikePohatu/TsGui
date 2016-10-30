@@ -36,14 +36,14 @@ namespace TsGui.View.GuiOptions
         protected ToolTip _validationtooltip;
         protected string _controltext;
         protected string _validationtext;
-        protected StringValidation _stringvalidation;
+        //protected StringValidation _stringvalidation;
         protected Color _bordercolor;
         protected Color _mouseoverbordercolor;
         protected Color _focusbordercolor;
         private ToolTip _controltooltip;
         private ValidationErrorToolTip _validationerrortooltip;
         private bool _isvalidcurrentvalue;
-        private List<StringValidation> _validations;
+        private ValidationHandler _validationhandler;
 
         //Properties
         #region
@@ -61,8 +61,8 @@ namespace TsGui.View.GuiOptions
         public bool IsValid { get { return _isvalidcurrentvalue; } }
         public int MaxLength
         {
-            get { return this._stringvalidation.MaxLength; }
-            set { this._stringvalidation.MaxLength = value; this.OnPropertyChanged(this, "MaxLength"); }
+            get { return this._validationhandler.MaxLength; }
+            //set { this._validationhandler.MaxLength = value; this.OnPropertyChanged(this, "MaxLength"); }
         }
         public TsVariable Variable
         {
@@ -100,7 +100,7 @@ namespace TsGui.View.GuiOptions
             this._controltooltip = new ToolTip();
             this._controltooltip.Content = _validationerrortooltip;
 
-            this._stringvalidation = new StringValidation(MainController);
+            this._validationhandler = new ValidationHandler(MainController);
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
             this.Label = new TsLabelUI();
@@ -113,8 +113,7 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this._isvalidcurrentvalue = true;
-            this._stringvalidation.MaxLength = 32760;
-            this._stringvalidation.MinLength = 0;
+
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.ControlFormatting.Padding = new Thickness(3, 2, 3, 2);
             //record the default colors
@@ -127,17 +126,16 @@ namespace TsGui.View.GuiOptions
         {
             base.LoadXml(InputXml);
             XElement x;
+            IEnumerable<XElement> xlist;
 
-            //load legacy options
-            x = InputXml.Element("Disallowed");
-            if (x != null) { this._stringvalidation.LoadLegacyXml(x); }
-            this._stringvalidation.MinLength = XmlHandler.GetIntFromXAttribute(InputXml, "MinLength", this._stringvalidation.MinLength);
-            this._stringvalidation.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", this._stringvalidation.MaxLength);
+            this._validationhandler.LoadLegacyXml(InputXml);
 
-            //this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
-
-            x = InputXml.Element("Validation");
-            if (x != null) { this._stringvalidation.LoadXml(x); }
+            xlist = InputXml.Elements("Validation");
+            if (xlist != null)
+            {
+                foreach (XElement xval in xlist)
+                this._validationhandler.AddValidation(xval);
+            }
 
             x = InputXml.Element("DefaultValue");
             if (x != null)
@@ -159,9 +157,10 @@ namespace TsGui.View.GuiOptions
                 if (this._controltext == null) { this._controltext = string.Empty; }
 
                 //if required, remove invalid characters and truncate
-                if (!string.IsNullOrEmpty(this._stringvalidation.GetAllInvalidCharacters())) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this._stringvalidation.GetAllInvalidCharacters()); }
+                if (!string.IsNullOrEmpty(this._validationhandler.GetAllInvalidCharacters())) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
             }
+
 
             this.Validate();
         }
@@ -176,14 +175,14 @@ namespace TsGui.View.GuiOptions
 
         private bool Validate()
         {
-            bool newvalid = this._stringvalidation.IsValid(this.ControlText);
+            bool newvalid = this._validationhandler.IsValid(this.ControlText);
 
             this._isvalidcurrentvalue = newvalid;
-            string s = this._stringvalidation.ValidationMessage;
+            string s = this._validationhandler.ValidationMessage;
 
             if (_isvalidcurrentvalue == false)
             {
-                if (string.IsNullOrEmpty(s)) { s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine + Environment.NewLine + _stringvalidation.FailedValidationMessage; }
+                if (string.IsNullOrEmpty(s)) { s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine + Environment.NewLine + _validationhandler.FailedValidationMessage; }
                 this.ValidationText = s;
                 this.ShowInvalidToolTip();
             }

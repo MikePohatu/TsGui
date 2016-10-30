@@ -57,6 +57,15 @@ namespace TsGui.Validation
         public StringValidation(MainController MainController)
         {
             this._controller = MainController;
+            this.SetDefaults();
+
+        }
+
+        private void SetDefaults()
+        {
+            this.IsActive = true;
+            this.MaxLength = 32760;
+            this.MinLength = 0;
         }
 
         public void LoadXml(XElement InputXml)
@@ -135,7 +144,7 @@ namespace TsGui.Validation
             return result;
         }
 
-        private bool IsShorterThanMinLength(string Input)
+        public bool IsShorterThanMinLength(string Input)
         {
             if (string.IsNullOrEmpty(Input))
             {
@@ -152,7 +161,7 @@ namespace TsGui.Validation
             else { return false; }
         }
 
-        private bool IsLongerThanMaxLength(string Input)
+        public bool IsLongerThanMaxLength(string Input)
         {
             if (string.IsNullOrEmpty(Input)) { return false; }
 
@@ -164,7 +173,7 @@ namespace TsGui.Validation
             else { return false; }
         }
 
-        private bool IsInvalidMatched(string Input)
+        public bool IsInvalidMatched(string Input)
         {
             bool result = false;
             string s = string.Empty;
@@ -187,7 +196,7 @@ namespace TsGui.Validation
             return result;
         }
 
-        private bool IsValidMatched(string Input)
+        public bool IsValidMatched(string Input)
         {
             if (this._validrules.Count == 0) { return true; }
 
