@@ -31,7 +31,7 @@ namespace TsGui
 {
     public class MainController
     {
-        public event WindowLoadedHandler MainWindowLoaded;
+        public event WindowLoadedHandler WindowLoaded;
 
         private string _configpath;
         private bool _prodmode = false;
@@ -52,45 +52,19 @@ namespace TsGui
         public bool ShowGridLines { get; set; }
 
         //constructors
-        public MainController(MainWindow ParentWindow)
+        public MainController(MainWindow ParentWindow, Arguments Arguments)
         {
+            this._configpath = Arguments.ConfigFile;
             this.ParentWindow = ParentWindow;
             this.Init();          
         }
 
-        private void ProcessArguments()
-        {
-            string[] args = Environment.GetCommandLineArgs();
-            Dictionary<string, string> argdic = new Dictionary<string, string>();
-            if (args.Length > 0)
-            {
-                for (int index = 1; index < args.Length; index += 2)
-                {
-                    if (args.Length < index) { throw new InvalidOperationException("Missing command line paramter after \"" + args[index] + "\""); }
-                    argdic.Add(args[index], args[index + 1]);
-                }
-            }
-
-            if (string.IsNullOrEmpty(this._configpath))
-            {
-                string exefolder = AppDomain.CurrentDomain.BaseDirectory;
-                this._configpath = exefolder + @"Config.xml";
-            }
-        }
+        
 
         //Wrap a generic exception handler to get some useful information in the event of a 
         //crash. 
         private void Init()
         {
-            try { this.ProcessArguments(); }
-            catch (Exception exc)
-            {
-                string msg = exc.Message + Environment.NewLine;
-                MessageBox.Show(msg, "Command Line Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.ParentWindow.Closing -= this.OnWindowClosing;
-                this.ParentWindow.Close();
-            }
-
             try { this.Startup(); }
             catch (Exception exc)
             {
@@ -118,7 +92,9 @@ namespace TsGui
                     return;
                 }               
             }
-            
+
+            //this.ParentWindow.Loaded += this.OnWindowLoaded;
+
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
 
@@ -366,7 +342,7 @@ namespace TsGui
         /// <param name="e"></param>
         public void OnWindowLoaded(object o, RoutedEventArgs e)
         {
-            this.MainWindowLoaded?.Invoke();
+            this.WindowLoaded?.Invoke();
         }
 
         public String GetValueFromList(XElement InputXml)

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System;
 
 namespace TsGui
 {
@@ -7,11 +8,29 @@ namespace TsGui
     /// </summary>
     public partial class App : Application
     {
+        public Arguments Arguments;
 
-        private void OnApplicationStartup(object sender, StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
-            string msg = "Test startup";
-            MessageBox.Show(msg, "Startup test", MessageBoxButton.OK, MessageBoxImage.Error);
+            base.OnStartup(e);
+
+            try { this.Arguments = new Arguments(Environment.GetCommandLineArgs()); }
+            catch (Exception exc)
+            {
+                string msg = exc.Message + Environment.NewLine;
+                MessageBox.Show(msg, "Command Line Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown(1);
+                return;
+            }
+
+            //this.StartupUri = new Uri("MainWindow.xaml", UriKind.Relative);
+            this.StartTsGui();
+        }
+
+        private void StartTsGui()
+        {
+            MainWindow mainWindow = new MainWindow(this.Arguments);
+            mainWindow.Show();
         }
     }
 }

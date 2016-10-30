@@ -73,6 +73,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Arguments.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />

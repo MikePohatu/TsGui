@@ -29,10 +29,10 @@ namespace TsGui
     {
         private MainController _controller;
 
-        public MainWindow()
+        public MainWindow(Arguments Arguments)
         {            
             InitializeComponent();
-            this._controller = new MainController(this);
+            this._controller = new MainController(this, Arguments);
         }
 
         private void windowDrag(object sender, MouseButtonEventArgs e)
