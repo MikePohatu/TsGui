@@ -31,8 +31,7 @@ namespace TsGui.Validation
         //Properties
 
         #region
-        public bool IsActive { get; set; }
-        public string ValidationMessage { get; set; }
+        public string ValidationMessage { get { return this.GetActiveValidation()?.ValidationMessage; } }
         public string FailedValidationMessage { get; set; }
         public int MinLength { get { return this.GetMinLength(); } }
         public int MaxLength { get { return this.GetMaxLength(); } }
@@ -68,9 +67,19 @@ namespace TsGui.Validation
 
         public bool IsValid(string Input)
         {
-            StringValidation sv = this.GetActiveValidation();
-            if (sv != null) { return sv.IsValid(Input); }
-            else { return true; }
+            bool result = true;
+            string s = string.Empty;
+
+            foreach (StringValidation sv in this._validations)
+            {
+                if (sv.IsValid(Input) == false )
+                {
+                    s = s + sv.FailedValidationMessage;
+                    result = false;
+                }
+            }
+            this.FailedValidationMessage = s;
+            return result;
         }
 
         private bool IsShorterThanMinLength(string Input)

@@ -73,6 +73,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
     <Style x:Key="FreeTextStyle" TargetType="TextBox" BasedOn="{StaticResource ControlStyle}">
         <Setter Property="TextAlignment" Value="{Binding ControlFormatting.TextAlignment}"/>
+        <Setter Property="MaxLength" Value="{Binding MaxLength}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">

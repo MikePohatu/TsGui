@@ -36,7 +36,7 @@ namespace TsGui.View.GuiOptions
         protected ToolTip _validationtooltip;
         protected string _controltext;
         protected string _validationtext;
-        //protected StringValidation _stringvalidation;
+        protected int _maxlength;
         protected Color _bordercolor;
         protected Color _mouseoverbordercolor;
         protected Color _focusbordercolor;
@@ -61,8 +61,8 @@ namespace TsGui.View.GuiOptions
         public bool IsValid { get { return _isvalidcurrentvalue; } }
         public int MaxLength
         {
-            get { return this._validationhandler.MaxLength; }
-            //set { this._validationhandler.MaxLength = value; this.OnPropertyChanged(this, "MaxLength"); }
+            get { return this._maxlength; }
+            set { this._maxlength = value; this.OnPropertyChanged(this, "MaxLength"); }
         }
         public TsVariable Variable
         {
@@ -128,6 +128,7 @@ namespace TsGui.View.GuiOptions
             XElement x;
             IEnumerable<XElement> xlist;
 
+            this.MaxLength = XmlHandler.GetIntFromXElement(InputXml, "MaxLength", this.MaxLength);
             this._validationhandler.LoadLegacyXml(InputXml);
 
             xlist = InputXml.Elements("Validation");
@@ -160,9 +161,6 @@ namespace TsGui.View.GuiOptions
                 if (!string.IsNullOrEmpty(this._validationhandler.GetAllInvalidCharacters())) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
             }
-
-
-            this.Validate();
         }
 
         //Handle UI events
@@ -173,7 +171,7 @@ namespace TsGui.View.GuiOptions
         #endregion
 
 
-        private bool Validate()
+        public bool Validate()
         {
             bool newvalid = this._validationhandler.IsValid(this.ControlText);
 

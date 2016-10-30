@@ -73,7 +73,6 @@ namespace TsGui.Validation
             XElement x;
             IEnumerable<XElement> xlist;
 
-            #region
             this.ValidationMessage = XmlHandler.GetStringFromXElement(InputXml, "Message", this.ValidationMessage);
             this._validateempty = XmlHandler.GetBoolFromXAttribute(InputXml, "ValidateEmpty", this._validateempty);
             this._maxlength = XmlHandler.GetIntFromXElement(InputXml, "MaxLength", this._maxlength);
@@ -109,7 +108,6 @@ namespace TsGui.Validation
                     g.StateEvent += this.OnGroupStateChange;
 ;               }
             }
-            #endregion
         }
 
         //load options from old Xml e.g. pre-0.9.5.0
@@ -135,6 +133,8 @@ namespace TsGui.Validation
             bool result = true;
             this.FailedValidationMessage = string.Empty;
 
+            if (this.IsActive == false) { return result; }
+
             if (string.IsNullOrEmpty(Input) && (this._validateempty == false)) { return true; }
             if (IsShorterThanMinLength(Input)) { result = false; }
             if (IsLongerThanMaxLength(Input)) { result = false; }
@@ -146,11 +146,9 @@ namespace TsGui.Validation
 
         public bool IsShorterThanMinLength(string Input)
         {
+            if (this.IsActive == false) { return false; }
             if (string.IsNullOrEmpty(Input))
-            {
-                if (this.MinLength > 0) { return true; }
-                else { return false; }
-            }
+            { if (this.MinLength == 0 ) { return false; } }
             
 
             if ((Input.Length < this.MinLength))
@@ -163,6 +161,7 @@ namespace TsGui.Validation
 
         public bool IsLongerThanMaxLength(string Input)
         {
+            if (this.IsActive == false) { return false; }
             if (string.IsNullOrEmpty(Input)) { return false; }
 
             if ((Input.Length > this.MaxLength))
@@ -175,6 +174,7 @@ namespace TsGui.Validation
 
         public bool IsInvalidMatched(string Input)
         {
+            if (this.IsActive == false) { return false; }
             bool result = false;
             string s = string.Empty;
 
@@ -189,7 +189,7 @@ namespace TsGui.Validation
 
             if (result == true)
             {
-                s = this.FailedValidationMessage +  "Invalid text rule matched: " + Environment.NewLine + s;
+                s = this.FailedValidationMessage +  "Invalid text rule matched: " + Environment.NewLine + s + Environment.NewLine;
                 this.FailedValidationMessage = s;
             }
 
@@ -198,6 +198,7 @@ namespace TsGui.Validation
 
         public bool IsValidMatched(string Input)
         {
+            if (this.IsActive == false) { return true; }
             if (this._validrules.Count == 0) { return true; }
 
             string s = string.Empty;
@@ -214,6 +215,7 @@ namespace TsGui.Validation
 
         public string GetAllInvalidCharacters()
         {
+            if (this.IsActive == false) { return string.Empty; }
             string s = string.Empty;
             foreach (StringValidationRule rule in this._invalidrules)
             {
