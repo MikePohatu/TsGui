@@ -32,7 +32,6 @@ namespace TsGui.View.GuiOptions
         private TsDropDownListItem _currentitem;
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private bool _istoggle = false;
-        private double _biggestwidth;
 
 
         //Custom stuff for control
@@ -49,7 +48,8 @@ namespace TsGui.View.GuiOptions
         }
         public string CurrentValue
         {
-            get { return this._currentitem.Value; }
+            get { return this._currentvalue; }
+            set { this._currentvalue = value; this.OnPropertyChanged(this, "CurrentValue"); }
         }
         public TsDropDownListItem CurrentItem
         {
@@ -110,7 +110,6 @@ namespace TsGui.View.GuiOptions
                     string opttext = x.Element("Text").Value;
                     TsDropDownListItem newoption = new TsDropDownListItem(optval, opttext);
                     this._options.Add(newoption);
-                    if (newoption.Width > this._biggestwidth) { this._biggestwidth = newoption.Width; }
 
                     XElement togglex = x.Element("Toggle");
                     if (togglex != null)
@@ -151,7 +150,7 @@ namespace TsGui.View.GuiOptions
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list
                 if ((entry.Value == this._currentvalue) || (index == 0))
-                { this.CurrentItem = entry; }
+                { this.CurrentValue = entry.Value; }
 
                 index++;
             }
@@ -175,7 +174,6 @@ namespace TsGui.View.GuiOptions
         {
             this._dropdownlistui.Control.IsDropDownOpen = true;
             this._dropdownlistui.Control.IsDropDownOpen = false;
-            if (this.ControlFormatting.Width == double.NaN) { this.ControlFormatting.Width = this._biggestwidth; }
         }
 
         private void SetDefaults()

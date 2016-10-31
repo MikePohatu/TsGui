@@ -23,26 +23,15 @@ using System.Windows;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsDropDownListItem: ComboBoxItem
+    public class TsDropDownListItem
     {
         public string Value { get; set; }
         public string Text { get; set; }
-        public Label Control { get; set; }
 
-        public TsDropDownListItem(string Value, string Text):base ()
+        public TsDropDownListItem(string Value, string Text)
         {
-            this.Control = new Label();
             this.Value = Value;
             this.Text = Text;
-            this.Content = this.Control;
-
-            this.Control.Content = this.Text;
-            this.Control.Padding = new Thickness(0);
-            this.Control.Margin = new Thickness(0);
-            this.HorizontalContentAlignment = HorizontalAlignment.Left;
-            this.VerticalContentAlignment = VerticalAlignment.Bottom;
-            this.Control.SetBinding(Label.IsEnabledProperty, new Binding("IsEnabled"));
-            this.Control.SetBinding(Label.WidthProperty, new Binding("ControlFormatting.Width"));
         }
     }
 }
