@@ -61,7 +61,8 @@ namespace TsGui.View.GuiOptions
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
             this._controller.WindowLoaded += this.OnLoadReload;
-            this._dropdownlistui = new TsDropDownListUI();           
+            this._dropdownlistui = new TsDropDownListUI();
+            this._dropdownlistui.Control.SelectionChanged += this.OnChanged;         
             this.UserControl.DataContext = this;           
             this.Control = this._dropdownlistui;
             this.Label = new TsLabelUI();
