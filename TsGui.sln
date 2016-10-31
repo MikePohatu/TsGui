@@ -5,7 +5,13 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{13E6ECDF-E7F4-4B16-878A-557717F95D2D}"
 	ProjectSection(SolutionItems) = preProject
+		TestConfigs\Config.1.xml = TestConfigs\Config.1.xml
+		TestConfigs\Config.2.xml = TestConfigs\Config.2.xml
+		TestConfigs\Config.matt.xml = TestConfigs\Config.matt.xml
 		Config.xml = Config.xml
+		TestConfigs\Config.xml = TestConfigs\Config.xml
+		TestConfigs\Config.xml.old2 = TestConfigs\Config.xml.old2
+		TestConfigs\Config_old.xml = TestConfigs\Config_old.xml
 		License.txt = License.txt
 		README.md = README.md
 	EndProjectSection

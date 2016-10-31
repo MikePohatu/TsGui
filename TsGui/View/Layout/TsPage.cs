@@ -234,7 +234,7 @@ namespace TsGui.View.Layout
                 {
                     x.Add(xColumn);
                 }
-                if (x != null) { this.CreateRow(x, 0); }
+                if (x.Elements() != null) { this.CreateRow(x, 0); }
             }
 
         }

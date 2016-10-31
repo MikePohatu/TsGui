@@ -1,0 +1,156 @@
+<TsGui>
+	<ShowGridLines /> 
+	
+	<Height>230</Height>
+	<Width>510</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>Server Imaging</Title>
+		<Text>Configure your Server</Text>
+		<Bg-Color>#0074E4</Bg-Color>
+		<Font-Color>#FFFFFF</Font-Color>
+	</Heading>
+	
+	<Footer>
+		<Text>Powered by IT</Text>
+		<Height>17</Height>
+		<HAlign>right</HAlign>
+	</Footer>
+
+	<Page>
+		<Column>
+			<Width>280</Width>
+			<LabelWidth>110</LabelWidth>
+			<ControlWidth>160</ControlWidth>
+			
+			<GuiOption Type="ComputerName" />
+			
+			<GuiOption Type="DropDownList">
+				<Variable>VAR_Domain</Variable>
+				<Label>Domain:</Label>
+				<DefaultValue>domain_1</DefaultValue>			
+				<Option>
+					<Text>company.local</Text>
+					<Value>domian_1</Value>
+					<Toggle Group="D1_OU">
+						<Hide/>
+					</Toggle>
+				</Option>
+				<Option>
+					<Text>a.test.company.com</Text>
+					<Value>domain_2</Value>
+					<Toggle Group="D2_OU">
+						<PurgeInactive />
+						<Hide/>
+					</Toggle>
+				</Option>
+				<Option>
+					<Text>b.test.company.com</Text>
+					<Value>domain_3</Value>
+					<Toggle Group="D3_OU">
+						<Hide/>
+					</Toggle>
+				</Option>
+				
+				<HelpText>Select the domain the server will be in.</HelpText>
+			</GuiOption>
+			
+			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
+				<Group>D1_OU</Group>
+				<Variable>VAR_OU</Variable>
+				<Label>OU:</Label>
+				<DefaultValue>D1_OU_1</DefaultValue>
+				<Option>
+					<Text>Domain 1 OU 1</Text>
+					<Value>D1_OU_1</Value>
+				</Option>
+				<Option>
+					<Text>Domain 1 OU 2</Text>
+					<Value>D1_OU_2</Value>
+				</Option>
+				<Option>
+					<Text>Domain 1 OU 3</Text>
+					<Value>D1_OU_3</Value>
+				</Option>
+			</GuiOption>
+			
+
+			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
+				<Group>D2_OU</Group>
+				<Variable>VAR_OU</Variable>
+				<Label>OU:</Label>
+				<DefaultValue>D2_OU_1</DefaultValue>
+				<Option>
+					<Text>Domain 2 OU 1</Text>
+					<Value>D2_OU_1</Value>
+				</Option>
+				<Option>
+					<Text>Domain 2 OU 2</Text>
+					<Value>D2_OU_2</Value>
+				</Option>
+				<Option>
+					<Text>Domain 2 OU 3</Text>
+					<Value>D2_OU_3</Value>
+				</Option>
+			</GuiOption>
+
+			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
+				<Group>D3_OU</Group>
+				<Variable>VAR_OU</Variable>
+				<Label>OU:</Label>
+				<DefaultValue>D3_OU_1</DefaultValue>
+				<Option>
+					<Text>Domain 3 OU 1</Text>
+					<Value>D3_OU_1</Value>
+				</Option>
+				<Option>
+					<Text>Domain 3 OU 2</Text>
+					<Value>D3_OU_2</Value>
+				</Option>
+				<Option>
+					<Text>Domain 3 OU 3</Text>
+					<Value>D3_OU_3</Value>
+				</Option>
+			</GuiOption>
+			
+			<GuiOption Type="FreeText" MaxLength="100" MinLength="4">
+				<Disallowed>
+					<Characters>abcdefchijklmnopqrstuvwxyz`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
+				</Disallowed>
+				<Variable>VAR_PageFileSize</Variable>
+				<Label>Page File (MB):</Label>
+				<DefaultValue>
+					<Value>4096</Value>
+				</DefaultValue>
+				<HelpText>Enter the size of page file you want to set.</HelpText>
+			</GuiOption>
+		</Column>
+		
+		<Column>
+			<Width>210</Width>
+			<LabelWidth>190</LabelWidth>
+			<ControlWidth>20</ControlWidth>
+		
+			<GuiOption Type="Heading">
+				<Label>Additional Applications</Label>
+				<Bold /> 
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>VAR_DotNet</Variable>
+				<Label>Install .NET 3.5</Label>
+				<HAlign>right</HAlign>
+				<HelpText>Install .NET 3.5</HelpText>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>VAR_SSMS</Variable>
+				<Label>Install SSMS</Label>
+				<HAlign>right</HAlign>
+				<HelpText>Install SSMS</HelpText>
+			</GuiOption>
+		</Column>
+	</Page>
+</TsGui>

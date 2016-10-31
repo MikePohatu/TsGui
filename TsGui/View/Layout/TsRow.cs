@@ -43,11 +43,11 @@ namespace TsGui.View.Layout
 
         //constructor
         #region
-        public TsRow (XElement SourceXml,int PageIndex, TsPage ParentPage, MainController MainController): base (ParentPage,MainController)
+        public TsRow (XElement SourceXml,int PageIndex, TsPage Parent, MainController MainController): base (Parent,MainController)
         {
 
             this._controller = MainController;
-            this._parent = ParentPage;
+            this._parent = Parent;
             this.Index = PageIndex;
             this._rowpanel = new Grid();
             this._rowpanel.Name = "_rowpanel";

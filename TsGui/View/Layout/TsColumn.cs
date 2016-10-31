@@ -53,7 +53,7 @@ namespace TsGui
             this._columnpanel.Name = "_columnpanel";
             this._columnpanel.DataContext = this;
             this._columnpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
-            this._columnpanel.SetBinding(StackPanel.WidthProperty, new Binding("GridFormatting.Width"));
+            this._columnpanel.SetBinding(Grid.WidthProperty, new Binding("GridFormatting.Width"));
 
             this.ShowGridLines = Parent.ShowGridLines;
 
