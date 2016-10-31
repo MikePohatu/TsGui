@@ -57,13 +57,10 @@ namespace TsGui.View.GuiOptions
             set { this._currentitem = value; this.OnPropertyChanged(this, "CurrentItem"); }
         }
 
-        //{ get { return this.UpdateSelected(); } }
-
-
         //Constructor
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
-            this._controller.WindowLoaded += this.OnWindowLoad;
+            this._controller.WindowLoaded += this.OnLoadReload;
             this._dropdownlistui = new TsDropDownListUI();           
             this.UserControl.DataContext = this;           
             this.Control = this._dropdownlistui;
@@ -144,28 +141,6 @@ namespace TsGui.View.GuiOptions
             #endregion
         }
 
-        //private string UpdateSelected()
-        //{
-        //    TsDropDownListItem selected = (TsDropDownListItem)this._dropdownlistui.Control.SelectedItem;
-        //    this._value = selected.Value;
-        //    return this._value;
-        //}
-
-        //iterate through the list and set the default if found
-        //private void SetComboBoxDefault()
-        //{
-        //    int index = 0;
-
-        //    foreach (TsDropDownListItem entry in this._options)
-        //    {
-        //        //if this entry is the default, or is the first in the list (in case there is no
-        //        //default, select it by default in the list
-        //        if ((entry.Value == this.) || (index == 0))
-        //        { this._dropdownlistui.Control.SelectedItem = entry; }
-
-        //        index++;
-        //    }
-        //}
         private void SetComboBoxDefault()
         {
             int index = 0;
@@ -195,7 +170,7 @@ namespace TsGui.View.GuiOptions
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
         //and closes the dropdown so it initialises proeprly
-        public void OnWindowLoad()
+        public void OnLoadReload()
         {
             this._dropdownlistui.Control.IsDropDownOpen = true;
             this._dropdownlistui.Control.IsDropDownOpen = false;

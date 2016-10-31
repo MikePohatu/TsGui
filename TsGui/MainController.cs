@@ -110,6 +110,7 @@ namespace TsGui
             { t.InitialiseToggle(); }
 
             this.UpdateWindow();
+            this.ParentWindow.Show();
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails

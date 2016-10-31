@@ -30,7 +30,7 @@ namespace TsGui
         private void StartTsGui()
         {
             MainWindow mainWindow = new MainWindow(this.Arguments);
-            mainWindow.Show();
+            //mainWindow.Show();
         }
     }
 }

@@ -116,9 +116,10 @@ namespace TsGui.Validation
         {
             XElement x;
 
-            if (InputXml.Name == "Disallowed")
+            x = InputXml.Element("Disallowed");
+            if (x != null)
             {
-                x = InputXml.Element("Characters");
+                x = x.Element("Characters");
                 if (x != null)
                 {
                     StringValidationRule newrule = new StringValidationRule(StringValidationRuleType.Characters,x.Value);

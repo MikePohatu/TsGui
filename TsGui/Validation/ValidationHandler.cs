@@ -46,21 +46,30 @@ namespace TsGui.Validation
         {
             if (InputXml == null) { return; }
             StringValidation sv = new StringValidation(this._controller);
-            sv.LoadLegacyXml(this._legacyxml);
             sv.LoadXml(InputXml);
-            this._validations.Add(sv);
-            sv.RevalidationRequired += this._owner.OnValidationChange;
+            this.AddValidation(sv);
+        }
+
+        public void AddValidation(StringValidation Validation)
+        {
+            this._validations.Add(Validation);
+            Validation.RevalidationRequired += this._owner.OnValidationChange;
         }
 
         public void LoadLegacyXml(XElement InputXml)
         {
             XElement x;
+            XElement result = new XElement("Legacy");
             //load legacy options
             x = InputXml.Element("Disallowed");
-            if (x != null) { this._legacyxml.Add(x); }
+            if (x != null) { result.Add(x); }
 
             x = InputXml.Element("MinLength");
-            if (x != null) { this._legacyxml.Add(x); }
+            if (x != null) { result.Add(x); }
+
+            StringValidation sv = new StringValidation(this._controller);
+            sv.LoadLegacyXml(result);
+            this.AddValidation(sv);
         }
 
         public bool IsValid(string Input)
