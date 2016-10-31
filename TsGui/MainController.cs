@@ -42,7 +42,6 @@ namespace TsGui
         private EnvironmentController _envController = new EnvironmentController();
         private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
         private List<IToggleControl> _toggles = new List<IToggleControl>();
-        private List<IEditableGuiOption> _editables = new List<IEditableGuiOption>();
         private OptionLibrary _optionlibrary = new OptionLibrary();
         private HardwareEvaluator _chassischeck;
 
@@ -109,8 +108,6 @@ namespace TsGui
             //update group settings to all controls
             foreach (IToggleControl t in this._toggles)
             { t.InitialiseToggle(); }
-
-            foreach (IEditableGuiOption g in this._editables) { g.Validate(); }
 
             this.UpdateWindow();
         }

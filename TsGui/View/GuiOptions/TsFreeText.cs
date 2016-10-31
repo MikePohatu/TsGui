@@ -95,6 +95,7 @@ namespace TsGui.View.GuiOptions
         private void Init(MainController MainController)
         {
             this._controller = MainController;
+            this._controller.WindowLoaded += this.OnWindowLoaded;
             this._validationerrortooltip = new ValidationErrorToolTip();
             this._controltooltip = new ToolTip();
             this._controltooltip.Content = _validationerrortooltip;
@@ -164,6 +165,9 @@ namespace TsGui.View.GuiOptions
         #region
 
         public void onLoseFocus(object sender, RoutedEventArgs e)
+        { this.Validate(); }
+
+        public void OnWindowLoaded()
         { this.Validate(); }
         #endregion
 
