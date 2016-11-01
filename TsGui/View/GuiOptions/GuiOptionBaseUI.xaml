@@ -33,13 +33,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl>
-        <Grid x:Name="MainGrid" Style="{StaticResource GridStyle}" ToolTip="{Binding HelpText}" Margin="0">
+        <Grid x:Name="MainGrid" Width="{Binding GridFormatting.Width}"  ToolTip="{Binding HelpText}" Margin="0" ShowGridLines="{Binding ShowGridLines}">
             <Grid.RowDefinitions>
-                <RowDefinition Style="{StaticResource RowDefinitionStyle}"/>
+                <RowDefinition x:Name="GuiOptionRow" Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="LabelColumn" Style="{StaticResource LabelColumnStyle}"/>
-                <ColumnDefinition x:Name="ControlColumn" Style="{StaticResource ControlColumnStyle}"/>
+                <ColumnDefinition x:Name="GuiOptionLeftColumn" Width="Auto"/>
+                <ColumnDefinition x:Name="GuiOptionRigthColumn" Width="Auto"/>
             </Grid.ColumnDefinitions>
             <ContentPresenter Grid.Column="0" x:Name="LeftPresenter"/>
             <ContentPresenter Grid.Column="1" x:Name="RightPresenter"/>

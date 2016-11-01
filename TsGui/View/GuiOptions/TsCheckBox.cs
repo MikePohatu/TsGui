@@ -82,6 +82,8 @@ namespace TsGui.View.GuiOptions
             #region
             XElement x;
 
+            this.LoadLegacyXml(InputXml);
+
             //load the xml for the base class stuff
             base.LoadXml(InputXml);
 
@@ -113,6 +115,34 @@ namespace TsGui.View.GuiOptions
             this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
             this.ControlFormatting.Margin = new Thickness(2, 1, 2, 1);
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
+        }
+
+        private void LoadLegacyXml(XElement InputXml)
+        {
+            XElement x;
+
+            x = InputXml.Element("HAlign");
+            if (x != null)
+            {
+                string s = x.Value.ToUpper();
+                switch (s)
+                {
+                    case "RIGHT":
+                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Right;
+                        break;
+                    case "LEFT":
+                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Left;
+                        break;
+                    case "CENTER":
+                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
+                        break;
+                    case "STRETCH":
+                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

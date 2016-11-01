@@ -31,6 +31,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <CheckBox x:Name="Control" IsChecked="{Binding IsChecked}" Style="{StaticResource ControlStyle}" />
-
+    <Grid Width="{Binding ControlFormatting.Width}">
+        <CheckBox x:Name="Control" IsChecked="{Binding IsChecked}" 
+              HorizontalContentAlignment="Center" Style="{StaticResource ControlStyle}"/>
+    </Grid>
 </UserControl>

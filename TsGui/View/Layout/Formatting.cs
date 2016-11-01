@@ -157,8 +157,6 @@ namespace TsGui.View.Layout
 
         public void LoadXml(XElement InputXml)
         {
-            this.SetDefaults();
-
             //Load the XML
             #region
             XElement x;

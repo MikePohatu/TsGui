@@ -46,7 +46,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         <Setter Property="Control.FontSize" Value="{Binding LabelFormatting.FontSize}"/>
         <Setter Property="Control.IsEnabled" Value="{Binding IsEnabled}"/>
     </Style>
-    
+
     <Style x:Key="ControlStyle">
         <Setter Property="Control.Height" Value="{Binding ControlFormatting.Height}"/>
         <Setter Property="Control.Margin" Value="{Binding ControlFormatting.Margin}"/>
@@ -57,18 +57,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         <Setter Property="Control.FontStyle" Value="{Binding Path=ControlFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
         <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
         <Setter Property="Control.IsEnabled" Value="{Binding IsEnabled}"/>
-    </Style>
-    
-    <Style x:Key="RowDefinitionStyle">
-        <Setter Property="RowDefinition.Height" Value="{Binding GridFormatting.Height}"/>
-    </Style>
-    
-    <Style x:Key="LabelColumnStyle">
-        <Setter Property="ColumnDefinition.Width" Value="{Binding LabelFormatting.Width}"/>
-    </Style>
-
-    <Style x:Key="ControlColumnStyle">
-        <Setter Property="ColumnDefinition.Width" Value="{Binding ControlFormatting.Width}"/>
     </Style>
 
     <Style x:Key="FreeTextStyle" TargetType="TextBox" BasedOn="{StaticResource ControlStyle}">

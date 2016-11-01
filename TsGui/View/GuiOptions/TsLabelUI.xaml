@@ -31,5 +31,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Label x:Name="Label" Content="{Binding LabelText}"  Style="{StaticResource LabelStyle}"/>
+    <Grid Width="{Binding LabelFormatting.Width}">
+        <Label x:Name="Label" Content="{Binding LabelText}"  Style="{StaticResource LabelStyle}"/>
+    </Grid>
 </UserControl>

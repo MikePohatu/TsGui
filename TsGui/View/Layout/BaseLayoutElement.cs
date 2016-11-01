@@ -45,7 +45,7 @@ namespace TsGui.View.Layout
         {
             this.LabelFormatting = Parent.LabelFormatting.Clone();
             this.ControlFormatting = Parent.ControlFormatting.Clone();
-            this.GridFormatting = Parent.GridFormatting.Clone();
+            this.GridFormatting = new Formatting();
             this.ShowGridLines = Parent.ShowGridLines;
 
             //register grouping events from the parent element
@@ -55,9 +55,9 @@ namespace TsGui.View.Layout
 
         protected new void LoadXml(XElement InputXml)
         {
-            this.ControlFormatting.SetDefaults();
-            this.LabelFormatting.SetDefaults();
-            this.GridFormatting.SetDefaults();
+            //this.ControlFormatting.SetDefaults();
+            //this.LabelFormatting.SetDefaults();
+            //this.GridFormatting.SetDefaults();
 
             base.LoadXml(InputXml);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);

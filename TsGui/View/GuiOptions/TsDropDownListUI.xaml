@@ -31,9 +31,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <ComboBox x:Name="Control" ItemsSource="{Binding Options}" SelectedValue="{Binding CurrentValue, Mode=TwoWay}" 
+    <Grid Width="{Binding ControlFormatting.Width}">
+        <ComboBox x:Name="Control" ItemsSource="{Binding Options}" SelectedValue="{Binding CurrentValue, Mode=TwoWay}" 
           SelectedValuePath="Value" 
           DisplayMemberPath="Text"
               HorizontalAlignment="Stretch"
               Style="{StaticResource ControlStyle}"/>
+    </Grid>
 </UserControl>

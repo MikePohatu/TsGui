@@ -41,7 +41,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-
-    <TextBox x:Name="Control" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+    <Grid Width="{Binding ControlFormatting.Width}">
+        <TextBox x:Name="Control" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
              Style="{StaticResource FreeTextStyle}"/>
+    </Grid>
 </UserControl>
