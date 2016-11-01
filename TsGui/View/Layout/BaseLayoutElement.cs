@@ -55,6 +55,10 @@ namespace TsGui.View.Layout
 
         protected new void LoadXml(XElement InputXml)
         {
+            this.ControlFormatting.SetDefaults();
+            this.LabelFormatting.SetDefaults();
+            this.GridFormatting.SetDefaults();
+
             base.LoadXml(InputXml);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
 

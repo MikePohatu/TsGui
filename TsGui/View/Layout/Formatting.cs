@@ -135,21 +135,21 @@ namespace TsGui.View.Layout
             this.SetDefaults();
         }
 
-        private void SetDefaults()
+        public void SetDefaults()
         {
-            this._fontstyle = "Normal";
-            this._fontweight = "Normal";
-            this._fontsize = 11;
-            this._height = Double.NaN;
-            this._width = Double.NaN;
-            this._margin = new Thickness(2, 2, 2, 2);
-            this._padding = new Thickness(2, 2, 2, 2);
-            this._verticalalign = VerticalAlignment.Bottom;
-            this._horizontalalign = HorizontalAlignment.Left;
+            this.FontStyle = "Normal";
+            this.FontWeight = "Normal";
+            this.FontSize = 11;
+            this.Height = Double.NaN;
+            this.Width = Double.NaN;
+            this.Margin = new Thickness(2, 2, 2, 2);
+            this.Padding = new Thickness(2, 2, 2, 2);
+            this.VerticalAlignment = VerticalAlignment.Bottom;
+            this.HorizontalAlignment = HorizontalAlignment.Left;
             this.TextAlignment = TextAlignment.Left;
-            this._bordercolorbrush = new SolidColorBrush();
-            this._mouseovercolorbrush = new SolidColorBrush();
-            this._focusedcolorbrush = new SolidColorBrush();
+            this.BorderBrush = new SolidColorBrush();
+            this.MouseOverBorderBrush = new SolidColorBrush();
+            this.FocusedBorderBrush = new SolidColorBrush();
             this.BorderBrush.Color = Colors.Gray; 
             this.MouseOverBorderBrush.Color = Colors.DarkGray;
             this.FocusedBorderBrush.Color = Colors.LightBlue;  
@@ -157,6 +157,8 @@ namespace TsGui.View.Layout
 
         public void LoadXml(XElement InputXml)
         {
+            this.SetDefaults();
+
             //Load the XML
             #region
             XElement x;

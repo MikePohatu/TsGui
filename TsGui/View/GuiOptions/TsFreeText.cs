@@ -18,8 +18,6 @@
 
 using TsGui.Validation;
 
-using System.Diagnostics;
-
 using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -123,11 +121,12 @@ namespace TsGui.View.GuiOptions
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            XElement x;
-            IEnumerable<XElement> xlist;
 
             this.MaxLength = XmlHandler.GetIntFromXElement(InputXml, "MaxLength", this.MaxLength);
             this._validationhandler.LoadLegacyXml(InputXml);
+
+            XElement x;
+            IEnumerable<XElement> xlist;
 
             xlist = InputXml.Elements("Validation");
             if (xlist != null)

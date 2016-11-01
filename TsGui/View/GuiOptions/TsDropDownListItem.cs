@@ -17,10 +17,6 @@
 // keyvaluepairs doesn't disable/enable properly. The text doesn't grey out. This class uses a label 
 // control to make this work properly. 
 
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows;
-
 namespace TsGui.View.GuiOptions
 {
     public class TsDropDownListItem
@@ -35,3 +31,4 @@ namespace TsGui.View.GuiOptions
         }
     }
 }
+
