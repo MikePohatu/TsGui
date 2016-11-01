@@ -76,7 +76,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
                             <Setter Property="Opacity" TargetName="Border" Value="0.56"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
-                    
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

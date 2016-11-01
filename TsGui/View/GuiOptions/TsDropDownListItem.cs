@@ -13,9 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsDropDownListItem.cs - class that is primarily to work around an issue where using a list of
-// keyvaluepairs doesn't disable/enable properly. The text doesn't grey out. This class uses a label 
-// control to make this work properly. 
+// TsDropDownListItem.cs - class to hold entries in dropdownlist
 
 namespace TsGui.View.GuiOptions
 {

@@ -31,11 +31,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+
     <Grid Width="{Binding ControlFormatting.Width}">
         <ComboBox x:Name="Control" ItemsSource="{Binding Options}" SelectedValue="{Binding CurrentValue, Mode=TwoWay}" 
-          SelectedValuePath="Value" 
-          DisplayMemberPath="Text"
-              HorizontalAlignment="Stretch"
-              Style="{StaticResource ControlStyle}"/>
+          SelectedValuePath="Value" HorizontalAlignment="Stretch" Style="{StaticResource ControlStyle}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Text}" Style="{StaticResource ControlStyle}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+
+        </ComboBox>
     </Grid>
 </UserControl>
