@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TestConfigs\Config_old.xml = TestConfigs\Config_old.xml
 		License.txt = License.txt
 		README.md = README.md
+		TestConfigs\TestConfigs.vbs = TestConfigs\TestConfigs.vbs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsGui", "TsGui\TsGui.csproj", "{5E3CFB02-4012-4298-8770-A101BC0AE200}"
