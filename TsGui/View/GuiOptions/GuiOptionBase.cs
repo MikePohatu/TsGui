@@ -72,7 +72,12 @@ namespace TsGui.View.GuiOptions
         protected new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            
+
+            //load legacy
+            XElement x;
+            x = InputXml.Element("Bold");
+            if (x != null) { this.LabelFormatting.FontWeight = "Bold"; }
+
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", this.HelpText);
@@ -84,6 +89,7 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this.LabelFormatting.Padding = new Thickness(3, 0, 0, 0);
+            this.GridFormatting.Margin = new Thickness(0,0,0,0);
         }
 
         private void SetLayoutRightLeft(bool InvertLayout)

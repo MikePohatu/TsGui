@@ -1,240 +1,111 @@
 <TsGui>
-	<!-- The showgridlines option is used for assisting with layout design
-	<ShowGridLines /> 
-	-->
-	<Height>300</Height>
-	<Width>600</Width>
-	
+    <Height>400</Height>
+	<Width>470</Width>
+
 	<HardwareEval />
-	
-	<Heading>
-		<Title>Title Text</Title>
-		<Text>Text</Text>
+
+<Heading>
+		<Title>Windows 10 Image</Title>
+		<Text>Easy imaging tool</Text>
 		<Bg-Color>#FF006AD4</Bg-Color>
 		<Font-Color>#FFFFFF</Font-Color>
 	</Heading>
 	
-	<Buttons>
-		<Next>-Next-</Next>
-		<Back>-Back-</Back>
-		<Cancel>-Cancel-</Cancel>
-		<Finish>-Finish-</Finish>
-	</Buttons>
 
 	<Footer>
-		<Text>Powered by TsGui - www.20road.com</Text>
+		<Text>TsGui by 20Road</Text>
 		<Height>17</Height>
 		<HAlign>right</HAlign>
 	</Footer>
 
-	<!-- ***** Simple config example **** -->
 	<Page>
 		<Column>
-			<LabelWidth>110</LabelWidth>
-			<ControlWidth>160</ControlWidth>
+			<LabelWidth>170</LabelWidth>
+			<ControlWidth>250</ControlWidth>
 			
-			<!-- GuiOptions -->
 			<GuiOption Type="ComputerName" />
-			
-			<GuiOption Type="FreeText">
-				<Variable>Engineer</Variable>
-				<Label>Engineer name:</Label>
-				<DefaultValue>
-					<Value>Jane Doe</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="DropDownList">
-				<Variable>IT_Team</Variable>
-				<Label>Team:</Label>
-				<DefaultValue>Desktop</DefaultValue>
-				<Option>
-					<Text>Desktop</Text>
-					<Value>Desktop</Value>
-				</Option>
-				<Option>
-					<Text>Infrastructure</Text>
-					<Value>Inf</Value>
-				</Option>
-				<Option>
-					<Text>Service Desk</Text>
-					<Value>SD</Value>
-				</Option>
-			</GuiOption>	
-			
-		</Column>		
-	</Page>
-	
-	
-	
-	<!-- **** Advanced config options  **** -->
-	<Page>
-		<Heading>
-			<Title>Title text override</Title>
-			<Text>Text override</Text>
-		</Heading>
-		
-		<Column>
-			<Width>360</Width>
-			<LabelWidth>180</LabelWidth>
-			<ControlWidth>170</ControlWidth>
-			
-			<!-- GuiOptions -->
-			
-			<!-- Advanced freetext with queries. This one is the equivalent of the ComputerName GuiOption type-->
-			<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
-				<Disallowed>
-					<Characters>`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
-				</Disallowed>
-				<Variable>OSDComputerName_FullQuery</Variable>
-				<Label>Computer Name:</Label>
-				<HelpText>Enter a computer name for the device</HelpText>
-				
-				<!-- Query for the default value. Return the first valid value. Note
-				the Ignore values for evaluating the value returned by the query -->
-				<DefaultValue>
-					<Query Type="EnvironmentVariable">
-						<Variable>OSDComputerName</Variable>
-						<Ignore>MINNT</Ignore>
-						<Ignore>MINWIN</Ignore>						
-					</Query>				
-					<Query Type="EnvironmentVariable">
-						<Variable>_SMSTSMachineName</Variable>
-						<Ignore>MINNT</Ignore>
-						<Ignore>MINWIN</Ignore>					
-					</Query>					
-					<Query Type="EnvironmentVariable">
-						<Variable>ComputerName</Variable>
-						<Ignore>MINNT</Ignore>
-						<Ignore>MINWIN</Ignore>						
-					</Query>					
-					<Query Type="Wmi">
-						<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
-						<Ignore>No Asset Tag</Ignore>
-					</Query>					
-					<Query Type="Wmi">
-						<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
-					</Query>
-				</DefaultValue>
-			</GuiOption>			
-			
-			<GuiOption Type="FreeText"  PurgeInactive="TRUE">
-				<Group>Group_Fin</Group>
-				<Group>Group_IT</Group>
-				<Variable>User</Variable>
-				<Label>User name:</Label>
-				<DefaultValue>
-					<Value>John Doe User</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="FreeText"  PurgeInactive="TRUE">
-				<Group>Group_PMO</Group>
-				<Variable>User</Variable>
-				<Label>Project manager name:</Label>
-				<DefaultValue>
-					<Value>John Doe PM</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="FreeText" PurgeInactive="TRUE">
-				<Group>Group_HR</Group>
-				<Variable>User</Variable>
-				<Label>HR consultant name:</Label>
-				<DefaultValue>
-					<Value>John Doe HR</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="DropDownList">
-				<Variable>Department</Variable>
-				<Label>Department:</Label>
-				<DefaultValue>Finance</DefaultValue>
-				<Option>
-					<Toggle Group="Group_Fin">
-						<Hide/>
-					</Toggle>
-					<Text>Finance</Text>
-					<Value>Finance</Value>
-				</Option>
-				<Option>
-					<Toggle Group="Group_IT">
-						<Hide/>
-					</Toggle>
-					<Text>Information Technology</Text>
-					<Value>IT</Value>
-				</Option>
-				<Option>
-					<Toggle Group="Group_HR">
-						<Hide/>
-					</Toggle>
-					<Text>Human Resources</Text>
-					<Value>HR</Value>
-				</Option>
-				<Option>
-					<Toggle Group="Group_PMO">
-						<Hide/>
-					</Toggle>
-					<Text>Project Office</Text>
-					<Value>PMO</Value>
-				</Option>
-			</GuiOption>
-			
+						
 			<GuiOption Type="CheckBox">
-				<Variable>TOGGLE_Apps</Variable>
-				<Label>Additional apps</Label>
+				<Variable>TOGGLE_DiskID</Variable>
+				<Label>Choose disk</Label>
 				<HAlign>left</HAlign>
 				
-				<Toggle Group="Group_Apps">
+				<Toggle Group="Group_Disk">
 					<Enabled>TRUE</Enabled>
 					<Disabled>FALSE</Disabled>
 				</Toggle>
 			</GuiOption>
-		</Column>
-
-		<Column>
-			<Group>Group_Apps</Group>
-			<Width>200</Width>
-			<LabelWidth>120</LabelWidth>
-			<ControlWidth>80</ControlWidth>
 			
-			<!-- GuiOptions -->
-			<GuiOption Type="Heading">
-				<Label>Applications</Label>
-				<Bold /> 
+			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
+				<Group>Group_Disk</Group>
+				<Variable>OSDDiskIndex</Variable>
+				<Label>Disk</Label>
+				<DefaultValue>0</DefaultValue>
+				<Query Type="Wmi">
+					<Wql>select Index,Caption,Size FROM Win32_DiskDrive where MediaType='Fixed hard disk media'</Wql>
+					<Property Name="Index"/>
+					<Property Name="Index">
+						<Prefix>ID: </Prefix>
+					</Property>
+					<Property Name="Size">
+						<Calculate DecimalPlaces="2">VALUE/1073741824</Calculate>
+						<Append>GB</Append>
+					</Property>
+					<Property Name="Caption"/>					
+					<Separator> - </Separator>
+				</Query>
 			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
-				<Variable>App_MsOffice</Variable>
-				<Label>Microsoft Office</Label>
-				<HAlign>right</HAlign>
+				<Variable>VAR_NotepadPP</Variable>
+				<Label>Notepad++</Label>
+				<HAlign>Left</HAlign>
 				<Checked />
 			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
-				<Variable>App_MsAccess</Variable>
-				<Label>Microsoft Access</Label>
-				<HAlign>right</HAlign>
+				<Variable>VAR_7zip</Variable>
+				<Label>7zip</Label>
+				<HAlign>left</HAlign>
+				<Checked />
 			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
-				<Variable>App_MsVisio</Variable>
-				<Label>Microsoft Visio</Label>
-				<HAlign>right</HAlign>
+				<Variable>SMSTSAssignUsersMode</Variable>
+				<Label>Set primary user</Label>
+				<TrueValue>Auto</TrueValue>
+				<FalseValue>Disabled</FalseValue>
+				<HAlign>left</HAlign>
+				
+				<Toggle Group="Group_UDA">
+					<Enabled>Auto</Enabled>
+					<Disabled>Disabled</Disabled>
+				</Toggle>
+			</GuiOption>
+			
+			<GuiOption Type="Heading">
+				<Group>Group_UDA</Group>
+				<Label>User Device Affinity</Label>
+				<Bold /> 
+			</GuiOption>
+			
+			<GuiOption Type="FreeText" PurgeInactive="TRUE">
+				<Group>Group_UDA</Group>
+				<Variable>SMSTSUdaUsers</Variable>
+				<Label>User:</Label>
+				<DefaultValue>
+					<Value>Home\</Value>
+				</DefaultValue>
 			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
-				<Group>Group_PMO</Group>
-				<Group>Group_IT</Group>
-				<InactiveValue>No_Project</InactiveValue>
-				<Variable>App_MsProject</Variable>
-				<Label>Microsoft Project</Label>
-				<HAlign>right</HAlign>
+				<Group>Group_UDA</Group>
+				<Variable>VAR_UDACheck</Variable>
+				<Label>CHeck test</Label>
+				<HAlign>left</HAlign>
+				<Checked />
 			</GuiOption>
-		</Column>
+		</Column>		
 	</Page>
+	
 </TsGui>

@@ -135,7 +135,7 @@ namespace TsGui.View.Layout
             this.SetDefaults();
         }
 
-        public void SetDefaults()
+        private void SetDefaults()
         {
             this.FontStyle = "Normal";
             this.FontWeight = "Normal";

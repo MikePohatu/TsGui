@@ -17,7 +17,6 @@
 // amongst the other options. 
 
 using System.Xml.Linq;
-using System.Windows.Controls;
 using System.Windows;
 
 namespace TsGui.View.GuiOptions
@@ -34,7 +33,7 @@ namespace TsGui.View.GuiOptions
             get { return this._controltext; }
             set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
         }
-        public TsVariable Variable { get { return null; } }
+        public TsVariable Variable { get { return new TsVariable(this.VariableName, this.ControlText); } }
 
         //constructor
         public TsInfoBox(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
@@ -49,13 +48,10 @@ namespace TsGui.View.GuiOptions
         }
 
         public new void LoadXml(XElement InputXml)
-        {
-            //load legacy
-            XElement x;
-            x = InputXml.Element("Bold");
-            if (x != null) { this.LabelFormatting.FontWeight = "Bold"; }
-
+        {            
             base.LoadXml(InputXml);
+
+            XElement x;
 
             x = InputXml.Element("DisplayValue");
             if (x != null)
