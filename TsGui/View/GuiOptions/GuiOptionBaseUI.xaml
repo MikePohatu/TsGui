@@ -33,7 +33,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl>
-        <Grid x:Name="MainGrid" Width="{Binding GridFormatting.Width}"  ToolTip="{Binding HelpText}" Margin="0" ShowGridLines="{Binding ShowGridLines}">
+        <Grid x:Name="MainGrid" Width="{Binding GridFormatting.Width}"  ToolTip="{Binding HelpText}" Visibility="{Binding Visibility}"
+              Margin="0" ShowGridLines="{Binding ShowGridLines}">
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="GuiOptionRow" Height="Auto"/>
             </Grid.RowDefinitions>
