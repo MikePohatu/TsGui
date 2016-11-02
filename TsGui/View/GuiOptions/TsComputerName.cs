@@ -101,7 +101,7 @@ namespace TsGui.View.GuiOptions
             x.Add(new XElement("Variable", "OSDComputerName"));
             x.Add(new XElement("Label", "Computer Name:"));
             x.Add(new XElement("HelpText", "Enter a computer name for the device"));
-            x.Add(new XElement("MaxLength", "15"));
+            x.Add(new XAttribute("MaxLength", "15"));
 
             return x;
         }
