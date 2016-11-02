@@ -61,15 +61,27 @@ namespace TsGui.Tests
         }
 
         [Test]
-        [TestCase("MINIT_Test","_", true,ExpectedResult = false)]
+        [TestCase("MINIT_Test","_", true,ExpectedResult = true)]
         [TestCase("MINIT_Test", "m", true, ExpectedResult = false)]
         [TestCase(null, "m", true, ExpectedResult = false)]
         [TestCase("MINIT_Test", "", true, ExpectedResult = true)]
-        [TestCase("MINIT_Test", "M", true, ExpectedResult = false)]
-        public bool ValidCharactersTest(string StringValue, string InvalidChars, bool CaseSensitive)
+        [TestCase("MINIT_Test", "M", true, ExpectedResult = true)]
+        public bool DoesStringContainCharactersTest(string StringValue, string InvalidChars, bool CaseSensitive)
         {
             return ResultValidator.DoesStringContainCharacters(StringValue, InvalidChars, CaseSensitive);
             
+        }
+
+        [Test]
+        [TestCase("MINIT_Test", "_", ExpectedResult = "MINITTest")]
+        [TestCase("MINIT_Test", "m", ExpectedResult = "MINIT_Test")]
+        [TestCase(null, "m", ExpectedResult = null)]
+        [TestCase("MINIT_Test", "", ExpectedResult = "MINIT_Test")]
+        [TestCase("MINIT_Test", "M", ExpectedResult = "INIT_Test")]
+        public string RemoveInvalidTest(string StringValue, string InvalidChars)
+        {
+            return ResultValidator.RemoveInvalid(StringValue, InvalidChars);
+
         }
 
         [Test]
@@ -92,6 +104,16 @@ namespace TsGui.Tests
         public bool ValidMinLengthTest(string StringValue, int MinLength)
         {
             return ResultValidator.ValidMinLength(StringValue, MinLength);
+        }
+
+        [Test]
+        [TestCase("my-us3r_n4m3", "^[a-z0-9_-]{3,16}$", false, ExpectedResult = true)]
+        [TestCase("th1s1s-wayt00_l0ngt0beausername", "^[a-z0-9_-]{3,16}$", false, ExpectedResult = false)]
+        [TestCase("myp4ssw0rd", "^[a-z0-9_-]{6,18}$", false, ExpectedResult = true)]
+        [TestCase("mypa$$w0rd", "^[a-z0-9_-]{6,18}$", false, ExpectedResult = false)]
+        public bool DoesRegExMatchTest(string StringValue, string Pattern, bool CaseSensitive)
+        {
+            return ResultValidator.DoesRegexMatch(StringValue, Pattern, CaseSensitive);
         }
     }
 }
