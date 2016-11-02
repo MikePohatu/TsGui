@@ -16,6 +16,7 @@
 // ValidationHandler.cs - maintains a list of stringvalidation objects. returns correct values taking
 // into account group membership
 
+using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
 
@@ -30,7 +31,7 @@ namespace TsGui.Validation
         //Properties
 
         #region
-        public string ValidationMessage { get { return this.GetActiveValidation()?.ValidationMessage; } }
+        public string ValidationMessage { get { return this.GetActiveValidationMessages(); } }
         public string FailedValidationMessage { get; set; }
         public int MinLength { get { return this.GetMinLength(); } }
         public int MaxLength { get { return this.GetMaxLength(); } }
@@ -145,6 +146,22 @@ namespace TsGui.Validation
                 if (sv.IsActive == true) { return sv; }
             }
             return null;
+        }
+
+        private string GetActiveValidationMessages()
+        {
+            string s = string.Empty;
+            bool active = false;
+            foreach (StringValidation sv in this._validations)
+            {
+                if ((sv.IsActive == true) && (!string.IsNullOrEmpty(sv.ValidationMessage)))
+                {
+                    s = s + Environment.NewLine + sv.ValidationMessage ;
+                    active = true;
+                }
+            }
+            if (active == true) { return s + Environment.NewLine; }
+            else { return string.Empty; }
         }
     }
 }

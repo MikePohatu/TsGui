@@ -174,11 +174,13 @@ namespace TsGui.View.GuiOptions
         {
             bool newvalid = this._validationhandler.IsValid(this.ControlText);
 
-            string s = this._validationhandler.ValidationMessage;
-
             if (newvalid == false)
             {
-                if (string.IsNullOrEmpty(s)) { s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine + _validationhandler.FailedValidationMessage; }
+                string validationmessage = this._validationhandler.ValidationMessage;
+                string s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine;
+                if (string.IsNullOrEmpty(validationmessage)) { s = s + _validationhandler.FailedValidationMessage; }
+                else { s = s + validationmessage; }
+
                 this.ValidationText = s;
                 this.ShowInvalidToolTip();
             }
