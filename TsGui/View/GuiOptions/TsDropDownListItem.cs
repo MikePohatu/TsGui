@@ -15,17 +15,21 @@
 
 // TsDropDownListItem.cs - class to hold entries in dropdownlist
 
+using TsGui.View.Layout;
+
 namespace TsGui.View.GuiOptions
 {
     public class TsDropDownListItem
     {
         public string Value { get; set; }
         public string Text { get; set; }
+        public Formatting ControlFormatting { get; set; }
 
-        public TsDropDownListItem(string Value, string Text)
+        public TsDropDownListItem(string Value, string Text, Formatting Formatting)
         {
             this.Value = Value;
             this.Text = Text;
+            this.ControlFormatting = Formatting;
         }
     }
 }

@@ -37,10 +37,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
           SelectedValuePath="Value" HorizontalAlignment="Stretch" Style="{StaticResource ControlStyle}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding Text}" Style="{StaticResource ControlStyle}" />
+                    <Label x:Name="DropDownListLabel" Content="{Binding Text}" Style="{StaticResource ComboBoxItemLabelStyle}"/>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
-
         </ComboBox>
     </Grid>
 </UserControl>

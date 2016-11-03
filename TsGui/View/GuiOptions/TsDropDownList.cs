@@ -108,7 +108,7 @@ namespace TsGui.View.GuiOptions
                 {
                     string optval = x.Element("Value").Value;
                     string opttext = x.Element("Text").Value;
-                    TsDropDownListItem newoption = new TsDropDownListItem(optval, opttext);
+                    TsDropDownListItem newoption = new TsDropDownListItem(optval, opttext, this.ControlFormatting);
                     this._options.Add(newoption);
 
                     XElement togglex = x.Element("Toggle");
@@ -125,7 +125,7 @@ namespace TsGui.View.GuiOptions
                     List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        TsDropDownListItem item = new TsDropDownListItem(kv.Key, kv.Value);
+                        TsDropDownListItem item = new TsDropDownListItem(kv.Key, kv.Value, this.ControlFormatting);
                         this._options.Add(item);
                     }
                 }
