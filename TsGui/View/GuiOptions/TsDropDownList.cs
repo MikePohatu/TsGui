@@ -29,6 +29,7 @@ namespace TsGui.View.GuiOptions
 
         private TsDropDownListUI _dropdownlistui;
         private string _currentvalue;
+        private string _defaultvalue;
         private TsDropDownListItem _currentitem;
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private bool _istoggle = false;
@@ -91,7 +92,7 @@ namespace TsGui.View.GuiOptions
                         defxCount++;
                         if (xdefoption.Name == "Value")
                         {
-                            this._currentvalue = xdefoption.Value;
+                            this._defaultvalue = xdefoption.Value;
                             break;
                         }
                         else if (xdefoption.Name == "Query")
@@ -100,7 +101,7 @@ namespace TsGui.View.GuiOptions
                         }
                     }
 
-                    if (defxCount == 0) { this._currentvalue = x.Value.Trim(); }
+                    if (defxCount == 0) { this._defaultvalue = x.Value.Trim(); }
                 }
 
                 //now read in an option and add to a dictionary for later use
@@ -149,7 +150,7 @@ namespace TsGui.View.GuiOptions
             {
                 //if this entry is the default, or is the first in the list (in case there is no
                 //default, select it by default in the list
-                if ((entry.Value == this._currentvalue) || (index == 0))
+                if ((entry.Value == this._defaultvalue) || (index == 0))
                 { this.CurrentValue = entry.Value; }
 
                 index++;
@@ -179,6 +180,8 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
+            this.ControlFormatting.Margin = new Thickness(6, 0, 0, 0);
+            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
     }
 }

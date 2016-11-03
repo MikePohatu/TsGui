@@ -83,12 +83,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
     <Style x:Key="ComboBoxItemLabelStyle" TargetType="Label">
         <Setter Property="Control.Height" Value="Auto"/>
-        <Setter Property="Control.Margin" Value="0"/>
+        <Setter Property="Control.Margin" Value="{Binding ItemFormatting.Margin}"/>
         <Setter Property="Control.Padding" Value="0"/>
         <Setter Property="Control.VerticalAlignment" Value="Stretch"/>
         <Setter Property="Control.HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="Control.FontWeight" Value="{Binding Path=ControlFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
-        <Setter Property="Control.FontStyle" Value="{Binding Path=ControlFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
-        <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
+        <Setter Property="Control.FontWeight" Value="{Binding Path=ItemFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
+        <Setter Property="Control.FontStyle" Value="{Binding Path=ItemFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
+        <Setter Property="Control.FontSize" Value="{Binding ItemFormatting.FontSize}"/>
     </Style>
 </ResourceDictionary>
