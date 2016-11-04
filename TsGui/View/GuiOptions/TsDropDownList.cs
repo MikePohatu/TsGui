@@ -180,7 +180,6 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
-            this.ControlFormatting.Margin = new Thickness(6, 0, 0, 0);
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
     }

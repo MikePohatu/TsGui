@@ -1,156 +1,111 @@
 <TsGui>
-	<ShowGridLines /> 
-	
-	<Height>230</Height>
-	<Width>510</Width>
+    <Height>400</Height>
+	<Width>470</Width>
 
 	<HardwareEval />
-	
-	<Heading>
-		<Title>Server Imaging</Title>
-		<Text>Configure your Server</Text>
-		<Bg-Color>#0074E4</Bg-Color>
+
+<Heading>
+		<Title>Windows 10 Image</Title>
+		<Text>Easy imaging tool</Text>
+		<Bg-Color>#FF006AD4</Bg-Color>
 		<Font-Color>#FFFFFF</Font-Color>
 	</Heading>
 	
+
 	<Footer>
-		<Text>Powered by IT</Text>
+		<Text>TsGui by 20Road</Text>
 		<Height>17</Height>
 		<HAlign>right</HAlign>
 	</Footer>
 
 	<Page>
 		<Column>
-			<Width>280</Width>
-			<LabelWidth>110</LabelWidth>
-			<ControlWidth>160</ControlWidth>
+			<LabelWidth>170</LabelWidth>
+			<ControlWidth>250</ControlWidth>
 			
 			<GuiOption Type="ComputerName" />
-			
-			<GuiOption Type="DropDownList">
-				<Variable>VAR_Domain</Variable>
-				<Label>Domain:</Label>
-				<DefaultValue>domain_1</DefaultValue>			
-				<Option>
-					<Text>company.local</Text>
-					<Value>domian_1</Value>
-					<Toggle Group="D1_OU">
-						<Hide/>
-					</Toggle>
-				</Option>
-				<Option>
-					<Text>a.test.company.com</Text>
-					<Value>domain_2</Value>
-					<Toggle Group="D2_OU">
-						<PurgeInactive />
-						<Hide/>
-					</Toggle>
-				</Option>
-				<Option>
-					<Text>b.test.company.com</Text>
-					<Value>domain_3</Value>
-					<Toggle Group="D3_OU">
-						<Hide/>
-					</Toggle>
-				</Option>
+						
+			<GuiOption Type="CheckBox">
+				<Variable>TOGGLE_DiskID</Variable>
+				<Label>Choose disk</Label>
+				<HAlign>left</HAlign>
 				
-				<HelpText>Select the domain the server will be in.</HelpText>
+				<Toggle Group="Group_Disk">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+				</Toggle>
 			</GuiOption>
 			
 			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
-				<Group>D1_OU</Group>
-				<Variable>VAR_OU</Variable>
-				<Label>OU:</Label>
-				<DefaultValue>D1_OU_1</DefaultValue>
-				<Option>
-					<Text>Domain 1 OU 1</Text>
-					<Value>D1_OU_1</Value>
-				</Option>
-				<Option>
-					<Text>Domain 1 OU 2</Text>
-					<Value>D1_OU_2</Value>
-				</Option>
-				<Option>
-					<Text>Domain 1 OU 3</Text>
-					<Value>D1_OU_3</Value>
-				</Option>
+				<Group>Group_Disk</Group>
+				<Variable>OSDDiskIndex</Variable>
+				<Label>Disk</Label>
+				<DefaultValue>0</DefaultValue>
+				<Query Type="Wmi">
+					<Wql>select Index,Caption,Size FROM Win32_DiskDrive where MediaType='Fixed hard disk media'</Wql>
+					<Property Name="Index"/>
+					<Property Name="Index">
+						<Prefix>ID: </Prefix>
+					</Property>
+					<Property Name="Size">
+						<Calculate DecimalPlaces="2">VALUE/1073741824</Calculate>
+						<Append>GB</Append>
+					</Property>
+					<Property Name="Caption"/>					
+					<Separator> - </Separator>
+				</Query>
 			</GuiOption>
 			
-
-			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
-				<Group>D2_OU</Group>
-				<Variable>VAR_OU</Variable>
-				<Label>OU:</Label>
-				<DefaultValue>D2_OU_1</DefaultValue>
-				<Option>
-					<Text>Domain 2 OU 1</Text>
-					<Value>D2_OU_1</Value>
-				</Option>
-				<Option>
-					<Text>Domain 2 OU 2</Text>
-					<Value>D2_OU_2</Value>
-				</Option>
-				<Option>
-					<Text>Domain 2 OU 3</Text>
-					<Value>D2_OU_3</Value>
-				</Option>
-			</GuiOption>
-
-			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
-				<Group>D3_OU</Group>
-				<Variable>VAR_OU</Variable>
-				<Label>OU:</Label>
-				<DefaultValue>D3_OU_1</DefaultValue>
-				<Option>
-					<Text>Domain 3 OU 1</Text>
-					<Value>D3_OU_1</Value>
-				</Option>
-				<Option>
-					<Text>Domain 3 OU 2</Text>
-					<Value>D3_OU_2</Value>
-				</Option>
-				<Option>
-					<Text>Domain 3 OU 3</Text>
-					<Value>D3_OU_3</Value>
-				</Option>
+			<GuiOption Type="CheckBox">
+				<Variable>VAR_NotepadPP</Variable>
+				<Label>Notepad++</Label>
+				<HAlign>Left</HAlign>
+				<Checked />
 			</GuiOption>
 			
-			<GuiOption Type="FreeText" MaxLength="100" MinLength="4">
-				<Disallowed>
-					<Characters>abcdefchijklmnopqrstuvwxyz`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
-				</Disallowed>
-				<Variable>VAR_PageFileSize</Variable>
-				<Label>Page File (MB):</Label>
-				<DefaultValue>
-					<Value>4096</Value>
-				</DefaultValue>
-				<HelpText>Enter the size of page file you want to set.</HelpText>
+			<GuiOption Type="CheckBox">
+				<Variable>VAR_7zip</Variable>
+				<Label>7zip</Label>
+				<HAlign>left</HAlign>
+				<Checked />
 			</GuiOption>
-		</Column>
-		
-		<Column>
-			<Width>210</Width>
-			<LabelWidth>190</LabelWidth>
-			<ControlWidth>20</ControlWidth>
-		
+			
+			<GuiOption Type="CheckBox">
+				<Variable>SMSTSAssignUsersMode</Variable>
+				<Label>Set primary user</Label>
+				<TrueValue>Auto</TrueValue>
+				<FalseValue>Disabled</FalseValue>
+				<HAlign>left</HAlign>
+				
+				<Toggle Group="Group_UDA">
+					<Enabled>Auto</Enabled>
+					<Disabled>Disabled</Disabled>
+				</Toggle>
+			</GuiOption>
+			
 			<GuiOption Type="Heading">
-				<Label>Additional Applications</Label>
+				<Group>Group_UDA</Group>
+				<Label>User Device Affinity</Label>
 				<Bold /> 
 			</GuiOption>
 			
-			<GuiOption Type="CheckBox">
-				<Variable>VAR_DotNet</Variable>
-				<Label>Install .NET 3.5</Label>
-				<HAlign>right</HAlign>
-				<HelpText>Install .NET 3.5</HelpText>
+			<GuiOption Type="FreeText" PurgeInactive="TRUE">
+				<Group>Group_UDA</Group>
+				<Variable>SMSTSUdaUsers</Variable>
+				<Label>User:</Label>
+				<DefaultValue>
+					<Value>Home\</Value>
+				</DefaultValue>
 			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
-				<Variable>VAR_SSMS</Variable>
-				<Label>Install SSMS</Label>
-				<HAlign>right</HAlign>
-				<HelpText>Install SSMS</HelpText>
+				<Group>Group_UDA</Group>
+				<Variable>VAR_UDACheck</Variable>
+				<Label>CHeck test</Label>
+				<HAlign>left</HAlign>
+				<Checked />
 			</GuiOption>
-		</Column>
+		</Column>		
 	</Page>
+	
 </TsGui>
