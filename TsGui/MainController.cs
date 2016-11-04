@@ -79,22 +79,24 @@ namespace TsGui
         {
             this._prodmode = this._envController.Init();
 
-            //if prodmode isn't true, the envcontroller couldn't connect to sccm
-            //prompt the user if they want to continue. exit if not. 
-            if (this._prodmode != true)
-            {
-                if (this.PromptTestMode() != true)
-                {
-                    this.Cancel();
-                    return;
-                }               
-            }
-
             this._mainWindow = new TsMainWindow();
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
 
             this.LoadXml(x);
+
+            //if prodmode isn't true, the envcontroller couldn't connect to sccm
+            //prompt the user if they want to continue. exit if not. 
+            if (this._prodmode == true)
+            { this._envController.HideProgressUI(); }
+            else
+            {
+                if (this.PromptTestMode() != true)
+                {
+                    this.Cancel();
+                    return;
+                }
+            }
 
             //subscribe to closing event
             this.ParentWindow.Closing += this.OnWindowClosing;

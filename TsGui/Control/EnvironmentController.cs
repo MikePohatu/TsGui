@@ -41,7 +41,6 @@ namespace TsGui
             try
             {
                 this._sccmconnector = new SccmConnector();
-                this._sccmconnector.Hide(); //hide the tsprogessui window
                 return true;
             }
             catch
@@ -51,6 +50,10 @@ namespace TsGui
             }
         }
 
+        public void HideProgressUI()
+        {
+            this._sccmconnector?.Hide(); //hide the tsprogessui window
+        }
 
         public void AddVariable(TsVariable Variable)
         {
