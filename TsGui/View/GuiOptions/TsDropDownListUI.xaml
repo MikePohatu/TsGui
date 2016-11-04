@@ -27,7 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
     <Grid Width="{Binding ControlFormatting.Width}">
         <ComboBox x:Name="Control" ItemsSource="{Binding Options}" SelectedValue="{Binding CurrentValue, Mode=TwoWay}" 
-          SelectedValuePath="Value" HorizontalAlignment="Stretch" Style="{StaticResource ControlStyle}">
+          SelectedValuePath="Value" Style="{StaticResource ControlStyle}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <Label x:Name="DropDownListLabel" Content="{Binding Text}" Style="{StaticResource ComboBoxItemLabelStyle}"/>

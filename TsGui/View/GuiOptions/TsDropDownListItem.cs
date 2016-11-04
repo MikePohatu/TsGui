@@ -23,13 +23,13 @@ namespace TsGui.View.GuiOptions
     {
         public string Value { get; set; }
         public string Text { get; set; }
-        public Formatting ControlFormatting { get; set; }
+        public Formatting ItemFormatting { get; set; }
 
         public TsDropDownListItem(string Value, string Text, Formatting Formatting)
         {
             this.Value = Value;
             this.Text = Text;
-            this.ControlFormatting = Formatting;
+            this.ItemFormatting = Formatting;
         }
     }
 }
