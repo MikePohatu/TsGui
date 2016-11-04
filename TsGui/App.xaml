@@ -1,7 +1,79 @@
 ﻿<Application x:Class="TsGui.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Converters="clr-namespace:TsGui.View.Layout.Converters">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <Converters:FontWeightConverter x:Key="FontWeight"/>
+            <Converters:FontStyleConverter x:Key="FontStyle"/>
+
+            <Style x:Key="GridStyle">
+                <Setter Property="Grid.Margin" Value="{Binding GridFormatting.Margin}"/>
+                <Setter Property="Grid.VerticalAlignment" Value="{Binding GridFormatting.VerticalAlignment}"/>
+                <Setter Property="Grid.HorizontalAlignment" Value="{Binding GridFormatting.HorizontalAlignment}"/>
+                <Setter Property="Grid.Width" Value="{Binding GridFormatting.Width}"/>
+                <Setter Property="Grid.IsEnabled" Value="{Binding IsEnabled}"/>
+                <Setter Property="Grid.Visibility" Value="{Binding Visibility}"/>
+                <Setter Property="Grid.ShowGridLines" Value="{Binding ShowGridLines}"/>
+            </Style>
+
+            <Style x:Key="LabelStyle">
+                <Setter Property="Control.Height" Value="{Binding LabelFormatting.Height}"/>
+                <Setter Property="Control.Margin" Value="{Binding LabelFormatting.Margin}"/>
+                <Setter Property="Control.VerticalAlignment" Value="{Binding LabelFormatting.VerticalAlignment}"/>
+                <Setter Property="Control.HorizontalAlignment" Value="{Binding LabelFormatting.HorizontalAlignment}"/>
+                <Setter Property="Control.Padding" Value="{Binding LabelFormatting.Padding}"/>
+                <Setter Property="Control.FontWeight" Value="{Binding Path=LabelFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
+                <Setter Property="Control.FontStyle" Value="{Binding Path=LabelFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
+                <Setter Property="Control.FontSize" Value="{Binding LabelFormatting.FontSize}"/>
+                <Setter Property="Control.IsEnabled" Value="{Binding IsEnabled}"/>
+            </Style>
+
+            <Style x:Key="ControlStyle">
+                <Setter Property="Control.Height" Value="{Binding ControlFormatting.Height}"/>
+                <Setter Property="Control.Margin" Value="{Binding ControlFormatting.Margin}"/>
+                <Setter Property="Control.VerticalAlignment" Value="{Binding ControlFormatting.VerticalAlignment}"/>
+                <Setter Property="Control.HorizontalAlignment" Value="{Binding ControlFormatting.HorizontalAlignment}"/>
+                <Setter Property="Control.Padding" Value="{Binding ControlFormatting.Padding}"/>
+                <Setter Property="Control.FontWeight" Value="{Binding Path=ControlFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
+                <Setter Property="Control.FontStyle" Value="{Binding Path=ControlFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
+                <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
+                <Setter Property="Control.IsEnabled" Value="{Binding IsEnabled}"/>
+            </Style>
+
+            <Style x:Key="FreeTextStyle" TargetType="TextBox" BasedOn="{StaticResource ControlStyle}">
+                <Setter Property="TextAlignment" Value="{Binding ControlFormatting.TextAlignment}"/>
+                <Setter Property="MaxLength" Value="{Binding MaxLength}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border Name="Border" BorderBrush="{Binding ControlFormatting.BorderBrush}" BorderThickness="1" >
+                                <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="TextBox.IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding ControlFormatting.MouseOverBorderBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" TargetName="Border" Value="0.56"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="ComboBoxItemLabelStyle" TargetType="Label">
+                <Setter Property="Control.Height" Value="Auto"/>
+                <Setter Property="Control.Margin" Value="0"/>
+                <Setter Property="Control.Padding" Value="0"/>
+                <Setter Property="Control.VerticalAlignment" Value="Stretch"/>
+                <Setter Property="Control.HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="Control.FontWeight" Value="{Binding Path=ControlFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
+                <Setter Property="Control.FontStyle" Value="{Binding Path=ControlFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
+                <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
+            </Style>
+        </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

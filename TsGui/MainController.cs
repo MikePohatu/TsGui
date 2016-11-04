@@ -22,6 +22,7 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Windows;
 using System.ComponentModel;
+
 using TsGui.View.Layout;
 using TsGui.View.GuiOptions;
 
@@ -76,9 +77,6 @@ namespace TsGui
 
         public void Startup()
         {
-            this._mainWindow = new TsMainWindow();
-            this.ParentWindow.DataContext = this._mainWindow;
-
             this._prodmode = this._envController.Init();
 
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
@@ -92,8 +90,7 @@ namespace TsGui
                 }               
             }
 
-            //this.ParentWindow.Loaded += this.OnWindowLoaded;
-
+            this._mainWindow = new TsMainWindow();
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
 
@@ -101,16 +98,15 @@ namespace TsGui
 
             //subscribe to closing event
             this.ParentWindow.Closing += this.OnWindowClosing;
-
-            //now show the first page in the list
             this.CurrentPage = this._pages.First();
 
             //update group settings to all controls
             foreach (IToggleControl t in this._toggles)
             { t.InitialiseToggle(); }
 
+            this.ParentWindow.DataContext = this._mainWindow;
             this.UpdateWindow();
-            this.ParentWindow.Show();
+            this.ParentWindow.Visibility = Visibility.Visible;
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails

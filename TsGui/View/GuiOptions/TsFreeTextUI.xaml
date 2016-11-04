@@ -27,9 +27,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              d:DesignHeight="20" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="GuiOptionStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
             <Style TargetType="ToolTip">
                 <Setter Property="Template">
                     <Setter.Value>

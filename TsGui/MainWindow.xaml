@@ -27,22 +27,20 @@ MainWindow.xaml - wrapper window for the app. Includes footer.
         mc:Ignorable="d"
         Title="{Binding HeadingTitle}" Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}"
 
-        WindowStartupLocation="Manual" 
+        WindowStartupLocation="CenterScreen" 
         Topmost="True"
         Left="40" Top="40" WindowStyle="None"
         MouseLeftButtonDown="windowDrag" ResizeMode="NoResize"
-        AllowsTransparency="True" Background="Transparent" >
+        AllowsTransparency="True" Background="Transparent">
     <Grid Name="ContentWrapper">
         <Grid.RowDefinitions>
             <RowDefinition Height="100*" />
             <RowDefinition x:Name="FooterRow" Height="{Binding FooterHeight}" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" >
-            <Frame Name="ContentArea" Background="Transparent" NavigationUIVisibility="Hidden">
-
-            </Frame>
+            <Frame Name="ContentArea" Background="Transparent" NavigationUIVisibility="Hidden"/>
         </Grid>
-        
+
         <Grid x:Name="FooterGrid" Grid.Row="1" Margin="0,0,0,0" ShowGridLines="{Binding ShowGridLines}">
             <Border Background="#FFE5E5E5" CornerRadius="0,0,5,5"  Height="{Binding FooterHeight}" >
                 <StackPanel>
@@ -50,6 +48,5 @@ MainWindow.xaml - wrapper window for the app. Includes footer.
                 </StackPanel>
             </Border>
         </Grid>
-       
     </Grid>
 </Window>
