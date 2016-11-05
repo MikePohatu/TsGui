@@ -26,7 +26,6 @@
                 <Setter Property="Control.FontWeight" Value="{Binding Path=LabelFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
                 <Setter Property="Control.FontStyle" Value="{Binding Path=LabelFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
                 <Setter Property="Control.FontSize" Value="{Binding LabelFormatting.FontSize}"/>
-                <Setter Property="Control.IsEnabled" Value="{Binding IsEnabled}"/>
             </Style>
 
             <Style x:Key="ControlStyle">
@@ -38,7 +37,6 @@
                 <Setter Property="Control.FontWeight" Value="{Binding Path=ControlFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
                 <Setter Property="Control.FontStyle" Value="{Binding Path=ControlFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
                 <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
-                <Setter Property="Control.IsEnabled" Value="{Binding IsEnabled}"/>
             </Style>
 
             <Style x:Key="FreeTextStyle" TargetType="TextBox" BasedOn="{StaticResource ControlStyle}">
@@ -69,9 +67,9 @@
                 <Setter Property="Control.Padding" Value="0"/>
                 <Setter Property="Control.VerticalAlignment" Value="Stretch"/>
                 <Setter Property="Control.HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="Control.FontWeight" Value="{Binding Path=ControlFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
-                <Setter Property="Control.FontStyle" Value="{Binding Path=ControlFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
-                <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
+                <Setter Property="Control.FontWeight" Value="{Binding Path=ItemFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
+                <Setter Property="Control.FontStyle" Value="{Binding Path=ItemFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
+                <Setter Property="Control.FontSize" Value="{Binding ItemFormatting.FontSize}"/>
             </Style>
         </ResourceDictionary>
         

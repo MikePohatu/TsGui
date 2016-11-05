@@ -13,7 +13,8 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// IValidationOwner.cs - parent of a ValidationHandler
+// IValidationOwner.cs - Parent element of a ValidationHandler. Required to pickup events
+// on the handler e.g. group changes. 
 
 namespace TsGui.Validation
 {

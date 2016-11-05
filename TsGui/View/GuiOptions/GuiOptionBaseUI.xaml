@@ -24,7 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
-             d:DesignHeight="20" d:DesignWidth="300" Visibility="{Binding Visibility}">
+             d:DesignHeight="20" d:DesignWidth="300" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}">
     <Grid x:Name="MainGrid" Width="{Binding GridFormatting.Width}"  ToolTip="{Binding HelpText}"
               Margin="0" ShowGridLines="{Binding ShowGridLines}">
             <Grid.RowDefinitions>

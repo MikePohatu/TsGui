@@ -46,9 +46,12 @@ namespace TsGui.Grouping
             get { return this._isenabled; }
             set
             {
-                this._isenabled = value;
-                this.OnPropertyChanged(this, "IsEnabled");
-                this.GroupableEnable?.Invoke(value);
+                if (value != this._isenabled)
+                {
+                    this._isenabled = value;
+                    this.GroupableEnable?.Invoke(value);
+                    this.OnPropertyChanged(this, "IsEnabled");
+                }              
             }
         }
         public bool IsHidden
@@ -56,8 +59,12 @@ namespace TsGui.Grouping
             get { return this._ishidden; }
             set
             {
-                this.HideUnhide(value);
-                this.OnPropertyChanged(this, "IsHidden");
+                if (value != this._ishidden)
+                {
+                    this.HideUnhide(value);
+                    this.GroupableHide?.Invoke(value);
+                    this.OnPropertyChanged(this, "IsHidden");
+                }            
             }
         }
         public Visibility Visibility
@@ -150,8 +157,6 @@ namespace TsGui.Grouping
             { this.Visibility = Visibility.Collapsed; }
             else
             { this.Visibility = Visibility.Visible; }
-
-            this.GroupableHide?.Invoke(Hidden);
         }
 
         protected void LoadXml(XElement InputXml)

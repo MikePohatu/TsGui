@@ -104,7 +104,8 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
             
             this.UserControl.DataContext = this;
-            this._freetextui.Control.LostFocus += this.onLoseFocus;
+            this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
+            this.UserControl.IsEnabledChanged += this.OnValidationEvent;
             this.SetDefaults();
         }
 
@@ -163,7 +164,13 @@ namespace TsGui.View.GuiOptions
         //Handle UI events
         #region
 
-        public void onLoseFocus(object sender, RoutedEventArgs e)
+        public void OnValidationEvent(bool b)
+        { this.Validate(); }
+
+        public void OnValidationEvent(object sender, RoutedEventArgs e)
+        { this.Validate(); }
+
+        public void OnValidationEvent(object sender, DependencyPropertyChangedEventArgs e)
         { this.Validate(); }
 
         public void OnWindowLoaded()
@@ -172,6 +179,8 @@ namespace TsGui.View.GuiOptions
 
         public bool Validate()
         {
+            if (this.IsActive == false) { this.ClearToolTips(); return true; }
+
             bool newvalid = this._validationhandler.IsValid(this.ControlText);
 
             if (newvalid == false)
@@ -214,8 +223,6 @@ namespace TsGui.View.GuiOptions
         }
 
         public void OnValidationChange()
-        {
-            this.Validate();
-        }
+        { this.Validate(); }
     }
 }
