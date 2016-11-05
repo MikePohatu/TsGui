@@ -31,10 +31,6 @@ namespace TsGui.Grouping
         private Visibility _visibility = Visibility.Visible;
         private bool _purgeinactive = false;
 
-        public int GroupCount { get { return this._groups.Count; } }
-        public int DisabledParentCount { get; set; }
-        public int HiddenParentCount { get; set; }
-
         public List<Group> Groups { get { return this._groups; } }
 
         public bool IsActive
@@ -95,19 +91,57 @@ namespace TsGui.Grouping
 
         public void OnParentHide(bool Hide)
         {
-            GroupingLogic.OnParentHide(this, Hide);
+            if (Hide == true ) { this.IsHidden = true; }
+            else { this.EvaluateGroups(); }
         }
 
         public void OnParentEnable(bool Enable)
         {
-            GroupingLogic.OnParentEnable(this, Enable);
+            if (Enable == false) { this.IsEnabled = false; }
+            else { this.EvaluateGroups(); }
         }
 
         public void OnGroupStateChange()
         {
-            GroupingLogic.EvaluateGroups(this);
+            this.EvaluateGroups();
         }
         #endregion
+
+        protected void EvaluateGroups()
+        { 
+            if (this._groups.Count == 0) { this.ChangeState(GroupState.Enabled); return; }
+
+            GroupState gs = GroupState.Hidden;
+
+            foreach (Group g in this._groups)
+            {
+                if (g.State == GroupState.Enabled) { this.ChangeState(GroupState.Enabled);  return; }
+                else if (g.State == GroupState.Disabled) { gs = GroupState.Disabled; }
+            }
+
+            this.ChangeState(gs);
+        }
+
+        private void ChangeState(GroupState State)
+        {
+            switch (State)
+            {
+                case GroupState.Disabled:
+                    this.IsHidden = false;
+                    this.IsEnabled = false;
+                    break;
+                case GroupState.Enabled:
+                    this.IsHidden = false;
+                    this.IsEnabled = true;
+                    break;
+                case GroupState.Hidden:
+                    this.IsHidden = true;
+                    this.IsEnabled = false;
+                    break;
+                default:
+                    break;
+            }
+        }
 
         protected void HideUnhide(bool Hidden)
         {

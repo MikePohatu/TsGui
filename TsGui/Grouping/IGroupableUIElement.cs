@@ -25,9 +25,6 @@ namespace TsGui.Grouping
         bool IsEnabled { get; set; }
         bool IsHidden { get; set; }
         List<Group> Groups { get; }
-        int DisabledParentCount { get; set; }
-        int HiddenParentCount { get; set; }
-        int GroupCount { get; }
 
         void OnGroupStateChange();
         event PropertyChangedEventHandler PropertyChanged;

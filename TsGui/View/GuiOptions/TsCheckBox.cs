@@ -73,7 +73,7 @@ namespace TsGui.View.GuiOptions
             this.SetDefaults();           
             this.LoadXml(InputXml);
             this.UserControl.IsEnabledChanged += this.OnChanged;
-            //this.UserControl.IsVisibleChanged += this.OnChanged;
+            this.UserControl.IsVisibleChanged += this.OnChanged;
         }
 
 

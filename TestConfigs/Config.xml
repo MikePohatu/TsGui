@@ -1,41 +1,155 @@
 <TsGui>
-	<Height>250</Height>
-	<Width>300</Width>
+	<ShowGridLines /> 
+	
+	<Height>230</Height>
+	<Width>510</Width>
 
 	<HardwareEval />
 	
 	<Heading>
-		<Title>TsGui</Title>
-		<Text>Task Sequence GUI base config</Text>
+		<Title>Server Imaging</Title>
+		<Text>Configure your Server</Text>
+		<Bg-Color>#0074E4</Bg-Color>
+		<Font-Color>#FFFFFF</Font-Color>
 	</Heading>
+	
+	<Footer>
+		<Text>Powered by IT</Text>
+		<Height>17</Height>
+		<HAlign>right</HAlign>
+	</Footer>
 
 	<Page>
 		<Column>
+			<Width>280</Width>
 			<LabelWidth>110</LabelWidth>
 			<ControlWidth>160</ControlWidth>
 			
-			<GuiOption Type="ComputerName">
-				<Validation ValidateEmpty="FALSE">
-					<!--<Group>Group_1</Group>-->
+			<GuiOption Type="ComputerName" />
+			
+			<GuiOption Type="DropDownList">
+				<Variable>VAR_Domain</Variable>
+				<Label>Domain:</Label>
+				<DefaultValue>domain_1</DefaultValue>			
+				<Option>
+					<Text>company.local</Text>
+					<Value>domian_1</Value>
+					<Toggle Group="D1_OU">
+						<Hide/>
+					</Toggle>
+				</Option>
+				<Option>
+					<Text>a.test.company.com</Text>
+					<Value>domain_2</Value>
+					<Toggle Group="D2_OU">
+						<PurgeInactive />
+						<Hide/>
+					</Toggle>
+				</Option>
+				<Option>
+					<Text>b.test.company.com</Text>
+					<Value>domain_3</Value>
+					<Toggle Group="D3_OU">
+						<Hide/>
+					</Toggle>
+				</Option>
 				
-					<!--<Message>Tooltip message to display on validation error</Message>	-->				
-					<MaxLength>15</MaxLength>
-					<MinLength>1</MinLength>
-					<Valid>
-						<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
-						<Rule Type="EndsWith">AB</Rule>
-						<Rule Type="Contains">AB</Rule>
-						<Rule Type="Characters">1234567890</Rule>
-						<Rule Type="RegEx" CaseSensitive="TRUE">^(WM|WD)[0-9]{6}$</Rule>
-					</Valid>
-					<Invalid>
-						<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
-						<Rule Type="EndsWith">YZ</Rule>
-						<Rule Type="Contains">YZ</Rule>
-						<Rule Type="Characters">`~!@#$%^*()</Rule>
-						<Rule Type="RegEx" CaseSensitive="TRUE">^(YZ|XZ)[0-9]{6}$</Rule>
-					</Invalid>
-				</Validation>
+				<HelpText>Select the domain the server will be in.</HelpText>
+			</GuiOption>
+			
+			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
+				<Group>D1_OU</Group>
+				<Variable>VAR_OU</Variable>
+				<Label>OU:</Label>
+				<DefaultValue>D1_OU_1</DefaultValue>
+				<Option>
+					<Text>Domain 1 OU 1</Text>
+					<Value>D1_OU_1</Value>
+				</Option>
+				<Option>
+					<Text>Domain 1 OU 2</Text>
+					<Value>D1_OU_2</Value>
+				</Option>
+				<Option>
+					<Text>Domain 1 OU 3</Text>
+					<Value>D1_OU_3</Value>
+				</Option>
+			</GuiOption>
+			
+
+			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
+				<Group>D2_OU</Group>
+				<Variable>VAR_OU</Variable>
+				<Label>OU:</Label>
+				<DefaultValue>D2_OU_1</DefaultValue>
+				<Option>
+					<Text>Domain 2 OU 1</Text>
+					<Value>D2_OU_1</Value>
+				</Option>
+				<Option>
+					<Text>Domain 2 OU 2</Text>
+					<Value>D2_OU_2</Value>
+				</Option>
+				<Option>
+					<Text>Domain 2 OU 3</Text>
+					<Value>D2_OU_3</Value>
+				</Option>
+			</GuiOption>
+
+			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
+				<Group>D3_OU</Group>
+				<Variable>VAR_OU</Variable>
+				<Label>OU:</Label>
+				<DefaultValue>D3_OU_1</DefaultValue>
+				<Option>
+					<Text>Domain 3 OU 1</Text>
+					<Value>D3_OU_1</Value>
+				</Option>
+				<Option>
+					<Text>Domain 3 OU 2</Text>
+					<Value>D3_OU_2</Value>
+				</Option>
+				<Option>
+					<Text>Domain 3 OU 3</Text>
+					<Value>D3_OU_3</Value>
+				</Option>
+			</GuiOption>
+			
+			<GuiOption Type="FreeText" MaxLength="100" MinLength="4">
+				<Disallowed>
+					<Characters>abcdefchijklmnopqrstuvwxyz`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
+				</Disallowed>
+				<Variable>VAR_PageFileSize</Variable>
+				<Label>Page File (MB):</Label>
+				<DefaultValue>
+					<Value>4096</Value>
+				</DefaultValue>
+				<HelpText>Enter the size of page file you want to set.</HelpText>
+			</GuiOption>
+		</Column>
+		
+		<Column>
+			<Width>210</Width>
+			<LabelWidth>190</LabelWidth>
+			<ControlWidth>20</ControlWidth>
+		
+			<GuiOption Type="Heading">
+				<Label>Additional Applications</Label>
+				<Bold /> 
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>VAR_DotNet</Variable>
+				<Label>Install .NET 3.5</Label>
+				<HAlign>right</HAlign>
+				<HelpText>Install .NET 3.5</HelpText>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>VAR_SSMS</Variable>
+				<Label>Install SSMS</Label>
+				<HAlign>right</HAlign>
+				<HelpText>Install SSMS</HelpText>
 			</GuiOption>
 		</Column>
 	</Page>

@@ -131,7 +131,6 @@
     <Compile Include="Grouping\GroupDelegates.cs" />
     <Compile Include="Grouping\Group.cs" />
     <Compile Include="View\GuiOptions\GuiFactory.cs" />
-    <Compile Include="Grouping\GroupingLogic.cs" />
     <Compile Include="Grouping\IGroupableUIElement.cs" />
     <Compile Include="Grouping\IGroupChild.cs" />
     <Compile Include="Grouping\IGroupParent.cs" />
