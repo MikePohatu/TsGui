@@ -190,7 +190,7 @@ namespace TsGui.Validation
 
             if (result == true)
             {
-                s = this.FailedValidationMessage + Environment.NewLine +  "Invalid text rule matched: " + Environment.NewLine + s;
+                s = this.FailedValidationMessage + Environment.NewLine +  "Must not match any of: " + Environment.NewLine + s;
                 this.FailedValidationMessage = s;
             }
 
