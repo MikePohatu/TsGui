@@ -24,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestConfigs", "TestConfigs"
 		TestConfigs\Config.5.xml = TestConfigs\Config.5.xml
 		TestConfigs\Config.6.xml = TestConfigs\Config.6.xml
 		TestConfigs\Config.7.xml = TestConfigs\Config.7.xml
+		TestConfigs\Config.8.xml = TestConfigs\Config.8.xml
 		TestConfigs\TestConfigs.vbs = TestConfigs\TestConfigs.vbs
 	EndProjectSection
 EndProject
