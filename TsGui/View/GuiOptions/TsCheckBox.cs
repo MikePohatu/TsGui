@@ -17,7 +17,6 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
-using System.Windows.Controls;
 using System.Windows;
 
 using TsGui.Grouping;
@@ -28,7 +27,7 @@ namespace TsGui.View.GuiOptions
     {
         public event ToggleEvent ToggleEvent;
 
-        private bool _value;
+        private bool _ischecked;
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private string _valTrue = "TRUE";
         private string _valFalse = "FALSE";
@@ -37,10 +36,10 @@ namespace TsGui.View.GuiOptions
         public List<TsDropDownListItem> Options { get { return this._options; } }
         public bool IsChecked
         {
-            get { return this._value; }
+            get { return this._ischecked; }
             set
             {
-                this._value = value;
+                this._ischecked = value;
                 this.OnPropertyChanged(this, "IsChecked");
                 this.ToggleEvent?.Invoke();
             }
@@ -71,8 +70,10 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;           
             this.Control = new TsCheckBoxUI();
             this.Label = new TsLabelUI();
-            this.SetDefaults();
+            this.SetDefaults();           
             this.LoadXml(InputXml);
+            this.UserControl.IsEnabledChanged += this.OnChanged;
+            //this.UserControl.IsVisibleChanged += this.OnChanged;
         }
 
 
@@ -106,6 +107,16 @@ namespace TsGui.View.GuiOptions
         //fire an intial event to make sure things are set correctly. This is
         //called by the controller once everything is loaded
         public void InitialiseToggle()
+        {
+            this.ToggleEvent?.Invoke();
+        }
+
+        private void OnChanged(object o, RoutedEventArgs e)
+        {
+            this.ToggleEvent?.Invoke();
+        }
+
+        private void OnChanged(object o, DependencyPropertyChangedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
         }

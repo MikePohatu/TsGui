@@ -20,7 +20,6 @@ using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
-using System.ComponentModel;
 
 using TsGui.View.GuiOptions;
 
@@ -52,6 +51,8 @@ namespace TsGui.View.Layout
             this._rowpanel = new Grid();
             this._rowpanel.Name = "_rowpanel";
             this._rowpanel.DataContext = this;
+            this._rowpanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
+            this._rowpanel.SetBinding(Grid.VisibilityProperty, new Binding("Visibility"));
             this._rowpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
             this._rowpanel.SetBinding(Grid.HeightProperty, new Binding("GridFormatting.Height"));
             this._rowpanel.SetBinding(Grid.WidthProperty, new Binding("GridFormatting.Width"));

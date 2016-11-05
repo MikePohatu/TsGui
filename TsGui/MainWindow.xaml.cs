@@ -16,7 +16,6 @@
 // MainWindow.xaml.cs - MainWindow backing class. Creates a MainController on 
 // instantiation which starts and controls the application. 
 
-using System;
 using System.Windows;
 using System.Windows.Input;
 

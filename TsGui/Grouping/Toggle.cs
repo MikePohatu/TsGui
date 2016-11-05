@@ -30,7 +30,6 @@ namespace TsGui.Grouping
         private bool _hiddenMode = false;
         private bool _inverse = false;
         private IToggleControl _option;
-        private bool _isenabled = true;
 
         public Toggle(IToggleControl GuiOption, MainController MainController, XElement InputXml)
         {
@@ -101,26 +100,26 @@ namespace TsGui.Grouping
             val = (this._option.CurrentValue);
             this._toggleValMappings.TryGetValue(val, out newenabled);
 
-            if (newenabled != this._isenabled)
+            if (this._option.IsActive == false)
             {
-                if (this._option.IsActive == true)
-                {
-                    if (!this._inverse)
-                    {
-                        if (newenabled == true) { this.EnableGroup(); }
-                        else { this.DisableGroup(); }
-                    }
-                    else
-                    {
-                        if (newenabled == true) { this.DisableGroup(); }
-                        else { this.EnableGroup(); }
-                    }
-                }
-                else { this.DisableGroup(); }
-
-                this._isenabled = newenabled;
+                this.DisableGroup();
+                return;
             }
 
+            if (this._option.IsActive == true)
+            {
+                if (!this._inverse)
+                {
+                    if (newenabled == true) { this.EnableGroup(); }
+                    else { this.DisableGroup(); }
+                }
+                else
+                {
+                    if (newenabled == true) { this.DisableGroup(); }
+                    else { this.EnableGroup(); }
+                }
+            }
+            else { this.DisableGroup(); }
         }
 
         private void DisableGroup()

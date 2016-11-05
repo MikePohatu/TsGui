@@ -25,7 +25,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="20">
     <Grid Width="{Binding ControlFormatting.Width}">
-        <CheckBox x:Name="Control" IsChecked="{Binding IsChecked}" 
+        <CheckBox x:Name="CheckBox" IsChecked="{Binding IsChecked}" 
               HorizontalContentAlignment="Center" Style="{StaticResource ControlStyle}"/>
     </Grid>
 </UserControl>

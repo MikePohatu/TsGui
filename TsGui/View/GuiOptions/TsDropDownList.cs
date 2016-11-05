@@ -63,7 +63,9 @@ namespace TsGui.View.GuiOptions
         {
             this._controller.WindowLoaded += this.OnLoadReload;
             this._dropdownlistui = new TsDropDownListUI();
-            this._dropdownlistui.Control.SelectionChanged += this.OnChanged;         
+            this._dropdownlistui.Control.SelectionChanged += this.OnChanged;
+            this.UserControl.IsEnabledChanged += this.OnChanged;
+            this.UserControl.IsVisibleChanged += this.OnChanged;
             this.UserControl.DataContext = this;           
             this.Control = this._dropdownlistui;
             this.Label = new TsLabelUI();
@@ -165,6 +167,11 @@ namespace TsGui.View.GuiOptions
         }
 
         private void OnChanged(object o, RoutedEventArgs e)
+        {
+            this.ToggleEvent?.Invoke();
+        }
+
+        private void OnChanged(object o, DependencyPropertyChangedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
         }
