@@ -128,9 +128,10 @@ namespace TsGui
                 return null;
             }
 
-            catch
+            catch (Exception e)
             {
-                MessageBox.Show("Invalid config file: " + this._configpath, "Error reading config file", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Invalid config file: " + this._configpath + Environment.NewLine + Environment.NewLine + e.Message, "Error reading config file", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(e.Message, "Error reading config file", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.ParentWindow.Close();
                 return null;
             }

@@ -40,7 +40,8 @@ namespace TsGui
             if (!File.Exists(pPath)) 
             { throw new FileNotFoundException("File not found: " + pPath); }
             try { temp = XElement.Load(pPath); }
-            catch { throw new InvalidOperationException("Unable to read xml file: " + pPath); }
+            catch (Exception e)
+            { throw new InvalidOperationException("Unable to read xml file: " + pPath + Environment.NewLine + e.Message); }
 
             return temp;
         }

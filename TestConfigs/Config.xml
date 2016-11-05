@@ -1,343 +1,41 @@
 <TsGui>
-	<!-- The showgridlines option is used for assisting with layout design-->
-	<ShowGridLines /> 
-	
-	<Height>300</Height>
-	<Width>600</Width>
-	
+	<Height>250</Height>
+	<Width>300</Width>
+
 	<HardwareEval />
 	
 	<Heading>
-		<Title>Title Text</Title>
-		<Text>Text</Text>
-		<Bg-Color>#FF006AD4</Bg-Color>
-		<Font-Color>#FFFFFF</Font-Color>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI base config</Text>
 	</Heading>
-	
-	<!--
-	<Buttons>
-		<Next>-Next-</Next>
-		<Back>-Back-</Back>
-		<Cancel>-Cancel-</Cancel>
-		<Finish>-Finish-</Finish>
-	</Buttons>
-	-->
-	
-	<Footer>
-		<Text>Powered by TsGui - www.20road.com</Text>
-		<Height>17</Height>
-		<HAlign>right</HAlign>
-	</Footer>
 
-	<!-- ***** Simple config example **** -->
 	<Page>
-		<Column>
-			<Width>280</Width>
-			<LabelWidth>110</LabelWidth>
-			<ControlWidth>160</ControlWidth>
-			
-			<!-- GuiOptions -->
-			<GuiOption Type="ComputerName" />
-			
-			<GuiOption Type="FreeText">
-				<Variable>Engineer</Variable>
-				<Label>Engineer name:</Label>
-				<DefaultValue>
-					<Value>Jane Doe</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="DropDownList">
-				<Variable>IT_Team</Variable>
-				<Label>Team:</Label>
-				<DefaultValue>Desktop</DefaultValue>
-				<Option>
-					<Text>Desktop</Text>
-					<Value>Desktop</Value>
-				</Option>
-				<Option>
-					<Text>Infrastructure</Text>
-					<Value>Inf</Value>
-				</Option>
-				<Option>
-					<Text>Service Desk</Text>
-					<Value>SD</Value>
-				</Option>
-			</GuiOption>	
-			
-			<GuiOption Type="CheckBox">
-				<Variable>MsOffice</Variable>
-				<Label>Microsoft Office</Label>
-				<HAlign>right</HAlign>
-			</GuiOption>
-		</Column>
-
-		<!-- **** Advanced config options  **** -->
 		<Column>
 			<LabelWidth>110</LabelWidth>
 			<ControlWidth>160</ControlWidth>
 			
-			<GuiOption Type="Heading">
-				<Label>Additional Info</Label>
-				<Bold /> 
-			</GuiOption>
-			
-			
-			<!-- Infobox control. Creates a non interactive text box containing information either set statically using a <Value> tag or a query. 
-			This GuiOption creates a Task Sequence Variable so the value can be used e.g. display the serial number and also use it later in a script. 
-			Takes similar structure as freetext and dropdownlist queries. Query result will be truncated to MaxLength, and Disallowed characters removed --> 
-			<GuiOption Type="InfoBox" MaxLength="20">
-				<Disallowed>
-					<Characters>='-</Characters>
-				</Disallowed>
-				<Variable>INFO_Serial</Variable>
-				<Label>Serial: </Label>
-				<HelpText>Serial number of the device</HelpText>
+			<GuiOption Type="ComputerName">
+				<Validation ValidateEmpty="FALSE">
+					<!--<Group>Group_1</Group>-->
 				
-				<!-- Query for the display value. Return the first valid value. Note
-				the Ignore values for evaluating the value returned by the query -->
-				<DisplayValue>
-					<Query Type="Wmi">
-						<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
-						<Ignore>Parallels</Ignore>
-						<Ignore>VMWare</Ignore>
-					</Query>
-					<Value>Virtual machine</Value>
-				</DisplayValue>
-			</GuiOption>
-			
-			<GuiOption Type="InfoBox" MaxLength="20">
-				<Variable>INFO_Memory</Variable>
-				<Label>Memory: </Label>
-				<HelpText>Memory the device</HelpText>
-				
-				<!-- Query for the default value. Return the first valid value. Note
-				the Ignore values for evaluating the value returned by the query -->
-				<DisplayValue>
-					<Query Type="Wmi">
-						<Wql>SELECT TotalPhysicalMemory FROM Win32_ComputerSystem</Wql>
-						<Property Name="TotalPhysicalMemory">
-							<Calculate DecimalPlaces="0">VALUE/1048576</Calculate>
-							<Append> MB</Append>
-						</Property>
-					</Query>
-				</DisplayValue>
-			</GuiOption>
-		</Column>		
-	</Page>
-	
-
-	<Page>
-		<Heading>
-			<Title>Title text override</Title>
-			<Text>Text override</Text>
-		</Heading>
-		
-		<Column>
-			<Width>360</Width>
-			<LabelWidth>150</LabelWidth>
-			<ControlWidth>200</ControlWidth>
-			
-			<!-- GuiOptions -->
-			
-			<!-- Advanced freetext with queries. This one is the equivalent of the ComputerName GuiOption type-->
-			<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
-				<Disallowed>
-					<Characters>`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
-				</Disallowed>
-				<Variable>OSDComputerName_FullQuery</Variable>
-				<Label>Computer Name:</Label>
-				<HelpText>Enter a computer name for the device</HelpText>
-				
-				<!-- Query for the default value. Return the first valid value. Note
-				the Ignore values for evaluating the value returned by the query -->
-				<DefaultValue>
-					<Query Type="EnvironmentVariable">
-						<Variable>OSDComputerName</Variable>
-						<Ignore>MINNT</Ignore>
-						<Ignore>MINWIN</Ignore>						
-					</Query>				
-					<Query Type="EnvironmentVariable">
-						<Variable>_SMSTSMachineName</Variable>
-						<Ignore>MINNT</Ignore>
-						<Ignore>MINWIN</Ignore>					
-					</Query>					
-					<Query Type="EnvironmentVariable">
-						<Variable>ComputerName</Variable>
-						<Ignore>MINNT</Ignore>
-						<Ignore>MINWIN</Ignore>						
-					</Query>					
-					<Query Type="Wmi">
-						<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
-						<Ignore>No Asset Tag</Ignore>
-					</Query>					
-					<Query Type="Wmi">
-						<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
-					</Query>
-				</DefaultValue>
-			</GuiOption>			
-			
-			<!--  PurgeInactive attribute set. This will stop the Task Sequence variable from 
-			being created if disabled or hidden -->
-			<GuiOption Type="FreeText"  PurgeInactive="TRUE">
-				<Group>Group_Fin</Group>
-				<Group>Group_IT</Group>
-				<Variable>User</Variable>
-				<Label>User name:</Label>
-				<DefaultValue>
-					<Value>John Doe User</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="FreeText"  PurgeInactive="TRUE">
-				<Group>Group_PMO</Group>
-				<Variable>User</Variable>
-				<Label>Project manager name:</Label>
-				<DefaultValue>
-					<Value>John Doe PM</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="FreeText" PurgeInactive="TRUE">
-				<Group>Group_HR</Group>
-				<Variable>User</Variable>
-				<Label>HR consultant name:</Label>
-				<DefaultValue>
-					<Value>John Doe HR</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
-			</GuiOption>
-			
-			<!-- DropDownList being used as a toggle -->
-			<GuiOption Type="DropDownList">
-				<Variable>Department</Variable>
-				<Label>Department:</Label>
-				<DefaultValue>Finance</DefaultValue>
-				<Option>
-					<Toggle Group="Group_Fin">
-						<Hide/>
-					</Toggle>
-					<Text>Finance</Text>
-					<Value>Finance</Value>
-				</Option>
-				<Option>
-					<Toggle Group="Group_IT">
-						<Hide/>
-					</Toggle>
-					<Text>Information Technology</Text>
-					<Value>IT</Value>
-				</Option>
-				<Option>
-					<Toggle Group="Group_HR">
-						<Hide/>
-					</Toggle>
-					<Text>Human Resources</Text>
-					<Value>HR</Value>
-				</Option>
-				<Option>
-					<Toggle Group="Group_PMO">
-						<Hide/>
-					</Toggle>
-					<Text>Project Office</Text>
-					<Value>PMO</Value>
-				</Option>
-			</GuiOption>
-					
-			<!--CheckBox used as a toggle -->
-			<GuiOption Type="CheckBox">
-				<Variable>TOGGLE_Disk</Variable>
-				<Label>Configure disk</Label>
-				<HAlign>left</HAlign>
-				
-				<Toggle Group="Group_Disk">
-					<Enabled>TRUE</Enabled>
-					<Disabled>FALSE</Disabled>
-				</Toggle>
-			</GuiOption>
-			
-			<!--This options presents a dropdownlist of available fixed harddisks 
-			for the partition and format step in SCCM task sequences-->
-			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
-				<Group>Group_Disk</Group>
-				<Variable>OSDDiskIndex</Variable>
-				<Label>Disk</Label>
-				<DefaultValue>0</DefaultValue>
-				<Query Type="Wmi">
-					<Wql>select Index,Caption,Size FROM Win32_DiskDrive where MediaType='Fixed hard disk media'</Wql>
-					<Property Name="Index"/>
-					<Property Name="Index">
-						<Prefix>ID: </Prefix>
-					</Property>
-					<Property Name="Size">
-						<Calculate DecimalPlaces="2">VALUE/1073741824</Calculate>
-						<Prefix></Prefix>
-						<Append>GB</Append>
-					</Property>
-					<Property Name="Caption"/>					
-					<Separator>, </Separator>
-				</Query>
-			</GuiOption>
-			
-			<!--CheckBox used as a toggle -->
-			<GuiOption Type="CheckBox">
-				<Variable>TOGGLE_Apps</Variable>
-				<Label>Additional apps</Label>
-				<HAlign>left</HAlign>
-				
-				<Toggle Group="Group_Apps">
-					<Enabled>TRUE</Enabled>
-					<Disabled>FALSE</Disabled>
-					<Hide/>
-				</Toggle>
-			</GuiOption>
-		</Column>
-
-		<!-- Parent column with group membership.
-		Enable/disable hide/unhide will propogate down-->
-		<Column>
-			<Group>Group_Apps</Group>
-			<Width>200</Width>
-			<LabelWidth>120</LabelWidth>
-			<ControlWidth>80</ControlWidth>
-			
-			<!-- GuiOptions -->
-			<GuiOption Type="Heading">
-				<Label>Applications</Label>
-				<Bold /> 
-			</GuiOption>
-			
-			<GuiOption Type="CheckBox">
-				<Variable>App_MsOffice</Variable>
-				<Label>Microsoft Office</Label>
-				<HAlign>right</HAlign>
-				<Checked />
-			</GuiOption>
-			
-			<GuiOption Type="CheckBox">
-				<Variable>App_MsAccess</Variable>
-				<Label>Microsoft Access</Label>
-				<HAlign>right</HAlign>
-			</GuiOption>
-			
-			<GuiOption Type="CheckBox" PurgeInactive="TRUE">
-				<Group>Group_IT</Group>
-				<Variable>App_MsVisio</Variable>
-				<Label>Microsoft Visio</Label>
-				<HAlign>right</HAlign>
-			</GuiOption>
-			
-			<!-- Note the InactiveValue option. This sets a new value if the
-			GuiOption is disabled/hidden-->
-			<GuiOption Type="CheckBox">
-				<Group>Group_PMO</Group>
-				<Group>Group_IT</Group>
-				<InactiveValue>No_Project</InactiveValue>
-				<Variable>App_MsProject</Variable>
-				<Label>Microsoft Project</Label>
-				<HAlign>right</HAlign>
+					<Message>Tooltip message to display on validation error</Message>					
+					<MaxLength>15</MaxLength>
+					<MinLength>1</MinLength>
+					<Valid>
+						<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
+						<Rule Type="EndsWith">AB</Rule>
+						<Rule Type="Contains">AB</Rule>
+						<Rule Type="Characters">1234567890</Rule>
+						<Rule Type="RegEx" CaseSensitive="TRUE">^(WM|WD)[0-9]{6}$</Rule>
+					</Valid>
+					<Invalid>
+						<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
+						<Rule Type="EndsWith">AB</Rule>
+						<Rule Type="Contains">AB</Rule>
+						<Rule Type="Characters">`~!@#$%^&*()</Rule>
+						<Rule Type="RegEx" CaseSensitive="TRUE">^(WM|WD)[0-9]{6}$</Rule>
+					</Invalid>
+				</Validation>
 			</GuiOption>
 		</Column>
 	</Page>
