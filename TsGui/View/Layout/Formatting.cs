@@ -41,6 +41,7 @@ namespace TsGui.View.Layout
         private SolidColorBrush _bordercolorbrush;
         private SolidColorBrush _focusedcolorbrush;
         private SolidColorBrush _mouseovercolorbrush;
+        private SolidColorBrush _fontcolorbrush;
         #endregion
 
         //Properties
@@ -115,6 +116,11 @@ namespace TsGui.View.Layout
             get { return this._mouseovercolorbrush; }
             set { this._mouseovercolorbrush = value; this.OnPropertyChanged(this, "MouseOverBorderBrush"); }
         }
+        public SolidColorBrush FontColorBrush
+        {
+            get { return this._fontcolorbrush; }
+            set { this._fontcolorbrush = value; this.OnPropertyChanged(this, "FontColorBrush"); }
+        }
         #endregion
 
         //Event handling
@@ -147,12 +153,10 @@ namespace TsGui.View.Layout
             this.VerticalAlignment = VerticalAlignment.Bottom;
             this.HorizontalAlignment = HorizontalAlignment.Left;
             this.TextAlignment = TextAlignment.Left;
-            this.BorderBrush = new SolidColorBrush();
-            this.MouseOverBorderBrush = new SolidColorBrush();
-            this.FocusedBorderBrush = new SolidColorBrush();
-            this.BorderBrush.Color = Colors.Gray; 
-            this.MouseOverBorderBrush.Color = Colors.DarkGray;
-            this.FocusedBorderBrush.Color = Colors.LightBlue;  
+            this.BorderBrush = new SolidColorBrush(Colors.Gray);
+            this.MouseOverBorderBrush = new SolidColorBrush(Colors.DarkGray);
+            this.FocusedBorderBrush = new SolidColorBrush(Colors.LightBlue);
+            this.FontColorBrush = new SolidColorBrush(Colors.Black);
         }
 
         public void LoadXml(XElement InputXml)
@@ -162,8 +166,8 @@ namespace TsGui.View.Layout
             XElement x;
             this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
             this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
-            this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", 2);
-            this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", 2);
+            this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", this.Padding);
+            this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", this.Margin);
             this.VerticalAlignment = XmlHandler.GetVerticalAlignmentFromXElement(InputXml, "VerticalAlignment", this.VerticalAlignment);
             this.HorizontalAlignment = XmlHandler.GetHorizontalAlignmentFromXElement(InputXml, "HorizontalAlignment", this.HorizontalAlignment);
             this.TextAlignment = XmlHandler.GetTextAlignmentFromXElement(InputXml, "TextAlignment", this.TextAlignment);
@@ -174,6 +178,7 @@ namespace TsGui.View.Layout
                 this.FontWeight = XmlHandler.GetStringFromXElement(x, "Weight", this.FontWeight);
                 this.FontStyle = XmlHandler.GetStringFromXElement(x, "Style", this.FontStyle);
                 this.FontSize = XmlHandler.GetDoubleFromXElement(x, "Size", this.FontSize);
+                this.FontColorBrush = XmlHandler.GetSolidColorBrushFromXElement(x, "Color", this.FontColorBrush);
             }
             #endregion
         }
@@ -193,6 +198,7 @@ namespace TsGui.View.Layout
             f.BorderBrush = this.BorderBrush.Clone();
             f.FocusedBorderBrush = this.FocusedBorderBrush.Clone();
             f.MouseOverBorderBrush = this.MouseOverBorderBrush.Clone();
+            f.FontColorBrush = this.FontColorBrush.Clone();
 
             return f;
         }

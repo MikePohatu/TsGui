@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using System.Xml.Linq;
 using System.Windows;
+using System.Windows.Media;
 
 namespace TsGui
 {
@@ -97,16 +98,32 @@ namespace TsGui
             else { return DefaultValue; }
         }
 
-        public static Thickness GetThicknessFromXElement(XElement InputXml, string XName, int DefaultValue)
+        public static Thickness GetThicknessFromXElement(XElement InputXml, string XName, Thickness DefaultValue)
         {
             XElement x;
             int i;
 
             x = InputXml.Element(XName);
-            if (x != null) { i = Convert.ToInt32(x.Value); }
-            else { i = DefaultValue; }
+            if (x != null)
+            {
+                i = Convert.ToInt32(x.Value);
+                return new Thickness(i, i, i, i);
+            }
+            else { return DefaultValue; }
+        }
 
-            return new Thickness(i, i, i, i);
+        public static Color GetColorFromXElement(XElement InputXml, string XName, Color DefaultValue)
+        {
+            XElement x = InputXml.Element(XName);
+            if (x != null) { return (Color)ColorConverter.ConvertFromString(x.Value); }
+            else { return DefaultValue; }            
+        }
+
+        public static SolidColorBrush GetSolidColorBrushFromXElement(XElement InputXml, string XName, SolidColorBrush DefaultValue)
+        {
+            XElement x = InputXml.Element(XName);
+            if (x != null) { return new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value)); }
+            else { return DefaultValue; }
         }
 
         //XAttribute functions
