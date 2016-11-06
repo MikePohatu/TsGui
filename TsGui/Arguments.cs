@@ -35,16 +35,17 @@ namespace TsGui
             if (Args.Length > 1)
             {
                 for (int index = 1; index < Args.Length; index += 2)
-                {
-                    if (Args.Length < index+2) { throw new InvalidOperationException("Missing command line paramter after \"" + Args[index] + "\""); }
+                {                  
                     switch (Args[index].ToUpper())
                     {
                         case "-CONFIG":
-                            this.ConfigFile = CompleteFilePath(Args[index + 1]);
+                            if (Args.Length < index + 2) { throw new InvalidOperationException("Missing config file after parameter -config"); }
+                            this.ConfigFile = CompleteFilePath(Args[index + 1]);                           
                             break;
                         default:
-                            break;
+                            throw new InvalidOperationException("Invalid parameter: " + Args[index]);
                     }
+                    
                 }
             }
         }
