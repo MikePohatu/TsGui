@@ -46,11 +46,6 @@ namespace TsGui.View.GuiOptions
 
         public new void LoadXml(XElement InputXml)
         {
-            //load legacy
-            XElement x;
-            x = InputXml.Element("Bold");
-            if (x != null) { this.LabelFormatting.FontWeight = "Bold"; }
-
             base.LoadXml(InputXml);
             this.ControlText = XmlHandler.GetStringFromXElement(InputXml, "AltLabel", this.ControlText);
         }

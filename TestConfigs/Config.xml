@@ -1,123 +1,111 @@
 <TsGui>
-
-	<Height>300</Height>
+    <Height>400</Height>
 	<Width>470</Width>
-	
+
 	<HardwareEval />
 
-	<!--	
-	<ShowGridLines />
-	-->
-	<Heading>
-		<Title>Task Sequence Gui</Title>
-		<Text>Do whatever you want. I don't care</Text>
-		<!--
-		<BgColor>#FF006AD4</BgColor>
-		<TextColor>#FFFFFF</TextColor>
-		-->
+<Heading>
+		<Title>Windows 10 Image</Title>
+		<Text>Easy imaging tool</Text>
+		<Bg-Color>#FF006AD4</Bg-Color>
+		<Font-Color>#FFFFFF</Font-Color>
 	</Heading>
 	
+
 	<Footer>
-		<Text>Powered by Yamama - www.20road.com</Text>
-		<!--<Height>25</Height>
+		<Text>TsGui by 20Road</Text>
+		<Height>17</Height>
 		<HAlign>right</HAlign>
-		-->
 	</Footer>
 
 	<Page>
-		<Height>300</Height>
-		<Width>490</Width>
-		<Heading>
-			<Title>DEBUG - Task Sequence Gui - Enter computer name</Title>
-			<Text>Enter the new computer details</Text>
-			<BgColor>#ff0000</BgColor>
-			<TextColor>#FFFFFF</TextColor>
-		</Heading>
-		<Column>		
-			<ControlWidth>150</ControlWidth>
-			<LabelWidth>120</LabelWidth>
+		<Column>
+			<LabelWidth>170</LabelWidth>
+			<ControlWidth>250</ControlWidth>
 			
 			<GuiOption Type="ComputerName" />
-			
-			<GuiOption Type="FreeText">
-				<Variable>PCTypeString</Variable>
-				<Label>PCType - string</Label>
-				<DefaultValue UseCurrent="true">
-					<!--
-					<Query Type="EnvironmentVariable">
-						<Variable>PCType</Variable>
-					</Query>
-					-->
-					<Value>ICT</Value>
-				</DefaultValue>
-				<HelpText>Test&#xD;123</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="DropDownList">
-				<Variable>PCType</Variable>
-				<Label>PC Type:</Label>
-				<DefaultValue>
-					<Value>STDLT</Value>
-				</DefaultValue>
-				<Option>
-					<Text>Standard Desktop</Text>
-					<Value>STDPC</Value>
-				</Option>
-				<Option>
-					<Text>Standard Laptop</Text>
-					<Value>STDLT</Value>
-				</Option>
-				<Option>
-					<Text>Clinical PC</Text>
-					<Value>ClinicalPC</Value>
-				</Option>
-			</GuiOption>
-		</Column>
-		
-		<Column>	
-			<LabelWidth>120</LabelWidth>
-			<ControlWidth>40</ControlWidth>
-			
-			<GuiOption Type="Heading">
-				<Label>Applications</Label>
-				<Bold /> 
-			</GuiOption>
-			
+						
 			<GuiOption Type="CheckBox">
-				<Variable>AdminApps</Variable>
-				<Label>Admin applications</Label>
-				<!--
-				<TrueValue>YES</TrueValue>
-				<FalseValue>NO</FalseValue>
-				-->
-				<HAlign>right</HAlign>
+				<Variable>TOGGLE_DiskID</Variable>
+				<Label>Choose disk</Label>
+				<HAlign>left</HAlign>
 				
+				<Toggle Group="Group_Disk">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+				</Toggle>
+			</GuiOption>
+			
+			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
+				<Group>Group_Disk</Group>
+				<Variable>OSDDiskIndex</Variable>
+				<Label>Disk</Label>
+				<DefaultValue>0</DefaultValue>
+				<Query Type="Wmi">
+					<Wql>select Index,Caption,Size FROM Win32_DiskDrive where MediaType='Fixed hard disk media'</Wql>
+					<Property Name="Index"/>
+					<Property Name="Index">
+						<Prefix>ID: </Prefix>
+					</Property>
+					<Property Name="Size">
+						<Calculate DecimalPlaces="2">VALUE/1073741824</Calculate>
+						<Append>GB</Append>
+					</Property>
+					<Property Name="Caption"/>					
+					<Separator> - </Separator>
+				</Query>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>VAR_NotepadPP</Variable>
+				<Label>Notepad++</Label>
+				<HAlign>Left</HAlign>
 				<Checked />
 			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
-				<Variable>OfficeApps</Variable>
-				<Label>Office applications</Label>
-				<!--
-				<TrueValue>YES</TrueValue>
-				<FalseValue>NO</FalseValue>
+				<Variable>VAR_7zip</Variable>
+				<Label>7zip</Label>
+				<HAlign>left</HAlign>
 				<Checked />
-				-->
-				<HAlign>right</HAlign>
 			</GuiOption>
-		</Column>
-		
-	</Page>
-	<Page>
-		<Heading>
-			<Title>Task Sequence Gui</Title>
-			<Text>Do whatever you want. I don't care</Text>
-		</Heading>
-		<Column>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>SMSTSAssignUsersMode</Variable>
+				<Label>Set primary user</Label>
+				<TrueValue>Auto</TrueValue>
+				<FalseValue>Disabled</FalseValue>
+				<HAlign>left</HAlign>
+				
+				<Toggle Group="Group_UDA">
+					<Enabled>Auto</Enabled>
+					<Disabled>Disabled</Disabled>
+				</Toggle>
+			</GuiOption>
+			
 			<GuiOption Type="Heading">
-				<Label>Test page</Label>
+				<Group>Group_UDA</Group>
+				<Label>User Device Affinity</Label>
 				<Bold /> 
 			</GuiOption>
-		</Column>
+			
+			<GuiOption Type="FreeText" PurgeInactive="TRUE">
+				<Group>Group_UDA</Group>
+				<Variable>SMSTSUdaUsers</Variable>
+				<Label>User:</Label>
+				<DefaultValue>
+					<Value>Home\</Value>
+				</DefaultValue>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Group>Group_UDA</Group>
+				<Variable>VAR_UDACheck</Variable>
+				<Label>CHeck test</Label>
+				<HAlign>left</HAlign>
+				<Checked />
+			</GuiOption>
+		</Column>		
 	</Page>
+	
 </TsGui>
