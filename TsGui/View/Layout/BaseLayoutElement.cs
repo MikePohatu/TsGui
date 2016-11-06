@@ -114,8 +114,8 @@ namespace TsGui.View.Layout
             {
                 this.LabelFormatting = this._parent.LabelFormatting.Clone();
                 this.ControlFormatting = this._parent.ControlFormatting.Clone();
-                this.Height = this._parent.Height;
-                this.Width = this._parent.Width;
+                this.Height = double.NaN;
+                this.Width = double.NaN;
                 this.LabelWidth = this._parent.LabelWidth;
                 this.ControlWidth = this._parent.ControlWidth;
                 this.ShowGridLines = this._parent.ShowGridLines;
