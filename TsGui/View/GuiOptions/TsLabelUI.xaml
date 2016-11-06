@@ -24,8 +24,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="300">
-    <Grid Width="{Binding LabelFormatting.Width}">
-        <Label x:Name="Label" Content="{Binding LabelText}"  Style="{StaticResource LabelStyle}"
+    <Label x:Name="Label" Content="{Binding LabelText}"  Style="{StaticResource LabelStyle}"
                Foreground="{Binding LabelFormatting.FontColorBrush}"/>
-    </Grid>
 </UserControl>

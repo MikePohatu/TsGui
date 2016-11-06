@@ -25,14 +25,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="300">
 
-    <Grid Width="{Binding ControlFormatting.Width}">
-        <ComboBox x:Name="Control" ItemsSource="{Binding Options}" SelectedValue="{Binding CurrentValue, Mode=TwoWay}" 
+    <ComboBox x:Name="Control" ItemsSource="{Binding Options}" SelectedValue="{Binding CurrentValue, Mode=TwoWay}" 
           SelectedValuePath="Value" Style="{StaticResource ControlStyle}" Foreground="{Binding ControlFormatting.FontColorBrush}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <Label x:Name="DropDownListLabel" Content="{Binding Text}" Style="{StaticResource ComboBoxItemLabelStyle}"/>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-    </Grid>
+        <ComboBox.ItemTemplate>
+            <DataTemplate>
+                <Label x:Name="DropDownListLabel" Content="{Binding Text}" Style="{StaticResource ComboBoxItemLabelStyle}"/>
+            </DataTemplate>
+        </ComboBox.ItemTemplate>
+    </ComboBox>
 </UserControl>

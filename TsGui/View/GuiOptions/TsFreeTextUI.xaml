@@ -38,8 +38,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Width="{Binding ControlFormatting.Width}">
-        <TextBox x:Name="TextBox" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+    <TextBox x:Name="TextBox" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
              Style="{StaticResource FreeTextStyle}"/>
-    </Grid>
 </UserControl>
