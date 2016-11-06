@@ -25,8 +25,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="300" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}">
-    <Grid x:Name="MainGrid" Width="{Binding GridFormatting.Width}"  ToolTip="{Binding HelpText}"
-              Margin="0" ShowGridLines="{Binding ShowGridLines}">
+    <Grid x:Name="MainGrid" Width="{Binding GridFormatting.Width}" Height="{Binding GridFormatting.Height}" ToolTip="{Binding HelpText}"
+              Margin="0" ShowGridLines="{Binding ShowGridLines}"  >
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="GuiOptionRow" Height="Auto"/>
             </Grid.RowDefinitions>
@@ -36,6 +36,5 @@ with this program; if not, write to the Free Software Foundation, Inc.,
             </Grid.ColumnDefinitions>
             <ContentPresenter Grid.Column="0" x:Name="LeftPresenter"/>
             <ContentPresenter Grid.Column="1" x:Name="RightPresenter"/>
-
     </Grid>
 </UserControl>
