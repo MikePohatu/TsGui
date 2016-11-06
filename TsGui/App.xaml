@@ -7,7 +7,7 @@
             <Converters:FontWeightConverter x:Key="FontWeight"/>
             <Converters:FontStyleConverter x:Key="FontStyle"/>
 
-            <Style x:Key="LabelStyle">
+            <Style x:Key="LabelStyle" TargetType="Label">
                 <Setter Property="Control.Height" Value="{Binding LabelFormatting.Height}"/>
                 <Setter Property="Control.Width" Value="{Binding LabelFormatting.Width}"/>
                 <Setter Property="Control.Margin" Value="{Binding LabelFormatting.Margin}"/>
@@ -17,6 +17,24 @@
                 <Setter Property="Control.FontWeight" Value="{Binding Path=LabelFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
                 <Setter Property="Control.FontStyle" Value="{Binding Path=LabelFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
                 <Setter Property="Control.FontSize" Value="{Binding LabelFormatting.FontSize}"/>
+                <Setter Property="Foreground" Value="{Binding LabelFormatting.FontColorBrush}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Label}">
+                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" 
+                                    Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                                <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" 
+                                                  ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
             <Style x:Key="ControlStyle">
@@ -53,6 +71,7 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+           
 
             <Style x:Key="ComboBoxItemLabelStyle" TargetType="Label">
                 <Setter Property="Control.Height" Value="Auto"/>
@@ -65,6 +84,8 @@
                 <Setter Property="Control.FontStyle" Value="{Binding Path=ItemFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
                 <Setter Property="Control.FontSize" Value="{Binding ItemFormatting.FontSize}"/>
             </Style>
+            
+            
         </ResourceDictionary>
         
     </Application.Resources>
