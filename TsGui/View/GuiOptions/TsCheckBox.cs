@@ -124,7 +124,7 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
-            this.ControlFormatting.Margin = new Thickness(2, 1, 2, 1);
+            this.ControlFormatting.Margin = new Thickness(7, 1, 2, 1);
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
         }
 
