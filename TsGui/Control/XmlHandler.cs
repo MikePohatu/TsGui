@@ -71,7 +71,11 @@ namespace TsGui
             XElement x;
 
             x = InputXml.Element(XName);
-            if (x != null) { return Convert.ToDouble(x.Value); }
+            if (x != null)
+            {
+                if (x.Value.ToUpper() == "AUTO") { return Double.NaN; }
+                else { return Convert.ToDouble(x.Value); }
+            }
             else { return DefaultValue; }
         }
 
@@ -129,7 +133,11 @@ namespace TsGui
             XAttribute x;
 
             x = InputXml.Attribute(XName);
-            if (x != null) { return Convert.ToDouble(x.Value); }
+            if (x != null)
+            {
+                if (x.Value.ToUpper() == "AUTO") { return Double.NaN; }
+                else { return Convert.ToDouble(x.Value); }
+            }
             else { return DefaultValue; }
         }
 
