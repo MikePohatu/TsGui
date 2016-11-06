@@ -22,31 +22,50 @@ namespace TsGui.View.Layout
 {
     public abstract class BaseLayoutElement: GroupableUIElementBase
     {
-        private bool _showgridlines = false;
+        private bool _showgridlines;
+        private double _labelwidth;
+        private double _controlwidth;
+        private double _width;
+        private double _height;
+        private BaseLayoutElement _parent;
 
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
-        public Formatting GridFormatting { get; set; }
         public bool ShowGridLines
         {
             get { return this._showgridlines; }
             set { this._showgridlines = value; this.OnPropertyChanged(this, "ShowGridLines"); }
         }
-
+        public double Width
+        {
+            get { return this._width; }
+            set { this._width = value; this.OnPropertyChanged(this, "Width"); }
+        }
+        public double LabelWidth
+        {
+            get { return this._labelwidth; }
+            set { this._labelwidth = value; this.OnPropertyChanged(this, "LabelWidth"); }
+        }
+        public double ControlWidth
+        {
+            get { return this._controlwidth; }
+            set { this._controlwidth = value; this.OnPropertyChanged(this, "ControlWidth"); }
+        }
+        public double Height
+        {
+            get { return this._height; }
+            set { this._height = value; this.OnPropertyChanged(this, "Height"); }
+        }
         //constructors
         public BaseLayoutElement(MainController MainController):base (MainController)
         {
-            this.LabelFormatting = new Formatting();
-            this.ControlFormatting = new Formatting();
-            this.GridFormatting = new Formatting();
+            this.SetDefaults();
         }
 
         public BaseLayoutElement(BaseLayoutElement Parent, MainController MainController):base (MainController)
         {
-            this.LabelFormatting = Parent.LabelFormatting.Clone();
-            this.ControlFormatting = Parent.ControlFormatting.Clone();
-            this.GridFormatting = new Formatting();
-            this.ShowGridLines = Parent.ShowGridLines;
+            this._parent = Parent;
+            this.SetDefaults();
 
             //register grouping events from the parent element
             Parent.GroupableEnable += this.OnParentEnable;
@@ -55,16 +74,17 @@ namespace TsGui.View.Layout
 
         protected new void LoadXml(XElement InputXml)
         {
-            //this.ControlFormatting.SetDefaults();
-            //this.LabelFormatting.SetDefaults();
-            //this.GridFormatting.SetDefaults();
-
             base.LoadXml(InputXml);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
+            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
+            this.LabelWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LabelWidth);
+            this.ControlWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.ControlWidth);
+            this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
 
             XElement x;
             XElement subx;
             
+
             x = InputXml.Element("Formatting");
             if (x != null)
             {
@@ -75,10 +95,30 @@ namespace TsGui.View.Layout
                 subx = x.Element("Control");
                 if (subx != null)
                 { this.ControlFormatting.LoadXml(subx); }
+            }
+        }
 
-                subx = x.Element("Grid");
-                if (subx != null)
-                { this.GridFormatting.LoadXml(subx); }
+        private void SetDefaults()
+        {
+            if (this._parent == null)
+            {
+                this.LabelFormatting = new Formatting();
+                this.ControlFormatting = new Formatting();
+                this.Height = double.NaN;
+                this.Width = double.NaN;
+                this.LabelWidth = double.NaN;
+                this.ControlWidth = double.NaN;
+                this.ShowGridLines = false;
+            }
+            else
+            {
+                this.LabelFormatting = this._parent.LabelFormatting.Clone();
+                this.ControlFormatting = this._parent.ControlFormatting.Clone();
+                this.Height = this._parent.Height;
+                this.Width = this._parent.Width;
+                this.LabelWidth = this._parent.LabelWidth;
+                this.ControlWidth = this._parent.ControlWidth;
+                this.ShowGridLines = this._parent.ShowGridLines;
             }
         }
     }

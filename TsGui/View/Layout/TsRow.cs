@@ -54,8 +54,8 @@ namespace TsGui.View.Layout
             this._rowpanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
             this._rowpanel.SetBinding(Grid.VisibilityProperty, new Binding("Visibility"));
             this._rowpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
-            this._rowpanel.SetBinding(Grid.HeightProperty, new Binding("GridFormatting.Height"));
-            this._rowpanel.SetBinding(Grid.WidthProperty, new Binding("GridFormatting.Width"));
+            this._rowpanel.SetBinding(Grid.HeightProperty, new Binding("Height"));
+            this._rowpanel.SetBinding(Grid.WidthProperty, new Binding("Width"));
             this._rowpanel.VerticalAlignment = VerticalAlignment.Top;
 
             this.LoadXml(SourceXml);
@@ -67,8 +67,6 @@ namespace TsGui.View.Layout
             base.LoadXml(InputXml);
             IEnumerable<XElement> xlist;
             int colIndex = 0;
-
-            this.GridFormatting.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.GridFormatting.Height);
 
             xlist = InputXml.Elements("Column");
             if (xlist != null)

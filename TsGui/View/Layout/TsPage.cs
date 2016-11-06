@@ -181,8 +181,6 @@ namespace TsGui.View.Layout
             XElement x;
             int index;
 
-            this.GridFormatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.GridFormatting.Width);
-            this.GridFormatting.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.GridFormatting.Height);
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this._parent.ShowGridLines);

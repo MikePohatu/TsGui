@@ -55,7 +55,7 @@ namespace TsGui
             this._columnpanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
             this._columnpanel.SetBinding(Grid.VisibilityProperty, new Binding("Visibility"));
             this._columnpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
-            this._columnpanel.SetBinding(Grid.WidthProperty, new Binding("GridFormatting.Width"));
+            this._columnpanel.SetBinding(Grid.WidthProperty, new Binding("Width"));
 
             this.ShowGridLines = Parent.ShowGridLines;
 
@@ -71,7 +71,6 @@ namespace TsGui
             int index = 0;
 
             //legacy options
-            this.GridFormatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.GridFormatting.Width);
             this.LabelFormatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LabelFormatting.Width);
             this.ControlFormatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.ControlFormatting.Width);
 

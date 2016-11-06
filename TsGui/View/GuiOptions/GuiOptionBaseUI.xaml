@@ -25,8 +25,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="300" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}">
-    <DockPanel x:Name="MainDock" Width="{Binding GridFormatting.Width}" Height="{Binding GridFormatting.Height}" ToolTip="{Binding HelpText}" Margin="0">
+    <DockPanel x:Name="MainDock" Width="{Binding Width}" Height="{Binding Height}" ToolTip="{Binding HelpText}" Margin="0">
         <ContentPresenter DockPanel.Dock="Left" x:Name="LeftPresenter"/>
-        <ContentPresenter DockPanel.Dock="Right" x:Name="RightPresenter"/>
+        <ContentPresenter x:Name="RightPresenter"/>
+        <ContentPresenter DockPanel.Dock="Right" x:Name="FarRightPresenter"/>
     </DockPanel>
 </UserControl>

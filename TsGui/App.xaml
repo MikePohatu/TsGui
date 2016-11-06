@@ -7,16 +7,6 @@
             <Converters:FontWeightConverter x:Key="FontWeight"/>
             <Converters:FontStyleConverter x:Key="FontStyle"/>
 
-            <Style x:Key="GridStyle">
-                <Setter Property="Grid.Margin" Value="{Binding GridFormatting.Margin}"/>
-                <Setter Property="Grid.VerticalAlignment" Value="{Binding GridFormatting.VerticalAlignment}"/>
-                <Setter Property="Grid.HorizontalAlignment" Value="{Binding GridFormatting.HorizontalAlignment}"/>
-                <Setter Property="Grid.Width" Value="{Binding GridFormatting.Width}"/>
-                <Setter Property="Grid.IsEnabled" Value="{Binding IsEnabled}"/>
-                <Setter Property="Grid.Visibility" Value="{Binding Visibility}"/>
-                <Setter Property="Grid.ShowGridLines" Value="{Binding ShowGridLines}"/>
-            </Style>
-
             <Style x:Key="LabelStyle">
                 <Setter Property="Control.Height" Value="{Binding LabelFormatting.Height}"/>
                 <Setter Property="Control.Width" Value="{Binding ControlFormatting.Width}"/>

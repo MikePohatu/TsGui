@@ -24,6 +24,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="20">
-    <CheckBox x:Name="CheckBox" IsChecked="{Binding IsChecked}" 
+    <CheckBox x:Name="CheckBox" IsChecked="{Binding IsChecked}" Width="Auto" Height="Auto"
               HorizontalContentAlignment="Center" Style="{StaticResource ControlStyle}"/>
 </UserControl>

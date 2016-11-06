@@ -19,6 +19,7 @@ using System.Xml.Linq;
 using TsGui.View.Layout;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Data;
 
 namespace TsGui.View.GuiOptions
 {
@@ -89,7 +90,6 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this.LabelFormatting.Padding = new Thickness(3, 0, 0, 0);
-            this.GridFormatting.Margin = new Thickness(0,0,0,0);
         }
 
         private void SetLayoutRightLeft(bool InvertLayout)
@@ -99,11 +99,15 @@ namespace TsGui.View.GuiOptions
             {
                 this.UserControl.RightPresenter.Content = this.Control;
                 this.UserControl.LeftPresenter.Content = this.Label;
+                this.UserControl.LeftPresenter.SetBinding(ContentPresenter.WidthProperty, new Binding("LabelWidth"));
+                this.UserControl.RightPresenter.SetBinding(ContentPresenter.WidthProperty, new Binding("ControlWidth"));
             }
             else
             {
                 this.UserControl.RightPresenter.Content = this.Label;
                 this.UserControl.LeftPresenter.Content = this.Control;
+                this.UserControl.LeftPresenter.SetBinding(ContentPresenter.WidthProperty, new Binding("ControlWidth"));
+                this.UserControl.RightPresenter.SetBinding(ContentPresenter.WidthProperty, new Binding("LabelWidth"));
             }
         }
     }
