@@ -70,12 +70,8 @@ namespace TsGui
             IGuiOption_2 newOption;
             int index = 0;
 
-            //legacy options
-            this.LabelFormatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LabelFormatting.Width);
-            this.ControlFormatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.ControlFormatting.Width);
-
             base.LoadXml(InputXml);
-
+            
             //now read in the options and add to a dictionary for later use
             //do this last so the event subscriptions don't get setup too early (no toggles fired 
             //until everything is loaded.
