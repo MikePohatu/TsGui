@@ -1,55 +1,123 @@
 <TsGui>
-	<Height>250</Height>
-	<Width>600</Width>
 
-	<HardwareEval />
+	<Height>300</Height>
+	<Width>470</Width>
 	
+	<HardwareEval />
+
+	<!--	
+	<ShowGridLines />
+	-->
 	<Heading>
-		<Title>TsGui</Title>
-		<Text>Task Sequence GUI groups example config</Text>
+		<Title>Task Sequence Gui</Title>
+		<Text>Do whatever you want. I don't care</Text>
+		<!--
+		<BgColor>#FF006AD4</BgColor>
+		<TextColor>#FFFFFF</TextColor>
+		-->
 	</Heading>
+	
+	<Footer>
+		<Text>Powered by Yamama - www.20road.com</Text>
+		<!--<Height>25</Height>
+		<HAlign>right</HAlign>
+		-->
+	</Footer>
 
 	<Page>
-		<Row>
-			<Column>
-				<LabelWidth>140</LabelWidth>
-				<ControlWidth>130</ControlWidth>
-
-				<GuiOption Type="ComputerName">
-					<Validation ValidateEmpty="FALSE">
-						<Group>Group_2012r2</Group>
-						<Valid>
-							<Rule Type="StartsWith">S12-</Rule>
-						</Valid>
-					</Validation>
-					<Validation ValidateEmpty="FALSE">
-						<Group>Group_2016</Group>
-						<Valid>
-							<Rule Type="StartsWith">S16-</Rule>
-						</Valid>
-					</Validation>
-				</GuiOption>
+		<Height>300</Height>
+		<Width>490</Width>
+		<Heading>
+			<Title>DEBUG - Task Sequence Gui - Enter computer name</Title>
+			<Text>Enter the new computer details</Text>
+			<BgColor>#ff0000</BgColor>
+			<TextColor>#FFFFFF</TextColor>
+		</Heading>
+		<Column>		
+			<ControlWidth>150</ControlWidth>
+			<LabelWidth>120</LabelWidth>
+			
+			<GuiOption Type="ComputerName" />
+			
+			<GuiOption Type="FreeText">
+				<Variable>PCTypeString</Variable>
+				<Label>PCType - string</Label>
+				<DefaultValue UseCurrent="true">
+					<!--
+					<Query Type="EnvironmentVariable">
+						<Variable>PCType</Variable>
+					</Query>
+					-->
+					<Value>ICT</Value>
+				</DefaultValue>
+				<HelpText>Test&#xD;123</HelpText>
+			</GuiOption>
+			
+			<GuiOption Type="DropDownList">
+				<Variable>PCType</Variable>
+				<Label>PC Type:</Label>
+				<DefaultValue>
+					<Value>STDLT</Value>
+				</DefaultValue>
+				<Option>
+					<Text>Standard Desktop</Text>
+					<Value>STDPC</Value>
+				</Option>
+				<Option>
+					<Text>Standard Laptop</Text>
+					<Value>STDLT</Value>
+				</Option>
+				<Option>
+					<Text>Clinical PC</Text>
+					<Value>ClinicalPC</Value>
+				</Option>
+			</GuiOption>
+		</Column>
+		
+		<Column>	
+			<LabelWidth>120</LabelWidth>
+			<ControlWidth>40</ControlWidth>
+			
+			<GuiOption Type="Heading">
+				<Label>Applications</Label>
+				<Bold /> 
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>AdminApps</Variable>
+				<Label>Admin applications</Label>
+				<!--
+				<TrueValue>YES</TrueValue>
+				<FalseValue>NO</FalseValue>
+				-->
+				<HAlign>right</HAlign>
 				
-				<GuiOption Type="DropDownList">
-					<Variable>VAR_OSVer</Variable>
-					<Label>OS:</Label>
-					<DefaultValue>2012r2</DefaultValue>
-					<Option>
-						<Toggle Group="Group_2012r2">
-							<Hide/>
-						</Toggle>
-						<Text>Server 2012 R2</Text>
-						<Value>2012r2</Value>
-					</Option>
-					<Option>
-						<Toggle Group="Group_2016">
-							<Hide/>
-						</Toggle>
-						<Text>Server 2016</Text>
-						<Value>2016</Value>
-					</Option>
-				</GuiOption>	
-			</Column>
-		</Row>
+				<Checked />
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>OfficeApps</Variable>
+				<Label>Office applications</Label>
+				<!--
+				<TrueValue>YES</TrueValue>
+				<FalseValue>NO</FalseValue>
+				<Checked />
+				-->
+				<HAlign>right</HAlign>
+			</GuiOption>
+		</Column>
+		
+	</Page>
+	<Page>
+		<Heading>
+			<Title>Task Sequence Gui</Title>
+			<Text>Do whatever you want. I don't care</Text>
+		</Heading>
+		<Column>
+			<GuiOption Type="Heading">
+				<Label>Test page</Label>
+				<Bold /> 
+			</GuiOption>
+		</Column>
 	</Page>
 </TsGui>

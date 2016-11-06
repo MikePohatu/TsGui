@@ -71,7 +71,8 @@ namespace TsGui
             int index = 0;
 
             base.LoadXml(InputXml);
-            
+
+            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", double.NaN);
             //now read in the options and add to a dictionary for later use
             //do this last so the event subscriptions don't get setup too early (no toggles fired 
             //until everything is loaded.
