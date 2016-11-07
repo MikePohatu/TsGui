@@ -33,11 +33,6 @@ namespace TsGui.View.GuiOptions
 
         //standard stuff
         public TsColumn Parent { get; set; }
-        public bool InvertLayout
-        {
-            get { return this._invertlayout; }
-            set { this.SetLayoutRightLeft(value); }
-        }
         public UserControl Control { get; set; }
         public UserControl Label { get; set; }
         public GuiOptionBaseUI UserControl
@@ -84,7 +79,7 @@ namespace TsGui.View.GuiOptions
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", this.HelpText);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
-            this.InvertLayout = XmlHandler.GetBoolFromXAttribute(InputXml, "InvertLayout", this.InvertLayout);
+            this.SetLayoutRightLeft();
         }
 
         private void SetDefaults()
@@ -92,22 +87,17 @@ namespace TsGui.View.GuiOptions
             this.LabelFormatting.Padding = new Thickness(3, 0, 0, 0);
         }
 
-        private void SetLayoutRightLeft(bool InvertLayout)
+        private void SetLayoutRightLeft()
         {
-            this._invertlayout = InvertLayout;
-            if (InvertLayout == false)
+            if (this.InvertColumns == false)
             {
                 this.UserControl.RightPresenter.Content = this.Control;
                 this.UserControl.LeftPresenter.Content = this.Label;
-                this.UserControl.LeftPresenter.SetBinding(ContentPresenter.WidthProperty, new Binding("LabelWidth"));
-                this.UserControl.RightPresenter.SetBinding(ContentPresenter.WidthProperty, new Binding("ControlWidth"));
             }
             else
             {
                 this.UserControl.RightPresenter.Content = this.Label;
                 this.UserControl.LeftPresenter.Content = this.Control;
-                this.UserControl.LeftPresenter.SetBinding(ContentPresenter.WidthProperty, new Binding("ControlWidth"));
-                this.UserControl.RightPresenter.SetBinding(ContentPresenter.WidthProperty, new Binding("LabelWidth"));
             }
         }
     }

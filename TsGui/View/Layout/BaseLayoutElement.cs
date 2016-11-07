@@ -23,14 +23,15 @@ namespace TsGui.View.Layout
     public abstract class BaseLayoutElement: GroupableUIElementBase
     {
         private bool _showgridlines;
-        private double _labelwidth;
-        private double _controlwidth;
+        private double _leftcellwidth;
+        private double _rightcellwidth;
         private double _width;
         private double _height;
         private BaseLayoutElement _parent;
 
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
+        public bool InvertColumns { get; set; }
         public bool ShowGridLines
         {
             get { return this._showgridlines; }
@@ -41,15 +42,15 @@ namespace TsGui.View.Layout
             get { return this._width; }
             set { this._width = value; this.OnPropertyChanged(this, "Width"); }
         }
-        public double LabelWidth
+        public double LeftCellWidth
         {
-            get { return this._labelwidth; }
-            set { this._labelwidth = value; this.OnPropertyChanged(this, "LabelWidth"); }
+            get { return this._leftcellwidth; }
+            set { this._leftcellwidth = value; this.OnPropertyChanged(this, "LeftCellWidth"); }
         }
-        public double ControlWidth
+        public double RightCellWidth
         {
-            get { return this._controlwidth; }
-            set { this._controlwidth = value; this.OnPropertyChanged(this, "ControlWidth"); }
+            get { return this._rightcellwidth; }
+            set { this._rightcellwidth = value; this.OnPropertyChanged(this, "RightCellWidth"); }
         }
         public double Height
         {
@@ -71,10 +72,12 @@ namespace TsGui.View.Layout
         protected new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
+            //Load legacy options
+            this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LeftCellWidth);
+            this.RightCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.RightCellWidth);
+
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
-            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
-            this.LabelWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LabelWidth);
-            this.ControlWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.ControlWidth);
+            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);           
             this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
 
             XElement x;
@@ -84,6 +87,10 @@ namespace TsGui.View.Layout
             x = InputXml.Element("Formatting");
             if (x != null)
             {
+                this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(x, "LeftCellWidth", this.LeftCellWidth);
+                this.RightCellWidth = XmlHandler.GetDoubleFromXElement(x, "RightCellWidth", this.RightCellWidth);
+                this.InvertColumns = XmlHandler.GetBoolFromXElement(x, "InvertColumns", this.InvertColumns);
+
                 subx = x.Element("Label");
                 if (subx != null)
                 { this.LabelFormatting.LoadXml(subx); }
@@ -102,9 +109,10 @@ namespace TsGui.View.Layout
                 this.ControlFormatting = new Formatting();
                 this.Height = double.NaN;
                 this.Width = double.NaN;
-                this.LabelWidth = double.NaN;
-                this.ControlWidth = double.NaN;
+                this.LeftCellWidth = double.NaN;
+                this.RightCellWidth = double.NaN;
                 this.ShowGridLines = false;
+                this.InvertColumns = false;
             }
             else
             {
@@ -112,9 +120,10 @@ namespace TsGui.View.Layout
                 this.ControlFormatting = this._parent.ControlFormatting.Clone();
                 this.Height = double.NaN;
                 this.Width = double.NaN;
-                this.LabelWidth = this._parent.LabelWidth;
-                this.ControlWidth = this._parent.ControlWidth;
+                this.LeftCellWidth = this._parent.LeftCellWidth;
+                this.RightCellWidth = this._parent.RightCellWidth;
                 this.ShowGridLines = this._parent.ShowGridLines;
+                this.InvertColumns = this._parent.InvertColumns;
             }
         }
     }
