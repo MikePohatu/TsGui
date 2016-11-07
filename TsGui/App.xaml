@@ -49,10 +49,34 @@
                 <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
             </Style>
 
+            <Style x:Key="ContentControlStyle" TargetType="ContentControl" BasedOn="{StaticResource ControlStyle}">
+                <Setter Property="Foreground" Value="{Binding ControlFormatting.FontColorBrush}"/>
+                <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ContentControl}">
+                            <Border Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" 
+                                    Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                                <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" 
+                                                  ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" TargetName="Border" Value="0.56"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <Style x:Key="FreeTextStyle" TargetType="TextBox" BasedOn="{StaticResource ControlStyle}">
                 <Setter Property="TextAlignment" Value="{Binding ControlFormatting.TextAlignment}"/>
                 <Setter Property="MaxLength" Value="{Binding MaxLength}"/>
                 <Setter Property="Foreground" Value="{Binding ControlFormatting.FontColorBrush}"/>
+                <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TextBox}">
@@ -65,6 +89,7 @@
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Opacity" TargetName="Border" Value="0.56"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
