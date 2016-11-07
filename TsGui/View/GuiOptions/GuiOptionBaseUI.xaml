@@ -25,7 +25,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="300" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}">
-    <StackPanel x:Name="MainPanel" Width="{Binding Width}" Height="{Binding Height}" ToolTip="{Binding HelpText}" Margin="0" Orientation="Horizontal">
+    <StackPanel x:Name="MainPanel" Width="{Binding Width}" Height="{Binding Height}" 
+                ToolTip="{Binding HelpText}" Margin="0" Orientation="Horizontal" >
         <ContentPresenter x:Name="LeftPresenter"/>
         <ContentPresenter x:Name="RightPresenter"/>
     </StackPanel>

@@ -71,7 +71,7 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-           
+
 
             <Style x:Key="ComboBoxItemLabelStyle" TargetType="Label">
                 <Setter Property="Control.Height" Value="Auto"/>
@@ -84,9 +84,6 @@
                 <Setter Property="Control.FontStyle" Value="{Binding Path=ItemFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
                 <Setter Property="Control.FontSize" Value="{Binding ItemFormatting.FontSize}"/>
             </Style>
-            
-            
         </ResourceDictionary>
-        
     </Application.Resources>
 </Application>
