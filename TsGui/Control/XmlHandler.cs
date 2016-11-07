@@ -101,13 +101,25 @@ namespace TsGui
         public static Thickness GetThicknessFromXElement(XElement InputXml, string XName, Thickness DefaultValue)
         {
             XElement x;
-            int i;
+            string[] splitstring;
 
             x = InputXml.Element(XName);
             if (x != null)
             {
-                i = Convert.ToInt32(x.Value);
-                return new Thickness(i, i, i, i);
+                splitstring = x.Value.Split(',');
+                if (splitstring.Length == 1)
+                {
+                    return new Thickness(Convert.ToDouble(splitstring[0]));
+                }
+                else if (splitstring.Length == 4)
+                {
+                    double left = Convert.ToDouble(splitstring[0]);
+                    double top = Convert.ToDouble(splitstring[1]);
+                    double right = Convert.ToDouble(splitstring[2]);
+                    double bottom = Convert.ToDouble(splitstring[3]);
+                    return new Thickness(left,top,right,bottom);
+                }
+                else { throw new InvalidDataException("Invalid thickness in element " + XName + ": " + x.Value); }
             }
             else { return DefaultValue; }
         }
