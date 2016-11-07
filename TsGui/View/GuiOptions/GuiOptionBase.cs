@@ -89,7 +89,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetLayoutRightLeft()
         {
-            if (this.InvertColumns == false)
+            if (this.LabelOnRight == false)
             {
                 this.UserControl.RightPresenter.Content = this.Control;
                 this.UserControl.LeftPresenter.Content = this.Label;

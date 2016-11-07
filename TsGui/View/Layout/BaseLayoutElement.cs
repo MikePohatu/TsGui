@@ -31,7 +31,7 @@ namespace TsGui.View.Layout
 
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
-        public bool InvertColumns { get; set; }
+        public bool LabelOnRight { get; set; }
         public bool ShowGridLines
         {
             get { return this._showgridlines; }
@@ -89,7 +89,7 @@ namespace TsGui.View.Layout
             {
                 this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(x, "LeftCellWidth", this.LeftCellWidth);
                 this.RightCellWidth = XmlHandler.GetDoubleFromXElement(x, "RightCellWidth", this.RightCellWidth);
-                this.InvertColumns = XmlHandler.GetBoolFromXElement(x, "InvertColumns", this.InvertColumns);
+                this.LabelOnRight = XmlHandler.GetBoolFromXElement(x, "LabelOnRight", this.LabelOnRight);
 
                 subx = x.Element("Label");
                 if (subx != null)
@@ -112,7 +112,7 @@ namespace TsGui.View.Layout
                 this.LeftCellWidth = double.NaN;
                 this.RightCellWidth = double.NaN;
                 this.ShowGridLines = false;
-                this.InvertColumns = false;
+                this.LabelOnRight = false;
             }
             else
             {
@@ -123,7 +123,7 @@ namespace TsGui.View.Layout
                 this.LeftCellWidth = this._parent.LeftCellWidth;
                 this.RightCellWidth = this._parent.RightCellWidth;
                 this.ShowGridLines = this._parent.ShowGridLines;
-                this.InvertColumns = this._parent.InvertColumns;
+                this.LabelOnRight = this._parent.LabelOnRight;
             }
         }
     }
