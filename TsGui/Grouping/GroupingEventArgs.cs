@@ -13,13 +13,17 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// IGroupParent.cs - interface for parent elements i.e. columns and pages. 
+// GroupingEventArgs.cs - EventArgs to be used with grouping events
+
+using System;
 
 namespace TsGui.Grouping
 {
-    public interface IGroupParent: IGroupableUIElement
+    public class GroupingEventArgs: EventArgs
     {
-        event GroupableHide ParentHide;
-        event GroupableEnable ParentEnable;
+        public GroupStateChanged GroupStateChanged { get; set; }
+
+        public GroupingEventArgs() { }
+        public GroupingEventArgs(GroupStateChanged StateChanged) { this.GroupStateChanged = StateChanged; }
     }
 }

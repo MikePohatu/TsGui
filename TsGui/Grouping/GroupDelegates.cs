@@ -19,6 +19,7 @@ namespace TsGui.Grouping
 {
 
     public enum GroupState { Hidden, Disabled, Enabled };
+    public enum GroupStateChanged { IsHidden, IsEnabled };
     public delegate void ToggleEvent();
 
     /// <summary>
@@ -30,6 +31,7 @@ namespace TsGui.Grouping
     //public delegate void ParentToggleEvent(IGroupParent Parent, bool IsEnabled, bool IsHidden);
     public delegate void GroupStateChange();
 
-    public delegate void GroupableHide(bool Hide);
-    public delegate void GroupableEnable(bool Enable);
+    //public delegate void GroupableHide(bool Hide);
+    //public delegate void GroupableEnable(bool Enable);
+    public delegate void GrouableStateChange(object o, GroupingEventArgs e);
 }

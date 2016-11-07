@@ -62,14 +62,10 @@ namespace TsGui.View.Layout
             this.SetDefaults();
         }
 
-        public BaseLayoutElement(BaseLayoutElement Parent, MainController MainController):base (MainController)
+        public BaseLayoutElement(BaseLayoutElement Parent, MainController MainController):base (Parent,MainController)
         {
             this._parent = Parent;
             this.SetDefaults();
-
-            //register grouping events from the parent element
-            Parent.GroupableEnable += this.OnParentEnable;
-            Parent.GroupableHide += this.OnParentHide;
         }
 
         protected new void LoadXml(XElement InputXml)

@@ -22,6 +22,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
+using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
@@ -41,8 +42,6 @@ namespace TsGui.View.Layout
         private TsPage _previouspage;
         private TsPage _nextpage;
         private TsMainWindow _parent;
-
-        //private bool _islast = false;
         private bool _isfirst = false;
 
         //Properties
@@ -149,8 +148,6 @@ namespace TsGui.View.Layout
         //Constructors
         public TsPage(XElement SourceXml, PageDefaults Defaults, MainController MainController):base (MainController)
         {
-            //Debug.WriteLine("New page constructor");
-            //Debug.WriteLine(SourceXml);
             this._parent = Defaults.Parent;
             this._controller = Defaults.RootController;
             this._pagelayout = new PageLayout(this);
@@ -241,10 +238,6 @@ namespace TsGui.View.Layout
             TsRow r = new TsRow(InputXml, Index, this, this._controller);
 
             this._rows.Add(r);
-
-            //Debug.WriteLine("TsPage - Registering column");
-            this.GroupableHide += r.OnParentHide;
-            this.GroupableEnable += r.OnParentEnable;
         }
 
         //build the gui controls.
@@ -257,7 +250,6 @@ namespace TsGui.View.Layout
 
             foreach (TsRow row in this._rows)
             {
-                //Debug.WriteLine("TsPage - Build - Adding row");
                 RowDefinition rowdef = new RowDefinition();
                 rowdef.Height = GridLength.Auto;
 
@@ -288,7 +280,6 @@ namespace TsGui.View.Layout
 
         public bool OptionsValid()
         {
-            //Debug.WriteLine("OptionsValid called");
             foreach (IEditableGuiOption option in this._editables)
             {
                 if (option.IsActive == true)
@@ -344,23 +335,23 @@ namespace TsGui.View.Layout
             TsButtons.Update(this, this._pagelayout);
         }
 
-        public void OnSurroundingPageHide(bool Hide)
+        public void OnSurroundingPageHide(object o, GroupingEventArgs e)
         {
-            this.Update();
+            if (e.GroupStateChanged == GroupStateChanged.IsHidden) { this.Update(); }
         }
         
         private void ConnectNextPage(TsPage NewNextPage)
         {
-            if (this.NextPage != null) { this.NextPage.GroupableHide -= this.OnSurroundingPageHide; }
+            if (this.NextPage != null) { this.NextPage.GroupingStateChange -= this.OnSurroundingPageHide; }
             this._nextpage = NewNextPage;
-            if (this._nextpage != null) { this._nextpage.GroupableHide += this.OnSurroundingPageHide; }
+            if (this._nextpage != null) { this._nextpage.GroupingStateChange += this.OnSurroundingPageHide; }
         }
 
         private void ConnectPrevPage(TsPage NewPrevPage)
         {           
-            if (this.PreviousPage != null) { this.PreviousPage.GroupableHide -= this.OnSurroundingPageHide; }
+            if (this.PreviousPage != null) { this.PreviousPage.GroupingStateChange -= this.OnSurroundingPageHide; }
             this._previouspage = NewPrevPage;
-            if (this._previouspage != null) { this._previouspage.GroupableHide += this.OnSurroundingPageHide; }
+            if (this._previouspage != null) { this._previouspage.GroupingStateChange += this.OnSurroundingPageHide; }
         }
 
     }

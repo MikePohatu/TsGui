@@ -19,7 +19,6 @@ namespace TsGui.Grouping
 {
     public interface IGroupChild: IGroupableUIElement
     {
-        void OnParentHide(bool Hide);
-        void OnParentEnable(bool Enable);
+        void OnParentGoupingStateChange(object o, GroupingEventArgs e);
     }
 }

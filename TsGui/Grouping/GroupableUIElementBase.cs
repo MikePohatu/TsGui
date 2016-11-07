@@ -30,6 +30,7 @@ namespace TsGui.Grouping
         private List<Group> _groups = new List<Group>();
         private Visibility _visibility = Visibility.Visible;
         private bool _purgeinactive = false;
+        private GroupableUIElementBase _parent;
 
         public List<Group> Groups { get { return this._groups; } }
 
@@ -49,7 +50,7 @@ namespace TsGui.Grouping
                 if (value != this._isenabled)
                 {
                     this._isenabled = value;
-                    this.GroupableEnable?.Invoke(value);
+                    this.GroupingStateChange?.Invoke(this,new GroupingEventArgs(GroupStateChanged.IsEnabled));
                     this.OnPropertyChanged(this, "IsEnabled");
                 }              
             }
@@ -62,7 +63,7 @@ namespace TsGui.Grouping
                 if (value != this._ishidden)
                 {
                     this.HideUnhide(value);
-                    this.GroupableHide?.Invoke(value);
+                    this.GroupingStateChange?.Invoke(this, new GroupingEventArgs(GroupStateChanged.IsHidden));
                     this.OnPropertyChanged(this, "IsHidden");
                 }            
             }
@@ -84,28 +85,28 @@ namespace TsGui.Grouping
             this._controller = MainController;
         }
 
+        public GroupableUIElementBase(GroupableUIElementBase Parent, MainController MainController)
+        {
+            this._controller = MainController;
+
+            //register grouping events from the parent element
+            this._parent = Parent;
+            this._parent.GroupingStateChange += this.OnParentGoupingStateChange;
+        }
         //Events
         #region
         //Setup the INotifyPropertyChanged interface 
         public event PropertyChangedEventHandler PropertyChanged;
-        public event GroupableHide GroupableHide;
-        public event GroupableEnable GroupableEnable;
+        public event GrouableStateChange GroupingStateChange;
 
         protected void OnPropertyChanged(object sender, string name)
         {
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
 
-        public void OnParentHide(bool Hide)
+        public void OnParentGoupingStateChange(object o, GroupingEventArgs e)
         {
-            if (Hide == true ) { this.IsHidden = true; }
-            else { this.EvaluateGroups(); }
-        }
-
-        public void OnParentEnable(bool Enable)
-        {
-            if (Enable == false) { this.IsEnabled = false; }
-            else { this.EvaluateGroups(); }
+            this.EvaluateGroups();
         }
 
         public void OnGroupStateChange()
@@ -115,18 +116,26 @@ namespace TsGui.Grouping
         #endregion
 
         protected void EvaluateGroups()
-        { 
-            if (this._groups.Count == 0) { this.ChangeState(GroupState.Enabled); return; }
+        {
+            GroupState groupsstate = GroupState.Hidden;
+            GroupState parentstate = GroupState.Enabled;
+            if (this._parent != null)
+            {
+                 if (this._parent.IsHidden == true) { this.ChangeState(GroupState.Hidden); return; }
+                 if (this._parent.IsEnabled == false) { parentstate = GroupState.Disabled; }
+            }
 
-            GroupState gs = GroupState.Hidden;
+            if (this._groups.Count == 0) { groupsstate = GroupState.Enabled; }
 
             foreach (Group g in this._groups)
             {
-                if (g.State == GroupState.Enabled) { this.ChangeState(GroupState.Enabled);  return; }
-                else if (g.State == GroupState.Disabled) { gs = GroupState.Disabled; }
+                if (g.State == GroupState.Enabled) { groupsstate = GroupState.Enabled; break; }
+                else if (g.State == GroupState.Disabled) { groupsstate = GroupState.Disabled; }
             }
 
-            this.ChangeState(gs);
+            if (groupsstate == GroupState.Hidden) { this.ChangeState(GroupState.Hidden); }
+            else if (parentstate == GroupState.Disabled) { this.ChangeState(GroupState.Disabled); }
+            else { this.ChangeState(groupsstate); }
         }
 
         private void ChangeState(GroupState State)
