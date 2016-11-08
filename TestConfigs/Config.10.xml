@@ -1,0 +1,208 @@
+<TsGui>
+	<Height>320</Height>
+	<Width>390</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI</Text>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<GuiOption Type="ComputerName" >
+					<Formatting>
+						<LeftCellWidth>90</LeftCellWidth>
+						<RightCellWidth>100</RightCellWidth>
+					</Formatting>
+					<Validation>
+						<Group>Group_Win10_1511</Group>							
+						<Valid>
+							<Rule Type="StartsWith">W1</Rule>
+						</Valid>
+					</Validation>
+					<Validation>
+						<Group>Group_Win10_1607</Group>							
+						<Valid>
+							<Rule Type="StartsWith">W2</Rule>
+						</Valid>
+					</Validation>
+				</GuiOption>
+			</Column>
+			
+			<Column>
+				
+				<GuiOption Type="DropDownList">
+					<Formatting>
+						<LeftCellWidth>50</LeftCellWidth>
+						<RightCellWidth>120</RightCellWidth>
+						<Label>
+							<HorizontalAlignment>Right</HorizontalAlignment> 					
+						</Label>
+					</Formatting>
+					<Variable>VAR_OS</Variable>
+					<Label>Version:</Label>
+					<DefaultValue>Win10_1511</DefaultValue>
+					<Option>
+						<Toggle Group="Group_Win10_1511">
+							<Hide/>
+						</Toggle>
+						<Text>Windows 10 1511</Text>
+						<Value>Win10_1511</Value>
+					</Option>
+					<Option>
+						<Toggle Group="Group_Win10_1607">
+							<Hide/>
+						</Toggle>
+						<Text>Windows 10 1607</Text>
+						<Value>Win10_1607</Value>
+					</Option>
+				</GuiOption>
+			</Column>
+		</Row>
+		<Row>
+			<Column>
+				<GuiOption Type="FreeText">
+					<Variable>VAR_Description</Variable>
+					<Label>Description:</Label>
+					<Formatting>
+						<LeftCellWidth>90</LeftCellWidth>
+						<RightCellWidth>270</RightCellWidth>
+					</Formatting>
+				</GuiOption>
+			
+			</Column>
+		</Row>
+		
+		<Row>
+			<Column>
+				<GuiOption Type="Heading">
+					<Label>Applications</Label>
+					<Formatting>
+						<Label>
+							<Font>
+								<Weight>Bold</Weight>		<!-- Options available: Normal, Italic, Oblique -->
+								<Size>13</Size>	
+							</Font>							
+						</Label>
+					</Formatting> 
+				</GuiOption>
+			</Column>
+		</Row>
+		
+		<Row>
+			<Formatting>
+				<RightCellWidth>30</RightCellWidth>
+			</Formatting>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>85</LeftCellWidth>
+				</Formatting>
+				<GuiOption Type="Heading">
+					<Label>Microsoft</Label>
+					<Formatting>
+						<Label>
+							<Font>
+								<Color>Blue</Color>
+							</Font>							
+						</Label>
+					</Formatting> 
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>VAR_Acces_2013</Variable>
+					<Label>Access 2013</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+
+				<GuiOption Type="CheckBox">
+					<Variable>VAR_Project_2013</Variable>
+					<Label>Project 2013</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>VAR_Visio_2013</Variable>
+					<Label>Visio 2013</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+			</Column>
+			
+			<Column>
+				<Formatting>
+					<LeftCellWidth>110</LeftCellWidth>
+				</Formatting>
+				<GuiOption Type="Heading">
+					<Label>Adobe</Label>
+					<Formatting>
+						<Label>
+							<Font>
+								<Color>Red</Color>
+							</Font>							
+						</Label>
+					</Formatting> 
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>VAR_Adobe_Captivate</Variable>
+					<Label>Adobe Captivate</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>VAR_Adobe_Lightroom</Variable>
+					<Label>Adobe Lightroom</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>VAR_Adobe_Photoshop</Variable>
+					<Label>Adobe Photoshop</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>VAR_Adobe_Premiere</Variable>
+					<Label>Adobe Premiere</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+			</Column>
+			
+			<Column>
+				<Formatting>
+					<LeftCellWidth>85</LeftCellWidth>
+				</Formatting>
+				<GuiOption Type="Heading">
+					<Label>Other</Label>
+					<Formatting>
+						<Label>
+							<Font>
+								<Color>Green</Color>
+							</Font>							
+						</Label>
+					</Formatting> 
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>VAR_CiscoVPN</Variable>
+					<Label>Cisco VPN</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>VAR_CitrixClient</Variable>
+					<Label>Citrix Client</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>VAR_VMWareView</Variable>
+					<Label>VMWare View</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>
