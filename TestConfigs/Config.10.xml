@@ -112,7 +112,7 @@
 				</GuiOption>
 				
 				<GuiOption Type="CheckBox">
-					<Variable>VAR_Acces_2013</Variable>
+					<Variable>VAR_Access_2013</Variable>
 					<Label>Access 2013</Label>
 					<HAlign>left</HAlign>
 				</GuiOption>
