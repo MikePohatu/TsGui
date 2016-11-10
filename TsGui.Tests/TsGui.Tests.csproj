@@ -43,6 +43,7 @@
     <Compile Include="EnvironmentControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemConnectorTests.cs" />
+    <Compile Include="TruncateRuleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
