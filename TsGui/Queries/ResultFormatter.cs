@@ -26,8 +26,6 @@ namespace TsGui.Queries
         private List<IQueryRule> _rules = new List<IQueryRule>();
         public string Name { get; set; }
         public string Input { get; set; }
-        public string Append { get; set; }
-        public string Prefix { get; set; }
         public string Value { get { return this.Process(); } }
 
         public ResultFormatter() { }
@@ -50,10 +48,10 @@ namespace TsGui.Queries
                 switch(xsetting.Name.ToString())
                 {
                     case "Prefix":
-                        this.Prefix = xsetting.Value;
+                        this._rules.Add(new PrefixRule(xsetting));
                         break;
                     case "Append":
-                        this.Append = xsetting.Value;
+                        this._rules.Add(new AppendRule(xsetting));
                         break;
                     case "Calculate":
                         this._rules.Add(new CalculateRule(xsetting));
@@ -75,8 +73,6 @@ namespace TsGui.Queries
 
             foreach (IQueryRule rule in this._rules)
             { s = rule.Process(s); }
-
-            s = this.Prefix + s + this.Append;
 
             return s;
         }
