@@ -16,83 +16,65 @@
 // ResultFormatter.cs - provides additional formatting/processing for a query result e.g.
 // processing math on the result, prefix and postfix
 
-using TsGui.Math;
 using System.Xml.Linq;
-using System;
+using System.Collections.Generic;
 
 namespace TsGui.Queries
 {
     public class ResultFormatter
     {
+        private List<IQueryRule> _rules = new List<IQueryRule>();
         public string Name { get; set; }
         public string Input { get; set; }
-        public int DecimalPlaces { get; set; }
-        public string Calculation { get; set; }
         public string Append { get; set; }
         public string Prefix { get; set; }
         public string Value { get { return this.Process(); } }
 
-        public ResultFormatter()
-        {
-            this.DecimalPlaces = -1;
-        }
+        public ResultFormatter() { }
 
         public ResultFormatter(XElement InputXml)
         {
-            this.DecimalPlaces = -1;
             this.LoadXml(InputXml);
         }
 
 
         private void LoadXml(XElement InputXml)
         {
-            XElement x;
             XAttribute xattrib;
 
             xattrib = InputXml.Attribute("Name");
             if (xattrib != null) { this.Name = xattrib.Value; }
 
-            x = InputXml.Element("Calculate");
-            if (x != null)
+            foreach (XElement xsetting in InputXml.Elements())
             {
-                this.Calculation = x.Value;
-
-                xattrib = x.Attribute("DecimalPlaces");
-                if (xattrib != null) { this.DecimalPlaces = Convert.ToInt32(xattrib.Value); }
+                switch(xsetting.Name.ToString())
+                {
+                    case "Prefix":
+                        this.Prefix = xsetting.Value;
+                        break;
+                    case "Append":
+                        this.Append = xsetting.Value;
+                        break;
+                    case "Calculate":
+                        this._rules.Add(new CalculateRule(xsetting));
+                        break;
+                    case "Truncate":
+                        this._rules.Add(new TruncateRule(xsetting));
+                        break;
+                    default:
+                        break;
+                }
             }
-
-            x = InputXml.Element("Append");
-            if (x != null) { this.Append = x.Value; }
-
-            x = InputXml.Element("Prefix");
-            if (x != null) { this.Prefix = x.Value; }
         }
 
         private string Process()
         {
             string s = this.Input;
 
-            //if the input is empty, return 
             if (string.IsNullOrEmpty(s)) { return s; }
 
-            //try any calculations
-            try
-            {
-                if (!string.IsNullOrEmpty(this.Calculation))
-                {
-                    double result;
-                    s = Calculation.Replace("VALUE", this.Input);
-                    result = Calculator.CalculateString(s);
-
-                    if (this.DecimalPlaces != -1)
-                    { result = System.Math.Round(result, this.DecimalPlaces); }
-
-                    s = result.ToString();
-                }
-            }
-            // if there is an error in the calculation e.g. if a non-numeric string is the input, set
-            // s to the input value
-            catch { s = this.Input; }
+            foreach (IQueryRule rule in this._rules)
+            { s = rule.Process(s); }
 
             s = this.Prefix + s + this.Append;
 

@@ -87,6 +87,8 @@ namespace TsGui.View.Layout
             x = InputXml.Element("Formatting");
             if (x != null)
             {
+                this.Width = XmlHandler.GetDoubleFromXElement(x, "Width", this.Width);
+                this.Height = XmlHandler.GetDoubleFromXElement(x, "Height", this.Height);
                 this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(x, "LeftCellWidth", this.LeftCellWidth);
                 this.RightCellWidth = XmlHandler.GetDoubleFromXElement(x, "RightCellWidth", this.RightCellWidth);
                 this.LabelOnRight = XmlHandler.GetBoolFromXElement(x, "LabelOnRight", this.LabelOnRight);

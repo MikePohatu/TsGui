@@ -77,6 +77,8 @@
     <Compile Include="Calculator\Operator.cs" />
     <Compile Include="Control\ControlDelegates.cs" />
     <Compile Include="Grouping\GroupingEventArgs.cs" />
+    <Compile Include="Queries\CalculateRule.cs" />
+    <Compile Include="Queries\IQueryRule.cs" />
     <Compile Include="Queries\TruncateRule.cs" />
     <Compile Include="Validation\IValidationOwner.cs" />
     <Compile Include="Validation\StringValidation.cs" />

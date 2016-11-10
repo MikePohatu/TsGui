@@ -1,124 +1,111 @@
 <TsGui>
-	<Height>350</Height>
-	<Width>600</Width>
+    <Height>400</Height>
+	<Width>470</Width>
 
 	<HardwareEval />
-	
-	<Heading>
-		<Title>TsGui</Title>
-		<Text>Task Sequence GUI groups example config</Text>
+
+<Heading>
+		<Title>Windows 10 Image</Title>
+		<Text>Easy imaging tool</Text>
+		<Bg-Color>#FF006AD4</Bg-Color>
+		<Font-Color>#FFFFFF</Font-Color>
 	</Heading>
+	
+
+	<Footer>
+		<Text>TsGui by 20Road</Text>
+		<Height>17</Height>
+		<HAlign>right</HAlign>
+	</Footer>
 
 	<Page>
-		<Row>
-			<Column>
-				<LabelWidth>140</LabelWidth>
-				<ControlWidth>130</ControlWidth>
-
-				<GuiOption Type="CheckBox">
-					<Variable>TOGGLE_Test</Variable>
-					<Label>Toggle Test</Label>
-					<HAlign>left</HAlign>
-					
-					<Toggle Group="Group_Test">
-						<Enabled>TRUE</Enabled>
-						<Disabled>FALSE</Disabled>
-					</Toggle>
-				</GuiOption>
-			</Column>
-			<Column>
-				<Group>Group_Test</Group>
-				<Formatting>
-					<LeftCellWidth>110</LeftCellWidth>
-					<RightCellWidth>130</RightCellWidth>						
-					<Label>
-						<Font>
-							<Color>Black</Color>
-						</Font>							
-					</Label>
+		<Column>
+			<LabelWidth>170</LabelWidth>
+			<ControlWidth>250</ControlWidth>
+			
+			<GuiOption Type="ComputerName" />
 						
-					<Control>
-						<Font>
-							<Color>Blue</Color>
-						</Font>							
-					</Control>
-				</Formatting>
+			<GuiOption Type="CheckBox">
+				<Variable>TOGGLE_DiskID</Variable>
+				<Label>Choose disk</Label>
+				<HAlign>left</HAlign>
 				
-				<GuiOption Type="Heading">
-					<Label>Colour testing</Label>
-					<Bold /> 
-				</GuiOption>
+				<Toggle Group="Group_Disk">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+				</Toggle>
+			</GuiOption>
 			
-				<GuiOption Type="ComputerName">
-					<Validation ValidateEmpty="FALSE">
-						<Group>Group_2012r2</Group>
-						<Valid>
-							<Rule Type="StartsWith">S12-</Rule>
-						</Valid>
-					</Validation>
-					<Validation ValidateEmpty="FALSE">
-						<Group>Group_2016</Group>
-						<Valid>
-							<Rule Type="StartsWith">S16-</Rule>
-						</Valid>
-					</Validation>
-				</GuiOption>
+			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
+				<Group>Group_Disk</Group>
+				<Variable>OSDDiskIndex</Variable>
+				<Label>Disk</Label>
+				<DefaultValue>0</DefaultValue>
+				<Query Type="Wmi">
+					<Wql>select Index,Caption,Size FROM Win32_DiskDrive where MediaType='Fixed hard disk media'</Wql>
+					<Property Name="Index"/>
+					<Property Name="Index">
+						<Prefix>ID: </Prefix>
+					</Property>
+					<Property Name="Size">
+						<Calculate DecimalPlaces="2">VALUE/1073741824</Calculate>
+						<Append>GB</Append>
+					</Property>
+					<Property Name="Caption"/>					
+					<Separator> - </Separator>
+				</Query>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>VAR_NotepadPP</Variable>
+				<Label>Notepad++</Label>
+				<HAlign>Left</HAlign>
+				<Checked />
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>VAR_7zip</Variable>
+				<Label>7zip</Label>
+				<HAlign>left</HAlign>
+				<Checked />
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>SMSTSAssignUsersMode</Variable>
+				<Label>Set primary user</Label>
+				<TrueValue>Auto</TrueValue>
+				<FalseValue>Disabled</FalseValue>
+				<HAlign>left</HAlign>
 				
-				<GuiOption Type="FreeText">
-					<Variable>Engineer</Variable>
-					<Label>Engineer name:</Label>
-					<DefaultValue>
-						<Value>Jane Doe</Value>
-					</DefaultValue>
-					<HelpText>Enter the user to be using this device</HelpText>
-				</GuiOption>
+				<Toggle Group="Group_UDA">
+					<Enabled>Auto</Enabled>
+					<Disabled>Disabled</Disabled>
+				</Toggle>
+			</GuiOption>
 			
-				<GuiOption Type="DropDownList">
-					<Variable>VAR_OSVer</Variable>
-					<Label>OS:</Label>
-					<DefaultValue>2012r2</DefaultValue>
-					<Option>
-						<Toggle Group="Group_2012r2">
-							<Hide/>
-						</Toggle>
-						<Text>Server 2012 R2</Text>
-						<Value>2012r2</Value>
-					</Option>
-					<Option>
-						<Toggle Group="Group_2016">
-							<Hide/>
-						</Toggle>
-						<Text>Server 2016</Text>
-						<Value>2016</Value>
-					</Option>
-				</GuiOption>
-
-				<GuiOption Type="CheckBox">
-					<Variable>CheckTest</Variable>
-					<Label>CheckBox Test</Label>
-					<HAlign>left</HAlign>
-				</GuiOption>
-
-				<GuiOption Type="InfoBox" MaxLength="20">
-					<Disallowed>
-						<Characters>='-</Characters>
-					</Disallowed>
-					<Variable>INFO_Serial</Variable>
-					<Label>Serial: </Label>
-					<HelpText>Serial number of the device</HelpText>
-					
-					<!-- Query for the display value. Return the first valid value. Note
-					the Ignore values for evaluating the value returned by the query -->
-					<DisplayValue>
-						<Query Type="Wmi">
-							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
-							<Ignore>Parallels</Ignore>
-							<Ignore>VMWare</Ignore>
-						</Query>
-						<Value>Virtual machine</Value>
-					</DisplayValue>
-				</GuiOption>				
-			</Column>
-		</Row>
+			<GuiOption Type="Heading">
+				<Group>Group_UDA</Group>
+				<Label>User Device Affinity</Label>
+				<Bold /> 
+			</GuiOption>
+			
+			<GuiOption Type="FreeText" PurgeInactive="TRUE">
+				<Group>Group_UDA</Group>
+				<Variable>SMSTSUdaUsers</Variable>
+				<Label>User:</Label>
+				<DefaultValue>
+					<Value>Home\</Value>
+				</DefaultValue>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Group>Group_UDA</Group>
+				<Variable>VAR_UDACheck</Variable>
+				<Label>CHeck test</Label>
+				<HAlign>left</HAlign>
+				<Checked />
+			</GuiOption>
+		</Column>		
 	</Page>
+	
 </TsGui>

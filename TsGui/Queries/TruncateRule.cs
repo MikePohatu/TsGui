@@ -22,7 +22,7 @@ namespace TsGui.Queries
 {
     public enum TruncateRuleType { RemoveFromStart, RemoveFromEnd, KeepFromStart, KeepFromEnd};
 
-    public class TruncateRule
+    public class TruncateRule: IQueryRule
     {
         private TruncateRuleType _type;
         private int _number;
