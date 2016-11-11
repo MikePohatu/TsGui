@@ -93,6 +93,12 @@ namespace TsGui
                     this._isvm = true;
                     break;
                 }
+                //Parallels
+                if (model == "Parallels Virtual Platform")
+                {
+                    this._isvm = true;
+                    break;
+                }
             }
 
             //chassis type tests
