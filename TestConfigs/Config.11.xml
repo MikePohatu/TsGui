@@ -13,42 +13,50 @@
 		<Row>
 			<Column>
 				<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
-					<Disallowed>
-						<Characters>`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
-					</Disallowed>
-					<Variable>OSDComputerName_FullQuery</Variable>
+					<Validation ValidateEmpty="FALSE">
+						<!--<Group>Group_1</Group>-->
+					
+						<Message>Tooltip message to display on validation error</Message>			
+						<MaxLength>15</MaxLength>
+						<MinLength>1</MinLength>
+						<Invalid>
+							<Rule Type="Characters">`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Rule>
+						</Invalid>
+					</Validation>
+					<Variable>Model</Variable>
 					<Label>Computer Name:</Label>
 					<HelpText>Enter a computer name for the device</HelpText>
 					
 					<!-- Query for the default value. Return the first valid value. Note
 					the Ignore values for evaluating the value returned by the query -->
 					<DefaultValue>
-						<!--<Query Type="EnvironmentVariable">
-							<Variable>OSDComputerName</Variable>
-							<Ignore>MINNT</Ignore>
-							<Ignore>MINWIN</Ignore>						
-						</Query>				
-						<Query Type="EnvironmentVariable">
-							<Variable>_SMSTSMachineName</Variable>
-							<Ignore>MINNT</Ignore>
-							<Ignore>MINWIN</Ignore>					
-						</Query>					
-						<Query Type="EnvironmentVariable">
-							<Variable>ComputerName</Variable>
-							<Ignore>MINNT</Ignore>
-							<Ignore>MINWIN</Ignore>						
-						</Query>					
 						<Query Type="Wmi">
-							<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
-							<Ignore>No Asset Tag</Ignore>
-						</Query>					
-						<Query Type="Wmi">
-							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
+							<Wql>SELECT * FROM Win32_ComputerSystem</Wql>
+							<Property Name="Model"/>
 						</Query>
-						-->
 						<Value>Test 1 2 -3 -4 </Value>
 					</DefaultValue>
 				</GuiOption>
+				
+				<GuiOption Type="FreeText">
+					<Variable>VAR_BuildDate</Variable>
+					<Label>Build date:</Label>
+					<DefaultValue>
+						<Query Type="Wmi">
+							<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
+							<Property Name="Year">
+								<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
+								<Prefix>PC-</Prefix>
+							</Property>
+							<Property Name="Month"/>
+							<Property Name="Day"/>			
+							<Separator></Separator>
+						</Query>
+					</DefaultValue>
+					
+				</GuiOption>
+			
+				
 			</Column>
 		</Row>
 	</Page>

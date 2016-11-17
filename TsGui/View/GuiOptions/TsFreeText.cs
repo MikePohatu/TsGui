@@ -156,7 +156,8 @@ namespace TsGui.View.GuiOptions
                 if (this._controltext == null) { this._controltext = string.Empty; }
 
                 //if required, remove invalid characters and truncate
-                if (!string.IsNullOrEmpty(this._validationhandler.GetAllInvalidCharacters())) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
+                string invalchars = this._validationhandler.GetAllInvalidCharacters();
+                if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
             }
         }

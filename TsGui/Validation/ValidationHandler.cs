@@ -120,9 +120,12 @@ namespace TsGui.Validation
 
         public string GetAllInvalidCharacters()
         {
-            StringValidation sv = this.GetActiveValidation();
-            if (sv != null) { return sv.GetAllInvalidCharacters(); }
-            else { return null; }
+            string s = string.Empty;
+            foreach (StringValidation sv in this._validations)
+            {
+                if (sv.IsActive == true) { s = s + sv.GetAllInvalidCharacters(); }
+            }
+            return s;
         }
 
         private int GetMaxLength()
