@@ -37,10 +37,10 @@ namespace TsGui.View.Layout
         private double _footerHeight;
         private HorizontalAlignment _footerHAlignment;
         private bool _gridlines = false;
-        private Positioning _positioning = new Positioning();
+        private WindowLocation _positioning = new WindowLocation();
 
         //Properties
-        public Positioning Positioning { get { return this._positioning; } }
+        public WindowLocation Positioning { get { return this._positioning; } }
         public string HeadingText { get { return this._headingText; } }
         public int HeadingHeight { get { return this._headingHeight; } }
         public string HeadingTitle
@@ -194,7 +194,7 @@ namespace TsGui.View.Layout
                     GuiFactory.LoadHAlignment(x, ref this._footerHAlignment);
                 }
 
-                x = SourceXml.Element("Positioning");
+                x = SourceXml.Element("WindowLocation");
                 if (x != null) { this._positioning.LoadXml(x); }
 
                 this.Width = XmlHandler.GetDoubleFromXElement(SourceXml, "Width", this.Width);

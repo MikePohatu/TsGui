@@ -21,7 +21,7 @@ using System.Xml.Linq;
 
 namespace TsGui.View.Layout
 {
-    public class Positioning: INotifyPropertyChanged
+    public class WindowLocation: INotifyPropertyChanged
     {
         private double _left;
         private double _top;
@@ -55,13 +55,13 @@ namespace TsGui.View.Layout
         }
         #endregion
 
-        public Positioning(XElement InputXml)
+        public WindowLocation(XElement InputXml)
         {
             this.SetDefaults();
             this.LoadXml(InputXml);
         }
 
-        public Positioning()
+        public WindowLocation()
         {
             this.SetDefaults();
         }

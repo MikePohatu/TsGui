@@ -128,7 +128,7 @@
     <Compile Include="View\GuiOptions\GuiOptionBaseUI.xaml.cs">
       <DependentUpon>GuiOptionBaseUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Layout\Positioning.cs" />
+    <Compile Include="View\Layout\WindowLocation.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
     <Compile Include="Validation\ResultValidator.cs" />
     <Compile Include="Control\EnvironmentController.cs" />
