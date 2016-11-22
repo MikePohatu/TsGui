@@ -38,7 +38,7 @@ namespace TsGui
         private bool _prodmode = false;
         private bool _finished = false;
         private TsButtons _buttons = new TsButtons();
-        private TsMainWindow _mainWindow;
+        private TsMainWindow _tsmainWindow;
         private List<TsPage> _pages = new List<TsPage>();
         private EnvironmentController _envController = new EnvironmentController();
         private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
@@ -79,7 +79,7 @@ namespace TsGui
         {
             this._prodmode = this._envController.Init();
 
-            this._mainWindow = new TsMainWindow();
+            this._tsmainWindow = new TsMainWindow();
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
 
@@ -106,7 +106,8 @@ namespace TsGui
             foreach (IToggleControl t in this._toggles)
             { t.InitialiseToggle(); }
 
-            this.ParentWindow.DataContext = this._mainWindow;
+            this.ParentWindow.DataContext = this._tsmainWindow;
+            this.ParentWindow.WindowStartupLocation = this._tsmainWindow.Positioning.StartupLocation;
             this.UpdateWindow();
             this.ParentWindow.Visibility = Visibility.Visible;
         }
@@ -146,7 +147,7 @@ namespace TsGui
 
             IEnumerable<XElement> pagesXml;
 
-            this._mainWindow.LoadXml(SourceXml);
+            this._tsmainWindow.LoadXml(SourceXml);
 
             if (SourceXml != null)
             {
@@ -163,12 +164,12 @@ namespace TsGui
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
 
                 PageDefaults pagedef = new PageDefaults();
-                pagedef.HeadingTitle = this._mainWindow.HeadingTitle;
-                pagedef.HeadingText = this._mainWindow.HeadingText;
-                pagedef.HeadingBgColor = this._mainWindow.HeadingBgColor;
-                pagedef.HeadingFontColor = this._mainWindow.HeadingFontColor;
+                pagedef.HeadingTitle = this._tsmainWindow.HeadingTitle;
+                pagedef.HeadingText = this._tsmainWindow.HeadingText;
+                pagedef.HeadingBgColor = this._tsmainWindow.HeadingBgColor;
+                pagedef.HeadingFontColor = this._tsmainWindow.HeadingFontColor;
                 pagedef.Buttons = this._buttons;
-                pagedef.Parent = this._mainWindow;
+                pagedef.Parent = this._tsmainWindow;
                 pagedef.RootController = this;
 
                 //now read in the options and add to a dictionary for later use

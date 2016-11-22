@@ -138,6 +138,18 @@ namespace TsGui
             else { return DefaultValue; }
         }
 
+        public static WindowStartupLocation GetWindowStartupLocationFromXElement(XElement InputXml, string XName, WindowStartupLocation DefaultValue)
+        {
+            XElement x = InputXml.Element(XName);
+            if (x != null)
+            {
+                if (x.Value.ToUpper() == "MANUAL") { return WindowStartupLocation.Manual; }
+                else if (x.Value.ToUpper() == "CENTEROWNER") { return WindowStartupLocation.CenterOwner; }
+                else { return WindowStartupLocation.CenterScreen; }
+            }
+            else { return DefaultValue; }
+        }
+
         //XAttribute functions
         public static string GetStringFromXAttribute(XElement InputXml, string XName, string DefaultValue)
         {

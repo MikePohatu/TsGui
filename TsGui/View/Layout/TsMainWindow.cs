@@ -21,7 +21,6 @@ using System.Windows;
 using System.Windows.Media;
 using System.ComponentModel;
 
-using TsGui;
 using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
@@ -38,10 +37,10 @@ namespace TsGui.View.Layout
         private double _footerHeight;
         private HorizontalAlignment _footerHAlignment;
         private bool _gridlines = false;
-
-        
+        private Positioning _positioning = new Positioning();
 
         //Properties
+        public Positioning Positioning { get { return this._positioning; } }
         public string HeadingText { get { return this._headingText; } }
         public int HeadingHeight { get { return this._headingHeight; } }
         public string HeadingTitle
@@ -151,48 +150,52 @@ namespace TsGui.View.Layout
         public void LoadXml(XElement SourceXml)
         {
 
+            XElement subx;
             XElement x;
 
             if (SourceXml != null)
             {
 
-                XElement headingX = SourceXml.Element("Heading");
-                if (headingX != null)
+                x = SourceXml.Element("Heading");
+                if (x != null)
                 {
-                    x = headingX.Element("Title");
-                    if (x != null) { this.HeadingTitle = x.Value; }
+                    subx = x.Element("Title");
+                    if (subx != null) { this.HeadingTitle = subx.Value; }
 
-                    x = headingX.Element("Text");
-                    if (x != null) { this._headingText = x.Value; }
+                    subx = x.Element("Text");
+                    if (subx != null) { this._headingText = subx.Value; }
 
-                    x = headingX.Element("Height");
-                    if (x != null) { this._headingHeight = Convert.ToInt32(x.Value); }
+                    subx = x.Element("Height");
+                    if (subx != null) { this._headingHeight = Convert.ToInt32(subx.Value); }
 
-                    x = headingX.Element("Bg-Color");
-                    if (x != null)
+                    subx = x.Element("Bg-Color");
+                    if (subx != null)
                     {
-                        this.HeadingBgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value));
+                        this.HeadingBgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(subx.Value));
                     }
 
-                    x = headingX.Element("Font-Color");
-                    if (x != null)
+                    subx = x.Element("Font-Color");
+                    if (subx != null)
                     {
-                        this.HeadingFontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value));
+                        this.HeadingFontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(subx.Value));
                     }
 
                 }
 
-                XElement footerX = SourceXml.Element("Footer");
-                if (footerX != null)
+                x = SourceXml.Element("Footer");
+                if (x != null)
                 {
-                    x = footerX.Element("Text");
-                    if (x != null) { this.FooterText = x.Value; }
+                    subx = x.Element("Text");
+                    if (subx != null) { this.FooterText = subx.Value; }
 
-                    x = footerX.Element("Height");
-                    if (x != null) { this.FooterHeight = Convert.ToInt32(x.Value); }
+                    subx = x.Element("Height");
+                    if (subx != null) { this.FooterHeight = Convert.ToInt32(subx.Value); }
 
-                    GuiFactory.LoadHAlignment(footerX, ref this._footerHAlignment);
+                    GuiFactory.LoadHAlignment(x, ref this._footerHAlignment);
                 }
+
+                x = SourceXml.Element("Positioning");
+                if (x != null) { this._positioning.LoadXml(x); }
 
                 this.Width = XmlHandler.GetDoubleFromXElement(SourceXml, "Width", this.Width);
                 this.Height = XmlHandler.GetDoubleFromXElement(SourceXml, "Height", this.Height);
