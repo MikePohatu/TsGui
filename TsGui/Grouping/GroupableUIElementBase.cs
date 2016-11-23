@@ -92,6 +92,7 @@ namespace TsGui.Grouping
             //register grouping events from the parent element
             this._parent = Parent;
             this._parent.GroupingStateChange += this.OnParentGoupingStateChange;
+            this._purgeinactive = Parent.PurgeInactive;
         }
         //Events
         #region
