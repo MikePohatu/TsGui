@@ -61,7 +61,9 @@
 		</Row>
 	</Page>
 	
-	<Container PurgeInactive="TRUE">
-		<BlindOption Variable="BlindOption_1" Value="BlindOption_1_Val"/>
-	</Container>
+	<NoUI>
+		<Container PurgeInactive="TRUE">
+			<BlindOption Variable="BlindOption_1" Value="BlindOption_1_Val"/>
+		</Container>
+	</NoUI>
 </TsGui>

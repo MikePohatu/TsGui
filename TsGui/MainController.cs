@@ -24,7 +24,7 @@ using System.Windows;
 using System.ComponentModel;
 
 using TsGui.View.Layout;
-using TsGui.View.GuiOptions;
+using TsGui.Blind;
 
 using TsGui.Grouping;
 
@@ -45,7 +45,7 @@ namespace TsGui
         private List<IToggleControl> _toggles = new List<IToggleControl>();
         private OptionLibrary _optionlibrary = new OptionLibrary();
         private HardwareEvaluator _chassischeck;
-
+        private NoUIContainer _nouicontainer;
         //properties
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
@@ -203,6 +203,12 @@ namespace TsGui
                     }
 
                     //currPage.IsLast = true;
+                }
+
+                x = SourceXml.Element("NoUI");
+                if (x != null)
+                {
+                    this._nouicontainer = new NoUIContainer(this, x);
                 }
             }
         }

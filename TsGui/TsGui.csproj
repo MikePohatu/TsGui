@@ -73,7 +73,7 @@
     </Compile>
     <Compile Include="Arguments.cs" />
     <Compile Include="Blind\BlindOption.cs" />
-    <Compile Include="Blind\Container.cs" />
+    <Compile Include="Blind\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />

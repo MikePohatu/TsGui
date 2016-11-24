@@ -33,9 +33,25 @@ namespace TsGui.Blind
         }
         public TsVariable Variable { get { return new TsVariable(this.VariableName, this._value); } }
 
+        //constructors
         public BlindOption(MainController MainController) : base(MainController) { }
-        public BlindOption(GroupableBase Parent, MainController MainController) : base(Parent, MainController) { }
+        public BlindOption(NoUIContainer Parent, MainController MainController) : base(Parent, MainController)
+        {
+            Parent.GroupingStateChange += this.OnParentGoupingStateChange;
+            this._parent = Parent;          
+        }
+        public BlindOption(MainController MainController, XElement InputXml) : base(MainController)
+        {
+            this.LoadXml(InputXml);
+        }
+        public BlindOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(MainController)
+        {
+            Parent.GroupingStateChange += this.OnParentGoupingStateChange;
+            this._parent = Parent;
+            this.LoadXml(InputXml);
+        }
 
+        //public methods
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
