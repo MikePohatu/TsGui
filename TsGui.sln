@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestConfigs", "TestConfigs"
 		TestConfigs\Config.10.xml = TestConfigs\Config.10.xml
 		TestConfigs\Config.11.xml = TestConfigs\Config.11.xml
 		TestConfigs\Config.12.xml = TestConfigs\Config.12.xml
+		TestConfigs\Config.13.xml = TestConfigs\Config.13.xml
 		TestConfigs\Config.2.xml = TestConfigs\Config.2.xml
 		TestConfigs\Config.3.xml = TestConfigs\Config.3.xml
 		TestConfigs\Config.4.xml = TestConfigs\Config.4.xml
