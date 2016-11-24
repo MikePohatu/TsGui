@@ -13,23 +13,16 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// OptionLibrary.cs - class for the MainController to keep track of all the IGuiOption in 
-// the app
-
-using System.Collections.Generic;
-using TsGui.View.GuiOptions;
+// IOption.cs - option interface. Base interface to apply to both GuiOptions and BlindOptions
 
 namespace TsGui
 {
-    class OptionLibrary
+    public interface IOption
     {
-        private List<IOption> _options = new List<IOption>();
-
-        public List<IOption> Options { get { return this._options; } }
-
-        public void Add(IOption Option)
-        {
-            this._options.Add(Option);
-        }
+        TsVariable Variable { get; }
+        string VariableName { get; }
+        string InactiveValue { get; }
+        bool PurgeInactive { get; set; }
+        bool IsActive { get; }
     }
 }

@@ -20,7 +20,7 @@ using System.Xml.Linq;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsHeading : GuiOptionBase, IGuiOption_2
+    public class TsHeading : GuiOptionBase, IGuiOption
     {
         private string _controltext;
         

@@ -29,12 +29,12 @@ namespace TsGui.View.Layout
     {
         private Grid _rowpanel;
         private List<TsColumn> _columns = new List<TsColumn>();
-        private TsPage _parent;
-        private List<IGuiOption_2> _options = new List<IGuiOption_2>();
+        private new TsPage _parent;
+        private List<IGuiOption> _options = new List<IGuiOption>();
 
         //properties
         #region
-        public List<IGuiOption_2> Options { get { return this._options; } }
+        public List<IGuiOption> Options { get { return this._options; } }
         public TsPage Parent { get { return this._parent; } }
         public int Index { get; set; }
         public Panel Panel { get { return this._rowpanel; } }

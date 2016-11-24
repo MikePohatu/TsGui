@@ -13,23 +13,18 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// OptionLibrary.cs - class for the MainController to keep track of all the IGuiOption in 
-// the app
+// Container.cs - container for BlindOptions
 
 using System.Collections.Generic;
-using TsGui.View.GuiOptions;
+using TsGui.Grouping;
 
-namespace TsGui
+namespace TsGui.Blind
 {
-    class OptionLibrary
+    public class Container: GroupableBase
     {
         private List<IOption> _options = new List<IOption>();
 
-        public List<IOption> Options { get { return this._options; } }
-
-        public void Add(IOption Option)
-        {
-            this._options.Add(Option);
-        }
+        public Container(MainController MainController) : base(MainController) { }
+        public Container(GroupableBase Parent, MainController MainController) : base(Parent, MainController) { }
     }
 }

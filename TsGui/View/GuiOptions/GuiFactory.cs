@@ -25,7 +25,7 @@ namespace TsGui.View.GuiOptions
 {
     public static class GuiFactory
     {
-        public static IGuiOption_2 CreateGuiOption(XElement OptionXml, TsColumn Parent, MainController RootController)
+        public static IGuiOption CreateGuiOption(XElement OptionXml, TsColumn Parent, MainController RootController)
         {
             #region
             if (OptionXml.Attribute("Type").Value == "TextBlock")

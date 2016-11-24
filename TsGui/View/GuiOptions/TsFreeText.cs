@@ -28,7 +28,7 @@ using System.Windows.Media;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsFreeText: GuiOptionBase, IGuiOption_2, IEditableGuiOption
+    public class TsFreeText: GuiOptionBase, IGuiOption, IEditableGuiOption
     {
         protected TsFreeTextUI _freetextui;
         protected ToolTip _validationtooltip;

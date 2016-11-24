@@ -35,18 +35,17 @@ namespace TsGui.View.Layout
         private SolidColorBrush _headingBgColor;
         private SolidColorBrush _headingFontColor;
         private List<TsRow> _rows = new List<TsRow>();
-        private List<IGuiOption_2> _options = new List<IGuiOption_2>();
+        private List<IGuiOption> _options = new List<IGuiOption>();
         private List<IEditableGuiOption> _editables = new List<IEditableGuiOption>();
         private Grid _pagepanel;
         private PageLayout _pagelayout;
         private TsPage _previouspage;
         private TsPage _nextpage;
-        private TsMainWindow _parent;
         private bool _isfirst = false;
+        private new TsMainWindow _parent;
 
         //Properties
         #region
-        public TsMainWindow Parent { get { return this._parent; } }
         public TsPage NextActivePage
         {
             get
@@ -119,7 +118,7 @@ namespace TsGui.View.Layout
             get { return this._nextpage; }
             set { this.ConnectNextPage(value); }
         }        
-        public List<IGuiOption_2> Options { get { return this._options; } }
+        public List<IGuiOption> Options { get { return this._options; } }
         public PageLayout Page { get { return this._pagelayout; } }
         public bool IsFirst
         {
@@ -272,7 +271,7 @@ namespace TsGui.View.Layout
                 this._options.AddRange(row.Options);
             }
 
-            foreach (IGuiOption_2 option in this._options)
+            foreach (IGuiOption option in this._options)
             {
                 if (option is IEditableGuiOption) { this._editables.Add((IEditableGuiOption)option); }
             }

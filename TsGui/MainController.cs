@@ -209,7 +209,7 @@ namespace TsGui
 
         //add options from sub classes to the main library. used to generate the final list of 
         //tsvariables
-        public void AddOptionToLibary(IGuiOption_2 Option)
+        public void AddOptionToLibary(IOption Option)
         {
             this._optionlibrary.Add(Option);
         }
@@ -249,7 +249,7 @@ namespace TsGui
         /// <param name="ID"></param>
         /// <param name="Element"></param>
         /// <returns></returns>
-        public Group AddToGroup (string ID, IGroupableUIElement Element)
+        public Group AddToGroup (string ID, GroupableBase Element)
         {
             Group group = this.GetGroupFromID(ID);
             group.Add(Element);
@@ -298,13 +298,13 @@ namespace TsGui
         //finish and create the TS Variables
         public void Finish()
         {
-            foreach (IGuiOption_2 option in this._optionlibrary.Options)
+            foreach (IOption option in this._optionlibrary.Options)
             {
                 //first check for null option variables e.g. for headings
                 if (option.Variable != null)
                 {
                     //now check if the option is active or not and variables created as required
-                    if ((option.IsEnabled == true) && (option.IsHidden == false))
+                    if (option.IsActive == true)
                     { this._envController.AddVariable(option.Variable); }
                     else
                     { this._envController.AddVariable(new TsVariable(option.VariableName,option.InactiveValue)); }

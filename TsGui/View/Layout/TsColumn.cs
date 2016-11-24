@@ -28,15 +28,15 @@ namespace TsGui
 {
     public class TsColumn : BaseLayoutElement
     {
-        private List<IGuiOption_2> _options = new List<IGuiOption_2>();
+        private List<IGuiOption> _options = new List<IGuiOption>();
         private Grid _columnpanel;
-        private TsRow _parent;
+        private new TsRow _parent;
 
         //properties
         #region
         public TsRow Parent { get { return this._parent; } }
         public int Index { get; set; }
-        public List<IGuiOption_2> Options { get { return this._options; } }
+        public List<IGuiOption> Options { get { return this._options; } }
         public Panel Panel { get { return this._columnpanel; } }
         
         #endregion
@@ -67,7 +67,7 @@ namespace TsGui
         private new void LoadXml(XElement InputXml)
         {
             IEnumerable<XElement> xlist;
-            IGuiOption_2 newOption;
+            IGuiOption newOption;
             int index = 0;
 
             base.LoadXml(InputXml);

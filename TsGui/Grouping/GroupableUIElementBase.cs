@@ -22,19 +22,14 @@ using System.Xml.Linq;
 
 namespace TsGui.Grouping
 {
-    public abstract class GroupableUIElementBase: IGroupableUIElement, IGroupChild, INotifyPropertyChanged
+    public abstract class GroupableUIElementBase: GroupableBase, IGroupableUIElement, IGroupChild, INotifyPropertyChanged
     {
-        protected MainController _controller;
         protected bool _isenabled = true;
         protected bool _ishidden = false;
-        private List<Group> _groups = new List<Group>();
         private Visibility _visibility = Visibility.Visible;
-        private bool _purgeinactive = false;
-        private GroupableUIElementBase _parent;
+        private new GroupableUIElementBase _parent;
 
-        public List<Group> Groups { get { return this._groups; } }
-
-        public bool IsActive
+        public new bool IsActive
         {
             get
             {
@@ -73,50 +68,28 @@ namespace TsGui.Grouping
             get { return this._visibility; }
             set { this._visibility = value; this.OnPropertyChanged(this, "Visibility"); }
         }
-        public bool PurgeInactive
-        {
-            get { return this._purgeinactive; }
-            set { this._purgeinactive = value; }
-        }
 
         //Constructor
-        public GroupableUIElementBase(MainController MainController)
+        public GroupableUIElementBase(MainController MainController) : base(MainController) { }
+        public GroupableUIElementBase(GroupableUIElementBase Parent, MainController MainController): base(Parent, MainController)
         {
-            this._controller = MainController;
-        }
-
-        public GroupableUIElementBase(GroupableUIElementBase Parent, MainController MainController)
-        {
-            this._controller = MainController;
-
-            //register grouping events from the parent element
             this._parent = Parent;
             this._parent.GroupingStateChange += this.OnParentGoupingStateChange;
-            this._purgeinactive = Parent.PurgeInactive;
         }
+        
         //Events
         #region
         //Setup the INotifyPropertyChanged interface 
-        public event PropertyChangedEventHandler PropertyChanged;
         public event GrouableStateChange GroupingStateChange;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(object sender, string name)
         {
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
-
-        public void OnParentGoupingStateChange(object o, GroupingEventArgs e)
-        {
-            this.EvaluateGroups();
-        }
-
-        public void OnGroupStateChange()
-        {
-            this.EvaluateGroups();
-        }
         #endregion
 
-        protected void EvaluateGroups()
+        protected new void EvaluateGroups()
         {
             GroupState groupsstate = GroupState.Hidden;
             GroupState parentstate = GroupState.Enabled;
@@ -167,18 +140,6 @@ namespace TsGui.Grouping
             { this.Visibility = Visibility.Collapsed; }
             else
             { this.Visibility = Visibility.Visible; }
-        }
-
-        protected void LoadXml(XElement InputXml)
-        {
-            this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
-
-            IEnumerable<XElement> xGroups = InputXml.Elements("Group");
-            if (xGroups != null)
-            {
-                foreach (XElement xGroup in xGroups)
-                { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
-            }
         }
     }
 }

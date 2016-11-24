@@ -21,7 +21,7 @@ using System.Windows;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsInfoBox : GuiOptionBase, IGuiOption_2
+    public class TsInfoBox : GuiOptionBase, IGuiOption
     {
         private string _controltext;
 

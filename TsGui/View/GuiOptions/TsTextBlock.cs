@@ -21,7 +21,7 @@ using TsGui.Validation;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsTextBlock: GuiOptionBase, IGuiOption_2
+    public class TsTextBlock: GuiOptionBase, IGuiOption
     {
         private string _controltext;
         private StringValidation _stringvalidation;

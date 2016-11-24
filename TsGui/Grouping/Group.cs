@@ -25,7 +25,7 @@ namespace TsGui.Grouping
     {
         public event GroupStateChange StateEvent;
         
-        private List<IGroupableUIElement> _elements;
+        private List<GroupableBase> _groupables;
         private GroupState _state;
 
         //properties
@@ -41,22 +41,22 @@ namespace TsGui.Grouping
         }
         public bool PurgeInactive { get; set; }
         public string ID { get; set; }
-        public int Count { get { return this._elements.Count; } }
+        public int Count { get { return this._groupables.Count; } }
         #endregion
 
         //constructor
         public Group (string ID)
         {
-            this._elements = new List<IGroupableUIElement>();
+            this._groupables = new List<GroupableBase>();
             this.ID = ID;
             this.State = GroupState.Enabled;
             this.PurgeInactive = false;
         }
 
         //method
-        public void Add(IGroupableUIElement GroupableElement)
+        public void Add(GroupableBase GroupableElement)
         {
-            this._elements.Add(GroupableElement);
+            this._groupables.Add(GroupableElement);
             this.StateEvent += GroupableElement.OnGroupStateChange;
         }
     }

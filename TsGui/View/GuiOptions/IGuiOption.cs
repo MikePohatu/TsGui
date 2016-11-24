@@ -15,17 +15,12 @@
 
 // IGuiOption_2.cs - controls to apply to the gui. 
 
-using System.Windows.Controls;
 using TsGui.Grouping;
 
 namespace TsGui.View.GuiOptions
 {
-    public interface IGuiOption_2: IGroupChild
+    public interface IGuiOption: IGroupChild, IOption
     {
-        TsVariable Variable { get; }
-        string VariableName { get; }
-        string InactiveValue { get; }
         GuiOptionBaseUI UserControl { get; }
-        bool PurgeInactive { get; set; }
     }
 }

@@ -72,10 +72,14 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Arguments.cs" />
+    <Compile Include="Blind\BlindOption.cs" />
+    <Compile Include="Blind\Container.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
     <Compile Include="Control\ControlDelegates.cs" />
+    <Compile Include="Control\IOption.cs" />
+    <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="Grouping\GroupingEventArgs.cs" />
     <Compile Include="Queries\PrefixRule.cs" />
     <Compile Include="Queries\CalculateRule.cs" />
@@ -104,7 +108,7 @@
     </Compile>
     <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
-    <Compile Include="View\GuiOptions\IGuiOption_2.cs" />
+    <Compile Include="View\GuiOptions\IGuiOption.cs" />
     <Compile Include="View\GuiOptions\TsDropDownList.cs" />
     <Compile Include="View\GuiOptions\TsDropDownListUI.xaml.cs">
       <DependentUpon>TsDropDownListUI.xaml</DependentUpon>

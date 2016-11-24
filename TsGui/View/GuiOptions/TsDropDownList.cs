@@ -23,7 +23,7 @@ using TsGui.Grouping;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsDropDownList: GuiOptionBase, IGuiOption_2, IToggleControl
+    public class TsDropDownList: GuiOptionBase, IGuiOption, IToggleControl
     {
         public event ToggleEvent ToggleEvent;
 
