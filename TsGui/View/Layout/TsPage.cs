@@ -42,7 +42,7 @@ namespace TsGui.View.Layout
         private TsPage _previouspage;
         private TsPage _nextpage;
         private bool _isfirst = false;
-        private new TsMainWindow _parent;
+        private TsMainWindow _parent;
 
         //Properties
         #region

@@ -30,7 +30,7 @@ namespace TsGui
     {
         private List<IGuiOption> _options = new List<IGuiOption>();
         private Grid _columnpanel;
-        private new TsRow _parent;
+        private TsRow _parent;
 
         //properties
         #region

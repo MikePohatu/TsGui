@@ -27,7 +27,7 @@ namespace TsGui.View.Layout
         private double _rightcellwidth;
         private double _width;
         private double _height;
-        private new BaseLayoutElement _parent;
+        private BaseLayoutElement _parent;
 
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }

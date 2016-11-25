@@ -25,15 +25,19 @@ namespace TsGui.Blind
     {
         private List<IOption> _options = new List<IOption>();
         private List<NoUIContainer> _containers = new List<NoUIContainer>();
-
-        public NoUIContainer(MainController MainController) : base(MainController) { }
-        public NoUIContainer(NoUIContainer Parent, MainController MainController) : base(Parent, MainController) { }
+        
+        //constructors
         public NoUIContainer(MainController MainController,XElement InputXml) : base(MainController)
         {
             this.LoadXml(InputXml);
         }
+        public NoUIContainer(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent, MainController)
+        {
+            this.LoadXml(InputXml);
+        }
 
-        public new void LoadXml(XElement InputXml)
+        //methods
+        private new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
             foreach (XElement opx in InputXml.Elements())
@@ -45,7 +49,7 @@ namespace TsGui.Blind
 
                 else if (opx.Name == "Container")
                 {
-                    this._containers.Add(new NoUIContainer(this._controller, opx));
+                    this._containers.Add(new NoUIContainer(this,this._controller, opx));
                 }
             }
         }

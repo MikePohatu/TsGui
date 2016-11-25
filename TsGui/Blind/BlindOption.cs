@@ -57,6 +57,7 @@ namespace TsGui.Blind
 
             this.VariableName = XmlHandler.GetStringFromXAttribute(InputXml, "Variable", this.VariableName);
             this._value = XmlHandler.GetStringFromXAttribute(InputXml, "Value", this._value);
+            this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
         }
     }
 }

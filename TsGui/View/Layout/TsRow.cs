@@ -29,7 +29,7 @@ namespace TsGui.View.Layout
     {
         private Grid _rowpanel;
         private List<TsColumn> _columns = new List<TsColumn>();
-        private new TsPage _parent;
+        private TsPage _parent;
         private List<IGuiOption> _options = new List<IGuiOption>();
 
         //properties
