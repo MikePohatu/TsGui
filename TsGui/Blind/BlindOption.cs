@@ -17,13 +17,15 @@
 
 using System.Xml.Linq;
 using TsGui.Grouping;
+using TsGui.Validation;
 
 namespace TsGui.Blind
 {
-    public class BlindOption: GroupableBlindBase,IOption
+    public class BlindOption: GroupableBlindBase,IOption, IValidationOwner
     {
         private string _inactivevalue = "TSGUI_INACTIVE";
         private string _value;
+        private ValidationHandler _validationhandler;
 
         public string VariableName { get; set; }
         public string InactiveValue
@@ -45,6 +47,7 @@ namespace TsGui.Blind
         //constructors     
         public BlindOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent,MainController)
         {
+            this._validationhandler = new ValidationHandler(this, MainController);
             this.LoadXml(InputXml);
         }
 
@@ -52,6 +55,7 @@ namespace TsGui.Blind
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
+            this._validationhandler.AddValidations(InputXml.Elements("Validation"));
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
             this._value = XmlHandler.GetStringFromXElement(InputXml, "Value", this._value);
 
@@ -59,5 +63,8 @@ namespace TsGui.Blind
             this._value = XmlHandler.GetStringFromXAttribute(InputXml, "Value", this._value);
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
         }
+
+        public void OnValidationChange()
+        { }
     }
 }

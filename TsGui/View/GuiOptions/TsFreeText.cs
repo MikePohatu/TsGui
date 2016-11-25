@@ -125,16 +125,9 @@ namespace TsGui.View.GuiOptions
 
             this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", this.MaxLength);
             this._validationhandler.LoadLegacyXml(InputXml);
+            this._validationhandler.AddValidations(InputXml.Elements("Validation"));
 
-            XElement x;
-            IEnumerable<XElement> xlist;
-
-            xlist = InputXml.Elements("Validation");
-            if (xlist != null)
-            {
-                foreach (XElement xval in xlist)
-                this._validationhandler.AddValidation(xval);
-            }
+            XElement x;         
 
             x = InputXml.Element("DefaultValue");
             if (x != null)

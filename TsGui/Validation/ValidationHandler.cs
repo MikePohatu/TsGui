@@ -57,6 +57,13 @@ namespace TsGui.Validation
             Validation.RevalidationRequired += this._owner.OnValidationChange;
         }
 
+        public void AddValidations(IEnumerable<XElement> InputXmlList)
+        {
+            if (InputXmlList == null) { return; }
+            foreach (XElement xval in InputXmlList)
+            { this.AddValidation(xval); }   
+        }
+
         public void LoadLegacyXml(XElement InputXml)
         {
             XElement x;
