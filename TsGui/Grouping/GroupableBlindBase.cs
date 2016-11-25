@@ -15,8 +15,6 @@
 
 // GroupableBlindBase.cs - base class for grouable blind/noui objects
 
-using System.Xml.Linq;
-
 namespace TsGui.Grouping
 {
     public abstract class GroupableBlindBase: GroupableBase

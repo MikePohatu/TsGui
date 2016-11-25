@@ -16,8 +16,6 @@
 // Group.cs - groups of elements to be enabled and disabled by a toggle
 
 using System.Collections.Generic;
-using System;
-//using System.Diagnostics;
 
 namespace TsGui.Grouping
 {
