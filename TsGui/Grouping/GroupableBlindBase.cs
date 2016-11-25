@@ -15,38 +15,49 @@
 
 // GroupableBlindBase.cs - base class for grouable blind/noui objects
 
+using System.Xml.Linq;
+
 namespace TsGui.Grouping
 {
-    public class GroupableBlindBase: GroupableBase
+    public abstract class GroupableBlindBase: GroupableBase
     {
+        protected GroupableBlindBase _parent;
+
+        public bool IsActive
+        {
+            get { return this._isactive; }
+            set
+            {
+                this._isactive = value;
+                this.GroupingStateChange?.Invoke(this, new GroupingEventArgs(GroupStateChanged.IsEnabled));
+            }
+        }
+
         //Constructor
         public GroupableBlindBase(MainController MainController) : base(MainController) { }
         public GroupableBlindBase(GroupableBlindBase Parent, MainController MainController): base(Parent, MainController)
         {
-            Parent.GroupingStateChange += this.OnParentGoupingStateChange;
             this._parent = Parent;
+            this._parent.GroupingStateChange += this.OnParentGoupingStateChange;
         }
 
         //Events
-        #region
-        //Setup the INotifyPropertyChanged interface 
-        public event GrouableStateChange GroupingStateChange;
-        #endregion
+        public override event GrouableStateChange GroupingStateChange;
 
         protected override void EvaluateGroups()
         {
             if (this._parent != null)
             {
                 if (this._parent.IsActive == false)
-                { this._isactive = false; return; }
+                { this.IsActive = false; return; }
             }
 
             foreach (Group g in this._groups)
             {
-                if (g.State == GroupState.Disabled) { this._isactive = false; return; }
+                if (g.State == GroupState.Disabled) { this.IsActive = false; return; }
             }
 
-            this._isactive = true;
+            this.IsActive = true;
         }
     }
 }

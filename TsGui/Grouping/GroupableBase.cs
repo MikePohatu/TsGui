@@ -26,11 +26,8 @@ namespace TsGui.Grouping
         protected bool _isactive = true;
         protected List<Group> _groups = new List<Group>();
         protected bool _purgeinactive = false;
-        protected GroupableBase _parent;
 
         public List<Group> Groups { get { return this._groups; } }
-
-        public bool IsActive { get { return this._isactive; } }
         public bool PurgeInactive
         {
             get { return this._purgeinactive; }
@@ -48,8 +45,11 @@ namespace TsGui.Grouping
             this._controller = MainController;
             this._purgeinactive = Parent.PurgeInactive;
         }
+
         //Events
         #region
+        public abstract event GrouableStateChange GroupingStateChange;
+
         public void OnParentGoupingStateChange(object o, GroupingEventArgs e)
         {
             this.EvaluateGroups();

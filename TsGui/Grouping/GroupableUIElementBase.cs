@@ -17,8 +17,6 @@
 
 using System.Windows;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace TsGui.Grouping
 {
@@ -27,9 +25,9 @@ namespace TsGui.Grouping
         protected bool _isenabled = true;
         protected bool _ishidden = false;
         private Visibility _visibility = Visibility.Visible;
-        private new GroupableUIElementBase _parent;
+        private GroupableUIElementBase _parent;
 
-        public new bool IsActive
+        public bool IsActive
         {
             get
             {
@@ -76,11 +74,11 @@ namespace TsGui.Grouping
             this._parent = Parent;
             this._parent.GroupingStateChange += this.OnParentGoupingStateChange;
         }
-        
+
         //Events
         #region
         //Setup the INotifyPropertyChanged interface 
-        public event GrouableStateChange GroupingStateChange;
+        public override event GrouableStateChange GroupingStateChange;
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(object sender, string name)
@@ -89,6 +87,7 @@ namespace TsGui.Grouping
         }
         #endregion
 
+        //methods
         protected override void EvaluateGroups()
         {
             GroupState groupsstate = GroupState.Hidden;

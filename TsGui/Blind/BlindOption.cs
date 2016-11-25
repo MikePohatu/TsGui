@@ -31,23 +31,20 @@ namespace TsGui.Blind
             get { return this._inactivevalue; }
             set { this._inactivevalue = value; }
         }
-        public TsVariable Variable { get { return new TsVariable(this.VariableName, this._value); } }
+        public TsVariable Variable
+        {
+            get
+            {
+                if ((this.IsActive == false) && (this.PurgeInactive == true))
+                { return null; }
+                else
+                { return new TsVariable(this.VariableName, this._value); }
+            }
+        }
 
-        //constructors
-        public BlindOption(MainController MainController) : base(MainController) { }
-        public BlindOption(NoUIContainer Parent, MainController MainController) : base(Parent, MainController)
+        //constructors     
+        public BlindOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent,MainController)
         {
-            Parent.GroupingStateChange += this.OnParentGoupingStateChange;
-            this._parent = Parent;          
-        }
-        public BlindOption(MainController MainController, XElement InputXml) : base(MainController)
-        {
-            this.LoadXml(InputXml);
-        }
-        public BlindOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(MainController)
-        {
-            Parent.GroupingStateChange += this.OnParentGoupingStateChange;
-            this._parent = Parent;
             this.LoadXml(InputXml);
         }
 

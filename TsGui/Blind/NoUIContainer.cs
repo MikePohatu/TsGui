@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// Container.cs - container for BlindOptions
+// NoUIContainer.cs - container for BlindOptions
 
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -32,12 +32,6 @@ namespace TsGui.Blind
         {
             this.LoadXml(InputXml);
         }
-
-        //Events
-        #region
-        //Setup the INotifyPropertyChanged interface 
-        public event GrouableStateChange GroupingStateChange;
-        #endregion
 
         public new void LoadXml(XElement InputXml)
         {
