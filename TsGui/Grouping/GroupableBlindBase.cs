@@ -48,16 +48,17 @@ namespace TsGui.Grouping
         {
             if (this._parent != null)
             {
-                if (this._parent.IsActive == false)
-                { this.IsActive = false; return; }
+                if (this._parent.IsActive == false) { this.IsActive = false; return; }
             }
+
+            if (this._groups.Count == 0) { this.IsActive = true; return; }
 
             foreach (Group g in this._groups)
             {
-                if (g.State == GroupState.Disabled) { this.IsActive = false; return; }
+                if (g.State == GroupState.Enabled) { this.IsActive = true; return; }
             }
 
-            this.IsActive = true;
+            this.IsActive = false;
         }
     }
 }
