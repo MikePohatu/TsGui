@@ -20,7 +20,7 @@ using TsGui.Grouping;
 
 namespace TsGui.Blind
 {
-    public class BlindOption: GroupableBase,IOption
+    public class BlindOption: GroupableBlindBase,IOption
     {
         private string _inactivevalue = "TSGUI_INACTIVE";
         private string _value;

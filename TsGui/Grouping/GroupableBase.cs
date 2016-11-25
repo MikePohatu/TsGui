@@ -50,7 +50,6 @@ namespace TsGui.Grouping
         }
         //Events
         #region
-
         public void OnParentGoupingStateChange(object o, GroupingEventArgs e)
         {
             this.EvaluateGroups();
@@ -62,21 +61,7 @@ namespace TsGui.Grouping
         }
         #endregion
 
-        protected void EvaluateGroups()
-        {
-            if (this._parent != null)
-            {
-                if (this._parent.IsActive == false)
-                { this._isactive = false; return; }
-            }
-
-            foreach (Group g in this._groups)
-            {
-                if (g.State == GroupState.Disabled) { this._isactive = false; return; }
-            }
-
-            this._isactive = true;
-        }
+        protected abstract void EvaluateGroups();
 
         protected void LoadXml(XElement InputXml)
         {

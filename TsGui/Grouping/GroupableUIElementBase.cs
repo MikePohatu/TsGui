@@ -89,7 +89,7 @@ namespace TsGui.Grouping
         }
         #endregion
 
-        protected new void EvaluateGroups()
+        protected override void EvaluateGroups()
         {
             GroupState groupsstate = GroupState.Hidden;
             GroupState parentstate = GroupState.Enabled;

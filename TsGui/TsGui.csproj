@@ -80,6 +80,7 @@
     <Compile Include="Control\ControlDelegates.cs" />
     <Compile Include="Control\IOption.cs" />
     <Compile Include="Grouping\GroupableBase.cs" />
+    <Compile Include="Grouping\GroupableBlindBase.cs" />
     <Compile Include="Grouping\GroupingEventArgs.cs" />
     <Compile Include="Queries\PrefixRule.cs" />
     <Compile Include="Queries\CalculateRule.cs" />

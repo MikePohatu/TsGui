@@ -21,7 +21,7 @@ using TsGui.Grouping;
 
 namespace TsGui.Blind
 {
-    public class NoUIContainer: GroupableBase
+    public class NoUIContainer: GroupableBlindBase
     {
         private List<IOption> _options = new List<IOption>();
         private List<NoUIContainer> _containers = new List<NoUIContainer>();
