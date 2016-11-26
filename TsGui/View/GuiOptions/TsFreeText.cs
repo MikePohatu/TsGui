@@ -21,7 +21,6 @@ using TsGui.Validation;
 using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;

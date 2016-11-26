@@ -28,8 +28,8 @@ namespace TsGui.Validation
         private List<StringValidation> _validations = new List<StringValidation>();
         private XElement _legacyxml = new XElement("Legacy");
         private IValidationOwner _owner;
+        
         //Properties
-
         #region
         public string ValidationMessage { get { return this.GetActiveValidationMessages(); } }
         public string FailedValidationMessage { get; set; }
@@ -99,28 +99,28 @@ namespace TsGui.Validation
 
         private bool IsShorterThanMinLength(string Input)
         {
-            StringValidation sv = this.GetActiveValidation();
+            StringValidation sv = this.GetFirstActiveValidation();
             if (sv != null) { return sv.IsShorterThanMinLength(Input); }
             else { return false; }
         }
 
         private bool IsLongerThanMaxLength(string Input)
         {
-            StringValidation sv = this.GetActiveValidation();
+            StringValidation sv = this.GetFirstActiveValidation();
             if (sv != null) { return sv.IsLongerThanMaxLength(Input); }
             else { return false; }
         }
 
         private bool IsInvalidMatched(string Input)
         {
-            StringValidation sv = this.GetActiveValidation();
+            StringValidation sv = this.GetFirstActiveValidation();
             if (sv != null) { return sv.IsInvalidMatched(Input); }
             else { return false; }
         }
 
         private bool IsValidMatched(string Input)
         {
-            StringValidation sv = this.GetActiveValidation();
+            StringValidation sv = this.GetFirstActiveValidation();
             if (sv != null) { return sv.IsValidMatched(Input); }
             else { return true; }
         }
@@ -137,19 +137,31 @@ namespace TsGui.Validation
 
         private int GetMaxLength()
         {
-            StringValidation sv = this.GetActiveValidation();
-            if (sv != null) { return sv.MaxLength; }
-            else { return 32760; }
+            int max= -1;
+            foreach (StringValidation sv in this._validations)
+            {
+                if (sv.IsActive == true)
+                { if (sv.MaxLength > max) { max = sv.MaxLength; } }
+            }
+
+            if (max == -1) { max = 32760; }
+            return max;
         }
 
         private int GetMinLength()
         {
-            StringValidation sv = this.GetActiveValidation();
-            if (sv != null) { return sv.MinLength; }
-            else { return 0; }
+            int min = 32760;
+            foreach (StringValidation sv in this._validations)
+            {
+                if (sv.IsActive == true)
+                { if (sv.MinLength < min) { min = sv.MinLength; } }
+            }
+
+            if (min == 32760) { min = 0; }
+            return min;
         }
 
-        private StringValidation GetActiveValidation()
+        private StringValidation GetFirstActiveValidation()
         {
             foreach (StringValidation sv in this._validations)
             {
