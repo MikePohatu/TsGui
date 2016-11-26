@@ -1,0 +1,69 @@
+<TsGui>
+	<Height>250</Height>
+	<Width>300</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI base config</Text>
+	</Heading>
+
+	<Page>
+		<Column>
+			<Formatting>
+				<LeftCellWidth>110</LeftCellWidth>
+				<RightCellWidth>160</RightCellWidth>
+			</Formatting>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>TOGGLE_Test</Variable>
+				<Label>Test group enabled</Label>
+				<HAlign>left</HAlign>
+				
+				<Toggle Group="Group_Test">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+				</Toggle>
+			</GuiOption>
+			
+			<GuiOption Type="ComputerName">
+				<Validation ValidateEmpty="FALSE">
+					<Group>Group_Test</Group>
+				
+					<Message>TEST - ComputerName can't start with AB</Message>			
+					<Invalid>
+						<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
+					</Invalid>
+				</Validation>
+			</GuiOption>
+			
+			<GuiOption Type="DropDownList">
+				<Variable>IT_Team</Variable>
+				<Label>Team:</Label>
+				<DefaultValue>Desktop</DefaultValue>
+				<Option>
+					<Text>Desktop</Text>
+					<Value>Desktop</Value>
+				</Option>
+				<Option>
+					<Text>Infrastructure</Text>
+					<Value>Inf</Value>
+				</Option>
+				<Option>
+					<Text>Service Desk</Text>
+					<Value>SD</Value>
+				</Option>
+				
+				<Validation ValidateEmpty="FALSE">
+					<Group>Group_Test</Group>
+				
+					<Message>Desktop not valid when check box ticked</Message>			
+					<Invalid>
+						<Rule Type="StartsWith" CaseSensitive="TRUE">Desktop</Rule>
+					</Invalid>
+				</Validation>
+			</GuiOption>
+		</Column>
+	</Page>
+</TsGui>

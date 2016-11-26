@@ -147,7 +147,7 @@
     <Compile Include="Grouping\IGroupChild.cs" />
     <Compile Include="Grouping\Toggle.cs" />
     <Compile Include="Control\HardwareEvaluator.cs" />
-    <Compile Include="View\GuiOptions\IEditableGuiOption.cs" />
+    <Compile Include="View\GuiOptions\IValidationGuiOption.cs" />
     <Compile Include="Control\ITsVariableOutput.cs" />
     <Compile Include="Grouping\IToggleControl.cs" />
     <Compile Include="View\Layout\PageLayout.xaml.cs">

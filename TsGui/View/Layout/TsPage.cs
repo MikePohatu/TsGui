@@ -36,7 +36,7 @@ namespace TsGui.View.Layout
         private SolidColorBrush _headingFontColor;
         private List<TsRow> _rows = new List<TsRow>();
         private List<IGuiOption> _options = new List<IGuiOption>();
-        private List<IEditableGuiOption> _editables = new List<IEditableGuiOption>();
+        private List<IValidationGuiOption> _validationoptions = new List<IValidationGuiOption>();
         private Grid _pagepanel;
         private PageLayout _pagelayout;
         private TsPage _previouspage;
@@ -273,13 +273,13 @@ namespace TsGui.View.Layout
 
             foreach (IGuiOption option in this._options)
             {
-                if (option is IEditableGuiOption) { this._editables.Add((IEditableGuiOption)option); }
+                if (option is IValidationGuiOption) { this._validationoptions.Add((IValidationGuiOption)option); }
             }
         }
 
         public bool OptionsValid()
         {
-            foreach (IEditableGuiOption option in this._editables)
+            foreach (IValidationGuiOption option in this._validationoptions)
             {
                 if (option.IsActive == true)
                 {
@@ -297,7 +297,7 @@ namespace TsGui.View.Layout
 
         public void MovePrevious()
         {
-            foreach (IEditableGuiOption option in this._editables)
+            foreach (IValidationGuiOption option in this._validationoptions)
             { option.ClearToolTips(); }
 
             this._controller.MovePrevious();

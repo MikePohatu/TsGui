@@ -16,14 +16,19 @@
 // TsDropDownList.cs - combobox control for user input
 
 using System.Collections.Generic;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+using System.Windows.Controls;
 using System.Xml.Linq;
 using System.Windows;
+using System;
 
 using TsGui.Grouping;
+using TsGui.Validation;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsDropDownList: GuiOptionBase, IGuiOption, IToggleControl
+    public class TsDropDownList: GuiOptionBase, IGuiOption, IToggleControl, IValidationGuiOption
     {
         public event ToggleEvent ToggleEvent;
 
@@ -33,9 +38,16 @@ namespace TsGui.View.GuiOptions
         private TsDropDownListItem _currentitem;
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private bool _istoggle = false;
+        private string _validationtext;
+        private Color _bordercolor;
+        private Color _mouseoverbordercolor;
+        private Color _focusbordercolor;
+        private ToolTip _controltooltip;
+        private ValidationErrorToolTip _validationerrortooltip;
+        private ValidationHandler _validationhandler;
 
 
-        //Custom stuff for control
+        //properties
         public List<TsDropDownListItem> Options { get { return this._options; } }
         public TsVariable Variable
         {
@@ -57,6 +69,12 @@ namespace TsGui.View.GuiOptions
             get { return this._currentitem; }
             set { this._currentitem = value; this.OnPropertyChanged(this, "CurrentItem"); }
         }
+        public bool IsValid { get { return this.Validate(); } }
+        public string ValidationText
+        {
+            get { return this._validationtext; }
+            set { this._validationtext = value; this.OnPropertyChanged(this, "ValidationText"); }
+        }
 
         //Constructor
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
@@ -64,16 +82,42 @@ namespace TsGui.View.GuiOptions
             this._controller.WindowLoaded += this.OnLoadReload;
             this._dropdownlistui = new TsDropDownListUI();
             this._dropdownlistui.Control.SelectionChanged += this.OnChanged;
-            this.UserControl.IsEnabledChanged += this.OnChanged;
-            this.UserControl.IsVisibleChanged += this.OnChanged;
-            this.UserControl.DataContext = this;           
+  
             this.Control = this._dropdownlistui;
             this.Label = new TsLabelUI();
+            
+            this._validationerrortooltip = new ValidationErrorToolTip();
+            this._controltooltip = new ToolTip();
+            this._controltooltip.Background = Brushes.Transparent;
+            this._controltooltip.BorderBrush = Brushes.Transparent;
+            this._controltooltip.Content = _validationerrortooltip;
+            this._validationhandler = new ValidationHandler(this, MainController);
+            this._dropdownlistui.LostFocus += this.OnValidationEvent;
+            this.UserControl.IsEnabledChanged += this.OnValidationEvent;
+
+            this.UserControl.DataContext = this;
+            this.UserControl.IsEnabledChanged += this.OnChanged;
+            this.UserControl.IsVisibleChanged += this.OnChanged;
             this.SetDefaults();
             this.LoadXml(InputXml);
             this.SetComboBoxDefault();
         }
 
+        //Handle UI events
+        #region
+
+        public void OnValidationEvent(bool b)
+        { this.Validate(); }
+
+        public void OnValidationEvent(object sender, RoutedEventArgs e)
+        { this.Validate(); }
+
+        public void OnValidationEvent(object sender, DependencyPropertyChangedEventArgs e)
+        { this.Validate(); }
+
+        public void OnWindowLoaded()
+        { this.Validate(); }
+        #endregion
 
         //Methods
         public new void LoadXml(XElement InputXml)
@@ -82,6 +126,8 @@ namespace TsGui.View.GuiOptions
             #region
 
             IEnumerable<XElement> inputElements = InputXml.Elements();
+
+            this._validationhandler.AddValidations(InputXml.Elements("Validation"));
 
             foreach (XElement x in inputElements)
             {
@@ -188,6 +234,59 @@ namespace TsGui.View.GuiOptions
         {
             this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            //record the default colors
+            this._bordercolor = this.ControlFormatting.BorderBrush.Color;
+            this._mouseoverbordercolor = this.ControlFormatting.MouseOverBorderBrush.Color;
+            this._focusbordercolor = this.ControlFormatting.FocusedBorderBrush.Color;
+        }
+
+        public void ClearToolTips()
+        {
+            this._controltooltip.IsOpen = false;
+            this._controltooltip.StaysOpen = false;
+            this._dropdownlistui.ToolTip = null;
+            this.ControlFormatting.BorderBrush.Color = this._bordercolor;
+            this.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
+            this.ControlFormatting.FocusedBorderBrush.Color = this._focusbordercolor;
+        }
+
+        public void ShowInvalidToolTip()
+        {
+            this._dropdownlistui.ToolTip = this._controltooltip;
+            this._controltooltip.PlacementTarget = this._dropdownlistui;
+            this._controltooltip.Placement = PlacementMode.Right;
+            this._controltooltip.StaysOpen = true;
+            this._controltooltip.IsOpen = true;
+
+            //update the colors to red. 
+            this.ControlFormatting.BorderBrush.Color = Colors.Red;
+            this.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
+            this.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;
+        }
+
+        public void OnValidationChange()
+        { this.Validate(); }
+
+        public bool Validate()
+        {
+            if (this.IsActive == false) { this.ClearToolTips(); return true; }
+
+            bool newvalid = this._validationhandler.IsValid(this.CurrentValue);
+
+            if (newvalid == false)
+            {
+                string validationmessage = this._validationhandler.ValidationMessage;
+                string s = "\"" + this.CurrentValue + "\" is invalid" + Environment.NewLine;
+                if (string.IsNullOrEmpty(validationmessage)) { s = s + _validationhandler.FailedValidationMessage; }
+                else { s = s + validationmessage; }
+
+                this.ValidationText = s;
+                this.ShowInvalidToolTip();
+            }
+            else { this.ClearToolTips(); }
+
+            return newvalid;
         }
     }
 }
