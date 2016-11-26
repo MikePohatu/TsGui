@@ -12,58 +12,55 @@
 	<Page>
 		<Row>
 			<Column>
-				<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
-					<Validation ValidateEmpty="FALSE">
-						<!--<Group>Group_1</Group>-->
-					
-						<Message>Tooltip message to display on validation error</Message>			
-						<MaxLength>15</MaxLength>
-						<MinLength>1</MinLength>
-						<Invalid>
-							<Rule Type="Characters">`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Rule>
-						</Invalid>
-					</Validation>
-					<Variable>Model</Variable>
-					<Label>Computer Name:</Label>
-					<HelpText>Enter a computer name for the device</HelpText>
-					
-					<!-- Query for the default value. Return the first valid value. Note
-					the Ignore values for evaluating the value returned by the query -->
-					<DefaultValue>
-						<Query Type="Wmi">
-							<Wql>SELECT * FROM Win32_ComputerSystem</Wql>
-							<Property Name="Model"/>
-						</Query>
-						<Value>Test 1 2 -3 -4 </Value>
-					</DefaultValue>
-				</GuiOption>
+				<Formatting>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>160</RightCellWidth>
+				</Formatting>
 				
-				<GuiOption Type="FreeText">
-					<Variable>VAR_BuildDate</Variable>
-					<Label>Build date:</Label>
-					<DefaultValue>
-						<Query Type="Wmi">
-							<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
-							<Property Name="Year">
-								<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
-								<Prefix>PC-</Prefix>
-							</Property>
-							<Property Name="Month"/>
-							<Property Name="Day"/>			
-							<Separator></Separator>
-						</Query>
-					</DefaultValue>
-					
-				</GuiOption>
-			
+				<GuiOption Type="ComputerName" />
 				
+				<!--CheckBox used as a toggle -->
+				<GuiOption Type="CheckBox">
+					<Variable>TOGGLE_Test</Variable>
+					<Label>Test group enabled</Label>
+					<HAlign>left</HAlign>
+					
+					<Toggle Group="Group_Test">
+						<Enabled>TRUE</Enabled>
+						<Disabled>FALSE</Disabled>
+					</Toggle>
+				</GuiOption>
 			</Column>
 		</Row>
 	</Page>
 	
-	<NoUI>
-		<Container PurgeInactive="TRUE">
-			<BlindOption Variable="BlindOption_1" Value="BlindOption_1_Val"/>
+	<NoUI >
+		<BlindOption Variable="BlindOption_1" Value="BlindOption_1_Val"/>
+		<BlindOption Variable="BlindOption_2" >
+			<SetValue>
+				<Query Type="Wmi">
+					<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
+					<Property Name="Year">
+						<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
+						<Prefix>PC-</Prefix>
+					</Property>
+					<Property Name="Month"/>
+					<Property Name="Day"/>			
+					<Separator></Separator>
+				</Query>
+			</SetValue>
+		</BlindOption>
+		<Container>
+			<Group>Group_Test</Group>
+			<BlindOption Variable="BlindOption_3" Value="BlindOption_3_Val"/>
+			<BlindOption>
+				<Variable>BlindOption_4</Variable>
+				<SetValue>
+					<Value>BlindOption_4_Val</Value>
+				</SetValue>
+				<InactiveValue>BlindOption_4_Inactive</InactiveValue>
+			</BlindOption>
+			<BlindOption Variable="BlindOption_5" Value="BlindOption_5_Val" PurgeInactive="TRUE"/>
 		</Container>
 	</NoUI>
 </TsGui>
