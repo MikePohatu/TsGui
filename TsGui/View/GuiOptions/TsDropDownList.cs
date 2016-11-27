@@ -38,6 +38,7 @@ namespace TsGui.View.GuiOptions
         private string _validationtext;
         private ValidationToolTip _validationtooltip;
         private ValidationHandler _validationhandler;
+        private bool _nodefaultvalue;
 
 
         //properties
@@ -112,35 +113,15 @@ namespace TsGui.View.GuiOptions
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            #region
 
             IEnumerable<XElement> inputElements = InputXml.Elements();
 
             this._validationhandler.AddValidations(InputXml.Elements("Validation"));
+            this._defaultvalue = XmlHandler.GetStringFromXElement(InputXml, "DefaultValue", this._defaultvalue);
+            this._nodefaultvalue = XmlHandler.GetBoolFromXAttribute(InputXml, "NoDefaultValue", this._nodefaultvalue);
 
             foreach (XElement x in inputElements)
             {
-                if (x.Name == "DefaultValue")
-                {
-                    IEnumerable<XElement> defx = x.Elements();
-                    int defxCount = 0;
-                    foreach (XElement xdefoption in defx)
-                    {
-                        defxCount++;
-                        if (xdefoption.Name == "Value")
-                        {
-                            this._defaultvalue = xdefoption.Value;
-                            break;
-                        }
-                        else if (xdefoption.Name == "Query")
-                        {
-                            //code to be added
-                        }
-                    }
-
-                    if (defxCount == 0) { this._defaultvalue = x.Value.Trim(); }
-                }
-
                 //now read in an option and add to a dictionary for later use
                 if (x.Name == "Option")
                 {
@@ -173,24 +154,23 @@ namespace TsGui.View.GuiOptions
                     Toggle t = new Toggle(this, this._controller, x);
                     this._istoggle = true;
                 }
-
-                if (this._istoggle == true) { this._controller.AddToggleControl(this); }
             }
-            #endregion
+            if (this._istoggle == true) { this._controller.AddToggleControl(this); }
         }
 
         private void SetComboBoxDefault()
         {
-            int index = 0;
-
-            foreach (TsDropDownListItem entry in this._options)
+            if (this._nodefaultvalue == false)
             {
-                //if this entry is the default, or is the first in the list (in case there is no
-                //default, select it by default in the list
-                if ((entry.Value == this._defaultvalue) || (index == 0))
-                { this.CurrentValue = entry.Value; }
+                int index = 0;
 
-                index++;
+                foreach (TsDropDownListItem entry in this._options)
+                {
+                    if ((entry.Value == this._defaultvalue) || (index == 0))
+                    { this.CurrentValue = entry.Value; }
+
+                    index++;
+                }
             }
         }
 
@@ -215,6 +195,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
+            this._nodefaultvalue = false;
             this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
@@ -224,7 +205,14 @@ namespace TsGui.View.GuiOptions
 
         public bool Validate()
         {
+            
             if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
+            if (this._dropdownlistui.Control.SelectedItem == null)
+            {
+                this.ValidationText = "Please select a value";
+                this._validationtooltip.Show();
+                return false;
+            }
 
             bool newvalid = this._validationhandler.IsValid(this.CurrentValue);
 
