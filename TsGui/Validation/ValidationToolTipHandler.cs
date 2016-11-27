@@ -29,7 +29,7 @@ namespace TsGui.Validation
         private Color _bordercolor;
         private Color _mouseoverbordercolor;
         private Color _focusbordercolor;
-        private ToolTip _tooltip;
+        private Popup _popup;
         private ValidationErrorToolTip _validationerrortooltip;
         private GuiOptionBase _guioption;
 
@@ -43,18 +43,17 @@ namespace TsGui.Validation
             this._focusbordercolor = this._guioption.ControlFormatting.FocusedBorderBrush.Color;
 
             this._validationerrortooltip = new ValidationErrorToolTip();
-            this._tooltip = new ToolTip();
-            this._tooltip.Padding = new Thickness(0);
-            this._tooltip.Background = Brushes.Transparent;
-            this._tooltip.BorderBrush = Brushes.Transparent;
-            this._tooltip.Content = _validationerrortooltip;
+            this._popup = new Popup();
+            this._popup.AllowsTransparency = true;
+            this._popup.Child = _validationerrortooltip;
+
+            this._popup.PlacementTarget = this._guioption.UserControl;
+            this._popup.Placement = PlacementMode.Right;
         }
 
         public void Clear()
         {
-            this._tooltip.IsOpen = false;
-            this._tooltip.StaysOpen = false;
-            this._guioption.UserControl.ToolTip = null;
+            this._popup.IsOpen = false;
             this._guioption.ControlFormatting.BorderBrush.Color = this._bordercolor;
             this._guioption.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
             this._guioption.ControlFormatting.FocusedBorderBrush.Color = this._focusbordercolor;
@@ -62,11 +61,7 @@ namespace TsGui.Validation
 
         public void Show()
         {
-            this._guioption.UserControl.ToolTip = this._tooltip;
-            this._tooltip.PlacementTarget = this._guioption.UserControl;
-            this._tooltip.Placement = PlacementMode.Right;
-            this._tooltip.StaysOpen = true;
-            this._tooltip.IsOpen = true;
+            this._popup.IsOpen = true;
 
             //update the colors to red. 
             this._guioption.ControlFormatting.BorderBrush.Color = Colors.Red;

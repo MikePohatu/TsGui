@@ -18,8 +18,8 @@
     <TextBox TextWrapping="Wrap" 
              AcceptsReturn="True" 
              BorderBrush="Red"
-             Margin="0" Width="Auto" Height="Auto" 
-             BorderThickness="0.5" 
+             Margin="1" Width="Auto" Height="Auto" 
+             BorderThickness="0.7" 
              Padding="7,5,5,5" HorizontalContentAlignment="Left"
              Template="{StaticResource TextBoxBaseControlTemplate}"
              Text="{Binding ValidationText}"/>
