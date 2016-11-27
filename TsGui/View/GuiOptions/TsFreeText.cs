@@ -33,11 +33,7 @@ namespace TsGui.View.GuiOptions
         protected string _controltext;
         protected string _validationtext;
         protected int _maxlength;
-        protected Color _bordercolor;
-        protected Color _mouseoverbordercolor;
-        protected Color _focusbordercolor;
-        private ToolTip _controltooltip;
-        private ValidationErrorToolTip _validationerrortooltip;
+        private ValidationToolTip _validationtooltip;
         private ValidationHandler _validationhandler;
 
         //Properties
@@ -92,15 +88,14 @@ namespace TsGui.View.GuiOptions
         {
             this._controller = MainController;
             this._controller.WindowLoaded += this.OnWindowLoaded;
-            this._validationerrortooltip = new ValidationErrorToolTip();
-            this._controltooltip = new ToolTip();
-            this._controltooltip.Content = _validationerrortooltip;
 
-            this._validationhandler = new ValidationHandler(this,MainController);
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
             this.Label = new TsLabelUI();
-            
+
+            this._validationhandler = new ValidationHandler(this,MainController);
+            this._validationtooltip = new ValidationToolTip(this);
+
             this.UserControl.DataContext = this;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
             this.UserControl.IsEnabledChanged += this.OnValidationEvent;
@@ -111,10 +106,6 @@ namespace TsGui.View.GuiOptions
         {
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.ControlFormatting.Padding = new Thickness(3, 2, 3, 2);
-            //record the default colors
-            this._bordercolor = this.ControlFormatting.BorderBrush.Color;
-            this._mouseoverbordercolor = this.ControlFormatting.MouseOverBorderBrush.Color;
-            this._focusbordercolor = this.ControlFormatting.FocusedBorderBrush.Color;
         }
 
         public new void LoadXml(XElement InputXml)
@@ -171,7 +162,7 @@ namespace TsGui.View.GuiOptions
 
         public bool Validate()
         {
-            if (this.IsActive == false) { this.ClearToolTips(); return true; }
+            if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
 
             bool newvalid = this._validationhandler.IsValid(this.ControlText);
 
@@ -183,36 +174,15 @@ namespace TsGui.View.GuiOptions
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
-                this.ShowInvalidToolTip();
+                this._validationtooltip.Show();
             }
-            else { this.ClearToolTips(); }
+            else { this._validationtooltip.Clear(); }
 
             return newvalid;
         }
 
         public void ClearToolTips()
-        {
-            this._controltooltip.IsOpen = false;
-            this._controltooltip.StaysOpen = false;
-            this._freetextui.ToolTip = null;
-            this.ControlFormatting.BorderBrush.Color = this._bordercolor;
-            this.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
-            this.ControlFormatting.FocusedBorderBrush.Color = this._focusbordercolor;
-        }
-
-        public void ShowInvalidToolTip()
-        {         
-            this._freetextui.ToolTip = this._controltooltip;
-            this._controltooltip.PlacementTarget = this._freetextui;
-            this._controltooltip.Placement = PlacementMode.Right;
-            this._controltooltip.StaysOpen = true;
-            this._controltooltip.IsOpen = true;
-
-            //update the colors to red. 
-            this.ControlFormatting.BorderBrush.Color = Colors.Red;
-            this.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
-            this.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;
-        }
+        { this._validationtooltip.Clear(); }
 
         public void OnValidationChange()
         { this.Validate(); }

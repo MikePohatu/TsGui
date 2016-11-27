@@ -16,9 +16,6 @@
 // TsDropDownList.cs - combobox control for user input
 
 using System.Collections.Generic;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
-using System.Windows.Controls;
 using System.Xml.Linq;
 using System.Windows;
 using System;
@@ -39,11 +36,7 @@ namespace TsGui.View.GuiOptions
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private bool _istoggle = false;
         private string _validationtext;
-        private Color _bordercolor;
-        private Color _mouseoverbordercolor;
-        private Color _focusbordercolor;
-        private ToolTip _controltooltip;
-        private ValidationErrorToolTip _validationerrortooltip;
+        private ValidationToolTip _validationtooltip;
         private ValidationHandler _validationhandler;
 
 
@@ -85,13 +78,9 @@ namespace TsGui.View.GuiOptions
   
             this.Control = this._dropdownlistui;
             this.Label = new TsLabelUI();
-            
-            this._validationerrortooltip = new ValidationErrorToolTip();
-            this._controltooltip = new ToolTip();
-            this._controltooltip.Background = Brushes.Transparent;
-            this._controltooltip.BorderBrush = Brushes.Transparent;
-            this._controltooltip.Content = _validationerrortooltip;
+
             this._validationhandler = new ValidationHandler(this, MainController);
+            this._validationtooltip = new ValidationToolTip(this);
             this._dropdownlistui.LostFocus += this.OnValidationEvent;
             this.UserControl.IsEnabledChanged += this.OnValidationEvent;
 
@@ -208,19 +197,13 @@ namespace TsGui.View.GuiOptions
         //fire an intial event to make sure things are set correctly. This is
         //called by the controller once everything is loaded
         public void InitialiseToggle()
-        {
-            this.ToggleEvent?.Invoke();
-        }
+        { this.ToggleEvent?.Invoke(); }
 
         private void OnChanged(object o, RoutedEventArgs e)
-        {
-            this.ToggleEvent?.Invoke();
-        }
+        { this.ToggleEvent?.Invoke(); }
 
         private void OnChanged(object o, DependencyPropertyChangedEventArgs e)
-        {
-            this.ToggleEvent?.Invoke();
-        }
+        { this.ToggleEvent?.Invoke(); }
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
         //and closes the dropdown so it initialises proeprly
@@ -234,35 +217,6 @@ namespace TsGui.View.GuiOptions
         {
             this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
-
-            //record the default colors
-            this._bordercolor = this.ControlFormatting.BorderBrush.Color;
-            this._mouseoverbordercolor = this.ControlFormatting.MouseOverBorderBrush.Color;
-            this._focusbordercolor = this.ControlFormatting.FocusedBorderBrush.Color;
-        }
-
-        public void ClearToolTips()
-        {
-            this._controltooltip.IsOpen = false;
-            this._controltooltip.StaysOpen = false;
-            this._dropdownlistui.ToolTip = null;
-            this.ControlFormatting.BorderBrush.Color = this._bordercolor;
-            this.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
-            this.ControlFormatting.FocusedBorderBrush.Color = this._focusbordercolor;
-        }
-
-        public void ShowInvalidToolTip()
-        {
-            this._dropdownlistui.ToolTip = this._controltooltip;
-            this._controltooltip.PlacementTarget = this._dropdownlistui;
-            this._controltooltip.Placement = PlacementMode.Right;
-            this._controltooltip.StaysOpen = true;
-            this._controltooltip.IsOpen = true;
-
-            //update the colors to red. 
-            this.ControlFormatting.BorderBrush.Color = Colors.Red;
-            this.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
-            this.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;
         }
 
         public void OnValidationChange()
@@ -270,7 +224,7 @@ namespace TsGui.View.GuiOptions
 
         public bool Validate()
         {
-            if (this.IsActive == false) { this.ClearToolTips(); return true; }
+            if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
 
             bool newvalid = this._validationhandler.IsValid(this.CurrentValue);
 
@@ -282,11 +236,14 @@ namespace TsGui.View.GuiOptions
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
-                this.ShowInvalidToolTip();
+                this._validationtooltip.Show();
             }
-            else { this.ClearToolTips(); }
+            else { this._validationtooltip.Clear(); }
 
             return newvalid;
         }
+
+        public void ClearToolTips()
+        { this._validationtooltip.Clear(); }
     }
 }
