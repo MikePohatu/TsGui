@@ -233,8 +233,11 @@ namespace TsGui.Validation
             foreach (Group g in this._groups)
             { if (g.State == GroupState.Enabled) { result = true; break; } }
 
-            this.IsActive = result;
-            this.RevalidationRequired?.Invoke();
+            if (this.IsActive != result)
+            {
+                this.IsActive = result;
+                this.RevalidationRequired?.Invoke();
+            }
         }
     }
 }

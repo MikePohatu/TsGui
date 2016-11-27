@@ -46,7 +46,9 @@ namespace TsGui
         private OptionLibrary _optionlibrary = new OptionLibrary();
         private HardwareEvaluator _chassischeck;
         private NoUIContainer _nouicontainer;
+
         //properties
+        public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
         public bool ShowGridLines { get; set; }
@@ -77,6 +79,7 @@ namespace TsGui
 
         public void Startup()
         {
+            this.StartupFinished = false;
             this._prodmode = this._envController.Init();
 
             this._tsmainWindow = new TsMainWindow();
@@ -110,6 +113,7 @@ namespace TsGui
             this.ParentWindow.WindowStartupLocation = this._tsmainWindow.WindowLocation.StartupLocation;
             this.UpdateWindow();
             this.ParentWindow.Visibility = Visibility.Visible;
+            this.StartupFinished = true;
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails

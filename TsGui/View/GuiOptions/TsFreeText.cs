@@ -33,7 +33,7 @@ namespace TsGui.View.GuiOptions
         protected string _controltext;
         protected string _validationtext;
         protected int _maxlength;
-        private ValidationToolTip _validationtooltip;
+        private ValidationToolTipHandler _validationtooltip;
         private ValidationHandler _validationhandler;
 
         //Properties
@@ -94,7 +94,7 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
 
             this._validationhandler = new ValidationHandler(this,MainController);
-            this._validationtooltip = new ValidationToolTip(this);
+            this._validationtooltip = new ValidationToolTipHandler(this);
 
             this.UserControl.DataContext = this;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
@@ -162,6 +162,7 @@ namespace TsGui.View.GuiOptions
 
         public bool Validate()
         {
+            //if (this._controller.StartupFinished == false) { return true; }
             if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
 
             bool newvalid = this._validationhandler.IsValid(this.ControlText);

@@ -24,7 +24,7 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui.Validation
 {
-    public class ValidationToolTip
+    public class ValidationToolTipHandler
     {
         private Color _bordercolor;
         private Color _mouseoverbordercolor;
@@ -34,7 +34,7 @@ namespace TsGui.Validation
         private GuiOptionBase _guioption;
 
         //Constructor
-        public ValidationToolTip(GuiOptionBase GuiOption)
+        public ValidationToolTipHandler(GuiOptionBase GuiOption)
         {
             this._guioption = GuiOption;
             //record the default colors

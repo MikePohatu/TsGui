@@ -97,7 +97,7 @@
       <DependentUpon>ValidationErrorToolTip.xaml</DependentUpon>
     </Compile>
     <Compile Include="Validation\ValidationHandler.cs" />
-    <Compile Include="Validation\ValidationToolTip.cs" />
+    <Compile Include="Validation\ValidationToolTipHandler.cs" />
     <Compile Include="View\GuiOptions\GuiOptionGridFormatting.cs" />
     <Compile Include="View\GuiOptions\TsCheckBox.cs" />
     <Compile Include="View\GuiOptions\TsCheckBoxUI.xaml.cs">

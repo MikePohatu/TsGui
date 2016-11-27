@@ -36,9 +36,10 @@ namespace TsGui.View.GuiOptions
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private bool _istoggle = false;
         private string _validationtext;
-        private ValidationToolTip _validationtooltip;
+        private ValidationToolTipHandler _validationtooltip;
         private ValidationHandler _validationhandler;
         private bool _nodefaultvalue;
+        private string _noselectionmessage;
 
 
         //properties
@@ -81,9 +82,9 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
 
             this._validationhandler = new ValidationHandler(this, MainController);
-            this._validationtooltip = new ValidationToolTip(this);
+            this._validationtooltip = new ValidationToolTipHandler(this);
             this._dropdownlistui.LostFocus += this.OnValidationEvent;
-            this.UserControl.IsEnabledChanged += this.OnValidationEvent;
+            //this.UserControl.IsEnabledChanged += this.OnValidationEvent;
 
             this.UserControl.DataContext = this;
             this.UserControl.IsEnabledChanged += this.OnChanged;
@@ -119,6 +120,7 @@ namespace TsGui.View.GuiOptions
             this._validationhandler.AddValidations(InputXml.Elements("Validation"));
             this._defaultvalue = XmlHandler.GetStringFromXElement(InputXml, "DefaultValue", this._defaultvalue);
             this._nodefaultvalue = XmlHandler.GetBoolFromXAttribute(InputXml, "NoDefaultValue", this._nodefaultvalue);
+            this._noselectionmessage = XmlHandler.GetStringFromXElement(InputXml, "NoSelectionMessage", this._noselectionmessage);
 
             foreach (XElement x in inputElements)
             {
@@ -196,6 +198,7 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this._nodefaultvalue = false;
+            this._noselectionmessage = "Please seleect a value";
             this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
@@ -205,11 +208,11 @@ namespace TsGui.View.GuiOptions
 
         public bool Validate()
         {
-            
+            if (this._controller.StartupFinished == false ) { return true; }
             if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
             if (this._dropdownlistui.Control.SelectedItem == null)
             {
-                this.ValidationText = "Please select a value";
+                this.ValidationText = _noselectionmessage;
                 this._validationtooltip.Show();
                 return false;
             }
