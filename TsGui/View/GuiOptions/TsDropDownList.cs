@@ -36,7 +36,7 @@ namespace TsGui.View.GuiOptions
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private bool _istoggle = false;
         private string _validationtext;
-        private ValidationToolTipHandler _validationtooltip;
+        private ValidationToolTipHandler _validationtooltiphandler;
         private ValidationHandler _validationhandler;
         private bool _nodefaultvalue;
         private string _noselectionmessage;
@@ -73,42 +73,25 @@ namespace TsGui.View.GuiOptions
 
         //Constructor
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
-        {
-            this._controller.WindowLoaded += this.OnLoadReload;
+        {           
             this._dropdownlistui = new TsDropDownListUI();
-            this._dropdownlistui.Control.SelectionChanged += this.OnChanged;
   
             this.Control = this._dropdownlistui;
             this.Label = new TsLabelUI();
 
             this._validationhandler = new ValidationHandler(this, MainController);
-            this._validationtooltip = new ValidationToolTipHandler(this);
-            this._dropdownlistui.LostFocus += this.OnValidationEvent;
-            //this.UserControl.IsEnabledChanged += this.OnValidationEvent;
+            this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.UserControl.DataContext = this;
-            this.UserControl.IsEnabledChanged += this.OnChanged;
-            this.UserControl.IsVisibleChanged += this.OnChanged;
             this.SetDefaults();
             this.LoadXml(InputXml);
             this.SetComboBoxDefault();
+
+            this._controller.WindowLoaded += this.OnLoadReload;
+            this._dropdownlistui.Control.SelectionChanged += this.OnChanged;
+            this.UserControl.IsEnabledChanged += this.OnChanged;
+            this.UserControl.IsVisibleChanged += this.OnChanged;
         }
-
-        //Handle UI events
-        #region
-
-        public void OnValidationEvent(bool b)
-        { this.Validate(); }
-
-        public void OnValidationEvent(object sender, RoutedEventArgs e)
-        { this.Validate(); }
-
-        public void OnValidationEvent(object sender, DependencyPropertyChangedEventArgs e)
-        { this.Validate(); }
-
-        public void OnWindowLoaded()
-        { this.Validate(); }
-        #endregion
 
         //Methods
         public new void LoadXml(XElement InputXml)
@@ -182,10 +165,16 @@ namespace TsGui.View.GuiOptions
         { this.ToggleEvent?.Invoke(); }
 
         private void OnChanged(object o, RoutedEventArgs e)
-        { this.ToggleEvent?.Invoke(); }
+        {
+            this.ToggleEvent?.Invoke();
+            this.Validate();
+        }
 
         private void OnChanged(object o, DependencyPropertyChangedEventArgs e)
-        { this.ToggleEvent?.Invoke(); }
+        {
+            this.ToggleEvent?.Invoke();
+            this.Validate();
+        }
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
         //and closes the dropdown so it initialises proeprly
@@ -198,7 +187,7 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this._nodefaultvalue = false;
-            this._noselectionmessage = "Please seleect a value";
+            this._noselectionmessage = "Please select a value";
             this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
@@ -208,12 +197,12 @@ namespace TsGui.View.GuiOptions
 
         public bool Validate()
         {
-            if (this._controller.StartupFinished == false ) { return true; }
-            if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
+            if (this._controller.StartupFinished == false) { return true; }
+            if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
             if (this._dropdownlistui.Control.SelectedItem == null)
             {
                 this.ValidationText = _noselectionmessage;
-                this._validationtooltip.Show();
+                this._validationtooltiphandler.Show();
                 return false;
             }
 
@@ -227,14 +216,14 @@ namespace TsGui.View.GuiOptions
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
-                this._validationtooltip.Show();
+                this._validationtooltiphandler.Show();
             }
-            else { this._validationtooltip.Clear(); }
+            else { this._validationtooltiphandler.Clear(); }
 
             return newvalid;
         }
 
         public void ClearToolTips()
-        { this._validationtooltip.Clear(); }
+        { this._validationtooltiphandler.Clear(); }
     }
 }

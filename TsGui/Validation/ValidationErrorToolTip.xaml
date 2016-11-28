@@ -15,7 +15,7 @@
             </Border>
         </ControlTemplate>
     </UserControl.Resources>
-    <TextBox TextWrapping="Wrap" 
+    <TextBox x:Name="ToolTipTextBox" TextWrapping="Wrap" 
              AcceptsReturn="True" 
              BorderBrush="Red"
              Margin="1" Width="Auto" Height="Auto" 

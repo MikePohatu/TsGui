@@ -70,7 +70,7 @@ namespace TsGui
                 string model = (string)m["Model"];
                 string maker = (string)m["Manufacturer"];
                 //vmware
-                if (model == "VMware Virtual Platform")
+                if (model.Contains("VMware"))
                 {
                     this._isvm = true;
                     break;
@@ -82,19 +82,19 @@ namespace TsGui
                     break;
                 }
                 //virtualbox
-                if (model == "VirtualBox")
+                if (model.Contains("VirtualBox"))
                 {
                     this._isvm = true;
                     break;
                 }
                 //Xen
-                if (maker == "Xen")
+                if (maker.Contains("Xen"))
                 {
                     this._isvm = true;
                     break;
                 }
                 //Parallels
-                if (model == "Parallels Virtual Platform")
+                if (model.Contains("Parallels"))
                 {
                     this._isvm = true;
                     break;

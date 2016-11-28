@@ -97,7 +97,9 @@ namespace TsGui.Grouping
             string val;
             bool newenabled;
 
-            val = (this._option.CurrentValue);
+            val = this._option.CurrentValue;
+            if (val == null ) { return; }
+
             this._toggleValMappings.TryGetValue(val, out newenabled);
 
             if (this._option.IsActive == false)

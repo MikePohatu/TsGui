@@ -16,7 +16,6 @@
 // ValidationToolTip.cs - tooltip class to handle tooltip validation events in the gui
 
 using System.Windows.Media;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows;
 
@@ -45,10 +44,11 @@ namespace TsGui.Validation
             this._validationerrortooltip = new ValidationErrorToolTip();
             this._popup = new Popup();
             this._popup.AllowsTransparency = true;
-            this._popup.Child = _validationerrortooltip;
-
+            this._popup.Child = this._validationerrortooltip;
+            //this._validationerrortooltip.
             this._popup.PlacementTarget = this._guioption.UserControl;
-            this._popup.Placement = PlacementMode.Right;
+            this._popup.Placement = PlacementMode.Left;  //this is backwards for some reason. If you set right, it goes left....
+            //this._popup.HorizontalOffset = 5;
         }
 
         public void Clear()
