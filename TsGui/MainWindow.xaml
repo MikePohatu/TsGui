@@ -30,7 +30,8 @@ MainWindow.xaml - wrapper window for the app. Includes footer.
         Topmost="True"
         WindowStyle="None"
         MouseLeftButtonDown="windowDrag" ResizeMode="NoResize"
-        AllowsTransparency="True" Background="Transparent">
+        AllowsTransparency="True" Background="Transparent"
+        Loaded="OnWindowLoaded">
     <Grid Name="ContentWrapper">
         <Grid.RowDefinitions>
             <RowDefinition Height="100*" />
