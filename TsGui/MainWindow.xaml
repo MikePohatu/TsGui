@@ -31,7 +31,7 @@ MainWindow.xaml - wrapper window for the app. Includes footer.
         WindowStyle="None"
         MouseLeftButtonDown="windowDrag" ResizeMode="NoResize"
         AllowsTransparency="True" Background="Transparent"
-        Loaded="OnWindowLoaded">
+        >
     <Grid Name="ContentWrapper">
         <Grid.RowDefinitions>
             <RowDefinition Height="100*" />

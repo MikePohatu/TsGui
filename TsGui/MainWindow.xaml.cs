@@ -40,13 +40,5 @@ namespace TsGui
         {
             this.DragMove();
         }
-
-        private void OnWindowLoaded(object sender, RoutedEventArgs e)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(FinishedRender));
-        }
-
-        private void FinishedRender()
-        { }
     }
 }

@@ -27,7 +27,8 @@ PageLayout.xaml - main layout for each page.
       mc:Ignorable="d" 
       ShowsNavigationUI="False"
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="PageLayout">
+      Title="PageLayout"
+      >
 
     <Grid x:Name="WrapperGrid" ShowGridLines="{Binding ShowGridLines}">
         <Grid.RowDefinitions>

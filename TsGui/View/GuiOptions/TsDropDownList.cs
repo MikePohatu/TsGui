@@ -88,9 +88,9 @@ namespace TsGui.View.GuiOptions
             this.SetComboBoxDefault();
 
             this._controller.WindowLoaded += this.OnLoadReload;
-            this._dropdownlistui.Control.SelectionChanged += this.OnChanged;
-            this.UserControl.IsEnabledChanged += this.OnChanged;
-            this.UserControl.IsVisibleChanged += this.OnChanged;
+            this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
+            this.UserControl.IsEnabledChanged += this.OnActiveChanged;
+            this.UserControl.IsVisibleChanged += this.OnActiveChanged;
         }
 
         //Methods
@@ -164,16 +164,15 @@ namespace TsGui.View.GuiOptions
         public void InitialiseToggle()
         { this.ToggleEvent?.Invoke(); }
 
-        private void OnChanged(object o, RoutedEventArgs e)
+        private void OnSelectionChanged(object o, RoutedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
-            this.Validate();
+            this.Validate(false);
         }
 
-        private void OnChanged(object o, DependencyPropertyChangedEventArgs e)
+        private void OnActiveChanged(object o, DependencyPropertyChangedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
-            this.Validate();
         }
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
@@ -193,13 +192,16 @@ namespace TsGui.View.GuiOptions
         }
 
         public void OnValidationChange()
-        { this.Validate(); }
+        { this.Validate(false); }
 
         public bool Validate()
+        { return this.Validate(true); }
+
+        private bool Validate(bool CheckSelectionMade)
         {
             if (this._controller.StartupFinished == false) { return true; }
             if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
-            if (this._dropdownlistui.Control.SelectedItem == null)
+            if ((CheckSelectionMade == true) && (this._dropdownlistui.Control.SelectedItem == null))
             {
                 this.ValidationText = _noselectionmessage;
                 this._validationtooltiphandler.Show();
