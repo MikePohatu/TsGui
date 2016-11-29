@@ -16,21 +16,17 @@
         </ControlTemplate>
     </UserControl.Resources>
     <Grid>
-        <Polygon Margin="0,7,0,5"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Width="40"
-            Height="20"
-            Points="0,0 2,0 1,1"
-            Fill="Red"
-            Stretch="Fill"
-            Stroke="Red"
-            StrokeThickness="0.7" />
+        <!--<Polygon Margin="0,7,0,5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="15" Height="15"
+            Points="0,0 1,0 1,1" Fill="Red" Stretch="Fill"/>-->
+
+        <Polygon Margin="1,7,0,5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="11" Height="11"
+            Points="0,0 1,0 1,1" Fill="Red" Stretch="Fill"/>
+        
         <TextBox x:Name="ToolTipTextBox" TextWrapping="Wrap" 
                  AcceptsReturn="True"
                  BorderBrush="Red"
                  Margin="5,1,1,1" Width="Auto" Height="Auto" 
-                 BorderThickness="0.7" 
+                 BorderThickness="1" 
                  Padding="7,5,7,7" HorizontalContentAlignment="Left"
                  Template="{StaticResource TextBoxBaseControlTemplate}"
                  Text="{Binding ValidationText}"/>
