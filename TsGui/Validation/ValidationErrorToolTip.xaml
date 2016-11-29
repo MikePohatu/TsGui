@@ -10,29 +10,17 @@
         <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
             <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                     Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" Margin="{TemplateBinding Margin}"
-                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0,5,5,5">
+                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5,5,5,5">
                 <ScrollViewer x:Name="PART_ContentHost"/>
             </Border>
         </ControlTemplate>
     </UserControl.Resources>
-    <Grid>
-        <Polygon Margin="0,5,0,5"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Width="50"
-            Height="20"
-            Points="0,0 2,0 1,1"
-            Fill="Red"
-            Stretch="Fill"
-            Stroke="Red"
-            StrokeThickness="0.7" />
-        <TextBox x:Name="ToolTipTextBox" TextWrapping="Wrap" 
-                 AcceptsReturn="True"
-                 BorderBrush="Red"
-                 Margin="5,1,1,1" Width="Auto" Height="Auto" 
-                 BorderThickness="0.7" 
-                 Padding="7,5,5,7" HorizontalContentAlignment="Left"
-                 Template="{StaticResource TextBoxBaseControlTemplate}"
-                 Text="{Binding ValidationText}"/>
-    </Grid>
+    <TextBox x:Name="ToolTipTextBox" TextWrapping="Wrap" 
+             AcceptsReturn="True" 
+             BorderBrush="Red"
+             Margin="1" Width="Auto" Height="Auto" 
+             BorderThickness="0.7" 
+             Padding="7,5,5,5" HorizontalContentAlignment="Left"
+             Template="{StaticResource TextBoxBaseControlTemplate}"
+             Text="{Binding ValidationText}"/>
 </UserControl>

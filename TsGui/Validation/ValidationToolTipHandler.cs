@@ -45,9 +45,10 @@ namespace TsGui.Validation
             this._popup = new Popup();
             this._popup.AllowsTransparency = true;
             this._popup.Child = this._validationerrortooltip;
+            //this._validationerrortooltip.
             this._popup.PlacementTarget = this._guioption.UserControl;
-            if (SystemParameters.MenuDropAlignment == true) { this._popup.Placement = PlacementMode.Left; }
-            else { this._popup.Placement = PlacementMode.Right; }
+            this._popup.Placement = PlacementMode.Right; 
+            //this._popup.HorizontalOffset = 5;
         }
 
         public void Clear()
