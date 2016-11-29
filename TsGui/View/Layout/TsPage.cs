@@ -131,7 +131,7 @@ namespace TsGui.View.Layout
         #region
         //Setup the INotifyPropertyChanged interface 
 
-        public event WindowLoadedHandler PageWindowLoaded;
+        public event TsGuiWindowEventHandler PageWindowLoaded;
 
         /// <summary>
         /// Method to handle when content has finished rendering on the window
@@ -140,7 +140,7 @@ namespace TsGui.View.Layout
         /// <param name="e"></param>
         public void OnWindowLoaded(object o, RoutedEventArgs e)
         {
-            this.PageWindowLoaded?.Invoke();
+            this.PageWindowLoaded?.Invoke(o,e);
         }
         #endregion
 

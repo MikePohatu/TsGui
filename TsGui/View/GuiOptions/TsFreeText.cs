@@ -94,7 +94,7 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
 
             this._validationhandler = new ValidationHandler(this,MainController);
-            this._validationtooltip = new ValidationToolTipHandler(this);
+            this._validationtooltip = new ValidationToolTipHandler(this,this._controller);
 
             this.UserControl.DataContext = this;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
@@ -156,7 +156,7 @@ namespace TsGui.View.GuiOptions
         public void OnValidationEvent(object sender, DependencyPropertyChangedEventArgs e)
         { this.Validate(); }
 
-        public void OnWindowLoaded()
+        public void OnWindowLoaded(object o, RoutedEventArgs e)
         { this.Validate(); }
         #endregion
 

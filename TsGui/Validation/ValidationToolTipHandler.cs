@@ -18,6 +18,7 @@
 using System.Windows.Media;
 using System.Windows.Controls.Primitives;
 using System.Windows;
+using System.Diagnostics;
 
 using TsGui.View.GuiOptions;
 
@@ -31,11 +32,15 @@ namespace TsGui.Validation
         private Popup _popup;
         private ValidationErrorToolTip _validationerrortooltip;
         private GuiOptionBase _guioption;
+        private MainController _controller;
 
         //Constructor
-        public ValidationToolTipHandler(GuiOptionBase GuiOption)
+        public ValidationToolTipHandler(GuiOptionBase GuiOption, MainController MainController)
         {
             this._guioption = GuiOption;
+            this._controller = MainController;
+            this._controller.WindowMoved += this.OnWindowMoved;
+
             //record the default colors
             this._bordercolor = this._guioption.ControlFormatting.BorderBrush.Color;
             this._mouseoverbordercolor = this._guioption.ControlFormatting.MouseOverBorderBrush.Color;
@@ -67,5 +72,8 @@ namespace TsGui.Validation
             this._guioption.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
             this._guioption.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;
         }
+
+        public void OnWindowMoved(object o, RoutedEventArgs e)
+        { Debug.WriteLine("***Window moved"); }
     }
 }

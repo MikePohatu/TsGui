@@ -80,7 +80,7 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
 
             this._validationhandler = new ValidationHandler(this, MainController);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._controller);
 
             this.UserControl.DataContext = this;
             this.SetDefaults();
@@ -177,7 +177,7 @@ namespace TsGui.View.GuiOptions
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
         //and closes the dropdown so it initialises proeprly
-        public void OnLoadReload()
+        public void OnLoadReload(object o, RoutedEventArgs e)
         {
             this._dropdownlistui.Control.IsDropDownOpen = true;
             this._dropdownlistui.Control.IsDropDownOpen = false;

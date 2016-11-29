@@ -14,8 +14,9 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 // ControlDelegates.cs - Delegates for control parts of the app
+using System.Windows;
 
 namespace TsGui
 {
-    public delegate void WindowLoadedHandler();
+    public delegate void TsGuiWindowEventHandler(object o, RoutedEventArgs e);
 }

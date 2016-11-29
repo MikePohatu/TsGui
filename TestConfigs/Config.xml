@@ -1,67 +1,55 @@
 <TsGui>
-	<Height>540</Height>
-	<Width>920</Width>
+	<Height>250</Height>
+	<Width>600</Width>
 
 	<HardwareEval />
 	
 	<Heading>
 		<Title>TsGui</Title>
-		<Text>Task Sequence GUI</Text>
+		<Text>Task Sequence GUI groups example config</Text>
 	</Heading>
 
 	<Page>
 		<Row>
 			<Column>
-				<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
+				<LabelWidth>140</LabelWidth>
+				<ControlWidth>130</ControlWidth>
+
+				<GuiOption Type="ComputerName">
 					<Validation ValidateEmpty="FALSE">
-						<!--<Group>Group_1</Group>-->
-					
-						<Message>Tooltip message to display on validation error</Message>			
-						<MaxLength>15</MaxLength>
-						<MinLength>1</MinLength>
-						<Invalid>
-							<Rule Type="Characters">`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Rule>
-						</Invalid>
+						<Group>Group_2012r2</Group>
+						<Valid>
+							<Rule Type="StartsWith">S12-</Rule>
+						</Valid>
 					</Validation>
-					<Variable>Model</Variable>
-					<Label>Computer Name:</Label>
-					<HelpText>Enter a computer name for the device</HelpText>
-					
-					<!-- Query for the default value. Return the first valid value. Note
-					the Ignore values for evaluating the value returned by the query -->
-					<DefaultValue>
-						<Query Type="Wmi">
-							<Wql>SELECT * FROM Win32_ComputerSystem</Wql>
-							<Property Name="Model"/>
-						</Query>
-						<Value>Test 1 2 -3 -4 </Value>
-					</DefaultValue>
+					<Validation ValidateEmpty="FALSE">
+						<Group>Group_2016</Group>
+						<Valid>
+							<Rule Type="StartsWith">S16-</Rule>
+						</Valid>
+					</Validation>
 				</GuiOption>
 				
-				<GuiOption Type="FreeText">
-					<Variable>VAR_BuildDate</Variable>
-					<Label>Build date:</Label>
-					<DefaultValue>
-						<Query Type="Wmi">
-							<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
-							<Property Name="Year">
-								<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
-								<Prefix>PC-</Prefix>
-							</Property>
-							<Property Name="Month"/>
-							<Property Name="Day"/>			
-							<Separator></Separator>
-						</Query>
-					</DefaultValue>
-					
-				</GuiOption>
-			
-				
+				<GuiOption Type="DropDownList">
+					<Variable>VAR_OSVer</Variable>
+					<Label>OS:</Label>
+					<DefaultValue>2012r2</DefaultValue>
+					<Option>
+						<Toggle Group="Group_2012r2">
+							<Hide/>
+						</Toggle>
+						<Text>Server 2012 R2</Text>
+						<Value>2012r2</Value>
+					</Option>
+					<Option>
+						<Toggle Group="Group_2016">
+							<Hide/>
+						</Toggle>
+						<Text>Server 2016</Text>
+						<Value>2016</Value>
+					</Option>
+				</GuiOption>	
 			</Column>
 		</Row>
 	</Page>
-	
-	<Container PurgeInactive="TRUE">
-		<BlindOption Variable="BlindOption_1" Value="BlindOption_1_Val"/>
-	</Container>
 </TsGui>

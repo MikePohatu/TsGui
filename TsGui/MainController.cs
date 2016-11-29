@@ -32,7 +32,8 @@ namespace TsGui
 {
     public class MainController
     {
-        public event WindowLoadedHandler WindowLoaded;
+        public event TsGuiWindowEventHandler WindowLoaded;
+        public event TsGuiWindowEventHandler WindowMoved;
 
         private string _configpath;
         private bool _prodmode = false;
@@ -350,7 +351,17 @@ namespace TsGui
         /// <param name="e"></param>
         public void OnWindowLoaded(object o, RoutedEventArgs e)
         {
-            this.WindowLoaded?.Invoke();
+            this.WindowLoaded?.Invoke(o,e);
+        }
+
+        /// <summary>
+        /// Method to handle when TsGui window has moved
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
+        public void OnWindowMoved(object o, RoutedEventArgs e)
+        {
+            this.WindowMoved.Invoke(o, e);
         }
 
         public String GetValueFromList(XElement InputXml)

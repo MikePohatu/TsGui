@@ -1,7 +1,7 @@
 option explicit
 
 Dim newExe: newExe = "TsGui.exe"
-Dim referenceExe: referenceExe = "TsGui.0.9.4.1.exe"
+Dim referenceExe: referenceExe = "TsGui.0.9.6.3.exe"
 
 Dim objShell: Set objShell = CreateObject("Wscript.Shell")
 Dim objFSO: Set objFSO = CreateObject("Scripting.FileSystemObject")
