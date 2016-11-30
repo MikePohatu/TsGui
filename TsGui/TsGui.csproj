@@ -96,9 +96,6 @@
     <Compile Include="Validation\ValidationErrorToolTip.xaml.cs">
       <DependentUpon>ValidationErrorToolTip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Validation\ValidationErrorWindow.xaml.cs">
-      <DependentUpon>ValidationErrorWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Validation\ValidationHandler.cs" />
     <Compile Include="Validation\ValidationToolTipHandler.cs" />
     <Compile Include="View\GuiOptions\GuiOptionGridFormatting.cs" />
@@ -173,10 +170,6 @@
       <DependentUpon>TsTextBlockUI.xaml</DependentUpon>
     </Compile>
     <Page Include="Validation\ValidationErrorToolTip.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Validation\ValidationErrorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
