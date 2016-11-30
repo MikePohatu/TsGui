@@ -33,7 +33,8 @@ namespace TsGui
     public class MainController
     {
         public event TsGuiWindowEventHandler WindowLoaded;
-        public event TsGuiWindowEventHandler WindowMoved;
+        public event TsGuiWindowEventHandler WindowMoving;
+        public event TsGuiWindowEventHandler WindowMouseUp;
 
         private string _configpath;
         private bool _prodmode = false;
@@ -355,13 +356,23 @@ namespace TsGui
         }
 
         /// <summary>
-        /// Method to handle when TsGui window has moved
+        /// Method to handle when TsGui window has been moved
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>
-        public void OnWindowMoved(object o, RoutedEventArgs e)
+        public void OnWindowMoving(object o, RoutedEventArgs e)
         {
-            this.WindowMoved.Invoke(o, e);
+            this.WindowMoving?.Invoke(o, e);
+        }
+
+        /// <summary>
+        /// Method to handle when TsGui window left mouse is released
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
+        public void OnWindowMouseUp(object o, RoutedEventArgs e)
+        {
+            this.WindowMouseUp?.Invoke(o, e);
         }
 
         public String GetValueFromList(XElement InputXml)

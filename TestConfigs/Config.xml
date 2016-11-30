@@ -1,55 +1,69 @@
 <TsGui>
 	<Height>250</Height>
-	<Width>600</Width>
+	<Width>300</Width>
 
 	<HardwareEval />
 	
 	<Heading>
 		<Title>TsGui</Title>
-		<Text>Task Sequence GUI groups example config</Text>
+		<Text>Task Sequence GUI base config</Text>
 	</Heading>
 
 	<Page>
-		<Row>
-			<Column>
-				<LabelWidth>140</LabelWidth>
-				<ControlWidth>130</ControlWidth>
-
-				<GuiOption Type="ComputerName">
-					<Validation ValidateEmpty="FALSE">
-						<Group>Group_2012r2</Group>
-						<Valid>
-							<Rule Type="StartsWith">S12-</Rule>
-						</Valid>
-					</Validation>
-					<Validation ValidateEmpty="FALSE">
-						<Group>Group_2016</Group>
-						<Valid>
-							<Rule Type="StartsWith">S16-</Rule>
-						</Valid>
-					</Validation>
-				</GuiOption>
+		<Column>
+			<Formatting>
+				<LeftCellWidth>110</LeftCellWidth>
+				<RightCellWidth>160</RightCellWidth>
+			</Formatting>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>TOGGLE_Test</Variable>
+				<Label>Test group enabled</Label>
+				<HAlign>left</HAlign>
 				
-				<GuiOption Type="DropDownList">
-					<Variable>VAR_OSVer</Variable>
-					<Label>OS:</Label>
-					<DefaultValue>2012r2</DefaultValue>
-					<Option>
-						<Toggle Group="Group_2012r2">
-							<Hide/>
-						</Toggle>
-						<Text>Server 2012 R2</Text>
-						<Value>2012r2</Value>
-					</Option>
-					<Option>
-						<Toggle Group="Group_2016">
-							<Hide/>
-						</Toggle>
-						<Text>Server 2016</Text>
-						<Value>2016</Value>
-					</Option>
-				</GuiOption>	
-			</Column>
-		</Row>
+				<Toggle Group="Group_Test">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+				</Toggle>
+			</GuiOption>
+			
+			<GuiOption Type="ComputerName">
+				<Validation ValidateEmpty="FALSE">
+					<Group>Group_Test</Group>
+				
+					<Message>TEST - ComputerName can't start with AB</Message>			
+					<Invalid>
+						<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
+					</Invalid>
+				</Validation>
+			</GuiOption>
+			
+			<GuiOption Type="DropDownList">
+				<Variable>IT_Team</Variable>
+				<Label>Team:</Label>
+				<DefaultValue>Desktop</DefaultValue>
+				<Option>
+					<Text>Desktop</Text>
+					<Value>Desktop</Value>
+				</Option>
+				<Option>
+					<Text>Infrastructure</Text>
+					<Value>Inf</Value>
+				</Option>
+				<Option>
+					<Text>Service Desk</Text>
+					<Value>SD</Value>
+				</Option>
+				
+				<Validation ValidateEmpty="FALSE">
+					<Group>Group_Test</Group>
+				
+					<Message>Desktop not valid when check box ticked</Message>			
+					<Invalid>
+						<Rule Type="StartsWith" CaseSensitive="TRUE">Desktop</Rule>
+					</Invalid>
+				</Validation>
+			</GuiOption>
+		</Column>
 	</Page>
 </TsGui>

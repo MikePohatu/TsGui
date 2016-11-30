@@ -19,9 +19,9 @@
         <!--<Polygon Margin="0,7,0,5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="15" Height="15"
             Points="0,0 1,0 1,1" Fill="Red" Stretch="Fill"/>-->
 
-        <Polygon x:Name="LeftArrow" Margin="1,7,0,5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="11" Height="11"
+        <Polygon x:Name="LeftArrow" Margin="1,9,0,5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="11" Height="11"
             Points="0,0 1,0 1,1" Fill="Red" Stretch="Fill"/>
-        <Polygon x:Name="RightArrow" Margin="0,7,1,5" HorizontalAlignment="Right" VerticalAlignment="Top" Width="11" Height="11"
+        <Polygon x:Name="RightArrow" Margin="0,9,1,5" HorizontalAlignment="Right" VerticalAlignment="Top" Width="11" Height="11"
             Points="0,0 0,1  1,0" Fill="Red" Stretch="Fill"/>
         
         <TextBox x:Name="ToolTipTextBox" TextWrapping="Wrap" 
@@ -29,7 +29,7 @@
                  BorderBrush="Red"
                  Margin="5,1,5,1" Width="Auto" Height="Auto" 
                  BorderThickness="1" 
-                 Padding="7,5,7,7" HorizontalContentAlignment="Left"
+                 Padding="7,5,7,5" HorizontalContentAlignment="Left"
                  Template="{StaticResource TextBoxBaseControlTemplate}"
                  Text="{Binding ValidationText}"/>
     </Grid>
