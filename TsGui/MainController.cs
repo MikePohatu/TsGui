@@ -361,7 +361,7 @@ namespace TsGui
         /// <param name="e"></param>
         public void OnWindowMoved(object o, RoutedEventArgs e)
         {
-            this.WindowMoved.Invoke(o, e);
+            this.WindowMoved?.Invoke(o, e);
         }
 
         public String GetValueFromList(XElement InputXml)

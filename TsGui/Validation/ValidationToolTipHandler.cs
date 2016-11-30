@@ -39,7 +39,6 @@ namespace TsGui.Validation
         {
             this._guioption = GuiOption;
             this._controller = MainController;
-            this._controller.WindowMoved += this.OnWindowMoved;
 
             //record the default colors
             this._bordercolor = this._guioption.ControlFormatting.BorderBrush.Color;
@@ -50,13 +49,16 @@ namespace TsGui.Validation
             this._popup = new Popup();
             this._popup.AllowsTransparency = true;
             this._popup.Child = this._validationerrortooltip;
-            this._popup.PlacementTarget = this._guioption.UserControl;
+            this._popup.PlacementTarget = this._guioption.Control;
+
+            //this is to handle WPF quirks with touch devices
             if (SystemParameters.MenuDropAlignment == false) { this._popup.Placement = PlacementMode.Right; }
             else { this._popup.Placement = PlacementMode.Left; }
         }
 
         public void Clear()
         {
+            this._controller.WindowMoved -= this.OnWindowMoved;
             this._popup.IsOpen = false;
             this._guioption.ControlFormatting.BorderBrush.Color = this._bordercolor;
             this._guioption.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
@@ -65,12 +67,12 @@ namespace TsGui.Validation
 
         public void Show()
         {
-            this._popup.IsOpen = true;
-
-            //update the colors to red. 
+            this._controller.WindowMoved += this.OnWindowMoved;
+            this._popup.IsOpen = true; 
             this._guioption.ControlFormatting.BorderBrush.Color = Colors.Red;
             this._guioption.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
             this._guioption.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;
+            this.Refresh();
         }
 
         public void OnWindowMoved(object o, RoutedEventArgs e)
@@ -78,11 +80,34 @@ namespace TsGui.Validation
 
         private void Refresh()
         {
+            if (this.HasHitRightScreenEdge() == false)
+            {
+                this._validationerrortooltip.LeftArrow.Visibility = Visibility.Visible;
+                this._validationerrortooltip.RightArrow.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                this._validationerrortooltip.LeftArrow.Visibility = Visibility.Hidden;
+                this._validationerrortooltip.RightArrow.Visibility = Visibility.Visible;
+            }
+
             if (this._popup.IsOpen == true)
             {
                 this._popup.IsOpen = false;
                 this._popup.IsOpen = true;
             }
+        }
+
+        private bool HasHitRightScreenEdge()
+        {
+            Point locationOfControl = this._guioption.Control.PointToScreen(new Point(0, 0));
+            Point locationOfPopup = this._validationerrortooltip.PointToScreen(new Point(0, 0));
+
+            double controlRightEdge = locationOfControl.X + this._guioption.Control.ActualWidth;
+
+            if (controlRightEdge < locationOfPopup.X)
+            { return false; }
+            else { return true; }
         }
     }
 }
