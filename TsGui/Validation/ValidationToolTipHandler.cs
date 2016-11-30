@@ -18,6 +18,8 @@
 using System.Windows.Media;
 using System.Windows.Controls.Primitives;
 using System.Windows;
+using System.Windows.Threading;
+using System;
 using System.Diagnostics;
 
 using TsGui.View.GuiOptions;
@@ -79,14 +81,22 @@ namespace TsGui.Validation
         }
 
         public void OnWindowMoving(object o, RoutedEventArgs e)
-        { this.Refresh(false); }
+        {
+            //this.Refresh(false);
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => this.Refresh(true)));
+
+        }
 
         public void OnWindowMouseUp(object o, RoutedEventArgs e)
-        { this.Refresh(true); }
+        {
+            //this.Refresh(true);
+            //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => this.Refresh(true)));
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => this.Refresh(true)));
+        }
 
         private void Refresh(bool IsMoveFinished)
         {
-            if (this.HasHitRightScreenEdge() == false)
+            if (this.HasHitRightScreenEdge() == this._guioption.LabelOnRight)
             {
                 this._validationerrortooltip.LeftArrow.Visibility = Visibility.Visible;
                 this._validationerrortooltip.RightArrow.Visibility = Visibility.Hidden;
@@ -97,9 +107,15 @@ namespace TsGui.Validation
                 this._validationerrortooltip.RightArrow.Visibility = Visibility.Visible;
             }
 
+            double offset = this._popup.HorizontalOffset;
+            this._popup.HorizontalOffset = offset + 1;
+            this._popup.HorizontalOffset = offset;
+
             if (IsMoveFinished == true)
             {
                 Debug.WriteLine("*MouseUp");
+                
+                
                 this._popup.IsOpen = false;
                 this._popup.IsOpen = true;
             }
