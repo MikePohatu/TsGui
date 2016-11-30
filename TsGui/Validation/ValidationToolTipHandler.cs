@@ -73,17 +73,17 @@ namespace TsGui.Validation
             this._guioption.ControlFormatting.BorderBrush.Color = Colors.Red;
             this._guioption.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
             this._guioption.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;
-            this.Refresh(true);
+            this.Refresh();
         }
 
         public void OnWindowMouseUp(object o, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.Refresh(true)));
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.Refresh()));
         }
 
-        private void Refresh(bool IsMoveFinished)
+        private void Refresh()
         {
-            if (IsMoveFinished == true) { this.ResetPlacement(); }
+            this.ResetPlacement();
 
             if (this.HasHitRightScreenEdge() == this._guioption.LabelOnRight)
             {
@@ -95,10 +95,6 @@ namespace TsGui.Validation
                 this._validationerrortooltip.LeftArrow.Visibility = Visibility.Hidden;
                 this._validationerrortooltip.RightArrow.Visibility = Visibility.Visible;
             }
-
-            double offset = this._popup.HorizontalOffset;
-            this._popup.HorizontalOffset = offset + 1;
-            this._popup.HorizontalOffset = offset;
         }
 
         private bool HasHitRightScreenEdge()
