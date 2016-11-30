@@ -74,6 +74,15 @@ namespace TsGui.Validation
         }
 
         public void OnWindowMoved(object o, RoutedEventArgs e)
-        { Debug.WriteLine("***Window moved"); }
+        { this.Refresh(); }
+
+        private void Refresh()
+        {
+            if (this._popup.IsOpen == true)
+            {
+                this._popup.IsOpen = false;
+                this._popup.IsOpen = true;
+            }
+        }
     }
 }
