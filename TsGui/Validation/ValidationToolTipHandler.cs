@@ -20,7 +20,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows;
 using System.Windows.Threading;
 using System;
-using System.Diagnostics;
 
 using TsGui.View.GuiOptions;
 
@@ -52,7 +51,6 @@ namespace TsGui.Validation
             this._popup.AllowsTransparency = true;
             this._popup.Child = this._validationerrortooltip;
             this._popup.PlacementTarget = this._guioption.Control;
-            
 
             //this is to handle WPF quirks with touch devices
             if (SystemParameters.MenuDropAlignment == false) { this._popup.Placement = PlacementMode.Right; }
@@ -61,7 +59,6 @@ namespace TsGui.Validation
 
         public void Clear()
         {
-            this._controller.WindowMoving -= this.OnWindowMoving;
             this._controller.WindowMouseUp -= OnWindowMouseUp;
             this._popup.IsOpen = false;
             this._guioption.ControlFormatting.BorderBrush.Color = this._bordercolor;
@@ -71,7 +68,6 @@ namespace TsGui.Validation
 
         public void Show()
         {
-            this._controller.WindowMoving += this.OnWindowMoving;
             this._controller.WindowMouseUp += OnWindowMouseUp;
             this._popup.IsOpen = true; 
             this._guioption.ControlFormatting.BorderBrush.Color = Colors.Red;
@@ -80,22 +76,15 @@ namespace TsGui.Validation
             this.Refresh(true);
         }
 
-        public void OnWindowMoving(object o, RoutedEventArgs e)
-        {
-            //this.Refresh(false);
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => this.Refresh(true)));
-
-        }
-
         public void OnWindowMouseUp(object o, RoutedEventArgs e)
         {
-            //this.Refresh(true);
-            //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => this.Refresh(true)));
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => this.Refresh(true)));
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.Refresh(true)));
         }
 
         private void Refresh(bool IsMoveFinished)
         {
+            if (IsMoveFinished == true) { this.ResetPlacement(); }
+
             if (this.HasHitRightScreenEdge() == this._guioption.LabelOnRight)
             {
                 this._validationerrortooltip.LeftArrow.Visibility = Visibility.Visible;
@@ -110,15 +99,6 @@ namespace TsGui.Validation
             double offset = this._popup.HorizontalOffset;
             this._popup.HorizontalOffset = offset + 1;
             this._popup.HorizontalOffset = offset;
-
-            if (IsMoveFinished == true)
-            {
-                Debug.WriteLine("*MouseUp");
-                
-                
-                this._popup.IsOpen = false;
-                this._popup.IsOpen = true;
-            }
         }
 
         private bool HasHitRightScreenEdge()
@@ -128,12 +108,15 @@ namespace TsGui.Validation
 
             double controlRightEdge = locationOfControl.X + this._guioption.Control.ActualWidth;
 
-            Debug.WriteLine("***ControlRightEdge: " + controlRightEdge);
-            Debug.WriteLine("***Popup left edge: " + locationOfPopup.X);
-
             if (controlRightEdge <= locationOfPopup.X)
             { return false; }
             else { return true; }
+        }
+
+        private void ResetPlacement()
+        {
+            this._popup.IsOpen = false;
+            this._popup.IsOpen = true;
         }
     }
 }
