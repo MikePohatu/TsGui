@@ -27,9 +27,8 @@ MainWindow.xaml - wrapper window for the app. Includes footer.
         mc:Ignorable="d"
         Title="{Binding HeadingTitle}" Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}"
         Left="{Binding WindowLocation.Left, Mode=TwoWay}" Top="{Binding WindowLocation.Top, Mode=TwoWay}" 
-        Topmost="True"
-        WindowStyle="None"
-        MouseLeftButtonDown="windowDrag" ResizeMode="NoResize"
+        Topmost="True" 
+        WindowStyle="None" LocationChanged="WindowLocationChanged" MouseLeftButtonDown="OnMouseDown" MouseLeftButtonUp="OnMouseUp" ResizeMode="NoResize"
         AllowsTransparency="True" Background="Transparent"
         >
     <Grid Name="ContentWrapper">

@@ -50,6 +50,7 @@ namespace TsGui.Validation
             this._popup.AllowsTransparency = true;
             this._popup.Child = this._validationerrortooltip;
             this._popup.PlacementTarget = this._guioption.Control;
+            
 
             //this is to handle WPF quirks with touch devices
             if (SystemParameters.MenuDropAlignment == false) { this._popup.Placement = PlacementMode.Right; }
@@ -58,7 +59,8 @@ namespace TsGui.Validation
 
         public void Clear()
         {
-            this._controller.WindowMoved -= this.OnWindowMoved;
+            this._controller.WindowMoving -= this.OnWindowMoving;
+            this._controller.WindowMouseUp -= OnWindowMouseUp;
             this._popup.IsOpen = false;
             this._guioption.ControlFormatting.BorderBrush.Color = this._bordercolor;
             this._guioption.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
@@ -67,18 +69,22 @@ namespace TsGui.Validation
 
         public void Show()
         {
-            this._controller.WindowMoved += this.OnWindowMoved;
+            this._controller.WindowMoving += this.OnWindowMoving;
+            this._controller.WindowMouseUp += OnWindowMouseUp;
             this._popup.IsOpen = true; 
             this._guioption.ControlFormatting.BorderBrush.Color = Colors.Red;
             this._guioption.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
             this._guioption.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;
-            this.Refresh();
+            this.Refresh(true);
         }
 
-        public void OnWindowMoved(object o, RoutedEventArgs e)
-        { this.Refresh(); }
+        public void OnWindowMoving(object o, RoutedEventArgs e)
+        { this.Refresh(false); }
 
-        private void Refresh()
+        public void OnWindowMouseUp(object o, RoutedEventArgs e)
+        { this.Refresh(true); }
+
+        private void Refresh(bool IsMoveFinished)
         {
             if (this.HasHitRightScreenEdge() == false)
             {
@@ -91,8 +97,9 @@ namespace TsGui.Validation
                 this._validationerrortooltip.RightArrow.Visibility = Visibility.Visible;
             }
 
-            if (this._popup.IsOpen == true)
+            if (IsMoveFinished == true)
             {
+                Debug.WriteLine("*MouseUp");
                 this._popup.IsOpen = false;
                 this._popup.IsOpen = true;
             }
@@ -105,7 +112,10 @@ namespace TsGui.Validation
 
             double controlRightEdge = locationOfControl.X + this._guioption.Control.ActualWidth;
 
-            if (controlRightEdge < locationOfPopup.X)
+            Debug.WriteLine("***ControlRightEdge: " + controlRightEdge);
+            Debug.WriteLine("***Popup left edge: " + locationOfPopup.X);
+
+            if (controlRightEdge <= locationOfPopup.X)
             { return false; }
             else { return true; }
         }

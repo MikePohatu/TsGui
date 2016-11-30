@@ -16,6 +16,7 @@
 // MainWindow.xaml.cs - MainWindow backing class. Creates a MainController on 
 // instantiation which starts and controls the application. 
 
+using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -34,10 +35,13 @@ namespace TsGui
             this._controller = new MainController(this, Arguments);
         }
 
-        private void windowDrag(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
-            this._controller.OnWindowMoved(this, new RoutedEventArgs());
-        }
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        { this.DragMove(); }
+
+        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        { this._controller.OnWindowMouseUp(this,new RoutedEventArgs()); }
+
+        private void WindowLocationChanged(object sender, EventArgs e)
+        { this._controller.OnWindowMoving(this, new RoutedEventArgs()); }
     }
 }
