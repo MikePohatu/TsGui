@@ -20,10 +20,7 @@ using TsGui.Validation;
 
 using System;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 using System.Xml.Linq;
-using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace TsGui.View.GuiOptions
 {
@@ -87,7 +84,6 @@ namespace TsGui.View.GuiOptions
         private void Init(MainController MainController)
         {
             this._controller = MainController;
-            this._controller.WindowLoaded += this.OnWindowLoaded;
 
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
@@ -97,6 +93,7 @@ namespace TsGui.View.GuiOptions
             this._validationtooltip = new ValidationToolTipHandler(this,this._controller);
 
             this.UserControl.DataContext = this;
+            this._controller.WindowLoaded += this.OnWindowLoaded;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
             this.UserControl.IsEnabledChanged += this.OnValidationEvent;
             this.SetDefaults();

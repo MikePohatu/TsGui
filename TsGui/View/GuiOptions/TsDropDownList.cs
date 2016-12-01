@@ -73,9 +73,10 @@ namespace TsGui.View.GuiOptions
 
         //Constructor
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
-        {           
+        {
+            this._controller = MainController;
+
             this._dropdownlistui = new TsDropDownListUI();
-  
             this.Control = this._dropdownlistui;
             this.Label = new TsLabelUI();
 
@@ -166,8 +167,8 @@ namespace TsGui.View.GuiOptions
 
         private void OnSelectionChanged(object o, RoutedEventArgs e)
         {
-            this.ToggleEvent?.Invoke();
             this.Validate(false);
+            this.ToggleEvent?.Invoke();
         }
 
         private void OnActiveChanged(object o, DependencyPropertyChangedEventArgs e)

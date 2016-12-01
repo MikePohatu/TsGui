@@ -34,12 +34,15 @@ namespace TsGui.Validation
         private ValidationErrorToolTip _validationerrortooltip;
         private GuiOptionBase _guioption;
         private MainController _controller;
+        private bool _windowloaded = false;
 
         //Constructor
         public ValidationToolTipHandler(GuiOptionBase GuiOption, MainController MainController)
         {
             this._guioption = GuiOption;
             this._controller = MainController;
+            this._controller.WindowLoaded += OnWindowLoaded;
+            //this._controller.WindowMouseUp += this.OnWindowMouseUp;
 
             //record the default colors
             this._bordercolor = this._guioption.ControlFormatting.BorderBrush.Color;
@@ -50,38 +53,49 @@ namespace TsGui.Validation
             this._popup = new Popup();
             this._popup.AllowsTransparency = true;
             this._popup.Child = this._validationerrortooltip;
-            this._popup.PlacementTarget = this._guioption.Control; 
+            this._popup.PlacementTarget = this._guioption.Control;
+            this._popup.IsOpen = false;
         }
 
         public void Clear()
         {
-            this._controller.WindowMouseUp -= OnWindowMouseUp;
-            this._popup.IsOpen = false;
-            this._guioption.ControlFormatting.BorderBrush.Color = this._bordercolor;
-            this._guioption.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
-            this._guioption.ControlFormatting.FocusedBorderBrush.Color = this._focusbordercolor;
+            if (this._popup.IsOpen == true)
+            {
+                this._controller.WindowMouseUp -= this.OnWindowMouseUp;
+                this._popup.IsOpen = false;
+                this._guioption.ControlFormatting.BorderBrush.Color = this._bordercolor;
+                this._guioption.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
+                this._guioption.ControlFormatting.FocusedBorderBrush.Color = this._focusbordercolor;
+            }
         }
 
         public void Show()
         {
-            this.SetPlacement();
-            this._controller.WindowMouseUp += OnWindowMouseUp;
-            this._popup.IsOpen = true; 
-            this._guioption.ControlFormatting.BorderBrush.Color = Colors.Red;
-            this._guioption.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
-            this._guioption.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;
-            this.Refresh();
+            if (this._popup.IsOpen == false)
+            {
+                this.SetPlacement();
+                this._controller.WindowMouseUp += this.OnWindowMouseUp;
+                this._popup.IsOpen = true;
+                this._guioption.ControlFormatting.BorderBrush.Color = Colors.Red;
+                this._guioption.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
+                this._guioption.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;                
+            }
+            this.UpdateArrows();
         }
 
         public void OnWindowMouseUp(object o, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.Refresh()));
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.UpdateArrows()));
         }
 
-        private void Refresh()
-        {
-            this.ResetLocation();
+        public void OnWindowLoaded(object o, RoutedEventArgs e)
+        { this._windowloaded = true; }
 
+        private void UpdateArrows()
+        {
+            if (this._windowloaded == false ) { return; }
+            this.UpdatePopupLocation();
+            
             if (this.HasHitRightScreenEdge() == false)
             {
                 this._validationerrortooltip.LeftArrow.Visibility = Visibility.Visible;
@@ -106,7 +120,7 @@ namespace TsGui.Validation
             else { return true; }
         }
 
-        private void ResetLocation()
+        private void UpdatePopupLocation()
         {
             this._popup.IsOpen = false;
             this._popup.IsOpen = true;
