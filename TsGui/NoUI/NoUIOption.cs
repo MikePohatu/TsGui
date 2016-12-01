@@ -13,14 +13,14 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-//  BlindOption.cs - used to create TsVariables but aren't shown in the gui. 
+//  NoUIOption.cs - used to create TsVariables but aren't shown in the gui. 
 
 using System.Xml.Linq;
 using TsGui.Grouping;
 
-namespace TsGui.Blind
+namespace TsGui.NoUI
 {
-    public class BlindOption: GroupableBlindBase,IOption
+    public class NoUIOption: GroupableBlindBase,IOption
     {
         private string _inactivevalue = "TSGUI_INACTIVE";
         private string _value = string.Empty;
@@ -45,7 +45,7 @@ namespace TsGui.Blind
         }
 
         //constructors     
-        public BlindOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent,MainController)
+        public NoUIOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent,MainController)
         {
             this.LoadXml(InputXml);
         }

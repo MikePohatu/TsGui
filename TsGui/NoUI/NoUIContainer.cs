@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using TsGui.Grouping;
 
-namespace TsGui.Blind
+namespace TsGui.NoUI
 {
     public class NoUIContainer: GroupableBlindBase
     {
@@ -42,9 +42,9 @@ namespace TsGui.Blind
             base.LoadXml(InputXml);
             foreach (XElement opx in InputXml.Elements())
             {
-                if (opx.Name == "BlindOption")
+                if (opx.Name == "NoUIOption")
                 {
-                    this.AddOption(new BlindOption(this, this._controller, opx));
+                    this.AddOption(new NoUIOption(this, this._controller, opx));
                 }
 
                 else if (opx.Name == "Container")
