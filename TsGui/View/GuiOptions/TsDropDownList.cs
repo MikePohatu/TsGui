@@ -55,7 +55,7 @@ namespace TsGui.View.GuiOptions
         }
         public string CurrentValue
         {
-            get { return this._currentitem.Value; }
+            get { return this._currentitem?.Value; }
         }
         public TsDropDownListItem CurrentItem
         {

@@ -1,69 +1,66 @@
 <TsGui>
-	<Height>250</Height>
-	<Width>300</Width>
+	<Height>540</Height>
+	<Width>920</Width>
 
 	<HardwareEval />
 	
 	<Heading>
 		<Title>TsGui</Title>
-		<Text>Task Sequence GUI base config</Text>
+		<Text>Task Sequence GUI</Text>
 	</Heading>
 
 	<Page>
-		<Column>
-			<Formatting>
-				<LeftCellWidth>110</LeftCellWidth>
-				<RightCellWidth>160</RightCellWidth>
-			</Formatting>
-			
-			<GuiOption Type="CheckBox">
-				<Variable>TOGGLE_Test</Variable>
-				<Label>Test group enabled</Label>
-				<HAlign>left</HAlign>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>160</RightCellWidth>
+				</Formatting>
 				
-				<Toggle Group="Group_Test">
-					<Enabled>TRUE</Enabled>
-					<Disabled>FALSE</Disabled>
-				</Toggle>
-			</GuiOption>
-			
-			<GuiOption Type="ComputerName">
-				<Validation ValidateEmpty="FALSE">
-					<Group>Group_Test</Group>
+				<GuiOption Type="ComputerName" />
 				
-					<Message>TEST - ComputerName can't start with AB</Message>			
-					<Invalid>
-						<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
-					</Invalid>
-				</Validation>
-			</GuiOption>
-			
-			<GuiOption Type="DropDownList">
-				<Variable>IT_Team</Variable>
-				<Label>Team:</Label>
-				<DefaultValue>Desktop</DefaultValue>
-				<Option>
-					<Text>Desktop</Text>
-					<Value>Desktop</Value>
-				</Option>
-				<Option>
-					<Text>Infrastructure</Text>
-					<Value>Inf</Value>
-				</Option>
-				<Option>
-					<Text>Service Desk</Text>
-					<Value>SD</Value>
-				</Option>
-				
-				<Validation ValidateEmpty="FALSE">
-					<Group>Group_Test</Group>
-				
-					<Message>Desktop not valid when check box ticked</Message>			
-					<Invalid>
-						<Rule Type="StartsWith" CaseSensitive="TRUE">Desktop</Rule>
-					</Invalid>
-				</Validation>
-			</GuiOption>
-		</Column>
+				<!--CheckBox used as a toggle -->
+				<GuiOption Type="CheckBox">
+					<Variable>TOGGLE_Test</Variable>
+					<Label>Test group enabled</Label>
+					<HAlign>left</HAlign>
+					
+					<Toggle Group="Group_Test">
+						<Enabled>TRUE</Enabled>
+						<Disabled>FALSE</Disabled>
+					</Toggle>
+				</GuiOption>
+			</Column>
+		</Row>
 	</Page>
+	
+	<NoUI >
+		<BlindOption Variable="BlindOption_1" Value="BlindOption_1_Val"/>
+		<BlindOption Variable="BlindOption_2" >
+			<SetValue>
+				<Query Type="Wmi">
+					<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
+					<Property Name="Year">
+						<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
+						<Prefix>PC-</Prefix>
+					</Property>
+					<Property Name="Month"/>
+					<Property Name="Day"/>			
+					<Separator></Separator>
+				</Query>
+			</SetValue>
+		</BlindOption>
+		<Container>
+			<Group>Group_Test</Group>
+			<BlindOption Variable="BlindOption_3" Value="BlindOption_3_Val"/>
+			<BlindOption>
+				<Variable>BlindOption_4</Variable>
+				<SetValue>
+					<Value>BlindOption_4_Val</Value>
+				</SetValue>
+				<InactiveValue>BlindOption_4_Inactive</InactiveValue>
+			</BlindOption>
+			<BlindOption Variable="BlindOption_5" Value="BlindOption_5_Val" PurgeInactive="TRUE"/>
+		</Container>
+	</NoUI>
 </TsGui>

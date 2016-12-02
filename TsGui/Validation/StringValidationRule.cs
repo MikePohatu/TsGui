@@ -75,6 +75,9 @@ namespace TsGui.Validation
                     case "RegEx":
                         this.Type = StringValidationRuleType.RegEx;
                         break;
+                    case "Equals":
+                        this.Type = StringValidationRuleType.Equals;
+                        break;
                     default:
                         break;
                 }

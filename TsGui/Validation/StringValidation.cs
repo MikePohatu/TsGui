@@ -111,7 +111,6 @@ namespace TsGui.Validation
         }
 
         //load options from old Xml e.g. pre-0.9.5.0
-        #region
         public void LoadLegacyXml(XElement InputXml)
         {
             XElement x;
@@ -127,7 +126,6 @@ namespace TsGui.Validation
                 }
             }
         }
-        #endregion
 
         public bool IsValid(string Input)
         {

@@ -199,6 +199,9 @@ namespace TsGui.Validation
                 case StringValidationRuleType.RegEx:
                     result = DoesRegexMatch(Input, Rule.Content, Rule.IsCaseSensitive);
                     break;
+                case StringValidationRuleType.Equals:
+                    result = inputstring.Equals(rulestring);
+                    break;
                 default:
                     break;
             }
