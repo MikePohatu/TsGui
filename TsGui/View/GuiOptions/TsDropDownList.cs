@@ -30,7 +30,6 @@ namespace TsGui.View.GuiOptions
         public event ToggleEvent ToggleEvent;
 
         private TsDropDownListUI _dropdownlistui;
-        private string _currentvalue;
         private string _defaultvalue;
         private TsDropDownListItem _currentitem;
         private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
@@ -56,8 +55,7 @@ namespace TsGui.View.GuiOptions
         }
         public string CurrentValue
         {
-            get { return this._currentvalue; }
-            set { this._currentvalue = value; this.OnPropertyChanged(this, "CurrentValue"); }
+            get { return this._currentitem.Value; }
         }
         public TsDropDownListItem CurrentItem
         {
@@ -153,7 +151,7 @@ namespace TsGui.View.GuiOptions
                 foreach (TsDropDownListItem entry in this._options)
                 {
                     if ((entry.Value == this._defaultvalue) || (index == 0))
-                    { this.CurrentValue = entry.Value; }
+                    { this.CurrentItem = entry; }
 
                     index++;
                 }
@@ -214,7 +212,7 @@ namespace TsGui.View.GuiOptions
             if (newvalid == false)
             {
                 string validationmessage = this._validationhandler.ValidationMessage;
-                string s = "\"" + this.CurrentValue + "\" is invalid" + Environment.NewLine;
+                string s = "\"" + this.CurrentItem.Text + "\" is invalid" + Environment.NewLine;
                 if (string.IsNullOrEmpty(validationmessage)) { s = s + _validationhandler.FailedValidationMessage; }
                 else { s = s + validationmessage; }
 
