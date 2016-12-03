@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System;
+using System.Windows.Threading;
 
 namespace TsGui
 {
@@ -9,6 +10,7 @@ namespace TsGui
     public partial class App : Application
     {
         public Arguments Arguments;
+        MainWindow _mainwindow;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -23,14 +25,19 @@ namespace TsGui
                 return;
             }
 
-            //this.StartupUri = new Uri("MainWindow.xaml", UriKind.Relative);
             this.StartTsGui();
         }
 
         private void StartTsGui()
         {
-            MainWindow mainWindow = new MainWindow(this.Arguments);
-            //mainWindow.Show();
+            this._mainwindow = new MainWindow(this.Arguments);
+        }
+
+        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            string msg = "Error message: " + Environment.NewLine + e.Exception.Message;
+            e.Handled = true;
+            this._mainwindow.Controller.CloseWithError("Application Runtime Exception",msg);
         }
     }
 }

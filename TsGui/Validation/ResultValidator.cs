@@ -166,8 +166,12 @@ namespace TsGui.Validation
 
         public static bool DoesRegexMatch(string Input, string Pattern, bool IsCaseSensitvie)
         {
-            if (IsCaseSensitvie == true) { return Regex.IsMatch(Input, Pattern); }
-            else { return Regex.IsMatch(Input, Pattern, RegexOptions.IgnoreCase); }
+            try
+            {
+                if (IsCaseSensitvie == true) { return Regex.IsMatch(Input, Pattern); }
+                else { return Regex.IsMatch(Input, Pattern, RegexOptions.IgnoreCase); }
+            }
+            catch (Exception e) { throw new ArgumentException("Error processing RegEx: " + Pattern + ". " + Environment.NewLine + e.Message); }
         }
 
         public static bool DoesStringMatchRule(StringValidationRule Rule, string Input)
@@ -188,10 +192,10 @@ namespace TsGui.Validation
                     result = DoesStringContainCharacters(Input, Rule.Content, Rule.IsCaseSensitive);
                     break;
                 case StringValidationRuleType.Contains:
-                    result = inputstring.Contains(rulestring); 
+                    result = inputstring.Contains(rulestring);
                     break;
                 case StringValidationRuleType.EndsWith:
-                    result = inputstring.EndsWith(rulestring);          
+                    result = inputstring.EndsWith(rulestring);
                     break;
                 case StringValidationRuleType.StartsWith:
                     result = inputstring.StartsWith(rulestring);

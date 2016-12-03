@@ -1,6 +1,6 @@
 <TsGui>
-	<Height>540</Height>
-	<Width>920</Width>
+	<Height>340</Height>
+	<Width>420</Width>
 
 	<HardwareEval />
 	
@@ -35,8 +35,8 @@
 	</Page>
 	
 	<NoUI >
-		<BlindOption Variable="BlindOption_1" Value="BlindOption_1_Val"/>
-		<BlindOption Variable="BlindOption_2" >
+		<NoUIOption Variable="NoUIOption_1" Value="NoUIOption_1_Val"/>
+		<NoUIOption Variable="NoUIOption_2" >
 			<SetValue>
 				<Query Type="Wmi">
 					<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
@@ -49,18 +49,18 @@
 					<Separator></Separator>
 				</Query>
 			</SetValue>
-		</BlindOption>
+		</NoUIOption>
 		<Container>
 			<Group>Group_Test</Group>
-			<BlindOption Variable="BlindOption_3" Value="BlindOption_3_Val"/>
-			<BlindOption>
-				<Variable>BlindOption_4</Variable>
+			<NoUIOption Variable="NoUIOption_3" Value="NoUIOption_3_Val"/>
+			<NoUIOption>
+				<Variable>NoUIOption_4</Variable>
 				<SetValue>
-					<Value>BlindOption_4_Val</Value>
+					<Value>NoUIOption_4_Val</Value>
 				</SetValue>
-				<InactiveValue>BlindOption_4_Inactive</InactiveValue>
-			</BlindOption>
-			<BlindOption Variable="BlindOption_5" Value="BlindOption_5_Val" PurgeInactive="TRUE"/>
+				<InactiveValue>NoUIOption_4_Inactive</InactiveValue>
+			</NoUIOption>
+			<NoUIOption Variable="NoUIOption_5" Value="NoUIOption_5_Val" PurgeInactive="TRUE"/>
 		</Container>
 	</NoUI>
 </TsGui>

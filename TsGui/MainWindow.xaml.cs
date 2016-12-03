@@ -27,21 +27,21 @@ namespace TsGui
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainController _controller;
+        public MainController Controller { get; set; }
 
         public MainWindow(Arguments Arguments)
         {            
             InitializeComponent();
-            this._controller = new MainController(this, Arguments);
+            this.Controller = new MainController(this, Arguments);
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         { this.DragMove(); }
 
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
-        { this._controller.OnWindowMouseUp(this,new RoutedEventArgs()); }
+        { this.Controller.OnWindowMouseUp(this,new RoutedEventArgs()); }
 
         private void WindowLocationChanged(object sender, EventArgs e)
-        { this._controller.OnWindowMoving(this, new RoutedEventArgs()); }
+        { this.Controller.OnWindowMoving(this, new RoutedEventArgs()); }
     }
 }

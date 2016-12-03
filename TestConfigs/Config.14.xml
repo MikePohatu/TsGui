@@ -38,10 +38,10 @@
 				</Validation>
 			</GuiOption>
 			
-			<GuiOption Type="DropDownList">
+			<GuiOption Type="DropDownList" NoDefaultValue="TRUE">
 				<Variable>IT_Team</Variable>
 				<Label>Team:</Label>
-				<DefaultValue>Desktop</DefaultValue>
+				<!--<DefaultValue>Desktop</DefaultValue>-->
 				<Option>
 					<Text>Desktop</Text>
 					<Value>Desktop</Value>
@@ -60,7 +60,8 @@
 				
 					<Message>Desktop not valid when check box ticked</Message>			
 					<Invalid>
-						<Rule Type="StartsWith" CaseSensitive="TRUE">Desktop</Rule>
+						<!--Rule Type="Equals" CaseSensitive="TRUE">Desktop</Rule>-->
+						<Rule Type="RegEx" CaseSensitive="TRUE">(Desktop}</Rule>
 					</Invalid>
 				</Validation>
 			</GuiOption>

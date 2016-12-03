@@ -73,10 +73,16 @@ namespace TsGui
             catch (Exception exc)
             {
                 string msg = "Error message: " + exc.Message + Environment.NewLine + exc.ToString();
-                MessageBox.Show(msg, "Application Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.ParentWindow.Closing -= this.OnWindowClosing;
-                this.ParentWindow.Close();
+                this.CloseWithError("Application Startup Exception", msg);
             }
+        }
+
+        public void CloseWithError(string Title, string Message)
+        {
+            
+            MessageBox.Show(Message,Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            this.ParentWindow.Closing -= this.OnWindowClosing;
+            this.ParentWindow.Close();
         }
 
         public void Startup()
