@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestConfigs", "TestConfigs"
 		TestConfigs\Config.11.xml = TestConfigs\Config.11.xml
 		TestConfigs\Config.12.xml = TestConfigs\Config.12.xml
 		TestConfigs\Config.13.xml = TestConfigs\Config.13.xml
+		TestConfigs\Config.14.xml = TestConfigs\Config.14.xml
 		TestConfigs\Config.2.xml = TestConfigs\Config.2.xml
 		TestConfigs\Config.3.xml = TestConfigs\Config.3.xml
 		TestConfigs\Config.4.xml = TestConfigs\Config.4.xml
@@ -30,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestConfigs", "TestConfigs"
 		TestConfigs\Config.7.xml = TestConfigs\Config.7.xml
 		TestConfigs\Config.8.xml = TestConfigs\Config.8.xml
 		TestConfigs\Config.9.xml = TestConfigs\Config.9.xml
+		TestConfigs\Config.xml = TestConfigs\Config.xml
 		TestConfigs\TestConfigs.vbs = TestConfigs\TestConfigs.vbs
 	EndProjectSection
 EndProject
