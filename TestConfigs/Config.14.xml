@@ -61,7 +61,7 @@
 					<Message>Desktop not valid when check box ticked</Message>			
 					<Invalid>
 						<!--Rule Type="Equals" CaseSensitive="TRUE">Desktop</Rule>-->
-						<Rule Type="RegEx" CaseSensitive="TRUE">(Desktop}</Rule>
+						<Rule Type="RegEx" CaseSensitive="TRUE">(Desktop)</Rule>
 					</Invalid>
 				</Validation>
 			</GuiOption>
