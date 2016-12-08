@@ -1,0 +1,70 @@
+<TsGui>
+	<Height>250</Height>
+	<Width>300</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI base config</Text>
+	</Heading>
+
+	<Page>
+		<Column>
+			<Formatting>
+				<LeftCellWidth>110</LeftCellWidth>
+				<RightCellWidth>160</RightCellWidth>
+			</Formatting>
+			
+			<GuiOption Type="TrafficLight">
+				<Variable>CC_Test</Variable>
+				<Label>Compliance Test</Label>
+				<Formatting>						
+					<Control>
+						<HorizontalAlignment>Left</HorizontalAlignment> 	<!-- Options available: Left, Right, Center, Stretch -->						
+					</Control>
+				</Formatting>
+
+				<Query Type="Wmi">
+					<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
+					<Property Name="Year">
+						<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
+						<Prefix>PC-</Prefix>
+					</Property>
+					<Property Name="Month"/>
+					<Property Name="Day"/>			
+					<Separator></Separator>
+				</Query>
+				<Validation ValidateEmpty="FALSE">
+					<Group>Group_Test</Group>
+	
+					<Valid>
+						<Rule Type="StartsWith" CaseSensitive="TRUE">2015</Rule>
+					</Valid>
+				</Validation>
+			</GuiOption>
+			
+			
+			<GuiOption Type="CheckBox">
+				<Variable>TOGGLE_Test</Variable>
+				<Label>Test group enabled</Label>
+				<HAlign>left</HAlign>
+				
+				<Toggle Group="Group_Test">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+				</Toggle>
+			</GuiOption>
+			
+			<GuiOption Type="ComputerName">
+				<Validation ValidateEmpty="FALSE">
+					<Group>Group_Test</Group>
+		
+					<Invalid>
+						<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
+					</Invalid>
+				</Validation>
+			</GuiOption>
+		</Column>
+	</Page>
+</TsGui>

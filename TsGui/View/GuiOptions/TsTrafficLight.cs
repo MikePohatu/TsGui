@@ -27,7 +27,7 @@ namespace TsGui.View.GuiOptions
     public class TsTrafficLight: GuiOptionBase, IGuiOption, IValidationGuiOption
     {
         private string _currentvalue;
-        private XElement _querysxml;
+        private XElement _queryxml;
         private double _iconheight;
         private double _iconwidth;
         private SolidColorBrush _fillcolor;
@@ -131,12 +131,13 @@ namespace TsGui.View.GuiOptions
             this._validationhandler.LoadLegacyXml(InputXml);
             this._validationhandler.AddValidations(InputXml.Elements("Validation"));
 
-            this._querysxml = InputXml.Element("GetValue");
+            //wrap the query in another to make it suitable for the controller. 
+            this._queryxml = new XElement("GetValue",InputXml.Element("Query"));
         } 
 
         private void ProcessQuery()
         {
-            if (this._querysxml != null) { this._currentvalue = this._controller.GetValueFromList(this._querysxml); }
+            if (this._queryxml != null) { this._currentvalue = this._controller.GetValueFromList(this._queryxml); }
         }
 
         private void SetDefaults()
