@@ -87,6 +87,7 @@
     <Compile Include="Queries\IQueryRule.cs" />
     <Compile Include="Queries\AppendRule.cs" />
     <Compile Include="Queries\TruncateRule.cs" />
+    <Compile Include="Validation\ComplianceEnums.cs" />
     <Compile Include="Validation\IValidationOwner.cs" />
     <Compile Include="Validation\StringValidation.cs" />
     <Compile Include="Delegates.cs" />
@@ -102,6 +103,10 @@
     <Compile Include="View\GuiOptions\TsCheckBox.cs" />
     <Compile Include="View\GuiOptions\TsCheckBoxUI.xaml.cs">
       <DependentUpon>TsCheckBoxUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GuiOptions\TsTrafficLight.cs" />
+    <Compile Include="View\GuiOptions\TsTrafficLightUI.xaml.cs">
+      <DependentUpon>TsTrafficLightUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsComputerName.cs" />
     <Compile Include="View\GuiOptions\TsDropDownListItem.cs" />
@@ -170,6 +175,10 @@
       <DependentUpon>TsTextBlockUI.xaml</DependentUpon>
     </Compile>
     <Page Include="Validation\ValidationErrorToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GuiOptions\TsTrafficLightUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

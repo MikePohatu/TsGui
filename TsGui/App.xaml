@@ -50,6 +50,12 @@
                 <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
             </Style>
 
+            <Style x:Key="TrafficLightStyle">
+                <Setter Property="Shape.Height" Value="{Binding IconHeight}"/>
+                <Setter Property="Shape.Width" Value="{Binding IconWidth}"/>
+                <Setter Property="Shape.Fill" Value="{Binding FillColor}"/>
+            </Style>
+            
             <Style x:Key="ContentControlStyle" TargetType="ContentControl" BasedOn="{StaticResource ControlStyle}">
                 <Setter Property="Foreground" Value="{Binding ControlFormatting.FontColorBrush}"/>
                 <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>

@@ -66,6 +66,11 @@ namespace TsGui.View.GuiOptions
                 TsInfoBox ib = new TsInfoBox(OptionXml, Parent, RootController);
                 return ib;
             }
+            else if (OptionXml.Attribute("Type").Value == "TrafficLight")
+            {
+                TsTrafficLight cc = new TsTrafficLight(OptionXml, Parent, RootController);
+                return cc;
+            }
             else
             { return null; }
             #endregion
