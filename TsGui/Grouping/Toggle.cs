@@ -98,7 +98,11 @@ namespace TsGui.Grouping
             bool newenabled;
 
             val = this._option.CurrentValue;
-            if (val == null ) { return; }
+            if (val == null )
+            {
+                this.DisableGroup();
+                return;
+            }
 
             this._toggleValMappings.TryGetValue(val, out newenabled);
 
