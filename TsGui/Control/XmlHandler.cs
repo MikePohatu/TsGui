@@ -257,5 +257,28 @@ namespace TsGui
             }
             else { return DefaultValue; }
         }
+
+        public static Stretch GetStretchFromXElement(XElement InputXml, string XName, Stretch DefaultValue)
+        {
+            XElement x;
+            x = InputXml.Element(XName);
+            if (x != null)
+            {
+                switch (x.Value.ToUpper())
+                {
+                    case "FILL":
+                        return Stretch.Fill;
+                    case "NONE":
+                        return Stretch.None;
+                    case "UNIFORM":
+                        return Stretch.Uniform;
+                    case "UNIFORMTOFILL":
+                        return Stretch.UniformToFill;
+                    default:
+                        return Stretch.None;
+                }
+            }
+            else { return DefaultValue; }
+        }
     }
 }

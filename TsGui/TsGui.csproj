@@ -72,6 +72,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Arguments.cs" />
+    <Compile Include="Helpers\ReverseComparer.cs" />
+    <Compile Include="Images\MultiImage.cs" />
     <Compile Include="NoUI\NoUIOption.cs" />
     <Compile Include="NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
@@ -100,9 +102,13 @@
     <Compile Include="Validation\ValidationHandler.cs" />
     <Compile Include="Validation\ValidationToolTipHandler.cs" />
     <Compile Include="View\GuiOptions\GuiOptionGridFormatting.cs" />
+    <Compile Include="View\GuiOptions\TsImage.cs" />
     <Compile Include="View\GuiOptions\TsCheckBox.cs" />
     <Compile Include="View\GuiOptions\TsCheckBoxUI.xaml.cs">
       <DependentUpon>TsCheckBoxUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GuiOptions\TsImageUI.xaml.cs">
+      <DependentUpon>TsImageUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsTrafficLight.cs" />
     <Compile Include="View\GuiOptions\TsTrafficLightUI.xaml.cs">
@@ -175,6 +181,10 @@
       <DependentUpon>TsTextBlockUI.xaml</DependentUpon>
     </Compile>
     <Page Include="Validation\ValidationErrorToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GuiOptions\TsImageUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -264,6 +274,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

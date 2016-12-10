@@ -15,7 +15,6 @@
 
 // TsCheckBox.cs - combobox control for user input
 
-using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows;
 
@@ -28,12 +27,9 @@ namespace TsGui.View.GuiOptions
         public event ToggleEvent ToggleEvent;
 
         private bool _ischecked;
-        private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
         private string _valTrue = "TRUE";
         private string _valFalse = "FALSE";
 
-        //Custom stuff for control
-        public List<TsDropDownListItem> Options { get { return this._options; } }
         public bool IsChecked
         {
             get { return this._ischecked; }

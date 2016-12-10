@@ -71,6 +71,11 @@ namespace TsGui.View.GuiOptions
                 TsTrafficLight cc = new TsTrafficLight(OptionXml, Parent, RootController);
                 return cc;
             }
+            else if (OptionXml.Attribute("Type").Value == "Image")
+            {
+                TsImage img = new TsImage(OptionXml, Parent, RootController);
+                return img;
+            }
             else
             { return null; }
             #endregion
