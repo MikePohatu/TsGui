@@ -19,10 +19,13 @@
 
 using System;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Threading;
 
 using TsGui.Helpers;
 
@@ -33,6 +36,7 @@ namespace TsGui.Images
         private string _rootpath;
         private string _imagename;
         private string _imageextn;
+        private int _scale;
         private SortedDictionary<int, BitmapImage> _images;
         private BitmapImage _currentimage;
         private MainController _controller;
@@ -45,6 +49,9 @@ namespace TsGui.Images
         public MultiImage (string FileName, MainController MainController)
         {
             this._controller = MainController;
+            this._controller.WindowLoaded += this.OnWindowLoaded;
+            this._controller.WindowMouseUp += this.OnWindowMouseUp;
+
             this._images = new SortedDictionary<int, BitmapImage>(new ReverseComparer<int>(Comparer<int>.Default));
             this._rootpath = AppDomain.CurrentDomain.BaseDirectory + @"\images\";
 
@@ -52,9 +59,6 @@ namespace TsGui.Images
             this._imagename = Path.GetFileNameWithoutExtension(fullpath);
             this._imageextn = Path.GetExtension(fullpath);
             this.LoadImages();
-            
-            //for testing
-            this.UpdateImage(100);
         }
 
         //Events
@@ -67,8 +71,15 @@ namespace TsGui.Images
         }
         #endregion
 
-        public void OnScalingChange(object sender, SizeChangedEventArgs e)
-        { }
+        public void OnWindowMouseUp(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.UpdateImage(this.GetScaling())));
+        }
+
+        public void OnWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            this.UpdateImage(this.GetScaling());
+        }
 
         private void LoadImages()
         {
@@ -86,6 +97,9 @@ namespace TsGui.Images
 
         private void UpdateImage(int Scale)
         {
+            if (this._scale == Scale) { return; }
+
+            this._scale = Scale;
             BitmapImage outimage;
             this._images.TryGetValue(Scale, out outimage);
             if (outimage != null) { this.CurrentImage = outimage; }
@@ -132,6 +146,16 @@ namespace TsGui.Images
             if (outimage == null) { this._images.Add(setscale, image); }
             else { this._images[setscale] = image; }
             
+        }
+
+        private int GetScaling()
+        {
+            Window mainwindow = Application.Current.MainWindow;
+            PresentationSource MainWindowPresentationSource = PresentationSource.FromVisual(mainwindow);
+            Matrix m = MainWindowPresentationSource.CompositionTarget.TransformToDevice;
+            int returnval = Convert.ToInt32(m.M11) * 100;
+            Debug.WriteLine("GetScaling: " + returnval);
+            return returnval;
         }
     }
 }
