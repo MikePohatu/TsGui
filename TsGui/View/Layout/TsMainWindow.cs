@@ -37,7 +37,8 @@ namespace TsGui.View.Layout
         private double _footerHeight;
         private HorizontalAlignment _footerHAlignment;
         private bool _gridlines = false;
-        private WindowLocation _windowlocation = new WindowLocation();
+        private WindowLocation _windowlocation;
+        private MainWindow _parentwindow;
 
         //Properties
         public WindowLocation WindowLocation { get { return this._windowlocation; } }
@@ -120,8 +121,11 @@ namespace TsGui.View.Layout
         }
 
         //Constructors
-        public TsMainWindow()
+        public TsMainWindow(MainWindow ParentWindow)
         {
+            this._parentwindow = ParentWindow;
+            this._windowlocation = new WindowLocation(this._parentwindow);
+
             //set default values
             this._width = Double.NaN;
             this._height = Double.NaN;
@@ -132,6 +136,7 @@ namespace TsGui.View.Layout
             this.FooterText = "Powered by TsGui - www.20road.com";
             this.FooterHeight = 15;
             this.FooterHAlignment = HorizontalAlignment.Right;
+            
         }
 
         //Setup the INotifyPropertyChanged interface 
@@ -194,11 +199,12 @@ namespace TsGui.View.Layout
                     GuiFactory.LoadHAlignment(x, ref this._footerHAlignment);
                 }
 
+                this.Width = XmlHandler.GetDoubleFromXElement(SourceXml, "Width", this.Width);
+                this.Height = XmlHandler.GetDoubleFromXElement(SourceXml, "Height", this.Height);
+
                 x = SourceXml.Element("WindowLocation");
                 if (x != null) { this._windowlocation.LoadXml(x); }
 
-                this.Width = XmlHandler.GetDoubleFromXElement(SourceXml, "Width", this.Width);
-                this.Height = XmlHandler.GetDoubleFromXElement(SourceXml, "Height", this.Height);
                 GuiFactory.LoadMargins(SourceXml, this._pageMargin);
 
                 //Set show grid lines after pages and columns have been created.

@@ -25,7 +25,7 @@ namespace TsGui.View.Layout
     {
         private double _left;
         private double _top;
-        private WindowStartupLocation _startuplocation;
+        private Window _parentwindow;
 
         public double Left
         {
@@ -37,11 +37,7 @@ namespace TsGui.View.Layout
             get { return this._top; }
             set { this._top = value; this.OnPropertyChanged(this, "Top"); }
         }
-        public WindowStartupLocation StartupLocation
-        {
-            get { return this._startuplocation; }
-            set { this._startuplocation = value; this.OnPropertyChanged(this, "StartupLocation"); }
-        }
+        public WindowStartupLocation StartupLocation { get; set; }
 
         //Event handling
         #region
@@ -55,14 +51,16 @@ namespace TsGui.View.Layout
         }
         #endregion
 
-        public WindowLocation(XElement InputXml)
+        public WindowLocation(XElement InputXml, Window ParentWindow)
         {
+            this._parentwindow = ParentWindow;
             this.SetDefaults();
             this.LoadXml(InputXml);
         }
 
-        public WindowLocation()
+        public WindowLocation(Window ParentWindow)
         {
+            this._parentwindow = ParentWindow;
             this.SetDefaults();
         }
 
@@ -71,13 +69,24 @@ namespace TsGui.View.Layout
             this.StartupLocation = XmlHandler.GetWindowStartupLocationFromXElement(InputXml, "StartupLocation", this.StartupLocation);
             this.Left = XmlHandler.GetDoubleFromXElement(InputXml, "Left", this.Left);
             this.Top = XmlHandler.GetDoubleFromXElement(InputXml, "Top", this.Top);
+
+            if (this.StartupLocation == WindowStartupLocation.CenterScreen) { this.SetCenter(); }
         }
 
         private void SetDefaults()
         {
             this.StartupLocation = WindowStartupLocation.CenterScreen;
-            this.Left = 0;
-            this.Top = 0;
+            this.SetCenter();
+            //this.Left = 40;
+            //this.Top = 40;
+        }
+
+        private void SetCenter()
+        {
+            double screenwidth = SystemParameters.WorkArea.Width;
+            double screenheight = SystemParameters.WorkArea.Height;
+            this.Left = (screenwidth / 2) - (this._parentwindow.Width / 2);
+            this.Top = (screenheight / 2) - (this._parentwindow.Height / 2);
         }
     }
 }

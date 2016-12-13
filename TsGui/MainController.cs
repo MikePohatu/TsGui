@@ -90,7 +90,7 @@ namespace TsGui
             this.StartupFinished = false;
             this._prodmode = this._envController.Init();
 
-            this._tsmainWindow = new TsMainWindow();
+            this._tsmainWindow = new TsMainWindow(this.ParentWindow);
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
 
