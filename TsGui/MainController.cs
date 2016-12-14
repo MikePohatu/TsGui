@@ -118,7 +118,7 @@ namespace TsGui
             { t.InitialiseToggle(); }
 
             this.ParentWindow.DataContext = this._tsmainWindow;
-            this.ParentWindow.WindowStartupLocation = this._tsmainWindow.WindowLocation.StartupLocation;
+            //this.ParentWindow.WindowStartupLocation = this._tsmainWindow.WindowLocation.StartupLocation;
             this.UpdateWindow();
             this.ParentWindow.Visibility = Visibility.Visible;
             this.StartupFinished = true;
