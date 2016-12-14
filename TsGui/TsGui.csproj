@@ -72,6 +72,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Arguments.cs" />
+    <Compile Include="Diagnostics\DiagnosticsHelper.cs" />
     <Compile Include="NoUI\NoUIOption.cs" />
     <Compile Include="NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />

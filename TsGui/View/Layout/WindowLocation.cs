@@ -15,9 +15,12 @@
 
 // Positioning.cs - view model for window positioning
 
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Xml.Linq;
+
+using TsGui.Diagnostics;
 
 namespace TsGui.View.Layout
 {
@@ -97,8 +100,11 @@ namespace TsGui.View.Layout
         {
             double screenwidth = SystemParameters.PrimaryScreenWidth;
             double screenheight = SystemParameters.PrimaryScreenHeight;
-            this.Left = (screenwidth - this._parentwindow.ActualWidth ) / 2;
-            this.Top = (screenheight - this._parentwindow.ActualHeight ) / 2;
+
+            DiagnosticsHelper.DisplayOkDialog("ScreenWidth: " + screenwidth + Environment.NewLine + "ScreenHeight: " + screenheight, "Dimensions");
+
+            this.Left = (screenwidth / 2)  - ( this._parentwindow.ActualWidth  / 2);
+            this.Top = (screenheight /2 ) - ( this._parentwindow.ActualHeight / 2);
         }
     }
 }
