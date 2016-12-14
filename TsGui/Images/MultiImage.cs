@@ -19,12 +19,10 @@
 
 using System;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Threading;
 
 using TsGui.Helpers;
@@ -50,7 +48,6 @@ namespace TsGui.Images
         {
             this._controller = MainController;
             this._controller.WindowLoaded += this.OnWindowLoaded;
-            this._controller.WindowMouseUp += this.OnWindowMouseUp;
 
             this._images = new SortedDictionary<int, BitmapImage>(new ReverseComparer<int>(Comparer<int>.Default));
             this._rootpath = AppDomain.CurrentDomain.BaseDirectory + @"\images\";
@@ -59,6 +56,8 @@ namespace TsGui.Images
             this._imagename = Path.GetFileNameWithoutExtension(fullpath);
             this._imageextn = Path.GetExtension(fullpath);
             this.LoadImages();
+
+            if (this._images.Count > 1) { this._controller.WindowMouseUp += this.OnWindowMouseUp; }
         }
 
         //Events
@@ -73,12 +72,12 @@ namespace TsGui.Images
 
         public void OnWindowMouseUp(object sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.UpdateImage(this.GetScaling())));
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.UpdateImage(DisplayInformation.GetScaling())));
         }
 
         public void OnWindowLoaded(object sender, RoutedEventArgs e)
         {
-            this.UpdateImage(this.GetScaling());
+            this.UpdateImage(DisplayInformation.GetScaling());
         }
 
         private void LoadImages()
@@ -146,16 +145,6 @@ namespace TsGui.Images
             if (outimage == null) { this._images.Add(setscale, image); }
             else { this._images[setscale] = image; }
             
-        }
-
-        private int GetScaling()
-        {
-            Window mainwindow = Application.Current.MainWindow;
-            PresentationSource MainWindowPresentationSource = PresentationSource.FromVisual(mainwindow);
-            Matrix m = MainWindowPresentationSource.CompositionTarget.TransformToDevice;
-            int returnval = Convert.ToInt32(m.M11) * 100;
-            Debug.WriteLine("GetScaling: " + returnval);
-            return returnval;
         }
     }
 }
