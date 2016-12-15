@@ -73,8 +73,8 @@
     </Compile>
     <Compile Include="Arguments.cs" />
     <Compile Include="Diagnostics\DiagnosticsHelper.cs" />
-    <Compile Include="Diagnostics\TestingWindow.xaml.cs">
-      <DependentUpon>TestingWindow.xaml</DependentUpon>
+    <Compile Include="Diagnostics\TestingWindowUI.xaml.cs">
+      <DependentUpon>TestingWindowUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="NoUI\NoUIOption.cs" />
     <Compile Include="NoUI\NoUIContainer.cs" />
@@ -141,7 +141,7 @@
     <Compile Include="View\GuiOptions\GuiOptionBaseUI.xaml.cs">
       <DependentUpon>GuiOptionBaseUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Layout\TestingWindowViewModel.cs" />
+    <Compile Include="Diagnostics\TestingWindow.cs" />
     <Compile Include="View\Layout\WindowLocation.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
     <Compile Include="Validation\ResultValidator.cs" />
@@ -177,7 +177,7 @@
     <Compile Include="View\GuiOptions\TsTextBlockUI.xaml.cs">
       <DependentUpon>TsTextBlockUI.xaml</DependentUpon>
     </Compile>
-    <Page Include="Diagnostics\TestingWindow.xaml">
+    <Page Include="Diagnostics\TestingWindowUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

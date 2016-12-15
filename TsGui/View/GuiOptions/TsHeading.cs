@@ -27,17 +27,18 @@ namespace TsGui.View.GuiOptions
         //Properties
 
         //Custom stuff for control
-        public string CurrentValue
+        public override string CurrentValue { get { return this._controltext; } }
+        public string ControlText
         {
             get { return this._controltext; }
-            set { this._controltext = value; this.OnPropertyChanged(this, "CurrentValue"); }
+            set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
         }
         public TsVariable Variable { get { return null; } }
 
         //constructor
         public TsHeading(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
         {
-            this.CurrentValue = string.Empty;
+            this.ControlText = string.Empty;
             this.Control = new TsHeadingUI();
             this.Label = new TsLabelUI();
             this.UserControl.DataContext = this;
@@ -47,7 +48,7 @@ namespace TsGui.View.GuiOptions
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            this.CurrentValue = XmlHandler.GetStringFromXElement(InputXml, "AltLabel", this.CurrentValue);
+            this.ControlText = XmlHandler.GetStringFromXElement(InputXml, "AltLabel", this.ControlText);
         }
     }
 }

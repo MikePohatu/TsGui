@@ -55,6 +55,19 @@ namespace TsGui.View.GuiOptions
             get { return this._helptext; }
             set { this._helptext = value; this.OnPropertyChanged(this, "HelpText"); }
         }
+        public abstract string CurrentValue { get; }
+        public string LiveValue
+        {
+            get
+            {
+                if (this.IsActive == true) { return this.CurrentValue; }
+                else
+                {
+                    if (this._purgeinactive == true) { return "PURGED"; }
+                    else { return this._inactivevalue; }
+                }
+            }
+        }
         
         
         public GuiOptionBase(TsColumn Parent, MainController MainController):base(Parent,MainController)
@@ -98,6 +111,12 @@ namespace TsGui.View.GuiOptions
                 this.UserControl.RightPresenter.Content = this.Label;
                 this.UserControl.LeftPresenter.Content = this.Control;
             }
+        }
+
+        protected void NotifyUpdate()
+        {
+            this.OnPropertyChanged(this, "CurrentValue");
+            this.OnPropertyChanged(this, "LiveValue");
         }
     }
 }

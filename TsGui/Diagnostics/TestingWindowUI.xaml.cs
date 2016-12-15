@@ -16,9 +16,9 @@ namespace TsGui.Diagnostics
     /// <summary>
     /// Interaction logic for TestingWindow.xaml
     /// </summary>
-    public partial class TestingWindow : Window
+    public partial class TestingWindowUI : Window
     {
-        public TestingWindow()
+        public TestingWindowUI()
         {
             InitializeComponent();
         }

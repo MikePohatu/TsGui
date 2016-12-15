@@ -22,7 +22,6 @@ namespace TsGui.Grouping
         string VariableName { get; }
         string CurrentValue { get; }
         bool IsActive { get; }
-        //void AttachToggle(Toggle Toggle);
         event ToggleEvent ToggleEvent;
         void InitialiseToggle();
     }

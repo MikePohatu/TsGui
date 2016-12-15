@@ -106,7 +106,6 @@ namespace TsGui
             else
             {
                 if (this.PromptTestMode() != true) { this.Cancel(); return; }
-                else { if (this._showtestingwindow == true) { this._debug = true; } }
             }
 
             //subscribe to closing event
@@ -129,7 +128,7 @@ namespace TsGui
             this.ParentWindow.Visibility = Visibility.Visible;
             this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
             this.StartupFinished = true;
-            if (this._debug == true) { this.ShowTestingWindow(); }
+            if ((this._debug == true) || (this._showtestingwindow == true)) { this._testingwindow = new TestingWindow(this); }
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
@@ -360,7 +359,6 @@ namespace TsGui
             if (_finished) { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE")); }
             else { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "TRUE")); }
             this._envController.Release();
-            this._testingwindow?.Close();
         }
 
         /// <summary>
@@ -430,13 +428,6 @@ namespace TsGui
 
             if (result == MessageBoxResult.Yes) return true;
             else return false;
-        }
-
-        private void ShowTestingWindow()
-        {
-            this._testingwindow = new TestingWindow();
-            this._testingwindow.DataContext = this;
-            this._testingwindow.Show();
         }
     }
 }

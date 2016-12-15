@@ -41,11 +41,12 @@ namespace TsGui.View.GuiOptions
             {
                 this._ischecked = value;
                 this.OnPropertyChanged(this, "IsChecked");
-                this.OnPropertyChanged(this, "CurrentValue");
+                this.NotifyUpdate();
                 this.ToggleEvent?.Invoke();
             }
         }
-        public string CurrentValue
+        public override string CurrentValue { get { return this.ControlText; } }
+        public string ControlText
         {
             get
             {
@@ -60,7 +61,7 @@ namespace TsGui.View.GuiOptions
                 if ((this.IsActive == false) && (PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.CurrentValue); }
+                { return new TsVariable(this.VariableName, this.ControlText); }
             }
         }
 

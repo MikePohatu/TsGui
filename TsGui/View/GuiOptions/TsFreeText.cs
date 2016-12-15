@@ -36,16 +36,18 @@ namespace TsGui.View.GuiOptions
         //Properties
         #region
         //Custom stuff for control
-        public string CurrentValue
+        public string ControlText
         {
             get { return this._controltext; }
             set
             {
                 this._controltext = value;
-                this.OnPropertyChanged(this, "CurrentValue");
+                this.OnPropertyChanged(this, "ControlText");
+                this.NotifyUpdate();
                 this.Validate();
             }
         }
+        public override string CurrentValue { get { return this._controltext; } }
         public bool IsValid { get { return this.Validate(); } }
         public int MaxLength
         {
@@ -59,7 +61,7 @@ namespace TsGui.View.GuiOptions
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.CurrentValue); }
+                { return new TsVariable(this.VariableName, this.ControlText); }
             }
         }
         public string ValidationText
@@ -136,8 +138,8 @@ namespace TsGui.View.GuiOptions
 
                 //if required, remove invalid characters and truncate
                 string invalchars = this._validationhandler.GetAllInvalidCharacters();
-                if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.CurrentValue, this._validationhandler.GetAllInvalidCharacters()); }
-                if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.CurrentValue, this.MaxLength); }
+                if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
+                if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
             }
         }
 
@@ -162,12 +164,12 @@ namespace TsGui.View.GuiOptions
             //if (this._controller.StartupFinished == false) { return true; }
             if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
 
-            bool newvalid = this._validationhandler.IsValid(this.CurrentValue);
+            bool newvalid = this._validationhandler.IsValid(this.ControlText);
 
             if (newvalid == false)
             {
                 string validationmessage = this._validationhandler.ValidationMessage;
-                string s = "\"" + this.CurrentValue + "\" is invalid" + Environment.NewLine;
+                string s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine;
                 if (string.IsNullOrEmpty(validationmessage)) { s = s + _validationhandler.FailedValidationMessage; }
                 else { s = s + validationmessage; }
 

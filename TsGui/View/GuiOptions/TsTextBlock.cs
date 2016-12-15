@@ -27,10 +27,16 @@ namespace TsGui.View.GuiOptions
         private StringValidation _stringvalidation;
 
         //Custom stuff for control
-        public string CurrentValue
+        public override string CurrentValue { get { return this.ControlText; } }
+        public string ControlText
         {
             get { return this._controltext; }
-            set { this._controltext = value; this.OnPropertyChanged(this, "CurrentValue"); }
+            set
+            {
+                this._controltext = value;
+                this.OnPropertyChanged(this, "ControlText");
+                this.NotifyUpdate();
+            }
         }
         public TsVariable Variable { get { return null; } }
 
@@ -72,12 +78,12 @@ namespace TsGui.View.GuiOptions
             x = InputXml.Element("DisplayValue");
             if (x != null)
             {
-                this.CurrentValue = this._controller.GetValueFromList(x);
-                if (this.CurrentValue == null) { this.CurrentValue = string.Empty; }
+                this.ControlText = this._controller.GetValueFromList(x);
+                if (this.ControlText == null) { this.ControlText = string.Empty; }
 
                 //if required, remove invalid characters and truncate
                 //if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this.DisallowedCharacters); }
-                if (this._stringvalidation.MaxLength > 0) { this.CurrentValue = ResultValidator.Truncate(this.CurrentValue, this._stringvalidation.MaxLength); }
+                if (this._stringvalidation.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this._stringvalidation.MaxLength); }
             }
         }
     }
