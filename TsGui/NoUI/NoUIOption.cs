@@ -33,6 +33,7 @@ namespace TsGui.NoUI
             get { return this._inactivevalue; }
             set { this._inactivevalue = value; }
         }
+        public string CurrentValue { get { return this._value; } }
         public TsVariable Variable
         {
             get

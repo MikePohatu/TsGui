@@ -36,13 +36,13 @@ namespace TsGui.View.GuiOptions
         //Properties
         #region
         //Custom stuff for control
-        public string ControlText
+        public string CurrentValue
         {
             get { return this._controltext; }
             set
             {
                 this._controltext = value;
-                this.OnPropertyChanged(this, "ControlText");
+                this.OnPropertyChanged(this, "CurrentValue");
                 this.Validate();
             }
         }
@@ -59,7 +59,7 @@ namespace TsGui.View.GuiOptions
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.ControlText); }
+                { return new TsVariable(this.VariableName, this.CurrentValue); }
             }
         }
         public string ValidationText
@@ -136,8 +136,8 @@ namespace TsGui.View.GuiOptions
 
                 //if required, remove invalid characters and truncate
                 string invalchars = this._validationhandler.GetAllInvalidCharacters();
-                if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
-                if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
+                if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.CurrentValue, this._validationhandler.GetAllInvalidCharacters()); }
+                if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.CurrentValue, this.MaxLength); }
             }
         }
 
@@ -162,12 +162,12 @@ namespace TsGui.View.GuiOptions
             //if (this._controller.StartupFinished == false) { return true; }
             if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
 
-            bool newvalid = this._validationhandler.IsValid(this.ControlText);
+            bool newvalid = this._validationhandler.IsValid(this.CurrentValue);
 
             if (newvalid == false)
             {
                 string validationmessage = this._validationhandler.ValidationMessage;
-                string s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine;
+                string s = "\"" + this.CurrentValue + "\" is invalid" + Environment.NewLine;
                 if (string.IsNullOrEmpty(validationmessage)) { s = s + _validationhandler.FailedValidationMessage; }
                 else { s = s + validationmessage; }
 

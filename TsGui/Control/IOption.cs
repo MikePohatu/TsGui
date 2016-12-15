@@ -20,6 +20,7 @@ namespace TsGui
     public interface IOption
     {
         TsVariable Variable { get; }
+        string CurrentValue { get; }
         string VariableName { get; }
         string InactiveValue { get; }
         bool PurgeInactive { get; set; }

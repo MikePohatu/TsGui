@@ -27,6 +27,7 @@ using TsGui.View.Layout;
 using TsGui.NoUI;
 
 using TsGui.Grouping;
+using TsGui.Diagnostics;
 
 namespace TsGui
 {
@@ -39,8 +40,7 @@ namespace TsGui
         private string _configpath;
         private bool _prodmode = false;
         private bool _finished = false;
-        private TsButtons _buttons = new TsButtons();
-        private TsMainWindow _tsmainWindow;
+        private TsButtons _buttons = new TsButtons();     
         private List<TsPage> _pages = new List<TsPage>();
         private EnvironmentController _envController = new EnvironmentController();
         private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
@@ -48,8 +48,12 @@ namespace TsGui
         private OptionLibrary _optionlibrary = new OptionLibrary();
         private HardwareEvaluator _chassischeck;
         private NoUIContainer _nouicontainer;
+        private TestingWindow _testingwindow;
+        private bool _debug = false;
 
         //properties
+        public TsMainWindow TsMainWindow { get; set; }
+        public OptionLibrary OptionLibrary { get { return this._optionlibrary; } }
         public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
@@ -62,8 +66,6 @@ namespace TsGui
             this.ParentWindow = ParentWindow;
             this.Init();          
         }
-
-        
 
         //Wrap a generic exception handler to get some useful information in the event of a 
         //crash. 
@@ -90,7 +92,7 @@ namespace TsGui
             this.StartupFinished = false;
             this._prodmode = this._envController.Init();
 
-            this._tsmainWindow = new TsMainWindow(this.ParentWindow);
+            this.TsMainWindow = new TsMainWindow(this.ParentWindow);
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
 
@@ -107,6 +109,8 @@ namespace TsGui
                     this.Cancel();
                     return;
                 }
+                else
+                { this._debug = true; }
             }
 
             //subscribe to closing event
@@ -117,11 +121,13 @@ namespace TsGui
             foreach (IToggleControl t in this._toggles)
             { t.InitialiseToggle(); }
 
-            this.ParentWindow.DataContext = this._tsmainWindow;
-            this.ParentWindow.WindowStartupLocation = this._tsmainWindow.WindowLocation.StartupLocation;
+            this.ParentWindow.DataContext = this.TsMainWindow;
+
             this.UpdateWindow();
             this.ParentWindow.Visibility = Visibility.Visible;
+            this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
             this.StartupFinished = true;
+            if (this._debug == true) { this.ShowTestingWindow(); }
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
@@ -159,10 +165,11 @@ namespace TsGui
 
             IEnumerable<XElement> pagesXml;
 
-            this._tsmainWindow.LoadXml(SourceXml);
+            this.TsMainWindow.LoadXml(SourceXml);
 
             if (SourceXml != null)
             {
+                this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
                 //Set show grid lines after pages and columns have been created.
                 x = SourceXml.Element("ShowGridLines");
                 if ((x != null) && (this._prodmode = false))
@@ -176,12 +183,12 @@ namespace TsGui
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
 
                 PageDefaults pagedef = new PageDefaults();
-                pagedef.HeadingTitle = this._tsmainWindow.HeadingTitle;
-                pagedef.HeadingText = this._tsmainWindow.HeadingText;
-                pagedef.HeadingBgColor = this._tsmainWindow.HeadingBgColor;
-                pagedef.HeadingFontColor = this._tsmainWindow.HeadingFontColor;
+                pagedef.HeadingTitle = this.TsMainWindow.HeadingTitle;
+                pagedef.HeadingText = this.TsMainWindow.HeadingText;
+                pagedef.HeadingBgColor = this.TsMainWindow.HeadingBgColor;
+                pagedef.HeadingFontColor = this.TsMainWindow.HeadingFontColor;
                 pagedef.Buttons = this._buttons;
-                pagedef.Parent = this._tsmainWindow;
+                pagedef.Parent = this.TsMainWindow;
                 pagedef.RootController = this;
 
                 //now read in the options and add to a dictionary for later use
@@ -349,6 +356,7 @@ namespace TsGui
             if (_finished) { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE")); }
             else { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "TRUE")); }
             this._envController.Release();
+            this._testingwindow?.Close();
         }
 
         /// <summary>
@@ -418,6 +426,13 @@ namespace TsGui
 
             if (result == MessageBoxResult.Yes) return true;
             else return false;
+        }
+
+        private void ShowTestingWindow()
+        {
+            this._testingwindow = new TestingWindow();
+            this._testingwindow.DataContext = this;
+            this._testingwindow.Show();
         }
     }
 }

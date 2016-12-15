@@ -28,17 +28,17 @@ namespace TsGui.View.GuiOptions
         //Properties
 
         //Custom stuff for control
-        public string ControlText
+        public string CurrentValue
         {
             get { return this._controltext; }
-            set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
+            set { this._controltext = value; this.OnPropertyChanged(this, "CurrentValue"); }
         }
-        public TsVariable Variable { get { return new TsVariable(this.VariableName, this.ControlText); } }
+        public TsVariable Variable { get { return new TsVariable(this.VariableName, this.CurrentValue); } }
 
         //constructor
         public TsInfoBox(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
         {
-            this.ControlText = string.Empty;
+            this.CurrentValue = string.Empty;
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.UserControl.DataContext = this;
             this.Control = new TsInfoBoxUI();
@@ -56,8 +56,8 @@ namespace TsGui.View.GuiOptions
             x = InputXml.Element("DisplayValue");
             if (x != null)
             {
-                this.ControlText = this._controller.GetValueFromList(x);
-                if (this.ControlText == null) { this.ControlText = string.Empty; }
+                this.CurrentValue = this._controller.GetValueFromList(x);
+                if (this.CurrentValue == null) { this.CurrentValue = string.Empty; }
             }
         }
 

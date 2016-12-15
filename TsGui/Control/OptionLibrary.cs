@@ -16,16 +16,15 @@
 // OptionLibrary.cs - class for the MainController to keep track of all the IGuiOption in 
 // the app
 
-using System.Collections.Generic;
-using TsGui.View.GuiOptions;
+using System.Collections.ObjectModel;
 
 namespace TsGui
 {
-    class OptionLibrary
+    public class OptionLibrary
     {
-        private List<IOption> _options = new List<IOption>();
+        private ObservableCollection<IOption> _options = new ObservableCollection<IOption>();
 
-        public List<IOption> Options { get { return this._options; } }
+        public ObservableCollection<IOption> Options { get { return this._options; } }
 
         public void Add(IOption Option)
         {

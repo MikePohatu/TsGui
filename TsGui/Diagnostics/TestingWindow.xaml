@@ -1,0 +1,39 @@
+﻿<Window x:Class="TsGui.Diagnostics.TestingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TsGui.Diagnostics"
+        mc:Ignorable="d"
+        Title="Test mode" Height="300" Width="400" Topmost="True"
+        WindowStartupLocation="Manual" Left="10" Top="10">
+    <StackPanel Orientation="Horizontal">
+        <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto" Margin="10,10,10,10" >
+            <DataGrid x:Name="OptionsGrid" ItemsSource="{Binding OptionLibrary.Options}"
+                      AlternatingRowBackground="LightGray"  AlternationCount="2" AutoGenerateColumns="False"
+                      HorizontalAlignment="Left" VerticalAlignment="Top" Height="Auto" Width="Auto">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Variable" Binding="{Binding VariableName}" />
+                    <DataGridTextColumn Header="Value" Binding="{Binding CurrentValue}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto" Margin="10,10,10,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="70" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Left"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding TsMainWindow.WindowLocation.Left}"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="Top"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding TsMainWindow.WindowLocation.Top}"/>
+            </Grid>
+        </StackPanel>
+
+    </StackPanel>
+</Window>

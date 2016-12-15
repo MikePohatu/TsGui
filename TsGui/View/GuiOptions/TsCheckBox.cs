@@ -41,6 +41,7 @@ namespace TsGui.View.GuiOptions
             {
                 this._ischecked = value;
                 this.OnPropertyChanged(this, "IsChecked");
+                this.OnPropertyChanged(this, "CurrentValue");
                 this.ToggleEvent?.Invoke();
             }
         }

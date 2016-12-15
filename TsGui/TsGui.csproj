@@ -73,6 +73,9 @@
     </Compile>
     <Compile Include="Arguments.cs" />
     <Compile Include="Diagnostics\DiagnosticsHelper.cs" />
+    <Compile Include="Diagnostics\TestingWindow.xaml.cs">
+      <DependentUpon>TestingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NoUI\NoUIOption.cs" />
     <Compile Include="NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
@@ -170,6 +173,10 @@
     <Compile Include="View\GuiOptions\TsTextBlockUI.xaml.cs">
       <DependentUpon>TsTextBlockUI.xaml</DependentUpon>
     </Compile>
+    <Page Include="Diagnostics\TestingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Validation\ValidationErrorToolTip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

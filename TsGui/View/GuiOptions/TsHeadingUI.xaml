@@ -25,5 +25,5 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:Converters="clr-namespace:TsGui.View.Layout.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
-    <Label x:Name="Control" Content="{Binding ControlText}"  Style="{StaticResource ControlStyle}"/>
+    <Label x:Name="Control" Content="{Binding CurrentValue}"  Style="{StaticResource ControlStyle}"/>
 </UserControl>
