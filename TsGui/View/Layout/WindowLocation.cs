@@ -13,13 +13,11 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// Positioning.cs - view model for window positioning
+// WindowLocation.cs - view model for window positioning
 
-using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Xml.Linq;
-using System.Windows.Threading;
 
 namespace TsGui.View.Layout
 {
@@ -43,12 +41,7 @@ namespace TsGui.View.Layout
         public WindowStartupLocation StartupLocation
         {
             get { return this._startuplocation; }
-            set
-            {
-                this._startuplocation = value;
-                if (this.StartupLocation == WindowStartupLocation.CenterScreen) { this._parentwindow.Loaded += this.OnWindowLoadedSetToCenter; }
-                else { this._parentwindow.Loaded -= this.OnWindowLoadedSetToCenter; }
-            }
+            set { this._startuplocation = value; }
         }
 
         //Event handling
@@ -79,14 +72,6 @@ namespace TsGui.View.Layout
             this.StartupLocation = XmlHandler.GetWindowStartupLocationFromXElement(InputXml, "StartupLocation", this.StartupLocation);
             this.Left = XmlHandler.GetDoubleFromXElement(InputXml, "Left", this.Left);
             this.Top = XmlHandler.GetDoubleFromXElement(InputXml, "Top", this.Top);
-
-            
-        }
-
-        public void OnWindowLoadedSetToCenter(object o, RoutedEventArgs e)
-        {
-            //this.CalculateCenter();
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => this.CalculateCenter()));
         }
 
         private void Init(Window ParentWindow)
@@ -98,15 +83,17 @@ namespace TsGui.View.Layout
         private void SetDefaults()
         {
             this.StartupLocation = WindowStartupLocation.CenterScreen;
+            this.Left = 40;
+            this.Top = 40;
         }
 
-        private void CalculateCenter()
-        {
-            double screenwidth = SystemParameters.PrimaryScreenWidth;
-            double screenheight = SystemParameters.PrimaryScreenHeight;
+        //private void CalculateCenter()
+        //{
+        //    double screenwidth = SystemParameters.PrimaryScreenWidth;
+        //    double screenheight = SystemParameters.PrimaryScreenHeight;
             
-            this.Left = (screenwidth / 2)  - ( this._parentwindow.ActualWidth  / 2);
-            this.Top = (screenheight /2 ) - ( this._parentwindow.ActualHeight / 2);
-        }
+        //    this.Left = (screenwidth / 2)  - ( this._parentwindow.ActualWidth  / 2);
+        //    this.Top = (screenheight /2 ) - ( this._parentwindow.ActualHeight / 2);
+        //}
     }
 }

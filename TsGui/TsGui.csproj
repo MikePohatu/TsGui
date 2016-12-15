@@ -112,6 +112,9 @@
     <Compile Include="View\GuiOptions\TsLabelUI.xaml.cs">
       <DependentUpon>TsLabelUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Layout\GhostWindow.xaml.cs">
+      <DependentUpon>GhostWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\IGuiOption.cs" />
@@ -138,6 +141,7 @@
     <Compile Include="View\GuiOptions\GuiOptionBaseUI.xaml.cs">
       <DependentUpon>GuiOptionBaseUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Layout\TestingWindowViewModel.cs" />
     <Compile Include="View\Layout\WindowLocation.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
     <Compile Include="Validation\ResultValidator.cs" />
@@ -194,6 +198,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\GuiOptions\TsInfoBoxUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Layout\GhostWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

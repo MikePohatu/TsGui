@@ -49,6 +49,7 @@ namespace TsGui
         private HardwareEvaluator _chassischeck;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
+        private bool _showtestingwindow = false;
         private bool _debug = false;
 
         //properties
@@ -104,13 +105,8 @@ namespace TsGui
             { this._envController.HideProgressUI(); }
             else
             {
-                if (this.PromptTestMode() != true)
-                {
-                    this.Cancel();
-                    return;
-                }
-                else
-                { this._debug = true; }
+                if (this.PromptTestMode() != true) { this.Cancel(); return; }
+                else { if (this._showtestingwindow == true) { this._debug = true; } }
             }
 
             //subscribe to closing event
@@ -122,6 +118,12 @@ namespace TsGui
             { t.InitialiseToggle(); }
 
             this.ParentWindow.DataContext = this.TsMainWindow;
+            
+            // Now show and close the ghost window to make sure WinPE honours the 
+            // windowstartuplocation
+            GhostWindow ghost = new GhostWindow();
+            ghost.Show();
+            ghost.Close();
 
             this.UpdateWindow();
             this.ParentWindow.Visibility = Visibility.Visible;
@@ -170,6 +172,8 @@ namespace TsGui
             if (SourceXml != null)
             {
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
+                this._showtestingwindow = XmlHandler.GetBoolFromXAttribute(SourceXml, "TestingWindow", this._showtestingwindow);
+                
                 //Set show grid lines after pages and columns have been created.
                 x = SourceXml.Element("ShowGridLines");
                 if ((x != null) && (this._prodmode = false))

@@ -145,11 +145,7 @@ namespace TsGui.View.Layout
         // OnPropertyChanged method to raise the event
         protected void OnPropertyChanged(object sender, string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(sender, new PropertyChangedEventArgs(name));
-            }
+            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
 
         public void LoadXml(XElement SourceXml)
