@@ -1,4 +1,4 @@
-<TsGui>
+<TsGui TestingWindow="TRUE">
 	<ShowGridLines /> 
 	
 	<Height>230</Height>

@@ -49,7 +49,7 @@ namespace TsGui
         private HardwareEvaluator _chassischeck;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
-        private bool _showtestingwindow = false;
+        private bool _showtestwindow = false;
         private bool _debug = false;
 
         //properties
@@ -128,7 +128,7 @@ namespace TsGui
             this.ParentWindow.Visibility = Visibility.Visible;
             this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
             this.StartupFinished = true;
-            if ((this._debug == true) || (this._showtestingwindow == true)) { this._testingwindow = new TestingWindow(this); }
+            if ((this._debug == true) || (this._showtestwindow == true)) { this._testingwindow = new TestingWindow(this); }
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
@@ -171,7 +171,7 @@ namespace TsGui
             if (SourceXml != null)
             {
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
-                this._showtestingwindow = XmlHandler.GetBoolFromXAttribute(SourceXml, "TestingWindow", this._showtestingwindow);
+                this._showtestwindow = XmlHandler.GetBoolFromXAttribute(SourceXml, "TestingWindow", this._showtestwindow);
                 
                 //Set show grid lines after pages and columns have been created.
                 x = SourceXml.Element("ShowGridLines");
