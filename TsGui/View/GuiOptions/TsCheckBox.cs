@@ -45,8 +45,8 @@ namespace TsGui.View.GuiOptions
                 this.ToggleEvent?.Invoke();
             }
         }
-        public override string CurrentValue { get { return this.ControlText; } }
-        public string ControlText
+        //public override string CurrentValue { get { return this.ControlText; } }
+        public override string CurrentValue
         {
             get
             {
@@ -61,7 +61,7 @@ namespace TsGui.View.GuiOptions
                 if ((this.IsActive == false) && (PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.ControlText); }
+                { return new TsVariable(this.VariableName, this.CurrentValue); }
             }
         }
 

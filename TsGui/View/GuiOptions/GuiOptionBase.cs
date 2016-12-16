@@ -63,7 +63,7 @@ namespace TsGui.View.GuiOptions
                 if (this.IsActive == true) { return this.CurrentValue; }
                 else
                 {
-                    if (this._purgeinactive == true) { return "PURGED"; }
+                    if (this._purgeinactive == true) { return "*PURGED*"; }
                     else { return this._inactivevalue; }
                 }
             }
@@ -92,6 +92,12 @@ namespace TsGui.View.GuiOptions
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
             this.SetLayoutRightLeft();
+        }
+
+        protected override void EvaluateGroups()
+        {
+            base.EvaluateGroups();
+            this.NotifyUpdate();
         }
 
         private void SetDefaults()

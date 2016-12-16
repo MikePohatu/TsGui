@@ -24,28 +24,33 @@ TestingWindow.xaml - shows live data at runtime
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TsGui.Diagnostics"
         mc:Ignorable="d"
-        Title="Test mode" Height="300" Width="400" Topmost="True"
+        Title="Test mode" Height="300" Width="500" Topmost="True"
         WindowStartupLocation="Manual" Left="10" Top="10">
-    <StackPanel Orientation="Horizontal">
+    <StackPanel Orientation="Horizontal" Width="Auto">
         <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto" Margin="10,10,10,10" >
             <DataGrid x:Name="OptionsGrid" ItemsSource="{Binding Options}"
                       AlternatingRowBackground="LightGray"  AlternationCount="2" AutoGenerateColumns="False"
-                      HorizontalAlignment="Left" VerticalAlignment="Top" Height="Auto" Width="Auto">
+                      HorizontalAlignment="Left" VerticalAlignment="Top" Height="Auto" Width="Auto" 
+                      HeadersVisibility="Column">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Variable" Binding="{Binding VariableName}" />
                     <DataGridTextColumn Header="Value" Binding="{Binding LiveValue}" />
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
-        <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto" Margin="10,10,10,10">
+        <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="130" Margin="10,10,10,10">
+            <TextBlock Text="Window Position" FontWeight="Bold"/>
             <TextBlock Text="Left:"/>
             <TextBlock Text="Top:"/>
+            <TextBlock Text="Screen Dimensions" FontWeight="Bold" Margin="2,5,2,2"/>
             <TextBlock Text="Primary Screen Width:"/>
             <TextBlock Text="Primary Screen Height:"/>
         </StackPanel>
-        <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto" Margin="10,10,10,10">
+        <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="70" Margin="10,10,10,10">
+            <TextBlock Text=""/>
             <TextBlock Text="{Binding TsMainWindow.WindowLocation.Left}"/>
             <TextBlock Text="{Binding TsMainWindow.WindowLocation.Top}"/>
+            <TextBlock Text="" Margin="2,5,2,2"/>
             <TextBlock Text="{Binding ScreenWidth}"/>
             <TextBlock Text="{Binding ScreenHeight}"/>
         </StackPanel>
