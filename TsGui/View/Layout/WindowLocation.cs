@@ -86,14 +86,5 @@ namespace TsGui.View.Layout
             this.Left = 40;
             this.Top = 40;
         }
-
-        //private void CalculateCenter()
-        //{
-        //    double screenwidth = SystemParameters.PrimaryScreenWidth;
-        //    double screenheight = SystemParameters.PrimaryScreenHeight;
-            
-        //    this.Left = (screenwidth / 2)  - ( this._parentwindow.ActualWidth  / 2);
-        //    this.Top = (screenheight /2 ) - ( this._parentwindow.ActualHeight / 2);
-        //}
     }
 }

@@ -24,25 +24,32 @@ TestingWindowUI.xaml - shows live data at runtime
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TsGui.Diagnostics"
         mc:Ignorable="d"
-        Title="Testing Window" SizeToContent="WidthAndHeight"
+        Title="Live Data" SizeToContent="WidthAndHeight" 
         Topmost="True" WindowStartupLocation="Manual" Left="10" Top="10">
     <Window.Resources>
         <Style x:Key="DataGridColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Padding" Value="2"/>
+            <Setter Property="TextBlock.Foreground" Value="White"/>
             <Setter Property="Background" Value="Gray"/>
         </Style>
     </Window.Resources>
 
     <StackPanel Orientation="Horizontal" Width="Auto" VerticalAlignment="Top">
-        <DataGrid x:Name="OptionsGrid" ItemsSource="{Binding Options}" AlternatingRowBackground="LightGray" 
-                          AlternationCount="2" AutoGenerateColumns="False" HeadersVisibility="Column"  Margin="10,10,10,10"
-                          Width="Auto" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}" IsReadOnly="True" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Variable" Binding="{Binding VariableName}"/>
-                <DataGridTextColumn Header="Value" Binding="{Binding LiveValue}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <StackPanel x:Name="_tsvarwrapperpanel" Margin="10">
+            <DataGrid x:Name="_optionsgrid" ItemsSource="{Binding Options}" AlternatingRowBackground="LightGray" 
+                              AlternationCount="2" AutoGenerateColumns="False" HeadersVisibility="Column"  
+                              Margin="0" FrozenColumnCount="1"
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}" 
+                              IsReadOnly="True" HorizontalScrollBarVisibility="Auto">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="_variablecolumn" Header="Variable" Binding="{Binding VariableName}" 
+                            Width="Auto"/>
+                    <DataGridTextColumn x:Name="_valuecolumn" Header="Value" Binding="{Binding LiveValue}" 
+                            MinWidth="130" Width="Auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Margin="10,10,10,10">
             <TextBlock Text="Window Position" FontWeight="Bold"/>
             <TextBlock Text="Left:"/>

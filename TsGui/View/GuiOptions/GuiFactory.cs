@@ -19,7 +19,6 @@
 using System;
 using System.Xml.Linq;
 using System.Windows;
-using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
