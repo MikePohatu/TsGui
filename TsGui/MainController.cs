@@ -49,8 +49,9 @@ namespace TsGui
         private HardwareEvaluator _chassischeck;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
-        private bool _showtestwindow = false;
+        private bool _livedata = false;
         private bool _debug = false;
+        private bool _showtestwindow = false;
 
         //properties
         public TsMainWindow TsMainWindow { get; set; }
@@ -106,6 +107,7 @@ namespace TsGui
             else
             {
                 if (this.PromptTestMode() != true) { this.Cancel(); return; }
+                if (this._livedata == true) { this._showtestwindow = true; }
             }
 
             //subscribe to closing event
@@ -171,7 +173,7 @@ namespace TsGui
             if (SourceXml != null)
             {
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
-                this._showtestwindow = XmlHandler.GetBoolFromXAttribute(SourceXml, "TestingWindow", this._showtestwindow);
+                this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
                 
                 //Set show grid lines after pages and columns have been created.
                 x = SourceXml.Element("ShowGridLines");
