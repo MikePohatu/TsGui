@@ -36,41 +36,38 @@ TestingWindowUI.xaml - shows live data at runtime
     </Window.Resources>
 
     <StackPanel Orientation="Vertical" Width="Auto" VerticalAlignment="Top" Margin="10">
-        <StackPanel x:Name="_tsvarwrapperpanel" >
-            <DataGrid x:Name="_optionsgrid" ItemsSource="{Binding Options}" AlternatingRowBackground="LightGray" 
+        <DataGrid x:Name="_optionsgrid" ItemsSource="{Binding Options}" AlternatingRowBackground="LightGray" 
                               AlternationCount="2" AutoGenerateColumns="False" HeadersVisibility="Column"  
-                              Margin="0" FrozenColumnCount="1"
+                              Margin="0,0,0,10" FrozenColumnCount="1"
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}" 
                               IsReadOnly="True" HorizontalScrollBarVisibility="Auto">
-                <DataGrid.Columns>
-                    <DataGridTextColumn x:Name="_variablecolumn" Header="Variable" Binding="{Binding VariableName}" 
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="_variablecolumn" Header="Variable" Binding="{Binding VariableName}" 
                             Width="Auto"/>
-                    <DataGridTextColumn x:Name="_valuecolumn" Header="Value" Binding="{Binding LiveValue}" 
+                <DataGridTextColumn x:Name="_valuecolumn" Header="Value" Binding="{Binding LiveValue}" 
                             MinWidth="130" Width="Auto"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
-        
-        <Grid Margin="0,10,0,5">
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid x:Name="_positiongrid" Margin="0,5,0,5" Width="100" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="40"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Window Position" FontWeight="Bold" Grid.Row="0" Grid.ColumnSpan="4"/>
+            <TextBlock Text="Window Position" FontWeight="Bold" Grid.Row="0" Grid.ColumnSpan="2"/>
             <TextBlock Text="Left: " Grid.Column="0" Grid.Row="1"/>
             <TextBlock Text="{Binding TsMainWindow.WindowLocation.Left}" Grid.Column="1" Grid.Row="1"/>
-            <TextBlock Text="Top: " Grid.Column="2" Grid.Row="1"/>
-            <TextBlock Text="{Binding TsMainWindow.WindowLocation.Top}" Grid.Column="3" Grid.Row="1"/>
+            <TextBlock Text="Top: " Grid.Column="0" Grid.Row="2"/>
+            <TextBlock Text="{Binding TsMainWindow.WindowLocation.Top}" Grid.Column="1" Grid.Row="2"/>
         </Grid>
-        <Grid>
+        <Grid x:Name="_screengrid" Margin="0,5,0,5" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="130"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -78,11 +75,11 @@ TestingWindowUI.xaml - shows live data at runtime
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Screen Dimensions" FontWeight="Bold" Margin="2,5,2,2"/>
-            <TextBlock Text="Primary Screen Width: " Grid.Column="0" Grid.Row="1"/>
-            <TextBlock Text="Primary Screen Height: " Grid.Column="0" Grid.Row="2"/>
-            <TextBlock Text="{Binding ScreenWidth}" Grid.Column="1" Grid.Row="1"/>
-            <TextBlock Text="{Binding ScreenHeight}" Grid.Column="1" Grid.Row="2"/>
+            <TextBlock Text="Screen Dimensions" FontWeight="Bold" Margin="2,5,2,2" HorizontalAlignment="Left"/>
+            <TextBlock Text="Primary Screen Width: " Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"/>
+            <TextBlock Text="Primary Screen Height: " Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left"/>
+            <TextBlock Text="{Binding ScreenWidth}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left"/>
+            <TextBlock Text="{Binding ScreenHeight}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"/>
         </Grid>
     </StackPanel>
 </Window>
