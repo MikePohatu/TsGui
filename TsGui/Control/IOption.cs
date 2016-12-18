@@ -21,6 +21,7 @@ namespace TsGui
     {
         TsVariable Variable { get; }
         string CurrentValue { get; }
+        string LiveValue { get; }
         string VariableName { get; }
         string InactiveValue { get; }
         bool PurgeInactive { get; set; }

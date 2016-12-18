@@ -20,7 +20,7 @@ using System.Windows;
 
 namespace TsGui.Grouping
 {
-    public abstract class GroupableUIElementBase: GroupableBase, IGroupableUIElement, IGroupChild, INotifyPropertyChanged
+    public abstract class GroupableUIElementBase: GroupableBase, IGroupableUIElement, IGroupChild
     {
         protected bool _isenabled = true;
         protected bool _ishidden = false;
@@ -76,16 +76,7 @@ namespace TsGui.Grouping
         }
 
         //Events
-        #region
-        //Setup the INotifyPropertyChanged interface 
         public override event GrouableStateChange GroupingStateChange;
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(object sender, string name)
-        {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-        }
-        #endregion
 
         //methods
         protected override void EvaluateGroups()
