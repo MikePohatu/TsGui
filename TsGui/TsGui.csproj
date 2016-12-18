@@ -113,6 +113,7 @@
     <Compile Include="View\GuiOptions\TsLabelUI.xaml.cs">
       <DependentUpon>TsLabelUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Helpers\IconHelper.cs" />
     <Compile Include="View\Layout\GhostWindow.xaml.cs">
       <DependentUpon>GhostWindow.xaml</DependentUpon>
     </Compile>

@@ -24,7 +24,7 @@ TestingWindowUI.xaml - shows live data at runtime
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TsGui.Diagnostics"
         mc:Ignorable="d"
-        Title="Live Data" SizeToContent="WidthAndHeight" 
+        Title="Live Data" SizeToContent="WidthAndHeight" Icon="{Binding Icon}"
         Topmost="True" WindowStartupLocation="Manual" Left="10" Top="10">
     <Window.Resources>
         <Style x:Key="DataGridColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">

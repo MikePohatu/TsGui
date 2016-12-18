@@ -18,8 +18,11 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System;
+using System.Drawing;
+using System.Windows.Media;
 
 using TsGui.View.Layout;
+using TsGui.View.Helpers;
 
 namespace TsGui.Diagnostics
 {
@@ -33,12 +36,14 @@ namespace TsGui.Diagnostics
         public TsMainWindow TsMainWindow { get; set; }
         public double ScreenHeight { get; set; }
         public double ScreenWidth { get; set; }
+        public ImageSource Icon { get; set; }
 
         public TestingWindow(MainController Controller)
         {
             this._controller = Controller;
             this.ScreenWidth = SystemParameters.PrimaryScreenWidth;
             this.ScreenHeight = SystemParameters.PrimaryScreenHeight;
+            this.Icon = IconHelper.ConvertToImageSource(SystemIcons.Information);
             this._testingwindowui = new TestingWindowUI();
             this._testingwindowui.DataContext = this;
             this._options = this._controller.OptionLibrary.Options;
