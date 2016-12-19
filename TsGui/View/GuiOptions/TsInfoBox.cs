@@ -28,10 +28,15 @@ namespace TsGui.View.GuiOptions
         //Properties
 
         //Custom stuff for control
+        public override string CurrentValue { get { return this._controltext; } }
         public string ControlText
         {
             get { return this._controltext; }
-            set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
+            set {
+                this._controltext = value;
+                this.OnPropertyChanged(this, "ControlText");
+                this.NotifyUpdate();
+            }
         }
         public TsVariable Variable { get { return new TsVariable(this.VariableName, this.ControlText); } }
 

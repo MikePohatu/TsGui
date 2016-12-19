@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// Positioning.cs - view model for window positioning
+// WindowLocation.cs - view model for window positioning
 
 using System.ComponentModel;
 using System.Windows;
@@ -26,6 +26,7 @@ namespace TsGui.View.Layout
         private double _left;
         private double _top;
         private WindowStartupLocation _startuplocation;
+        private Window _parentwindow;
 
         public double Left
         {
@@ -40,7 +41,7 @@ namespace TsGui.View.Layout
         public WindowStartupLocation StartupLocation
         {
             get { return this._startuplocation; }
-            set { this._startuplocation = value; this.OnPropertyChanged(this, "StartupLocation"); }
+            set { this._startuplocation = value; }
         }
 
         //Event handling
@@ -55,15 +56,15 @@ namespace TsGui.View.Layout
         }
         #endregion
 
-        public WindowLocation(XElement InputXml)
+        public WindowLocation(XElement InputXml, Window ParentWindow)
         {
-            this.SetDefaults();
+            this.Init(ParentWindow);
             this.LoadXml(InputXml);
         }
 
-        public WindowLocation()
+        public WindowLocation(Window ParentWindow)
         {
-            this.SetDefaults();
+            this.Init(ParentWindow);
         }
 
         public void LoadXml(XElement InputXml)
@@ -73,11 +74,17 @@ namespace TsGui.View.Layout
             this.Top = XmlHandler.GetDoubleFromXElement(InputXml, "Top", this.Top);
         }
 
+        private void Init(Window ParentWindow)
+        {
+            this._parentwindow = ParentWindow;
+            this.SetDefaults();
+        }
+
         private void SetDefaults()
         {
             this.StartupLocation = WindowStartupLocation.CenterScreen;
-            this.Left = 0;
-            this.Top = 0;
+            this.Left = 40;
+            this.Top = 40;
         }
     }
 }

@@ -15,12 +15,13 @@
 
 // GroupableBase.cs - base class for grouable objects
 
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace TsGui.Grouping
 {
-    public abstract class GroupableBase
+    public abstract class GroupableBase: INotifyPropertyChanged
     {
         protected MainController _controller;
         protected bool _isactive = true;
@@ -58,6 +59,14 @@ namespace TsGui.Grouping
         public void OnGroupStateChange()
         {
             this.EvaluateGroups();
+        }
+
+        //Setup the INotifyPropertyChanged interface 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(object sender, string name)
+        {
+            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
         }
         #endregion
 

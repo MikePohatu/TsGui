@@ -19,7 +19,6 @@
 using System;
 using System.Xml.Linq;
 using System.Windows;
-using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
@@ -31,29 +30,34 @@ namespace TsGui.View.GuiOptions
             if (OptionXml.Attribute("Type").Value == "TextBlock")
             {
                 TsTextBlock tb = new TsTextBlock(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(tb);
                 return tb;
             }
 
             else if (OptionXml.Attribute("Type").Value == "DropDownList")
             {
                 TsDropDownList ddl = new TsDropDownList(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(ddl);
                 return ddl;
             }
 
             else if (OptionXml.Attribute("Type").Value == "CheckBox")
             {
                 TsCheckBox cb = new TsCheckBox(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(cb);
                 return cb;
             }
             else if (OptionXml.Attribute("Type").Value == "FreeText")
             {
                 TsFreeText ft = new TsFreeText(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(ft);
                 return ft;
             }
 
             else if (OptionXml.Attribute("Type").Value == "ComputerName")
             {
                 TsComputerName cn = new TsComputerName(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(cn);
                 return cn;
             }
             else if (OptionXml.Attribute("Type").Value == "Heading")
@@ -64,6 +68,7 @@ namespace TsGui.View.GuiOptions
             else if (OptionXml.Attribute("Type").Value == "InfoBox")
             {
                 TsInfoBox ib = new TsInfoBox(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(ib);
                 return ib;
             }
             else if (OptionXml.Attribute("Type").Value == "TrafficLight")

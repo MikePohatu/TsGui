@@ -84,7 +84,6 @@ namespace TsGui
                     newOption = GuiFactory.CreateGuiOption(xOption,this,this._controller);
                     if (newOption ==null) { continue; }
                     this._options.Add(newOption);
-                    this._controller.AddOptionToLibary(newOption);
 
                     RowDefinition rowdef = new RowDefinition();
                     rowdef.Height = GridLength.Auto;

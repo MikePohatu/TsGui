@@ -14,10 +14,11 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 // GroupableBlindBase.cs - base class for grouable blind/noui objects
+using System.ComponentModel;
 
 namespace TsGui.Grouping
 {
-    public abstract class GroupableBlindBase: GroupableBase
+    public abstract class GroupableBlindBase: GroupableBase, INotifyPropertyChanged
     {
         protected GroupableBlindBase _parent;
 

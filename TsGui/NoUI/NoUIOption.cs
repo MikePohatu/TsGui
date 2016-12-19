@@ -33,6 +33,7 @@ namespace TsGui.NoUI
             get { return this._inactivevalue; }
             set { this._inactivevalue = value; }
         }
+        public string CurrentValue { get { return this._value; } }
         public TsVariable Variable
         {
             get
@@ -43,11 +44,23 @@ namespace TsGui.NoUI
                 { return new TsVariable(this.VariableName, this._value); }
             }
         }
-
+        public string LiveValue
+        {
+            get
+            {
+                if (this.IsActive == true) { return this.CurrentValue; }
+                else
+                {
+                    if (this._purgeinactive == true) { return "*PURGED*"; }
+                    else { return this._inactivevalue; }
+                }
+            }
+        }
         //constructors     
         public NoUIOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent,MainController)
         {
             this.LoadXml(InputXml);
+            this.NotifyUpdate();
         }
 
         //public methods
@@ -78,6 +91,18 @@ namespace TsGui.NoUI
 
                 this._value = this._controller.GetValueFromList(x);
             }
+        }
+
+        protected override void EvaluateGroups()
+        {
+            base.EvaluateGroups();
+            this.NotifyUpdate();
+        }
+
+        protected void NotifyUpdate()
+        {
+            this.OnPropertyChanged(this, "CurrentValue");
+            this.OnPropertyChanged(this, "LiveValue");
         }
     }
 }

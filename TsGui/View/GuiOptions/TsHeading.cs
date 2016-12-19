@@ -27,6 +27,7 @@ namespace TsGui.View.GuiOptions
         //Properties
 
         //Custom stuff for control
+        public override string CurrentValue { get { return this._controltext; } }
         public string ControlText
         {
             get { return this._controltext; }

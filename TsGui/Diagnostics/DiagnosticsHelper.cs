@@ -13,18 +13,24 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// IOption.cs - option interface. Base interface to apply to both GuiOptions and BlindOptions
+// DiagnosticsHelper.cs - Helper functions for debugging outside of VS e.g. in WinPE
 
-namespace TsGui
+using System.Windows;
+
+namespace TsGui.Diagnostics
 {
-    public interface IOption
+    public static class DiagnosticsHelper
     {
-        TsVariable Variable { get; }
-        string CurrentValue { get; }
-        string LiveValue { get; }
-        string VariableName { get; }
-        string InactiveValue { get; }
-        bool PurgeInactive { get; set; }
-        bool IsActive { get; }
+        public static MessageBoxResult DisplayYesNoDialog(string Message, string Title)
+        {
+            MessageBoxResult result = MessageBox.Show(Message, Title, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            return result;
+        }
+
+        public static MessageBoxResult DisplayOkDialog(string Message, string Title)
+        {
+            MessageBoxResult result = MessageBox.Show(Message, Title, MessageBoxButton.OK, MessageBoxImage.Warning);
+            return result;
+        }
     }
 }

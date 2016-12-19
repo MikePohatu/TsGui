@@ -53,7 +53,7 @@ namespace TsGui.View.GuiOptions
                 { return new TsVariable(this.VariableName, this.CurrentValue); }
             }
         }
-        public string CurrentValue
+        public override string CurrentValue
         {
             get { return this._currentitem?.Value; }
         }
@@ -166,6 +166,7 @@ namespace TsGui.View.GuiOptions
         private void OnSelectionChanged(object o, RoutedEventArgs e)
         {
             this.Validate(false);
+            this.NotifyUpdate();
             this.ToggleEvent?.Invoke();
         }
 

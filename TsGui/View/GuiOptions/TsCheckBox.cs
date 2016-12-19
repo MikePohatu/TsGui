@@ -37,10 +37,12 @@ namespace TsGui.View.GuiOptions
             {
                 this._ischecked = value;
                 this.OnPropertyChanged(this, "IsChecked");
+                this.NotifyUpdate();
                 this.ToggleEvent?.Invoke();
             }
         }
-        public string CurrentValue
+        //public override string CurrentValue { get { return this.ControlText; } }
+        public override string CurrentValue
         {
             get
             {

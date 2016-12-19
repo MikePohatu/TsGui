@@ -13,18 +13,21 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// IOption.cs - option interface. Base interface to apply to both GuiOptions and BlindOptions
+// IconHelper.cs - Helper methods for icons e.g. convert icons to imagesource etc.
 
-namespace TsGui
+using System.Windows.Media;
+using System.Drawing;
+using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
+
+namespace TsGui.View.Helpers
 {
-    public interface IOption
+    public static class IconHelper
     {
-        TsVariable Variable { get; }
-        string CurrentValue { get; }
-        string LiveValue { get; }
-        string VariableName { get; }
-        string InactiveValue { get; }
-        bool PurgeInactive { get; set; }
-        bool IsActive { get; }
+        public static ImageSource ConvertToImageSource(Icon Icon)
+        {
+            return Imaging.CreateBitmapSourceFromHIcon(Icon.Handle,Int32Rect.Empty,BitmapSizeOptions.FromEmptyOptions());
+        }
     }
 }

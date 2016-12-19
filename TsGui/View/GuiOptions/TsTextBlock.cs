@@ -27,10 +27,16 @@ namespace TsGui.View.GuiOptions
         private StringValidation _stringvalidation;
 
         //Custom stuff for control
+        public override string CurrentValue { get { return this.ControlText; } }
         public string ControlText
         {
             get { return this._controltext; }
-            set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
+            set
+            {
+                this._controltext = value;
+                this.OnPropertyChanged(this, "ControlText");
+                this.NotifyUpdate();
+            }
         }
         public TsVariable Variable { get { return null; } }
 

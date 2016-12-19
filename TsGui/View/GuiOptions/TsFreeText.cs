@@ -43,9 +43,11 @@ namespace TsGui.View.GuiOptions
             {
                 this._controltext = value;
                 this.OnPropertyChanged(this, "ControlText");
+                this.NotifyUpdate();
                 this.Validate();
             }
         }
+        public override string CurrentValue { get { return this._controltext; } }
         public bool IsValid { get { return this.Validate(); } }
         public int MaxLength
         {
