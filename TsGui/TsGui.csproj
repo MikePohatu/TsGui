@@ -72,6 +72,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Arguments.cs" />
+    <Compile Include="Helpers\DisplayInformation.cs" />
     <Compile Include="Helpers\ReverseComparer.cs" />
     <Compile Include="Images\MultiImage.cs" />
     <Compile Include="NoUI\NoUIOption.cs" />
