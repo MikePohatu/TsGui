@@ -73,8 +73,9 @@ namespace TsGui.View.GuiOptions
             }
             else if (OptionXml.Attribute("Type").Value == "TrafficLight")
             {
-                TsTrafficLight cc = new TsTrafficLight(OptionXml, Parent, RootController);
-                return cc;
+                TsTrafficLight tl = new TsTrafficLight(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(tl);
+                return tl;
             }
             else if (OptionXml.Attribute("Type").Value == "Image")
             {

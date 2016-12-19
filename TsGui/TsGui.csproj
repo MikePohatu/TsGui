@@ -60,6 +60,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -72,6 +73,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Arguments.cs" />
+    <Compile Include="Diagnostics\DiagnosticsHelper.cs" />
+    <Compile Include="Diagnostics\TestingWindow.cs" />
+    <Compile Include="Diagnostics\TestingWindowUI.xaml.cs">
+      <DependentUpon>TestingWindowUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\DisplayInformation.cs" />
     <Compile Include="Helpers\ReverseComparer.cs" />
     <Compile Include="Images\MultiImage.cs" />
@@ -119,6 +125,10 @@
     <Compile Include="View\GuiOptions\TsDropDownListItem.cs" />
     <Compile Include="View\GuiOptions\TsLabelUI.xaml.cs">
       <DependentUpon>TsLabelUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Helpers\IconHelper.cs" />
+    <Compile Include="View\Layout\GhostWindow.xaml.cs">
+      <DependentUpon>GhostWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
@@ -181,6 +191,10 @@
     <Compile Include="View\GuiOptions\TsTextBlockUI.xaml.cs">
       <DependentUpon>TsTextBlockUI.xaml</DependentUpon>
     </Compile>
+    <Page Include="Diagnostics\TestingWindowUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Validation\ValidationErrorToolTip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -208,6 +222,10 @@
     <Page Include="View\GuiOptions\TsInfoBoxUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Layout\GhostWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Layout\PageLayout.xaml">
       <SubType>Designer</SubType>

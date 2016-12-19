@@ -18,7 +18,6 @@
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using TsGui.Images;
 
 namespace TsGui.View.GuiOptions
@@ -32,6 +31,7 @@ namespace TsGui.View.GuiOptions
 
         public MultiImage MultiImage { get { return this._multiimage; } }
         public TsVariable Variable { get { return null; } }
+        public override string CurrentValue { get { return null; } }
         public double ImageWidth
         {
             get { return this._imagewidth; }

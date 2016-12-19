@@ -54,6 +54,7 @@ namespace TsGui.View.GuiOptions
             set { this._fillcolor = value; this.OnPropertyChanged(this, "FillColor"); }
         }
         public bool IsValid { get { return this.Validate(); } }
+        public override string CurrentValue { get { return this.Validate().ToString(); } }
         public string ValidationText
         {
             get { return this._validationtext; }
