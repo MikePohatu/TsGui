@@ -20,7 +20,6 @@ using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
 
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
@@ -29,11 +28,6 @@ namespace TsGui.View.Layout
 {
     public class TsPage: BaseLayoutElement
     {
-        private double _headingHeight;
-        private string _headingTitle;
-        private string _headingText;        
-        private SolidColorBrush _headingBgColor;
-        private SolidColorBrush _headingFontColor;
         private List<TsRow> _rows = new List<TsRow>();
         private List<IGuiOption> _options = new List<IGuiOption>();
         private List<IValidationGuiOption> _validationoptions = new List<IValidationGuiOption>();
@@ -43,9 +37,11 @@ namespace TsGui.View.Layout
         private TsPage _nextpage;
         private bool _isfirst = false;
         private TsMainWindow _parent;
+        private TsHeading _heading;
 
         //Properties
         #region
+        public TsHeading Heading { get; set; }
         public TsPage NextActivePage
         {
             get
@@ -62,52 +58,7 @@ namespace TsGui.View.Layout
                 else { return this.PreviousPage.PreviousActivePage; }
             }
         }
-        public string HeadingTitle
-        {
-            get { return this._headingTitle; }
-            set
-            {
-                this._headingTitle = value;
-                this.OnPropertyChanged(this, "HeadingTitle");
-            }
-        }
-        public string HeadingText
-        {
-            get { return this._headingText; }
-            set
-            {
-                this._headingText = value;
-                this.OnPropertyChanged(this, "HeadingText");
-            }
-        }
-        public double HeadingHeight
-        {
-            get { return this._headingHeight; }
-            set
-            {
-                this._headingHeight = value;
-                this.OnPropertyChanged(this, "HeadingHeight");
-            }
-        }
 
-        public SolidColorBrush HeadingBgColor
-        {
-            get { return this._headingBgColor; }
-            set
-            {
-                this._headingBgColor = value;
-                this.OnPropertyChanged(this, "HeadingBgColor");
-            }
-        }
-        public SolidColorBrush HeadinFontColor
-        {
-            get { return this._headingFontColor; }
-            set
-            {
-                this._headingFontColor = value;
-                this.OnPropertyChanged(this, "HeadinFontColor");
-            }
-        }
         public TsPage PreviousPage
         {
             get { return this._previouspage; }
@@ -146,18 +97,16 @@ namespace TsGui.View.Layout
 
         //Constructors
         public TsPage(XElement SourceXml, PageDefaults Defaults, MainController MainController):base (MainController)
-        {
+        { 
             this._parent = Defaults.Parent;
             this._controller = Defaults.RootController;
             this._pagelayout = new PageLayout(this);
             this._pagelayout.Loaded += this.OnWindowLoaded;
             this._pagepanel = this._pagelayout.MainGrid;
-            this.HeadingHeight = 40;
-            this.HeadingTitle = Defaults.HeadingTitle;
-            this.HeadingText = Defaults.HeadingText;
-            this.HeadinFontColor = Defaults.HeadingFontColor;
-            this.HeadingBgColor = Defaults.HeadingBgColor;
-            this.ShowGridLines = MainController.ShowGridLines;      
+            this.ShowGridLines = MainController.ShowGridLines;         
+
+            //if (Defaults.Heading != null) { this.Heading = Defaults.Heading; }
+            //else { this.Heading = new TsHeading(SourceXml, Defaults, MainController); }
 
             this._pagelayout.DataContext = this;
             this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
@@ -180,26 +129,6 @@ namespace TsGui.View.Layout
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this._parent.ShowGridLines);
-
-            XElement headingX = InputXml.Element("Heading");
-            if (headingX != null)
-            {
-                this._headingTitle = XmlHandler.GetStringFromXElement(headingX, "Title", this._headingTitle);
-                this._headingText = XmlHandler.GetStringFromXElement(headingX, "Text", this._headingText);
-                this._headingHeight = XmlHandler.GetDoubleFromXElement(headingX, "Height", this._headingHeight);
-
-                x = headingX.Element("BgColor");
-                if (x != null)
-                {
-                    this.HeadingBgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value));
-                }
-
-                x = headingX.Element("TextColor");
-                if (x != null)
-                {
-                    this.HeadinFontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value));
-                }
-            }
 
             //now read in the options and add to a dictionary for later use
             int i = 0;

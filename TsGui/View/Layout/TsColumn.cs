@@ -30,11 +30,11 @@ namespace TsGui
     {
         private List<IGuiOption> _options = new List<IGuiOption>();
         private Grid _columnpanel;
-        private TsRow _parent;
+        private BaseLayoutElement _parent;
 
         //properties
         #region
-        public TsRow Parent { get { return this._parent; } }
+        public BaseLayoutElement Parent { get { return this._parent; } }
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this._options; } }
         public Panel Panel { get { return this._columnpanel; } }

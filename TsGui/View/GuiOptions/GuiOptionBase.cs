@@ -28,7 +28,6 @@ namespace TsGui.View.GuiOptions
         private string _helptext = null;
         private string _inactivevalue = "TSGUI_INACTIVE";
         private GuiOptionBaseUI _ui;
-        private bool _invertlayout = false;
 
         //standard stuff
         public TsColumn Parent { get; set; }

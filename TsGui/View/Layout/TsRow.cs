@@ -29,20 +29,20 @@ namespace TsGui.View.Layout
     {
         private Grid _rowpanel;
         private List<TsColumn> _columns = new List<TsColumn>();
-        private TsPage _parent;
+        private BaseLayoutElement _parent;
         private List<IGuiOption> _options = new List<IGuiOption>();
 
         //properties
         #region
         public List<IGuiOption> Options { get { return this._options; } }
-        public TsPage Parent { get { return this._parent; } }
+        public BaseLayoutElement Parent { get { return this._parent; } }
         public int Index { get; set; }
         public Panel Panel { get { return this._rowpanel; } }
         #endregion
 
         //constructor
         #region
-        public TsRow (XElement SourceXml,int PageIndex, TsPage Parent, MainController MainController): base (Parent,MainController)
+        public TsRow (XElement SourceXml,int PageIndex, BaseLayoutElement Parent, MainController MainController): base (Parent,MainController)
         {
 
             this._controller = MainController;

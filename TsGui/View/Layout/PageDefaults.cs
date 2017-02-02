@@ -29,5 +29,6 @@ namespace TsGui.View.Layout
         public TsButtons Buttons { get; set; }
         public MainController RootController { get; set; }
         public TsMainWindow Parent { get; set; }
+        public TsHeading Heading { get; set; }
     }
 }
