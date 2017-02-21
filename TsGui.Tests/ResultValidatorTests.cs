@@ -138,5 +138,23 @@ namespace TsGui.Tests
         {
             return ResultValidator.IsGreaterThan(StringInput, StringRuleContent);
         }
+
+        [Test]
+        [TestCase("1te", "4", ExpectedResult = "Non numeric input passed to IsGreaterThan function")]
+        [TestCase("4", "1te", ExpectedResult = "Non numeric rule content passed to IsGreaterThan function")]
+        public string IsGreaterThanThrowsArgumentExceptionTest(string StringInput, string StringRuleContent)
+        {
+            Exception ex = Assert.Throws<ArgumentException>(() => ResultValidator.IsGreaterThan(StringInput, StringRuleContent));
+            return ex.Message;
+        }
+
+        [Test]
+        [TestCase("1te", "4", ExpectedResult = "Non numeric input passed to IsLessThan function")]
+        [TestCase("4", "1te", ExpectedResult = "Non numeric rule content passed to IsLessThan function")]
+        public string IsLessThanThrowsArgumentExceptionTest(string StringInput, string StringRuleContent)
+        {
+            Exception ex = Assert.Throws<ArgumentException>(() => ResultValidator.IsLessThan(StringInput, StringRuleContent));
+            return ex.Message;
+        }
     }
 }

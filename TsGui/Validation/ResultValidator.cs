@@ -190,8 +190,8 @@ namespace TsGui.Validation
             double inputnum;
             double rulenum;
 
-            if (!double.TryParse(Input, out inputnum)) { throw new ArgumentException("Non numeric input passed to IsLessThan function"); }
-            if (!double.TryParse(RuleContent, out rulenum)) { throw new ArgumentException("Non numeric rule content passed to IsLessThan function"); }
+            if (!double.TryParse(Input, out inputnum)) { throw new ArgumentException("Non numeric input passed to IsGreaterThan function"); }
+            if (!double.TryParse(RuleContent, out rulenum)) { throw new ArgumentException("Non numeric rule content passed to IsGreaterThan function"); }
 
             return inputnum > rulenum;
         }
