@@ -78,6 +78,12 @@ namespace TsGui.Validation
                     case "Equals":
                         this.Type = StringValidationRuleType.Equals;
                         break;
+                    case "GreaterThan":
+                        this.Type = StringValidationRuleType.GreaterThan;
+                        break;
+                    case "LessThan":
+                        this.Type = StringValidationRuleType.LessThan;
+                        break;
                     default:
                         break;
                 }

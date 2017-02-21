@@ -17,5 +17,5 @@
 
 namespace TsGui.Validation
 {
-    public enum StringValidationRuleType { StartsWith, EndsWith, Contains, Characters, RegEx, Equals};
+    public enum StringValidationRuleType { StartsWith, EndsWith, Contains, Characters, RegEx, Equals, GreaterThan, LessThan};
 }

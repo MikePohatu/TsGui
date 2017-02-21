@@ -174,6 +174,28 @@ namespace TsGui.Validation
             catch (Exception e) { throw new ArgumentException("Error processing RegEx: " + Pattern + ". " + Environment.NewLine + e.Message); }
         }
 
+        public static bool IsLessThan(string Input, string RuleContent)
+        {
+            double inputnum;
+            double rulenum;
+
+            if (!double.TryParse(Input,out inputnum)) { throw new ArgumentException("Non numeric input passed to IsLessThan function"); }
+            if (!double.TryParse(RuleContent, out rulenum)) { throw new ArgumentException("Non numeric rule content passed to IsLessThan function"); }
+
+            return inputnum < rulenum;
+        }
+
+        public static bool IsGreaterThan(string Input, string RuleContent)
+        {
+            double inputnum;
+            double rulenum;
+
+            if (!double.TryParse(Input, out inputnum)) { throw new ArgumentException("Non numeric input passed to IsLessThan function"); }
+            if (!double.TryParse(RuleContent, out rulenum)) { throw new ArgumentException("Non numeric rule content passed to IsLessThan function"); }
+
+            return inputnum > rulenum;
+        }
+
         public static bool DoesStringMatchRule(StringValidationRule Rule, string Input)
         {
             bool result = false;
@@ -205,6 +227,12 @@ namespace TsGui.Validation
                     break;
                 case StringValidationRuleType.Equals:
                     result = inputstring.Equals(rulestring);
+                    break;
+                case StringValidationRuleType.LessThan:
+                    result = IsLessThan(Input, Rule.Content);
+                    break;
+                case StringValidationRuleType.GreaterThan:
+                    result = IsGreaterThan(Input,Rule.Content);
                     break;
                 default:
                     break;

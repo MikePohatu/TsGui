@@ -1,13 +1,14 @@
 ﻿using NUnit.Framework;
 using System.Xml.Linq;
 using System.Diagnostics;
+using System;
 
 using TsGui.Validation;
 
 namespace TsGui.Tests
 {
     [TestFixture]
-    public class CheckerTests
+    public class ResultValidatorTests
     {
         [Test]
         [TestCase("MINIT", ExpectedResult = true)]
@@ -114,6 +115,28 @@ namespace TsGui.Tests
         public bool DoesRegExMatchTest(string StringValue, string Pattern, bool CaseSensitive)
         {
             return ResultValidator.DoesRegexMatch(StringValue, Pattern, CaseSensitive);
+        }
+
+        [Test]
+        [TestCase("1", "4", ExpectedResult = true)]
+        [TestCase("4", "4", ExpectedResult = false)]
+        [TestCase("6", "4", ExpectedResult = false)]
+        [TestCase("1", "-4", ExpectedResult = false)]
+        [TestCase("-10", "-4", ExpectedResult = true)]
+        public bool IsLessThanTest(string StringInput, string StringRuleContent)
+        {
+            return ResultValidator.IsLessThan(StringInput, StringRuleContent);
+        }
+
+        [Test]
+        [TestCase("1", "4", ExpectedResult = false)]
+        [TestCase("4", "4", ExpectedResult = false)]
+        [TestCase("6", "4", ExpectedResult = true)]
+        [TestCase("1", "-4", ExpectedResult = true)]
+        [TestCase("-10", "-4", ExpectedResult = false)]
+        public bool IsGreaterThanTest(string StringInput, string StringRuleContent)
+        {
+            return ResultValidator.IsGreaterThan(StringInput, StringRuleContent);
         }
     }
 }
