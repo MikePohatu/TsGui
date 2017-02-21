@@ -48,8 +48,14 @@ namespace TsGui.Validation
         private void GenerateMessage()
         {
             string s;
-            s = this.Type.ToString() + ": \"" + this.Content + "\"";
-            if (this.IsCaseSensitive == true) { s = s + " (case sensitive)"; }
+            if (this.Type != StringValidationRuleType.IsNumeric)
+            {
+                s = this.Type.ToString() + ": \"" + this.Content + "\"";
+                if (this.IsCaseSensitive == true) { s = s + " (case sensitive)"; }
+            }
+            else
+            { s = this.Type.ToString(); }
+            
             this.Message = s;
         }
 
@@ -83,6 +89,15 @@ namespace TsGui.Validation
                         break;
                     case "LessThan":
                         this.Type = StringValidationRuleType.LessThan;
+                        break;
+                    case "GreaterThanOrEqualTo":
+                        this.Type = StringValidationRuleType.GreaterThanOrEqualTo;
+                        break;
+                    case "LessThanOrEqualTo":
+                        this.Type = StringValidationRuleType.LessThanOrEqualTo;
+                        break;
+                    case "IsNumeric":
+                        this.Type = StringValidationRuleType.IsNumeric;
                         break;
                     default:
                         break;

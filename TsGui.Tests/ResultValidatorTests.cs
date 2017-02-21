@@ -118,43 +118,31 @@ namespace TsGui.Tests
         }
 
         [Test]
-        [TestCase("1", "4", ExpectedResult = true)]
-        [TestCase("4", "4", ExpectedResult = false)]
-        [TestCase("6", "4", ExpectedResult = false)]
-        [TestCase("1", "-4", ExpectedResult = false)]
-        [TestCase("-10", "-4", ExpectedResult = true)]
-        public bool IsLessThanTest(string StringInput, string StringRuleContent)
+        [TestCase("1", "4", StringValidationRuleType.LessThan, ExpectedResult = true)]
+        [TestCase("4", "4", StringValidationRuleType.LessThan, ExpectedResult = false)]
+        [TestCase("6", "4", StringValidationRuleType.LessThan, ExpectedResult = false)]
+        [TestCase("1", "-4", StringValidationRuleType.LessThan, ExpectedResult = false)]
+        [TestCase("-10", "-4", StringValidationRuleType.LessThan, ExpectedResult = true)]
+        [TestCase("1", "4",StringValidationRuleType.GreaterThan, ExpectedResult = false)]
+        [TestCase("4", "4", StringValidationRuleType.GreaterThan, ExpectedResult = false)]
+        [TestCase("6", "4", StringValidationRuleType.GreaterThan, ExpectedResult = true)]
+        [TestCase("1", "-4", StringValidationRuleType.GreaterThan, ExpectedResult = true)]
+        [TestCase("-10", "-4", StringValidationRuleType.GreaterThan, ExpectedResult = false)]
+        [TestCase("lte", "-4", StringValidationRuleType.GreaterThan, ExpectedResult = false)]
+        [TestCase("-10", "lte", StringValidationRuleType.GreaterThan, ExpectedResult = false)]
+        public bool DoesNumberComparisonMatchTest(string StringInput, string StringRuleContent, StringValidationRuleType Type)
         {
-            return ResultValidator.IsLessThan(StringInput, StringRuleContent);
+            return ResultValidator.DoesNumberComparisonMatch(StringInput, StringRuleContent,Type);
         }
 
-        [Test]
-        [TestCase("1", "4", ExpectedResult = false)]
-        [TestCase("4", "4", ExpectedResult = false)]
-        [TestCase("6", "4", ExpectedResult = true)]
-        [TestCase("1", "-4", ExpectedResult = true)]
-        [TestCase("-10", "-4", ExpectedResult = false)]
-        public bool IsGreaterThanTest(string StringInput, string StringRuleContent)
-        {
-            return ResultValidator.IsGreaterThan(StringInput, StringRuleContent);
-        }
 
         [Test]
-        [TestCase("1te", "4", ExpectedResult = "Non numeric input passed to IsGreaterThan function")]
-        [TestCase("4", "1te", ExpectedResult = "Non numeric rule content passed to IsGreaterThan function")]
-        public string IsGreaterThanThrowsArgumentExceptionTest(string StringInput, string StringRuleContent)
+        [TestCase("1", ExpectedResult = true)]
+        [TestCase("fa", ExpectedResult = false)]
+        [TestCase("-", ExpectedResult = false)]
+        public bool IsNumericTest(string StringInput)
         {
-            Exception ex = Assert.Throws<ArgumentException>(() => ResultValidator.IsGreaterThan(StringInput, StringRuleContent));
-            return ex.Message;
-        }
-
-        [Test]
-        [TestCase("1te", "4", ExpectedResult = "Non numeric input passed to IsLessThan function")]
-        [TestCase("4", "1te", ExpectedResult = "Non numeric rule content passed to IsLessThan function")]
-        public string IsLessThanThrowsArgumentExceptionTest(string StringInput, string StringRuleContent)
-        {
-            Exception ex = Assert.Throws<ArgumentException>(() => ResultValidator.IsLessThan(StringInput, StringRuleContent));
-            return ex.Message;
+            return ResultValidator.IsNumeric(StringInput);
         }
     }
 }

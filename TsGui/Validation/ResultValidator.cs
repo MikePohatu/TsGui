@@ -174,26 +174,32 @@ namespace TsGui.Validation
             catch (Exception e) { throw new ArgumentException("Error processing RegEx: " + Pattern + ". " + Environment.NewLine + e.Message); }
         }
 
-        public static bool IsLessThan(string Input, string RuleContent)
+        public static bool IsNumeric(string Input)
         {
             double inputnum;
-            double rulenum;
-
-            if (!double.TryParse(Input,out inputnum)) { throw new ArgumentException("Non numeric input passed to IsLessThan function"); }
-            if (!double.TryParse(RuleContent, out rulenum)) { throw new ArgumentException("Non numeric rule content passed to IsLessThan function"); }
-
-            return inputnum < rulenum;
+            if (!double.TryParse(Input, out inputnum)) { return false; }
+            else { return true; }
         }
 
-        public static bool IsGreaterThan(string Input, string RuleContent)
+        public static bool DoesNumberComparisonMatch(string Input, string RuleContent, StringValidationRuleType Type)
         {
             double inputnum;
             double rulenum;
 
-            if (!double.TryParse(Input, out inputnum)) { throw new ArgumentException("Non numeric input passed to IsGreaterThan function"); }
-            if (!double.TryParse(RuleContent, out rulenum)) { throw new ArgumentException("Non numeric rule content passed to IsGreaterThan function"); }
+            if (!double.TryParse(Input,out inputnum)) { return false; }
+            if (!double.TryParse(RuleContent, out rulenum)) { return false; }
 
-            return inputnum > rulenum;
+            if (Type == StringValidationRuleType.LessThan)
+            { return inputnum < rulenum; }
+            else if (Type == StringValidationRuleType.LessThanOrEqualTo)
+            { return inputnum <= rulenum; }
+            else if (Type == StringValidationRuleType.GreaterThan)
+            { return inputnum > rulenum; }
+            else if (Type == StringValidationRuleType.GreaterThanOrEqualTo)
+            { return inputnum >= rulenum; }
+            else
+            { throw new ArgumentException("Invalid StringValidationRuleType passed to StringNumberCompare"); }
+
         }
 
         public static bool DoesStringMatchRule(StringValidationRule Rule, string Input)
@@ -229,10 +235,19 @@ namespace TsGui.Validation
                     result = inputstring.Equals(rulestring);
                     break;
                 case StringValidationRuleType.LessThan:
-                    result = IsLessThan(Input, Rule.Content);
+                    result = DoesNumberComparisonMatch(Input, Rule.Content,Rule.Type);
                     break;
                 case StringValidationRuleType.GreaterThan:
-                    result = IsGreaterThan(Input,Rule.Content);
+                    result = DoesNumberComparisonMatch(Input,Rule.Content, Rule.Type);
+                    break;
+                case StringValidationRuleType.LessThanOrEqualTo:
+                    result = DoesNumberComparisonMatch(Input, Rule.Content, Rule.Type);
+                    break;
+                case StringValidationRuleType.GreaterThanOrEqualTo:
+                    result = DoesNumberComparisonMatch(Input, Rule.Content, Rule.Type);
+                    break;
+                case StringValidationRuleType.IsNumeric:
+                    result = IsNumeric(Input);
                     break;
                 default:
                     break;

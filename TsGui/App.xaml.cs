@@ -30,14 +30,28 @@ namespace TsGui
 
         private void StartTsGui()
         {
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(this.OnUnhandledException);
+
             this._mainwindow = new MainWindow(this.Arguments);
         }
 
-        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        public void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            string msg = "Error message: " + Environment.NewLine + e.Exception.Message;
             e.Handled = true;
-            this._mainwindow.Controller.CloseWithError("Application Runtime Exception",msg);
+            this.ShowErrorMessageAndClose(e.Exception.Message);
+        }
+
+        public void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception exception = (Exception)e.ExceptionObject;
+            this.ShowErrorMessageAndClose(exception.Message);
+        }
+
+        private void ShowErrorMessageAndClose(string Message)
+        {
+            string msg = "Error message: " + Environment.NewLine + Message;
+            this._mainwindow.Controller.CloseWithError("Application Runtime Exception", msg);
         }
     }
 }
