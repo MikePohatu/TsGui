@@ -32,9 +32,9 @@ namespace TsGui.View.GuiOptions
         private double _iconwidth;
         private SolidColorBrush _fillcolor;
         private TsTrafficLightUI _trafficlight;
-        private ComplianceState _state;
-        private ValidationToolTipHandler _validationtooltip;
-        private ValidationHandler _validationhandler;
+        private int _state;
+        //private ValidationToolTipHandler _validationtooltip;
+        private ComplianceHandler _compliancehandler;
         private string _validationtext;
 
         //properties
@@ -81,8 +81,8 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
 
             this.FillColor = new SolidColorBrush(Colors.Blue);
-            this._validationhandler = new ValidationHandler(this, MainController);
-            this._validationtooltip = new ValidationToolTipHandler(this, this._controller);
+            this._compliancehandler = new ComplianceHandler(this, MainController);
+            //this._validationtooltip = new ValidationToolTipHandler(this, this._controller);
 
             this.UserControl.DataContext = this;
             this.SetDefaults();
@@ -92,35 +92,46 @@ namespace TsGui.View.GuiOptions
         }
 
         //methods
+        //public bool Validate()
+        //{
+        //    //if (this._controller.StartupFinished == false) { return true; }
+        //    //if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
+        //    if (this.IsActive == false) { return true; }
+
+        //    bool newvalid = this._compliancehandler.IsValid(this._currentvalue);
+
+        //    if (newvalid == false)
+        //    {
+        //        string validationmessage = this._compliancehandler.ValidationMessage;
+        //        string s = "\"" + this._currentvalue + "\" is invalid" + Environment.NewLine;
+        //        if (string.IsNullOrEmpty(validationmessage)) { s = s + _compliancehandler.FailedValidationMessage; }
+        //        else { s = s + validationmessage; }
+
+        //        this.ValidationText = s;
+        //        this._validationtooltip.Show();
+        //        this.SetStateColor(ComplianceStateValues.Invalid);
+        //    }
+        //    else
+        //    {
+        //        this._validationtooltip.Clear();
+        //        this.SetStateColor(ComplianceStateValues.OK);
+        //    }
+
+        //    return newvalid;
+        //}
+
         public bool Validate()
         {
-            //if (this._controller.StartupFinished == false) { return true; }
-            if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
-
-            bool newvalid = this._validationhandler.IsValid(this._currentvalue);
-
-            if (newvalid == false)
-            {
-                string validationmessage = this._validationhandler.ValidationMessage;
-                string s = "\"" + this._currentvalue + "\" is invalid" + Environment.NewLine;
-                if (string.IsNullOrEmpty(validationmessage)) { s = s + _validationhandler.FailedValidationMessage; }
-                else { s = s + validationmessage; }
-
-                this.ValidationText = s;
-                this._validationtooltip.Show();
-                this.SetState(ComplianceState.NotCompliant);
-            }
-            else
-            {
-                this._validationtooltip.Clear();
-                this.SetState(ComplianceState.Compliant);
-            }
-
-            return newvalid;
+            int state = this._compliancehandler.EvaluateComplianceState(this._currentvalue);
+            this.SetStateColor(state);
+            if (this.IsActive == false) { return true; }
+            if (state <= ComplianceStateValues.Error ) { return true; }
+            return false;
         }
 
         public void ClearToolTips()
-        { this._validationtooltip.Clear(); }
+        { //this._validationtooltip.Clear(); 
+        }
 
         public void OnValidationChange()
         { this.Validate(); }
@@ -129,11 +140,11 @@ namespace TsGui.View.GuiOptions
         {
             base.LoadXml(InputXml);
             this.LoadLegacyXml(InputXml);
-            this._validationhandler.LoadLegacyXml(InputXml);
-            this._validationhandler.AddValidations(InputXml.Elements("Validation"));
+            //this._compliancehandler.LoadLegacyXml(InputXml);
+            this._compliancehandler.AddCompliances(InputXml.Elements("Compliance"));
 
             //wrap the query in another to make it suitable for the controller. 
-            this._queryxml = new XElement("GetValue",InputXml.Element("Query"));
+            this._queryxml = InputXml.Element("GetValue");
         } 
 
         private void ProcessQuery()
@@ -143,7 +154,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.SetState(ComplianceState.Compliant);
+            this.SetStateColor(ComplianceStateValues.OK);
             this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
             this.ControlFormatting.Margin = new Thickness(2, 1, 2, 1);
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
@@ -151,19 +162,22 @@ namespace TsGui.View.GuiOptions
             this.IconWidth = 15;
         }
 
-        private void SetState(ComplianceState State)
+        private void SetStateColor(int State)
         {
             this._state = State;
             switch (State)
             {
-                case ComplianceState.Compliant:
+                case ComplianceStateValues.OK:
                     this.FillColor.Color = Colors.Green;
+                    break;               
+                case ComplianceStateValues.Warning:
+                    this.FillColor.Color = Colors.Orange;
                     break;
-                case ComplianceState.NotCompliant:
+                case ComplianceStateValues.Error:
                     this.FillColor.Color = Colors.Red;
                     break;
-                case ComplianceState.Warning:
-                    this.FillColor.Color = Colors.Orange;
+                case ComplianceStateValues.Invalid:
+                    this.FillColor.Color = Colors.Red;
                     break;
                 default:
                     throw new ArgumentException("State is not valid");

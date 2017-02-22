@@ -17,5 +17,11 @@
 
 namespace TsGui.Validation
 {
-    public enum ComplianceState { Compliant, NotCompliant, Warning };
+    public static class ComplianceStateValues
+    {
+        public const int OK = 0;
+        public const int Warning = 1;
+        public const int Error = 2;
+        public const int Invalid = 3;
+    }
 }

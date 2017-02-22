@@ -21,7 +21,7 @@ using TsGui.Grouping;
 
 namespace TsGui.Validation
 {
-    public class StringValidation
+    public class StringValidation: GroupableValidationBase
     {
         private bool _validateempty = true;
         private int _maxlength = int.MaxValue;
@@ -29,12 +29,10 @@ namespace TsGui.Validation
         private List<StringValidationRule> _validrules = new List<StringValidationRule>();
         private List<StringValidationRule> _invalidrules = new List<StringValidationRule>();
         private MainController _controller;
-        private List<Group> _groups = new List<Group>();
 
         //Properties
 
         #region
-        public bool IsActive { get; set; }
         public string ValidationMessage { get; set; }
         public string FailedValidationMessage { get; set; }
         public int MinLength
@@ -221,21 +219,6 @@ namespace TsGui.Validation
                 if (rule.Type == StringValidationRuleType.Characters) { s = s + rule.Content; }
             }
             return s;
-        }
-
-        //Grouping 
-        public GroupStateChange RevalidationRequired;
-        public void OnGroupStateChange()
-        {
-            bool result = false;
-            foreach (Group g in this._groups)
-            { if (g.State == GroupState.Enabled) { result = true; break; } }
-
-            if (this.IsActive != result)
-            {
-                this.IsActive = result;
-                this.RevalidationRequired?.Invoke();
-            }
         }
     }
 }
