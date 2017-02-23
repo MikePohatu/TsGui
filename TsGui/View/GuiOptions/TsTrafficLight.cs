@@ -26,7 +26,7 @@ namespace TsGui.View.GuiOptions
 {
     public class TsTrafficLight: GuiOptionBase, IGuiOption, IValidationGuiOption
     {
-        private string _currentvalue;
+        private string _value;
         private XElement _queryxml;
         private double _iconheight;
         private double _iconwidth;
@@ -54,7 +54,7 @@ namespace TsGui.View.GuiOptions
             set { this._fillcolor = value; this.OnPropertyChanged(this, "FillColor"); }
         }
         public bool IsValid { get { return this.Validate(); } }
-        public override string CurrentValue { get { return this.Validate().ToString(); } }
+        public override string CurrentValue { get { return ComplianceStateValues.ToString(this._state); } }
         public string ValidationText
         {
             get { return this._validationtext; }
@@ -67,7 +67,7 @@ namespace TsGui.View.GuiOptions
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this._state.ToString()); }
+                { return new TsVariable(this.VariableName, this.CurrentValue); }
             }
         }
 
@@ -94,29 +94,30 @@ namespace TsGui.View.GuiOptions
         //methods
         public bool Validate()
         {
+            bool returnval = false;
             //if (this._controller.StartupFinished == false) { return true; }
             if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
 
-            int newstate = this._compliancehandler.EvaluateComplianceState(this._currentvalue);
+            this.UpdateState(this._value);
 
-            this.SetStateColor(newstate);
-
-            if (newstate == ComplianceStateValues.Invalid)
+            if (this._state == ComplianceStateValues.Invalid)
             {
                 string validationmessage = this._compliancehandler.ValidationMessage;
-                string s = "\"" + this._currentvalue + "\" is invalid" + Environment.NewLine;
+                string s = "\"" + this._value + "\" is invalid" + Environment.NewLine;
                 if (string.IsNullOrEmpty(validationmessage)) { s = s + _compliancehandler.FailedValidationMessage; }
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
                 this._validationtooltip.Show();
-                return false;
+                returnval = false;
             }
             else
             {
                 this.ClearToolTips();
-                return true;
+                returnval = true;
             }
+            
+            return returnval;
         }
 
         public void ClearToolTips()
@@ -129,7 +130,6 @@ namespace TsGui.View.GuiOptions
         {
             base.LoadXml(InputXml);
             this.LoadLegacyXml(InputXml);
-            //this._compliancehandler.LoadLegacyXml(InputXml);
             this._compliancehandler.AddCompliances(InputXml.Elements("Compliance"));
 
             //wrap the query in another to make it suitable for the controller. 
@@ -138,7 +138,19 @@ namespace TsGui.View.GuiOptions
 
         private void ProcessQuery()
         {
-            if (this._queryxml != null) { this._currentvalue = this._controller.GetValueFromList(this._queryxml); }
+            if (this._queryxml != null)
+            {
+                this._value = this._controller.GetValueFromList(this._queryxml);
+                this.UpdateState(this._value);
+            }
+        }
+
+        private void UpdateState(string Value)
+        {
+            
+            this._state = this._compliancehandler.EvaluateComplianceState(this._value);
+            this.SetStateColor(this._state);
+            this.NotifyUpdate();
         }
 
         private void SetDefaults()

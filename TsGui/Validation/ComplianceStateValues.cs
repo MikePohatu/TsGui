@@ -13,7 +13,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ComplianceEnums.cs
+// ComplianceStateValues.cs
+
+using System;
 
 namespace TsGui.Validation
 {
@@ -23,5 +25,27 @@ namespace TsGui.Validation
         public const int Warning = 1;
         public const int Error = 2;
         public const int Invalid = 3;
+
+        /// <summary>
+        /// Convert a integer state value into the string value of that state
+        /// </summary>
+        /// <param name="StateValue"></param>
+        /// <returns></returns>
+        public static string ToString(int StateValue)
+        {
+            switch (StateValue)
+            {
+                case 0:
+                    return "OK";
+                case 1:
+                    return "Warning";
+                case 2:
+                    return "Error";
+                case 3:
+                    return "Invalid";
+                default:
+                    throw new ArgumentException(StateValue + " is not a valid state value");
+            }
+        }
     }
 }
