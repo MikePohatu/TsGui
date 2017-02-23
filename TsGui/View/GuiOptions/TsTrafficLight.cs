@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsComplianceCheck.cs - Displays an icon indicating whether a device is compliant with
+// TsTrafficLight.cs - Displays an icon indicating whether a device is compliant with
 // a specific condition
 
 using System;
@@ -33,7 +33,7 @@ namespace TsGui.View.GuiOptions
         private SolidColorBrush _fillcolor;
         private TsTrafficLightUI _trafficlight;
         private int _state;
-        //private ValidationToolTipHandler _validationtooltip;
+        private ValidationToolTipHandler _validationtooltip;
         private ComplianceHandler _compliancehandler;
         private string _validationtext;
 
@@ -82,7 +82,7 @@ namespace TsGui.View.GuiOptions
 
             this.FillColor = new SolidColorBrush(Colors.Blue);
             this._compliancehandler = new ComplianceHandler(this, MainController);
-            //this._validationtooltip = new ValidationToolTipHandler(this, this._controller);
+            this._validationtooltip = new ValidationToolTipHandler(this, this._controller);
 
             this.UserControl.DataContext = this;
             this.SetDefaults();
@@ -92,46 +92,35 @@ namespace TsGui.View.GuiOptions
         }
 
         //methods
-        //public bool Validate()
-        //{
-        //    //if (this._controller.StartupFinished == false) { return true; }
-        //    //if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
-        //    if (this.IsActive == false) { return true; }
-
-        //    bool newvalid = this._compliancehandler.IsValid(this._currentvalue);
-
-        //    if (newvalid == false)
-        //    {
-        //        string validationmessage = this._compliancehandler.ValidationMessage;
-        //        string s = "\"" + this._currentvalue + "\" is invalid" + Environment.NewLine;
-        //        if (string.IsNullOrEmpty(validationmessage)) { s = s + _compliancehandler.FailedValidationMessage; }
-        //        else { s = s + validationmessage; }
-
-        //        this.ValidationText = s;
-        //        this._validationtooltip.Show();
-        //        this.SetStateColor(ComplianceStateValues.Invalid);
-        //    }
-        //    else
-        //    {
-        //        this._validationtooltip.Clear();
-        //        this.SetStateColor(ComplianceStateValues.OK);
-        //    }
-
-        //    return newvalid;
-        //}
-
         public bool Validate()
         {
-            int state = this._compliancehandler.EvaluateComplianceState(this._currentvalue);
-            this.SetStateColor(state);
-            if (this.IsActive == false) { return true; }
-            if (state <= ComplianceStateValues.Error ) { return true; }
-            return false;
+            //if (this._controller.StartupFinished == false) { return true; }
+            if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
+
+            int newstate = this._compliancehandler.EvaluateComplianceState(this._currentvalue);
+
+            this.SetStateColor(newstate);
+
+            if (newstate == ComplianceStateValues.Invalid)
+            {
+                string validationmessage = this._compliancehandler.ValidationMessage;
+                string s = "\"" + this._currentvalue + "\" is invalid" + Environment.NewLine;
+                if (string.IsNullOrEmpty(validationmessage)) { s = s + _compliancehandler.FailedValidationMessage; }
+                else { s = s + validationmessage; }
+
+                this.ValidationText = s;
+                this._validationtooltip.Show();
+                return false;
+            }
+            else
+            {
+                this.ClearToolTips();
+                return true;
+            }
         }
 
         public void ClearToolTips()
-        { //this._validationtooltip.Clear(); 
-        }
+        { this._validationtooltip.Clear(); }
 
         public void OnValidationChange()
         { this.Validate(); }

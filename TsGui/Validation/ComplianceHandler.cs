@@ -30,6 +30,8 @@ namespace TsGui.Validation
 
         //Properties
         #region
+        public string ValidationMessage { get { return this.GetActiveValidationMessages(); } }
+        public string FailedValidationMessage { get; set; }
         #endregion
 
         public ComplianceHandler(IValidationOwner Owner, MainController MainController)
@@ -73,6 +75,22 @@ namespace TsGui.Validation
                 }
             }
             return state;
+        }
+
+        private string GetActiveValidationMessages()
+        {
+            string s = string.Empty;
+            bool active = false;
+            foreach (Compliance c in this._compliances)
+            {
+                if ((c.IsActive == true) && (!string.IsNullOrEmpty(c.Message)))
+                {
+                    s = s + Environment.NewLine + c.Message;
+                    active = true;
+                }
+            }
+            if (active == true) { return s + Environment.NewLine; }
+            else { return string.Empty; }
         }
     }
 }

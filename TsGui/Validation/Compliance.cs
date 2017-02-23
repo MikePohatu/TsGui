@@ -30,19 +30,22 @@ namespace TsGui.Validation
         private List<StringValidationRule> _invalidrules = new List<StringValidationRule>();
         private MainController _controller;
 
-        //public int State { get; set; }
+        //properties
+        public string Message { get; set; }
+        public string FailedComplianceMessage { get; set; }
 
         public Compliance(MainController MainController)
         {
             this._controller = MainController;
             this.IsActive = true;
-
         }
 
         public void LoadXml(XElement InputXml)
         {
             XElement x;
             IEnumerable<XElement> xlist;
+
+            this.Message = XmlHandler.GetStringFromXElement(InputXml, "Message", this.Message);
 
             x = InputXml.Element("OK");
             if (x != null)
