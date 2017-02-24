@@ -98,7 +98,7 @@ namespace TsGui.View.Layout
             this.HeadingText = Defaults.HeadingText;
             this.HeadingFontColor = Defaults.HeadingFontColor;
             this.HeadingBgColor = Defaults.HeadingBgColor;
-            this._table = new TsTable(SourceXml, this, MainController);
+            //this._table = new TsTable(SourceXml, this, MainController);
             this.LoadXml(SourceXml);
         }
 

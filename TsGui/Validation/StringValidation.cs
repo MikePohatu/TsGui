@@ -128,15 +128,20 @@ namespace TsGui.Validation
         public bool IsValid(string Input)
         {
             bool result = true;
+
+            string input;
+            if (Input == null) { input = string.Empty; }
+            else { input = Input; }
+
             this.FailedValidationMessage = string.Empty;
 
             if (this.IsActive == false) { return result; }
 
-            if (string.IsNullOrEmpty(Input) && (this._validateempty == false)) { return true; }
-            if (IsShorterThanMinLength(Input)) { result = false; }
-            if (IsLongerThanMaxLength(Input)) { result = false; }
-            if (IsValidMatched(Input) == false) { result = false; }
-            if (IsInvalidMatched(Input) == true) { result = false; }            
+            if (string.IsNullOrEmpty(input) && (this._validateempty == false)) { return true; }
+            if (IsShorterThanMinLength(input)) { result = false; }
+            if (IsLongerThanMaxLength(input)) { result = false; }
+            if (IsValidMatched(input) == false) { result = false; }
+            if (IsInvalidMatched(input) == true) { result = false; }            
 
             return result;
         }

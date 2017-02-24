@@ -6,10 +6,12 @@
              xmlns:local="clr-namespace:TsGui.View.Layout"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="10,5,10,10">
-        <StackPanel x:Name="HeadingStack" >
-            <TextBlock x:Name="HeadingTitle" Text="{Binding HeadingTitle}" Foreground="{Binding HeadingFontColor}" FontFamily="Segoe UI Semibold" FontSize="13.333" />
-            <TextBlock x:Name="HeadingText" Text="{Binding HeadingText}" Foreground="{Binding HeadingFontColor}" />
-        </StackPanel>
-    </Grid>
+    <Border CornerRadius="5,5,0,0" Background="{Binding HeadingBgColor}" >
+        <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="10,5,10,10">
+            <StackPanel x:Name="HeadingStack" >
+                <TextBlock x:Name="HeadingTitle" Text="{Binding HeadingTitle}" Foreground="{Binding HeadingFontColor}" FontFamily="Segoe UI Semibold" FontSize="13.333" />
+                <TextBlock x:Name="HeadingText" Text="{Binding HeadingText}" Foreground="{Binding HeadingFontColor}" />
+            </StackPanel>
+        </Grid>
+    </Border>
 </UserControl>

@@ -33,8 +33,12 @@ namespace TsGui.Grouping
             get { return this._state; }
             set
             {
+                bool changed = false;
+                if (this._state != value) { changed = true; }
                 this._state = value;
-                StateEvent?.Invoke();
+
+                if (changed == true)
+                { StateEvent?.Invoke(); }
             }
         }
         public bool PurgeInactive { get; set; }

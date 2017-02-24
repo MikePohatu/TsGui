@@ -31,7 +31,6 @@ namespace TsGui.View.GuiOptions
         private double _iconheight;
         private double _iconwidth;
         private SolidColorBrush _fillcolor;
-        private TsTrafficLightUI _trafficlight;
         private int _state;
         private ValidationToolTipHandler _validationtooltip;
         private ComplianceHandler _compliancehandler;
@@ -76,8 +75,7 @@ namespace TsGui.View.GuiOptions
         {
             this._controller = MainController;
 
-            this._trafficlight = new TsTrafficLightUI();
-            this.Control = this._trafficlight;
+            this.Control = new TsTrafficLightUI();
             this.Label = new TsLabelUI();
 
             this.FillColor = new SolidColorBrush(Colors.Blue);
