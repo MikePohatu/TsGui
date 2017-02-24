@@ -43,11 +43,9 @@ namespace TsGui.View.GuiOptions
         //constructor
         public TsInfoBox(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
         {
-            this.ControlText = string.Empty;
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
-            this.UserControl.DataContext = this;
             this.Control = new TsInfoBoxUI();
             this.Label = new TsLabelUI();
+            this.UserControl.DataContext = this;
             this.SetDefaults();
             this.LoadXml(InputXml);
         }
@@ -68,7 +66,8 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ControlFormatting.Padding = new Thickness(3, 0, 0, 0);
+            this.ControlText = string.Empty;
+            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
     }
 }
