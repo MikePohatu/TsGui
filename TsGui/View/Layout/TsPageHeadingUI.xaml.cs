@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace TsGui.View.Layout
 {
     /// <summary>
-    /// Interaction logic for TsHeadingUI.xaml
+    /// Interaction logic for TsPageHeadingUI.xaml
     /// </summary>
-    public partial class TsHeadingUI : UserControl
+    public partial class TsPageHeadingUI : UserControl
     {
-        public TsHeadingUI()
+        public TsPageHeadingUI()
         {
             InitializeComponent();
         }

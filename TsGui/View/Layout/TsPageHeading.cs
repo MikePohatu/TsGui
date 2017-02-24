@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsHeading.cs - view model class for the heading on a page
+// TsPageHeading.cs - view model class for the heading on a page
 
 
 
@@ -30,7 +30,7 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsHeading : BaseLayoutElement
+    public class TsPageHeading : BaseLayoutElement
     {
         private double _headingHeight;
         private string _headingTitle;
@@ -88,9 +88,10 @@ namespace TsGui.View.Layout
             }
         }
         //Constructors
-        public TsHeading(XElement SourceXml, PageDefaults Defaults, MainController MainController) : base(MainController)
+        public TsPageHeading(XElement SourceXml, PageDefaults Defaults, MainController MainController) : base(MainController)
         {
             this.HeadingUI = new TsHeadingUI();
+            this.HeadingUI.DataContext = this;
             this.ShowGridLines = MainController.ShowGridLines;
             this.HeadingHeight = 40;
             this.HeadingTitle = Defaults.HeadingTitle;

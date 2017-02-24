@@ -37,11 +37,10 @@ namespace TsGui.View.Layout
         private TsPage _nextpage;
         private bool _isfirst = false;
         private TsMainWindow _parent;
-        private TsHeading _heading;
 
         //Properties
         #region
-        public TsHeading Heading { get; set; }
+        public TsPageHeading Heading { get; set; }
         public TsPage NextActivePage
         {
             get
@@ -100,8 +99,10 @@ namespace TsGui.View.Layout
         { 
             this._parent = Defaults.Parent;
             this._controller = Defaults.RootController;
+            this.Heading = new TsPageHeading(SourceXml, Defaults, MainController);
             this._pagelayout = new PageLayout(this);
             this._pagelayout.Loaded += this.OnWindowLoaded;
+            this._pagelayout.HeadingPresenter.Content = this.Heading.HeadingUI;
             this._pagepanel = this._pagelayout.MainGrid;
             this.ShowGridLines = MainController.ShowGridLines;         
 

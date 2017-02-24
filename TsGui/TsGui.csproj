@@ -159,9 +159,9 @@
     <Compile Include="View\GuiOptions\GuiOptionBaseUI.xaml.cs">
       <DependentUpon>GuiOptionBaseUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Layout\TsHeading.cs" />
-    <Compile Include="View\Layout\TsHeadingUI.xaml.cs">
-      <DependentUpon>TsHeadingUI.xaml</DependentUpon>
+    <Compile Include="View\Layout\TsPageHeading.cs" />
+    <Compile Include="View\Layout\TsPageHeadingUI.xaml.cs">
+      <DependentUpon>TsPageHeadingUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Layout\TsTable.cs" />
     <Compile Include="View\Layout\WindowLocation.cs" />
@@ -266,7 +266,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Layout\TsHeadingUI.xaml">
+    <Page Include="View\Layout\TsPageHeadingUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
