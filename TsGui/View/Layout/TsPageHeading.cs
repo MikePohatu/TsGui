@@ -40,7 +40,7 @@ namespace TsGui.View.Layout
         private TsTable _table;
 
         //Properties
-        public TsHeadingUI HeadingUI { get; set; }
+        public TsPageHeadingUI HeadingUI { get; set; }
         public SolidColorBrush HeadingBgColor
         {
             get { return this._headingBgColor; }
@@ -90,7 +90,7 @@ namespace TsGui.View.Layout
         //Constructors
         public TsPageHeading(XElement SourceXml, PageDefaults Defaults, MainController MainController) : base(MainController)
         {
-            this.HeadingUI = new TsHeadingUI();
+            this.HeadingUI = new TsPageHeadingUI();
             this.HeadingUI.DataContext = this;
             this.ShowGridLines = MainController.ShowGridLines;
             this.HeadingHeight = 40;
