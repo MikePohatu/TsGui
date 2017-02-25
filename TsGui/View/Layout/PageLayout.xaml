@@ -36,7 +36,22 @@ PageLayout.xaml - main layout for each page.
             <RowDefinition x:Name="MainRow" Height="100*"/>
             <RowDefinition x:Name="ButtonRow" Height="50" />
         </Grid.RowDefinitions>
-        <ContentPresenter x:Name="HeadingPresenter" Grid.Row="0"/>
+        <!--<ContentPresenter x:Name="HeadingPresenter" Grid.Row="0"/>-->
+        <Grid Grid.Row="0">
+            <Border CornerRadius="5,5,0,0" Background="{Binding PageHeader.BgColor}" >
+                <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="10,5,10,10" Height="{Binding PageHeader.Height}">
+                    <!--<Grid.ColumnDefinitions>
+                        <ColumnDefinition x:Name="TitleTextColumn"/>
+                        <ColumnDefinition x:Name="TitleImageColumn"/>
+                    </Grid.ColumnDefinitions>-->
+                    <StackPanel x:Name="HeaderStack" >
+                        <TextBlock x:Name="HeaderTitle" Text="{Binding PageHeader.Title}" Foreground="{Binding PageHeader.FontColor}" FontFamily="Segoe UI Semibold" FontSize="13.333" />
+                        <TextBlock x:Name="HeaderText" Text="{Binding PageHeader.Text}" Foreground="{Binding PageHeader.FontColor}" />
+                        <ContentPresenter x:Name="HeaderImagePresenter"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
 
         <Grid  Background="White" Grid.Row="1" >
             <Grid x:Name="MainGrid" Margin="10,5,10,5" ShowGridLines="{Binding ShowGridLines}"></Grid>

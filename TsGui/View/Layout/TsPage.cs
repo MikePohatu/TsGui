@@ -40,7 +40,8 @@ namespace TsGui.View.Layout
 
         //Properties
         #region
-        public TsPageHeading Heading { get; set; }
+        public TsTable Table { get; set; }
+        public TsPageHeader PageHeader { get; set; }
         public TsPage NextActivePage
         {
             get
@@ -99,15 +100,11 @@ namespace TsGui.View.Layout
         { 
             this._parent = Defaults.Parent;
             this._controller = Defaults.RootController;
-            this.Heading = new TsPageHeading(SourceXml, Defaults, MainController);
             this._pagelayout = new PageLayout(this);
             this._pagelayout.Loaded += this.OnWindowLoaded;
-            this._pagelayout.HeadingPresenter.Content = this.Heading.HeadingUI;
             this._pagepanel = this._pagelayout.MainGrid;
+            this.PageHeader = Defaults.PageHeader;
             this.ShowGridLines = MainController.ShowGridLines;         
-
-            //if (Defaults.Heading != null) { this.Heading = Defaults.Heading; }
-            //else { this.Heading = new TsHeading(SourceXml, Defaults, MainController); }
 
             this._pagelayout.DataContext = this;
             this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
@@ -130,6 +127,9 @@ namespace TsGui.View.Layout
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this._parent.ShowGridLines);
+
+            x = InputXml.Element("Heading");
+            if (x == null) { this.PageHeader = new TsPageHeader(this.PageHeader,x,this._controller); }
 
             //now read in the options and add to a dictionary for later use
             int i = 0;

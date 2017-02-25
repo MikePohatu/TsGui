@@ -186,12 +186,15 @@ namespace TsGui
                 { this._chassischeck = new HardwareEvaluator(); }
 
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
-
                 PageDefaults pagedef = new PageDefaults();
-                pagedef.HeadingTitle = this.TsMainWindow.HeadingTitle;
-                pagedef.HeadingText = this.TsMainWindow.HeadingText;
-                pagedef.HeadingBgColor = this.TsMainWindow.HeadingBgColor;
-                pagedef.HeadingFontColor = this.TsMainWindow.HeadingFontColor;
+                //pagedef.HeaderTitle = this.TsMainWindow.HeadingTitle;
+                //pagedef.HeaderText = this.TsMainWindow.HeadingText;
+                //pagedef.HeaderBgColor = this.TsMainWindow.HeadingBgColor;
+                //pagedef.HeaderFontColor = this.TsMainWindow.HeadingFontColor;
+                x = SourceXml.Element("Heading");
+                if (x != null)
+                { pagedef.PageHeader = new TsPageHeader(x, this); }
+                
                 pagedef.Buttons = this._buttons;
                 pagedef.Parent = this.TsMainWindow;
                 pagedef.RootController = this;

@@ -159,10 +159,7 @@
     <Compile Include="View\GuiOptions\GuiOptionBaseUI.xaml.cs">
       <DependentUpon>GuiOptionBaseUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Layout\TsPageHeading.cs" />
-    <Compile Include="View\Layout\TsPageHeadingUI.xaml.cs">
-      <DependentUpon>TsPageHeadingUI.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="View\Layout\TsPageHeader.cs" />
     <Compile Include="View\Layout\TsTable.cs" />
     <Compile Include="View\Layout\WindowLocation.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
@@ -263,10 +260,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\GuiOptions\GuiOptionBaseUI.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Layout\TsPageHeadingUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

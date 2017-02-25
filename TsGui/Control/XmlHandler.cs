@@ -51,6 +51,8 @@ namespace TsGui
         //XElement functions
         public static string GetStringFromXElement(XElement InputXml, string XName, string DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x;
 
             x = InputXml.Element(XName);
@@ -60,6 +62,8 @@ namespace TsGui
 
         public static int GetIntFromXElement(XElement InputXml, string XName, int DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x;
 
             x = InputXml.Element(XName);
@@ -69,6 +73,8 @@ namespace TsGui
 
         public static double GetDoubleFromXElement(XElement InputXml, string XName, double DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x;
 
             x = InputXml.Element(XName);
@@ -82,6 +88,8 @@ namespace TsGui
 
         public static GridLength GetGridLengthFromXElement(XElement InputXml, string XName, GridLength DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x;
 
             x = InputXml.Element(XName);
@@ -91,6 +99,8 @@ namespace TsGui
 
         public static bool GetBoolFromXElement(XElement InputXml, string XName, bool DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x;
 
             x = InputXml.Element(XName);
@@ -100,6 +110,8 @@ namespace TsGui
 
         public static Thickness GetThicknessFromXElement(XElement InputXml, string XName, Thickness DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x;
             string[] splitstring;
 
@@ -126,6 +138,8 @@ namespace TsGui
 
         public static Color GetColorFromXElement(XElement InputXml, string XName, Color DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x = InputXml.Element(XName);
             if (x != null) { return (Color)ColorConverter.ConvertFromString(x.Value); }
             else { return DefaultValue; }            
@@ -133,6 +147,8 @@ namespace TsGui
 
         public static SolidColorBrush GetSolidColorBrushFromXElement(XElement InputXml, string XName, SolidColorBrush DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x = InputXml.Element(XName);
             if (x != null) { return new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value)); }
             else { return DefaultValue; }
@@ -140,6 +156,8 @@ namespace TsGui
 
         public static WindowStartupLocation GetWindowStartupLocationFromXElement(XElement InputXml, string XName, WindowStartupLocation DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x = InputXml.Element(XName);
             if (x != null)
             {
@@ -153,6 +171,8 @@ namespace TsGui
         //XAttribute functions
         public static string GetStringFromXAttribute(XElement InputXml, string XName, string DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XAttribute x;
 
             x = InputXml.Attribute(XName);
@@ -162,6 +182,8 @@ namespace TsGui
 
         public static int GetIntFromXAttribute(XElement InputXml, string XName, int DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XAttribute x;
 
             x = InputXml.Attribute(XName);
@@ -171,6 +193,8 @@ namespace TsGui
 
         public static double GetDoubleFromXAttribute(XElement InputXml, string XName, double DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XAttribute x;
 
             x = InputXml.Attribute(XName);
@@ -184,6 +208,8 @@ namespace TsGui
 
         public static bool GetBoolFromXAttribute(XElement InputXml, string XName, bool DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XAttribute x;
 
             x = InputXml.Attribute(XName);
@@ -193,6 +219,8 @@ namespace TsGui
 
         public static VerticalAlignment GetVerticalAlignmentFromXElement(XElement InputXml, string XName, VerticalAlignment DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x;
             x = InputXml.Element(XName);
             if (x != null)
@@ -216,6 +244,8 @@ namespace TsGui
 
         public static HorizontalAlignment GetHorizontalAlignmentFromXElement(XElement InputXml, string XName, HorizontalAlignment DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x;
             x = InputXml.Element(XName);
             if (x != null)
@@ -239,6 +269,8 @@ namespace TsGui
 
         public static TextAlignment GetTextAlignmentFromXElement(XElement InputXml, string XName, TextAlignment DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x;
             x = InputXml.Element(XName);
             if (x != null)
@@ -260,6 +292,8 @@ namespace TsGui
 
         public static Stretch GetStretchFromXElement(XElement InputXml, string XName, Stretch DefaultValue)
         {
+            if (InputXml == null) { return DefaultValue; }
+
             XElement x;
             x = InputXml.Element(XName);
             if (x != null)

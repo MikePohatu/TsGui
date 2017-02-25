@@ -37,6 +37,7 @@ namespace TsGui.View.Layout
         //Properties
         #region
         public List<IGuiOption> Options { get { return this._options; } }
+        public Grid Grid { get { return this._grid; } }
         #endregion
 
         //Constructors

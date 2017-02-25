@@ -29,9 +29,9 @@ namespace TsGui.View.Layout
     {
         private double _height;        //default page height for the window
         private double _width;         //default page width for the window
-        private string _headingTitle;
-        private string _headingText;
-        private int _headingHeight;
+        //private string _headingTitle;
+        //private string _headingText;
+        //private int _headingHeight;
         private Thickness _pageMargin = new Thickness(0, 0, 0, 0);
         private string _footerText;
         private double _footerHeight;
@@ -42,17 +42,17 @@ namespace TsGui.View.Layout
 
         //Properties
         public WindowLocation WindowLocation { get { return this._windowlocation; } }
-        public string HeadingText { get { return this._headingText; } }
-        public int HeadingHeight { get { return this._headingHeight; } }
-        public string HeadingTitle
-        {
-            get { return this._headingTitle; }
-            set
-            {
-                this._headingTitle = value;
-                this.OnPropertyChanged(this, "HeadingTitle");
-            }
-        }
+        //public string HeadingText { get { return this._headingText; } }
+        //public int HeadingHeight { get { return this._headingHeight; } }
+        //public string HeadingTitle
+        //{
+        //    get { return this._headingTitle; }
+        //    set
+        //    {
+        //        this._headingTitle = value;
+        //        this.OnPropertyChanged(this, "HeadingTitle");
+        //    }
+        //}
         public double Height
         {
             get { return this._height; }
@@ -80,8 +80,8 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "PageMargin");
             }
         }
-        public SolidColorBrush HeadingBgColor { get; set; }
-        public SolidColorBrush HeadingFontColor { get; set; }
+        //public SolidColorBrush HeadingBgColor { get; set; }
+        //public SolidColorBrush HeadingFontColor { get; set; }
 
         public double FooterHeight
         {
@@ -129,10 +129,6 @@ namespace TsGui.View.Layout
             //set default values
             this._width = Double.NaN;
             this._height = Double.NaN;
-            this._headingHeight = 50;
-            this.HeadingTitle = "TsGui";
-            this.HeadingFontColor = new SolidColorBrush(Colors.White);
-            this.HeadingBgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF006AD4"));
             this.FooterText = "Powered by TsGui - www.20road.com";
             this.FooterHeight = 15;
             this.FooterHAlignment = HorizontalAlignment.Right;
@@ -157,31 +153,31 @@ namespace TsGui.View.Layout
             if (SourceXml != null)
             {
 
-                x = SourceXml.Element("Heading");
-                if (x != null)
-                {
-                    subx = x.Element("Title");
-                    if (subx != null) { this.HeadingTitle = subx.Value; }
+                //x = SourceXml.Element("Heading");
+                //if (x != null)
+                //{
+                //    subx = x.Element("Title");
+                //    if (subx != null) { this.HeadingTitle = subx.Value; }
 
-                    subx = x.Element("Text");
-                    if (subx != null) { this._headingText = subx.Value; }
+                //    subx = x.Element("Text");
+                //    if (subx != null) { this._headingText = subx.Value; }
 
-                    subx = x.Element("Height");
-                    if (subx != null) { this._headingHeight = Convert.ToInt32(subx.Value); }
+                //    subx = x.Element("Height");
+                //    if (subx != null) { this._headingHeight = Convert.ToInt32(subx.Value); }
 
-                    subx = x.Element("Bg-Color");
-                    if (subx != null)
-                    {
-                        this.HeadingBgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(subx.Value));
-                    }
+                //    subx = x.Element("Bg-Color");
+                //    if (subx != null)
+                //    {
+                //        this.HeadingBgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(subx.Value));
+                //    }
 
-                    subx = x.Element("Font-Color");
-                    if (subx != null)
-                    {
-                        this.HeadingFontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(subx.Value));
-                    }
+                //    subx = x.Element("Font-Color");
+                //    if (subx != null)
+                //    {
+                //        this.HeadingFontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(subx.Value));
+                //    }
 
-                }
+                //}
 
                 x = SourceXml.Element("Footer");
                 if (x != null)

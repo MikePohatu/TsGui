@@ -15,20 +15,15 @@
 
 // PageDefaults.cs - Default settings for new TsPages.
 
-using System.Windows;
-using System.Windows.Media;
-
 namespace TsGui.View.Layout
 {
     public class PageDefaults
     {
-        public string HeadingTitle { get; set; }
-        public string HeadingText { get; set; }
-        public SolidColorBrush HeadingBgColor { get; set; }
-        public SolidColorBrush HeadingFontColor { get; set; }
+        public double Height { get; set; }
+        public TsPageHeader PageHeader { get; set; }
         public TsButtons Buttons { get; set; }
         public MainController RootController { get; set; }
         public TsMainWindow Parent { get; set; }
-        public TsPageHeading Heading { get; set; }
+        public TsTable Table { get; set; }
     }
 }
