@@ -30,11 +30,9 @@ namespace TsGui
     {
         private List<IGuiOption> _options = new List<IGuiOption>();
         private Grid _columnpanel;
-        private BaseLayoutElement _parent;
 
         //properties
         #region
-        public BaseLayoutElement Parent { get { return this._parent; } }
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this._options; } }
         public Panel Panel { get { return this._columnpanel; } }
@@ -47,7 +45,6 @@ namespace TsGui
         {
 
             this._controller = MainController;
-            this._parent = Parent;
             this.Index = PageIndex;
             this._columnpanel = new Grid();
             this._columnpanel.Name = "_columnpanel";

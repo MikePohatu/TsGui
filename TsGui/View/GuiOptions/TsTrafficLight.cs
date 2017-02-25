@@ -94,9 +94,9 @@ namespace TsGui.View.GuiOptions
         {
             bool returnval = false;
             //if (this._controller.StartupFinished == false) { return true; }
-            if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }
+            this.UpdateState();
 
-            this.UpdateState(this._value);
+            if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }          
 
             if (this._state == ComplianceStateValues.Invalid)
             {
@@ -139,14 +139,14 @@ namespace TsGui.View.GuiOptions
             if (this._queryxml != null)
             {
                 this._value = this._controller.GetValueFromList(this._queryxml);
-                this.UpdateState(this._value);
+                this.UpdateState();
             }
         }
 
-        private void UpdateState(string Value)
+        private void UpdateState()
         {
-            
-            this._state = this._compliancehandler.EvaluateComplianceState(this._value);
+            if (this.IsActive == true) { this._state = this._compliancehandler.EvaluateComplianceState(this._value); }
+            else { this._state = ComplianceStateValues.Inactive; }
             this.SetStateColor(this._state);
             this.NotifyUpdate();
         }
@@ -166,6 +166,9 @@ namespace TsGui.View.GuiOptions
             this._state = State;
             switch (State)
             {
+                case ComplianceStateValues.Inactive:
+                    this.FillColor.Color = Colors.LightGray;
+                    break;
                 case ComplianceStateValues.OK:
                     this.FillColor.Color = Colors.Green;
                     break;               

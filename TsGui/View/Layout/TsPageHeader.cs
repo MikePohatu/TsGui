@@ -24,9 +24,9 @@ using System.Windows.Media;
 
 namespace TsGui.View.Layout
 {
-    public class TsPageHeader: INotifyPropertyChanged
+    public class TsPageHeader: BaseLayoutElement
     {
-        private double _height;
+        //private double _height;
         private string _title;
         private string _text;
         private SolidColorBrush _bgColor;
@@ -61,15 +61,6 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "HeadingText");
             }
         }
-        public double Height
-        {
-            get { return this._height; }
-            set
-            {
-                this._height = value;
-                this.OnPropertyChanged(this, "HeadingHeight");
-            }
-        }
 
         public SolidColorBrush FontColor
         {
@@ -82,7 +73,7 @@ namespace TsGui.View.Layout
         }
 
         //Constructors
-        public TsPageHeader(TsPageHeader Template, XElement SourceXml, MainController MainController)
+        public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml, MainController MainController):base(Parent, MainController)
         {
             this.Height = Template.Height;
             this.Title = Template.Title;
@@ -93,7 +84,7 @@ namespace TsGui.View.Layout
             this.Init(SourceXml, MainController);
         }
 
-        public TsPageHeader(XElement SourceXml, MainController MainController)
+        public TsPageHeader(XElement SourceXml, MainController MainController): base (MainController)
         {
             //set default values
             this.Height = 50;
@@ -103,28 +94,21 @@ namespace TsGui.View.Layout
             this.Init(SourceXml, MainController);
         }
 
-        //Setup the INotifyPropertyChanged interface 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(object sender, string name)
-        {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-        }
-
         private void Init (XElement SourceXml, MainController MainController)
         {
-            //this.ShowGridLines = MainController.ShowGridLines;
             this.LoadXml(SourceXml);
         }
 
         //Methods
-        public void LoadXml(XElement InputXml)
+        public new void LoadXml(XElement InputXml)
         {
-            //base.LoadXml(InputXml);
+            
             IEnumerable<XElement> xlist;
 
             if (InputXml != null)
             {
+                base.LoadXml(InputXml);
+
                 this.FontColor = XmlHandler.GetSolidColorBrushFromXElement(InputXml, "Font-Color", this.FontColor);
                 this.BgColor = XmlHandler.GetSolidColorBrushFromXElement(InputXml, "Bg-Color", this.BgColor);
                 this.Title = XmlHandler.GetStringFromXElement(InputXml, "Title", this.Title);
@@ -133,7 +117,7 @@ namespace TsGui.View.Layout
                 this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
 
                 xlist = InputXml.Elements("Row");
-                //if (xlist != null) { this.Table = new TsTable(xlist,null,this._con)}
+                if (xlist != null) { this.Table = new TsTable(InputXml, this, this._controller); }
             }
 
             

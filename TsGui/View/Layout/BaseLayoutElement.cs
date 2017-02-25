@@ -27,7 +27,6 @@ namespace TsGui.View.Layout
         private double _rightcellwidth;
         private double _width;
         private double _height;
-        private BaseLayoutElement _parent;
 
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
@@ -57,6 +56,8 @@ namespace TsGui.View.Layout
             get { return this._height; }
             set { this._height = value; this.OnPropertyChanged(this, "Height"); }
         }
+        public BaseLayoutElement Parent { get; set; }
+
         //constructors
         public BaseLayoutElement(MainController MainController):base (MainController)
         {
@@ -65,7 +66,7 @@ namespace TsGui.View.Layout
 
         public BaseLayoutElement(BaseLayoutElement Parent, MainController MainController):base (Parent,MainController)
         {
-            this._parent = Parent;
+            this.Parent = Parent;
             this.SetDefaults();
         }
 
@@ -105,7 +106,7 @@ namespace TsGui.View.Layout
 
         private void SetDefaults()
         {
-            if (this._parent == null)
+            if (this.Parent == null)
             {
                 this.LabelFormatting = new Formatting();
                 this.ControlFormatting = new Formatting();
@@ -118,14 +119,14 @@ namespace TsGui.View.Layout
             }
             else
             {
-                this.LabelFormatting = this._parent.LabelFormatting.Clone();
-                this.ControlFormatting = this._parent.ControlFormatting.Clone();
+                this.LabelFormatting = this.Parent.LabelFormatting.Clone();
+                this.ControlFormatting = this.Parent.ControlFormatting.Clone();
                 this.Height = double.NaN;
                 this.Width = double.NaN;
-                this.LeftCellWidth = this._parent.LeftCellWidth;
-                this.RightCellWidth = this._parent.RightCellWidth;
-                this.ShowGridLines = this._parent.ShowGridLines;
-                this.LabelOnRight = this._parent.LabelOnRight;
+                this.LeftCellWidth = this.Parent.LeftCellWidth;
+                this.RightCellWidth = this.Parent.RightCellWidth;
+                this.ShowGridLines = this.Parent.ShowGridLines;
+                this.LabelOnRight = this.Parent.LabelOnRight;
             }
         }
     }

@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsPage.cs - view model class for PageLayout
+// TsTable.cs - builds the grid structure and populates with GuiOtions
 
 using System.Collections.Generic;
 using System.Xml.Linq;

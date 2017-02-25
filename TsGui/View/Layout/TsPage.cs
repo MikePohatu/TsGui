@@ -129,7 +129,7 @@ namespace TsGui.View.Layout
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this._parent.ShowGridLines);
 
             x = InputXml.Element("Heading");
-            if (x == null) { this.PageHeader = new TsPageHeader(this.PageHeader,x,this._controller); }
+            if (x == null) { this.PageHeader = new TsPageHeader(this,this.PageHeader,x,this._controller); }
 
             //now read in the options and add to a dictionary for later use
             int i = 0;
@@ -174,8 +174,12 @@ namespace TsGui.View.Layout
         {
             int index = 0;
 
+            if (this.PageHeader.Table != null) { this._pagelayout.HeaderStack.Children.Add(this.PageHeader.Table.Grid); }
             this._pagepanel.VerticalAlignment = VerticalAlignment.Top;
             this._pagepanel.HorizontalAlignment = HorizontalAlignment.Left;
+
+            if (string.IsNullOrEmpty(this.PageHeader.Title)) { this._pagelayout.HeaderTitle.Visibility = Visibility.Collapsed; }
+            if (string.IsNullOrEmpty(this.PageHeader.Text)) { this._pagelayout.HeaderText.Visibility = Visibility.Collapsed; }
 
             foreach (TsRow row in this._rows)
             {

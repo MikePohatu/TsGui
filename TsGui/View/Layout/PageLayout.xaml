@@ -47,7 +47,7 @@ PageLayout.xaml - main layout for each page.
                     <StackPanel x:Name="HeaderStack" >
                         <TextBlock x:Name="HeaderTitle" Text="{Binding PageHeader.Title}" Foreground="{Binding PageHeader.FontColor}" FontFamily="Segoe UI Semibold" FontSize="13.333" />
                         <TextBlock x:Name="HeaderText" Text="{Binding PageHeader.Text}" Foreground="{Binding PageHeader.FontColor}" />
-                        <ContentPresenter x:Name="HeaderImagePresenter"/>
+                        <!--<ContentPresenter x:Name="HeaderImagePresenter" Content="{Binding PageHeader.Table.Grid}"/>-->
                     </StackPanel>
                 </Grid>
             </Border>

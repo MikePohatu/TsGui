@@ -30,7 +30,6 @@ namespace TsGui.View.GuiOptions
         private GuiOptionBaseUI _ui;
 
         //standard stuff
-        public TsColumn Parent { get; set; }
         public UserControl Control { get; set; }
         public UserControl Label { get; set; }
         public GuiOptionBaseUI UserControl
@@ -71,7 +70,6 @@ namespace TsGui.View.GuiOptions
         
         public GuiOptionBase(TsColumn Parent, MainController MainController):base(Parent,MainController)
         {
-            this.Parent = Parent;
             this._controller = MainController;
             this.UserControl = new GuiOptionBaseUI();
         }

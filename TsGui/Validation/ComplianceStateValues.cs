@@ -21,6 +21,7 @@ namespace TsGui.Validation
 {
     public static class ComplianceStateValues
     {
+        public const int Inactive = -1;
         public const int OK = 0;
         public const int Warning = 1;
         public const int Error = 2;
@@ -35,6 +36,8 @@ namespace TsGui.Validation
         {
             switch (StateValue)
             {
+                case -1:
+                    return "Inactive";
                 case 0:
                     return "OK";
                 case 1:

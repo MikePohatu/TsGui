@@ -29,13 +29,11 @@ namespace TsGui.View.Layout
     {
         private Grid _rowpanel;
         private List<TsColumn> _columns = new List<TsColumn>();
-        private BaseLayoutElement _parent;
         private List<IGuiOption> _options = new List<IGuiOption>();
 
         //properties
         #region
         public List<IGuiOption> Options { get { return this._options; } }
-        public BaseLayoutElement Parent { get { return this._parent; } }
         public int Index { get; set; }
         public Panel Panel { get { return this._rowpanel; } }
         #endregion
@@ -46,7 +44,6 @@ namespace TsGui.View.Layout
         {
 
             this._controller = MainController;
-            this._parent = Parent;
             this.Index = PageIndex;
             this._rowpanel = new Grid();
             this._rowpanel.Name = "_rowpanel";
