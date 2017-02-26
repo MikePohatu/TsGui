@@ -19,9 +19,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Controls;
 using System.Windows;
-using System.Windows.Data;
 
-using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
@@ -32,7 +30,6 @@ namespace TsGui.View.Layout
         private List<IGuiOption> _options = new List<IGuiOption>();
         private List<IValidationGuiOption> _validationoptions = new List<IValidationGuiOption>();
         private Grid _grid;
-        private BaseLayoutElement _parent;
 
         //Properties
         #region
@@ -52,10 +49,11 @@ namespace TsGui.View.Layout
             this.Init(SourceXml, Parent, MainController, g);
         }
 
+        //methods
         private void Init(XElement SourceXml, BaseLayoutElement Parent, MainController MainController, Grid MainGrid)
         {
             this._grid = MainGrid;
-            this._parent = Parent;
+            this.Parent = Parent;
             this._controller = MainController;
             this.ShowGridLines = MainController.ShowGridLines;
 
@@ -75,7 +73,7 @@ namespace TsGui.View.Layout
 
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
-            this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this._parent.ShowGridLines);
+            this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
 
             //now read in the options and add to a dictionary for later use
             int i = 0;

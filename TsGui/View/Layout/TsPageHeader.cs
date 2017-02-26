@@ -100,7 +100,7 @@ namespace TsGui.View.Layout
         {
             base.LoadXml(InputXml);
 
-            IEnumerable<XElement> xlist;
+            XElement x;
 
             if (InputXml != null)
             {
@@ -113,8 +113,8 @@ namespace TsGui.View.Layout
                 this.FontColor = XmlHandler.GetSolidColorBrushFromXElement(InputXml, "TextColor", this.FontColor);
                 this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
 
-                xlist = InputXml.Elements("Row");
-                if (xlist != null) { this.Table = new TsTable(InputXml, this, this._controller); }
+                x = InputXml.Element("Row");
+                if (x != null) { this.Table = new TsTable(InputXml, this, this._controller); }
             }
 
             

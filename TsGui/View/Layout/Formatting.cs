@@ -188,6 +188,7 @@ namespace TsGui.View.Layout
             Formatting f = new Formatting();
             f.FontWeight = this.FontWeight;
             f.FontStyle = this.FontStyle;
+            f.FontSize = this.FontSize;
             f.Width = this.Width;
             f.Height = this.Height;
             f.Padding = this.Padding;
