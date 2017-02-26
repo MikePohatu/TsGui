@@ -15,13 +15,14 @@
 
 // TsPageHeader.cs - view model class for the heading on a page
 
-using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Media;
 
+using TsGui.Images;
+
 namespace TsGui.View.Layout
 {
-    public class TsPageHeader: BaseLayoutElement
+    public class TsPageHeader : BaseLayoutElement
     {
         private string _title;
         private string _text;
@@ -29,6 +30,7 @@ namespace TsGui.View.Layout
         private SolidColorBrush _fontColor;
 
         //Properties
+        public Image Image { get; set; }
         public TsTable Table { get; set; }
         public SolidColorBrush BgColor
         {
@@ -67,7 +69,8 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "HeadingFontColor");
             }
         }
-
+        
+        
         //Constructors
         public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml, MainController MainController):base(Parent, MainController)
         {
@@ -76,6 +79,7 @@ namespace TsGui.View.Layout
             this.Text = Template.Text;
             this.FontColor = Template.FontColor;
             this.BgColor = Template.BgColor;
+            this.Image = Template.Image;
 
             this.Init(SourceXml, MainController);
         }
@@ -112,6 +116,9 @@ namespace TsGui.View.Layout
                 this.Text = XmlHandler.GetStringFromXElement(InputXml, "Text", this.Text);
                 this.FontColor = XmlHandler.GetSolidColorBrushFromXElement(InputXml, "TextColor", this.FontColor);
                 this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
+
+                x = InputXml.Element("Image");
+                if (x != null) { this.Image = new Image(x, this._controller); }
 
                 x = InputXml.Element("Row");
                 if (x != null) { this.Table = new TsTable(InputXml, this, this._controller); }

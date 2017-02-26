@@ -17,46 +17,25 @@
 
 using System.Xml.Linq;
 using System.Windows;
-using System.Windows.Media;
+
 using TsGui.Images;
 
 namespace TsGui.View.GuiOptions
 {
     public class TsImage : GuiOptionBase, IGuiOption
     {
-        private MultiImage _multiimage;
-        private Stretch _stretchmode;
-        private double _imagewidth;
-        private double _imageheight;
-
-        public MultiImage MultiImage { get { return this._multiimage; } }
+        public Image Image { get; set; }
         public TsVariable Variable { get { return null; } }
         public override string CurrentValue { get { return null; } }
-        public double ImageWidth
-        {
-            get { return this._imagewidth; }
-            set { this._imagewidth = value; this.OnPropertyChanged(this, "ImageWidth"); }
-        }
-        public double ImageHeight
-        {
-            get { return this._imageheight; }
-            set { this._imageheight = value; this.OnPropertyChanged(this, "ImageHeight"); }
-        }
-        //https://msdn.microsoft.com/en-us/library/system.windows.media.stretch(v=vs.110).aspx
-        public Stretch StretchMode
-        {
-            get { return this._stretchmode; }
-            set { this._stretchmode = value; this.OnPropertyChanged(this, "StretchMode"); }
-        }
 
         //Constructor
         public TsImage(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent,MainController)
         {
-            this.UserControl.DataContext = this;
             this.Control = new TsImageUI();
             this.Label = new TsLabelUI();
             this.SetDefaults();
             this.LoadXml(InputXml);
+            this.UserControl.DataContext = this;
         }
 
 
@@ -68,14 +47,7 @@ namespace TsGui.View.GuiOptions
 
             XElement x;
             x = InputXml.Element("Image");
-            if (x != null)
-            {
-                string file = XmlHandler.GetStringFromXElement(x, "File", string.Empty);
-                this._multiimage = new MultiImage(file,this._controller);
-                this.ImageWidth = XmlHandler.GetDoubleFromXElement(x, "Width", this.ImageWidth);
-                this.ImageHeight = XmlHandler.GetDoubleFromXElement(x, "Height", this.ImageHeight);
-                this.StretchMode = XmlHandler.GetStretchFromXElement(x, "Stretch", this.StretchMode);
-            }
+            if (x != null) { this.Image = new Image(x,this._controller ); }
         }
 
             
@@ -85,11 +57,8 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ImageHeight = double.NaN;
-            this.ImageWidth = double.NaN;
             this.RightCellWidth = this.LeftCellWidth + this.RightCellWidth;
             this.LeftCellWidth = 0;
-            this.StretchMode = Stretch.None;
             this.ControlFormatting.Padding = new Thickness(0);
             this.ControlFormatting.Margin = new Thickness(0);
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;

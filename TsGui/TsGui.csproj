@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="Helpers\DisplayInformation.cs" />
     <Compile Include="Helpers\ReverseComparer.cs" />
+    <Compile Include="Images\Image.cs" />
     <Compile Include="Images\MultiImage.cs" />
     <Compile Include="NoUI\NoUIOption.cs" />
     <Compile Include="NoUI\NoUIContainer.cs" />

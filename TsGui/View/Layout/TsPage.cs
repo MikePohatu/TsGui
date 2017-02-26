@@ -179,6 +179,7 @@ namespace TsGui.View.Layout
 
             if (string.IsNullOrEmpty(this.PageHeader.Title)) { this._pagelayout.HeaderTitle.Visibility = Visibility.Collapsed; }
             if (string.IsNullOrEmpty(this.PageHeader.Text)) { this._pagelayout.HeaderText.Visibility = Visibility.Collapsed; }
+            if (this.PageHeader.Image == null) { this._pagelayout.ImageElement.Visibility = Visibility.Collapsed; }
 
             foreach (TsRow row in this._rows)
             {

@@ -39,13 +39,27 @@ PageLayout.xaml - main layout for each page.
         <!--<ContentPresenter x:Name="HeadingPresenter" Grid.Row="0"/>-->
         <Grid Grid.Row="0" >
             <Border CornerRadius="5,5,0,0" Background="{Binding PageHeader.BgColor}" >
-                <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="10,5,10,10">
-                    <StackPanel x:Name="HeaderStack" >
-                        <TextBlock x:Name="HeaderTitle" Text="{Binding PageHeader.Title}" Foreground="{Binding PageHeader.FontColor}" FontFamily="Segoe UI Semibold" FontSize="13.333" />
-                        <TextBlock x:Name="HeaderText" Text="{Binding PageHeader.Text}" Foreground="{Binding PageHeader.FontColor}" />
-                        <ContentPresenter x:Name="HeaderImagePresenter" Content="{Binding PageHeader.Table.Grid}"/>
-                    </StackPanel>
-                </Grid>
+                <StackPanel>
+                    <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="10,10,10,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="HeadingTitleColumn" Width="100*"/>
+                            <ColumnDefinition x:Name="HeadingImageColumn" Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition x:Name="HeadingTitleRow"/>
+                            <RowDefinition x:Name="HeadingTableRow"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel x:Name="HeaderTitleStack" Grid.Row="0" >
+                            <TextBlock x:Name="HeaderTitle" Grid.Column="0" Text="{Binding PageHeader.Title}" Foreground="{Binding PageHeader.FontColor}" FontFamily="Segoe UI Semibold" FontSize="13" />
+                            <TextBlock x:Name="HeaderText" Grid.Column="0" Text="{Binding PageHeader.Text}" Foreground="{Binding PageHeader.FontColor}" />
+                        </StackPanel>
+                        <Image x:Name="ImageElement" Grid.Column="1" Grid.Row="0" 
+                               Width="{Binding PageHeader.Image.Width}" Height="{Binding PageHeader.Image.Height}"
+                               Source="{Binding PageHeader.Image.MultiImage.CurrentImage}" RenderOptions.BitmapScalingMode="Fant" 
+                               Stretch="{Binding PageHeader.Image.StretchMode}" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <ContentPresenter x:Name="HeaderImagePresenter" Content="{Binding PageHeader.Table.Grid}" Margin="10,5,10,5"/>
+                </StackPanel>
             </Border>
         </Grid>
 

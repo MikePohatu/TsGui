@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Image x:Name="ImageElement" Style="{StaticResource ControlStyle}" 
-           Width="{Binding ImageWidth}" Height="{Binding ImageHeight}"
-           Source="{Binding MultiImage.CurrentImage}" RenderOptions.BitmapScalingMode="Fant" 
-           Stretch="{Binding StretchMode}"/>
+           Width="{Binding Image.Width}" Height="{Binding Image.Height}"
+           Source="{Binding Image.MultiImage.CurrentImage}" RenderOptions.BitmapScalingMode="Fant" 
+           Stretch="{Binding Image.StretchMode}"/>
 </UserControl>
