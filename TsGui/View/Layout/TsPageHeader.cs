@@ -15,9 +15,6 @@
 
 // TsPageHeader.cs - view model class for the heading on a page
 
-
-
-using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Media;
@@ -26,7 +23,6 @@ namespace TsGui.View.Layout
 {
     public class TsPageHeader: BaseLayoutElement
     {
-        //private double _height;
         private string _title;
         private string _text;
         private SolidColorBrush _bgColor;
@@ -88,7 +84,7 @@ namespace TsGui.View.Layout
         {
             //set default values
             this.Height = 50;
-            this.Title = "TsGui";
+            //this.Title = "TsGui";
             this.FontColor = new SolidColorBrush(Colors.White);
             this.BgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF006AD4"));
             this.Init(SourceXml, MainController);
@@ -102,7 +98,8 @@ namespace TsGui.View.Layout
         //Methods
         public new void LoadXml(XElement InputXml)
         {
-            
+            base.LoadXml(InputXml);
+
             IEnumerable<XElement> xlist;
 
             if (InputXml != null)

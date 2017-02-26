@@ -32,22 +32,18 @@ PageLayout.xaml - main layout for each page.
 
     <Grid x:Name="WrapperGrid" ShowGridLines="{Binding ShowGridLines}">
         <Grid.RowDefinitions>
-            <RowDefinition x:Name="HeadingRow" Height="50"/>
+            <RowDefinition x:Name="HeadingRow" Height="{Binding PageHeader.Height}"/>
             <RowDefinition x:Name="MainRow" Height="100*"/>
             <RowDefinition x:Name="ButtonRow" Height="50" />
         </Grid.RowDefinitions>
         <!--<ContentPresenter x:Name="HeadingPresenter" Grid.Row="0"/>-->
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" >
             <Border CornerRadius="5,5,0,0" Background="{Binding PageHeader.BgColor}" >
-                <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="10,5,10,10" Height="{Binding PageHeader.Height}">
-                    <!--<Grid.ColumnDefinitions>
-                        <ColumnDefinition x:Name="TitleTextColumn"/>
-                        <ColumnDefinition x:Name="TitleImageColumn"/>
-                    </Grid.ColumnDefinitions>-->
+                <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="10,5,10,10">
                     <StackPanel x:Name="HeaderStack" >
                         <TextBlock x:Name="HeaderTitle" Text="{Binding PageHeader.Title}" Foreground="{Binding PageHeader.FontColor}" FontFamily="Segoe UI Semibold" FontSize="13.333" />
                         <TextBlock x:Name="HeaderText" Text="{Binding PageHeader.Text}" Foreground="{Binding PageHeader.FontColor}" />
-                        <!--<ContentPresenter x:Name="HeaderImagePresenter" Content="{Binding PageHeader.Table.Grid}"/>-->
+                        <ContentPresenter x:Name="HeaderImagePresenter" Content="{Binding PageHeader.Table.Grid}"/>
                     </StackPanel>
                 </Grid>
             </Border>
