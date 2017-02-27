@@ -35,7 +35,7 @@ namespace TsGui
         #region
         public int Index { get; set; }
         public List<IGuiOption> Options { get { return this._options; } }
-        public Panel Panel { get { return this._columnpanel; } }
+        public Grid Panel { get { return this._columnpanel; } }
         
         #endregion
 

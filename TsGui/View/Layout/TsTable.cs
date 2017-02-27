@@ -25,12 +25,14 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsTable : BaseLayoutElement
+    public class TsTable
     {
         private List<TsRow> _rows = new List<TsRow>();
         private List<IGuiOption> _options = new List<IGuiOption>();
         private List<IValidationGuiOption> _validationoptions = new List<IValidationGuiOption>();
         private Grid _grid;
+        private BaseLayoutElement _parent;
+        private MainController _controller;
 
         //Properties
         #region
@@ -40,22 +42,25 @@ namespace TsGui.View.Layout
         #endregion
 
         //Constructors
-        public TsTable(XElement SourceXml, BaseLayoutElement Parent, MainController MainController, Grid ExistingGrid) : base(Parent,MainController)
+        public TsTable(XElement SourceXml, BaseLayoutElement Parent, MainController MainController, Grid ExistingGrid)
         {
-            this.Init(SourceXml, MainController, ExistingGrid);
+            this.Init(SourceXml, Parent, MainController, ExistingGrid);
         }
 
-        public TsTable(XElement SourceXml, BaseLayoutElement Parent, MainController MainController) : base(Parent,MainController)
+        public TsTable(XElement SourceXml, BaseLayoutElement Parent, MainController MainController)
         {
+            
             Grid g = new Grid();
             g.Name = "_tablegrid";
-            this.Init(SourceXml, MainController, g);
+            this.Init(SourceXml, Parent, MainController, g);
         }
 
         //methods
-        private void Init(XElement SourceXml, MainController MainController, Grid MainGrid)
+        private void Init(XElement SourceXml, BaseLayoutElement Parent, MainController MainController, Grid Grid)
         {
-            this._grid = MainGrid;
+            this._controller = MainController;
+            this._parent = Parent;
+            this._grid = Grid;
             this.LoadXml(SourceXml);
             this.PopulateOptions();
             this.Build();
@@ -63,9 +68,9 @@ namespace TsGui.View.Layout
 
 
         //Methods
-        public new void LoadXml(XElement InputXml)
+        public void LoadXml(XElement InputXml)
         {
-            base.LoadXml(InputXml);
+            //base.LoadXml(InputXml);
             IEnumerable<XElement> xlist;
             XElement x;
             int index;
@@ -103,7 +108,7 @@ namespace TsGui.View.Layout
 
         private void CreateRow(XElement InputXml, int Index)
         {
-            TsRow r = new TsRow(InputXml, Index, this, this._controller);
+            TsRow r = new TsRow(InputXml, Index, this._parent, this._controller);
             this._rows.Add(r);
         }
 

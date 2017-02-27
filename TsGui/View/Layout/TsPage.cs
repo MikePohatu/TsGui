@@ -90,6 +90,7 @@ namespace TsGui.View.Layout
         public TsPage(XElement SourceXml, PageDefaults Defaults, MainController MainController):base (MainController)
         { 
             this._controller = Defaults.RootController;
+            this.ShowGridLines = MainController.ShowGridLines;
             this._pageui = new TsPageUI(this);
             this.PageHeader = Defaults.PageHeader;
             this._table = new TsTable(SourceXml, this, MainController);
@@ -98,8 +99,6 @@ namespace TsGui.View.Layout
             this._pageui.Loaded += this.OnWindowLoaded;          
             this._pageui.DataContext = this;
             this._pageui.ButtonGrid.DataContext = Defaults.Buttons;
-
-            this.ShowGridLines = MainController.ShowGridLines;
 
             this.LoadXml(SourceXml);
             this.Update();
