@@ -61,6 +61,7 @@ namespace TsGui.View.Layout
         private new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
+
             IEnumerable<XElement> xlist;
             int colIndex = 0;
 

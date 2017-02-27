@@ -41,7 +41,7 @@ namespace TsGui
 
         //constructor
         #region
-        public TsColumn (XElement SourceXml,int PageIndex, TsRow Parent, MainController MainController) :base (Parent, MainController)
+        public TsColumn (XElement SourceXml,int PageIndex, BaseLayoutElement Parent, MainController MainController) :base (Parent, MainController)
         {
 
             this._controller = MainController;
@@ -54,8 +54,6 @@ namespace TsGui
             this._columnpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
             this._columnpanel.SetBinding(Grid.WidthProperty, new Binding("Width"));
 
-            this.ShowGridLines = Parent.ShowGridLines;
-
             this.LoadXml(SourceXml);
         }
         #endregion
@@ -63,11 +61,11 @@ namespace TsGui
 
         private new void LoadXml(XElement InputXml)
         {
+            base.LoadXml(InputXml);
+
             IEnumerable<XElement> xlist;
             IGuiOption newOption;
             int index = 0;
-
-            base.LoadXml(InputXml);
 
             this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", double.NaN);
             //now read in the options and add to a dictionary for later use
@@ -88,7 +86,6 @@ namespace TsGui
                     Grid.SetRow(newOption.UserControl, index);
 
                     this._columnpanel.Children.Add(newOption.UserControl);
-
                     
                     index++;
                 }

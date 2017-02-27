@@ -13,13 +13,11 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsPage.cs - view model class for PageLayout
+// TsPage.cs - view model class for a page in TsGui
 
 using System.Collections.Generic;
 using System.Xml.Linq;
-using System.Windows.Controls;
 using System.Windows;
-using System.Windows.Data;
 
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
@@ -28,19 +26,14 @@ namespace TsGui.View.Layout
 {
     public class TsPage: BaseLayoutElement
     {
-        private List<TsRow> _rows = new List<TsRow>();
-        private List<IGuiOption> _options = new List<IGuiOption>();
-        private List<IValidationGuiOption> _validationoptions = new List<IValidationGuiOption>();
-        private Grid _pagepanel;
-        private TsPageUI _pagelayout;
+        private TsPageUI _pageui;
         private TsPage _previouspage;
         private TsPage _nextpage;
         private bool _isfirst = false;
-        private TsMainWindow _parent;
+        private TsTable _table;
 
         //Properties
         #region
-        public TsTable Table { get; set; }
         public TsPageHeader PageHeader { get; set; }
         public TsPage NextActivePage
         {
@@ -69,8 +62,8 @@ namespace TsGui.View.Layout
             get { return this._nextpage; }
             set { this.ConnectNextPage(value); }
         }        
-        public List<IGuiOption> Options { get { return this._options; } }
-        public TsPageUI Page { get { return this._pagelayout; } }
+        public List<IGuiOption> Options { get { return this._table.Options; } }
+        public TsPageUI Page { get { return this._pageui; } }
         public bool IsFirst
         {
             get { return this._isfirst; }
@@ -80,8 +73,6 @@ namespace TsGui.View.Layout
 
         //Events
         #region
-        //Setup the INotifyPropertyChanged interface 
-
         public event TsGuiWindowEventHandler PageWindowLoaded;
 
         /// <summary>
@@ -98,21 +89,20 @@ namespace TsGui.View.Layout
         //Constructors
         public TsPage(XElement SourceXml, PageDefaults Defaults, MainController MainController):base (MainController)
         { 
-            this._parent = Defaults.Parent;
             this._controller = Defaults.RootController;
-            this._pagelayout = new TsPageUI(this);
-            this._pagelayout.Loaded += this.OnWindowLoaded;
-            this._pagepanel = this._pagelayout.MainGrid;
+            this._pageui = new TsPageUI(this);
             this.PageHeader = Defaults.PageHeader;
-            this.ShowGridLines = MainController.ShowGridLines;         
+            this._table = new TsTable(SourceXml, this, MainController);
+            this._pageui.MainTablePresenter.Content = this._table.Grid;
 
-            this._pagelayout.DataContext = this;
-            this._pagepanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
-            this._pagelayout.ButtonGrid.DataContext = Defaults.Buttons;
+            this._pageui.Loaded += this.OnWindowLoaded;          
+            this._pageui.DataContext = this;
+            this._pageui.ButtonGrid.DataContext = Defaults.Buttons;
+
+            this.ShowGridLines = MainController.ShowGridLines;
 
             this.LoadXml(SourceXml);
-            this.PopulateOptions();
-            this.Build();
+            this.Update();
         }
 
 
@@ -120,96 +110,18 @@ namespace TsGui.View.Layout
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            IEnumerable<XElement> xlist;
             XElement x;
-            int index;
 
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
-            this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this._parent.ShowGridLines);
 
             x = InputXml.Element("Heading");
             if (x != null) { this.PageHeader = new TsPageHeader(this,this.PageHeader,x,this._controller); }
-
-            //now read in the options and add to a dictionary for later use
-            int i = 0;
-            xlist = InputXml.Elements("Row");
-            if (xlist != null)
-            {
-                index = 0;
-                foreach (XElement xrow in xlist)
-                {
-                    this.CreateRow(xrow, index);
-                    index++;
-                    i++;
-                }
-            }
-
-            //legacy support i.e. no row in config.xml. create a new row and add the columns 
-            //to it
-            if (0 == i)
-            {
-
-                xlist = InputXml.Elements("Column");
-                x = new XElement("Row");
-
-                foreach (XElement xColumn in xlist)
-                {
-                    x.Add(xColumn);
-                }
-                if (x.Elements() != null) { this.CreateRow(x, 0); }
-            }
-
-        }
-
-        private void CreateRow(XElement InputXml, int Index)
-        {
-            TsRow r = new TsRow(InputXml, Index, this, this._controller);
-
-            this._rows.Add(r);
-        }
-
-        //build the gui controls.
-        public void Build()
-        {
-            int index = 0;
-
-            this._pagepanel.VerticalAlignment = VerticalAlignment.Top;
-            this._pagepanel.HorizontalAlignment = HorizontalAlignment.Left;
-
-            foreach (TsRow row in this._rows)
-            {
-                RowDefinition rowdef = new RowDefinition();
-                rowdef.Height = GridLength.Auto;
-
-                this._pagepanel.RowDefinitions.Add(rowdef);
-
-                Grid.SetRow(row.Panel, index);
-                this._pagepanel.Children.Add(row.Panel);
-                index++;
-            }
-
-            this.Update();
-        }
-
-        //get all the options from the sub columns. this is parsed up the chain to generate the final
-        //list of ts variables to set at the end. 
-        private void PopulateOptions()
-        {
-            foreach (TsRow row in this._rows)
-            {
-                this._options.AddRange(row.Options);
-            }
-
-            foreach (IGuiOption option in this._options)
-            {
-                if (option is IValidationGuiOption) { this._validationoptions.Add((IValidationGuiOption)option); }
-            }
         }
 
         public bool OptionsValid()
         {
-            foreach (IValidationGuiOption option in this._validationoptions)
+            foreach (IValidationGuiOption option in this._table.ValidationOptions)
             {
                 if (option.IsActive == true)
                 {
@@ -227,7 +139,7 @@ namespace TsGui.View.Layout
 
         public void MovePrevious()
         {
-            foreach (IValidationGuiOption option in this._validationoptions)
+            foreach (IValidationGuiOption option in this._table.ValidationOptions)
             { option.ClearToolTips(); }
 
             this.ReleaseThisPage();
@@ -258,15 +170,15 @@ namespace TsGui.View.Layout
 
         private void ReleaseThisPage()
         {
-            this._pagelayout.HeaderPresenter.Content = null;
+            this._pageui.HeaderPresenter.Content = null;
         }
 
         //Update the prev, next, finish buttons according to the current pages 
         //place in the world
         public void Update()
         {
-            this._pagelayout.HeaderPresenter.Content = this.PageHeader.UI;
-            TsButtons.Update(this, this._pagelayout);
+            this._pageui.HeaderPresenter.Content = this.PageHeader.UI;
+            TsButtons.Update(this, this._pageui);
         }
 
         public void OnSurroundingPageHide(object o, GroupingEventArgs e)
@@ -287,6 +199,5 @@ namespace TsGui.View.Layout
             this._previouspage = NewPrevPage;
             if (this._previouspage != null) { this._previouspage.GroupingStateChange += this.OnSurroundingPageHide; }
         }
-
     }
 }

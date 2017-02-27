@@ -35,29 +35,27 @@ namespace TsGui.View.Layout
         //Properties
         #region
         public List<IGuiOption> Options { get { return this._options; } }
+        public List<IValidationGuiOption> ValidationOptions { get { return this._validationoptions; } }
         public Grid Grid { get { return this._grid; } }
         #endregion
 
         //Constructors
-        public TsTable(XElement SourceXml, BaseLayoutElement Parent, MainController MainController, Grid ExistingGrid) : base(MainController)
+        public TsTable(XElement SourceXml, BaseLayoutElement Parent, MainController MainController, Grid ExistingGrid) : base(Parent,MainController)
         {
-            this.Init(SourceXml, Parent, MainController, ExistingGrid);
+            this.Init(SourceXml, MainController, ExistingGrid);
         }
 
-        public TsTable(XElement SourceXml, BaseLayoutElement Parent, MainController MainController) : base(MainController)
+        public TsTable(XElement SourceXml, BaseLayoutElement Parent, MainController MainController) : base(Parent,MainController)
         {
             Grid g = new Grid();
-            this.ShowGridLines = MainController.ShowGridLines;
-            this.Init(SourceXml, Parent, MainController, g);
+            g.Name = "_tablegrid";
+            this.Init(SourceXml, MainController, g);
         }
 
         //methods
-        private void Init(XElement SourceXml, BaseLayoutElement Parent, MainController MainController, Grid MainGrid)
+        private void Init(XElement SourceXml, MainController MainController, Grid MainGrid)
         {
             this._grid = MainGrid;
-            this.Parent = Parent;
-            this._controller = MainController;
-            this._grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
             this.LoadXml(SourceXml);
             this.PopulateOptions();
             this.Build();
@@ -88,7 +86,7 @@ namespace TsGui.View.Layout
 
             //legacy support i.e. no row in config.xml. create a new row and add the columns 
             //to it
-            if (0 == i)
+            if (i == 0)
             {
 
                 xlist = InputXml.Elements("Column");
@@ -106,7 +104,6 @@ namespace TsGui.View.Layout
         private void CreateRow(XElement InputXml, int Index)
         {
             TsRow r = new TsRow(InputXml, Index, this, this._controller);
-
             this._rows.Add(r);
         }
 
@@ -115,6 +112,8 @@ namespace TsGui.View.Layout
         {
             int index = 0;
 
+            this._grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
+            this._grid.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
             this._grid.VerticalAlignment = VerticalAlignment.Top;
             this._grid.HorizontalAlignment = HorizontalAlignment.Left;
 

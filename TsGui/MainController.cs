@@ -187,13 +187,11 @@ namespace TsGui
 
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
                 PageDefaults pagedef = new PageDefaults();
-                //pagedef.HeaderTitle = this.TsMainWindow.HeadingTitle;
-                //pagedef.HeaderText = this.TsMainWindow.HeadingText;
-                //pagedef.HeaderBgColor = this.TsMainWindow.HeadingBgColor;
-                //pagedef.HeaderFontColor = this.TsMainWindow.HeadingFontColor;
+
                 x = SourceXml.Element("Heading");
-                if (x != null)
-                { pagedef.PageHeader = new TsPageHeader(x, this); }
+                if (x != null) { pagedef.PageHeader = new TsPageHeader(x, this); }
+                else { pagedef.PageHeader = new TsPageHeader(this); }
+
                 
                 pagedef.Buttons = this._buttons;
                 pagedef.Parent = this.TsMainWindow;
@@ -428,7 +426,7 @@ namespace TsGui
                     "Do you wish to run in test mode?" + Environment.NewLine +
                     Environment.NewLine +
                     "Click Yes to run in test mode, click No to close Task Sequence Gui.";
-            string title = "Error";
+            string title = "Warning";
             MessageBoxResult result = MessageBox.Show(msg, title, MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (result == MessageBoxResult.Yes) return true;

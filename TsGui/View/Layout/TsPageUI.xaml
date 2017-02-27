@@ -40,8 +40,8 @@ PageLayout.xaml - main layout for each page.
             <ContentPresenter x:Name="HeaderPresenter"/>
         </Grid>
 
-        <Grid  Background="White" Grid.Row="1" >
-            <Grid x:Name="MainGrid" Margin="10,5,10,5" ShowGridLines="{Binding ShowGridLines}"></Grid>
+        <Grid Background="White" Grid.Row="1" >
+            <ContentPresenter x:Name="MainTablePresenter" Margin="10,5,10,5"/>
         </Grid>
         <Grid Grid.Row="2" Background="#FFF3F2F2" ShowGridLines="{Binding ShowGridLines}">
             <Grid x:Name="ButtonGrid" Margin="10,10,10,10">
