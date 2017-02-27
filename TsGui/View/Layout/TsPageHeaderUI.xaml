@@ -47,7 +47,7 @@ TsPageHeaderUI.xaml - header UI view
                                Source="{Binding Image.MultiImage.CurrentImage}" RenderOptions.BitmapScalingMode="Fant" 
                                Stretch="{Binding Image.StretchMode}" HorizontalAlignment="Right"/>
             </Grid>
-            <ContentPresenter x:Name="HeaderTablePresenter" Content="{Binding Table.Grid}" Margin="10,5,10,5"/>
+            <ContentPresenter x:Name="HeaderTablePresenter" Content="{Binding Table.Grid}" Margin="10,0,10,0"/>
         </StackPanel>
     </Border>
 </UserControl>

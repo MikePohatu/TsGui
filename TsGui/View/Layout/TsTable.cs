@@ -58,7 +58,6 @@ namespace TsGui.View.Layout
             this.Parent = Parent;
             this._controller = MainController;
             this._grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
-            this._grid.DataContext = this;
             this.LoadXml(SourceXml);
             this.PopulateOptions();
             this.Build();

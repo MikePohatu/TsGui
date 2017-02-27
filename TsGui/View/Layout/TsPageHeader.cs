@@ -17,6 +17,7 @@
 
 using System.Xml.Linq;
 using System.Windows.Media;
+using System.Windows;
 
 using TsGui.Images;
 
@@ -101,6 +102,10 @@ namespace TsGui.View.Layout
             this.UI.DataContext = this;
             
             this.LoadXml(SourceXml);
+
+            if (string.IsNullOrEmpty(this.Title)) { this.UI.HeaderTitle.Visibility = Visibility.Collapsed; }
+            if (string.IsNullOrEmpty(this.Text)) { this.UI.HeaderText.Visibility = Visibility.Collapsed; }
+            if (this.Image == null) { this.UI.ImageElement.Visibility = Visibility.Collapsed; }
         }
 
         //Methods

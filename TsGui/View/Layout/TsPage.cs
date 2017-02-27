@@ -177,11 +177,6 @@ namespace TsGui.View.Layout
             this._pagepanel.VerticalAlignment = VerticalAlignment.Top;
             this._pagepanel.HorizontalAlignment = HorizontalAlignment.Left;
 
-            if (string.IsNullOrEmpty(this.PageHeader.Title)) { this.PageHeader.UI.HeaderTitle.Visibility = Visibility.Collapsed; }
-            if (string.IsNullOrEmpty(this.PageHeader.Text)) { this.PageHeader.UI.Visibility = Visibility.Collapsed; }
-            if (this.PageHeader.Image == null) { this.PageHeader.UI.ImageElement.Visibility = Visibility.Collapsed; }
-            //if (this.PageHeader.Table != null) { this._pagelayout.HeaderStackPanel.Children.Add(this.PageHeader.Table.Grid); }
-            
             foreach (TsRow row in this._rows)
             {
                 RowDefinition rowdef = new RowDefinition();
