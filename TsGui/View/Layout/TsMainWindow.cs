@@ -29,7 +29,7 @@ namespace TsGui.View.Layout
     {
         private double _height;        //default page height for the window
         private double _width;         //default page width for the window
-        //private string _headingTitle;
+        private string _windowTitle;
         //private string _headingText;
         //private int _headingHeight;
         private Thickness _pageMargin = new Thickness(0, 0, 0, 0);
@@ -44,15 +44,15 @@ namespace TsGui.View.Layout
         public WindowLocation WindowLocation { get { return this._windowlocation; } }
         //public string HeadingText { get { return this._headingText; } }
         //public int HeadingHeight { get { return this._headingHeight; } }
-        //public string HeadingTitle
-        //{
-        //    get { return this._headingTitle; }
-        //    set
-        //    {
-        //        this._headingTitle = value;
-        //        this.OnPropertyChanged(this, "HeadingTitle");
-        //    }
-        //}
+        public string WindowTitle
+        {
+            get { return this._windowTitle; }
+            set
+            {
+                this._windowTitle = value;
+                this.OnPropertyChanged(this, "WindowTitle");
+            }
+        }
         public double Height
         {
             get { return this._height; }
@@ -127,6 +127,7 @@ namespace TsGui.View.Layout
             this._windowlocation = new WindowLocation(this._parentwindow);
 
             //set default values
+            this.WindowTitle = "TsGui";
             this._width = Double.NaN;
             this._height = Double.NaN;
             this.FooterText = "Powered by TsGui - www.20road.com";
@@ -152,33 +153,6 @@ namespace TsGui.View.Layout
 
             if (SourceXml != null)
             {
-
-                //x = SourceXml.Element("Heading");
-                //if (x != null)
-                //{
-                //    subx = x.Element("Title");
-                //    if (subx != null) { this.HeadingTitle = subx.Value; }
-
-                //    subx = x.Element("Text");
-                //    if (subx != null) { this._headingText = subx.Value; }
-
-                //    subx = x.Element("Height");
-                //    if (subx != null) { this._headingHeight = Convert.ToInt32(subx.Value); }
-
-                //    subx = x.Element("Bg-Color");
-                //    if (subx != null)
-                //    {
-                //        this.HeadingBgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(subx.Value));
-                //    }
-
-                //    subx = x.Element("Font-Color");
-                //    if (subx != null)
-                //    {
-                //        this.HeadingFontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(subx.Value));
-                //    }
-
-                //}
-
                 x = SourceXml.Element("Footer");
                 if (x != null)
                 {
@@ -191,6 +165,7 @@ namespace TsGui.View.Layout
                     GuiFactory.LoadHAlignment(x, ref this._footerHAlignment);
                 }
 
+                this.WindowTitle = XmlHandler.GetStringFromXElement(SourceXml, "Title", this.WindowTitle);
                 this.Width = XmlHandler.GetDoubleFromXElement(SourceXml, "Width", this.Width);
                 this.Height = XmlHandler.GetDoubleFromXElement(SourceXml, "Height", this.Height);
 

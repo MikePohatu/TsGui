@@ -161,6 +161,9 @@
       <DependentUpon>GuiOptionBaseUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Layout\TsPageHeader.cs" />
+    <Compile Include="View\Layout\TsPageHeaderUI.xaml.cs">
+      <DependentUpon>TsPageHeaderUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Layout\TsTable.cs" />
     <Compile Include="View\Layout\WindowLocation.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
@@ -179,8 +182,8 @@
     <Compile Include="View\GuiOptions\IValidationGuiOption.cs" />
     <Compile Include="Control\ITsVariableOutput.cs" />
     <Compile Include="Grouping\IToggleControl.cs" />
-    <Compile Include="View\Layout\PageLayout.xaml.cs">
-      <DependentUpon>PageLayout.xaml</DependentUpon>
+    <Compile Include="View\Layout\TsPageUI.xaml.cs">
+      <DependentUpon>TsPageUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\OptionLibrary.cs" />
     <Compile Include="Control\SccmConnector.cs" />
@@ -233,7 +236,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Layout\PageLayout.xaml">
+    <Page Include="View\Layout\TsPageUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -261,6 +264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\GuiOptions\GuiOptionBaseUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Layout\TsPageHeaderUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

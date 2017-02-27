@@ -113,7 +113,7 @@ namespace TsGui.View.Layout
         }
 
 
-        public static void Update(TsPage Page, PageLayout Layout)
+        public static void Update(TsPage Page, TsPageUI Layout)
         {
             if (Page.NextActivePage != null)
             {

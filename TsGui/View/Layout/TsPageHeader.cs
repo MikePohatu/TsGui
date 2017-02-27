@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsPageHeader.cs - view model class for the heading on a page
+// TsPageHeader.cs - view model class for the header on a page
 
 using System.Xml.Linq;
 using System.Windows.Media;
@@ -32,6 +32,7 @@ namespace TsGui.View.Layout
         //Properties
         public Image Image { get; set; }
         public TsTable Table { get; set; }
+        public TsPageHeaderUI UI { get; set; }
         public SolidColorBrush BgColor
         {
             get { return this._bgColor; }
@@ -88,7 +89,6 @@ namespace TsGui.View.Layout
         {
             //set default values
             this.Height = 50;
-            //this.Title = "TsGui";
             this.FontColor = new SolidColorBrush(Colors.White);
             this.BgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF006AD4"));
             this.Init(SourceXml, MainController);
@@ -96,6 +96,9 @@ namespace TsGui.View.Layout
 
         private void Init (XElement SourceXml, MainController MainController)
         {
+            this.UI = new TsPageHeaderUI();
+            this.UI.DataContext = this;
+            this.ShowGridLines = _controller.ShowGridLines;
             this.LoadXml(SourceXml);
         }
 
@@ -121,11 +124,9 @@ namespace TsGui.View.Layout
                 if (x != null) { this.Image = new Image(x, this._controller); }
 
                 x = InputXml.Element("Row");
-                if (x != null) { this.Table = new TsTable(InputXml, this, this._controller); }
+                if (x != null)
+                { this.Table = new TsTable(InputXml, this, this._controller); }
             }
-
-            
-
         }
     }
 }

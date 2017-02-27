@@ -32,7 +32,7 @@ namespace TsGui.View.Layout
         private List<IGuiOption> _options = new List<IGuiOption>();
         private List<IValidationGuiOption> _validationoptions = new List<IValidationGuiOption>();
         private Grid _pagepanel;
-        private PageLayout _pagelayout;
+        private TsPageUI _pagelayout;
         private TsPage _previouspage;
         private TsPage _nextpage;
         private bool _isfirst = false;
@@ -70,7 +70,7 @@ namespace TsGui.View.Layout
             set { this.ConnectNextPage(value); }
         }        
         public List<IGuiOption> Options { get { return this._options; } }
-        public PageLayout Page { get { return this._pagelayout; } }
+        public TsPageUI Page { get { return this._pagelayout; } }
         public bool IsFirst
         {
             get { return this._isfirst; }
@@ -100,7 +100,7 @@ namespace TsGui.View.Layout
         { 
             this._parent = Defaults.Parent;
             this._controller = Defaults.RootController;
-            this._pagelayout = new PageLayout(this);
+            this._pagelayout = new TsPageUI(this);
             this._pagelayout.Loaded += this.OnWindowLoaded;
             this._pagepanel = this._pagelayout.MainGrid;
             this.PageHeader = Defaults.PageHeader;
@@ -177,10 +177,11 @@ namespace TsGui.View.Layout
             this._pagepanel.VerticalAlignment = VerticalAlignment.Top;
             this._pagepanel.HorizontalAlignment = HorizontalAlignment.Left;
 
-            if (string.IsNullOrEmpty(this.PageHeader.Title)) { this._pagelayout.HeaderTitle.Visibility = Visibility.Collapsed; }
-            if (string.IsNullOrEmpty(this.PageHeader.Text)) { this._pagelayout.HeaderText.Visibility = Visibility.Collapsed; }
-            if (this.PageHeader.Image == null) { this._pagelayout.ImageElement.Visibility = Visibility.Collapsed; }
-
+            if (string.IsNullOrEmpty(this.PageHeader.Title)) { this.PageHeader.UI.HeaderTitle.Visibility = Visibility.Collapsed; }
+            if (string.IsNullOrEmpty(this.PageHeader.Text)) { this.PageHeader.UI.Visibility = Visibility.Collapsed; }
+            if (this.PageHeader.Image == null) { this.PageHeader.UI.ImageElement.Visibility = Visibility.Collapsed; }
+            //if (this.PageHeader.Table != null) { this._pagelayout.HeaderStackPanel.Children.Add(this.PageHeader.Table.Grid); }
+            
             foreach (TsRow row in this._rows)
             {
                 RowDefinition rowdef = new RowDefinition();
@@ -234,6 +235,7 @@ namespace TsGui.View.Layout
             foreach (IValidationGuiOption option in this._validationoptions)
             { option.ClearToolTips(); }
 
+            this.ReleaseThisPage();
             this._controller.MovePrevious();
         }
 
@@ -241,6 +243,7 @@ namespace TsGui.View.Layout
         {
             if (this.OptionsValid() == true)
             {
+                this.ReleaseThisPage();
                 this._controller.MoveNext();
             }
         }
@@ -255,16 +258,19 @@ namespace TsGui.View.Layout
 
         private void UpdatePrevious()
         {
-            TsPage tempPage;
+            this.PreviousActivePage?.Update();
+        }
 
-            tempPage = this.PreviousActivePage;
-            if (tempPage != null) { tempPage.Update(); }
+        private void ReleaseThisPage()
+        {
+            this._pagelayout.HeaderPresenter.Content = null;
         }
 
         //Update the prev, next, finish buttons according to the current pages 
         //place in the world
         public void Update()
         {
+            this._pagelayout.HeaderPresenter.Content = this.PageHeader.UI;
             TsButtons.Update(this, this._pagelayout);
         }
 

@@ -8,11 +8,11 @@ namespace TsGui.View.Layout
     /// <summary>
     /// Interaction logic for PageLayout.xaml
     /// </summary>
-    public partial class PageLayout : Page
+    public partial class TsPageUI : Page
     {
         private TsPage _page;
 
-        public PageLayout(TsPage Page)
+        public TsPageUI(TsPage Page)
         {
             InitializeComponent();
             this._page = Page;

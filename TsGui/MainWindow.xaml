@@ -25,7 +25,7 @@ MainWindow.xaml - wrapper window for the app. Includes footer.
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TsGui"
         mc:Ignorable="d"
-        Title="{Binding HeadingTitle}" Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}"
+        Title="{Binding WindowTitle}" Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}"
         Left="{Binding WindowLocation.Left, Mode=TwoWay}" Top="{Binding WindowLocation.Top, Mode=TwoWay}" 
         Topmost="True" 
         WindowStyle="None" LocationChanged="WindowLocationChanged" MouseLeftButtonDown="OnMouseDown" MouseLeftButtonUp="OnMouseUp" ResizeMode="NoResize"

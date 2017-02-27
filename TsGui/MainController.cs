@@ -168,10 +168,10 @@ namespace TsGui
 
             IEnumerable<XElement> pagesXml;
 
-            this.TsMainWindow.LoadXml(SourceXml);
-
             if (SourceXml != null)
             {
+                this.TsMainWindow.LoadXml(SourceXml);
+
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
                 this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
                 

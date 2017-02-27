@@ -18,6 +18,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows;
 
 using TsGui.View.GuiOptions;
@@ -56,7 +57,7 @@ namespace TsGui.View.Layout
             this.Parent = Parent;
             this._controller = MainController;
             this.ShowGridLines = MainController.ShowGridLines;
-
+            this._grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
             this.LoadXml(SourceXml);
             this.PopulateOptions();
             this.Build();
