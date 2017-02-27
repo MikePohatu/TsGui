@@ -177,7 +177,7 @@ namespace TsGui
                 
                 //Set show grid lines after pages and columns have been created.
                 x = SourceXml.Element("ShowGridLines");
-                if ((x != null) && (this._prodmode = false))
+                if ((x != null) && (this._prodmode == false))
                 { this.ShowGridLines = true; }
 
                 //turn hardware eval on or off

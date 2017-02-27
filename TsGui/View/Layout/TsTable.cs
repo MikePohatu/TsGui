@@ -47,6 +47,7 @@ namespace TsGui.View.Layout
         public TsTable(XElement SourceXml, BaseLayoutElement Parent, MainController MainController) : base(MainController)
         {
             Grid g = new Grid();
+            this.ShowGridLines = MainController.ShowGridLines;
             this.Init(SourceXml, Parent, MainController, g);
         }
 
@@ -56,8 +57,8 @@ namespace TsGui.View.Layout
             this._grid = MainGrid;
             this.Parent = Parent;
             this._controller = MainController;
-            this.ShowGridLines = MainController.ShowGridLines;
             this._grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
+            this._grid.DataContext = this;
             this.LoadXml(SourceXml);
             this.PopulateOptions();
             this.Build();
@@ -71,10 +72,6 @@ namespace TsGui.View.Layout
             IEnumerable<XElement> xlist;
             XElement x;
             int index;
-
-            this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
-            this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
-            this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
 
             //now read in the options and add to a dictionary for later use
             int i = 0;

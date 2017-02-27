@@ -88,6 +88,7 @@ namespace TsGui.View.Layout
         public TsPageHeader(XElement SourceXml, MainController MainController): base (MainController)
         {
             //set default values
+            this.ShowGridLines = _controller.ShowGridLines;
             this.Height = 50;
             this.FontColor = new SolidColorBrush(Colors.White);
             this.BgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF006AD4"));
@@ -98,7 +99,7 @@ namespace TsGui.View.Layout
         {
             this.UI = new TsPageHeaderUI();
             this.UI.DataContext = this;
-            this.ShowGridLines = _controller.ShowGridLines;
+            
             this.LoadXml(SourceXml);
         }
 
