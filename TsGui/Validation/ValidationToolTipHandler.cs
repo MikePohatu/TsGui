@@ -18,6 +18,7 @@
 using System.Windows.Media;
 using System.Windows.Controls.Primitives;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using System;
 
@@ -42,7 +43,6 @@ namespace TsGui.Validation
             this._guioption = GuiOption;
             this._controller = MainController;
             this._controller.WindowLoaded += OnWindowLoaded;
-            //this._controller.WindowMouseUp += this.OnWindowMouseUp;
 
             //record the default colors
             this._bordercolor = this._guioption.ControlFormatting.BorderBrush.Color;
@@ -53,8 +53,13 @@ namespace TsGui.Validation
             this._popup = new Popup();
             this._popup.AllowsTransparency = true;
             this._popup.Child = this._validationerrortooltip;
-            this._popup.PlacementTarget = this._guioption.Control;
+            this.SetTarget(this._guioption.Control);
             this._popup.IsOpen = false;
+        }
+
+        public void SetTarget(UserControl Control)
+        {
+            this._popup.PlacementTarget = Control;
         }
 
         public void Clear()

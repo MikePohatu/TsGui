@@ -83,13 +83,14 @@ namespace TsGui.Validation
             bool active = false;
             foreach (Compliance c in this._compliances)
             {
-                if ((c.IsActive == true) && (!string.IsNullOrEmpty(c.Message)))
+                if ((c.IsActive == true) && (string.IsNullOrEmpty(c.Message) == false))
                 {
-                    s = s + Environment.NewLine + c.Message;
+                    if (string.IsNullOrEmpty(s)) { s = c.Message; }
+                    else { s = s + Environment.NewLine + c.Message; }
                     active = true;
                 }
             }
-            if (active == true) { return s + Environment.NewLine; }
+            if (active == true) { return s; }
             else { return string.Empty; }
         }
     }

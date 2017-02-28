@@ -26,16 +26,17 @@ namespace TsGui.View.GuiOptions
 {
     public abstract class ComplianceOptionBase : GuiOptionBase, IGuiOption, IValidationGuiOption
     {
-        private string _value;
-        private XElement _queryxml;
-        private double _iconheight;
-        private double _iconwidth;
-        private SolidColorBrush _fillcolor;
-        private int _state;
-        private ValidationToolTipHandler _validationtooltip;
-        private ComplianceHandler _compliancehandler;
-        private string _validationtext;
-        private IRootLayoutElement _rootelement;
+        protected string _value;
+        protected XElement _queryxml;
+        protected double _iconheight;
+        protected double _iconwidth;
+        protected SolidColorBrush _fillcolor;
+        protected int _state;
+        protected ValidationToolTipHandler _validationtooltiphandler;
+        protected ComplianceHandler _compliancehandler;
+        protected string _validationtext;
+        protected IRootLayoutElement _rootelement;
+        protected bool _showvalueinpopup;
 
         //properties
         public double IconHeight
@@ -80,7 +81,7 @@ namespace TsGui.View.GuiOptions
 
             this.FillColor = new SolidColorBrush(Colors.Blue);
             this._compliancehandler = new ComplianceHandler(this, MainController);
-            this._validationtooltip = new ValidationToolTipHandler(this, this._controller);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._controller);
 
             this.UserControl.DataContext = this;
             this.SetDefaults();          
@@ -93,17 +94,19 @@ namespace TsGui.View.GuiOptions
             //if (this._controller.StartupFinished == false) { return true; }
             this.UpdateState();
 
-            if (this.IsActive == false) { this._validationtooltip.Clear(); return true; }          
+            if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }          
 
             if (this._state == ComplianceStateValues.Invalid)
             {
                 string validationmessage = this._compliancehandler.ValidationMessage;
-                string s = "\"" + this._value + "\" is invalid" + Environment.NewLine;
+                string s = string.Empty;
+
+                if (this._showvalueinpopup == true) { s = "\"" + this._value + "\" is invalid" + Environment.NewLine; }
                 if (string.IsNullOrEmpty(validationmessage)) { s = s + _compliancehandler.FailedValidationMessage; }
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
-                this._validationtooltip.Show();
+                this._validationtooltiphandler.Show();
                 returnval = false;
             }
             else
@@ -116,7 +119,7 @@ namespace TsGui.View.GuiOptions
         }
 
         public void ClearToolTips()
-        { this._validationtooltip.Clear(); }
+        { this._validationtooltiphandler.Clear(); }
 
         public void OnValidationChange()
         { this.Validate(); }
@@ -162,6 +165,7 @@ namespace TsGui.View.GuiOptions
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
             this.IconHeight = 15;
             this.IconWidth = 15;
+            this._showvalueinpopup = false;
         }
 
         private void SetStateColor(int State)
