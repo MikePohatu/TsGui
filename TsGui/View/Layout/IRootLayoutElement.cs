@@ -13,9 +13,16 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// Delegates.cs - Delegates for the TsGui namespace
+// IRootLayoutElement.cs - interface for 
 
-namespace TsGui
+using TsGui.Events;
+
+namespace TsGui.View.Layout
 {
-    public delegate void NotificationEvent();
+    public interface IRootLayoutElement
+    {
+        IRootLayoutElement GetRootElement();
+        event ComplianceRetryEventHandler ComplianceRetry;
+        void RaiseComplianceRetryEvent();
+    }
 }

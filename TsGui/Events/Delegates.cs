@@ -13,10 +13,14 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ControlDelegates.cs - Delegates for control parts of the app
-using System.Windows;
+// Delegates.cs - Delegates for control parts of the app
 
-namespace TsGui
+using System;
+using System.Windows;
+using TsGui.View.Layout;
+
+namespace TsGui.Events
 {
     public delegate void TsGuiWindowEventHandler(object o, RoutedEventArgs e);
+    public delegate void ComplianceRetryEventHandler(IRootLayoutElement o, EventArgs e);
 }

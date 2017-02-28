@@ -16,6 +16,7 @@
 // BaseLayoutElement.cs - base class for elements in the UI tree (page, row, column, guioptions
 
 using TsGui.Grouping;
+
 using System.Xml.Linq;
 
 namespace TsGui.View.Layout
@@ -102,6 +103,16 @@ namespace TsGui.View.Layout
                 if (subx != null)
                 { this.ControlFormatting.LoadXml(subx); }
             }
+        }
+
+        public IRootLayoutElement GetRootElement()
+        {
+            if (this.Parent == null)
+            {
+                if (this is IRootLayoutElement) { return (IRootLayoutElement)this; }
+                else { return null; }
+            }
+            else { return this.Parent.GetRootElement(); }
         }
 
         private void SetDefaults()

@@ -82,6 +82,11 @@ namespace TsGui.View.GuiOptions
                 TsImage img = new TsImage(OptionXml, Parent, RootController);
                 return img;
             }
+            else if (OptionXml.Attribute("Type").Value == "ComplianceRetryButton")
+            {
+                TsComplianceRetryButton crb = new TsComplianceRetryButton(OptionXml, Parent, RootController);
+                return crb;
+            }
             else
             { return null; }
             #endregion

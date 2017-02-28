@@ -19,13 +19,16 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows;
 
+using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsPage: BaseLayoutElement
+    public class TsPage: BaseLayoutElement, IRootLayoutElement
     {
+        public event ComplianceRetryEventHandler ComplianceRetry;
+
         private TsPageUI _pageui;
         private TsPage _previouspage;
         private TsPage _nextpage;
@@ -184,7 +187,12 @@ namespace TsGui.View.Layout
         {
             if (e.GroupStateChanged == GroupStateChanged.IsHidden) { this.Update(); }
         }
-        
+
+        public void RaiseComplianceRetryEvent()
+        {
+            this.ComplianceRetry?.Invoke(this, new RoutedEventArgs());
+        }
+
         private void ConnectNextPage(TsPage NewNextPage)
         {
             if (this.NextPage != null) { this.NextPage.GroupingStateChange -= this.OnSurroundingPageHide; }

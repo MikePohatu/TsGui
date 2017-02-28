@@ -87,7 +87,7 @@
     <Compile Include="Calculator\CalculatorEnums.cs" />
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
-    <Compile Include="Control\ControlDelegates.cs" />
+    <Compile Include="Events\Delegates.cs" />
     <Compile Include="Control\IOption.cs" />
     <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="Grouping\GroupableBlindBase.cs" />
@@ -103,7 +103,6 @@
     <Compile Include="Validation\GroupableValidationBase.cs" />
     <Compile Include="Validation\IValidationOwner.cs" />
     <Compile Include="Validation\StringValidation.cs" />
-    <Compile Include="Delegates.cs" />
     <Compile Include="Grouping\GroupableUIElementBase.cs" />
     <Compile Include="Validation\ValidationEnums.cs" />
     <Compile Include="Validation\StringValidationRule.cs" />
@@ -113,6 +112,10 @@
     <Compile Include="Validation\ValidationHandler.cs" />
     <Compile Include="Validation\ValidationToolTipHandler.cs" />
     <Compile Include="View\GuiOptions\GuiOptionGridFormatting.cs" />
+    <Compile Include="View\GuiOptions\TsComplianceRetryButton.cs" />
+    <Compile Include="View\GuiOptions\TsComplianceRetryButtonUI.xaml.cs">
+      <DependentUpon>TsComplianceRetryButtonUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GuiOptions\TsImage.cs" />
     <Compile Include="View\GuiOptions\TsCheckBox.cs" />
     <Compile Include="View\GuiOptions\TsCheckBoxUI.xaml.cs">
@@ -121,6 +124,7 @@
     <Compile Include="View\GuiOptions\TsImageUI.xaml.cs">
       <DependentUpon>TsImageUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\GuiOptions\ComplianceOptionBase.cs" />
     <Compile Include="View\GuiOptions\TsTrafficLight.cs" />
     <Compile Include="View\GuiOptions\TsTrafficLightUI.xaml.cs">
       <DependentUpon>TsTrafficLightUI.xaml</DependentUpon>
@@ -134,6 +138,7 @@
     <Compile Include="View\Layout\GhostWindow.xaml.cs">
       <DependentUpon>GhostWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Layout\IRootLayoutElement.cs" />
     <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\IGuiOption.cs" />
@@ -207,6 +212,10 @@
     <Page Include="Validation\ValidationErrorToolTip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GuiOptions\TsComplianceRetryButtonUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\GuiOptions\TsImageUI.xaml">
       <SubType>Designer</SubType>

@@ -19,12 +19,15 @@ using System.Xml.Linq;
 using System.Windows.Media;
 using System.Windows;
 
+using TsGui.Events;
 using TsGui.Images;
 
 namespace TsGui.View.Layout
 {
-    public class TsPageHeader : BaseLayoutElement
+    public class TsPageHeader : BaseLayoutElement, IRootLayoutElement
     {
+        public event ComplianceRetryEventHandler ComplianceRetry;
+
         private string _title;
         private string _text;
         private SolidColorBrush _bgColor;
@@ -143,6 +146,11 @@ namespace TsGui.View.Layout
                 if (x != null)
                 { this.Table = new TsTable(InputXml, this, this._controller); }
             }
+        }
+
+        public void RaiseComplianceRetryEvent()
+        {
+            this.ComplianceRetry?.Invoke(this, new RoutedEventArgs());
         }
     }
 }
