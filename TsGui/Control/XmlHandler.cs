@@ -21,6 +21,8 @@ using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Media;
 
+using TsGui.Validation;
+
 namespace TsGui
 {
     public static class XmlHandler
@@ -68,6 +70,32 @@ namespace TsGui
 
             x = InputXml.Element(XName);
             if (x != null) { return Convert.ToInt32(x.Value); }
+            else { return DefaultValue; }
+        }
+
+        public static int GetComplianceStateValueFromXElement(XElement InputXml, string XName, int DefaultValue)
+        {
+            if (InputXml == null) { return DefaultValue; }
+
+            XElement x;
+
+            x = InputXml.Element(XName);
+            if (x != null)
+            {
+                switch (x.Value)
+                {
+                    case "OK":
+                        return ComplianceStateValues.OK;
+                    case "Warning":
+                        return ComplianceStateValues.Warning;
+                    case "Error":
+                        return ComplianceStateValues.Error;
+                    case "Invalid":
+                        return ComplianceStateValues.Invalid;
+                    default:
+                        return DefaultValue;
+                }
+            }
             else { return DefaultValue; }
         }
 

@@ -28,6 +28,7 @@ namespace TsGui.Validation
         private List<StringValidationRule> _warningrules = new List<StringValidationRule>();
         private List<StringValidationRule> _errorrules = new List<StringValidationRule>();
         private List<StringValidationRule> _invalidrules = new List<StringValidationRule>();
+        private int _defaultstate = ComplianceStateValues.Invalid;
         private MainController _controller;
 
         //properties
@@ -46,7 +47,7 @@ namespace TsGui.Validation
             IEnumerable<XElement> xlist;
 
             this.Message = XmlHandler.GetStringFromXElement(InputXml, "Message", this.Message);
-
+            this._defaultstate = XmlHandler.GetComplianceStateValueFromXElement(InputXml, "DefaultState", this._defaultstate);
             x = InputXml.Element("OK");
             if (x != null)
             {
@@ -126,13 +127,15 @@ namespace TsGui.Validation
                 { return ComplianceStateValues.Warning; }
             }
 
-            //foreach (StringValidationRule rule in this._okrules)
-            //{
-            //    if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-            //    { return ComplianceStateValues.OK; }
-            //}
+            if (this._okrules.Count == 0 ) { return ComplianceStateValues.OK; }
 
-            return ComplianceStateValues.OK;
+            foreach (StringValidationRule rule in this._okrules)
+            {
+                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
+                { return ComplianceStateValues.OK; }
+            }
+
+            return this._defaultstate;
         }
     }
 }
