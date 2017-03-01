@@ -77,13 +77,30 @@ namespace TsGui.Validation
             return state;
         }
 
-        private string GetActiveValidationMessages()
+        public string GetActiveValidationMessages()
         {
             string s = string.Empty;
             bool active = false;
             foreach (Compliance c in this._compliances)
             {
                 if ((c.IsActive == true) && (string.IsNullOrEmpty(c.Message) == false))
+                {
+                    if (string.IsNullOrEmpty(s)) { s = c.Message; }
+                    else { s = s + Environment.NewLine + c.Message; }
+                    active = true;
+                }
+            }
+            if (active == true) { return s; }
+            else { return string.Empty; }
+        }
+
+        public string GetNonOkValidationMessages(string Input)
+        {
+            string s = string.Empty;
+            bool active = false;
+            foreach (Compliance c in this._compliances)
+            {
+                if ((c.IsActive == true) && (string.IsNullOrEmpty(c.Message) == false) && (c.EvaluateState(Input) != ComplianceStateValues.OK))
                 {
                     if (string.IsNullOrEmpty(s)) { s = c.Message; }
                     else { s = s + Environment.NewLine + c.Message; }

@@ -17,6 +17,7 @@
 
 using System.Xml.Linq;
 using System.Windows;
+using System.Collections.Generic;
 
 using TsGui.Grouping;
 
@@ -80,7 +81,7 @@ namespace TsGui.View.GuiOptions
         {
             #region
             XElement x;
-
+            IEnumerable<XElement> xlist;
             this.LoadLegacyXml(InputXml);
 
             //load the xml for the base class stuff
@@ -93,11 +94,15 @@ namespace TsGui.View.GuiOptions
             if (x != null)
             { this.IsChecked = true; }
 
-            x = InputXml.Element("Toggle");
-            if (x != null)
+            xlist = InputXml.Elements("Toggle");
+            if (xlist != null)
             {
-                Toggle t = new Toggle(this, this._controller, x);
                 this._controller.AddToggleControl(this);
+
+                foreach (XElement subx in xlist)
+                {
+                    Toggle t = new Toggle(this, this._controller, subx); 
+                }  
             }
             #endregion
         }

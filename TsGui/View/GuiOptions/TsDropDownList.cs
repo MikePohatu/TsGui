@@ -114,12 +114,17 @@ namespace TsGui.View.GuiOptions
                     TsDropDownListItem newoption = new TsDropDownListItem(optval, opttext, this.ControlFormatting);
                     this._options.Add(newoption);
 
-                    XElement togglex = x.Element("Toggle");
-                    if (togglex != null)
+
+                    IEnumerable<XElement> togglexlist = x.Elements("Toggle");
+                    foreach (XElement togglex in togglexlist)
                     {
-                        togglex.Add(new XElement("Enabled", optval));
-                        Toggle t = new Toggle(this, this._controller, togglex);
-                        this._istoggle = true;
+                        //XElement togglex = x.Element("Toggle");
+                        //if (togglex != null)
+                        //{
+                            togglex.Add(new XElement("Enabled", optval));
+                            Toggle t = new Toggle(this, this._controller, togglex);
+                            this._istoggle = true;
+                        //}
                     }
                 }
 
@@ -133,11 +138,24 @@ namespace TsGui.View.GuiOptions
                     }
                 }
 
-                if (x.Name == "Toggle")
+                IEnumerable<XElement> xlist;
+
+                xlist = InputXml.Elements("Toggle");
+                if (xlist != null)
                 {
-                    Toggle t = new Toggle(this, this._controller, x);
-                    this._istoggle = true;
+                    //this._controller.AddToggleControl(this);
+
+                    foreach (XElement subx in xlist)
+                    {
+                        Toggle t = new Toggle(this, this._controller, subx);
+                    }
                 }
+
+                //if (x.Name == "Toggle")
+                //{
+                //    Toggle t = new Toggle(this, this._controller, x);
+                //    this._istoggle = true;
+                //}
             }
             if (this._istoggle == true) { this._controller.AddToggleControl(this); }
         }
@@ -204,7 +222,7 @@ namespace TsGui.View.GuiOptions
             if ((CheckSelectionMade == true) && (this._dropdownlistui.Control.SelectedItem == null))
             {
                 this.ValidationText = _noselectionmessage;
-                this._validationtooltiphandler.Show();
+                this._validationtooltiphandler.ShowError();
                 return false;
             }
 
@@ -218,7 +236,7 @@ namespace TsGui.View.GuiOptions
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
-                this._validationtooltiphandler.Show();
+                this._validationtooltiphandler.ShowError();
             }
             else { this._validationtooltiphandler.Clear(); }
 

@@ -175,7 +175,7 @@ namespace TsGui.View.GuiOptions
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
-                this._validationtooltiphandler.Show();
+                this._validationtooltiphandler.ShowError();
             }
             else { this._validationtooltiphandler.Clear(); }
 

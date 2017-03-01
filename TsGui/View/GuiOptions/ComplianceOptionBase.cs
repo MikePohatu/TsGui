@@ -37,6 +37,7 @@ namespace TsGui.View.GuiOptions
         protected string _validationtext;
         protected IRootLayoutElement _rootelement;
         protected bool _showvalueinpopup;
+        protected string _okHelpText;
 
         //properties
         public double IconHeight
@@ -106,7 +107,7 @@ namespace TsGui.View.GuiOptions
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
-                this._validationtooltiphandler.Show();
+                this._validationtooltiphandler.ShowError();
                 returnval = false;
             }
             else
@@ -134,6 +135,7 @@ namespace TsGui.View.GuiOptions
         {
             base.LoadXml(InputXml);
             this.LoadLegacyXml(InputXml);
+            this._okHelpText = this.HelpText;
             this._compliancehandler.AddCompliances(InputXml.Elements("Compliance"));
 
             //wrap the query in another to make it suitable for the controller. 
@@ -154,6 +156,10 @@ namespace TsGui.View.GuiOptions
             if (this.IsActive == true) { this._state = this._compliancehandler.EvaluateComplianceState(this._value); }
             else { this._state = ComplianceStateValues.Inactive; }
             this.SetStateColor(this._state);
+
+            if ( this._state != 0) { this.HelpText = this._compliancehandler.GetActiveValidationMessages(); }
+            else { this.HelpText = this._okHelpText; }
+
             this.NotifyUpdate();
         }
 

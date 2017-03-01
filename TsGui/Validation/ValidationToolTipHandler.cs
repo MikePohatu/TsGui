@@ -74,7 +74,7 @@ namespace TsGui.Validation
             }
         }
 
-        public void Show()
+        public void ShowError()
         {
             if (this._popup.IsOpen == false)
             {
@@ -87,6 +87,18 @@ namespace TsGui.Validation
             }
             this.UpdateArrows();
         }
+
+        public void ShowInformation()
+        {
+            if (this._popup.IsOpen == false)
+            {
+                this.SetPlacement();
+                this._controller.WindowMouseUp += this.OnWindowMouseUp;
+                this._popup.IsOpen = true;
+            }
+            this.UpdateArrows();
+        }
+
 
         public void OnWindowMouseUp(object o, RoutedEventArgs e)
         {
