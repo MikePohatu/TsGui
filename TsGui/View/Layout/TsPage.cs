@@ -92,12 +92,10 @@ namespace TsGui.View.Layout
         //Constructors
         public TsPage(XElement SourceXml, PageDefaults Defaults, MainController MainController):base (MainController)
         { 
-            this._controller = Defaults.RootController;
+            //this._controller = Defaults.RootController;
             this.ShowGridLines = MainController.ShowGridLines;
             this._pageui = new TsPageUI(this);
             this.PageHeader = Defaults.PageHeader;
-            this._table = new TsTable(SourceXml, this, MainController);
-            this._pageui.MainTablePresenter.Content = this._table.Grid;
 
             this._pageui.Loaded += this.OnWindowLoaded;          
             this._pageui.DataContext = this;
@@ -106,7 +104,6 @@ namespace TsGui.View.Layout
             this.LoadXml(SourceXml);
             this.Update();
         }
-
 
         //Methods
         public new void LoadXml(XElement InputXml)
@@ -119,6 +116,10 @@ namespace TsGui.View.Layout
 
             x = InputXml.Element("Heading");
             if (x != null) { this.PageHeader = new TsPageHeader(this,this.PageHeader,x,this._controller); }
+
+            //create the table adn bind it to the content
+            this._table = new TsTable(InputXml, this, this._controller);
+            this._pageui.MainTablePresenter.Content = this._table.Grid;
         }
 
         public bool OptionsValid()
