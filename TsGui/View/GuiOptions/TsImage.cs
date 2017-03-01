@@ -33,9 +33,9 @@ namespace TsGui.View.GuiOptions
         {
             this.Control = new TsImageUI();
             this.Label = new TsLabelUI();
-            this.SetDefaults();
-            this.LoadXml(InputXml);
             this.UserControl.DataContext = this;
+            this.SetDefaults();
+            this.LoadXml(InputXml);          
         }
 
 

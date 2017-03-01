@@ -38,12 +38,12 @@ namespace TsGui.Images
         public double Width
         {
             get { return this._width; }
-            set { this._width = value; this.OnPropertyChanged(this, "ImageWidth"); }
+            set { this._width = value; this.OnPropertyChanged(this, "Width"); }
         }
         public double Height
         {
             get { return this._height; }
-            set { this._height = value; this.OnPropertyChanged(this, "ImageHeight"); }
+            set { this._height = value; this.OnPropertyChanged(this, "Height"); }
         }
         //https://msdn.microsoft.com/en-us/library/system.windows.media.stretch(v=vs.110).aspx
         public Stretch StretchMode
@@ -95,7 +95,7 @@ namespace TsGui.Images
         {
             this.Height = double.NaN;
             this.Width = double.NaN;
-            this.StretchMode = Stretch.None;
+            this.StretchMode = Stretch.Uniform;
         }
     }
 }
