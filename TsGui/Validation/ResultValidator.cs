@@ -15,7 +15,7 @@
 
 using System;
 using System.Text.RegularExpressions;
-//using System.Diagnostics;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace TsGui.Validation
@@ -253,6 +253,19 @@ namespace TsGui.Validation
                     break;
             }
             return result;
+        }
+
+        public static bool OptionsValid(List<IValidationGuiOption> OptionList)
+        {
+            foreach (IValidationGuiOption option in OptionList)
+            {
+                if (option.IsActive == true)
+                {
+                    if (option.IsValid == false)
+                    { return false; }
+                }
+            }
+            return true;
         }
     }
 }

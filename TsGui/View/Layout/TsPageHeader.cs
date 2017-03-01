@@ -21,6 +21,7 @@ using System.Windows;
 
 using TsGui.Events;
 using TsGui.Images;
+using TsGui.Validation;
 
 namespace TsGui.View.Layout
 {
@@ -100,6 +101,11 @@ namespace TsGui.View.Layout
         public TsPageHeader(MainController MainController) : base(MainController)
         {
             this.SetDefaults();
+        }
+
+        public bool OptionsValid()
+        {
+            return ResultValidator.OptionsValid(this.Table.ValidationOptions);
         }
 
         private void SetDefaults()

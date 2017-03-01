@@ -22,6 +22,7 @@ using System.Windows;
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
+using TsGui.Validation;
 
 namespace TsGui.View.Layout
 {
@@ -124,16 +125,8 @@ namespace TsGui.View.Layout
 
         public bool OptionsValid()
         {
-            return this._controller.OptionsValid(this._table.ValidationOptions);
-            //foreach (IValidationGuiOption option in this._table.ValidationOptions)
-            //{
-            //    if (option.IsActive == true)
-            //    {
-            //        if (option.IsValid == false)
-            //        { return false; }
-            //    }
-            //}
-            //return true;
+            if ((ResultValidator.OptionsValid(this._table.ValidationOptions)) && this.PageHeader.OptionsValid()) { return true; }
+            else { return false; }
         }
 
         public void Cancel()

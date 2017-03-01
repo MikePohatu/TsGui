@@ -52,7 +52,6 @@ namespace TsGui
         private bool _livedata = false;
         private bool _debug = false;
         private bool _showtestwindow = false;
-        private List<IValidationGuiOption> _validationoptions = new List<IValidationGuiOption>();
 
         //properties
         public TsMainWindow TsMainWindow { get; set; }
@@ -190,11 +189,7 @@ namespace TsGui
                 PageDefaults pagedef = new PageDefaults();
 
                 x = SourceXml.Element("Heading");
-                if (x != null)
-                {
-                    pagedef.PageHeader = new TsPageHeader(x, this);
-                    if (pagedef.PageHeader.Table != null) { this._validationoptions.AddRange(pagedef.PageHeader.Table.ValidationOptions); }
-                }
+                if (x != null) { pagedef.PageHeader = new TsPageHeader(x, this); }
                 else { pagedef.PageHeader = new TsPageHeader(this); }
 
                 
@@ -334,8 +329,6 @@ namespace TsGui
         //finish and create the TS Variables
         public void Finish()
         {
-            if (this.OptionsValid(this._validationoptions) == false) { return; }
-
             foreach (IOption option in this._optionlibrary.Options)
             {
                 //first check for null option variables e.g. for headings
@@ -415,24 +408,11 @@ namespace TsGui
         {
             return this._envController.GetKeyValueListFromList(InputXml);
         }
-            
+
 
         public String GetEnvVar(string VariableName)
         {
             return this._envController.GetEnvVar(VariableName);
-        }
-
-        public bool OptionsValid(List<IValidationGuiOption> OptionList)
-        {
-            foreach (IValidationGuiOption option in OptionList)
-            {
-                if (option.IsActive == true)
-                {
-                    if (option.IsValid == false)
-                    { return false; }
-                }
-            }
-            return true;
         }
 
         private bool PromptTestMode()
