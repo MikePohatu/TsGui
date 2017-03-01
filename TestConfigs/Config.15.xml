@@ -24,24 +24,27 @@
 						<HorizontalAlignment>Left</HorizontalAlignment> 	<!-- Options available: Left, Right, Center, Stretch -->						
 					</Control>
 				</Formatting>
-
-				<Query Type="Wmi">
-					<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
-					<Property Name="Year">
-						<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
-						<Prefix>PC-</Prefix>
-					</Property>
-					<Property Name="Month"/>
-					<Property Name="Day"/>			
-					<Separator></Separator>
-				</Query>
-				<Validation ValidateEmpty="FALSE">
+				
+				<GetValue>
+					<Query Type="Wmi">
+						<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
+						<Property Name="Year">
+							<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
+							<Prefix>PC-</Prefix>
+						</Property>
+						<Property Name="Month"/>
+						<Property Name="Day"/>			
+						<Separator></Separator>
+					</Query>
+				</GetValue>
+				
+				<Compliance>
 					<Group>Group_Test</Group>
 	
-					<Valid>
+					<OK>
 						<Rule Type="StartsWith" CaseSensitive="TRUE">2015</Rule>
-					</Valid>
-				</Validation>
+					</OK>
+				</Compliance>
 			</GuiOption>
 			
 			
@@ -54,16 +57,6 @@
 					<Enabled>TRUE</Enabled>
 					<Disabled>FALSE</Disabled>
 				</Toggle>
-			</GuiOption>
-			
-			<GuiOption Type="ComputerName">
-				<Validation ValidateEmpty="FALSE">
-					<Group>Group_Test</Group>
-		
-					<Invalid>
-						<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
-					</Invalid>
-				</Validation>
 			</GuiOption>
 		</Column>
 	</Page>

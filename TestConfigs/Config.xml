@@ -1,239 +1,62 @@
 <TsGui>
-	<!-- The showgridlines option is used for assisting with layout design
-	<ShowGridLines /> 
-	-->
-	<Height>300</Height>
-	<Width>600</Width>
-	
+	<Height>250</Height>
+	<Width>300</Width>
+
 	<HardwareEval />
 	
 	<Heading>
-		<Title>Title Text</Title>
-		<Text>Text</Text>
-		<Bg-Color>#FF006AD4</Bg-Color>
-		<Font-Color>#FFFFFF</Font-Color>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI base config</Text>
 	</Heading>
-	
-	<Buttons>
-		<Next>-Next-</Next>
-		<Back>-Back-</Back>
-		<Cancel>-Cancel-</Cancel>
-		<Finish>-Finish-</Finish>
-	</Buttons>
 
-	<Footer>
-		<Text>Powered by TsGui - www.20road.com</Text>
-		<Height>17</Height>
-		<HAlign>right</HAlign>
-	</Footer>
-
-	<!-- ***** Simple config example **** -->
 	<Page>
 		<Column>
-			<LabelWidth>110</LabelWidth>
-			<ControlWidth>160</ControlWidth>
+			<Formatting>
+				<LeftCellWidth>110</LeftCellWidth>
+				<RightCellWidth>160</RightCellWidth>
+			</Formatting>
 			
-			<!-- GuiOptions -->
-			<GuiOption Type="ComputerName" />
-			
-			<GuiOption Type="FreeText">
-				<Variable>Engineer</Variable>
-				<Label>Engineer name:</Label>
-				<DefaultValue>
-					<Value>Jane Doe</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="DropDownList">
-				<Variable>IT_Team</Variable>
-				<Label>Team:</Label>
-				<DefaultValue>Desktop</DefaultValue>
-				<Option>
-					<Text>Desktop</Text>
-					<Value>Desktop</Value>
-				</Option>
-				<Option>
-					<Text>Infrastructure</Text>
-					<Value>Inf</Value>
-				</Option>
-				<Option>
-					<Text>Service Desk</Text>
-					<Value>SD</Value>
-				</Option>
-			</GuiOption>	
-			
-		</Column>		
-	</Page>
-	
-	
-	
-	<!-- **** Advanced config options  **** -->
-	<Page PurgeInactive="TRUE">
-		<Heading>
-			<Title>Title text override</Title>
-			<Text>Text override</Text>
-		</Heading>
-		
-		<Column>
-			<Width>360</Width>
-			<LabelWidth>180</LabelWidth>
-			<ControlWidth>170</ControlWidth>
-			
-			<!-- GuiOptions -->
-			
-			<!-- Advanced freetext with queries. This one is the equivalent of the ComputerName GuiOption type-->
-			<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
-				<Disallowed>
-					<Characters>`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
-				</Disallowed>
-				<Variable>OSDComputerName_FullQuery</Variable>
-				<Label>Computer Name:</Label>
-				<HelpText>Enter a computer name for the device</HelpText>
+			<GuiOption Type="TrafficLight">
+				<Variable>CC_Test</Variable>
+				<Label>Compliance Test</Label>
+				<Formatting>						
+					<Control>
+						<HorizontalAlignment>Left</HorizontalAlignment> 	<!-- Options available: Left, Right, Center, Stretch -->						
+					</Control>
+				</Formatting>
 				
-				<!-- Query for the default value. Return the first valid value. Note
-				the Ignore values for evaluating the value returned by the query -->
-				<DefaultValue>
-					<Query Type="EnvironmentVariable">
-						<Variable>OSDComputerName</Variable>
-						<Ignore>MINNT</Ignore>
-						<Ignore>MINWIN</Ignore>						
-					</Query>				
-					<Query Type="EnvironmentVariable">
-						<Variable>_SMSTSMachineName</Variable>
-						<Ignore>MINNT</Ignore>
-						<Ignore>MINWIN</Ignore>					
-					</Query>					
-					<Query Type="EnvironmentVariable">
-						<Variable>ComputerName</Variable>
-						<Ignore>MINNT</Ignore>
-						<Ignore>MINWIN</Ignore>						
-					</Query>					
+				<GetValue>
 					<Query Type="Wmi">
-						<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
-						<Ignore>No Asset Tag</Ignore>
-					</Query>					
-					<Query Type="Wmi">
-						<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
+						<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
+						<Property Name="Year">
+							<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
+							<Prefix>PC-</Prefix>
+						</Property>
+						<Property Name="Month"/>
+						<Property Name="Day"/>			
+						<Separator></Separator>
 					</Query>
-				</DefaultValue>
-			</GuiOption>			
-			
-			<GuiOption Type="FreeText">
-				<Group>Group_Fin</Group>
-				<Group>Group_IT</Group>
-				<Variable>User</Variable>
-				<Label>User name:</Label>
-				<DefaultValue>
-					<Value>John Doe User</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
+				</GetValue>
+				
+				<Compliance>
+					<Group>Group_Test</Group>
+	
+					<OK>
+						<Rule Type="StartsWith" CaseSensitive="TRUE">2015</Rule>
+					</OK>
+				</Compliance>
 			</GuiOption>
 			
-			<GuiOption Type="FreeText">
-				<Group>Group_PMO</Group>
-				<Variable>User</Variable>
-				<Label>Project manager name:</Label>
-				<DefaultValue>
-					<Value>John Doe PM</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="FreeText">
-				<Group>Group_HR</Group>
-				<Variable>User</Variable>
-				<Label>HR consultant name:</Label>
-				<DefaultValue>
-					<Value>John Doe HR</Value>
-				</DefaultValue>
-				<HelpText>Enter the user to be using this device</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="DropDownList">
-				<Variable>Department</Variable>
-				<Label>Department:</Label>
-				<DefaultValue>Finance</DefaultValue>
-				<Option>
-					<Toggle Group="Group_Fin">
-						<Hide/>
-					</Toggle>
-					<Text>Finance</Text>
-					<Value>Finance</Value>
-				</Option>
-				<Option>
-					<Toggle Group="Group_IT">
-						<Hide/>
-					</Toggle>
-					<Text>Information Technology</Text>
-					<Value>IT</Value>
-				</Option>
-				<Option>
-					<Toggle Group="Group_HR">
-						<Hide/>
-					</Toggle>
-					<Text>Human Resources</Text>
-					<Value>HR</Value>
-				</Option>
-				<Option>
-					<Toggle Group="Group_PMO">
-						<Hide/>
-					</Toggle>
-					<Text>Project Office</Text>
-					<Value>PMO</Value>
-				</Option>
-			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
-				<Variable>TOGGLE_Apps</Variable>
-				<Label>Additional apps</Label>
+				<Variable>TOGGLE_Test</Variable>
+				<Label>Test group enabled</Label>
 				<HAlign>left</HAlign>
 				
-				<Toggle Group="Group_Apps">
+				<Toggle Group="Group_Test">
 					<Enabled>TRUE</Enabled>
 					<Disabled>FALSE</Disabled>
 				</Toggle>
-			</GuiOption>
-		</Column>
-
-		<Column>
-			<Group>Group_Apps</Group>
-			<Width>200</Width>
-			<LabelWidth>120</LabelWidth>
-			<ControlWidth>80</ControlWidth>
-			
-			<!-- GuiOptions -->
-			<GuiOption Type="Heading">
-				<Label>Applications</Label>
-				<Bold /> 
-			</GuiOption>
-			
-			<GuiOption Type="CheckBox">
-				<Variable>App_MsOffice</Variable>
-				<Label>Microsoft Office</Label>
-				<HAlign>right</HAlign>
-				<Checked />
-			</GuiOption>
-			
-			<GuiOption Type="CheckBox">
-				<Variable>App_MsAccess</Variable>
-				<Label>Microsoft Access</Label>
-				<HAlign>right</HAlign>
-			</GuiOption>
-			
-			<GuiOption Type="CheckBox">
-				<Variable>App_MsVisio</Variable>
-				<Label>Microsoft Visio</Label>
-				<HAlign>right</HAlign>
-			</GuiOption>
-			
-			<GuiOption Type="CheckBox">
-				<Group>Group_PMO</Group>
-				<Group>Group_IT</Group>
-				<InactiveValue>No_Project</InactiveValue>
-				<Variable>App_MsProject</Variable>
-				<Label>Microsoft Project</Label>
-				<HAlign>right</HAlign>
 			</GuiOption>
 		</Column>
 	</Page>

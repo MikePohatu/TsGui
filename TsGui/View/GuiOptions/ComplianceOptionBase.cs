@@ -102,8 +102,10 @@ namespace TsGui.View.GuiOptions
                 string validationmessage = this._compliancehandler.ValidationMessage;
                 string s = string.Empty;
 
-                if (this._showvalueinpopup == true) { s = "\"" + this._value + "\" is invalid" + Environment.NewLine; }
+                
                 if (string.IsNullOrEmpty(validationmessage)) { s = s + _compliancehandler.FailedValidationMessage; }
+                if ((this._showvalueinpopup == true) || string.IsNullOrEmpty(s)) { s = "\"" + this._value + "\" is invalid" + Environment.NewLine + s; }
+
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
