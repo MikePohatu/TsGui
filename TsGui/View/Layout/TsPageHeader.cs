@@ -43,7 +43,7 @@ namespace TsGui.View.Layout
             set
             {
                 this._bgColor = value;
-                this.OnPropertyChanged(this, "HeadingBgColor");
+                this.OnPropertyChanged(this, "BgColor");
             }
         }
         public string Title

@@ -1,69 +1,122 @@
 <TsGui>
-	<Height>250</Height>
-	<Width>300</Width>
 
-	<HardwareEval />
+	<Height>300</Height>
+	<Width>470</Width>
 	
+	<HardwareEval />
+
+	<!--	
+	<ShowGridLines />
+	-->
 	<Heading>
-		<Title>TsGui</Title>
-		<Text>Task Sequence GUI base config</Text>
+		<Title>Task Sequence Gui</Title>
+		<Text>Do whatever you want. I don't care</Text>
+		<!--
+		<BgColor>#FF006AD4</BgColor>
+		<TextColor>#FFFFFF</TextColor>
+		-->
 	</Heading>
+	
+	<Footer>
+		<Text>Powered by Yamama - www.20road.com</Text>
+		<!--<Height>25</Height>
+		<HAlign>right</HAlign>
+		-->
+	</Footer>
 
 	<Page>
-		<Column>
-			<Formatting>
-				<LeftCellWidth>110</LeftCellWidth>
-				<RightCellWidth>160</RightCellWidth>
-			</Formatting>
+		<Height>300</Height>
+		<Width>490</Width>
+		<Heading>
+			<Title>DEBUG - Task Sequence Gui - Enter computer name</Title>
+			<Text>Enter the new computer details</Text>
+			<BgColor>#ff0000</BgColor>
+			<TextColor>#FFFFFF</TextColor>
+		</Heading>
+		<Column>		
+			<ControlWidth>150</ControlWidth>
+			<LabelWidth>120</LabelWidth>
+			
+			<GuiOption Type="ComputerName" />
+			
+			<GuiOption Type="FreeText">
+				<Variable>PCTypeString</Variable>
+				<Label>PCType - string</Label>
+				<DefaultValue UseCurrent="true">
+					<!--
+					<Query Type="EnvironmentVariable">
+						<Variable>PCType</Variable>
+					</Query>
+					-->
+					<Value>ICT</Value>
+				</DefaultValue>
+				<HelpText>Test&#xD;123</HelpText>
+			</GuiOption>
+			
+			<GuiOption Type="DropDownList">
+				<Variable>PCType</Variable>
+				<Label>PC Type:</Label>
+				<DefaultValue>
+					<Value>STDLT</Value>
+				</DefaultValue>
+				<Option>
+					<Text>Standard Desktop</Text>
+					<Value>STDPC</Value>
+				</Option>
+				<Option>
+					<Text>Standard Laptop</Text>
+					<Value>STDLT</Value>
+				</Option>
+				<Option>
+					<Text>Clinical PC</Text>
+					<Value>ClinicalPC</Value>
+				</Option>
+			</GuiOption>
+		</Column>
+		
+		<Column>	
+			<LabelWidth>120</LabelWidth>
+			<ControlWidth>40</ControlWidth>
+			
+			<GuiOption Type="Heading">
+				<Label>Applications</Label>
+				<Bold /> 
+			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
-				<Variable>TOGGLE_Test</Variable>
-				<Label>Test group enabled</Label>
-				<HAlign>left</HAlign>
+				<Variable>AdminApps</Variable>
+				<Label>Admin applications</Label>
+				<!--
+				<TrueValue>YES</TrueValue>
+				<FalseValue>NO</FalseValue>
+				-->
+				<HAlign>right</HAlign>
 				
-				<Toggle Group="Group_Test">
-					<Enabled>TRUE</Enabled>
-					<Disabled>FALSE</Disabled>
-				</Toggle>
+				<Checked />
 			</GuiOption>
 			
-			<GuiOption Type="ComputerName">
-				<Validation ValidateEmpty="FALSE">
-					<Group>Group_Test</Group>
-				
-					<Message>TEST - ComputerName can't start with AB</Message>			
-					<Invalid>
-						<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
-					</Invalid>
-				</Validation>
+			<GuiOption Type="CheckBox">
+				<Variable>OfficeApps</Variable>
+				<Label>Office applications</Label>
+				<!--
+				<TrueValue>YES</TrueValue>
+				<FalseValue>NO</FalseValue>
+				<Checked />
+				-->
+				<HAlign>right</HAlign>
 			</GuiOption>
-			
-			<GuiOption Type="DropDownList" NoDefaultValue="TRUE">
-				<Variable>IT_Team</Variable>
-				<Label>Team:</Label>
-				<!--<DefaultValue>Desktop</DefaultValue>-->
-				<Option>
-					<Text>Desktop</Text>
-					<Value>Desktop</Value>
-				</Option>
-				<Option>
-					<Text>Infrastructure</Text>
-					<Value>Inf</Value>
-				</Option>
-				<Option>
-					<Text>Service Desk</Text>
-					<Value>SD</Value>
-				</Option>
-				
-				<Validation ValidateEmpty="FALSE">
-					<Group>Group_Test</Group>
-				
-					<Message>Desktop not valid when check box ticked</Message>			
-					<Invalid>
-						<!--Rule Type="Equals" CaseSensitive="TRUE">Desktop</Rule>-->
-						<Rule Type="RegEx" CaseSensitive="TRUE">(Desktop)</Rule>
-					</Invalid>
-				</Validation>
+		</Column>
+		
+	</Page>
+	<Page>
+		<Heading>
+			<Title>Task Sequence Gui</Title>
+			<Text>Do whatever you want. I don't care</Text>
+		</Heading>
+		<Column>
+			<GuiOption Type="Heading">
+				<Label>Test page</Label>
+				<Bold /> 
 			</GuiOption>
 		</Column>
 	</Page>

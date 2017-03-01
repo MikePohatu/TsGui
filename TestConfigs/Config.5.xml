@@ -12,8 +12,8 @@
 		<Title>Task Sequence Gui</Title>
 		<Text>Do whatever you want. I don't care</Text>
 		<!--
-		<BgColor>#FF006AD4</BgColor>
-		<TextColor>#FFFFFF</TextColor>
+		<Bg-Color>#FF006AD4</Bg-Color>
+		<Font-Color>#FFFFFF</Font-Color>
 		-->
 	</Heading>
 	
@@ -30,8 +30,8 @@
 		<Heading>
 			<Title>DEBUG - Task Sequence Gui - Enter computer name</Title>
 			<Text>Enter the new computer details</Text>
-			<BgColor>#ff0000</BgColor>
-			<TextColor>#FFFFFF</TextColor>
+			<Bg-Color>#ff0000</Bg-Color>
+			<Font-Color>#FFFFFF</Font-Color>
 		</Heading>
 		<Column>		
 			<ControlWidth>150</ControlWidth>
