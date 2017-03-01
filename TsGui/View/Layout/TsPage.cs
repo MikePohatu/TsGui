@@ -124,15 +124,16 @@ namespace TsGui.View.Layout
 
         public bool OptionsValid()
         {
-            foreach (IValidationGuiOption option in this._table.ValidationOptions)
-            {
-                if (option.IsActive == true)
-                {
-                    if (option.IsValid == false)
-                    { return false; }
-                }
-            }
-            return true;
+            return this._controller.OptionsValid(this._table.ValidationOptions);
+            //foreach (IValidationGuiOption option in this._table.ValidationOptions)
+            //{
+            //    if (option.IsActive == true)
+            //    {
+            //        if (option.IsValid == false)
+            //        { return false; }
+            //    }
+            //}
+            //return true;
         }
 
         public void Cancel()
