@@ -28,7 +28,7 @@ TsPageHeaderUI.xaml - header UI view
              d:DesignHeight="50" d:DesignWidth="300">
     <Border CornerRadius="5,5,0,0" Background="{Binding BgColor}" >
         <StackPanel x:Name="HeaderStackPanel">
-            <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="10,10,10,5">
+            <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="10,5,10,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="HeadingTitleColumn" Width="100*"/>
                     <ColumnDefinition x:Name="HeadingImageColumn" Width="Auto"/>
