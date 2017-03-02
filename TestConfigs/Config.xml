@@ -1,63 +1,111 @@
 <TsGui>
-	<Height>250</Height>
-	<Width>300</Width>
+    <Height>400</Height>
+	<Width>470</Width>
 
 	<HardwareEval />
-	
-	<Heading>
-		<Title>TsGui</Title>
-		<Text>Task Sequence GUI base config</Text>
+
+<Heading>
+		<Title>Windows 10 Image</Title>
+		<Text>Easy imaging tool</Text>
+		<Bg-Color>#FF006AD4</Bg-Color>
+		<Font-Color>#FFFFFF</Font-Color>
 	</Heading>
+	
+
+	<Footer>
+		<Text>TsGui by 20Road</Text>
+		<Height>17</Height>
+		<HAlign>right</HAlign>
+	</Footer>
 
 	<Page>
 		<Column>
-			<Formatting>
-				<LeftCellWidth>110</LeftCellWidth>
-				<RightCellWidth>160</RightCellWidth>
-			</Formatting>
+			<LabelWidth>170</LabelWidth>
+			<ControlWidth>250</ControlWidth>
 			
-			<GuiOption Type="TrafficLight">
-				<Variable>CC_Test</Variable>
-				<Label>Compliance Test</Label>
-				<Formatting>						
-					<Control>
-						<HorizontalAlignment>Left</HorizontalAlignment> 	<!-- Options available: Left, Right, Center, Stretch -->						
-					</Control>
-				</Formatting>
-				
-				<GetValue>
-					<Query Type="Wmi">
-						<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
-						<Property Name="Year">
-							<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
-							<Prefix>PC-</Prefix>
-						</Property>
-						<Property Name="Month"/>
-						<Property Name="Day"/>			
-						<Separator></Separator>
-					</Query>
-				</GetValue>
-				
-				<Compliance>
-					<Group>Group_Test</Group>
-	
-					<OK>
-						<Rule Type="StartsWith" CaseSensitive="TRUE">2015</Rule>
-					</OK>
-				</Compliance>
-			</GuiOption>
-			
-			
+			<GuiOption Type="ComputerName" />
+						
 			<GuiOption Type="CheckBox">
-				<Variable>TOGGLE_Test</Variable>
-				<Label>Test group enabled</Label>
+				<Variable>TOGGLE_DiskID</Variable>
+				<Label>Choose disk</Label>
 				<HAlign>left</HAlign>
 				
-				<Toggle Group="Group_Test">
+				<Toggle Group="Group_Disk">
 					<Enabled>TRUE</Enabled>
 					<Disabled>FALSE</Disabled>
 				</Toggle>
 			</GuiOption>
-		</Column>
+			
+			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
+				<Group>Group_Disk</Group>
+				<Variable>OSDDiskIndex</Variable>
+				<Label>Disk</Label>
+				<DefaultValue>0</DefaultValue>
+				<Query Type="Wmi">
+					<Wql>select Index,Caption,Size FROM Win32_DiskDrive where MediaType='Fixed hard disk media'</Wql>
+					<Property Name="Index"/>
+					<Property Name="Index">
+						<Prefix>ID: </Prefix>
+					</Property>
+					<Property Name="Size">
+						<Calculate DecimalPlaces="2">VALUE/1073741824</Calculate>
+						<Append>GB</Append>
+					</Property>
+					<Property Name="Caption"/>					
+					<Separator> - </Separator>
+				</Query>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>VAR_NotepadPP</Variable>
+				<Label>Notepad++</Label>
+				<HAlign>Left</HAlign>
+				<Checked />
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>VAR_7zip</Variable>
+				<Label>7zip</Label>
+				<HAlign>left</HAlign>
+				<Checked />
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>SMSTSAssignUsersMode</Variable>
+				<Label>Set primary user</Label>
+				<TrueValue>Auto</TrueValue>
+				<FalseValue>Disabled</FalseValue>
+				<HAlign>left</HAlign>
+				
+				<Toggle Group="Group_UDA">
+					<Enabled>Auto</Enabled>
+					<Disabled>Disabled</Disabled>
+				</Toggle>
+			</GuiOption>
+			
+			<GuiOption Type="Heading">
+				<Group>Group_UDA</Group>
+				<Label>User Device Affinity</Label>
+				<Bold /> 
+			</GuiOption>
+			
+			<GuiOption Type="FreeText" PurgeInactive="TRUE">
+				<Group>Group_UDA</Group>
+				<Variable>SMSTSUdaUsers</Variable>
+				<Label>User:</Label>
+				<DefaultValue>
+					<Value>Home\</Value>
+				</DefaultValue>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Group>Group_UDA</Group>
+				<Variable>VAR_UDACheck</Variable>
+				<Label>CHeck test</Label>
+				<HAlign>left</HAlign>
+				<Checked />
+			</GuiOption>
+		</Column>		
 	</Page>
+	
 </TsGui>
