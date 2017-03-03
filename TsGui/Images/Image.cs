@@ -28,6 +28,13 @@ namespace TsGui.Images
         private double _height;
         private MultiImage _multiimage;
         private MainController _controller;
+        private string _file;
+
+        public string File
+        {
+            get { return this._file; }
+            set { this._file = value; this.OnPropertyChanged(this, "File"); }
+        }
 
         public MultiImage MultiImage
         {
@@ -70,8 +77,8 @@ namespace TsGui.Images
         {
             if (InputXml != null)
             {
-                string file = XmlHandler.GetStringFromXElement(InputXml, "File", string.Empty);
-                this.MultiImage = new MultiImage(file, this._controller);
+                this._file = XmlHandler.GetStringFromXElement(InputXml, "File", string.Empty);
+                this.MultiImage = new MultiImage(_file, this._controller);
                 this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
                 this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
                 this.StretchMode = XmlHandler.GetStretchFromXElement(InputXml, "Stretch", this.StretchMode);

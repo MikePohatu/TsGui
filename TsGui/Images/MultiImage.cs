@@ -22,16 +22,18 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows.Threading;
 
 using TsGui.Helpers;
 using TsGui.View;
+using TsGui.Events;
 
 namespace TsGui.Images
 {
     public class MultiImage: ViewModelBase
     {
+        public event TsGuiWindowEventHandler ImageScalingUpdate;
+
         private string _rootpath;
         private string _imagename;
         private string _imageextn;
@@ -49,6 +51,10 @@ namespace TsGui.Images
         {
             set { this._currentimage = value; this.OnPropertyChanged(this,"CurrentImage"); }
             get { return this._currentimage; }
+        }
+        public string CurrentFilePath
+        {
+            get { return this._currentimage?.UriSource.LocalPath; }
         }
         public MultiImage (string FileName, MainController MainController)
         {
@@ -106,6 +112,8 @@ namespace TsGui.Images
                     else { break; }
                 }
             }
+            this.OnPropertyChanged(this, "CurrentFileName");
+            this.ImageScalingUpdate?.Invoke(this, new RoutedEventArgs());
         }
 
         private void AddImage(string ImageName)

@@ -26,7 +26,7 @@ namespace TsGui.View.GuiOptions
     {
         public Image Image { get; set; }
         public TsVariable Variable { get { return null; } }
-        public override string CurrentValue { get { return null; } }
+        public override string CurrentValue { get { return this.Image.MultiImage.CurrentFilePath; } }
 
         //Constructor
         public TsImage(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent,MainController)
@@ -35,7 +35,9 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
             this.UserControl.DataContext = this;
             this.SetDefaults();
-            this.LoadXml(InputXml);          
+            this.LoadXml(InputXml);  
+            
+            if (this.Image != null) { this.Image.MultiImage.ImageScalingUpdate += this.OnImageScalingUpdate; }        
         }
 
 
@@ -47,18 +49,25 @@ namespace TsGui.View.GuiOptions
 
             XElement x;
             x = InputXml.Element("Image");
-            if (x != null) { this.Image = new Image(x,this._controller ); }
+            if (x != null)
+            { this.CreateImage(x); }
+        }
+        
+        public void OnImageScalingUpdate(object o, RoutedEventArgs e)
+        {
+            this.NotifyUpdate();
         }
 
-            
-
-        //fire an intial event to make sure things are set correctly. This is
-        //called by the controller once everything is loaded
+        private void CreateImage(XElement InputXml)
+        {
+            this.Image = new Image(InputXml, this._controller);
+            //this.VariableName = this.Image.File;
+        }
 
         private void SetDefaults()
         {
             this.RightCellWidth = this.LeftCellWidth + this.RightCellWidth;
-            this.LeftCellWidth = 0;
+            this.LeftCellWidth = 0;            
             this.ControlFormatting.Padding = new Thickness(0);
             this.ControlFormatting.Margin = new Thickness(0);
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
