@@ -1,0 +1,370 @@
+<TsGui LiveData="TRUE" >
+	<Height>330</Height>
+	<Width>500</Width>
+
+	<!--<ShowGridLines/>-->
+	<HardwareEval />
+	
+	<Heading>
+		<!--<Title>TsGui</Title>
+		<Text>Task Sequence GUI base config</Text>
+		<Bg-Color>#ff0000</Bg-Color>
+		<Image>
+			<File>avatar.jpg</File>
+			<Width>70</Width>
+			<Height>50</Height>
+			<Stretch>None</Stretch>
+		</Image>
+		<TextColor>#ff0000</TextColor>-->
+		
+		<Formatting>
+			<Height>70</Height>
+			<Label>
+				<Width>100</Width>
+				<Font>
+					<Weight>Normal</Weight>		<!-- Options available: Normal, Bold, ExtraBold, Light -->
+					<Size>11</Size>	
+					<Style>Normal</Style>		<!-- Options available: Normal, Italic, Oblique -->
+					<Color>White</Color>
+				</Font>							
+			</Label>
+				
+			<Control>
+				<Width>120</Width>
+				<Font>
+					<Weight>Normal</Weight>		<!-- Options available: Normal, Bold, ExtraBold, Light -->
+					<Size>11</Size>	
+					<Style>Normal</Style>		<!-- Options available: Normal, Italic, Oblique -->
+					<Color>Black</Color>
+				</Font>								
+			</Control>
+		</Formatting>
+		
+		
+		<Row>			
+			<Column>
+				<Width>250</Width>
+				<GuiOption Type="ComputerName">
+					<Formatting>
+						<Margin>2,12,2,2</Margin>
+						<Control>
+														
+						</Control>
+					</Formatting>
+				</GuiOption>
+			</Column>
+			<Column>
+				<Width>250</Width>
+				<GuiOption Type="Image">
+					<Image>
+						<File>TsGui-TextLogo1.png</File>
+						<Height>50</Height>
+						<Stretch>Uniform</Stretch>					
+					</Image>
+					
+					<Formatting>
+						<Width>250</Width>
+						<LeftCellWidth>100</LeftCellWidth>
+						<RightCellWidth>125</RightCellWidth>
+						
+
+						<Control>
+							<HorizontalAlignment>Right</HorizontalAlignment> 	<!-- Options available: Left, Right, Center, Stretch -->							
+						</Control>
+					</Formatting>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Heading>
+
+	<!-- Panes config -->
+	<LeftPane>
+		<Width>50</Width>
+		<Image>
+			<File>water.jpg</File>
+			<Width>50</Width>
+			<!--<Height>170</Height>-->
+			<Stretch>UniformToFill</Stretch>					
+		</Image>
+	</LeftPane>
+	
+	<!-- *** Pages *** -->
+	<Page>
+		<Formatting>
+			<Width>110</Width>
+		</Formatting>
+
+		<Column>
+			<Formatting>
+				<LeftCellWidth>110</LeftCellWidth>
+				<RightCellWidth>120</RightCellWidth>
+			</Formatting>
+			
+			<GuiOption Type="Heading">
+				<Label>Applications</Label>
+				<Bold/>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>App_Photoshop</Variable>
+				<Label>Photoshop</Label>
+				<HAlign>left</HAlign>
+				
+				<Toggle Group="Group_Photoshop">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+				</Toggle>
+				
+				<Toggle Group="Group_No_Photoshop">
+					<Enabled>FALSE</Enabled>
+					<Disabled>TRUE</Disabled>
+				</Toggle>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>App_Office</Variable>
+				<Label>Office</Label>
+				<HAlign>left</HAlign>
+			</GuiOption>
+			
+			<GuiOption Type="CheckBox">
+				<Variable>App_MSProject</Variable>
+				<Label>Microsoft Project</Label>
+				<HAlign>left</HAlign>
+			</GuiOption>
+			
+			<GuiOption Type="DropDownList">
+				<Variable>VAR_Department</Variable>
+				<Label>Department:</Label>
+				<DefaultValue>HR</DefaultValue>
+				<Option>
+					<Toggle Group="Group_IT">
+						<Hide/>
+					</Toggle>
+					<Text>IT</Text>
+					<Value>IT</Value>
+				</Option>
+				<Option>
+					<Toggle Group="Group_HR">
+						<Hide/>
+					</Toggle>
+					<Text>Human Resources</Text>
+					<Value>HR</Value>
+				</Option>
+				<Option>
+					<Toggle Group="Group_PMO">
+						<Hide/>
+					</Toggle>
+					<Text>Project Office</Text>
+					<Value>PMO</Value>
+				</Option>
+			</GuiOption>
+			
+			<GuiOption Type="DropDownList" NoDefaultValue="TRUE">
+				<!-- The NoSelectionMessage element overrides the default "Please select a value" text when nothing is selected by the user -->
+				<NoSelectionMessage>Please select something</NoSelectionMessage>
+				<Variable>Country</Variable>
+				<Label>Country:</Label>
+				<Option>
+					<Text>Australia</Text>
+					<Value>AU</Value>
+				</Option>
+				<Option>
+					<Text>New Zealand</Text>
+					<Value>NZ</Value>
+				</Option>
+				<Option>
+					<Text>USA</Text>
+					<Value>USA</Value>
+				</Option>
+			</GuiOption>
+		</Column>
+		
+		<Column>
+			<Width>30</Width>
+		</Column>
+
+		<Column>
+			<Formatting>
+				<Width>150</Width>
+				<LeftCellWidth>130</LeftCellWidth>
+				<RightCellWidth>20</RightCellWidth>
+			</Formatting>
+			
+			<GuiOption Type="Heading">
+				<Label>System readiness </Label>
+				<Bold/>
+			</GuiOption>
+			
+			<GuiOption Type="TrafficLight">
+				<Variable>Compliance_InstalledMemory</Variable>
+				<Label>Installed Memory: </Label>
+				<PopupShowValue>FALSE</PopupShowValue>
+				<GetValue>
+					<Query Type="Wmi">
+						<Wql>SELECT TotalPhysicalMemory from Win32_ComputerSystem</Wql>
+						<Property Name="TotalPhysicalMemory">
+							<Calculate DecimalPlaces="0">VALUE/1073741824</Calculate>
+						</Property>	
+						<Separator></Separator>
+					</Query>
+				</GetValue>
+				<Compliance>
+					<Group>Group_No_Photoshop</Group>
+					<Message>8GB memory is recommended. Minimum memory is 4GB</Message>			
+					<OK>
+						<Rule Type="GreaterThanOrEqualTo">8</Rule>
+					</OK>
+					<Warning>
+						<Rule Type="LessThan">8</Rule>
+					</Warning>
+					<Error>
+						<Rule Type="LessThan">4</Rule>
+					</Error>
+					<Invalid>
+						<Rule Type="LessThan">2</Rule>
+					</Invalid>
+				</Compliance>
+				
+				<Compliance>
+					<Group>Group_Photoshop</Group>					
+					<Message>16GB is recommended for Photoshop. Minimum of 8GB is required</Message>			
+					<OK>
+						<Rule Type="GreaterThanOrEqualTo">16</Rule>
+					</OK>
+					<Warning>
+						<Rule Type="LessThan">16</Rule>
+					</Warning>
+					<Error>
+						<Rule Type="LessThan">8</Rule>
+					</Error>
+					<Invalid>
+						<Rule Type="LessThan">4</Rule>
+					</Invalid>
+				</Compliance>
+			</GuiOption>
+			
+			<GuiOption Type="TrafficLight">
+				<Variable>Compliance_PowerStatus</Variable>
+				<Label>Power connected: </Label>
+				<PopupShowValue>FALSE</PopupShowValue>
+				<GetValue>
+					<Query Type="Wmi">
+						<Wql>SELECT BatteryStatus FROM Win32_Battery</Wql>
+						<Property Name="BatteryStatus"/>	
+						<Separator></Separator>
+					</Query>
+				</GetValue>
+				<Compliance>
+					<Message>Please connect the power</Message>		
+					<DefaultState>Error</DefaultState>
+					<OK>
+						<Rule Type="Equals">2</Rule>
+					</OK>
+				</Compliance>
+			</GuiOption>
+			
+			<GuiOption Type="TrafficLight">
+				<Variable>Compliance_WifiStatus</Variable>
+				<Label>Wifi disconnected: </Label>
+				<PopupShowValue>FALSE</PopupShowValue>
+				<GetValue>
+					<Query Type="Wmi">
+						<Wql>SELECT * FROM Win32_NetworkAdapter WHERE (AdapterType="Ethernet 802.3") AND (NetConnectionStatus=2)</Wql>
+						<Property Name="Name"/>	
+						<Separator></Separator>
+					</Query>
+				</GetValue>
+				<Compliance>
+					<Message>Please disconnect the wifi</Message>		
+					<DefaultState>Warning</DefaultState>
+					<Invalid>
+						<Rule Type="Contains">Wireless</Rule>
+						<Rule Type="Contains">Wifi</Rule>
+						<Rule Type="Contains">WLAN</Rule>
+					</Invalid>
+				</Compliance>
+			</GuiOption>
+			
+			<GuiOption Type="Heading"/>
+			<GuiOption Type="ComplianceRefreshButton">
+				<Formatting>
+					<LeftCellWidth>20</LeftCellWidth>
+					<RightCellWidth>130</RightCellWidth>
+					<Control>
+						<HorizontalAlignment>Right</HorizontalAlignment>
+					</Control>
+					
+				</Formatting>
+				<HAlign>left</HAlign>
+			</GuiOption>
+		</Column>
+	</Page>
+	
+	<!-- Page 2 -->
+	<Page>
+		<Group>Group_IT</Group>
+		<Row>
+			<Column>
+				<Formatting>
+					<Width>360</Width>
+					<LeftCellWidth>150</LeftCellWidth>
+					<RightCellWidth>200</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="Heading">
+					<Label>IT Applications</Label>
+					<Bold/>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_ExchangeConsole</Variable>
+					<Label>Exchange Console</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_RSAT</Variable>
+					<Label>Remote Server Administration Tools</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+				
+			</Column>
+		</Row>
+	</Page>
+
+	<!-- *** NoUI section *** -->
+	<NoUI>
+		<!-- NoUIOptions function like GuiOptions but without the user interface -->
+		<NoUIOption Variable="NoUIOption_1" Value="NoUIOption_1_Val"/>
+		<NoUIOption Variable="NoUIOption_2">
+			<SetValue>
+				<Query Type="Wmi">
+					<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
+					<Property Name="Year">
+						<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
+						<Prefix>PC-</Prefix>
+					</Property>
+					<Property Name="Month"/>
+					<Property Name="Day"/>			
+					<Separator></Separator>
+				</Query>
+			</SetValue>
+		</NoUIOption>
+		
+		<!-- Containers are used for for inheritance purposes. They function like pages, rows, and columns, e.g. 
+		group membership effects all NoUIOptions and Containers below. -->
+		<Container>
+			<Group>Group_Test</Group>
+			<NoUIOption Variable="NoUIOption_3" Value="NoUIOption_3_Val"/>
+			<NoUIOption>
+				<Variable>NoUIOption_4</Variable>
+				<SetValue>
+					<Value>NoUIOption_4_Val</Value>
+				</SetValue>
+				<InactiveValue>NoUIOption_4_Inactive</InactiveValue>
+			</NoUIOption>
+			<NoUIOption Variable="NoUIOption_5" Value="NoUIOption_5_Val" PurgeInactive="TRUE"/>
+		</Container>
+	</NoUI>
+</TsGui>

@@ -1,155 +1,62 @@
-<TsGui TestingWindow="TRUE">
-	<ShowGridLines /> 
-	
-	<Height>230</Height>
-	<Width>510</Width>
+<TsGui>
+	<Height>250</Height>
+	<Width>300</Width>
 
 	<HardwareEval />
 	
 	<Heading>
-		<Title>Server Imaging</Title>
-		<Text>Configure your Server</Text>
-		<Bg-Color>#0074E4</Bg-Color>
-		<Font-Color>#FFFFFF</Font-Color>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI base config</Text>
 	</Heading>
-	
-	<Footer>
-		<Text>Powered by IT</Text>
-		<Height>17</Height>
-		<HAlign>right</HAlign>
-	</Footer>
 
 	<Page>
 		<Column>
-			<Width>280</Width>
-			<LabelWidth>110</LabelWidth>
-			<ControlWidth>160</ControlWidth>
+			<Formatting>
+				<LeftCellWidth>110</LeftCellWidth>
+				<RightCellWidth>160</RightCellWidth>
+			</Formatting>
 			
-			<GuiOption Type="ComputerName" />
-			
-			<GuiOption Type="DropDownList">
-				<Variable>VAR_Domain</Variable>
-				<Label>Domain:</Label>
-				<DefaultValue>domain_1</DefaultValue>			
-				<Option>
-					<Text>company.local</Text>
-					<Value>domian_1</Value>
-					<Toggle Group="D1_OU">
-						<Hide/>
-					</Toggle>
-				</Option>
-				<Option>
-					<Text>a.test.company.com</Text>
-					<Value>domain_2</Value>
-					<Toggle Group="D2_OU">
-						<PurgeInactive />
-						<Hide/>
-					</Toggle>
-				</Option>
-				<Option>
-					<Text>b.test.company.com</Text>
-					<Value>domain_3</Value>
-					<Toggle Group="D3_OU">
-						<Hide/>
-					</Toggle>
-				</Option>
+			<GuiOption Type="TrafficLight">
+				<Variable>CC_Test</Variable>
+				<Label>Compliance Test</Label>
+				<Formatting>						
+					<Control>
+						<HorizontalAlignment>Left</HorizontalAlignment> 	<!-- Options available: Left, Right, Center, Stretch -->						
+					</Control>
+				</Formatting>
 				
-				<HelpText>Select the domain the server will be in.</HelpText>
+				<GetValue>
+					<Query Type="Wmi">
+						<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
+						<Property Name="Year">
+							<Truncate Type="KeepFromEnd">2</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
+							<Prefix>PC-</Prefix>
+						</Property>
+						<Property Name="Month"/>
+						<Property Name="Day"/>			
+						<Separator></Separator>
+					</Query>
+				</GetValue>
+				
+				<Compliance>
+					<Group>Group_Test</Group>
+	
+					<OK>
+						<Rule Type="StartsWith" CaseSensitive="TRUE">2015</Rule>
+					</OK>
+				</Compliance>
 			</GuiOption>
 			
-			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
-				<Group>D1_OU</Group>
-				<Variable>VAR_OU</Variable>
-				<Label>OU:</Label>
-				<DefaultValue>D1_OU_1</DefaultValue>
-				<Option>
-					<Text>Domain 1 OU 1</Text>
-					<Value>D1_OU_1</Value>
-				</Option>
-				<Option>
-					<Text>Domain 1 OU 2</Text>
-					<Value>D1_OU_2</Value>
-				</Option>
-				<Option>
-					<Text>Domain 1 OU 3</Text>
-					<Value>D1_OU_3</Value>
-				</Option>
-			</GuiOption>
-			
-
-			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
-				<Group>D2_OU</Group>
-				<Variable>VAR_OU</Variable>
-				<Label>OU:</Label>
-				<DefaultValue>D2_OU_1</DefaultValue>
-				<Option>
-					<Text>Domain 2 OU 1</Text>
-					<Value>D2_OU_1</Value>
-				</Option>
-				<Option>
-					<Text>Domain 2 OU 2</Text>
-					<Value>D2_OU_2</Value>
-				</Option>
-				<Option>
-					<Text>Domain 2 OU 3</Text>
-					<Value>D2_OU_3</Value>
-				</Option>
-			</GuiOption>
-
-			<GuiOption Type="DropDownList" PurgeInactive="TRUE">
-				<Group>D3_OU</Group>
-				<Variable>VAR_OU</Variable>
-				<Label>OU:</Label>
-				<DefaultValue>D3_OU_1</DefaultValue>
-				<Option>
-					<Text>Domain 3 OU 1</Text>
-					<Value>D3_OU_1</Value>
-				</Option>
-				<Option>
-					<Text>Domain 3 OU 2</Text>
-					<Value>D3_OU_2</Value>
-				</Option>
-				<Option>
-					<Text>Domain 3 OU 3</Text>
-					<Value>D3_OU_3</Value>
-				</Option>
-			</GuiOption>
-			
-			<GuiOption Type="FreeText" MaxLength="100" MinLength="4">
-				<Disallowed>
-					<Characters>abcdefchijklmnopqrstuvwxyz`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
-				</Disallowed>
-				<Variable>VAR_PageFileSize</Variable>
-				<Label>Page File (MB):</Label>
-				<DefaultValue>
-					<Value>4096</Value>
-				</DefaultValue>
-				<HelpText>Enter the size of page file you want to set.</HelpText>
-			</GuiOption>
-		</Column>
-		
-		<Column>
-			<Width>210</Width>
-			<LabelWidth>190</LabelWidth>
-			<ControlWidth>20</ControlWidth>
-		
-			<GuiOption Type="Heading">
-				<Label>Additional Applications</Label>
-				<Bold /> 
-			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
-				<Variable>VAR_DotNet</Variable>
-				<Label>Install .NET 3.5</Label>
-				<HAlign>right</HAlign>
-				<HelpText>Install .NET 3.5</HelpText>
-			</GuiOption>
-			
-			<GuiOption Type="CheckBox">
-				<Variable>VAR_SSMS</Variable>
-				<Label>Install SSMS</Label>
-				<HAlign>right</HAlign>
-				<HelpText>Install SSMS</HelpText>
+				<Variable>TOGGLE_Test</Variable>
+				<Label>Test group enabled</Label>
+				<HAlign>left</HAlign>
+				
+				<Toggle Group="Group_Test">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+				</Toggle>
 			</GuiOption>
 		</Column>
 	</Page>
