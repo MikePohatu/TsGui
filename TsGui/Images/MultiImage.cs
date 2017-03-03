@@ -26,10 +26,11 @@ using System.ComponentModel;
 using System.Windows.Threading;
 
 using TsGui.Helpers;
+using TsGui.View;
 
 namespace TsGui.Images
 {
-    public class MultiImage: INotifyPropertyChanged
+    public class MultiImage: ViewModelBase
     {
         private string _rootpath;
         private string _imagename;
@@ -64,16 +65,6 @@ namespace TsGui.Images
 
             if (this._images.Count > 1) { this._controller.WindowMouseUp += this.OnWindowMouseUp; }
         }
-
-        //Events
-        #region 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(object sender, string name)
-        {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-        }
-        #endregion
 
         public void OnWindowMouseUp(object sender, RoutedEventArgs e)
         {

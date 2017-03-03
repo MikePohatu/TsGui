@@ -15,14 +15,13 @@
 
 // Image.cs - view model class for the image on a page
 
-using System.ComponentModel;
 using System.Xml.Linq;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using TsGui.View;
 
 namespace TsGui.Images
 {
-    public class Image : INotifyPropertyChanged
+    public class Image : ViewModelBase
     {
         private Stretch _stretchmode;
         private double _width;
@@ -65,17 +64,6 @@ namespace TsGui.Images
             this._controller = MainController;
             this.SetDefaults();
         }
-
-        //events
-        #region
-        //Setup the INotifyPropertyChanged interface 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(object sender, string name)
-        {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-        }
-        #endregion
 
         //Methods
         public void LoadXml(XElement InputXml)
