@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsComplianceRetryButton.cs - button for retrying compliance rules on a page
+// TsComplianceRefreshButton.cs - button for retrying compliance rules on a page
 
 using System.Xml.Linq;
 using System.Windows;
