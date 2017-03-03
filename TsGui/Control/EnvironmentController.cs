@@ -83,7 +83,7 @@ namespace TsGui
                     s = this.ProcessQuery(x).GetString();
 
                     //now check any return value is valid before returning from method. 
-                    if (!string.IsNullOrEmpty(s.Trim()))
+                    if (!string.IsNullOrEmpty(s?.Trim()))
                     {
                         //if it shouldn't be ignored, return the value. Otherwise, carry on
                         if (ResultValidator.ShouldIgnore(x, s) == false) { return s; }
@@ -136,12 +136,12 @@ namespace TsGui
 
             if (string.Equals(type, "Wmi", StringComparison.OrdinalIgnoreCase))
             {
-                wrangler = ProcessWmiQuery(InputXml);               
+                wrangler = this.ProcessWmiQuery(InputXml);               
             }
 
             else if (string.Equals(type, "EnvironmentVariable", StringComparison.OrdinalIgnoreCase))
             {
-                wrangler = ProcessEnvironmentVariableQuery(InputXml);
+                wrangler = this.ProcessEnvironmentVariableQuery(InputXml);
             }
 
             return wrangler;

@@ -207,10 +207,16 @@ namespace TsGui.Validation
             bool result = false;
             string rulestring = Rule.Content;
             string inputstring = Input;
-            
+
+            if (inputstring == null)
+            {
+                if (rulestring?.ToUpper() == "*NULL") { return true; }
+                else { return false; }
+            }
+
             if (Rule.IsCaseSensitive == false)
             {
-                rulestring = rulestring.ToUpper();
+                rulestring = rulestring?.ToUpper();
                 inputstring = inputstring.ToUpper();
             }
 
