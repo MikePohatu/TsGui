@@ -220,37 +220,44 @@ namespace TsGui
 
             //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
             //New sublists are created for each management object in the wrangler. 
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjects(wql))
+            try
             {
-                wrangler.NewSubList();
-                ResultFormatter rf = null;
-                string input = null;
-
-                //if properties have been specified in the xml, query them directly in order
-                if (selectProperties == true)
+                foreach (ManagementObject m in SystemConnector.GetWmiManagementObjects(wql))
                 {
-                    foreach (KeyValuePair<string, XElement> template in propertyTemplates)
-                    {
-                        input = m.GetPropertyValue(template.Key).ToString();
+                    wrangler.NewSubList();
+                    ResultFormatter rf = null;
+                    string input = null;
 
-                        rf = new ResultFormatter(template.Value);
-                        rf.Input = input;
-                        wrangler.AddResultFormatter(rf);
-                    }
-                }
-                //if properties not set, add them all 
-                else
-                {
-                    foreach (PropertyData property in m.Properties)
+                    //if properties have been specified in the xml, query them directly in order
+                    if (selectProperties == true)
                     {
-                        if (property.Value != null)
+                        foreach (KeyValuePair<string, XElement> template in propertyTemplates)
                         {
-                            rf = new ResultFormatter();
-                            rf.Input = property.Value.ToString();
+                            input = m.GetPropertyValue(template.Key).ToString();
+
+                            rf = new ResultFormatter(template.Value);
+                            rf.Input = input;
                             wrangler.AddResultFormatter(rf);
                         }
                     }
-                } 
+                    //if properties not set, add them all 
+                    else
+                    {
+                        foreach (PropertyData property in m.Properties)
+                        {
+                            if (property.Value != null)
+                            {
+                                rf = new ResultFormatter();
+                                rf.Input = property.Value.ToString();
+                                wrangler.AddResultFormatter(rf);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (ManagementException)
+            {
+                throw new InvalidOperationException("WMI query caused an error e.g. invalid class:" + Environment.NewLine + wql + Environment.NewLine);
             }
 
             return wrangler;
