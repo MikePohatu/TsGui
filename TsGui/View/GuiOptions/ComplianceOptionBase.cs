@@ -104,9 +104,9 @@ namespace TsGui.View.GuiOptions
 
                 
                 if (string.IsNullOrEmpty(validationmessage)) { s = s + _compliancehandler.FailedValidationMessage; }
-                if ((this._showvalueinpopup == true) || string.IsNullOrEmpty(s)) { s = "\"" + this._value + "\" is invalid" + Environment.NewLine + s; }
+                else { s = validationmessage; }
 
-                else { s = s + validationmessage; }
+                if ((this._showvalueinpopup == true) || string.IsNullOrEmpty(s)) { s = "\"" + this._value + "\" is invalid" + Environment.NewLine + s; }
 
                 this.ValidationText = s;
                 this._validationtooltiphandler.ShowError();
@@ -139,6 +139,7 @@ namespace TsGui.View.GuiOptions
             this.LoadLegacyXml(InputXml);
             this._okHelpText = this.HelpText;
             this._compliancehandler.AddCompliances(InputXml.Elements("Compliance"));
+            this._showvalueinpopup = XmlHandler.GetBoolFromXElement(InputXml, "PopupShowValue", this._showvalueinpopup);
 
             //wrap the query in another to make it suitable for the controller. 
             this._queryxml = InputXml.Element("GetValue");
