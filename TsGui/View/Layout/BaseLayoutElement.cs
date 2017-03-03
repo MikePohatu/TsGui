@@ -15,6 +15,8 @@
 
 // BaseLayoutElement.cs - base class for elements in the UI tree (page, row, column, guioptions
 
+using System.Windows;
+
 using TsGui.Grouping;
 
 using System.Xml.Linq;
@@ -28,6 +30,7 @@ namespace TsGui.View.Layout
         private double _rightcellwidth;
         private double _width;
         private double _height;
+        private Thickness _margin;
 
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
@@ -41,6 +44,11 @@ namespace TsGui.View.Layout
         {
             get { return this._width; }
             set { this._width = value; this.OnPropertyChanged(this, "Width"); }
+        }
+        public Thickness Margin
+        {
+            get { return this._margin; }
+            set { this._margin = value; this.OnPropertyChanged(this, "Margin"); }
         }
         public double LeftCellWidth
         {
@@ -81,7 +89,7 @@ namespace TsGui.View.Layout
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
             this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);           
             this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
-
+            
             XElement x;
             XElement subx;
             
@@ -89,6 +97,7 @@ namespace TsGui.View.Layout
             x = InputXml.Element("Formatting");
             if (x != null)
             {
+                this.Margin = XmlHandler.GetThicknessFromXElement(x, "Margin", this.Margin);
                 this.Width = XmlHandler.GetDoubleFromXElement(x, "Width", this.Width);
                 this.Height = XmlHandler.GetDoubleFromXElement(x, "Height", this.Height);
                 this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(x, "LeftCellWidth", this.LeftCellWidth);

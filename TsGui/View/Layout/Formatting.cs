@@ -19,7 +19,6 @@
 using System;
 using System.Windows;
 using System.Xml.Linq;
-using System.ComponentModel;
 using System.Windows.Media;
 
 namespace TsGui.View.Layout
