@@ -169,6 +169,10 @@
     <Compile Include="View\Layout\TsPageHeaderUI.xaml.cs">
       <DependentUpon>TsPageHeaderUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Layout\TsPane.cs" />
+    <Compile Include="View\Layout\TsPaneUI.xaml.cs">
+      <DependentUpon>TsPaneUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Layout\TsTable.cs" />
     <Compile Include="View\Layout\WindowLocation.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
@@ -278,6 +282,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Layout\TsPageHeaderUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Layout\TsPaneUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

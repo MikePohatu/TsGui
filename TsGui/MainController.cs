@@ -192,7 +192,12 @@ namespace TsGui
                 if (x != null) { pagedef.PageHeader = new TsPageHeader(x, this); }
                 else { pagedef.PageHeader = new TsPageHeader(this); }
 
-                
+                x = SourceXml.Element("LeftPane");
+                if (x != null) { pagedef.LeftPane = new TsPane(x,this); }
+
+                x = SourceXml.Element("RightPane");
+                if (x != null) { pagedef.RightPane = new TsPane(x, this); }
+
                 pagedef.Buttons = this._buttons;
                 pagedef.Parent = this.TsMainWindow;
                 pagedef.RootController = this;

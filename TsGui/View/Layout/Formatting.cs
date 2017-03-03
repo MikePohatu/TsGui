@@ -24,7 +24,7 @@ using System.Windows.Media;
 
 namespace TsGui.View.Layout
 {
-    public class Formatting: INotifyPropertyChanged
+    public class Formatting: ViewModelBase
     {
         //Fields
         #region
@@ -123,22 +123,16 @@ namespace TsGui.View.Layout
         }
         #endregion
 
-        //Event handling
-        #region
-        //Setup the INotifyPropertyChanged interface 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // OnPropertyChanged method to raise the event
-        public void OnPropertyChanged(object sender, string name)
-        {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-        }
-        #endregion
-
         //Constructor 
         public Formatting()
         {
             this.SetDefaults();
+        }
+
+        public Formatting(XElement InputXml)
+        {
+            this.SetDefaults();
+            this.LoadXml(InputXml);
         }
 
         private void SetDefaults()

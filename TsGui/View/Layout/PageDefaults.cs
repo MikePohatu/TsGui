@@ -25,5 +25,7 @@ namespace TsGui.View.Layout
         public MainController RootController { get; set; }
         public TsMainWindow Parent { get; set; }
         public TsTable Table { get; set; }
+        public TsPane LeftPane { get; set; }
+        public TsPane RightPane { get; set; }
     }
 }

@@ -38,6 +38,8 @@ namespace TsGui.View.Layout
 
         //Properties
         #region
+        public TsPane LeftPane { get; set; }
+        public TsPane RightPane { get; set; }
         public TsPageHeader PageHeader { get; set; }
         public TsPage NextActivePage
         {
@@ -97,6 +99,8 @@ namespace TsGui.View.Layout
             this.ShowGridLines = MainController.ShowGridLines;
             this._pageui = new TsPageUI(this);
             this.PageHeader = Defaults.PageHeader;
+            this.LeftPane = Defaults.LeftPane;
+            this.RightPane = Defaults.RightPane;
 
             this._pageui.Loaded += this.OnWindowLoaded;          
             this._pageui.DataContext = this;
@@ -118,9 +122,17 @@ namespace TsGui.View.Layout
             x = InputXml.Element("Heading");
             if (x != null) { this.PageHeader = new TsPageHeader(this,this.PageHeader,x,this._controller); }
 
+            x = InputXml.Element("LeftPane");
+            if (x != null) { this.LeftPane = new TsPane(x, this._controller); }
+
+            x = InputXml.Element("RightPane");
+            if (x != null) { this.RightPane = new TsPane(x, this._controller); }
+
             //create the table adn bind it to the content
             this._table = new TsTable(InputXml, this, this._controller);
             this._pageui.MainTablePresenter.Content = this._table.Grid;
+            this._pageui.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
+            this._pageui.RightPanePresenter.Content = this.RightPane?.PaneUI;
         }
 
         public bool OptionsValid()
