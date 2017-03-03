@@ -74,12 +74,15 @@ TestingWindowUI.xaml - shows live data at runtime
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock Text="Screen Dimensions" FontWeight="Bold" Margin="2,5,2,2" HorizontalAlignment="Left"/>
             <TextBlock Text="Primary Screen Width: " Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"/>
             <TextBlock Text="Primary Screen Height: " Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left"/>
+            <TextBlock Text="Current Display Scaling: " Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"/>
             <TextBlock Text="{Binding ScreenWidth}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left"/>
             <TextBlock Text="{Binding ScreenHeight}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"/>
+            <TextBlock Text="{Binding CurrentScaling}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left"/>
         </Grid>
     </StackPanel>
 </Window>

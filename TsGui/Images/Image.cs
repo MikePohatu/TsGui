@@ -95,7 +95,7 @@ namespace TsGui.Images
         {
             this.Height = double.NaN;
             this.Width = double.NaN;
-            this.StretchMode = Stretch.Uniform;
+            this.StretchMode = Stretch.UniformToFill;
         }
     }
 }

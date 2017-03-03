@@ -21,21 +21,29 @@ using System;
 using System.Drawing;
 using System.Windows.Media;
 
+using TsGui.View;
 using TsGui.View.Layout;
 using TsGui.View.Helpers;
+using TsGui.Helpers;
 
 namespace TsGui.Diagnostics
 {
-    public class TestingWindow
+    public class TestingWindow: ViewModelBase
     {
         private MainController _controller;
         private TestingWindowUI _testingwindowui;
         private ObservableCollection<IOption> _options;
+        private int _currentscaling;
 
         public ObservableCollection<IOption> Options { get { return this._options; } }
         public TsMainWindow TsMainWindow { get; set; }
         public double ScreenHeight { get; set; }
         public double ScreenWidth { get; set; }
+        public int CurrentScaling
+        {
+            get { return this._currentscaling; }
+            set { this._currentscaling = value; this.OnPropertyChanged(this, "CurrentScaling"); }
+        }
         public ImageSource Icon { get; set; }
 
         public TestingWindow(MainController Controller)
@@ -48,8 +56,14 @@ namespace TsGui.Diagnostics
             this._testingwindowui.DataContext = this;
             this._options = this._controller.OptionLibrary.Options;
             this.TsMainWindow = this._controller.TsMainWindow;
+            this._controller.ParentWindow.Loaded += this.OnParentWindowLoaded;
             this._controller.ParentWindow.Closed += this.OnParentWindowClosing;
             this._testingwindowui.Show();
+        }
+
+        public void OnParentWindowLoaded(object o, EventArgs e)
+        {
+            this.CurrentScaling = DisplayInformation.GetScaling();
         }
 
         public void OnParentWindowClosing(object o, EventArgs e)

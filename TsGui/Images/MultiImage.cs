@@ -34,11 +34,16 @@ namespace TsGui.Images
         private string _rootpath;
         private string _imagename;
         private string _imageextn;
-        private int _scale;
+        private int _currentscaling;
         private SortedDictionary<int, BitmapImage> _images;
         private BitmapImage _currentimage;
         private MainController _controller;
 
+        public int CurrentScaling
+        {
+            set { this._currentscaling = value; this.OnPropertyChanged(this, "CurrentScaling"); }
+            get { return this._currentscaling; }
+        }
         public BitmapImage CurrentImage
         {
             set { this._currentimage = value; this.OnPropertyChanged(this,"CurrentImage"); }
@@ -96,9 +101,9 @@ namespace TsGui.Images
 
         private void UpdateImage(int Scale)
         {
-            if (this._scale == Scale) { return; }
+            if (this.CurrentScaling == Scale) { return; }
 
-            this._scale = Scale;
+            this.CurrentScaling = Scale;
             BitmapImage outimage;
             this._images.TryGetValue(Scale, out outimage);
             if (outimage != null) { this.CurrentImage = outimage; }
