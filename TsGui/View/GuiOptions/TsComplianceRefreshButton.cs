@@ -21,11 +21,11 @@ using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsComplianceRetryButton : GuiOptionBase, IGuiOption
+    public class TsComplianceRefreshButton : GuiOptionBase, IGuiOption
     {
         private IRootLayoutElement _rootelement;
         private string _buttontext;
-        private TsComplianceRetryButtonUI _ui;
+        private TsComplianceRefreshButtonUI _ui;
 
         public override string CurrentValue { get { return null; } }
         public TsVariable Variable { get { return null; } }
@@ -40,12 +40,12 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsComplianceRetryButton(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent,MainController)
+        public TsComplianceRefreshButton(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent,MainController)
         {
             this._rootelement = this.GetRootElement();
 
             this.UserControl.DataContext = this;           
-            this._ui = new TsComplianceRetryButtonUI();
+            this._ui = new TsComplianceRefreshButtonUI();
             this.Control = this._ui;
             this._ui.RetryButton.Click += this.OnButtonClick;
 
@@ -70,7 +70,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ButtonText = "Retry";
+            this.ButtonText = "Refresh";
             this.ControlFormatting.Height = 25;
             this.ControlFormatting.Width = 60;
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;

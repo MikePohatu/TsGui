@@ -112,9 +112,9 @@
     <Compile Include="Validation\ValidationHandler.cs" />
     <Compile Include="Validation\ValidationToolTipHandler.cs" />
     <Compile Include="View\GuiOptions\GuiOptionGridFormatting.cs" />
-    <Compile Include="View\GuiOptions\TsComplianceRetryButton.cs" />
-    <Compile Include="View\GuiOptions\TsComplianceRetryButtonUI.xaml.cs">
-      <DependentUpon>TsComplianceRetryButtonUI.xaml</DependentUpon>
+    <Compile Include="View\GuiOptions\TsComplianceRefreshButton.cs" />
+    <Compile Include="View\GuiOptions\TsComplianceRefreshButtonUI.xaml.cs">
+      <DependentUpon>TsComplianceRefreshButtonUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsImage.cs" />
     <Compile Include="View\GuiOptions\TsCheckBox.cs" />
@@ -214,7 +214,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\GuiOptions\TsComplianceRetryButtonUI.xaml">
+    <Page Include="View\GuiOptions\TsComplianceRefreshButtonUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

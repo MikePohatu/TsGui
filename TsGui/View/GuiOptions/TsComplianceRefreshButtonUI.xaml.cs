@@ -17,9 +17,9 @@ namespace TsGui.View.GuiOptions
     /// <summary>
     /// Interaction logic for TsCheckBoxUI.xaml
     /// </summary>
-    public partial class TsComplianceRetryButtonUI : UserControl
+    public partial class TsComplianceRefreshButtonUI : UserControl
     {
-        public TsComplianceRetryButtonUI()
+        public TsComplianceRefreshButtonUI()
         {
             InitializeComponent();
         }
