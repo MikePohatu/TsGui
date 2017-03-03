@@ -40,7 +40,7 @@ PageLayout.xaml - main layout for each page.
             <ContentPresenter x:Name="HeaderPresenter"/>
         </Grid>
 
-        <Grid x:Name="PageAreaGrid" Background="White" Grid.Row="1" >
+        <Grid x:Name="PageAreaGrid" Background="White" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding LeftPane.Width}"></ColumnDefinition>
                 <ColumnDefinition Width="100*"></ColumnDefinition>

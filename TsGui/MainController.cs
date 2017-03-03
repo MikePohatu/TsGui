@@ -201,9 +201,11 @@ namespace TsGui
 
                 x = SourceXml.Element("LeftPane");
                 if (x != null) { pagedef.LeftPane = new TsPane(x,this); }
+                else { pagedef.LeftPane = new TsPane(this); }
 
                 x = SourceXml.Element("RightPane");
                 if (x != null) { pagedef.RightPane = new TsPane(x, this); }
+                else { pagedef.RightPane = new TsPane(this); }
 
                 pagedef.Buttons = this._buttons;
                 pagedef.Parent = this.TsMainWindow;

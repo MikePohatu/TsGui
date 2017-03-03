@@ -90,8 +90,8 @@ namespace TsGui.View.Layout
 
         private void SetDefaults()
         {
-            this.Width = double.NaN;
-            this.Height = double.NaN;
+            this.Width = 0;
+            this.Height = 0;
             this.Formatting.Padding = new Thickness(0);
             this.Formatting.Margin = new Thickness(0);
         }
