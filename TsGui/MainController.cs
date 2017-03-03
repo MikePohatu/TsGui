@@ -78,6 +78,7 @@ namespace TsGui
             {
                 string msg = "Error message: " + exc.Message + Environment.NewLine + exc.ToString();
                 this.CloseWithError("Application Startup Exception", msg);
+                return;
             }
         }
 
@@ -97,8 +98,14 @@ namespace TsGui
             this.TsMainWindow = new TsMainWindow(this.ParentWindow);
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
-
-            this.LoadXml(x);
+            
+            try { this.LoadXml(x); }
+            catch (Exception exc)
+            {
+                string msg = "Error loading config file: " + exc.Message;
+                this.CloseWithError("Error loading config file", msg);
+                return;
+            }
 
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 

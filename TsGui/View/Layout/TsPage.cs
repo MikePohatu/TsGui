@@ -180,6 +180,8 @@ namespace TsGui.View.Layout
         private void ReleaseThisPage()
         {
             this._pageui.HeaderPresenter.Content = null;
+            this._pageui.LeftPanePresenter.Content = null;
+            this._pageui.RightPanePresenter.Content = null;
         }
 
         //Update the prev, next, finish buttons according to the current pages 
@@ -187,6 +189,8 @@ namespace TsGui.View.Layout
         public void Update()
         {
             this._pageui.HeaderPresenter.Content = this.PageHeader.UI;
+            this._pageui.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
+            this._pageui.RightPanePresenter.Content = this.RightPane?.PaneUI;
             TsButtons.Update(this, this._pageui);
         }
 

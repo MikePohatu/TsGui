@@ -26,63 +26,66 @@ namespace TsGui.View.GuiOptions
     {
         public static IGuiOption CreateGuiOption(XElement OptionXml, TsColumn Parent, MainController RootController)
         {
+            XAttribute xtype = OptionXml.Attribute("Type");
+            if (xtype == null) { throw new ArgumentException("Missing Type attribute on GuiOption" + Environment.NewLine); }
+
             #region
-            if (OptionXml.Attribute("Type").Value == "TextBlock")
+            if (xtype.Value == "TextBlock")
             {
                 TsTextBlock tb = new TsTextBlock(OptionXml, Parent, RootController);
                 RootController.AddOptionToLibary(tb);
                 return tb;
             }
 
-            else if (OptionXml.Attribute("Type").Value == "DropDownList")
+            else if (xtype.Value == "DropDownList")
             {
                 TsDropDownList ddl = new TsDropDownList(OptionXml, Parent, RootController);
                 RootController.AddOptionToLibary(ddl);
                 return ddl;
             }
 
-            else if (OptionXml.Attribute("Type").Value == "CheckBox")
+            else if (xtype.Value == "CheckBox")
             {
                 TsCheckBox cb = new TsCheckBox(OptionXml, Parent, RootController);
                 RootController.AddOptionToLibary(cb);
                 return cb;
             }
-            else if (OptionXml.Attribute("Type").Value == "FreeText")
+            else if (xtype.Value == "FreeText")
             {
                 TsFreeText ft = new TsFreeText(OptionXml, Parent, RootController);
                 RootController.AddOptionToLibary(ft);
                 return ft;
             }
 
-            else if (OptionXml.Attribute("Type").Value == "ComputerName")
+            else if (xtype.Value == "ComputerName")
             {
                 TsComputerName cn = new TsComputerName(OptionXml, Parent, RootController);
                 RootController.AddOptionToLibary(cn);
                 return cn;
             }
-            else if (OptionXml.Attribute("Type").Value == "Heading")
+            else if (xtype.Value == "Heading")
             {
                 TsHeading h = new TsHeading(OptionXml, Parent, RootController);
                 return h;
             }
-            else if (OptionXml.Attribute("Type").Value == "InfoBox")
+            else if (xtype.Value == "InfoBox")
             {
                 TsInfoBox ib = new TsInfoBox(OptionXml, Parent, RootController);
                 RootController.AddOptionToLibary(ib);
                 return ib;
             }
-            else if (OptionXml.Attribute("Type").Value == "TrafficLight")
+            else if (xtype.Value == "TrafficLight")
             {
                 TsTrafficLight tl = new TsTrafficLight(OptionXml, Parent, RootController);
                 RootController.AddOptionToLibary(tl);
                 return tl;
             }
-            else if (OptionXml.Attribute("Type").Value == "Image")
+            else if (xtype.Value == "Image")
             {
                 TsImage img = new TsImage(OptionXml, Parent, RootController);
                 return img;
             }
-            else if (OptionXml.Attribute("Type").Value == "ComplianceRefreshButton")
+            else if (xtype.Value == "ComplianceRefreshButton")
             {
                 TsComplianceRefreshButton crb = new TsComplianceRefreshButton(OptionXml, Parent, RootController);
                 return crb;
