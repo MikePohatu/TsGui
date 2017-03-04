@@ -74,6 +74,12 @@ namespace TsGui
         private void Init()
         {
             try { this.Startup(); }
+            catch (TsGuiKnownException exc)
+            {
+                string msg = "Error message: " + exc.CustomMessage;
+                this.CloseWithError("Application Startup Exception", msg);
+                return;
+            }
             catch (Exception exc)
             {
                 string msg = "Error message: " + exc.Message + Environment.NewLine + exc.ToString();
@@ -99,14 +105,14 @@ namespace TsGui
             XElement x = this.ReadConfigFile();
             if (x == null) { return; }
 
-            this.LoadXml(x);
-            //try { this.LoadXml(x); }
-            //catch (Exception exc)
-            //{
-            //    string msg = "Error loading config file: " + exc.Message;
-            //    this.CloseWithError("Error loading config file", msg);
-            //    return;
-            //}
+            //this.LoadXml(x);
+            try { this.LoadXml(x); }
+            catch (TsGuiKnownException e)
+            {
+                string msg = "Error loading config file" + Environment.NewLine + e.CustomMessage + Environment.NewLine + e.Message;
+                this.CloseWithError("Error loading config file", msg);
+                return;
+            }
 
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 

@@ -18,6 +18,8 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
+using TsGui.Diagnostics;
+
 namespace TsGui.Validation
 {
     public static class ResultValidator
@@ -171,7 +173,7 @@ namespace TsGui.Validation
                 if (IsCaseSensitvie == true) { return Regex.IsMatch(Input, Pattern); }
                 else { return Regex.IsMatch(Input, Pattern, RegexOptions.IgnoreCase); }
             }
-            catch (Exception e) { throw new ArgumentException("Error processing RegEx: " + Pattern + ". " + Environment.NewLine + e.Message); }
+            catch (Exception e) { throw new TsGuiKnownException("Error processing RegEx: " + Pattern,e.Message); }
         }
 
         public static bool IsNumeric(string Input)

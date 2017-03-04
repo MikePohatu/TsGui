@@ -23,6 +23,7 @@ using System;
 
 using TsGui.Queries;
 using TsGui.Validation;
+using TsGui.Diagnostics;
 
 namespace TsGui
 {
@@ -255,9 +256,9 @@ namespace TsGui
                     }
                 }
             }
-            catch (ManagementException)
+            catch (ManagementException e)
             {
-                throw new InvalidOperationException("WMI query caused an error e.g. invalid class:" + Environment.NewLine + wql + Environment.NewLine);
+                throw new TsGuiKnownException("WMI query caused an error:" + Environment.NewLine + wql,e.Message);
             }
 
             return wrangler;
