@@ -117,6 +117,10 @@
     <Compile Include="View\GuiOptions\TsComplianceRefreshButtonUI.xaml.cs">
       <DependentUpon>TsComplianceRefreshButtonUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\GuiOptions\TsTickCross.cs" />
+    <Compile Include="View\GuiOptions\TsWarnUI.xaml.cs">
+      <DependentUpon>TsWarnUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GuiOptions\TsImage.cs" />
     <Compile Include="View\GuiOptions\TsCheckBox.cs" />
     <Compile Include="View\GuiOptions\TsCheckBoxUI.xaml.cs">
@@ -126,7 +130,13 @@
       <DependentUpon>TsImageUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\ComplianceOptionBase.cs" />
+    <Compile Include="View\GuiOptions\TsCrossUI.xaml.cs">
+      <DependentUpon>TsCrossUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GuiOptions\TsTrafficLight.cs" />
+    <Compile Include="View\GuiOptions\TsTickUI.xaml.cs">
+      <DependentUpon>TsTickUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GuiOptions\TsTrafficLightUI.xaml.cs">
       <DependentUpon>TsTrafficLightUI.xaml</DependentUpon>
     </Compile>
@@ -223,9 +233,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\GuiOptions\TsWarnUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\GuiOptions\TsImageUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GuiOptions\TsCrossUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\GuiOptions\TsTickUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\GuiOptions\TsTrafficLightUI.xaml">
       <SubType>Designer</SubType>

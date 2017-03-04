@@ -80,6 +80,12 @@ namespace TsGui.View.GuiOptions
                 RootController.AddOptionToLibary(tl);
                 return tl;
             }
+            else if (xtype.Value == "TickCross")
+            {
+                TsTickCross option = new TsTickCross(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(option);
+                return option;
+            }
             else if (xtype.Value == "Image")
             {
                 TsImage img = new TsImage(OptionXml, Parent, RootController);

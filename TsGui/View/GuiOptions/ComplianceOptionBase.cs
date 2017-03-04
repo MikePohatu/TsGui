@@ -31,6 +31,7 @@ namespace TsGui.View.GuiOptions
         protected double _iconheight;
         protected double _iconwidth;
         protected SolidColorBrush _fillcolor;
+        protected SolidColorBrush _strokecolor;
         protected int _state;
         protected ValidationToolTipHandler _validationtooltiphandler;
         protected ComplianceHandler _compliancehandler;
@@ -54,6 +55,11 @@ namespace TsGui.View.GuiOptions
         {
             get { return this._fillcolor; }
             set { this._fillcolor = value; this.OnPropertyChanged(this, "FillColor"); }
+        }
+        public SolidColorBrush StrokeColor
+        {
+            get { return this._strokecolor; }
+            set { this._strokecolor = value; this.OnPropertyChanged(this, "StrokeColor"); }
         }
         public bool IsValid { get { return this.Validate(); } }
         public override string CurrentValue { get { return ComplianceStateValues.ToString(this._state); } }
@@ -81,6 +87,7 @@ namespace TsGui.View.GuiOptions
             this._rootelement.ComplianceRetry += this.OnComplianceRetry;
 
             this.FillColor = new SolidColorBrush(Colors.Blue);
+            this.StrokeColor = new SolidColorBrush(Colors.Blue);
             this._compliancehandler = new ComplianceHandler(this, MainController);
             this._validationtooltiphandler = new ValidationToolTipHandler(this, this._controller);
 
@@ -154,21 +161,23 @@ namespace TsGui.View.GuiOptions
             }
         }
 
-        private void UpdateState()
+        protected void UpdateState()
         {
             if (this.IsActive == true) { this._state = this._compliancehandler.EvaluateComplianceState(this._value); }
             else { this._state = ComplianceStateValues.Inactive; }
-            this.SetStateColor(this._state);
+            
 
             if ( this._state != 0) { this.HelpText = this._compliancehandler.GetActiveValidationMessages(); }
             else { this.HelpText = this._okHelpText; }
 
+            this.UpdateView();
             this.NotifyUpdate();
         }
 
+        protected abstract void UpdateView();
+
         private void SetDefaults()
         {
-            this.SetStateColor(ComplianceStateValues.OK);
             this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
             this.ControlFormatting.Margin = new Thickness(2, 1, 2, 1);
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
@@ -177,30 +186,7 @@ namespace TsGui.View.GuiOptions
             this._showvalueinpopup = false;
         }
 
-        private void SetStateColor(int State)
-        {
-            this._state = State;
-            switch (State)
-            {
-                case ComplianceStateValues.Inactive:
-                    this.FillColor.Color = Colors.LightGray;
-                    break;
-                case ComplianceStateValues.OK:
-                    this.FillColor.Color = Colors.Green;
-                    break;               
-                case ComplianceStateValues.Warning:
-                    this.FillColor.Color = Colors.Orange;
-                    break;
-                case ComplianceStateValues.Error:
-                    this.FillColor.Color = Colors.Red;
-                    break;
-                case ComplianceStateValues.Invalid:
-                    this.FillColor.Color = Colors.Red;
-                    break;
-                default:
-                    throw new ArgumentException("State is not valid");
-            }
-        }
+        
 
         private void LoadLegacyXml(XElement InputXml)
         {

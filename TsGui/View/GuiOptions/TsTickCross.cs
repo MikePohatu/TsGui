@@ -17,28 +17,31 @@
 // a specific condition
 
 using System.Xml.Linq;
-using TsGui.Validation;
-using System.Windows.Media;
 using System;
+using System.Windows.Media;
+
+using TsGui.Validation;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsTrafficLight: ComplianceOptionBase
+    public class TsTickCross: ComplianceOptionBase
     {
+        private TsCrossUI _crossui;
+        private TsTickUI _tickui;
+        private TsWarnUI _warnui;
 
         //constructor
-        public TsTrafficLight(XElement InputXml, TsColumn Parent, MainController MainController): base (InputXml, Parent, MainController)
-        {           
-            this.Control = new TsTrafficLightUI();
-            this._validationtooltiphandler.SetTarget(this.Control);
+        public TsTickCross(XElement InputXml, TsColumn Parent, MainController MainController): base (InputXml, Parent, MainController)
+        {
+            this._crossui = new TsCrossUI();
+            this._tickui = new TsTickUI();
+            this._warnui = new TsWarnUI();
+
+            this.Control = this._tickui;
+            this._validationtooltiphandler.SetTarget(this.UserControl);
             this.LoadXml(InputXml);
             this.ProcessQuery();
             this.Validate();
-        }
-
-        private void SetDefaults()
-        {
-            this.SetStateColor(ComplianceStateValues.OK);
         }
 
         private new void LoadXml(XElement InputXml)
@@ -48,32 +51,43 @@ namespace TsGui.View.GuiOptions
 
         protected override void UpdateView()
         {
-            this.SetStateColor(this._state);
+            this.SetUI(this._state);
         }
 
-        private void SetStateColor(int State)
+        private void SetUI(int State)
         {
             this._state = State;
             switch (State)
             {
                 case ComplianceStateValues.Inactive:
                     this.FillColor.Color = Colors.LightGray;
+                    this.StrokeColor.Color = Colors.Gray;
+                    this.Control = this._warnui;
                     break;
                 case ComplianceStateValues.OK:
                     this.FillColor.Color = Colors.Green;
+                    this.StrokeColor.Color = Colors.DarkGreen;
+                    this.Control = this._tickui;
                     break;
                 case ComplianceStateValues.Warning:
                     this.FillColor.Color = Colors.Orange;
+                    this.FillColor.Color = Colors.DarkOrange;
+                    this.Control = this._warnui;
                     break;
                 case ComplianceStateValues.Error:
                     this.FillColor.Color = Colors.Red;
+                    this.StrokeColor.Color = Colors.OrangeRed;
+                    this.Control = this._crossui;
                     break;
                 case ComplianceStateValues.Invalid:
                     this.FillColor.Color = Colors.Red;
+                    this.StrokeColor.Color = Colors.OrangeRed;
+                    this.Control = this._crossui;
                     break;
                 default:
                     throw new ArgumentException("State is not valid");
             }
+            this.OnPropertyChanged(this, "Control");
         }
     }
 }
