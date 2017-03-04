@@ -1,0 +1,42 @@
+<TsGui LiveData="TRUE" >
+	<Height>330</Height>
+	<Width>500</Width>
+
+	<!--<ShowGridLines/>-->
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI base config</Text>
+		<Bg-Color>#ff0000</Bg-Color>
+		<Image>
+			<File>avatar.jpg</File>
+			<Width>70</Width>
+			<Height>50</Height>
+			<Stretch>None</Stretch>
+		</Image>
+		<TextColor>#ff0000</TextColor>
+	</Heading>
+	
+	<Page>
+		<Row>			
+			<Column>
+				<Width>250</Width>
+				<GuiOption Type="TrafficLight">
+					<Variable>Compliance_InstalledMemory</Variable>
+					<Label>Installed Memory: </Label>
+					<PopupShowValue>FALSE</PopupShowValue>
+					<GetValue>
+						<Query Type="Wmi">
+							<Wql>SELECT TotalPhysicalMemory from Win32_ComputerSystem4</Wql>
+							<Property Name="TotalPhysicalMemory">
+								<Calculate DecimalPlaces="0">VALUE/1073741824</Calculate>
+							</Property>	
+							<Separator></Separator>
+						</Query>
+					</GetValue>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>
