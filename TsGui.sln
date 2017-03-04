@@ -37,6 +37,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestConfigs", "TestConfigs"
 		TestConfigs\TestConfigs.vbs = TestConfigs\TestConfigs.vbs
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{2A195006-2C40-40FF-8760-60312D1A22A1}"
+	ProjectSection(SolutionItems) = preProject
+		TestConfigs\images\image1.jpg = TestConfigs\images\image1.jpg
+		TestConfigs\images\image1_100.jpg = TestConfigs\images\image1_100.jpg
+		TestConfigs\images\image1_200.jpg = TestConfigs\images\image1_200.jpg
+		TestConfigs\images\image2.jpg = TestConfigs\images\image2.jpg
+		TestConfigs\images\TsGui-TextLogo1.png = TestConfigs\images\TsGui-TextLogo1.png
+		TestConfigs\images\water.jpg = TestConfigs\images\water.jpg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,5 +67,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D9C93D96-C808-4EF5-980A-E06BA28C6BDF} = {13E6ECDF-E7F4-4B16-878A-557717F95D2D}
+		{2A195006-2C40-40FF-8760-60312D1A22A1} = {D9C93D96-C808-4EF5-980A-E06BA28C6BDF}
 	EndGlobalSection
 EndGlobal
