@@ -170,8 +170,9 @@ namespace TsGui.View.GuiOptions
             if ( this._state != 0) { this.HelpText = this._compliancehandler.GetActiveValidationMessages(); }
             else { this.HelpText = this._okHelpText; }
 
-            this.UpdateView();
+            
             this.NotifyUpdate();
+            this.UpdateView();
         }
 
         protected abstract void UpdateView();

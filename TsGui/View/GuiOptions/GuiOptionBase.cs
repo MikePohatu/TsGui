@@ -19,6 +19,7 @@ using System.Xml.Linq;
 using TsGui.View.Layout;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Data;
 
 namespace TsGui.View.GuiOptions
 {
@@ -27,10 +28,15 @@ namespace TsGui.View.GuiOptions
         private string _labeltext = string.Empty;
         private string _helptext = null;
         private string _inactivevalue = "TSGUI_INACTIVE";
+        private UserControl _usercontrol;
         private GuiOptionBaseUI _ui;
 
         //standard stuff
-        public UserControl Control { get; set; }
+        public UserControl Control
+        {
+            get { return this._usercontrol; }
+            set { this._usercontrol = value; this.OnPropertyChanged(this, "Control"); }
+        }
         public UserControl Label { get; set; }
         public GuiOptionBaseUI UserControl
         {
@@ -105,13 +111,13 @@ namespace TsGui.View.GuiOptions
         {
             if (this.LabelOnRight == false)
             {
-                this.UserControl.RightPresenter.Content = this.Control;
-                this.UserControl.LeftPresenter.Content = this.Label;
+                this.UserControl.RightPresenter.SetBinding(ContentPresenter.ContentProperty, new Binding("Control"));
+                this.UserControl.LeftPresenter.SetBinding(ContentPresenter.ContentProperty, new Binding("Label"));
             }
             else
             {
-                this.UserControl.RightPresenter.Content = this.Label;
-                this.UserControl.LeftPresenter.Content = this.Control;
+                this.UserControl.RightPresenter.SetBinding(ContentPresenter.ContentProperty, new Binding("Label"));
+                this.UserControl.LeftPresenter.SetBinding(ContentPresenter.ContentProperty, new Binding("Control"));
             }
         }
 

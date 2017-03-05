@@ -38,10 +38,6 @@ namespace TsGui.View.GuiOptions
             this._tickui = new TsTickUI();
             this._warnui = new TsWarnUI();
 
-            this._crossui.DataContext = this;
-            this._tickui.DataContext = this;
-            this._warnui.DataContext = this;
-
             this.Control = this._tickui;
             this._validationtooltiphandler.SetTarget(this.UserControl);
             this.SetDefaults();
@@ -70,6 +66,7 @@ namespace TsGui.View.GuiOptions
         private void SetUI(int State)
         {
             this._state = State;
+            this.Control = null;
             switch (State)
             {
                 case ComplianceStateValues.Inactive:
