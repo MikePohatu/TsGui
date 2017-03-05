@@ -24,10 +24,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:TsGui.View.GuiOptions"
         mc:Ignorable="d" 
-        d:DesignHeight="20" d:DesignWidth="20">
-    <Canvas Style="{StaticResource ControlStyle}">
-        <!--<Path Name="TickMark" Stroke="OrangeRed" StrokeThickness="0.5" StrokeEndLineCap="Square" Fill="Red" Data="M0,4 3,10 0,16 2,20 5,14 8,20 10,16 7,10 10,4 8,0 5,6 2,0 0,4 " Visibility="Visible" Stretch="Fill" />-->
-        <Rectangle Name="ibase" Canvas.Left="7.5" Canvas.Bottom="0" Height="13" Width="5" RadiusX="1" RadiusY="1" Stroke="DarkOrange" StrokeThickness="0.5" Fill="Orange"/>
-        <Ellipse Name="idot" Canvas.Left="7.5" Canvas.Top="0" Height="5" Width="5" Stroke="DarkOrange" Fill="Orange" StrokeThickness="0.5" />
+        d:DesignHeight="20" d:DesignWidth="20" x:Name="usercontrol">
+    <Canvas Name="canvas" Style="{StaticResource ControlStyle}" Margin="0" Width="{Binding ActualWidth, ElementName=usercontrol}" Height="{Binding ActualHeight, ElementName=usercontrol}">
+        <Grid Margin="0" Width="{Binding ActualWidth, ElementName=usercontrol}" Height="{Binding ActualHeight, ElementName=usercontrol}">
+            <Path Name="CrossMark" Stroke="OrangeRed" StrokeThickness="0.5" StrokeLineJoin="Round" StrokeEndLineCap="Round" Fill="Orange" Data="M0,20 20,20 10,0 0,20" Stretch="UniformToFill" />
+            <!--<Ellipse Name="ibg" Canvas.Left="0" Canvas.Top="0" Height="20" Width="20" Stroke="DarkOrange" Fill="Orange" StrokeThickness="0.5" />-->
+            <Rectangle Name="ibase" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" Height="8" Width="3" StrokeThickness="0.2" RadiusX="1" RadiusY="1" Stroke="Red" Fill="White"/>
+            <Ellipse Name="idot"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,2" Height="3" Width="3" StrokeThickness="0.2" Stroke="Red" Fill="White"/>
+        </Grid>
     </Canvas>
 </UserControl>

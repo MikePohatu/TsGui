@@ -16,31 +16,24 @@
 // TsButtons.cs - class for controlling the Next, Back, Finish, and Cancel buttons
 
 using System.Windows;
-using System.ComponentModel;
 using System.Xml.Linq;
-using TsGui.View.Layout;
 
 namespace TsGui.View.Layout
 {
-    public class TsButtons : INotifyPropertyChanged
+    public class TsButtons : ViewModelBase
     {
         private string _buttonTextNext;
         private string _buttonTextFinish;
         private string _buttonTextCancel;
         private string _buttonTextBack;
-
-        //Constructor
-        public TsButtons()
-        {
-            this.ButtonTextBack = "Back";
-            this.ButtonTextCancel = "Cancel";
-            this.ButtonTextFinish = "Finish";
-            this.ButtonTextNext = "Next";
-        }
-
+        private Formatting _controlformatting;
 
         //Properties
         #region
+        public Formatting ControlFormatting
+        {
+            get { return this._controlformatting; }
+        }
         public string ButtonTextCancel
         {
             get { return this._buttonTextCancel; }
@@ -78,38 +71,31 @@ namespace TsGui.View.Layout
             }
         }
         #endregion
-        //Events and handlers
-        #region
-        //Setup the INotifyPropertyChanged interface 
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        // OnPropertyChanged method to raise the event
-        public void OnPropertyChanged(object sender, string name)
+        //Constructor
+        public TsButtons()
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(sender, new PropertyChangedEventArgs(name));
-            }
+            this.ButtonTextBack = "Back";
+            this.ButtonTextCancel = "Cancel";
+            this.ButtonTextFinish = "Finish";
+            this.ButtonTextNext = "Next";
+            this._controlformatting = new Formatting();
+            this.SetDefaults();
         }
-        #endregion
 
         public void LoadXml(XElement InputXml)
         {
             if (InputXml == null) { return; }
 
             XElement x;
-            x = InputXml.Element("Next");
-            if (x != null) { this.ButtonTextNext = x.Value; }
 
-            x = InputXml.Element("Back");
-            if (x != null) { this.ButtonTextBack = x.Value; }
+            this.ButtonTextNext = XmlHandler.GetStringFromXElement(InputXml, "Next", this.ButtonTextNext);
+            this.ButtonTextBack = XmlHandler.GetStringFromXElement(InputXml, "Back", this.ButtonTextBack);
+            this.ButtonTextFinish = XmlHandler.GetStringFromXElement(InputXml, "Finish", this.ButtonTextFinish);
+            this.ButtonTextCancel = XmlHandler.GetStringFromXElement(InputXml, "Cancel", this.ButtonTextCancel);
 
-            x = InputXml.Element("Finish");
-            if (x != null) { this.ButtonTextFinish = x.Value; }
-
-            x = InputXml.Element("Cancel");
-            if (x != null) { this.ButtonTextCancel = x.Value; }
+            x = InputXml.Element("Formatting");
+            if (x != null) { this._controlformatting.LoadXml(x); }
         }
 
 
@@ -140,6 +126,13 @@ namespace TsGui.View.Layout
                 Layout.buttonPrev.Visibility = Visibility.Hidden;
                 Layout.buttonPrev.IsEnabled = false;
             }
+        }
+
+        private void SetDefaults()
+        {
+            this._controlformatting.VerticalAlignment = VerticalAlignment.Center;
+            this._controlformatting.Width = 75;
+            this._controlformatting.Height = 30;
         }
     }
 }

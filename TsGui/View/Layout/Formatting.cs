@@ -32,6 +32,7 @@ namespace TsGui.View.Layout
         private double _fontsize;
         private double _height;
         private double _width;
+        private double _cornerradius;
         private Thickness _margin;
         private Thickness _padding;        
         private VerticalAlignment _verticalalign;
@@ -59,6 +60,11 @@ namespace TsGui.View.Layout
         {
             get { return this._fontsize; }
             set { this._fontsize = value; this.OnPropertyChanged(this, "FontSize"); }
+        }
+        public double CornerRadius
+        {
+            get { return this._cornerradius; }
+            set { this._cornerradius = value; this.OnPropertyChanged(this, "Rounding"); }
         }
         public double Height
         {
@@ -138,6 +144,7 @@ namespace TsGui.View.Layout
         {
             this.FontStyle = "Normal";
             this.FontWeight = "Normal";
+            this.CornerRadius = 0;
             this.FontSize = 11;
             this.Height = Double.NaN;
             this.Width = Double.NaN;
@@ -159,6 +166,7 @@ namespace TsGui.View.Layout
             XElement x;
             this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
             this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
+            this.CornerRadius = XmlHandler.GetDoubleFromXElement(InputXml, "CornerRadius", this.CornerRadius);
             this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", this.Padding);
             this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", this.Margin);
             this.VerticalAlignment = XmlHandler.GetVerticalAlignmentFromXElement(InputXml, "VerticalAlignment", this.VerticalAlignment);
@@ -184,6 +192,7 @@ namespace TsGui.View.Layout
             f.FontSize = this.FontSize;
             f.Width = this.Width;
             f.Height = this.Height;
+            f.CornerRadius = this.CornerRadius;
             f.Padding = this.Padding;
             f.Margin = this.Margin;
             f.HorizontalAlignment = this.HorizontalAlignment;
