@@ -19,6 +19,7 @@
 using System.Xml.Linq;
 using System;
 using System.Windows.Media;
+using System.Windows;
 
 using TsGui.Validation;
 
@@ -37,11 +38,23 @@ namespace TsGui.View.GuiOptions
             this._tickui = new TsTickUI();
             this._warnui = new TsWarnUI();
 
+            this._crossui.DataContext = this;
+            this._tickui.DataContext = this;
+            this._warnui.DataContext = this;
+
             this.Control = this._tickui;
             this._validationtooltiphandler.SetTarget(this.UserControl);
+            this.SetDefaults();
             this.LoadXml(InputXml);
             this.ProcessQuery();
             this.Validate();
+        }
+
+        private void SetDefaults()
+        {
+            this.ControlFormatting.Width = 20;
+            this.ControlFormatting.Height = 20;
+            this.ControlFormatting.Margin = new Thickness(0);
         }
 
         private new void LoadXml(XElement InputXml)
