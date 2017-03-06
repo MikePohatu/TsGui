@@ -66,7 +66,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            //this.RightCellWidth = this.Width;
+            this.RightCellWidth = this.LeftCellWidth + this.RightCellWidth;
             this.LeftCellWidth = 0;            
             this.ControlFormatting.Padding = new Thickness(0);
             this.ControlFormatting.Margin = new Thickness(0);
