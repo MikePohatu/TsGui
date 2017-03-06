@@ -25,12 +25,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         xmlns:local="clr-namespace:TsGui.View.GuiOptions"
         mc:Ignorable="d" 
         d:DesignHeight="20" d:DesignWidth="20" x:Name="usercontrol">
-    <Canvas Name="canvas" Style="{StaticResource ControlStyle}" Margin="0" Width="{Binding ActualWidth, ElementName=usercontrol}" Height="{Binding ActualHeight, ElementName=usercontrol}">
-        <Grid Margin="0" Width="{Binding ActualWidth, ElementName=usercontrol}" Height="{Binding ActualHeight, ElementName=usercontrol}">
-            <Path Name="CrossMark" Stroke="OrangeRed" StrokeThickness="0.5" StrokeLineJoin="Round" StrokeEndLineCap="Round" Fill="Orange" Data="M0,20 20,20 10,0 0,20" Stretch="UniformToFill" />
+    <Grid Margin="0"  Style="{StaticResource ControlStyle}">
+        <Canvas>
+            <Path Name="CrossMark" Stroke="Black" StrokeThickness="0.5" StrokeLineJoin="Round" StrokeEndLineCap="Round" Fill="#FFD52B" Data="M0,20 20,20 10,0 0,20" Stretch="UniformTofill" />
             <!--<Ellipse Name="ibg" Canvas.Left="0" Canvas.Top="0" Height="20" Width="20" Stroke="DarkOrange" Fill="Orange" StrokeThickness="0.5" />-->
-            <Rectangle Name="ibase" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" Height="8" Width="3" StrokeThickness="0.2" RadiusX="1" RadiusY="1" Stroke="Red" Fill="White"/>
-            <Ellipse Name="idot"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,2" Height="3" Width="3" StrokeThickness="0.2" Stroke="Red" Fill="White"/>
-        </Grid>
-    </Canvas>
+            <Rectangle Name="ibase" Canvas.Top="5.5" Canvas.Left="8.5" Height="8" Width="3" RadiusX="1.5" RadiusY="1.5" Fill="Black" Stretch="Fill" />
+            <Ellipse Name="idot" Canvas.Bottom="0.5" Canvas.Left="8.5" Margin="0,0,0,1.5" Height="3" Width="3" Fill="Black" Stretch="UniformTofill" />
+        </Canvas>
+    </Grid>
 </UserControl>
