@@ -203,9 +203,6 @@ namespace TsGui.View.GuiOptions
             //TsDropDownListItem currentselected = this.CurrentItem;
             this.OnPropertyChanged(this, "VisibleOptions");
             this.SetComboBoxDefault();
-            //if (currentselected?.IsActive == false)
-            //{ this.SetComboBoxDefault(); }
-            //else { this.CurrentItem = currentselected; }
         }
 
         private void SetDefaults()
