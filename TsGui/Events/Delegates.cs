@@ -18,9 +18,11 @@
 using System;
 using System.Windows;
 using TsGui.View.Layout;
+using TsGui.View.GuiOptions;
 
 namespace TsGui.Events
 {
     public delegate void TsGuiWindowEventHandler(object o, RoutedEventArgs e);
+    //public delegate void TsGuiDropDownListItemGroupEventHandler(TsDropDownListItem o, RoutedEventArgs e);
     public delegate void ComplianceRetryEventHandler(IRootLayoutElement o, EventArgs e);
 }

@@ -15,7 +15,6 @@
 
 // TsDropDownListItem.cs - class to hold entries in dropdownlist
 using System.Xml.Linq;
-using System.Collections.Generic;
 
 using TsGui.View.Layout;
 using TsGui.Grouping;
@@ -28,19 +27,25 @@ namespace TsGui.View.GuiOptions
         public string Text { get; set; }
         public Formatting ItemFormatting { get; set; }
 
-        public TsDropDownListItem(string Value, string Text, Formatting Formatting, MainController MainController):base(MainController)
+        public TsDropDownListItem(string Value, string Text, Formatting Formatting, TsDropDownList Parent, MainController MainController):base(MainController)
         {
+            this.Init(Formatting, Parent);
             this.Value = Value;
-            this.Text = Text;
-            this.ItemFormatting = Formatting;
+            this.Text = Text; 
         }
 
-        public TsDropDownListItem(XElement InputXml, Formatting Formatting, MainController MainController) : base(MainController)
+        public TsDropDownListItem(XElement InputXml, Formatting Formatting, TsDropDownList Parent, MainController MainController) : base(MainController)
         {
-            this.ItemFormatting = Formatting;
+            this.Init(Formatting, Parent);
             this.Text = XmlHandler.GetStringFromXElement(InputXml, "Text", this.Text);
             this.Value = XmlHandler.GetStringFromXElement(InputXml, "Value", this.Value);
             this.LoadXml(InputXml);
+        }
+
+        private void Init(Formatting Formatting, TsDropDownList Parent)
+        {
+            this.ItemFormatting = Formatting;
+            this.GroupingStateChange += Parent.OnDropDownListGroupEvent;
         }
     }
 }

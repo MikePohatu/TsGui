@@ -111,7 +111,7 @@ namespace TsGui.View.GuiOptions
                 {
                     //string optval = x.Element("Value").Value;
                     //string opttext = x.Element("Text").Value;
-                    TsDropDownListItem newoption = new TsDropDownListItem(x, this.ControlFormatting,this._controller);
+                    TsDropDownListItem newoption = new TsDropDownListItem(x, this.ControlFormatting,this,this._controller);
                     this._options.Add(newoption);
 
 
@@ -133,7 +133,7 @@ namespace TsGui.View.GuiOptions
                     List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        TsDropDownListItem item = new TsDropDownListItem(kv.Key, kv.Value, this.ControlFormatting,this._controller);
+                        TsDropDownListItem item = new TsDropDownListItem(kv.Key, kv.Value, this.ControlFormatting,this ,this._controller);
                         this._options.Add(item);
                     }
                 }
@@ -168,10 +168,13 @@ namespace TsGui.View.GuiOptions
 
                 foreach (TsDropDownListItem entry in this._options)
                 {
-                    if ((entry.Value == this._defaultvalue) || (index == 0))
-                    { this.CurrentItem = entry; }
+                    if (entry.IsActive == true)
+                    {
+                        if ((entry.Value == this._defaultvalue) || (index == 0))
+                        { this.CurrentItem = entry; }
 
-                    index++;
+                        index++;
+                    }
                 }
             }
         }
@@ -191,6 +194,12 @@ namespace TsGui.View.GuiOptions
         private void OnActiveChanged(object o, DependencyPropertyChangedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
+        }
+
+        public void OnDropDownListGroupEvent(object o, GroupingEventArgs e)
+        {
+            if (o == this._dropdownlistui.Control.SelectedItem)
+            { this.SetComboBoxDefault(); }       
         }
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
