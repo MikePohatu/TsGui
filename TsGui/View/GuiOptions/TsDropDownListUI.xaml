@@ -29,7 +29,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
           SelectedValuePath="Value" Style="{StaticResource ControlStyle}" Foreground="{Binding ControlFormatting.FontColorBrush}">
         <ComboBox.ItemTemplate>
             <DataTemplate>
-                <Label x:Name="DropDownListLabel" Content="{Binding Text}" Style="{StaticResource ComboBoxItemLabelStyle}"/>
+                <Label x:Name="DropDownListLabel" Content="{Binding Text}" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}" Style="{StaticResource ComboBoxItemLabelStyle}"/>
             </DataTemplate>
         </ComboBox.ItemTemplate>
     </ComboBox>

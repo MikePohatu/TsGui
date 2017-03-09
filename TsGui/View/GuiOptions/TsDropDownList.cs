@@ -109,9 +109,9 @@ namespace TsGui.View.GuiOptions
                 //now read in an option and add to a dictionary for later use
                 if (x.Name == "Option")
                 {
-                    string optval = x.Element("Value").Value;
-                    string opttext = x.Element("Text").Value;
-                    TsDropDownListItem newoption = new TsDropDownListItem(optval, opttext, this.ControlFormatting);
+                    //string optval = x.Element("Value").Value;
+                    //string opttext = x.Element("Text").Value;
+                    TsDropDownListItem newoption = new TsDropDownListItem(x, this.ControlFormatting,this._controller);
                     this._options.Add(newoption);
 
 
@@ -121,7 +121,7 @@ namespace TsGui.View.GuiOptions
                         //XElement togglex = x.Element("Toggle");
                         //if (togglex != null)
                         //{
-                            togglex.Add(new XElement("Enabled", optval));
+                            togglex.Add(new XElement("Enabled", newoption.Value));
                             Toggle t = new Toggle(this, this._controller, togglex);
                             this._istoggle = true;
                         //}
@@ -133,7 +133,7 @@ namespace TsGui.View.GuiOptions
                     List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        TsDropDownListItem item = new TsDropDownListItem(kv.Key, kv.Value, this.ControlFormatting);
+                        TsDropDownListItem item = new TsDropDownListItem(kv.Key, kv.Value, this.ControlFormatting,this._controller);
                         this._options.Add(item);
                     }
                 }

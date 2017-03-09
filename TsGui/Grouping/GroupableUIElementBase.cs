@@ -15,7 +15,6 @@
 
 // GroupableUIElementBase.cs - base class for grouable UI objects
 
-using System.ComponentModel;
 using System.Windows;
 
 namespace TsGui.Grouping
