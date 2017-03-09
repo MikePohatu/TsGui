@@ -43,7 +43,7 @@ namespace TsGui.View.GuiOptions
 
 
         //properties
-        public List<TsDropDownListItem> VisibleOptions { get { return this._options.Where(x => x.IsHidden == false).ToList(); } }
+        public List<TsDropDownListItem> VisibleOptions { get { return this._options.Where(x => x.IsEnabled == true).ToList(); } }
         public TsVariable Variable
         {
             get
@@ -200,11 +200,12 @@ namespace TsGui.View.GuiOptions
 
         private void UpdateView()
         {
-            TsDropDownListItem currentselected = (TsDropDownListItem)this._dropdownlistui.Control.SelectedItem;
+            //TsDropDownListItem currentselected = this.CurrentItem;
             this.OnPropertyChanged(this, "VisibleOptions");
-            if (currentselected?.IsActive == false)
-            { this.SetComboBoxDefault(); }
-            else { this._dropdownlistui.Control.SelectedItem = currentselected; }
+            this.SetComboBoxDefault();
+            //if (currentselected?.IsActive == false)
+            //{ this.SetComboBoxDefault(); }
+            //else { this.CurrentItem = currentselected; }
         }
 
         private void SetDefaults()

@@ -46,7 +46,7 @@ namespace TsGui.View.GuiOptions
         private void Init(int Index, Formatting Formatting, TsDropDownList Parent)
         {
             this.ItemFormatting = Formatting;
-            //this.GroupingStateChange += Parent.OnDropDownListItemGroupEvent;
+            this.GroupingStateChange += Parent.OnDropDownListItemGroupEvent;
         }
     }
 }
