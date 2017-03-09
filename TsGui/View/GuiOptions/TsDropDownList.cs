@@ -112,7 +112,7 @@ namespace TsGui.View.GuiOptions
                 if (x.Name == "Option")
                 {
                     TsDropDownListItem newoption = new TsDropDownListItem(optionindex, x, this.ControlFormatting,this,this._controller);
-                    this._options.Add(newoption);
+                    this.AddOption(newoption);
                     optionindex++;
 
                     IEnumerable<XElement> togglexlist = x.Elements("Toggle");
@@ -129,8 +129,8 @@ namespace TsGui.View.GuiOptions
                     List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        TsDropDownListItem item = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting,this ,this._controller);
-                        this._options.Add(item);
+                        TsDropDownListItem newoption = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting,this ,this._controller);
+                        this.AddOption(newoption);
                         optionindex++;
                     }
                 }
@@ -203,6 +203,12 @@ namespace TsGui.View.GuiOptions
             //TsDropDownListItem currentselected = this.CurrentItem;
             this.OnPropertyChanged(this, "VisibleOptions");
             this.SetComboBoxDefault();
+        }
+
+        private void AddOption(TsDropDownListItem Item)
+        {
+            this._options.Add(Item);
+            Item.GroupingStateChange += this.OnDropDownListItemGroupEvent;
         }
 
         private void SetDefaults()
