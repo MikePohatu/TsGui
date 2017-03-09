@@ -15,7 +15,6 @@
 
 // GroupableUIElementBase.cs - base class for grouable UI objects
 
-using System.ComponentModel;
 using System.Windows;
 
 namespace TsGui.Grouping
@@ -72,7 +71,7 @@ namespace TsGui.Grouping
         public GroupableUIElementBase(GroupableUIElementBase Parent, MainController MainController): base(Parent, MainController)
         {
             this._parent = Parent;
-            this._parent.GroupingStateChange += this.OnParentGoupingStateChange;
+            this._parent.GroupingStateChange += this.OnParentGroupingStateChange;
         }
 
         //Events

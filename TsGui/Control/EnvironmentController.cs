@@ -234,7 +234,9 @@ namespace TsGui
                     {
                         foreach (KeyValuePair<string, XElement> template in propertyTemplates)
                         {
-                            input = m.GetPropertyValue(template.Key).ToString();
+                            object o = m.GetPropertyValue(template.Key);
+                            if (o != null) { input = o.ToString(); }
+                            else { input = string.Empty; }
 
                             rf = new ResultFormatter(template.Value);
                             rf.Input = input;

@@ -51,7 +51,7 @@ namespace TsGui.Grouping
         #region
         public abstract event GrouableStateChange GroupingStateChange;
 
-        public void OnParentGoupingStateChange(object o, GroupingEventArgs e)
+        public void OnParentGroupingStateChange(object o, GroupingEventArgs e)
         {
             this.EvaluateGroups();
         }

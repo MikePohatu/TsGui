@@ -14,22 +14,39 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 // TsDropDownListItem.cs - class to hold entries in dropdownlist
+using System.Xml.Linq;
 
 using TsGui.View.Layout;
+using TsGui.Grouping;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsDropDownListItem
+    public class TsDropDownListItem: GroupableUIElementBase
     {
+        public int Index { get; set; }
         public string Value { get; set; }
         public string Text { get; set; }
         public Formatting ItemFormatting { get; set; }
 
-        public TsDropDownListItem(string Value, string Text, Formatting Formatting)
+        public TsDropDownListItem(int Index, string Value, string Text, Formatting Formatting, TsDropDownList Parent, MainController MainController):base(MainController)
         {
+            this.Init(Index, Formatting, Parent);
             this.Value = Value;
-            this.Text = Text;
+            this.Text = Text; 
+        }
+
+        public TsDropDownListItem(int Index, XElement InputXml, Formatting Formatting, TsDropDownList Parent, MainController MainController) : base(MainController)
+        {
+            this.Init(Index, Formatting, Parent);
+            this.Text = XmlHandler.GetStringFromXElement(InputXml, "Text", this.Text);
+            this.Value = XmlHandler.GetStringFromXElement(InputXml, "Value", this.Value);
+            base.LoadXml(InputXml);
+        }
+
+        private void Init(int Index, Formatting Formatting, TsDropDownList Parent)
+        {
             this.ItemFormatting = Formatting;
+            this.GroupingStateChange += Parent.OnDropDownListItemGroupEvent;
         }
     }
 }

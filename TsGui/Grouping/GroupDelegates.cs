@@ -17,9 +17,6 @@
 
 namespace TsGui.Grouping
 {
-
-    public enum GroupState { Hidden, Disabled, Enabled };
-    public enum GroupStateChanged { IsHidden, IsEnabled };
     public delegate void ToggleEvent();
 
     /// <summary>
