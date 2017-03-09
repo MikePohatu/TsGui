@@ -23,29 +23,30 @@ namespace TsGui.View.GuiOptions
 {
     public class TsDropDownListItem: GroupableUIElementBase
     {
+        public int Index { get; set; }
         public string Value { get; set; }
         public string Text { get; set; }
         public Formatting ItemFormatting { get; set; }
 
-        public TsDropDownListItem(string Value, string Text, Formatting Formatting, TsDropDownList Parent, MainController MainController):base(MainController)
+        public TsDropDownListItem(int Index, string Value, string Text, Formatting Formatting, TsDropDownList Parent, MainController MainController):base(MainController)
         {
-            this.Init(Formatting, Parent);
+            this.Init(Index, Formatting, Parent);
             this.Value = Value;
             this.Text = Text; 
         }
 
-        public TsDropDownListItem(XElement InputXml, Formatting Formatting, TsDropDownList Parent, MainController MainController) : base(MainController)
+        public TsDropDownListItem(int Index, XElement InputXml, Formatting Formatting, TsDropDownList Parent, MainController MainController) : base(MainController)
         {
-            this.Init(Formatting, Parent);
+            this.Init(Index, Formatting, Parent);
             this.Text = XmlHandler.GetStringFromXElement(InputXml, "Text", this.Text);
             this.Value = XmlHandler.GetStringFromXElement(InputXml, "Value", this.Value);
-            this.LoadXml(InputXml);
+            base.LoadXml(InputXml);
         }
 
-        private void Init(Formatting Formatting, TsDropDownList Parent)
+        private void Init(int Index, Formatting Formatting, TsDropDownList Parent)
         {
             this.ItemFormatting = Formatting;
-            this.GroupingStateChange += Parent.OnDropDownListGroupEvent;
+            //this.GroupingStateChange += Parent.OnDropDownListItemGroupEvent;
         }
     }
 }

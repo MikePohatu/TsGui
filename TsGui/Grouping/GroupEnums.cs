@@ -13,12 +13,11 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// IGroupChild.cs - interface for child elements i.e. columns and TSGuiOptions. 
+// GroupEnums.cs - enums for the Grouping namespace
 
 namespace TsGui.Grouping
 {
-    public interface IGroupChild: IGroupableUIElement
-    {
-        void OnParentGroupingStateChange(object o, GroupingEventArgs e);
-    }
+
+    public enum GroupState { Hidden, Disabled, Enabled };
+    public enum GroupStateChanged { IsHidden, IsEnabled };
 }

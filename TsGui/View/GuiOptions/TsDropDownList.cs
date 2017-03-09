@@ -17,6 +17,7 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
+using System.Linq;
 using System.Windows;
 using System;
 
@@ -42,7 +43,7 @@ namespace TsGui.View.GuiOptions
 
 
         //properties
-        public List<TsDropDownListItem> Options { get { return this._options; } }
+        public List<TsDropDownListItem> VisibleOptions { get { return this._options.Where(x => x.IsHidden == false).ToList(); } }
         public TsVariable Variable
         {
             get
@@ -95,6 +96,7 @@ namespace TsGui.View.GuiOptions
         //Methods
         public new void LoadXml(XElement InputXml)
         {
+            int optionindex = 0;
             base.LoadXml(InputXml);
 
             IEnumerable<XElement> inputElements = InputXml.Elements();
@@ -106,25 +108,19 @@ namespace TsGui.View.GuiOptions
 
             foreach (XElement x in inputElements)
             {
-                //now read in an option and add to a dictionary for later use
+                //read in an option and add to a dictionary for later use
                 if (x.Name == "Option")
                 {
-                    //string optval = x.Element("Value").Value;
-                    //string opttext = x.Element("Text").Value;
-                    TsDropDownListItem newoption = new TsDropDownListItem(x, this.ControlFormatting,this,this._controller);
+                    TsDropDownListItem newoption = new TsDropDownListItem(optionindex, x, this.ControlFormatting,this,this._controller);
                     this._options.Add(newoption);
-
+                    optionindex++;
 
                     IEnumerable<XElement> togglexlist = x.Elements("Toggle");
                     foreach (XElement togglex in togglexlist)
                     {
-                        //XElement togglex = x.Element("Toggle");
-                        //if (togglex != null)
-                        //{
-                            togglex.Add(new XElement("Enabled", newoption.Value));
-                            Toggle t = new Toggle(this, this._controller, togglex);
-                            this._istoggle = true;
-                        //}
+                        togglex.Add(new XElement("Enabled", newoption.Value));
+                        Toggle t = new Toggle(this, this._controller, togglex);
+                        this._istoggle = true;
                     }
                 }
 
@@ -133,8 +129,9 @@ namespace TsGui.View.GuiOptions
                     List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        TsDropDownListItem item = new TsDropDownListItem(kv.Key, kv.Value, this.ControlFormatting,this ,this._controller);
+                        TsDropDownListItem item = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting,this ,this._controller);
                         this._options.Add(item);
+                        optionindex++;
                     }
                 }
 
@@ -143,19 +140,11 @@ namespace TsGui.View.GuiOptions
                 xlist = InputXml.Elements("Toggle");
                 if (xlist != null)
                 {
-                    //this._controller.AddToggleControl(this);
-
                     foreach (XElement subx in xlist)
                     {
                         Toggle t = new Toggle(this, this._controller, subx);
                     }
                 }
-
-                //if (x.Name == "Toggle")
-                //{
-                //    Toggle t = new Toggle(this, this._controller, x);
-                //    this._istoggle = true;
-                //}
             }
             if (this._istoggle == true) { this._controller.AddToggleControl(this); }
         }
@@ -166,12 +155,12 @@ namespace TsGui.View.GuiOptions
             {
                 int index = 0;
 
-                foreach (TsDropDownListItem entry in this._options)
+                foreach (TsDropDownListItem item in this.VisibleOptions)
                 {
-                    if (entry.IsActive == true)
+                    if (item.IsActive == true)
                     {
-                        if ((entry.Value == this._defaultvalue) || (index == 0))
-                        { this.CurrentItem = entry; }
+                        if ((item.Value == this._defaultvalue) || (index == 0))
+                        { this.CurrentItem = item; }
 
                         index++;
                     }
@@ -196,10 +185,9 @@ namespace TsGui.View.GuiOptions
             this.ToggleEvent?.Invoke();
         }
 
-        public void OnDropDownListGroupEvent(object o, GroupingEventArgs e)
+        public void OnDropDownListItemGroupEvent(object o, GroupingEventArgs e)
         {
-            if (o == this._dropdownlistui.Control.SelectedItem)
-            { this.SetComboBoxDefault(); }       
+            this.UpdateView();
         }
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
@@ -208,6 +196,15 @@ namespace TsGui.View.GuiOptions
         {
             this._dropdownlistui.Control.IsDropDownOpen = true;
             this._dropdownlistui.Control.IsDropDownOpen = false;
+        }
+
+        private void UpdateView()
+        {
+            TsDropDownListItem currentselected = (TsDropDownListItem)this._dropdownlistui.Control.SelectedItem;
+            this.OnPropertyChanged(this, "VisibleOptions");
+            if (currentselected?.IsActive == false)
+            { this.SetComboBoxDefault(); }
+            else { this._dropdownlistui.Control.SelectedItem = currentselected; }
         }
 
         private void SetDefaults()
