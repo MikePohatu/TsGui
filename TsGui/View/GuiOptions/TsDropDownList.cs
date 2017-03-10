@@ -20,6 +20,7 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Windows;
 using System;
+using System.Windows.Threading;
 
 using TsGui.Grouping;
 using TsGui.Validation;
@@ -187,7 +188,7 @@ namespace TsGui.View.GuiOptions
 
         public void OnDropDownListItemGroupEvent(object o, GroupingEventArgs e)
         {
-            this.UpdateView();
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.UpdateView()));
         }
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
