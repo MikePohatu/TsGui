@@ -49,7 +49,7 @@ namespace TsGui.Grouping
 
         //Events
         #region
-        public abstract event GrouableStateChange GroupingStateChange;
+        public abstract event GroupableStateChange GroupingStateChange;
 
         public void OnParentGroupingStateChange(object o, GroupingEventArgs e)
         {

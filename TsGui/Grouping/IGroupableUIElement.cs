@@ -28,7 +28,5 @@ namespace TsGui.Grouping
 
         void OnGroupStateChange();
         event PropertyChangedEventHandler PropertyChanged;
-        //void OnGroupDisplay(bool Display);
-        //void OnGroupEnable(bool Enable);
     }
 }

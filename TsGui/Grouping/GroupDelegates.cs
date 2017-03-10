@@ -18,17 +18,6 @@
 namespace TsGui.Grouping
 {
     public delegate void ToggleEvent();
-
-    /// <summary>
-    /// Event for notifying sub controls that the parents visibility has changed.
-    /// </summary>
-    /// <param name="Parent"></param>
-    /// <param name="IsEnabled"></param>
-    /// <param name="IsHidden"></param>
-    //public delegate void ParentToggleEvent(IGroupParent Parent, bool IsEnabled, bool IsHidden);
     public delegate void GroupStateChange();
-
-    //public delegate void GroupableHide(bool Hide);
-    //public delegate void GroupableEnable(bool Enable);
-    public delegate void GrouableStateChange(object o, GroupingEventArgs e);
+    public delegate void GroupableStateChange(object sender, GroupingEventArgs e);
 }
