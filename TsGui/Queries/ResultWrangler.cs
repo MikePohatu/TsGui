@@ -31,12 +31,14 @@ namespace TsGui.Queries
         private int _currentValue;         //current result in the lists
 
         public string Separator { get; set; }
+        public bool IncludeNullValues { get; set; }
 
 
         public ResultWrangler()
         {
             this._valuelists = new Dictionary<int, List<ResultFormatter>>();
             this._keyvalues = new Dictionary<int, ResultFormatter>();
+            this.IncludeNullValues = true;
             this.Separator = ", ";
             this._currentValue = -1;
             this._currentIndex = 0;
@@ -87,7 +89,8 @@ namespace TsGui.Queries
             foreach (ResultFormatter result in Results)
             {
                 tempval = result.Value;
-                if (!string.IsNullOrEmpty(tempval))
+
+                if (this.IncludeNullValues || !string.IsNullOrEmpty(tempval))
                 {
                     if (i == 0) { s = tempval; }
                     else { s = s + Separator + tempval; }

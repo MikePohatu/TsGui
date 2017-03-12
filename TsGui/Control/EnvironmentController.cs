@@ -128,7 +128,7 @@ namespace TsGui
         //can return the data in the right format. 
         private ResultWrangler ProcessQuery(XElement InputXml)
         {
-            ResultWrangler wrangler = new ResultWrangler();
+            ResultWrangler wrangler = null;
             string type;
 
             type = InputXml.Attribute("Type")?.Value;
@@ -194,15 +194,12 @@ namespace TsGui
         private ResultWrangler ProcessWmiQuery(XElement InputXml)
         {
             ResultWrangler wrangler = new ResultWrangler();
-            XElement x;
-            //bool selectProperties = false;
 
             List<KeyValuePair<string, XElement>> propertyTemplates;
             string wql = InputXml.Element("Wql")?.Value;
 
-            x = InputXml.Element("Separator");
-            if (x != null)
-            { wrangler.Separator = x.Value; }
+            wrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", wrangler.Separator);
+            wrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", wrangler.IncludeNullValues);
 
             //make sure there is some WQL to query
             if (string.IsNullOrEmpty(wql)) { throw new InvalidOperationException("Empty WQL query in XML: " + Environment.NewLine + InputXml); }
