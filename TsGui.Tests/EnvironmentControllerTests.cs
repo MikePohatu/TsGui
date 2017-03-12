@@ -38,7 +38,9 @@ namespace TsGui.Tests
 
 
         [Test]
-        public void AddWmiPropertiesToWranglerTest()
+        [TestCase(true, ExpectedResult = ",1")]
+        [TestCase(false, ExpectedResult = "1")]
+        public string AddWmiPropertiesToWranglerTest(bool IncludeFalseValues)
         {
             //protected void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
             //< Query Type = "Wmi" >
@@ -52,6 +54,7 @@ namespace TsGui.Tests
             proptemplates.Add(new KeyValuePair<string, XElement>("BatteryStatus",propx));
 
             ResultWrangler wrangler = new ResultWrangler();
+            wrangler.IncludeNullValues = IncludeFalseValues;
             wrangler.Separator = ",";
 
             ManagementClass batt1 = new ManagementClass();
@@ -69,7 +72,7 @@ namespace TsGui.Tests
             obj.Invoke("AddWmiPropertiesToWrangler",args);
 
             string s = wrangler.GetString();
-            NUnit.Framework.Assert.AreEqual(",1",s);
+            return s;
         }
     }
 }
