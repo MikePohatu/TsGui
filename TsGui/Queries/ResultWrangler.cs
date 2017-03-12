@@ -211,7 +211,7 @@ namespace TsGui.Queries
                 { _tempRFListMain.AddRange(_tempRFList); }
 
                 if (i == 0) { s = this.ConcatenateResultValues(_tempRFListMain, Separator); }
-                else { s = s + Separator + this.ConcatenateResultValues(_tempRFListMain, Separator); }
+                else { s = this.ConcatenateResultValues(_tempRFListMain, Separator); }
             }
 
             return s;
