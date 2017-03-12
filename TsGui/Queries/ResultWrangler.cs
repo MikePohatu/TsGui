@@ -168,7 +168,7 @@ namespace TsGui.Queries
             ResultFormatter _tempRF;
             List<ResultFormatter> _tempRFList;
 
-            for (int i = 0; i == this._currentValue; i++)
+            for (int i = 0; i <= this._currentValue; i++)
             {
                 string concatlist = "";
                 string value = "";
@@ -201,7 +201,7 @@ namespace TsGui.Queries
             List<ResultFormatter> _tempRFListMain = new List<ResultFormatter>();
             List<ResultFormatter> _tempRFList;
 
-            for (int i = 0; i == this._currentValue; i++)
+            for (int i = 0; i <= this._currentValue; i++)
             {
 
                 if (this._keyvalues.TryGetValue(i, out _tempRF))

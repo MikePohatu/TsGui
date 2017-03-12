@@ -65,7 +65,7 @@ namespace TsGui
         private void Evaluate()
         {
             //virtual machine tests
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjects("select Model,Manufacturer from Win32_ComputerSystem"))
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection("select Model,Manufacturer from Win32_ComputerSystem"))
             {
                 string model = (string)m["Model"];
                 string maker = (string)m["Manufacturer"];
@@ -102,7 +102,7 @@ namespace TsGui
             }
 
             //chassis type tests
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjects("select ChassisTypes from Win32_SystemEnclosure"))
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection("select ChassisTypes from Win32_SystemEnclosure"))
             {
                 Int16[] chassistypes = (Int16[])m["ChassisTypes"];
 

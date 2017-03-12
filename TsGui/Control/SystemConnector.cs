@@ -18,6 +18,7 @@
 
 using System;
 using System.Management;
+using System.Collections.Generic;
 
 namespace TsGui
 {
@@ -77,7 +78,7 @@ namespace TsGui
             
         }
 
-        public static ManagementObjectCollection GetWmiManagementObjects(string WmiQuery)
+        public static ManagementObjectCollection GetWmiManagementObjectCollection(string WmiQuery)
         {
             try
             {
@@ -90,6 +91,18 @@ namespace TsGui
             {
                 return null;
             }
+        }
+
+        public static List<ManagementObject> GetWmiManagementObjectList(string WmiQuery)
+        {
+            ManagementObjectCollection collection = GetWmiManagementObjectCollection(WmiQuery);
+            List<ManagementObject> list = new List<ManagementObject>();
+            foreach (ManagementObject m in collection)
+            {
+                list.Add(m);
+            }
+
+            return list;
         }
     }
 }
