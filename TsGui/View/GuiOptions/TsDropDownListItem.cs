@@ -23,13 +23,14 @@ namespace TsGui.View.GuiOptions
 {
     public class TsDropDownListItem: GroupableUIElementBase
     {
+        private TsDropDownList _parent;
         public int Index { get; set; }
         public string Value { get; set; }
         public string Text { get; set; }
         public Formatting ItemFormatting { get; set; }
 
         public TsDropDownListItem(int Index, string Value, string Text, Formatting Formatting, TsDropDownList Parent, MainController MainController):base(MainController)
-        {
+        { 
             this.Init(Index, Formatting, Parent);
             this.Value = Value;
             this.Text = Text; 
@@ -46,6 +47,14 @@ namespace TsGui.View.GuiOptions
         private void Init(int Index, Formatting Formatting, TsDropDownList Parent)
         {
             this.ItemFormatting = Formatting;
+            this._parent = Parent;
+        }
+
+        protected override Group AddGroup(string GroupID)
+        {
+            Group g = base.AddGroup(GroupID);
+            this._parent.AddItemGroup(g);
+            return g;
         }
     }
 }

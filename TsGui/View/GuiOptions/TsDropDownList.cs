@@ -34,7 +34,8 @@ namespace TsGui.View.GuiOptions
         private TsDropDownListUI _dropdownlistui;
         private string _defaultvalue;
         private TsDropDownListItem _currentitem;
-        private List<TsDropDownListItem> _options = new List<TsDropDownListItem>();
+        private List<TsDropDownListItem> _items = new List<TsDropDownListItem>();
+        private Dictionary<string,Group> _itemGroups = new Dictionary<string,Group>();
         private bool _istoggle = false;
         private string _validationtext;
         private ValidationToolTipHandler _validationtooltiphandler;
@@ -44,7 +45,7 @@ namespace TsGui.View.GuiOptions
 
 
         //properties
-        public List<TsDropDownListItem> VisibleOptions { get { return this._options.Where(x => x.IsEnabled == true).ToList(); } }
+        public List<TsDropDownListItem> VisibleOptions { get { return this._items.Where(x => x.IsEnabled == true).ToList(); } }
         public TsVariable Variable
         {
             get
@@ -86,6 +87,7 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;
             this.SetDefaults();
             this.LoadXml(InputXml);
+            this.RegisterForItemGroupEvents();
             this.SetComboBoxDefault();
 
             this._controller.WindowLoaded += this.OnLoadReload;
@@ -169,6 +171,17 @@ namespace TsGui.View.GuiOptions
             }
         }
 
+        public void AddItemGroup(Group NewGroup)
+        {
+            Group g;
+            this._itemGroups.TryGetValue(NewGroup.ID, out g);
+            if (g == null) { this._itemGroups.Add(NewGroup.ID, NewGroup); }
+        }
+
+
+        public void ClearToolTips()
+        { this._validationtooltiphandler.Clear(); }
+
         //fire an intial event to make sure things are set correctly. This is
         //called by the controller once everything is loaded
         public void InitialiseToggle()
@@ -186,9 +199,10 @@ namespace TsGui.View.GuiOptions
             this.ToggleEvent?.Invoke();
         }
 
-        public void OnDropDownListItemGroupEvent(object o, GroupingEventArgs e)
+        public void OnDropDownListItemGroupEvent()
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.UpdateView()));
+            //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => this.UpdateView()));
+            this.UpdateView();
         }
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
@@ -208,8 +222,7 @@ namespace TsGui.View.GuiOptions
 
         private void AddOption(TsDropDownListItem Item)
         {
-            this._options.Add(Item);
-            Item.GroupingStateChange += this.OnDropDownListItemGroupEvent;
+            this._items.Add(Item);
         }
 
         private void SetDefaults()
@@ -254,7 +267,12 @@ namespace TsGui.View.GuiOptions
             return newvalid;
         }
 
-        public void ClearToolTips()
-        { this._validationtooltiphandler.Clear(); }
+        private void RegisterForItemGroupEvents()
+        {
+            foreach (Group g in this._itemGroups.Values)
+            {
+                g.StateEvent += this.OnDropDownListItemGroupEvent;
+            }
+        }
     }
 }
