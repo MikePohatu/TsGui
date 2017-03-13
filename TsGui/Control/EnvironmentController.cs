@@ -274,19 +274,14 @@ namespace TsGui
             {
                 Wrangler.NewSubList();
                 ResultFormatter rf = null;
-                string input = null;
 
                 //if properties have been specified in the xml, query them directly in order
                 if (PropertyTemplates.Count != 0)
                 {
                     foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
                     {
-                        object o = m.GetPropertyValue(template.Key);
-                        if (o != null) { input = o.ToString(); }
-                        //else { input = string.Empty; }
-
                         rf = new ResultFormatter(template.Value);
-                        rf.Input = input;
+                        rf.Input = m.GetPropertyValue(template.Key)?.ToString();
                         Wrangler.AddResultFormatter(rf);
                     }
                 }
@@ -295,12 +290,9 @@ namespace TsGui
                 {
                     foreach (PropertyData property in m.Properties)
                     {
-                        if (property.Value != null)
-                        {
-                            rf = new ResultFormatter();
-                            rf.Input = property.Value.ToString();
-                            Wrangler.AddResultFormatter(rf);
-                        }
+                        rf = new ResultFormatter();
+                        rf.Input = property.Value?.ToString();
+                        Wrangler.AddResultFormatter(rf);
                     }
                 }
             }

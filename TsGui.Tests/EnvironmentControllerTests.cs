@@ -38,20 +38,45 @@ namespace TsGui.Tests
 
 
         [Test]
-        [TestCase(true, ExpectedResult = ",1")]
-        [TestCase(false, ExpectedResult = "1")]
-        public string AddWmiPropertiesToWranglerTest(bool IncludeFalseValues)
+        [TestCaseSource("AddWmiPropertiesToWrangler_TestCases")]
+        public void AddWmiPropertiesToWrangler_Test(EnvironmentControllerTestArgs TestArgs)
         {
             //protected void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
-            //< Query Type = "Wmi" >
-            //    < Wql > SELECT BatteryStatus FROM Win32_Battery </ Wql >
-            //    < Property Name = "BatteryStatus" />
-            //    < Separator ></ Separator >
-            // </ Query >
+            EnvironmentController envcontroller = new EnvironmentController();
+            PrivateObject obj = new PrivateObject(envcontroller);
+
+            object[] args = new object[3] { TestArgs.Wrangler, TestArgs.ManagementObjectList, TestArgs.PropertyTemplates };
+            obj.Invoke("AddWmiPropertiesToWrangler",args);
+
+            ResultWrangler wrangler = TestArgs.Wrangler;
+            string s = wrangler.GetString();
+            NUnit.Framework.Assert.AreEqual(s, TestArgs.ExpectedResult);
+        }
+
+        public static IEnumerable<TestCaseData> AddWmiPropertiesToWrangler_TestCases
+        {
+            get
+            {
+                yield return new TestCaseData(AddWmiPropertiesToWrangler_TestArgs1(true));
+                yield return new TestCaseData(AddWmiPropertiesToWrangler_TestArgs1(false));
+                yield return new TestCaseData(AddWmiPropertiesToWrangler_TestArgs2(true));
+                yield return new TestCaseData(AddWmiPropertiesToWrangler_TestArgs2(false));
+                yield return new TestCaseData(AddWmiPropertiesToWrangler_TestArgs3());
+            }
+        }
+
+        private static EnvironmentControllerTestArgs AddWmiPropertiesToWrangler_TestArgs1(bool IncludeFalseValues)
+        {
+            string expectedresult;
+
+            if (IncludeFalseValues == true) { expectedresult = ",1"; }
+            else { expectedresult = "1"; }
+
+            //protected void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
             List<KeyValuePair<string, XElement>> proptemplates = new List<KeyValuePair<string, XElement>>();
             XElement propx = new XElement("Property");
             propx.Add(new XAttribute("Name", "BatteryStatus"));
-            proptemplates.Add(new KeyValuePair<string, XElement>("BatteryStatus",propx));
+            proptemplates.Add(new KeyValuePair<string, XElement>("BatteryStatus", propx));
 
             ResultWrangler wrangler = new ResultWrangler();
             wrangler.IncludeNullValues = IncludeFalseValues;
@@ -66,13 +91,63 @@ namespace TsGui.Tests
             objcollection.Add(batt1);
             objcollection.Add(batt2);
 
-            EnvironmentController envcontroller = new EnvironmentController();
-            PrivateObject obj = new PrivateObject(envcontroller);
-            object[] args = new object[3] { wrangler, objcollection, proptemplates};
-            obj.Invoke("AddWmiPropertiesToWrangler",args);
+            return new EnvironmentControllerTestArgs( expectedresult, wrangler, objcollection, proptemplates );
+        }
 
-            string s = wrangler.GetString();
-            return s;
+        private static EnvironmentControllerTestArgs AddWmiPropertiesToWrangler_TestArgs2(bool IncludeFalseValues)
+        {
+            string expectedresult;
+
+            if (IncludeFalseValues == true) { expectedresult = "1,"; }
+            else { expectedresult = "1"; }
+
+            //protected void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
+            List<KeyValuePair<string, XElement>> proptemplates = new List<KeyValuePair<string, XElement>>();
+
+            ResultWrangler wrangler = new ResultWrangler();
+            wrangler.IncludeNullValues = IncludeFalseValues;
+            wrangler.Separator = ",";
+
+            ManagementClass batt1 = new ManagementClass();
+            ManagementClass batt2 = new ManagementClass();
+            batt1.Properties.Add("BatteryStatus", 1, CimType.UInt16);
+            batt2.Properties.Add("BatteryStatus", null, CimType.UInt16);
+
+            List<ManagementObject> objcollection = new List<ManagementObject>();
+            objcollection.Add(batt1);
+            objcollection.Add(batt2);
+
+            return new EnvironmentControllerTestArgs(expectedresult, wrangler, objcollection, proptemplates);
+        }
+
+        private static EnvironmentControllerTestArgs AddWmiPropertiesToWrangler_TestArgs3()
+        {
+            string expectedresult = "Test Model,Test_VM";
+
+            //protected void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
+            List<KeyValuePair<string, XElement>> proptemplates = new List<KeyValuePair<string, XElement>>();
+
+            XElement propx = new XElement("Property");
+            propx.Add(new XAttribute("Name", "Model"));
+            proptemplates.Add(new KeyValuePair<string, XElement>("Model", propx));
+
+            propx = new XElement("Property");
+            propx.Add(new XAttribute("Name", "Serial"));
+            proptemplates.Add(new KeyValuePair<string, XElement>("Serial", propx));
+
+            ResultWrangler wrangler = new ResultWrangler();
+            wrangler.Separator = ",";
+
+            ManagementClass wmi1 = new ManagementClass();
+            ManagementClass wmi2 = new ManagementClass();
+            wmi1.Properties.Add("Model", "Test Model", CimType.String);
+            wmi1.Properties.Add("Serial", "Test_VM", CimType.String);
+
+            List<ManagementObject> objcollection = new List<ManagementObject>();
+            objcollection.Add(wmi1);
+            //objcollection.Add(wmi2);
+
+            return new EnvironmentControllerTestArgs(expectedresult, wrangler, objcollection, proptemplates);
         }
     }
 }

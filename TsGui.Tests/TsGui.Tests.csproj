@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculatorTests.cs" />
+    <Compile Include="EnvironmentControllerTestArgs.cs" />
     <Compile Include="ResultValidatorTests.cs" />
     <Compile Include="EnvironmentControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
