@@ -139,13 +139,12 @@ namespace TsGui.Tests
             wrangler.Separator = ",";
 
             ManagementClass wmi1 = new ManagementClass();
-            ManagementClass wmi2 = new ManagementClass();
+
             wmi1.Properties.Add("Model", "Test Model", CimType.String);
             wmi1.Properties.Add("Serial", "Test_VM", CimType.String);
 
             List<ManagementObject> objcollection = new List<ManagementObject>();
             objcollection.Add(wmi1);
-            //objcollection.Add(wmi2);
 
             return new EnvironmentControllerTestArgs(expectedresult, wrangler, objcollection, proptemplates);
         }
