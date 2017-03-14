@@ -40,13 +40,14 @@ namespace TsGui
 
         public void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
         {
-            //args.Handled = true;
+            args.Handled = true;
             this.HandleException(sender, args.Exception,args.Exception.StackTrace);
         }
 
         public void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
         {
-            this.HandleException(sender, (Exception)args.ExceptionObject, args.ExceptionObject.ToString());     
+            Exception e = (Exception)args.ExceptionObject;
+            this.HandleException(sender, e, e.StackTrace);     
         }
 
         private void HandleException(object sender, Exception e, string AdditionalText)
@@ -54,8 +55,8 @@ namespace TsGui
             if (e is TsGuiKnownException) { this.ShowErrorMessageAndClose((TsGuiKnownException)e); }
             else
             {
-                string s = e.Message + Environment.NewLine + Environment.NewLine + sender?.ToString();
-                if (!string.IsNullOrEmpty(AdditionalText)) { s = s + Environment.NewLine + Environment.NewLine + AdditionalText; }
+                string s = "Source: " + sender.ToString() + Environment.NewLine + Environment.NewLine + "Exception: " + e.Message + Environment.NewLine;
+                if (!string.IsNullOrEmpty(AdditionalText)) { s = s + Environment.NewLine + AdditionalText; }
                 this.ShowErrorMessageAndClose(s);
             }
 
