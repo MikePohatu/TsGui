@@ -40,8 +40,8 @@ namespace TsGui
 
         public void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
         {
-            args.Handled = true;
-            this.HandleException(sender, args.Exception,"Source: Dispatcher");
+            //args.Handled = true;
+            this.HandleException(sender, args.Exception,args.Exception.StackTrace);
         }
 
         public void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)

@@ -23,7 +23,7 @@ namespace TsGui.View.GuiOptions
 {
     public class TsDropDownListItem: GroupableUIElementBase
     {
-        private TsDropDownList _parent;
+        private TsDropDownList _dropdownlist;
         public int Index { get; set; }
         public string Value { get; set; }
         public string Text { get; set; }
@@ -47,13 +47,13 @@ namespace TsGui.View.GuiOptions
         private void Init(int Index, Formatting Formatting, TsDropDownList Parent)
         {
             this.ItemFormatting = Formatting;
-            this._parent = Parent;
+            this._dropdownlist = Parent;
         }
 
         protected override Group AddGroup(string GroupID)
         {
             Group g = base.AddGroup(GroupID);
-            this._parent.AddItemGroup(g);
+            this._dropdownlist.AddItemGroup(g);
             return g;
         }
     }

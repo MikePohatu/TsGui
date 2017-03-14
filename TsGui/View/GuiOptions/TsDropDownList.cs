@@ -88,7 +88,7 @@ namespace TsGui.View.GuiOptions
             this.SetDefaults();
             this.LoadXml(InputXml);
             this.RegisterForItemGroupEvents();
-            this.SetComboBoxDefault();
+            this.UpdateView();
 
             this._controller.WindowLoaded += this.OnLoadReload;
             this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
@@ -154,6 +154,8 @@ namespace TsGui.View.GuiOptions
 
         private void SetComboBoxDefault()
         {
+            TsDropDownListItem newdefault = null;
+
             if (this._nodefaultvalue == false)
             {
                 int index = 0;
@@ -163,12 +165,15 @@ namespace TsGui.View.GuiOptions
                     if (item.IsActive == true)
                     {
                         if ((item.Value == this._defaultvalue) || (index == 0))
-                        { this.CurrentItem = item; }
-
+                        {
+                            newdefault = item;
+                            if (index > 0) { break; }
+                        }
                         index++;
                     }
                 }
             }
+            this.CurrentItem = newdefault;
         }
 
         public void AddItemGroup(Group NewGroup)
@@ -215,7 +220,6 @@ namespace TsGui.View.GuiOptions
 
         private void UpdateView()
         {
-            //TsDropDownListItem currentselected = this.CurrentItem;
             this.OnPropertyChanged(this, "VisibleOptions");
             this.SetComboBoxDefault();
         }
