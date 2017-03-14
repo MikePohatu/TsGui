@@ -88,7 +88,7 @@ namespace TsGui.View.GuiOptions
             this.SetDefaults();
             this.LoadXml(InputXml);
             this.RegisterForItemGroupEvents();
-            this.UpdateView();
+            this.SetComboBoxDefault();
 
             this._controller.WindowLoaded += this.OnLoadReload;
             this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
