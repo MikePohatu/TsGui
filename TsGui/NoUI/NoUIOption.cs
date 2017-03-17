@@ -27,6 +27,7 @@ namespace TsGui.NoUI
         private bool _usecurrent = false;
 
         //properties
+        public string ID { get; set; }
         public string VariableName { get; set; }
         public string InactiveValue
         {

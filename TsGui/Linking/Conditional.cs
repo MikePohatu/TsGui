@@ -1,4 +1,4 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
+﻿//    Copyright (C) 2017 Mike Pohatu
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,19 +13,14 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// IOption.cs - option interface. Base interface to apply to both GuiOptions and BlindOptions
+// Conditional.cs - IF rule for option linking
 
-namespace TsGui
+namespace TsGui.Linking
 {
-    public interface IOption
+    public class Conditional
     {
-        TsVariable Variable { get; }
-        string CurrentValue { get; }
-        string LiveValue { get; }
-        string VariableName { get; }
-        string InactiveValue { get; }
-        string ID { get; }
-        bool PurgeInactive { get; set; }
-        bool IsActive { get; }
+        public string SourceID { get; set; }
+        public string SourceValue { get; set; }
+        public string TargetValue { get; set; }
     }
 }

@@ -30,6 +30,7 @@ namespace TsGui.View.GuiOptions
         private GuiOptionBaseUI _ui;
 
         //standard stuff
+        public string ID { get; set; }
         public UserControl Control { get; set; }
         public UserControl Label { get; set; }
         public GuiOptionBaseUI UserControl

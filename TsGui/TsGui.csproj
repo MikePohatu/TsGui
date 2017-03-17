@@ -84,6 +84,8 @@
     <Compile Include="Helpers\ReverseComparer.cs" />
     <Compile Include="Images\Image.cs" />
     <Compile Include="Images\MultiImage.cs" />
+    <Compile Include="Linking\Conditional.cs" />
+    <Compile Include="Linking\LinkableLibrary.cs" />
     <Compile Include="NoUI\NoUIOption.cs" />
     <Compile Include="NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
