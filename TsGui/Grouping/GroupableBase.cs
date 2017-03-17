@@ -49,7 +49,7 @@ namespace TsGui.Grouping
 
         //Events
         #region
-        public abstract event GrouableStateChange GroupingStateChange;
+        public abstract event GroupableStateChange GroupingStateChange;
 
         public void OnParentGroupingStateChange(object o, GroupingEventArgs e)
         {
@@ -72,8 +72,15 @@ namespace TsGui.Grouping
             if (xGroups != null)
             {
                 foreach (XElement xGroup in xGroups)
-                { this._groups.Add(this._controller.AddToGroup(xGroup.Value, this)); }
+                { this.AddGroup(xGroup.Value); }
             }
+        }
+
+        protected virtual Group AddGroup(string GroupID)
+        {
+            Group g = this._controller.AddToGroup(GroupID, this);
+            this._groups.Add(g);
+            return g;
         }
     }
 }

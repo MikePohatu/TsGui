@@ -21,6 +21,6 @@ using TsGui.View.Layout;
 
 namespace TsGui.Events
 {
-    public delegate void TsGuiWindowEventHandler(object o, RoutedEventArgs e);
-    public delegate void ComplianceRetryEventHandler(IRootLayoutElement o, EventArgs e);
+    public delegate void TsGuiWindowEventHandler(object sender, RoutedEventArgs e);
+    public delegate void ComplianceRetryEventHandler(IRootLayoutElement sender, EventArgs e);
 }

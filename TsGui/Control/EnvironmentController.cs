@@ -128,7 +128,7 @@ namespace TsGui
         //can return the data in the right format. 
         private ResultWrangler ProcessQuery(XElement InputXml)
         {
-            ResultWrangler wrangler = new ResultWrangler();
+            ResultWrangler wrangler = null;
             string type;
 
             type = InputXml.Attribute("Type")?.Value;
@@ -194,69 +194,23 @@ namespace TsGui
         private ResultWrangler ProcessWmiQuery(XElement InputXml)
         {
             ResultWrangler wrangler = new ResultWrangler();
-            XElement x;
-            bool selectProperties = false;
 
-            List<KeyValuePair<string, XElement>> propertyTemplates = new List<KeyValuePair<string, XElement>>();
+            List<KeyValuePair<string, XElement>> propertyTemplates;
             string wql = InputXml.Element("Wql")?.Value;
 
-            x = InputXml.Element("Separator");
-            if (x != null)
-            { wrangler.Separator = x.Value; }
+            wrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", wrangler.Separator);
+            wrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", wrangler.IncludeNullValues);
 
             //make sure there is some WQL to query
             if (string.IsNullOrEmpty(wql)) { throw new InvalidOperationException("Empty WQL query in XML: " + Environment.NewLine + InputXml); }
 
-            //first import the properties from the XML to the templates dictionary
-            foreach (XElement propx in InputXml.Elements("Property"))
-            {
-                selectProperties = true;
-                string name = propx.Attribute("Name")?.Value;
-                //make sure there is a name set
-                if (string.IsNullOrEmpty(name)) { throw new InvalidOperationException("Missing Name attribute in XML: " + Environment.NewLine + propx); }
-
-                //add it to the templates list
-                propertyTemplates.Add(new KeyValuePair<string,XElement>( name, propx));
-            }
+            propertyTemplates = this.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
 
             //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
             //New sublists are created for each management object in the wrangler. 
             try
             {
-                foreach (ManagementObject m in SystemConnector.GetWmiManagementObjects(wql))
-                {
-                    wrangler.NewSubList();
-                    ResultFormatter rf = null;
-                    string input = null;
-
-                    //if properties have been specified in the xml, query them directly in order
-                    if (selectProperties == true)
-                    {
-                        foreach (KeyValuePair<string, XElement> template in propertyTemplates)
-                        {
-                            object o = m.GetPropertyValue(template.Key);
-                            if (o != null) { input = o.ToString(); }
-                            else { input = string.Empty; }
-
-                            rf = new ResultFormatter(template.Value);
-                            rf.Input = input;
-                            wrangler.AddResultFormatter(rf);
-                        }
-                    }
-                    //if properties not set, add them all 
-                    else
-                    {
-                        foreach (PropertyData property in m.Properties)
-                        {
-                            if (property.Value != null)
-                            {
-                                rf = new ResultFormatter();
-                                rf.Input = property.Value.ToString();
-                                wrangler.AddResultFormatter(rf);
-                            }
-                        }
-                    }
-                }
+                this.AddWmiPropertiesToWrangler(wrangler, SystemConnector.GetWmiManagementObjectList(wql), propertyTemplates);
             }
             catch (ManagementException e)
             {
@@ -295,6 +249,53 @@ namespace TsGui
         {
             if (this._sccmconnector != null) { this._sccmconnector.Release(); }
             if (this._testconnector != null) { this._testconnector.Release(); }
+        }
+
+
+        private List<KeyValuePair<string, XElement>> GetTemplatesFromXmlElements(IEnumerable<XElement> Elements)
+        {
+            List<KeyValuePair<string, XElement>> templates = new List<KeyValuePair<string, XElement>>();
+
+            foreach (XElement propx in Elements)
+            {
+                string name = propx.Attribute("Name")?.Value;
+                //make sure there is a name set
+                if (string.IsNullOrEmpty(name)) { throw new InvalidOperationException("Missing Name attribute in XML: " + Environment.NewLine + propx); }
+
+                //add it to the templates list
+                templates.Add(new KeyValuePair<string, XElement>(name, propx));
+            }
+            return templates;
+        }
+
+        private void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
+        {
+            foreach (ManagementObject m in WmiObjectList)
+            {
+                Wrangler.NewSubList();
+                ResultFormatter rf = null;
+
+                //if properties have been specified in the xml, query them directly in order
+                if (PropertyTemplates.Count != 0)
+                {
+                    foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
+                    {
+                        rf = new ResultFormatter(template.Value);
+                        rf.Input = m.GetPropertyValue(template.Key)?.ToString();
+                        Wrangler.AddResultFormatter(rf);
+                    }
+                }
+                //if properties not set, add them all 
+                else
+                {
+                    foreach (PropertyData property in m.Properties)
+                    {
+                        rf = new ResultFormatter();
+                        rf.Input = property.Value?.ToString();
+                        Wrangler.AddResultFormatter(rf);
+                    }
+                }
+            }
         }
     }
 }

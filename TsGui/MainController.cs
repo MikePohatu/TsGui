@@ -323,22 +323,6 @@ namespace TsGui
             return group;
         }
 
-        /// <summary>
-        /// Return the Group object from a specified ID. Creates a new one if it doesn't already exist
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
-        public Group GetGroup(string ID)
-        {
-            Group group;
-            this._groups.TryGetValue(ID, out group);
-            if (group == null)
-            {
-                group = this.CreateGroup(ID);
-            }
-            return group;
-        }
-
         //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()
         {

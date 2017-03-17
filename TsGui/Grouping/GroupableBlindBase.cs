@@ -41,7 +41,7 @@ namespace TsGui.Grouping
         }
 
         //Events
-        public override event GrouableStateChange GroupingStateChange;
+        public override event GroupableStateChange GroupingStateChange;
 
         protected override void EvaluateGroups()
         {
