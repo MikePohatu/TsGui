@@ -15,6 +15,8 @@
 
 // Conditional.cs - IF rule for option linking
 
+using System.Xml.Linq;
+
 namespace TsGui.Linking
 {
     public class Conditional
@@ -22,5 +24,12 @@ namespace TsGui.Linking
         public string SourceID { get; set; }
         public string SourceValue { get; set; }
         public string TargetValue { get; set; }
+
+        public void LoadXml(XElement InputXml)
+        {
+            //<IF ID="AppParent" Value="TRUE">TRUE</IF>
+            this.SourceID = XmlHandler.GetStringFromXAttribute(InputXml, "ID", this.SourceID);
+            this.SourceValue = XmlHandler.GetStringFromXAttribute(InputXml, "Value", this.SourceID);
+        }
     }
 }

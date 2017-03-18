@@ -28,6 +28,7 @@ using TsGui.NoUI;
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Diagnostics;
+using TsGui.Linking;
 
 namespace TsGui
 {
@@ -43,6 +44,7 @@ namespace TsGui
         private TsButtons _buttons = new TsButtons();
         private List<TsPage> _pages = new List<TsPage>();
         private EnvironmentController _envController = new EnvironmentController();
+        private LinkingLibrary _linkinglibrary = new LinkingLibrary();
         private GroupLibrary _grouplibrary = new GroupLibrary();
         private List<IToggleControl> _toggles = new List<IToggleControl>();
         private OptionLibrary _optionlibrary = new OptionLibrary();
@@ -54,6 +56,7 @@ namespace TsGui
         private bool _showtestwindow = false;
 
         //properties
+        public LinkingLibrary LinkingLibrary { get { return this._linkinglibrary; } }
         public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get { return this._optionlibrary; } }

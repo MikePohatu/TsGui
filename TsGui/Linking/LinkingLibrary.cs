@@ -20,7 +20,7 @@ using System;
 
 namespace TsGui.Linking
 {
-    public class LinkableLibrary
+    public class LinkingLibrary
     {
         private Dictionary<string, IOption> _sources = new Dictionary<string, IOption>();
         private Dictionary<string, List<IOption>> _pendingtargets = new Dictionary<string, List<IOption>>();
