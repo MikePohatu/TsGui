@@ -134,7 +134,7 @@ namespace TsGui.View.GuiOptions
                     }
                 }
 
-                this._controltext = this._controller.GetValueFromList(x);
+                this._controltext = this._controller.EnvironmentController.GetValueFromList(x);
                 if (this._controltext == null) { this._controltext = string.Empty; }
 
                 //if required, remove invalid characters and truncate

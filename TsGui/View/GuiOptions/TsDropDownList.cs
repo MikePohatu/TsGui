@@ -129,7 +129,7 @@ namespace TsGui.View.GuiOptions
 
                 if (x.Name == "Query")
                 {
-                    List<KeyValuePair<string, string>> kvlist = this._controller.GetKeyValueListFromList(x);
+                    List<KeyValuePair<string, string>> kvlist = this._controller.EnvironmentController.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
                         TsDropDownListItem newoption = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting,this ,this._controller);

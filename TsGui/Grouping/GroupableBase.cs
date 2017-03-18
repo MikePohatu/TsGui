@@ -78,7 +78,7 @@ namespace TsGui.Grouping
 
         protected virtual Group AddGroup(string GroupID)
         {
-            Group g = this._controller.AddToGroup(GroupID, this);
+            Group g = this._controller.GroupLibrary.AddToGroup(GroupID, this);
             this._groups.Add(g);
             return g;
         }

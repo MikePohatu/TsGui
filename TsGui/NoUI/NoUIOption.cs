@@ -90,7 +90,7 @@ namespace TsGui.NoUI
                     x.AddFirst(xcurrentquery);
                 }
 
-                this._value = this._controller.GetValueFromList(x);
+                this._value = this._controller.EnvironmentController.GetValueFromList(x);
             }
         }
 

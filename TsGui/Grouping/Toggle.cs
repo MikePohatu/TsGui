@@ -55,7 +55,7 @@ namespace TsGui.Grouping
             {
                 if (!string.IsNullOrEmpty(xa.Value))
                 {
-                    this._group = this._controller.GetGroupFromID(xa.Value);
+                    this._group = this._controller.GroupLibrary.GetGroupFromID(xa.Value);
                 }
                 else { throw new InvalidOperationException("Invalid Toggle configured in XML: " + InputXml); }
             }

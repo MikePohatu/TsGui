@@ -40,10 +40,10 @@ namespace TsGui
         private string _configpath;
         private bool _prodmode = false;
         private bool _finished = false;
-        private TsButtons _buttons = new TsButtons();     
+        private TsButtons _buttons = new TsButtons();
         private List<TsPage> _pages = new List<TsPage>();
         private EnvironmentController _envController = new EnvironmentController();
-        private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
+        private GroupLibrary _grouplibrary = new GroupLibrary();
         private List<IToggleControl> _toggles = new List<IToggleControl>();
         private OptionLibrary _optionlibrary = new OptionLibrary();
         private HardwareEvaluator _chassischeck;
@@ -54,8 +54,10 @@ namespace TsGui
         private bool _showtestwindow = false;
 
         //properties
+        public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get { return this._optionlibrary; } }
+        public EnvironmentController EnvironmentController { get { return this._envController; } }
         public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
@@ -287,42 +289,6 @@ namespace TsGui
             this._toggles.Add(ToogleControl);
         }
 
-        private Group CreateGroup(string ID)
-        {
-            Group group;
-            group = new Group(ID);
-            this._groups.Add(ID, group);
-            return group;
-        }
-
-        /// <summary>
-        /// Add a groupable element to a group
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <param name="Element"></param>
-        /// <returns></returns>
-        public Group AddToGroup (string ID, GroupableBase Element)
-        {
-            Group group = this.GetGroupFromID(ID);
-            group.Add(Element);
-            
-            return group;
-        }
-
-        /// <summary>
-        /// Get a group object, create if doesn't exist
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
-        public Group GetGroupFromID(string ID)
-        {
-            Group group;
-            this._groups.TryGetValue(ID, out group);
-            if (group == null) { group = this.CreateGroup(ID); }
-
-            return group;
-        }
-
         //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()
         {
@@ -397,27 +363,6 @@ namespace TsGui
         public void OnWindowMouseUp(object o, RoutedEventArgs e)
         {
             this.WindowMouseUp?.Invoke(o, e);
-        }
-
-        public String GetValueFromList(XElement InputXml)
-        {
-            return this._envController.GetValueFromList(InputXml);
-        }
-
-        public Dictionary<string, string> GetDictionaryFromList(XElement InputXml)
-        {
-            return this._envController.GetDictionaryFromList(InputXml);
-        }
-
-        public List<KeyValuePair<string, string>> GetKeyValueListFromList(XElement InputXml)
-        {
-            return this._envController.GetKeyValueListFromList(InputXml);
-        }
-
-
-        public String GetEnvVar(string VariableName)
-        {
-            return this._envController.GetEnvVar(VariableName);
         }
 
         private bool PromptTestMode()
