@@ -86,6 +86,7 @@
     <Compile Include="Images\MultiImage.cs" />
     <Compile Include="Linking\Conditional.cs" />
     <Compile Include="Linking\LinkableLibrary.cs" />
+    <Compile Include="Linking\LinkingMatcher.cs" />
     <Compile Include="NoUI\NoUIOption.cs" />
     <Compile Include="NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
