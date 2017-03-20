@@ -86,6 +86,8 @@
     <Compile Include="Images\Image.cs" />
     <Compile Include="Images\MultiImage.cs" />
     <Compile Include="Linking\Conditional.cs" />
+    <Compile Include="Linking\LinkingDelegates.cs" />
+    <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />
     <Compile Include="NoUI\NoUIOption.cs" />
     <Compile Include="NoUI\NoUIContainer.cs" />

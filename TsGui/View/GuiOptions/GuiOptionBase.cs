@@ -19,11 +19,14 @@ using System.Xml.Linq;
 using TsGui.View.Layout;
 using System.Windows.Controls;
 using System.Windows;
+using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
     public abstract class GuiOptionBase : BaseLayoutElement
     {
+        public event IOptionValueChanged ValueUpdated;
+
         private string _labeltext = string.Empty;
         private string _helptext = null;
         private string _inactivevalue = "TSGUI_INACTIVE";
