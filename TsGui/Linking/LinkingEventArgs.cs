@@ -16,7 +16,6 @@
 // LinkingDelegates.cs - delegates for the Linking namespace. 
 
 using System;
-using TsGui.Grouping;
 
 
 namespace TsGui.Linking
@@ -24,13 +23,12 @@ namespace TsGui.Linking
     public class LinkingEventArgs: EventArgs
     {
         public string CurrentValue { get; set; }
-        public GroupState GroupState { get; set; }
 
-        public LinkingEventArgs(string CurrentValue, GroupState CurrentState)
+        public LinkingEventArgs(string CurrentValue)
         {
             this.CurrentValue = CurrentValue;
-            this.GroupState = CurrentState;
         }
 
+        public LinkingEventArgs() { }
     }
 }
