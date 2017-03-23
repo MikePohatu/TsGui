@@ -43,6 +43,7 @@ namespace TsGui
         private bool _finished = false;
         private TsButtons _buttons = new TsButtons();
         private List<TsPage> _pages = new List<TsPage>();
+        private Logger _logger = new Logger();
         private EnvironmentController _envController = new EnvironmentController();
         private LinkingLibrary _linkinglibrary = new LinkingLibrary();
         private GroupLibrary _grouplibrary = new GroupLibrary();
@@ -69,6 +70,8 @@ namespace TsGui
         //constructors
         public MainController(MainWindow ParentWindow, Arguments Arguments)
         {
+            this._logger.LogToStdOut = true;
+            this._logger.WriteMessage(Environment.NewLine + "TsGui - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
             this._configpath = Arguments.ConfigFile;
             this.ParentWindow = ParentWindow;
             this.Init();          
