@@ -57,6 +57,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.5\lib\net40\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -76,8 +80,7 @@
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="Diagnostics\DiagnosticsEnums.cs" />
     <Compile Include="Diagnostics\DiagnosticsHelper.cs" />
-    <Compile Include="Diagnostics\Logger.cs" />
-    <Compile Include="Diagnostics\LoggingLevels.cs" />
+    <Compile Include="Diagnostics\LoggerFacade.cs" />
     <Compile Include="Diagnostics\TestingWindow.cs" />
     <Compile Include="Diagnostics\TestingWindowUI.xaml.cs">
       <DependentUpon>TestingWindowUI.xaml</DependentUpon>
@@ -322,6 +325,13 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

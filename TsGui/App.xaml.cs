@@ -11,7 +11,6 @@ namespace TsGui
     /// </summary>
     public partial class App : Application
     {
-        private Logger _logger;
         private MainController _controller;
 
         public Arguments Arguments;
@@ -38,15 +37,10 @@ namespace TsGui
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(this.OnUnhandledException);
 
-            this._logger = new Logger();
-            this._logger.LogFile = this.Arguments.LogFile;
-            this._logger.LoggingLevel = this.Arguments.LoggingLevel;
+            LoggerFacade.Info("TsGui - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
-            this._logger.WriteMessage(Environment.NewLine + "TsGui - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            this._logger.WriteMessage("Logging level: " + LoggingLevels.ToString(this._logger.LoggingLevel));
-
-            this._mainwindow = new MainWindow(this.Arguments, this._logger);
-            this._controller = new MainController(this._mainwindow, this.Arguments, this._logger);
+            this._mainwindow = new MainWindow(this.Arguments);
+            this._controller = new MainController(this._mainwindow, this.Arguments);
         }
 
 

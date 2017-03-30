@@ -43,7 +43,6 @@ namespace TsGui
         private bool _finished = false;
         private TsButtons _buttons = new TsButtons();
         private List<TsPage> _pages = new List<TsPage>();
-        private Logger _logger;
         private EnvironmentController _envController = new EnvironmentController();
         private LinkingLibrary _linkinglibrary = new LinkingLibrary();
         private GroupLibrary _grouplibrary = new GroupLibrary();
@@ -57,7 +56,6 @@ namespace TsGui
         private bool _showtestwindow = false;
 
         //properties
-        public Logger Logger { get { return this._logger; } }
         public LinkingLibrary LinkingLibrary { get { return this._linkinglibrary; } }
         public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
@@ -69,9 +67,8 @@ namespace TsGui
         public bool ShowGridLines { get; set; }
 
         //constructors
-        public MainController(MainWindow ParentWindow, Arguments Arguments, Logger ParentLogger)
+        public MainController(MainWindow ParentWindow, Arguments Arguments)
         {
-            this._logger = ParentLogger;
             this._configpath = Arguments.ConfigFile;
             this.ParentWindow = ParentWindow;
             this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;

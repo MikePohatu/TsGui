@@ -97,7 +97,7 @@ namespace TsGui.View.Layout
         public TsPage(XElement SourceXml, PageDefaults Defaults, MainController MainController):base (MainController)
         {
             //this._controller = Defaults.RootController;
-            this._controller.Logger.WriteLog("New page created", LoggingLevels.Information);
+            LoggerFacade.Info("New page created");
             this.ShowGridLines = MainController.ShowGridLines;
             this._pageui = new TsPageUI(this);
             this.PageHeader = Defaults.PageHeader;
