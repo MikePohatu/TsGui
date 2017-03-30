@@ -19,6 +19,7 @@
 using System;
 using System.Xml.Linq;
 using System.Windows;
+using TsGui.Diagnostics;
 
 namespace TsGui.View.GuiOptions
 {
@@ -28,6 +29,8 @@ namespace TsGui.View.GuiOptions
         {
             XAttribute xtype = OptionXml.Attribute("Type");
             if (xtype == null) { throw new ArgumentException("Missing Type attribute on GuiOption" + Environment.NewLine); }
+
+            LoggerFacade.Info("Creating GuiOption, type: " + xtype.Value);
 
             #region
             if (xtype.Value == "TextBlock")

@@ -49,12 +49,14 @@ namespace TsGui
         public void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
         {
             args.Handled = true;
+            LoggerFacade.Fatal("OnDispatcherUnhandledException:" + args.Exception.Message );
             this.HandleException(sender, args.Exception,args.Exception.StackTrace);
         }
 
         public void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
         {
             Exception e = (Exception)args.ExceptionObject;
+            LoggerFacade.Fatal("OnUnhandledException:" + e.Message);
             this.HandleException(sender, e, e.StackTrace);     
         }
 
@@ -80,6 +82,7 @@ namespace TsGui
 
         private void ShowErrorMessageAndClose(string Message)
         {
+            LoggerFacade.Fatal("Closing TsGui. Error message: " + Message);
             string msg = Message;
             this._controller.CloseWithError("Application Runtime Exception", msg);
         }

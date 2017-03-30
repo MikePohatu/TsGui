@@ -69,6 +69,7 @@ namespace TsGui
         //constructors
         public MainController(MainWindow ParentWindow, Arguments Arguments)
         {
+            LoggerFacade.Trace("MainController initialized");
             this._configpath = Arguments.ConfigFile;
             this.ParentWindow = ParentWindow;
             this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
@@ -97,7 +98,8 @@ namespace TsGui
 
         public void CloseWithError(string Title, string Message)
         {
-            
+            LoggerFacade.Fatal("TsGui closing due to error: " + Title);
+            LoggerFacade.Fatal("Error message: " + Message);
             MessageBox.Show(Message,Title, MessageBoxButton.OK, MessageBoxImage.Error);
             this.ParentWindow.Closing -= this.OnWindowClosing;
             this.ParentWindow.Close();
