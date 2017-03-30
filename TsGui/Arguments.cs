@@ -17,11 +17,15 @@
 
 using System;
 
+using TsGui.Diagnostics;
+
 namespace TsGui
 {
     public class Arguments
     {
         public string ConfigFile { get; set; }
+        public string LogFile { get; set; }
+        public int LoggingLevel { get; set; }
 
         public Arguments(string[] Args)
         {
@@ -40,12 +44,19 @@ namespace TsGui
                     {
                         case "-CONFIG":
                             if (Args.Length < index + 2) { throw new InvalidOperationException("Missing config file after parameter -config"); }
-                            this.ConfigFile = CompleteFilePath(Args[index + 1]);                           
+                            this.ConfigFile = this.CompleteFilePath(Args[index + 1]);                           
+                            break;
+                        case "-LOG":
+                            if (Args.Length < index + 2) { throw new InvalidOperationException("Missing config file after parameter -log"); }
+                            this.LogFile = this.CompleteFilePath(Args[index + 1]);
+                            break;
+                        case "-LOGGINGLEVEL":
+                            if (Args.Length < index + 2) { throw new InvalidOperationException("Missing config file after parameter -log"); }
+                            this.LoggingLevel = this.SetLoggingLevel(Args[index + 1]);
                             break;
                         default:
                             throw new InvalidOperationException("Invalid parameter: " + Args[index]);
-                    }
-                    
+                    }                   
                 }
             }
         }
@@ -64,6 +75,29 @@ namespace TsGui
                 return exefolder + @Input;
             }
             else { return Input; }
+        }
+
+        private int SetLoggingLevel(string Input)
+        {
+            switch (Input.ToUpper())
+            {
+                case "DEBUG":
+                    return LoggingLevels.Debug;
+                case "INFORMATION":
+                    return LoggingLevels.Information;
+                case "INFO":
+                    return LoggingLevels.Information;
+                case "WARNING":
+                    return LoggingLevels.Warning;
+                case "WARN":
+                    return LoggingLevels.Warning;
+                case "ERROR":
+                    return LoggingLevels.Error;
+                case "ERR":
+                    return LoggingLevels.Error;
+                default:
+                    throw new InvalidOperationException("Invalid logging level: " + Input);
+            }
         }
     }
 }

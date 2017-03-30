@@ -35,7 +35,7 @@ namespace TsGui
     public class MainController
     {
         public event TsGuiWindowEventHandler WindowLoaded;
-        public event TsGuiWindowEventHandler WindowMoving;
+        public event TsGuiWindowMovingEventHandler WindowMoving;
         public event TsGuiWindowEventHandler WindowMouseUp;
 
         private string _configpath;
@@ -43,7 +43,7 @@ namespace TsGui
         private bool _finished = false;
         private TsButtons _buttons = new TsButtons();
         private List<TsPage> _pages = new List<TsPage>();
-        private Logger _logger = new Logger();
+        private Logger _logger;
         private EnvironmentController _envController = new EnvironmentController();
         private LinkingLibrary _linkinglibrary = new LinkingLibrary();
         private GroupLibrary _grouplibrary = new GroupLibrary();
@@ -57,6 +57,7 @@ namespace TsGui
         private bool _showtestwindow = false;
 
         //properties
+        public Logger Logger { get { return this._logger; } }
         public LinkingLibrary LinkingLibrary { get { return this._linkinglibrary; } }
         public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
@@ -68,12 +69,13 @@ namespace TsGui
         public bool ShowGridLines { get; set; }
 
         //constructors
-        public MainController(MainWindow ParentWindow, Arguments Arguments)
+        public MainController(MainWindow ParentWindow, Arguments Arguments, Logger ParentLogger)
         {
-            this._logger.LogToStdOut = true;
-            this._logger.WriteMessage(Environment.NewLine + "TsGui - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            this._logger = ParentLogger;
             this._configpath = Arguments.ConfigFile;
             this.ParentWindow = ParentWindow;
+            this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
+            this.ParentWindow.LocationChanged += this.OnWindowMoving;
             this.Init();          
         }
 
@@ -356,7 +358,7 @@ namespace TsGui
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>
-        public void OnWindowMoving(object o, RoutedEventArgs e)
+        public void OnWindowMoving(object o, EventArgs e)
         {
             this.WindowMoving?.Invoke(o, e);
         }

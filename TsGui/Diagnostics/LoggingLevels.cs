@@ -21,10 +21,10 @@ namespace TsGui.Diagnostics
 {
     public static class LoggingLevels
     {
-        public const int Debug = -1;
-        public const int Information = 0;
-        public const int Warning = 1;
-        public const int Error = 2;
+        public const int Debug = 0;
+        public const int Information = 1;
+        public const int Warning = 2;
+        public const int Error = 3;
 
 
         /// <summary>
@@ -36,16 +36,68 @@ namespace TsGui.Diagnostics
         {
             switch (StateValue)
             {
-                case 0:
-                    return "Information";
-                case 1:
-                    return "Warning";
-                case 2:
-                    return "Error";
-                case 3:
+                case Debug:
                     return "Debug";
+                case Information:
+                    return "Information";
+                case Warning:
+                    return "Warning";
+                case Error:
+                    return "Error";
                 default:
                     throw new ArgumentException(StateValue + " is not a valid state value");
+            }
+        }
+
+        /// <summary>
+        /// Convert a integer state value into the short string value of that state
+        /// </summary>
+        /// <param name="StateValue"></param>
+        /// <returns></returns>
+        public static string ToShortString(int StateValue)
+        {
+            switch (StateValue)
+            {
+                case Debug:
+                    return "Dbg";
+                case Information:
+                    return "Info";
+                case Warning:
+                    return "Warn";
+                case Error:
+                    return "Err";
+                default:
+                    throw new ArgumentException(StateValue + " is not a valid state value");
+            }
+        }
+
+        /// <summary>
+        /// Convert a string logging level into the integer for that state
+        /// </summary>
+        /// <param name="StateValue"></param>
+        /// <returns></returns>
+        public static int ToLoggingLevel(string Input)
+        {
+            switch (Input.ToLower())
+            {
+                case "debug":
+                    return Debug;
+                case "dbg":
+                    return Debug;
+                case "information":
+                    return Information;
+                case "info":
+                    return Information;
+                case "warning":
+                    return Warning;
+                case "warn":
+                    return Warning;
+                case "error":
+                    return Error;
+                case "err":
+                    return Error;
+                default:
+                    throw new ArgumentException(Input + " is not a valid logging level");
             }
         }
     }

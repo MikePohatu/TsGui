@@ -16,7 +16,6 @@
 // Logger.cs - directs logging input to the correct output
 
 using System;
-using TsGui.Connectors.System;
 
 namespace TsGui.Diagnostics
 {
@@ -38,6 +37,19 @@ namespace TsGui.Diagnostics
             set { this._logfile = value; this._logtofile = true; }
         }
 
+
+        public Logger()
+        {
+            this.SetDefaults();
+        }
+
+        private void SetDefaults()
+        {
+            this.LogToStdOut = true;
+            this.LoggingLevel = LoggingLevels.Warning;
+        }
+
+
         /// <summary>
         /// Process log of specified logging level/severity
         /// </summary>
@@ -45,10 +57,12 @@ namespace TsGui.Diagnostics
         /// <param name="Level"></param>
         public void WriteLog(string Message, int Level)
         {
-            if (Level <= this._loglevel)
+            string fullmessage = LoggingLevels.ToShortString(Level) + ":" + DateTime.Now.ToString() + ": " + Message;
+
+            if (Level >= this._loglevel)
             {
-                if (this.LogToStdOut == true) { Console.WriteLine(Message); }
-                if (this._logtofile == true) { this.LogToFile(Message); }
+                if (this.LogToStdOut == true) { Console.WriteLine(fullmessage); }
+                if (this._logtofile == true) { this.LogToFile(fullmessage); }
             }        
         }
 
@@ -62,16 +76,14 @@ namespace TsGui.Diagnostics
             if (this._logtofile == true) { this.LogToFile(Message); }
         }
 
-        private void LogToFile(string Message)
+        private void LogToFile(string message)
         {
 
         }
 
         private void WriteToConsole(string Message)
         {
-            //Kernel32Methods.AttachConsole(-1);
             Console.WriteLine(Message);
-            //Kernel32Methods.FreeConsole();
         }
 
         

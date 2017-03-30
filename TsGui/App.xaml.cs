@@ -11,6 +11,9 @@ namespace TsGui
     /// </summary>
     public partial class App : Application
     {
+        private Logger _logger;
+        private MainController _controller;
+
         public Arguments Arguments;
         MainWindow _mainwindow;
 
@@ -23,7 +26,7 @@ namespace TsGui
             {
                 string msg = exc.Message + Environment.NewLine;
                 MessageBox.Show(msg, "Command Line Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Shutdown(1);
+                this.Shutdown(1);
                 return;
             }
 
@@ -35,9 +38,20 @@ namespace TsGui
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(this.OnUnhandledException);
 
-            this._mainwindow = new MainWindow(this.Arguments);
+            this._logger = new Logger();
+            this._logger.LogFile = this.Arguments.LogFile;
+            this._logger.LoggingLevel = this.Arguments.LoggingLevel;
+
+            this._logger.WriteMessage(Environment.NewLine + "TsGui - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            this._logger.WriteMessage("Logging level: " + LoggingLevels.ToString(this._logger.LoggingLevel));
+
+            this._mainwindow = new MainWindow(this.Arguments, this._logger);
+            this._controller = new MainController(this._mainwindow, this.Arguments, this._logger);
         }
 
+
+        //Exception handler methods
+        #region
         public void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
         {
             args.Handled = true;
@@ -61,6 +75,8 @@ namespace TsGui
             }
 
         }
+        #endregion
+
 
         private void ShowErrorMessageAndClose(TsGuiKnownException e)
         {
@@ -71,7 +87,7 @@ namespace TsGui
         private void ShowErrorMessageAndClose(string Message)
         {
             string msg = Message;
-            this._mainwindow.Controller.CloseWithError("Application Runtime Exception", msg);
+            this._controller.CloseWithError("Application Runtime Exception", msg);
         }
     }
 }
