@@ -20,6 +20,7 @@ using TsGui.View.Layout;
 using System.Windows.Controls;
 using System.Windows;
 using TsGui.Linking;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.View.GuiOptions
 {
@@ -121,6 +122,7 @@ namespace TsGui.View.GuiOptions
 
         protected void NotifyUpdate()
         {
+            LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
         }

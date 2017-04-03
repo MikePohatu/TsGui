@@ -94,7 +94,7 @@ namespace TsGui.Diagnostics
 
         public void OnNewLogMessage(LoggingReceiverNLog sender, EventArgs e)
         {
-            this.Logs = this.Logs + Environment.NewLine + sender.LastMessage;
+            this.Logs = this.Logs + sender.LastMessage + Environment.NewLine;
             this._testingwindowui._logtextbox.ScrollToEnd();
         }
     }

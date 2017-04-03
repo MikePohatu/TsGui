@@ -155,6 +155,7 @@ namespace TsGui
             this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
             this.StartupFinished = true;
             if ((this._debug == true) || (this._showtestwindow == true)) { this._testingwindow = new TestingWindow(this); }
+            LoggerFacade.Info("TsGui startup finished");
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
