@@ -14,10 +14,10 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 // LoggerFacade.cs - Facade class for the main logging framework 
-
+using System;
 using NLog;
 
-namespace TsGui.Diagnostics
+namespace TsGui.Diagnostics.Logging
 {
     public static class LoggerFacade
     {

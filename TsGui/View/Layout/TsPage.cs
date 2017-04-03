@@ -23,7 +23,7 @@ using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 using TsGui.Validation;
-using TsGui.Diagnostics;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.View.Layout
 {

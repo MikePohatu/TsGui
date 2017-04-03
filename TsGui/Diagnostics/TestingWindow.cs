@@ -25,6 +25,8 @@ using TsGui.View;
 using TsGui.View.Layout;
 using TsGui.View.Helpers;
 using TsGui.Helpers;
+using TsGui.Diagnostics.Logging;
+
 
 namespace TsGui.Diagnostics
 {
@@ -34,21 +36,39 @@ namespace TsGui.Diagnostics
         private TestingWindowUI _testingwindowui;
         private ObservableCollection<IOption> _options;
         private int _currentscaling;
+        private string _logs;
+        private LoggingReceiver _logreceiver;
 
         public ObservableCollection<IOption> Options { get { return this._options; } }
         public TsMainWindow TsMainWindow { get; set; }
         public double ScreenHeight { get; set; }
         public double ScreenWidth { get; set; }
+        public double WindowMaxHeight { get { return SystemParameters.PrimaryScreenHeight - 20; } }
+        public double OptionsGridMaxHeight
+        {
+            get {
+                return this.WindowMaxHeight - this._testingwindowui._positiongrid.ActualHeight - 
+                    this._testingwindowui._screengrid.ActualHeight - this._testingwindowui._logtextblock.ActualHeight - 
+                    this._testingwindowui._logtitle.ActualHeight - 80; }
+        }
         public int CurrentScaling
         {
             get { return this._currentscaling; }
             set { this._currentscaling = value; this.OnPropertyChanged(this, "CurrentScaling"); }
         }
         public ImageSource Icon { get; set; }
+        public string Logs
+        {
+            get { return this._logs; }
+            set { this._logs = value; this.OnPropertyChanged(this, "Logs"); }
+        }
 
         public TestingWindow(MainController Controller)
         {
             this._controller = Controller;
+            this._logreceiver = new LoggingReceiver();
+            this._logreceiver.NewLogMessage += this.OnNewLogMessage;
+
             this.ScreenWidth = SystemParameters.PrimaryScreenWidth;
             this.ScreenHeight = SystemParameters.PrimaryScreenHeight;
             this.Icon = IconHelper.ConvertToImageSource(SystemIcons.Information);
@@ -69,6 +89,11 @@ namespace TsGui.Diagnostics
         public void OnParentWindowClosing(object o, EventArgs e)
         {
             this._testingwindowui.Close();
+        }
+
+        public void OnNewLogMessage(LoggingReceiver sender, EventArgs e)
+        {
+            this.Logs = this.Logs + sender.LastMessage;
         }
     }
 }

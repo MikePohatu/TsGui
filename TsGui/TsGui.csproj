@@ -78,9 +78,12 @@
     </Compile>
     <Compile Include="Arguments.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
+    <Compile Include="Diagnostics\Logging\LoggingDelegates.cs" />
     <Compile Include="Diagnostics\DiagnosticsEnums.cs" />
     <Compile Include="Diagnostics\DiagnosticsHelper.cs" />
-    <Compile Include="Diagnostics\LoggerFacade.cs" />
+    <Compile Include="Diagnostics\Logging\LoggerFacade.cs" />
+    <Compile Include="Diagnostics\Logging\LoggingFrameworkHelpers.cs" />
+    <Compile Include="Diagnostics\Logging\LoggingReceiver.cs" />
     <Compile Include="Diagnostics\TestingWindow.cs" />
     <Compile Include="Diagnostics\TestingWindowUI.xaml.cs">
       <DependentUpon>TestingWindowUI.xaml</DependentUpon>

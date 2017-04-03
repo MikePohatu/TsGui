@@ -16,6 +16,7 @@
 // Group.cs - groups of elements to be enabled and disabled by a toggle
 
 using System.Collections.Generic;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Grouping
 {
@@ -37,8 +38,8 @@ namespace TsGui.Grouping
                 if (this._state != value) { changed = true; }
                 this._state = value;
 
-                if (changed == true)
-                { StateEvent?.Invoke(); }
+                if (changed == true) { StateEvent?.Invoke(); }
+                LoggerFacade.Info("Group " + this.ID + "state changed. New state: " + this._state.ToString());
             }
         }
         public bool PurgeInactive { get; set; }

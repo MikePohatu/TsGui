@@ -19,7 +19,7 @@
 using System;
 using System.Xml.Linq;
 using System.Windows;
-using TsGui.Diagnostics;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.View.GuiOptions
 {

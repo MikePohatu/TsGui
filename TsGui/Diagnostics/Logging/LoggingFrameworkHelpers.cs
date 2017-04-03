@@ -1,4 +1,4 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
+﻿//    Copyright (C) 2017 Mike Pohatu
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,27 +13,17 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// MainWindow.xaml.cs - MainWindow backing class. Creates a MainController on 
-// instantiation which starts and controls the application. 
+// LoggingFrameworkHelpers.cs - class to provide helper methods for the logging framework e.g. setup
 
-using System.Windows;
-using System.Windows.Input;
-using TsGui.Diagnostics.Logging;
+using NLog.Config;
 
-namespace TsGui
+namespace TsGui.Diagnostics.Logging
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public static class LoggingFrameworkHelpers
     {
-        public MainWindow(Arguments arguments)
-        {            
-            InitializeComponent();
-            LoggerFacade.Trace("MainWindow initialized");
+        public static void InitializeLogFramework()
+        {
+            ConfigurationItemFactory.Default.Targets.RegisterDefinition("LiveDataWindow", typeof(LoggingReceiver));
         }
-
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
-        { this.DragMove(); }
     }
 }

@@ -28,6 +28,7 @@ using TsGui.NoUI;
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Diagnostics;
+using TsGui.Diagnostics.Logging;
 using TsGui.Linking;
 
 namespace TsGui

@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Threading;
 
+using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
 
 namespace TsGui
@@ -19,6 +20,7 @@ namespace TsGui
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            LoggingFrameworkHelpers.InitializeLogFramework();
 
             try { this.Arguments = new Arguments(Environment.GetCommandLineArgs()); }
             catch (Exception exc)
@@ -36,7 +38,7 @@ namespace TsGui
         {
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(this.OnUnhandledException);
-
+         
             LoggerFacade.Info("TsGui - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             this._mainwindow = new MainWindow(this.Arguments);

@@ -13,27 +13,26 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// MainWindow.xaml.cs - MainWindow backing class. Creates a MainController on 
-// instantiation which starts and controls the application. 
+// LoggingReceiver.cs - Receives logs from the logging framework for use in testingwindow
 
-using System.Windows;
-using System.Windows.Input;
-using TsGui.Diagnostics.Logging;
+using System;
 
-namespace TsGui
+using NLog;
+using NLog.Targets;
+
+namespace TsGui.Diagnostics.Logging
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    [Target("LiveDataWindow")]
+    public class LoggingReceiver: TargetWithLayout
     {
-        public MainWindow(Arguments arguments)
-        {            
-            InitializeComponent();
-            LoggerFacade.Trace("MainWindow initialized");
-        }
+        public event NewLog NewLogMessage;
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
-        { this.DragMove(); }
+        public string LastMessage { get; set; }
+
+        protected override void Write(LogEventInfo logEvent)
+        {
+            this.LastMessage = this.Layout.Render(logEvent);
+            this.NewLogMessage?.Invoke(this,new EventArgs());
+        }
     }
 }
