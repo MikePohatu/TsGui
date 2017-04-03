@@ -79,6 +79,7 @@ namespace TsGui.Diagnostics
             this._controller.ParentWindow.Loaded += this.OnParentWindowLoaded;
             this._controller.ParentWindow.Closed += this.OnParentWindowClosing;
             this._testingwindowui.Show();
+            //this._testingwindowui._logtextbox.Width = this._testingwindowui._logtextbox.ActualWidth;
         }
 
         public void OnParentWindowLoaded(object o, EventArgs e)

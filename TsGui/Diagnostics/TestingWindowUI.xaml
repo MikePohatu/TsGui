@@ -73,7 +73,7 @@ TestingWindowUI.xaml - shows live data at runtime
         </Grid>
         <DataGrid x:Name="_optionsgrid" ItemsSource="{Binding Options}" AlternatingRowBackground="LightGray"
                   AlternationCount="2" AutoGenerateColumns="False" HeadersVisibility="Column"  
-                  Margin="0,0,0,10" FrozenColumnCount="1"
+                  Margin="0,0,0,10" FrozenColumnCount="1" HorizontalAlignment="Left"
                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}" 
                   IsReadOnly="True" Height="Auto" MaxHeight="{Binding OptionsGridMaxHeight}"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -85,7 +85,10 @@ TestingWindowUI.xaml - shows live data at runtime
             </DataGrid.Columns>
         </DataGrid>
         <TextBlock x:Name="_logtitle" Text="Log output" FontWeight="Bold"/>
-        <TextBox x:Name="_logtextbox" Text="{Binding Logs}" HorizontalAlignment="Left" Width="Auto" Height="100" Background="LightGray"
+        <Grid x:Name="_wrapper" HorizontalAlignment="Stretch">
+            <TextBox x:Name="_logtextbox" Text="{Binding Logs}" HorizontalAlignment="Stretch" Background="LightGray" Height="100" Width="{Binding ElementName=_wrapper,Path=ActualWidth}"
                    ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" />
+        </Grid>
+
     </StackPanel>
 </Window>
