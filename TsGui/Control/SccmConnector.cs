@@ -16,6 +16,8 @@
 // SccmConnector.cs - class to connect to the SCCM task sequence agent
 
 using System;
+using TsGui.Diagnostics.Logging;
+
 
 namespace TsGui
 {
@@ -34,6 +36,7 @@ namespace TsGui
 
         public void AddVariable(TsVariable Variable)
         {
+            LoggerFacade.Info("TS variable applied: " + Variable.Name + ". Value: " + Variable.Value);
             objTSEnv.Value[Variable.Name] = Variable.Value;
         }
 

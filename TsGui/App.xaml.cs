@@ -39,7 +39,7 @@ namespace TsGui
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(this.OnUnhandledException);
          
-            LoggerFacade.Info("TsGui - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            LoggerFacade.Info("*TsGui started - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             this._mainwindow = new MainWindow(this.Arguments);
             this._controller = new MainController(this._mainwindow, this.Arguments);
