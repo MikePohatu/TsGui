@@ -85,6 +85,7 @@ TestingWindowUI.xaml - shows live data at runtime
             </DataGrid.Columns>
         </DataGrid>
         <TextBlock x:Name="_logtitle" Text="Log output" FontWeight="Bold"/>
-        <TextBlock x:Name="_logtextblock" Text="{Binding Logs}" HorizontalAlignment="Left" Width="Auto" Height="100" Background="LightGray"/>
+        <TextBox x:Name="_logtextbox" Text="{Binding Logs}" HorizontalAlignment="Left" Width="Auto" Height="100" Background="LightGray"
+                   ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" />
     </StackPanel>
 </Window>

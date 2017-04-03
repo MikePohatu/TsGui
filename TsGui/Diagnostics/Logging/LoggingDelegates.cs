@@ -1,6 +1,7 @@
 ﻿using System;
 
 namespace TsGui.Diagnostics.Logging
+
 {
-    public delegate void NewLog(LoggingReceiver sender, EventArgs e);
+    public delegate void NewLog(LoggingReceiverNLog sender, EventArgs e);
 }

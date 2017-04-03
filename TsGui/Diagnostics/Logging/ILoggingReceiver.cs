@@ -1,5 +1,4 @@
-﻿//    Copyright (C) 2017 Mike Pohatu
-
+﻿
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation; version 2 of the License.
@@ -13,24 +12,13 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// LoggingFrameworkHelpers.cs - class to provide helper methods for the logging framework e.g. setup
-
-using System.Linq;
-using System.Collections.Generic;
-using NLog.Config;
+// ILoggingReceiver.cs - interface for abstracting the logging receivers for logging frameworks
 
 namespace TsGui.Diagnostics.Logging
 {
-    public static class LoggingFrameworkHelpers
+    public interface ILoggingReceiver
     {
-        public static void InitializeLogFramework()
-        {
-            ConfigurationItemFactory.Default.Targets.RegisterDefinition("LiveDataWindow", typeof(LoggingReceiverNLog));
-        }
-
-        public static IEnumerable<ILoggingReceiver> GetLoggingReceivers()
-        {
-            return NLog.LogManager.Configuration.AllTargets.Where(t => t is ILoggingReceiver).Cast<ILoggingReceiver>();
-        }
+        event NewLog NewLogMessage;
+        string LastMessage { get; set; }
     }
 }

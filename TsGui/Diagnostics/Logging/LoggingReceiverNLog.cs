@@ -19,11 +19,12 @@ using System;
 
 using NLog;
 using NLog.Targets;
+using NLog.Config;
 
 namespace TsGui.Diagnostics.Logging
 {
     [Target("LiveDataWindow")]
-    public class LoggingReceiver: TargetWithLayout
+    public class LoggingReceiverNLog: TargetWithLayout, ILoggingReceiver
     {
         public event NewLog NewLogMessage;
 

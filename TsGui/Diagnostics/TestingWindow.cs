@@ -37,7 +37,6 @@ namespace TsGui.Diagnostics
         private ObservableCollection<IOption> _options;
         private int _currentscaling;
         private string _logs;
-        private LoggingReceiver _logreceiver;
 
         public ObservableCollection<IOption> Options { get { return this._options; } }
         public TsMainWindow TsMainWindow { get; set; }
@@ -48,8 +47,8 @@ namespace TsGui.Diagnostics
         {
             get {
                 return this.WindowMaxHeight - this._testingwindowui._positiongrid.ActualHeight - 
-                    this._testingwindowui._screengrid.ActualHeight - this._testingwindowui._logtextblock.ActualHeight - 
-                    this._testingwindowui._logtitle.ActualHeight - 80; }
+                    this._testingwindowui._screengrid.ActualHeight - this._testingwindowui._logtextbox.ActualHeight - 
+                    this._testingwindowui._logtitle.ActualHeight - 100; }
         }
         public int CurrentScaling
         {
@@ -66,8 +65,9 @@ namespace TsGui.Diagnostics
         public TestingWindow(MainController Controller)
         {
             this._controller = Controller;
-            this._logreceiver = new LoggingReceiver();
-            this._logreceiver.NewLogMessage += this.OnNewLogMessage;
+
+            foreach ( ILoggingReceiver receiver in LoggingFrameworkHelpers.GetLoggingReceivers())
+            { receiver.NewLogMessage += this.OnNewLogMessage; } 
 
             this.ScreenWidth = SystemParameters.PrimaryScreenWidth;
             this.ScreenHeight = SystemParameters.PrimaryScreenHeight;
@@ -91,9 +91,10 @@ namespace TsGui.Diagnostics
             this._testingwindowui.Close();
         }
 
-        public void OnNewLogMessage(LoggingReceiver sender, EventArgs e)
+        public void OnNewLogMessage(LoggingReceiverNLog sender, EventArgs e)
         {
-            this.Logs = this.Logs + sender.LastMessage;
+            this.Logs = this.Logs + Environment.NewLine + sender.LastMessage;
+            this._testingwindowui._logtextbox.ScrollToEnd();
         }
     }
 }
