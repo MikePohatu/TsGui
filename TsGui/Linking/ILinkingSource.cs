@@ -17,8 +17,9 @@
 
 namespace TsGui.Linking
 {
-    public interface ILinkingSource: ILinkable
+    public interface ILinkingSource
     {
+        string ID { get; }
         event IOptionValueChanged ValueChanged;
     }
 }

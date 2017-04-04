@@ -1,4 +1,4 @@
-﻿//    Copyright (C) 2017 Mike Pohatu
+﻿//    Copyright (C) 2016 Mike Pohatu
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,12 +13,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ILinkable - Base requirements for linking
+// LinkingEnums.cs
 
 namespace TsGui.Linking
 {
-    public interface ILinkable
-    {
-        string ID { get; }
-    }
+    public enum LinkingRuleType { IsActive, IsInactive, StartsWith, EndsWith, Contains, Characters, RegEx, Equals, GreaterThan, GreaterThanOrEqualTo, LessThan, LessThanOrEqualTo, IsNumeric};
 }

@@ -17,7 +17,7 @@
 
 namespace TsGui.Linking
 {
-    public interface ILinkingTarget: ILinkable
+    public interface ILinkingTarget
     {
         void OnLinkedValueChanged();
     }

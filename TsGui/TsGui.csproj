@@ -97,12 +97,13 @@
     <Compile Include="Images\Image.cs" />
     <Compile Include="Images\MultiImage.cs" />
     <Compile Include="Linking\Conditional.cs" />
-    <Compile Include="Linking\ILinkable.cs" />
     <Compile Include="Linking\ILinkingTarget.cs" />
     <Compile Include="Linking\ILinkingSource.cs" />
     <Compile Include="Linking\LinkingDelegates.cs" />
     <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />
+    <Compile Include="Linking\LinkingRule.cs" />
+    <Compile Include="Linking\LinkingEnums.cs" />
     <Compile Include="Options\NoUI\NoUIOption.cs" />
     <Compile Include="Options\NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
