@@ -18,47 +18,45 @@
 using System.Collections.Generic;
 using System;
 
-using TsGui.Options;
-
 namespace TsGui.Linking
 {
     public class LinkingLibrary
     {
-        private Dictionary<string, IOption> _sources = new Dictionary<string, IOption>();
-        private Dictionary<string, List<IOption>> _pendingtargets = new Dictionary<string, List<IOption>>();
+        private Dictionary<string, ILinkingSource> _sources = new Dictionary<string, ILinkingSource>();
+        private Dictionary<string, List<ILinkingTarget>> _pendingtargets = new Dictionary<string, List<ILinkingTarget>>();
 
-        public IOption GetOption(string ID)
+        public ILinkingSource GetSourceOption(string ID)
         {
-            IOption option;
+            ILinkingSource option;
             this._sources.TryGetValue(ID, out option);
             return option;
         }
 
-        public void AddTarget(string ID, IOption NewTarget)
+        public void AddTarget(string ID, ILinkingTarget NewTarget)
         {
-            IOption source;
+            ILinkingSource source;
             if (this._sources.TryGetValue(ID, out source) == true)
             {
                 this.RegisterTargetToSource(source, NewTarget);
             }
             else
             {
-                List<IOption> pendinglist;
+                List<ILinkingTarget> pendinglist;
                 if (this._pendingtargets.TryGetValue(ID, out pendinglist) == true)
                 { pendinglist.Add(NewTarget); }
                 else
                 {
-                    pendinglist = new List<IOption>();
+                    pendinglist = new List<ILinkingTarget>();
                     pendinglist.Add(NewTarget);
                     this._pendingtargets.Add(ID, pendinglist);
                 }
             }
         }
 
-        public void AddSource(IOption NewSource)
+        public void AddSource(ILinkingSource NewSource)
         {
-            List<IOption> pendingtargetslist;
-            IOption testoption;
+            List<ILinkingTarget> pendingtargetslist;
+            ILinkingSource testoption;
 
             if (this._sources.TryGetValue(NewSource.ID, out testoption) == true ) { throw new InvalidOperationException("Duplicate ID found in LinkableLibrary: " + NewSource.ID); }
             else { this._sources.Add(NewSource.ID,NewSource); }
@@ -66,7 +64,7 @@ namespace TsGui.Linking
             //now register any pending targets and cleanup
             if (this._pendingtargets.TryGetValue(NewSource.ID, out pendingtargetslist) == true)
             {
-                foreach (IOption target in pendingtargetslist)
+                foreach (ILinkingTarget target in pendingtargetslist)
                 {
                     this.RegisterTargetToSource(NewSource, target);
                 }
@@ -74,7 +72,7 @@ namespace TsGui.Linking
             }
         }
 
-        private void RegisterTargetToSource(IOption Source, IOption Target)
+        private void RegisterTargetToSource(ILinkingSource Source, ILinkingTarget Target)
         {
 
         }

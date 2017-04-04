@@ -69,19 +69,19 @@ namespace TsGui.Diagnostics
         {
             this._controller = Controller;
             this.SubscribeToLogs();             
+            this.CreateTestingWindowUI();
 
             this.ScreenWidth = SystemParameters.PrimaryScreenWidth;
             this.ScreenHeight = SystemParameters.PrimaryScreenHeight;
             this.Icon = IconHelper.ConvertToImageSource(SystemIcons.Information);
-            this.CreateTestingWindowUI();
             this._options = this._controller.OptionLibrary.Options;
             this.TsMainWindow = this._controller.TsMainWindow;
             this._controller.ParentWindow.Loaded += this.OnParentWindowLoaded;
-            this._controller.ParentWindow.Closed += this.OnParentWindowClosing;
+            this._controller.ParentWindow.Closed += this.OnParentWindowClosed;
             this._testingwindowui.Show();
         }
 
-        public void OnWindowClosing(object o, EventArgs e)
+        public void OnWindowClosed(object o, EventArgs e)
         {
             this.UnsubscribeFromLogs();
         }
@@ -91,7 +91,7 @@ namespace TsGui.Diagnostics
             this.CurrentScaling = DisplayInformation.GetScaling();
         }
 
-        public void OnParentWindowClosing(object o, EventArgs e)
+        public void OnParentWindowClosed(object o, EventArgs e)
         {
             this._testingwindowui.Close();
         }
@@ -134,7 +134,7 @@ namespace TsGui.Diagnostics
         {
             this._testingwindowui = new TestingWindowUI();
             this._testingwindowui.DataContext = this;
-            this._testingwindowui.Closing += this.OnWindowClosing;
+            this._testingwindowui.Closed += this.OnWindowClosed;
         }
     }
 }

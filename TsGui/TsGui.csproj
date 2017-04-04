@@ -97,6 +97,9 @@
     <Compile Include="Images\Image.cs" />
     <Compile Include="Images\MultiImage.cs" />
     <Compile Include="Linking\Conditional.cs" />
+    <Compile Include="Linking\ILinkable.cs" />
+    <Compile Include="Linking\ILinkingTarget.cs" />
+    <Compile Include="Linking\ILinkingSource.cs" />
     <Compile Include="Linking\LinkingDelegates.cs" />
     <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />

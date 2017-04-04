@@ -22,7 +22,7 @@ using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Options.NoUI
 {
-    public class NoUIOption: GroupableBlindBase,IOption
+    public class NoUIOption: GroupableBlindBase,IOption,ILinkingSource
     {
         public event IOptionValueChanged ValueChanged;
 
@@ -111,5 +111,8 @@ namespace TsGui.Options.NoUI
             this.OnPropertyChanged(this, "LiveValue");
             this.ValueChanged?.Invoke(this,new LinkingEventArgs(this.CurrentValue));
         }
+
+        public void OnLinkedValueChanged()
+        { }
     }
 }
