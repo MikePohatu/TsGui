@@ -100,8 +100,8 @@
     <Compile Include="Linking\LinkingDelegates.cs" />
     <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />
-    <Compile Include="NoUI\NoUIOption.cs" />
-    <Compile Include="NoUI\NoUIContainer.cs" />
+    <Compile Include="Options\NoUI\NoUIOption.cs" />
+    <Compile Include="Options\NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />

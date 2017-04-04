@@ -28,7 +28,7 @@ namespace TsGui.View.GuiOptions
         private TsComplianceRefreshButtonUI _ui;
 
         public override string CurrentValue { get { return null; } }
-        public TsVariable Variable { get { return null; } }
+        public override TsVariable Variable { get { return null; } }
         public string ButtonText
         {
             get { return this._buttontext; }

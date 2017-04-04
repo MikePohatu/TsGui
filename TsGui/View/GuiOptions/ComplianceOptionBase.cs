@@ -62,7 +62,7 @@ namespace TsGui.View.GuiOptions
             get { return this._validationtext; }
             set { this._validationtext = value; this.OnPropertyChanged(this, "ValidationText"); }
         }
-        public TsVariable Variable
+        public override TsVariable Variable
         {
             get
             {

@@ -38,7 +38,7 @@ namespace TsGui.View.GuiOptions
                 this.NotifyUpdate();
             }
         }
-        public TsVariable Variable { get { return new TsVariable(this.VariableName, this.ControlText); } }
+        public override TsVariable Variable { get { return new TsVariable(this.VariableName, this.ControlText); } }
 
         //constructor
         public TsInfoBox(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)

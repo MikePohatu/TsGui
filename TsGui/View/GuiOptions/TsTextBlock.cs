@@ -38,7 +38,7 @@ namespace TsGui.View.GuiOptions
                 this.NotifyUpdate();
             }
         }
-        public TsVariable Variable { get { return null; } }
+        public override TsVariable Variable { get { return null; } }
 
         //public TsColumn Parent { get; set; }
 

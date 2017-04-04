@@ -18,6 +18,8 @@
 using System.Collections.Generic;
 using System;
 
+using TsGui.Options;
+
 namespace TsGui.Linking
 {
     public class LinkingLibrary

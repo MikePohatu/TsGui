@@ -18,10 +18,9 @@
 using System.Xml.Linq;
 using TsGui.Grouping;
 using TsGui.Linking;
-using TsGui.Options;
 using TsGui.Diagnostics.Logging;
 
-namespace TsGui.NoUI
+namespace TsGui.Options.NoUI
 {
     public class NoUIOption: GroupableBlindBase,IOption
     {

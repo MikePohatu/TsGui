@@ -46,7 +46,7 @@ namespace TsGui.View.GuiOptions
 
         //properties
         public List<TsDropDownListItem> VisibleOptions { get { return this._items.Where(x => x.IsEnabled == true).ToList(); } }
-        public TsVariable Variable
+        public override TsVariable Variable
         {
             get
             {

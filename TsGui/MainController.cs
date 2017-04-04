@@ -24,7 +24,7 @@ using System.Windows;
 using System.ComponentModel;
 
 using TsGui.View.Layout;
-using TsGui.NoUI;
+using TsGui.Options.NoUI;
 using TsGui.Options;
 using TsGui.Events;
 using TsGui.Grouping;

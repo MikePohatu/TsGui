@@ -27,6 +27,7 @@ using TsGui.View.Layout;
 using TsGui.View.Helpers;
 using TsGui.Helpers;
 using TsGui.Diagnostics.Logging;
+using TsGui.Options;
 
 
 namespace TsGui.Diagnostics
@@ -67,21 +68,22 @@ namespace TsGui.Diagnostics
         public TestingWindow(MainController Controller)
         {
             this._controller = Controller;
-
-            foreach ( ILoggingReceiver receiver in LoggingFrameworkHelpers.GetLoggingReceivers())
-            { receiver.NewLogMessage += this.OnNewLogMessage; } 
+            this.SubscribeToLogs();             
 
             this.ScreenWidth = SystemParameters.PrimaryScreenWidth;
             this.ScreenHeight = SystemParameters.PrimaryScreenHeight;
             this.Icon = IconHelper.ConvertToImageSource(SystemIcons.Information);
-            this._testingwindowui = new TestingWindowUI();
-            this._testingwindowui.DataContext = this;
+            this.CreateTestingWindowUI();
             this._options = this._controller.OptionLibrary.Options;
             this.TsMainWindow = this._controller.TsMainWindow;
             this._controller.ParentWindow.Loaded += this.OnParentWindowLoaded;
             this._controller.ParentWindow.Closed += this.OnParentWindowClosing;
             this._testingwindowui.Show();
-            //this._testingwindowui._logtextbox.Width = this._testingwindowui._logtextbox.ActualWidth;
+        }
+
+        public void OnWindowClosing(object o, EventArgs e)
+        {
+            this.UnsubscribeFromLogs();
         }
 
         public void OnParentWindowLoaded(object o, EventArgs e)
@@ -114,6 +116,25 @@ namespace TsGui.Diagnostics
                 this._testingwindowui._logtextbox.ScrollToEnd();
             }
             
+        }
+
+        private void SubscribeToLogs()
+        {
+            foreach (ILoggingReceiver receiver in LoggingFrameworkHelpers.GetLoggingReceivers())
+            { receiver.NewLogMessage += this.OnNewLogMessage; }
+        }
+
+        private void UnsubscribeFromLogs()
+        {
+            foreach (ILoggingReceiver receiver in LoggingFrameworkHelpers.GetLoggingReceivers())
+            { receiver.NewLogMessage -= this.OnNewLogMessage; }
+        }
+
+        private void CreateTestingWindowUI()
+        {
+            this._testingwindowui = new TestingWindowUI();
+            this._testingwindowui.DataContext = this;
+            this._testingwindowui.Closing += this.OnWindowClosing;
         }
     }
 }

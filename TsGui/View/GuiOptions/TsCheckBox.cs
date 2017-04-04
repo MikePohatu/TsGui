@@ -51,7 +51,7 @@ namespace TsGui.View.GuiOptions
                 else { return this._valFalse; }
             }
         }
-        public TsVariable Variable
+        public override TsVariable Variable
         {
             get
             {

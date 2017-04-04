@@ -16,6 +16,7 @@
 // IGuiOption_2.cs - controls to apply to the gui. 
 
 using TsGui.Grouping;
+using TsGui.Options;
 
 namespace TsGui.View.GuiOptions
 {
