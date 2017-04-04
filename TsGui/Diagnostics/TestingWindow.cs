@@ -20,6 +20,7 @@ using System.Windows;
 using System;
 using System.Drawing;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 using TsGui.View;
 using TsGui.View.Layout;
@@ -37,6 +38,7 @@ namespace TsGui.Diagnostics
         private ObservableCollection<IOption> _options;
         private int _currentscaling;
         private string _logs;
+        private bool _pendinglogrefresh;
 
         public ObservableCollection<IOption> Options { get { return this._options; } }
         public TsMainWindow TsMainWindow { get; set; }
@@ -94,8 +96,24 @@ namespace TsGui.Diagnostics
 
         public void OnNewLogMessage(LoggingReceiverNLog sender, EventArgs e)
         {
-            this.Logs = this.Logs + sender.LastMessage + Environment.NewLine;
-            this._testingwindowui._logtextbox.ScrollToEnd();
+            this._logs = this._logs + sender.LastMessage + Environment.NewLine;
+
+            if (this._pendinglogrefresh == false)
+            {
+                this._pendinglogrefresh = true;
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.RefreshLogView()));
+            }
+        }
+
+        public void RefreshLogView()
+        {
+            if (this._pendinglogrefresh == true)
+            {
+                this.OnPropertyChanged(this, "Logs");
+                this._pendinglogrefresh = false;
+                this._testingwindowui._logtextbox.ScrollToEnd();
+            }
+            
         }
     }
 }
