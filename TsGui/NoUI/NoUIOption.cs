@@ -17,11 +17,16 @@
 
 using System.Xml.Linq;
 using TsGui.Grouping;
+using TsGui.Linking;
+using TsGui.Options;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.NoUI
 {
     public class NoUIOption: GroupableBlindBase,IOption
     {
+        public event IOptionValueChanged ValueChanged;
+
         private string _inactivevalue = "TSGUI_INACTIVE";
         private string _value = string.Empty;
         private bool _usecurrent = false;
@@ -102,8 +107,10 @@ namespace TsGui.NoUI
 
         protected void NotifyUpdate()
         {
+            LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
+            this.ValueChanged?.Invoke(this,new LinkingEventArgs(this.CurrentValue));
         }
     }
 }

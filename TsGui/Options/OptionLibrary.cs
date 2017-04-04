@@ -18,7 +18,7 @@
 
 using System.Collections.ObjectModel;
 
-namespace TsGui
+namespace TsGui.Options
 {
     public class OptionLibrary
     {

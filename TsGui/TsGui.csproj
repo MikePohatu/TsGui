@@ -106,7 +106,7 @@
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
     <Compile Include="Events\Delegates.cs" />
-    <Compile Include="Control\IOption.cs" />
+    <Compile Include="Options\IOption.cs" />
     <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="Grouping\GroupableBlindBase.cs" />
     <Compile Include="Grouping\GroupingEventArgs.cs" />
@@ -212,7 +212,7 @@
     <Compile Include="View\Layout\TsPageUI.xaml.cs">
       <DependentUpon>TsPageUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\OptionLibrary.cs" />
+    <Compile Include="Options\OptionLibrary.cs" />
     <Compile Include="Connectors\SccmConnector.cs" />
     <Compile Include="Connectors\SystemConnector.cs" />
     <Compile Include="Connectors\TestingConnector.cs" />

@@ -20,13 +20,14 @@ using TsGui.View.Layout;
 using System.Windows.Controls;
 using System.Windows;
 using TsGui.Linking;
+using TsGui.Options;
 using TsGui.Diagnostics.Logging;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class GuiOptionBase : BaseLayoutElement
+    public abstract class GuiOptionBase : BaseLayoutElement, IOption
     {
-        public event IOptionValueChanged ValueUpdated;
+        public event IOptionValueChanged ValueChanged;
 
         private string _labeltext = string.Empty;
         private string _helptext = null;
@@ -59,6 +60,7 @@ namespace TsGui.View.GuiOptions
             set { this._helptext = value; this.OnPropertyChanged(this, "HelpText"); }
         }
         public abstract string CurrentValue { get; }
+        public abstract TsVariable Variable { get; }
         public string LiveValue
         {
             get
@@ -125,6 +127,7 @@ namespace TsGui.View.GuiOptions
             LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
+            this.ValueChanged?.Invoke(this, new LinkingEventArgs(this.CurrentValue));
         }
     }
 }

@@ -15,7 +15,7 @@
 
 // LinkingDelegates.cs - delegates for the Linking namespace. 
 
-using System;
+using TsGui.Options;
 
 namespace TsGui.Linking
 {
