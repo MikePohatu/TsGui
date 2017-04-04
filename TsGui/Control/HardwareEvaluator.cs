@@ -41,26 +41,23 @@ namespace TsGui
             this.Evaluate();
         }
 
-        public List<TsVariable> GetTsVariables
+        public List<TsVariable> GetTsVariables()
         {
-            get
-            {
-                List<TsVariable> vars = new List<TsVariable>();
+            List<TsVariable> vars = new List<TsVariable>();
 
-                if (_islaptop) { vars.Add(new TsVariable("TsGui_IsLaptop", "TRUE")); }
-                else { vars.Add(new TsVariable("TsGui_IsLaptop", "FALSE")); }
+            if (_islaptop) { vars.Add(new TsVariable("TsGui_IsLaptop", "TRUE")); }
+            else { vars.Add(new TsVariable("TsGui_IsLaptop", "FALSE")); }
 
-                if (_isdesktop) { vars.Add(new TsVariable("TsGui_IsDesktop", "TRUE")); }
-                else { vars.Add(new TsVariable("TsGui_IsDesktop", "FALSE")); }
+            if (_isdesktop) { vars.Add(new TsVariable("TsGui_IsDesktop", "TRUE")); }
+            else { vars.Add(new TsVariable("TsGui_IsDesktop", "FALSE")); }
 
-                if (_isserver) { vars.Add(new TsVariable("TsGui_IsServer", "TRUE")); }
-                else { vars.Add(new TsVariable("TsGui_IsServer", "FALSE")); }
+            if (_isserver) { vars.Add(new TsVariable("TsGui_IsServer", "TRUE")); }
+            else { vars.Add(new TsVariable("TsGui_IsServer", "FALSE")); }
 
-                if (_isvm) { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "TRUE")); }
-                else { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "FALSE")); }
+            if (_isvm) { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "TRUE")); }
+            else { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "FALSE")); }
 
-                return vars;
-            }
+            return vars;
         }
 
         private void Evaluate()

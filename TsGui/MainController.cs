@@ -324,7 +324,7 @@ namespace TsGui
 
             if (this._chassischeck != null)
             {
-                foreach (TsVariable var in this._chassischeck.GetTsVariables)
+                foreach (TsVariable var in this._chassischeck.GetTsVariables())
                 { this._envController.AddVariable(var); }
             }
 
