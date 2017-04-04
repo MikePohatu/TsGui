@@ -22,7 +22,7 @@ using System.Windows;
 
 using TsGui.Diagnostics.Logging;
 
-namespace TsGui
+namespace TsGui.Connectors
 {
     public class TestingConnector: ITsVariableOutput
     {

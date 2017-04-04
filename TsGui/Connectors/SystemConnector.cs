@@ -20,7 +20,7 @@ using System;
 using System.Management;
 using System.Collections.Generic;
 
-namespace TsGui
+namespace TsGui.Connectors
 {
     public static class SystemConnector
     {

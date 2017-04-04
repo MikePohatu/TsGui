@@ -24,6 +24,7 @@ using System;
 using TsGui.Queries;
 using TsGui.Validation;
 using TsGui.Diagnostics;
+using TsGui.Connectors;
 
 namespace TsGui
 {

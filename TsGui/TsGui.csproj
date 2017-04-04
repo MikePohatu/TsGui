@@ -213,9 +213,9 @@
       <DependentUpon>TsPageUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\OptionLibrary.cs" />
-    <Compile Include="Control\SccmConnector.cs" />
-    <Compile Include="Control\SystemConnector.cs" />
-    <Compile Include="Control\TestingConnector.cs" />
+    <Compile Include="Connectors\SccmConnector.cs" />
+    <Compile Include="Connectors\SystemConnector.cs" />
+    <Compile Include="Connectors\TestingConnector.cs" />
     <Compile Include="Control\TsVariable.cs" />
     <Compile Include="Control\TsWindowAlerts.cs" />
     <Compile Include="Control\XmlHandler.cs" />

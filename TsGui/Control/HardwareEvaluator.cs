@@ -18,8 +18,9 @@
 
 using System;
 using System.Collections.Generic;
-
 using System.Management;
+
+using TsGui.Connectors;
 
 namespace TsGui
 {
