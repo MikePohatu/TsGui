@@ -25,7 +25,7 @@ using TsGui.Connectors;
 
 namespace TsGui.Queries
 {
-    public class WmiQuery
+    public class WmiQuery: IQuery
     {
         private ResultWrangler _wrangler = new ResultWrangler();
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
@@ -53,10 +53,10 @@ namespace TsGui.Queries
         public ResultWrangler GetResultWrangler()
         {
             if (this._processed == true) { return this._wrangler; }
-            else { return this.ProcessWmiQuery(); }
+            else { return this.ProcessQuery(); }
         }
 
-        public ResultWrangler ProcessWmiQuery()
+        public ResultWrangler ProcessQuery()
         {
             //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
             //New sublists are created for each management object in the wrangler. 

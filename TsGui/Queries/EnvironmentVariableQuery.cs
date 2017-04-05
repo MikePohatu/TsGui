@@ -21,17 +21,27 @@ using TsGui.Connectors;
 
 namespace TsGui.Queries
 {
-    public class EnvironmentVariableQuery
+    public class EnvironmentVariableQuery: IQuery
     {
         private SccmConnector _sccmconnector;
+        private bool _processed = false;
+        private ResultFormatter _formatter;
+        private ResultWrangler _wrangler = new ResultWrangler();
 
-        public EnvironmentVariableQuery(SccmConnector sccmconnector)
+        public EnvironmentVariableQuery(XElement inputxml, SccmConnector sccmconnector)
         {
             this._sccmconnector = sccmconnector;
+            this.LoadXml(inputxml);
+        }
+
+        public ResultWrangler GetResultWrangler()
+        {
+            if (this._processed == true) { return this._wrangler; }
+            else { return this.ProcessQuery(); }
         }
 
         //get and environmental variable, trying the sccm ts variables first
-        public string GetEnvVar(string variablename)
+        public string GetEnvironmentVariableValue(string variablename)
         {
             string s;
 
@@ -52,20 +62,26 @@ namespace TsGui.Queries
             else { return null; }
         }
 
+
+
         /// <summary>
         /// Process a <Query Type="EnvironmentVariable"> block and return the ResultWrangler
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        public ResultWrangler ProcessEnvironmentVariableQuery(XElement InputXml)
+        public ResultWrangler ProcessQuery()
         {
-            ResultWrangler wrangler = new ResultWrangler();
-            ResultFormatter rf;
+            this._formatter.Input = this.GetEnvironmentVariableValue(this._formatter.Name.Trim());
+            return this._wrangler;
+        }
+
+        private void LoadXml(XElement InputXml)
+        {
             XElement x;
             XAttribute xattrib;
 
-            wrangler.NewSubList();
-
+            this._wrangler.NewSubList();
+            
             x = InputXml.Element("Variable");
             if (x != null)
             {
@@ -74,19 +90,16 @@ namespace TsGui.Queries
                 xattrib = x.Attribute("Name");
                 if (xattrib == null)
                 {
-                    rf = new ResultFormatter();
-                    rf.Name = x.Value;
+                    this._formatter = new ResultFormatter();
+                    this._formatter.Name = x.Value;
                 }
                 else
                 {
-                    rf = new ResultFormatter(x);
+                    this._formatter = new ResultFormatter(x);
                 }
 
-                rf.Input = this.GetEnvVar(rf.Name.Trim());
-                wrangler.AddResultFormatter(rf);
+                this._wrangler.AddResultFormatter(this._formatter);
             }
-
-            return wrangler;
         }
     }
 }

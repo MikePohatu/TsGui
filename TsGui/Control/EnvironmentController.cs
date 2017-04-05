@@ -139,26 +139,26 @@ namespace TsGui
         //can return the data in the right format. 
         private ResultWrangler GetResultWranglerFromQuery(XElement InputXml)
         {
-            ResultWrangler wrangler = null;
-            string type;
+            //ResultWrangler wrangler = null;
+            //string type;
 
-            type = InputXml.Attribute("Type")?.Value;
+            //type = InputXml.Attribute("Type")?.Value;
 
-            if (string.IsNullOrEmpty(type)) { throw new InvalidOperationException("No type specified: " + Environment.NewLine + InputXml + Environment.NewLine); }
+            //if (string.IsNullOrEmpty(type)) { throw new InvalidOperationException("No type specified: " + Environment.NewLine + InputXml + Environment.NewLine); }
 
-            if (string.Equals(type, "Wmi", StringComparison.OrdinalIgnoreCase))
-            {
-                WmiQuery newquery = new WmiQuery(InputXml);
-                wrangler = newquery.ProcessWmiQuery();               
-            }
+            //if (string.Equals(type, "Wmi", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    WmiQuery newquery = new WmiQuery(InputXml);
+            //    wrangler = newquery.ProcessQuery();               
+            //}
 
-            else if (string.Equals(type, "EnvironmentVariable", StringComparison.OrdinalIgnoreCase))
-            {
-                EnvironmentVariableQuery newquery = new EnvironmentVariableQuery(this._sccmconnector);
-                wrangler = newquery.ProcessEnvironmentVariableQuery(InputXml);
-            }
-
-            return wrangler;
+            //else if (string.Equals(type, "EnvironmentVariable", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    EnvironmentVariableQuery newquery = new EnvironmentVariableQuery(this._sccmconnector);
+            //    wrangler = newquery.ProcessQuery(InputXml);
+            //}
+            IQuery newquery = QueryFactory.GetQueryObject(InputXml, this._sccmconnector);
+            return newquery.ProcessQuery();
         }
 
         /// <summary>
