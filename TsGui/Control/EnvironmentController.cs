@@ -31,14 +31,7 @@ namespace TsGui
     {
         private ITsVariableOutput _outputconnector;
         private SccmConnector _sccmconnector;
-        //private TestingConnector _testconnector;
         private MainController _controller;
-
-        /// <summary>
-        /// !!! Do not use this constructor. This is only testing
-        /// </summary>
-        public EnvironmentController()
-        { }
 
         public EnvironmentController(MainController maincontroller)
         { this._controller = maincontroller; }
@@ -139,65 +132,9 @@ namespace TsGui
         //can return the data in the right format. 
         private ResultWrangler GetResultWranglerFromQuery(XElement InputXml)
         {
-            //ResultWrangler wrangler = null;
-            //string type;
-
-            //type = InputXml.Attribute("Type")?.Value;
-
-            //if (string.IsNullOrEmpty(type)) { throw new InvalidOperationException("No type specified: " + Environment.NewLine + InputXml + Environment.NewLine); }
-
-            //if (string.Equals(type, "Wmi", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    WmiQuery newquery = new WmiQuery(InputXml);
-            //    wrangler = newquery.ProcessQuery();               
-            //}
-
-            //else if (string.Equals(type, "EnvironmentVariable", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    EnvironmentVariableQuery newquery = new EnvironmentVariableQuery(this._sccmconnector);
-            //    wrangler = newquery.ProcessQuery(InputXml);
-            //}
             IQuery newquery = QueryFactory.GetQueryObject(InputXml, this._sccmconnector);
             return newquery.ProcessQuery();
         }
-
-        /// <summary>
-        /// Process a <Query Type="EnvironmentVariable"> block and return the ResultWrangler
-        /// </summary>
-        /// <param name="InputXml"></param>
-        /// <returns></returns>
-        //private ResultWrangler ProcessEnvironmentVariableQuery(XElement InputXml)
-        //{
-        //    ResultWrangler wrangler = new ResultWrangler();
-        //    ResultFormatter rf;
-        //    XElement x;
-        //    XAttribute xattrib;
-
-        //    wrangler.NewSubList();
-
-        //    x = InputXml.Element("Variable");
-        //    if (x != null)
-        //    {
-        //        check for new xml syntax. If the name attribute doesn't exist, setup for the 
-        //        legacy layout.
-        //        xattrib = x.Attribute("Name");
-        //        if (xattrib == null)
-        //        {
-        //            rf = new ResultFormatter();
-        //            rf.Name = x.Value;
-        //        }
-        //        else
-        //        {
-        //            rf = new ResultFormatter(x);
-        //        }
-
-        //        rf.Input = this.GetEnvVar(rf.Name.Trim());
-        //        wrangler.AddResultFormatter(rf);
-        //    }
-
-        //    return wrangler;
-        //}
-
 
         /// <summary>
         /// Process a <Query Type="GuiOption"> block and return the ResultWrangler
@@ -229,7 +166,6 @@ namespace TsGui
                     rf = new ResultFormatter(x);
                 }
 
-                //rf.Input = this.GetEnvVar(rf.Name.Trim());
                 wrangler.AddResultFormatter(rf);
             }
 
@@ -258,35 +194,5 @@ namespace TsGui
             }
             return templates;
         }
-
-        //private void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
-        //{
-        //    foreach (ManagementObject m in WmiObjectList)
-        //    {
-        //        Wrangler.NewSubList();
-        //        ResultFormatter rf = null;
-
-        //        //if properties have been specified in the xml, query them directly in order
-        //        if (PropertyTemplates.Count != 0)
-        //        {
-        //            foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
-        //            {
-        //                rf = new ResultFormatter(template.Value);
-        //                rf.Input = m.GetPropertyValue(template.Key)?.ToString();
-        //                Wrangler.AddResultFormatter(rf);
-        //            }
-        //        }
-        //        //if properties not set, add them all 
-        //        else
-        //        {
-        //            foreach (PropertyData property in m.Properties)
-        //            {
-        //                rf = new ResultFormatter();
-        //                rf.Input = property.Value?.ToString();
-        //                Wrangler.AddResultFormatter(rf);
-        //            }
-        //        }
-        //    }
-        //}
     }
 }
