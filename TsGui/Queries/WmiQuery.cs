@@ -32,6 +32,8 @@ namespace TsGui.Queries
         private string _wql;
         private bool _processed = false;
 
+        public WmiQuery() { }
+
         public WmiQuery(XElement InputXml)
         {
             this.LoadXml(InputXml);

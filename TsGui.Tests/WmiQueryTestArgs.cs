@@ -5,7 +5,7 @@ using TsGui.Queries;
 
 namespace TsGui.Tests
 {
-    public class EnvironmentControllerTestArgs
+    public class WmiQueryTestArgs
     {
         //{ expectedresult, wrangler, objcollection, proptemplates };
         public string ExpectedResult { get; set; }
@@ -13,7 +13,7 @@ namespace TsGui.Tests
         public List<ManagementObject> ManagementObjectList { get; set; }
         public List<KeyValuePair<string, XElement>> PropertyTemplates { get; set; }
 
-        public EnvironmentControllerTestArgs (string ExpectedResult, ResultWrangler Wrangler, List<ManagementObject> ManagementObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
+        public WmiQueryTestArgs (string ExpectedResult, ResultWrangler Wrangler, List<ManagementObject> ManagementObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
         {
             this.ExpectedResult = ExpectedResult;
             this.Wrangler = Wrangler;
