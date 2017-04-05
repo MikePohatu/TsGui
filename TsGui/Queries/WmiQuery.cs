@@ -30,6 +30,7 @@ namespace TsGui.Queries
         private ResultWrangler _wrangler = new ResultWrangler();
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private string _wql;
+        private bool _processed = false;
 
         public WmiQuery(XElement InputXml)
         {
@@ -49,6 +50,12 @@ namespace TsGui.Queries
             this._propertyTemplates = this.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
 
+        public ResultWrangler GetResultWrangler()
+        {
+            if (this._processed == true) { return this._wrangler; }
+            else { return this.ProcessWmiQuery(); }
+        }
+
         public ResultWrangler ProcessWmiQuery()
         {
             //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
@@ -56,6 +63,7 @@ namespace TsGui.Queries
             try
             {
                 this.AddWmiPropertiesToWrangler(this._wrangler, SystemConnector.GetWmiManagementObjectList(this._wql), this._propertyTemplates);
+                this._processed = true;
             }
             catch (ManagementException e)
             {
