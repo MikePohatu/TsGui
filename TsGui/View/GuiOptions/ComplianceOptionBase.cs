@@ -149,7 +149,7 @@ namespace TsGui.View.GuiOptions
         {
             if (this._queryxml != null)
             {
-                this._value = this._controller.EnvironmentController.GetValueFromList(this._queryxml);
+                this._value = this._controller.EnvironmentController.GetStringValueFromList(this._queryxml);
                 this.UpdateState();
             }
         }

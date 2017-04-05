@@ -20,6 +20,7 @@ namespace TsGui.Linking
     public interface ILinkingSource
     {
         string ID { get; }
+        string CurrentValue { get; }
         event IOptionValueChanged ValueChanged;
     }
 }

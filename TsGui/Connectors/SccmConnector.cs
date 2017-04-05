@@ -61,7 +61,7 @@ namespace TsGui.Connectors
             }
         }
 
-        public string GetVariable(string Variable)
+        public string GetVariableValue(string Variable)
         {
             return objTSEnv.Value[Variable];
         }

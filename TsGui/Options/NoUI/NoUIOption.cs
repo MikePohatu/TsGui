@@ -94,7 +94,7 @@ namespace TsGui.Options.NoUI
                     x.AddFirst(xcurrentquery);
                 }
 
-                this._value = this._controller.EnvironmentController.GetValueFromList(x);
+                this._value = this._controller.EnvironmentController.GetStringValueFromList(x);
             }
         }
 

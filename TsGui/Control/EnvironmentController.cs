@@ -18,20 +18,30 @@
 
 using System.Xml.Linq;
 using System.Collections.Generic;
-using System.Management;
 using System;
 
 using TsGui.Queries;
 using TsGui.Validation;
-using TsGui.Diagnostics;
 using TsGui.Connectors;
+using TsGui.Linking;
 
 namespace TsGui
 {
     public class EnvironmentController
     {
+        private ITsVariableOutput _outputconnector;
         private SccmConnector _sccmconnector;
-        private TestingConnector _testconnector;
+        //private TestingConnector _testconnector;
+        private MainController _controller;
+
+        /// <summary>
+        /// !!! Do not use this constructor. This is only testing
+        /// </summary>
+        public EnvironmentController()
+        { }
+
+        public EnvironmentController(MainController maincontroller)
+        { this._controller = maincontroller; }
 
         public bool Init()
         {
@@ -43,24 +53,24 @@ namespace TsGui
             try
             {
                 this._sccmconnector = new SccmConnector();
+                this._outputconnector = this._sccmconnector;
                 return true;
             }
             catch
             {
-                this._testconnector = new TestingConnector();           
+                this._outputconnector = new TestingConnector();           
                 return false;
             }
         }
 
         public void HideProgressUI()
         {
-            this._sccmconnector?.Hide(); //hide the tsprogessui window
+            this._sccmconnector.Hide(); //hide the tsprogessui window
         }
 
         public void AddVariable(TsVariable Variable)
         {
-            if (this._sccmconnector != null) { this._sccmconnector.AddVariable(Variable); }
-            else { this._testconnector.AddVariable(Variable); }
+            this._outputconnector.AddVariable(Variable);
         }
 
         /// <summary>
@@ -69,34 +79,34 @@ namespace TsGui
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        public string GetValueFromList(XElement InputXml)
+        public string GetStringValueFromList(XElement InputXml)
         {
             string s = null;
             XAttribute xtype;
 
             foreach (XElement x in InputXml.Elements())
             {
-                if (string.Equals(x.Name.ToString(), "Query", StringComparison.OrdinalIgnoreCase))
+                string xname = x.Name.ToString();
+                switch (xname)
                 {
-                    //Debug.WriteLine("Query requested");
-                    xtype = x.Attribute("Type");
-                    if (xtype == null) { throw new NullReferenceException("Missing Type attribute XML: " + Environment.NewLine + x); }
+                    case "Query":
+                        //Debug.WriteLine("Query requested");
+                        xtype = x.Attribute("Type");
+                        if (xtype == null) { throw new NullReferenceException("Missing Type attribute XML: " + Environment.NewLine + x); }
 
-                    s = this.ProcessQuery(x).GetString();
+                        s = this.GetResultWranglerFromQuery(x).GetString();
 
-                    //now check any return value is valid before returning from method. 
-                    if (!string.IsNullOrEmpty(s?.Trim()))
-                    {
-                        //if it shouldn't be ignored, return the value. Otherwise, carry on
-                        if (ResultValidator.ShouldIgnore(x, s) == false) { return s; }
-                        else { s = null; }
-                    }
-                }  
-                
-                else if (string.Equals(x.Name.ToString(), "Value", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (x.Value == null) { return string.Empty; }
-                    else { return x.Value; }
+                        //now check any return value is valid before returning from method. 
+                        if (!string.IsNullOrEmpty(s?.Trim()))
+                        {
+                            //if it shouldn't be ignored, return the value. Otherwise, carry on
+                            if (ResultValidator.ShouldIgnore(x, s) == false) { return s; }
+                            else { s = null; }
+                        }
+                        break;
+                    case "Value":
+                        if (x.Value == null) { return string.Empty; }
+                        else { return x.Value; }
                 }
             }
 
@@ -111,7 +121,7 @@ namespace TsGui
         /// <returns></returns>
         public Dictionary<string, string> GetDictionaryFromList(XElement InputXml)
         {
-            return this.ProcessQuery(InputXml).GetDictionary();
+            return this.GetResultWranglerFromQuery(InputXml).GetDictionary();
         }
 
         /// <summary>
@@ -121,13 +131,13 @@ namespace TsGui
         /// <returns></returns>
         public List<KeyValuePair<string,string>> GetKeyValueListFromList(XElement InputXml)
         {
-            return this.ProcessQuery(InputXml).GetKeyValueList();
+            return this.GetResultWranglerFromQuery(InputXml).GetKeyValueList();
         }
 
 
         //worker method for the public getdictionary and getkeyvaluelist methods above. builds and returns the wrangler that
         //can return the data in the right format. 
-        private ResultWrangler ProcessQuery(XElement InputXml)
+        private ResultWrangler GetResultWranglerFromQuery(XElement InputXml)
         {
             ResultWrangler wrangler = null;
             string type;
@@ -138,12 +148,14 @@ namespace TsGui
 
             if (string.Equals(type, "Wmi", StringComparison.OrdinalIgnoreCase))
             {
-                wrangler = this.ProcessWmiQuery(InputXml);               
+                WmiQuery newquery = new WmiQuery(InputXml);
+                wrangler = newquery.ProcessWmiQuery();               
             }
 
             else if (string.Equals(type, "EnvironmentVariable", StringComparison.OrdinalIgnoreCase))
             {
-                wrangler = this.ProcessEnvironmentVariableQuery(InputXml);
+                EnvironmentVariableQuery newquery = new EnvironmentVariableQuery(this._sccmconnector);
+                wrangler = newquery.ProcessEnvironmentVariableQuery(InputXml);
             }
 
             return wrangler;
@@ -154,7 +166,45 @@ namespace TsGui
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        private ResultWrangler ProcessEnvironmentVariableQuery(XElement InputXml)
+        //private ResultWrangler ProcessEnvironmentVariableQuery(XElement InputXml)
+        //{
+        //    ResultWrangler wrangler = new ResultWrangler();
+        //    ResultFormatter rf;
+        //    XElement x;
+        //    XAttribute xattrib;
+
+        //    wrangler.NewSubList();
+
+        //    x = InputXml.Element("Variable");
+        //    if (x != null)
+        //    {
+        //        check for new xml syntax. If the name attribute doesn't exist, setup for the 
+        //        legacy layout.
+        //        xattrib = x.Attribute("Name");
+        //        if (xattrib == null)
+        //        {
+        //            rf = new ResultFormatter();
+        //            rf.Name = x.Value;
+        //        }
+        //        else
+        //        {
+        //            rf = new ResultFormatter(x);
+        //        }
+
+        //        rf.Input = this.GetEnvVar(rf.Name.Trim());
+        //        wrangler.AddResultFormatter(rf);
+        //    }
+
+        //    return wrangler;
+        //}
+
+
+        /// <summary>
+        /// Process a <Query Type="GuiOption"> block and return the ResultWrangler
+        /// </summary>
+        /// <param name="InputXml"></param>
+        /// <returns></returns>
+        private ResultWrangler GetResultWranglerFromGuiOption(XElement InputXml)
         {
             ResultWrangler wrangler = new ResultWrangler();
             ResultFormatter rf;
@@ -163,8 +213,8 @@ namespace TsGui
 
             wrangler.NewSubList();
 
-            x = InputXml.Element("Variable");
-            if (x!= null )
+            x = InputXml.Element("ID");
+            if (x != null)
             {
                 //check for new xml syntax. If the name attribute doesn't exist, setup for the 
                 //legacy layout.
@@ -176,80 +226,20 @@ namespace TsGui
                 }
                 else
                 {
-                    rf = new ResultFormatter(x);                                     
+                    rf = new ResultFormatter(x);
                 }
 
-                rf.Input = this.GetEnvVar(rf.Name.Trim());
+                //rf.Input = this.GetEnvVar(rf.Name.Trim());
                 wrangler.AddResultFormatter(rf);
             }
 
             return wrangler;
         }
 
-
-        /// <summary>
-        /// Process a <Query Type="Wmi"> block and return the ResultWrangler
-        /// </summary>
-        /// <param name="InputXml"></param>
-        /// <returns></returns>
-        private ResultWrangler ProcessWmiQuery(XElement InputXml)
-        {
-            ResultWrangler wrangler = new ResultWrangler();
-
-            List<KeyValuePair<string, XElement>> propertyTemplates;
-            string wql = InputXml.Element("Wql")?.Value;
-
-            wrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", wrangler.Separator);
-            wrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", wrangler.IncludeNullValues);
-
-            //make sure there is some WQL to query
-            if (string.IsNullOrEmpty(wql)) { throw new InvalidOperationException("Empty WQL query in XML: " + Environment.NewLine + InputXml); }
-
-            propertyTemplates = this.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
-
-            //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
-            //New sublists are created for each management object in the wrangler. 
-            try
-            {
-                this.AddWmiPropertiesToWrangler(wrangler, SystemConnector.GetWmiManagementObjectList(wql), propertyTemplates);
-            }
-            catch (ManagementException e)
-            {
-                throw new TsGuiKnownException("WMI query caused an error:" + Environment.NewLine + wql,e.Message);
-            }
-
-            return wrangler;
-        }
-
-
-        //get and environmental variable, trying the sccm ts variables first
-        public string GetEnvVar(string VariableName)
-        {
-            string s;
-
-            if (!string.IsNullOrEmpty(VariableName))
-            {
-                //try ts env first
-                if (this._sccmconnector != null)
-                {
-                    s = this._sccmconnector.GetVariable(VariableName);
-                    if (!string.IsNullOrEmpty(s)) { return s; }
-                }
-
-                //if hasn't returned already, try system env variables
-                s = SystemConnector.GetVariableValue(VariableName);
-                if (!string.IsNullOrEmpty(s)) { return s; }
-                else return null;
-            }
-            else { return null; }
-        }
-
-
         //release the output connectors.
         public void Release()
         {
-            if (this._sccmconnector != null) { this._sccmconnector.Release(); }
-            if (this._testconnector != null) { this._testconnector.Release(); }
+            this._outputconnector.Release();
         }
 
 
@@ -269,34 +259,34 @@ namespace TsGui
             return templates;
         }
 
-        private void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
-        {
-            foreach (ManagementObject m in WmiObjectList)
-            {
-                Wrangler.NewSubList();
-                ResultFormatter rf = null;
+        //private void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
+        //{
+        //    foreach (ManagementObject m in WmiObjectList)
+        //    {
+        //        Wrangler.NewSubList();
+        //        ResultFormatter rf = null;
 
-                //if properties have been specified in the xml, query them directly in order
-                if (PropertyTemplates.Count != 0)
-                {
-                    foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
-                    {
-                        rf = new ResultFormatter(template.Value);
-                        rf.Input = m.GetPropertyValue(template.Key)?.ToString();
-                        Wrangler.AddResultFormatter(rf);
-                    }
-                }
-                //if properties not set, add them all 
-                else
-                {
-                    foreach (PropertyData property in m.Properties)
-                    {
-                        rf = new ResultFormatter();
-                        rf.Input = property.Value?.ToString();
-                        Wrangler.AddResultFormatter(rf);
-                    }
-                }
-            }
-        }
+        //        //if properties have been specified in the xml, query them directly in order
+        //        if (PropertyTemplates.Count != 0)
+        //        {
+        //            foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
+        //            {
+        //                rf = new ResultFormatter(template.Value);
+        //                rf.Input = m.GetPropertyValue(template.Key)?.ToString();
+        //                Wrangler.AddResultFormatter(rf);
+        //            }
+        //        }
+        //        //if properties not set, add them all 
+        //        else
+        //        {
+        //            foreach (PropertyData property in m.Properties)
+        //            {
+        //                rf = new ResultFormatter();
+        //                rf.Input = property.Value?.ToString();
+        //                Wrangler.AddResultFormatter(rf);
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

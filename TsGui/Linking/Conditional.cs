@@ -15,21 +15,49 @@
 
 // Conditional.cs - IF rule for option linking
 
+using System;
 using System.Xml.Linq;
 
 namespace TsGui.Linking
 {
     public class Conditional
     {
-        public string SourceID { get; set; }
-        public string SourceValue { get; set; }
+        private LinkingRuleProcesssor _processor = new LinkingRuleProcesssor();
+        private ILinkingSource _sourceoption;
+        private MainController _controller;
+        private string _sourceID;
+
         public string TargetValue { get; set; }
+
+        public Conditional(XElement inputxml, MainController controller)
+        {
+            this._controller = controller;
+            this._controller.ConfigLoadFinished += this.OnControllerFinishedLoad;
+            this.LoadXml(inputxml);
+        }
 
         public void LoadXml(XElement InputXml)
         {
-            //<IF ID="AppParent" Value="TRUE">TRUE</IF>
-            this.SourceID = XmlHandler.GetStringFromXAttribute(InputXml, "ID", this.SourceID);
-            this.SourceValue = XmlHandler.GetStringFromXAttribute(InputXml, "Value", this.SourceID);
+            //<IF>
+            //  <SourceID>123</SourceID>
+            //  <SourceValue>
+            //      <Rule Type="StartsWith">test</Rule>
+            //  </SourceValue>
+            //  <TargetValue>
+            //      <Query></Query>
+            //      <Value></Value>
+            //  </TargetValue>
+            //</IF>
+            this._sourceID = XmlHandler.GetStringFromXElement(InputXml, "SourceID", this._sourceID);
+            //this.SourceValue = XmlHandler.GetStringFromXElement(InputXml, "Value", this.SourceID);
         }
+
+        public void OnSourceValueChanged(ILinkingSource source, EventArgs e)
+        {
+
+        }
+
+        public void OnControllerFinishedLoad(object o, EventArgs e)
+        { this._sourceoption = this._controller.LinkingLibrary.GetSourceOption(this._sourceID); }
     }
 }

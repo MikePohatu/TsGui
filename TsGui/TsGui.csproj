@@ -102,8 +102,7 @@
     <Compile Include="Linking\LinkingDelegates.cs" />
     <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />
-    <Compile Include="Linking\LinkingRule.cs" />
-    <Compile Include="Linking\LinkingEnums.cs" />
+    <Compile Include="Linking\LinkingRuleProcesssor.cs" />
     <Compile Include="Options\NoUI\NoUIOption.cs" />
     <Compile Include="Options\NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
@@ -114,11 +113,13 @@
     <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="Grouping\GroupableBlindBase.cs" />
     <Compile Include="Grouping\GroupingEventArgs.cs" />
+    <Compile Include="Queries\EnvironmentVariableQuery.cs" />
     <Compile Include="Queries\PrefixRule.cs" />
     <Compile Include="Queries\CalculateRule.cs" />
     <Compile Include="Queries\IQueryRule.cs" />
     <Compile Include="Queries\AppendRule.cs" />
     <Compile Include="Queries\TruncateRule.cs" />
+    <Compile Include="Queries\WmiQuery.cs" />
     <Compile Include="Validation\Compliance.cs" />
     <Compile Include="Validation\ComplianceStateValues.cs" />
     <Compile Include="Validation\ComplianceHandler.cs" />

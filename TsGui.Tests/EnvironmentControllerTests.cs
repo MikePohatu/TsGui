@@ -26,17 +26,6 @@ namespace TsGui.Tests
     [TestFixture]
     public class EnvironmentControllerTests
     {
-
-        [Test]
-        [TestCase(null, ExpectedResult = null)]
-        [TestCase("ComputerName", ExpectedResult = "WIN10")]
-        public string GetEnvVarTest(string VariableName)
-        {
-            EnvironmentController controller = new EnvironmentController();
-            return controller.GetEnvVar(VariableName);
-        }
-
-
         [Test]
         [TestCaseSource("AddWmiPropertiesToWrangler_TestCases")]
         public void AddWmiPropertiesToWrangler_Test(EnvironmentControllerTestArgs TestArgs)

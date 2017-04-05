@@ -39,13 +39,14 @@ namespace TsGui
         public event TsGuiWindowEventHandler WindowLoaded;
         public event TsGuiWindowMovingEventHandler WindowMoving;
         public event TsGuiWindowEventHandler WindowMouseUp;
+        public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
         private string _configpath;
         private bool _prodmode = false;
         private bool _finished = false;
         private TsButtons _buttons = new TsButtons();
         private List<TsPage> _pages = new List<TsPage>();
-        private EnvironmentController _envController = new EnvironmentController();
+        private EnvironmentController _envController;
         private LinkingLibrary _linkinglibrary = new LinkingLibrary();
         private GroupLibrary _grouplibrary = new GroupLibrary();
         private List<IToggleControl> _toggles = new List<IToggleControl>();
@@ -72,6 +73,7 @@ namespace TsGui
         public MainController(MainWindow ParentWindow, Arguments Arguments)
         {
             LoggerFacade.Trace("MainController initialized");
+            this._envController = new EnvironmentController(this);
             this._configpath = Arguments.ConfigFile;
             this.ParentWindow = ParentWindow;
             this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
@@ -269,6 +271,8 @@ namespace TsGui
                     this._nouicontainer = new NoUIContainer(this, x);
                 }
             }
+            LoggerFacade.Info("Config load finished");
+            this.ConfigLoadFinished?.Invoke(this, null);
         }
 
         //add options from sub classes to the main library. used to generate the final list of 

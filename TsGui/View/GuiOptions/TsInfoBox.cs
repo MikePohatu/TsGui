@@ -59,7 +59,7 @@ namespace TsGui.View.GuiOptions
             x = InputXml.Element("DisplayValue");
             if (x != null)
             {
-                this.ControlText = this._controller.EnvironmentController.GetValueFromList(x);
+                this.ControlText = this._controller.EnvironmentController.GetStringValueFromList(x);
                 if (this.ControlText == null) { this.ControlText = string.Empty; }
             }
         }
