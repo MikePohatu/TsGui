@@ -21,7 +21,7 @@ namespace TsGui.Queries
 {
     public static class QueryFactory
     {
-        public static IQuery GetQueryObject(XElement InputXml, SccmConnector sccmconnector)
+        public static IQuery GetQueryObject(XElement InputXml, SccmConnector sccmconnector, MainController controller)
         {
             if (InputXml == null) { return null; }
 
@@ -36,6 +36,8 @@ namespace TsGui.Queries
                         return new WmiQuery(InputXml);
                     case "EnvironmentVariable":
                         return new EnvironmentVariableQuery(InputXml,sccmconnector);
+                    case "OptionValue":
+                        return new SourceOptionValueQuery(InputXml, controller);
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
                 }

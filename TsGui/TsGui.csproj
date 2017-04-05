@@ -113,6 +113,7 @@
     <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="Grouping\GroupableBlindBase.cs" />
     <Compile Include="Grouping\GroupingEventArgs.cs" />
+    <Compile Include="Queries\SourceOptionValueQuery.cs" />
     <Compile Include="Queries\EnvironmentVariableQuery.cs" />
     <Compile Include="Queries\IQuery.cs" />
     <Compile Include="Queries\PrefixRule.cs" />

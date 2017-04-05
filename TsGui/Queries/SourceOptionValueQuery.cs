@@ -21,16 +21,16 @@ using TsGui.Connectors;
 
 namespace TsGui.Queries
 {
-    public class EnvironmentVariableQuery: IQuery
+    public class SourceOptionValueQuery: IQuery
     {
-        private SccmConnector _sccmconnector;
+        private MainController _controller;
         private bool _processed = false;
         private ResultFormatter _formatter;
         private ResultWrangler _wrangler = new ResultWrangler();
 
-        public EnvironmentVariableQuery(XElement inputxml, SccmConnector sccmconnector)
+        public SourceOptionValueQuery(XElement inputxml, MainController controller)
         {
-            this._sccmconnector = sccmconnector;
+            this._controller = controller;
             this.LoadXml(inputxml);
         }
 
@@ -41,23 +41,11 @@ namespace TsGui.Queries
         }
 
         //get and environmental variable, trying the sccm ts variables first
-        public string GetEnvironmentVariableValue(string variablename)
+        public string GetSourceOptionValue(string id)
         {
-            string s;
-
-            if (!string.IsNullOrEmpty(variablename))
+            if (!string.IsNullOrEmpty(id))
             {
-                //try ts env first
-                if (this._sccmconnector != null)
-                {
-                    s = this._sccmconnector.GetVariableValue(variablename);
-                    if (!string.IsNullOrEmpty(s)) { return s; }
-                }
-
-                //if hasn't returned already, try system env variables
-                s = SystemConnector.GetVariableValue(variablename);
-                if (!string.IsNullOrEmpty(s)) { return s; }
-                else return null;
+                return this._controller.LinkingLibrary.GetSourceOption(id)?.CurrentValue;
             }
             else { return null; }
         }
@@ -71,7 +59,7 @@ namespace TsGui.Queries
         /// <returns></returns>
         public ResultWrangler ProcessQuery()
         {
-            this._formatter.Input = this.GetEnvironmentVariableValue(this._formatter.Name.Trim());
+            this._formatter.Input = this.GetSourceOptionValue(this._formatter.Name.Trim());
             this._processed = true;
             return this._wrangler;
         }

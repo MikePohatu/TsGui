@@ -132,7 +132,7 @@ namespace TsGui
         //can return the data in the right format. 
         private ResultWrangler GetResultWranglerFromQuery(XElement InputXml)
         {
-            IQuery newquery = QueryFactory.GetQueryObject(InputXml, this._sccmconnector);
+            IQuery newquery = QueryFactory.GetQueryObject(InputXml, this._sccmconnector, this._controller);
             return newquery.ProcessQuery();
         }
 
