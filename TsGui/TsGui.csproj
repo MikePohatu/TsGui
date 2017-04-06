@@ -96,13 +96,13 @@
     <Compile Include="Helpers\ReverseComparer.cs" />
     <Compile Include="Images\Image.cs" />
     <Compile Include="Images\MultiImage.cs" />
-    <Compile Include="Linking\Conditional.cs" />
+    <Compile Include="Queries\Conditional.cs" />
     <Compile Include="Linking\ILinkingTarget.cs" />
     <Compile Include="Linking\ILinkingSource.cs" />
     <Compile Include="Linking\LinkingDelegates.cs" />
     <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />
-    <Compile Include="Linking\LinkingRuleProcesssor.cs" />
+    <Compile Include="Validation\StringMatchingRuleSet.cs" />
     <Compile Include="Options\NoUI\NoUIOption.cs" />
     <Compile Include="Options\NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
@@ -130,8 +130,8 @@
     <Compile Include="Validation\IValidationOwner.cs" />
     <Compile Include="Validation\StringValidation.cs" />
     <Compile Include="Grouping\GroupableUIElementBase.cs" />
-    <Compile Include="Validation\ValidationEnums.cs" />
-    <Compile Include="Validation\StringValidationRule.cs" />
+    <Compile Include="Validation\Enums.cs" />
+    <Compile Include="Validation\StringMatchingRule.cs" />
     <Compile Include="Validation\ValidationErrorToolTip.xaml.cs">
       <DependentUpon>ValidationErrorToolTip.xaml</DependentUpon>
     </Compile>

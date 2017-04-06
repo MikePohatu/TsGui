@@ -66,6 +66,13 @@ namespace TsGui
             this._outputconnector.AddVariable(Variable);
         }
 
+
+        //public string GetStringValueFromList(XElement InputXml, ILinkingTarget targetoption)
+        //{
+        //    this._controller.LinkingLibrary.AddTarget(targetoption);
+
+        //}
+
         /// <summary>
         /// Input a list of options as xml. Return the value of the first one that exists. 
         /// Return null if nothing is found. 

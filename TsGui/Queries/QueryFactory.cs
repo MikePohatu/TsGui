@@ -38,6 +38,8 @@ namespace TsGui.Queries
                         return new EnvironmentVariableQuery(InputXml,sccmconnector);
                     case "OptionValue":
                         return new SourceOptionValueQuery(InputXml, controller);
+                    case "IF":
+                        return new Conditional(InputXml, controller);
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
                 }

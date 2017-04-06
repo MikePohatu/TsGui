@@ -13,16 +13,19 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// Conditional.cs - IF rule for option linking
+// Conditional.cs - IF rule for queries
 
 using System;
 using System.Xml.Linq;
+using TsGui.Linking;
+using TsGui.Validation;
 
-namespace TsGui.Linking
+namespace TsGui.Queries
 {
-    public class Conditional
+    public class Conditional: IQuery
     {
-        private LinkingRuleProcesssor _processor = new LinkingRuleProcesssor();
+        private StringMatchingRuleSet _processor = new StringMatchingRuleSet();
+        private ResultWrangler _wrangler = new ResultWrangler();
         private ILinkingSource _sourceoption;
         private MainController _controller;
         private string _sourceID;
@@ -49,6 +52,9 @@ namespace TsGui.Linking
             //  </TargetValue>
             //</IF>
             this._sourceID = XmlHandler.GetStringFromXElement(InputXml, "SourceID", this._sourceID);
+            this._wrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._wrangler.Separator);
+            this._wrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._wrangler.IncludeNullValues);
+            this._wrangler.NewSubList();
             //this.SourceValue = XmlHandler.GetStringFromXElement(InputXml, "Value", this.SourceID);
         }
 
@@ -59,5 +65,13 @@ namespace TsGui.Linking
 
         public void OnControllerFinishedLoad(object o, EventArgs e)
         { this._sourceoption = this._controller.LinkingLibrary.GetSourceOption(this._sourceID); }
+
+        public ResultWrangler GetResultWrangler()
+        {
+            return this._wrangler;
+        }
+
+        public ResultWrangler ProcessQuery()
+        { return this._wrangler; }
     }
 }

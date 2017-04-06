@@ -1,4 +1,4 @@
-﻿//    Copyright (C) 2017 Mike Pohatu
+﻿//    Copyright (C) 2016 Mike Pohatu
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,28 +13,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// LinkingRuleProcesssor.cs - processes rules against a linking source
+// This file is part of TsGui
 
-using System.Collections.Generic;
-using TsGui.Validation;
-
-namespace TsGui.Linking
+namespace TsGui.Validation
 {
-    public class LinkingRuleProcesssor
-    {
-        private List<StringValidationRule> _rules;
-
-        public bool DoesRuleMatch(ILinkingSource source)
-        {
-            if (source == null) { }
-
-            foreach (StringValidationRule rule in this._rules)
-            {
-                if (ResultValidator.DoesStringMatchRule(rule, source.CurrentValue) == true)
-                { }
-            }
-            //dummy
-            return true;
-        }
-    }
+    public enum StringMatchingRuleType { StartsWith, EndsWith, Contains, Characters, RegEx, Equals, GreaterThan, GreaterThanOrEqualTo, LessThan, LessThanOrEqualTo, IsNumeric};
 }

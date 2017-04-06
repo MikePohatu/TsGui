@@ -14,7 +14,7 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 // Compliance.cs - responsible for storing rules that a string can be checked for compliance against
-using System;
+
 using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Grouping;
@@ -24,10 +24,10 @@ namespace TsGui.Validation
     public class Compliance: GroupableValidationBase
     {
 
-        private List<StringValidationRule> _okrules = new List<StringValidationRule>();
-        private List<StringValidationRule> _warningrules = new List<StringValidationRule>();
-        private List<StringValidationRule> _errorrules = new List<StringValidationRule>();
-        private List<StringValidationRule> _invalidrules = new List<StringValidationRule>();
+        private List<StringMatchingRule> _okrules = new List<StringMatchingRule>();
+        private List<StringMatchingRule> _warningrules = new List<StringMatchingRule>();
+        private List<StringMatchingRule> _errorrules = new List<StringMatchingRule>();
+        private List<StringMatchingRule> _invalidrules = new List<StringMatchingRule>();
         private int _defaultstate = ComplianceStateValues.Invalid;
         private MainController _controller;
 
@@ -53,7 +53,7 @@ namespace TsGui.Validation
             {
                 foreach (XElement subx in x.Elements("Rule"))
                 {
-                    StringValidationRule newrule = new StringValidationRule(subx);
+                    StringMatchingRule newrule = new StringMatchingRule(subx);
                     this._okrules.Add(newrule);
                 }
             }
@@ -63,7 +63,7 @@ namespace TsGui.Validation
             {
                 foreach (XElement subx in x.Elements("Rule"))
                 {
-                    StringValidationRule newrule = new StringValidationRule(subx);
+                    StringMatchingRule newrule = new StringMatchingRule(subx);
                     this._warningrules.Add(newrule);
                 }
             }
@@ -73,7 +73,7 @@ namespace TsGui.Validation
             {
                 foreach (XElement subx in x.Elements("Rule"))
                 {
-                    StringValidationRule newrule = new StringValidationRule(subx);
+                    StringMatchingRule newrule = new StringMatchingRule(subx);
                     this._errorrules.Add(newrule);
                 }
             }
@@ -83,7 +83,7 @@ namespace TsGui.Validation
             {
                 foreach (XElement subx in x.Elements("Rule"))
                 {
-                    StringValidationRule newrule = new StringValidationRule(subx);
+                    StringMatchingRule newrule = new StringMatchingRule(subx);
                     this._invalidrules.Add(newrule);
                 }
             }
@@ -109,19 +109,19 @@ namespace TsGui.Validation
 
         public int EvaluateState(string Input)
         {
-            foreach (StringValidationRule rule in this._invalidrules)
+            foreach (StringMatchingRule rule in this._invalidrules)
             {
                 if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
                 { return ComplianceStateValues.Invalid; }
             }
 
-            foreach (StringValidationRule rule in this._errorrules)
+            foreach (StringMatchingRule rule in this._errorrules)
             {
                 if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
                 { return ComplianceStateValues.Error; }
             }
 
-            foreach (StringValidationRule rule in this._warningrules)
+            foreach (StringMatchingRule rule in this._warningrules)
             {
                 if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
                 { return ComplianceStateValues.Warning; }
@@ -129,7 +129,7 @@ namespace TsGui.Validation
 
             if (this._okrules.Count == 0 ) { return ComplianceStateValues.OK; }
 
-            foreach (StringValidationRule rule in this._okrules)
+            foreach (StringMatchingRule rule in this._okrules)
             {
                 if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
                 { return ComplianceStateValues.OK; }
