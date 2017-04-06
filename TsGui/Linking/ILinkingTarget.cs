@@ -19,6 +19,6 @@ namespace TsGui.Linking
 {
     public interface ILinkingTarget
     {
-        void OnLinkedValueChanged();
+        void OnLinkedSourceValueChanged(ILinkingSource source);
     }
 }

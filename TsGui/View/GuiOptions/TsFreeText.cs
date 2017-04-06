@@ -21,10 +21,11 @@ using TsGui.Validation;
 using System;
 using System.Windows;
 using System.Xml.Linq;
+using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsFreeText: GuiOptionBase, IGuiOption, IValidationGuiOption
+    public class TsFreeText: GuiOptionBase, IGuiOption, IValidationGuiOption, ILinkingSource, ILinkingTarget
     {
         protected TsFreeTextUI _freetextui;
         protected string _controltext;
@@ -142,6 +143,13 @@ namespace TsGui.View.GuiOptions
                 if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
             }
+
+            XAttribute xa = InputXml.Attribute("ID");
+            if (xa != null)
+            {
+                this.ID = xa.Value;
+                this._controller.LinkingLibrary.AddSource(this);
+            }
         }
 
         //Handle UI events
@@ -187,5 +195,10 @@ namespace TsGui.View.GuiOptions
 
         public void OnValidationChange()
         { this.Validate(); }
+
+        public void OnLinkedSourceValueChanged(ILinkingSource source)
+        {
+
+        }
     }
 }

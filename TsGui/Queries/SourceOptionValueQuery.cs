@@ -17,8 +17,6 @@
 
 using System.Xml.Linq;
 
-using TsGui.Connectors;
-
 namespace TsGui.Queries
 {
     public class SourceOptionValueQuery: IQuery
@@ -40,7 +38,13 @@ namespace TsGui.Queries
             else { return this.ProcessQuery(); }
         }
 
-        //get and environmental variable, trying the sccm ts variables first
+        public ResultWrangler ProcessQuery()
+        {
+            this._formatter.Input = this.GetSourceOptionValue(this._formatter.Name.Trim());
+            this._processed = true;
+            return this._wrangler;
+        }
+
         public string GetSourceOptionValue(string id)
         {
             if (!string.IsNullOrEmpty(id))
@@ -50,43 +54,16 @@ namespace TsGui.Queries
             else { return null; }
         }
 
-
-
-        /// <summary>
-        /// Process a <Query Type="EnvironmentVariable"> block and return the ResultWrangler
-        /// </summary>
-        /// <param name="InputXml"></param>
-        /// <returns></returns>
-        public ResultWrangler ProcessQuery()
-        {
-            this._formatter.Input = this.GetSourceOptionValue(this._formatter.Name.Trim());
-            this._processed = true;
-            return this._wrangler;
-        }
-
         private void LoadXml(XElement InputXml)
         {
             XElement x;
-            XAttribute xattrib;
 
             this._wrangler.NewSubList();
             
-            x = InputXml.Element("Variable");
+            x = InputXml.Element("ID");
             if (x != null)
             {
-                //check for new xml syntax. If the name attribute doesn't exist, setup for the 
-                //legacy layout.
-                xattrib = x.Attribute("Name");
-                if (xattrib == null)
-                {
-                    this._formatter = new ResultFormatter();
-                    this._formatter.Name = x.Value;
-                }
-                else
-                {
-                    this._formatter = new ResultFormatter(x);
-                }
-
+                this._formatter = new ResultFormatter(x);
                 this._wrangler.AddResultFormatter(this._formatter);
             }
         }
