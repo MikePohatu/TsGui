@@ -43,50 +43,15 @@ namespace TsGui.Validation
 
         public void LoadXml(XElement InputXml)
         {
-            XElement x;
             IEnumerable<XElement> xlist;
 
             this.Message = XmlHandler.GetStringFromXElement(InputXml, "Message", this.Message);
             this._defaultstate = XmlHandler.GetComplianceStateValueFromXElement(InputXml, "DefaultState", this._defaultstate);
-            x = InputXml.Element("OK");
-            if (x != null)
-            {
-                foreach (XElement subx in x.Elements("Rule"))
-                {
-                    StringMatchingRule newrule = new StringMatchingRule(subx);
-                    this._okrules.Add(newrule);
-                }
-            }
 
-            x = InputXml.Element("Warning");
-            if (x != null)
-            {
-                foreach (XElement subx in x.Elements("Rule"))
-                {
-                    StringMatchingRule newrule = new StringMatchingRule(subx);
-                    this._warningrules.Add(newrule);
-                }
-            }
-
-            x = InputXml.Element("Error");
-            if (x != null)
-            {
-                foreach (XElement subx in x.Elements("Rule"))
-                {
-                    StringMatchingRule newrule = new StringMatchingRule(subx);
-                    this._errorrules.Add(newrule);
-                }
-            }
-
-            x = InputXml.Element("Invalid");
-            if (x != null)
-            {
-                foreach (XElement subx in x.Elements("Rule"))
-                {
-                    StringMatchingRule newrule = new StringMatchingRule(subx);
-                    this._invalidrules.Add(newrule);
-                }
-            }
+            this._okrules.LoadXml(InputXml.Element("OK"));
+            this._warningrules.LoadXml(InputXml.Element("Warning"));
+            this._errorrules.LoadXml(InputXml.Element("Error"));
+            this._invalidrules.LoadXml(InputXml.Element("Invalid"));
 
             xlist = InputXml.Elements("Group");
             if (xlist != null)

@@ -31,6 +31,7 @@ namespace TsGui.Validation
 
         public void LoadXml(XElement InputXml)
         {
+            if (InputXml == null) { return; }
             foreach (XElement subx in InputXml.Elements("Rule"))
             {
                 StringMatchingRule newrule = new StringMatchingRule(subx);
