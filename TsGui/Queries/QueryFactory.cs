@@ -21,7 +21,8 @@ namespace TsGui.Queries
 {
     public static class QueryFactory
     {
-        public static IQuery GetQueryObject(XElement InputXml, SccmConnector sccmconnector, MainController controller)
+
+        public static IQuery GetQueryObject(XElement InputXml, MainController controller)
         {
             if (InputXml == null) { return null; }
 
@@ -35,7 +36,7 @@ namespace TsGui.Queries
                     case "Wmi":
                         return new WmiQuery(InputXml);
                     case "EnvironmentVariable":
-                        return new EnvironmentVariableQuery(InputXml,sccmconnector);
+                        return new EnvironmentVariableQuery(InputXml, controller.EnvironmentController.SccmConnector);
                     case "OptionValue":
                         return new SourceOptionValueQuery(InputXml, controller);
                     case "IF":

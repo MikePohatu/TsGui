@@ -22,15 +22,11 @@ using TsGui.Validation;
 
 namespace TsGui.Queries
 {
-    public class Conditional: IQuery
+    public class Conditional: BaseQuery,IQuery
     {
-        private StringMatchingRuleSet _processor = new StringMatchingRuleSet();
+        private StringMatchingRuleSet _ruleset = new StringMatchingRuleSet();
         private ResultWrangler _wrangler = new ResultWrangler();
-        private ILinkingSource _sourceoption;
         private MainController _controller;
-        private string _sourceID;
-
-        public string TargetValue { get; set; }
 
         public Conditional(XElement inputxml, MainController controller)
         {
@@ -39,19 +35,21 @@ namespace TsGui.Queries
             this.LoadXml(inputxml);
         }
 
-        public void LoadXml(XElement InputXml)
+        public new void LoadXml(XElement InputXml)
         {
+            base.LoadXml(InputXml);
             //<IF>
-            //  <SourceID>123</SourceID>
-            //  <SourceValue>
+            //  <Source>
+            //      <Query/>
+            //  </Source>
+            //  <Ruleset>
             //      <Rule Type="StartsWith">test</Rule>
-            //  </SourceValue>
-            //  <TargetValue>
+            //  </Ruleset>
+            //  <Result>
             //      <Query></Query>
             //      <Value></Value>
-            //  </TargetValue>
+            //  </Result>
             //</IF>
-            this._sourceID = XmlHandler.GetStringFromXElement(InputXml, "SourceID", this._sourceID);
             this._wrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._wrangler.Separator);
             this._wrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._wrangler.IncludeNullValues);
             this._wrangler.NewSubList();
@@ -64,7 +62,7 @@ namespace TsGui.Queries
         }
 
         public void OnControllerFinishedLoad(object o, EventArgs e)
-        { this._sourceoption = this._controller.LinkingLibrary.GetSourceOption(this._sourceID); }
+        { }
 
         public ResultWrangler GetResultWrangler()
         {

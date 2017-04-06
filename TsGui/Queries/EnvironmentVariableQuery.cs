@@ -16,17 +16,17 @@
 // EnvironmentVariableQuery.cs - queries environment variables through the desired logic (try sccm, then proces, etc etc)
 
 using System.Xml.Linq;
-
 using TsGui.Connectors;
 
 namespace TsGui.Queries
 {
-    public class EnvironmentVariableQuery: IQuery
+    public class EnvironmentVariableQuery: BaseQuery, IQuery
     {
         private SccmConnector _sccmconnector;
         private bool _processed = false;
         private ResultFormatter _formatter;
-        private ResultWrangler _wrangler = new ResultWrangler();
+        private ResultWrangler _processingwrangler = new ResultWrangler();
+        private ResultWrangler _returnwrangler;
 
         public EnvironmentVariableQuery(XElement inputxml, SccmConnector sccmconnector)
         {
@@ -36,7 +36,7 @@ namespace TsGui.Queries
 
         public ResultWrangler GetResultWrangler()
         {
-            if (this._processed == true) { return this._wrangler; }
+            if (this._processed == true) { return this._returnwrangler; }
             else { return this.ProcessQuery(); }
         }
 
@@ -73,15 +73,26 @@ namespace TsGui.Queries
         {
             this._formatter.Input = this.GetEnvironmentVariableValue(this._formatter.Name.Trim());
             this._processed = true;
-            return this._wrangler;
+            return this.SetReturnWrangler();         
         }
 
-        private void LoadXml(XElement InputXml)
+        private ResultWrangler SetReturnWrangler()
         {
+            if (this.ShouldIgnore(this._formatter.Input) == true) { this._returnwrangler = null; }
+            else { this._returnwrangler = this._processingwrangler; }
+            return this._returnwrangler;
+        }
+
+        
+
+        private new void LoadXml(XElement InputXml)
+        {
+            base.LoadXml(InputXml);
+
             XElement x;
             XAttribute xattrib;
 
-            this._wrangler.NewSubList();
+            this._processingwrangler.NewSubList();
             
             x = InputXml.Element("Variable");
             if (x != null)
@@ -99,7 +110,7 @@ namespace TsGui.Queries
                     this._formatter = new ResultFormatter(x);
                 }
 
-                this._wrangler.AddResultFormatter(this._formatter);
+                this._processingwrangler.AddResultFormatter(this._formatter);
             }
         }
     }

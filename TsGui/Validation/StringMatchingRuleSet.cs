@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// LinkingRuleProcesssor.cs - processes rules against a linking source
+// LinkingRuleProcesssor.cs - stores and processes rules for a match 
 
 using System;
 using System.Collections.Generic;

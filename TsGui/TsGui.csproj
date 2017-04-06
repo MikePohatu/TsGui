@@ -96,12 +96,14 @@
     <Compile Include="Helpers\ReverseComparer.cs" />
     <Compile Include="Images\Image.cs" />
     <Compile Include="Images\MultiImage.cs" />
+    <Compile Include="Queries\BaseQuery.cs" />
     <Compile Include="Queries\Conditional.cs" />
     <Compile Include="Linking\ILinkingTarget.cs" />
     <Compile Include="Linking\ILinkingSource.cs" />
     <Compile Include="Linking\LinkingDelegates.cs" />
     <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />
+    <Compile Include="Queries\QueryList.cs" />
     <Compile Include="Validation\StringMatchingRuleSet.cs" />
     <Compile Include="Options\NoUI\NoUIOption.cs" />
     <Compile Include="Options\NoUI\NoUIContainer.cs" />

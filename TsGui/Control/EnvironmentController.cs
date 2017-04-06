@@ -33,6 +33,9 @@ namespace TsGui
         private SccmConnector _sccmconnector;
         private MainController _controller;
 
+        public SccmConnector SccmConnector { get { return this._sccmconnector; } }
+        public ITsVariableOutput OutputConnector { get { return this._outputconnector; } }
+
         public EnvironmentController(MainController maincontroller)
         { this._controller = maincontroller; }
 
@@ -82,7 +85,6 @@ namespace TsGui
         public string GetStringValueFromList(XElement InputXml)
         {
             string s = null;
-            XAttribute xtype;
 
             foreach (XElement x in InputXml.Elements())
             {
@@ -90,18 +92,10 @@ namespace TsGui
                 switch (xname)
                 {
                     case "Query":
-                        //Debug.WriteLine("Query requested");
-                        xtype = x.Attribute("Type");
-                        if (xtype == null) { throw new NullReferenceException("Missing Type attribute XML: " + Environment.NewLine + x); }
-
-                        s = this.GetResultWranglerFromQuery(x).GetString();
-
-                        //now check any return value is valid before returning from method. 
-                        if (!string.IsNullOrEmpty(s?.Trim()))
+                        IQuery newquery = QueryFactory.GetQueryObject(x, this._controller);
+                        if (newquery.Ignore == false)
                         {
-                            //if it shouldn't be ignored, return the value. Otherwise, carry on
-                            if (ResultValidator.ShouldIgnore(x, s) == false) { return s; }
-                            else { s = null; }
+                            return newquery.GetResultWrangler()?.GetString();
                         }
                         break;
                     case "Value":
@@ -139,7 +133,7 @@ namespace TsGui
         //can return the data in the right format. 
         private ResultWrangler GetResultWranglerFromQuery(XElement InputXml)
         {
-            IQuery newquery = QueryFactory.GetQueryObject(InputXml, this._sccmconnector, this._controller);
+            IQuery newquery = QueryFactory.GetQueryObject(InputXml, this._controller);
             return newquery.ProcessQuery();
         }
 

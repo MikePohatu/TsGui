@@ -19,5 +19,6 @@ namespace TsGui.Queries
     {
         ResultWrangler GetResultWrangler();
         ResultWrangler ProcessQuery();
+        bool Ignore { get; }
     }
 }

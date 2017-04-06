@@ -25,7 +25,7 @@ using TsGui.Connectors;
 
 namespace TsGui.Queries
 {
-    public class WmiQuery: IQuery
+    public class WmiQuery: BaseQuery, IQuery
     {
         private ResultWrangler _wrangler = new ResultWrangler();
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
@@ -39,8 +39,10 @@ namespace TsGui.Queries
             this.LoadXml(InputXml);
         }
 
-        public void LoadXml(XElement InputXml)
+        public new void LoadXml(XElement InputXml)
         {
+            base.LoadXml(InputXml);
+
             this._wql = InputXml.Element("Wql")?.Value;
 
             this._wrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._wrangler.Separator);
