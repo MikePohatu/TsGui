@@ -96,6 +96,14 @@ namespace TsGui.Options.NoUI
 
                 this._value = this._controller.EnvironmentController.GetStringValueFromList(x);
             }
+
+
+            XAttribute xa = InputXml.Attribute("ID");
+            if (xa != null)
+            {
+                this.ID = xa.Value;
+                this._controller.LinkingLibrary.AddSource(this);
+            }
         }
 
         protected override void EvaluateGroups()

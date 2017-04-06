@@ -142,14 +142,7 @@ namespace TsGui.View.GuiOptions
                 string invalchars = this._validationhandler.GetAllInvalidCharacters();
                 if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
-            }
-
-            XAttribute xa = InputXml.Attribute("ID");
-            if (xa != null)
-            {
-                this.ID = xa.Value;
-                this._controller.LinkingLibrary.AddSource(this);
-            }
+            }            
         }
 
         //Handle UI events

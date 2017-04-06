@@ -25,7 +25,7 @@ using TsGui.Diagnostics.Logging;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class GuiOptionBase : BaseLayoutElement, IOption
+    public abstract class GuiOptionBase : BaseLayoutElement, IOption, ILinkingSource
     {
         public event IOptionValueChanged ValueChanged;
 
@@ -95,6 +95,13 @@ namespace TsGui.View.GuiOptions
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
             this.SetLayoutRightLeft();
+
+            XAttribute xa = InputXml.Attribute("ID");
+            if (xa != null)
+            {
+                this.ID = xa.Value;
+                this._controller.LinkingLibrary.AddSource(this);
+            }
         }
 
         protected override void EvaluateGroups()
