@@ -24,10 +24,10 @@ namespace TsGui.Validation
     public class Compliance: GroupableValidationBase
     {
 
-        private List<StringMatchingRule> _okrules = new List<StringMatchingRule>();
-        private List<StringMatchingRule> _warningrules = new List<StringMatchingRule>();
-        private List<StringMatchingRule> _errorrules = new List<StringMatchingRule>();
-        private List<StringMatchingRule> _invalidrules = new List<StringMatchingRule>();
+        private StringMatchingRuleSet _okrules = new StringMatchingRuleSet();
+        private StringMatchingRuleSet _warningrules = new StringMatchingRuleSet();
+        private StringMatchingRuleSet _errorrules = new StringMatchingRuleSet();
+        private StringMatchingRuleSet _invalidrules = new StringMatchingRuleSet();
         private int _defaultstate = ComplianceStateValues.Invalid;
         private MainController _controller;
 
@@ -109,31 +109,11 @@ namespace TsGui.Validation
 
         public int EvaluateState(string Input)
         {
-            foreach (StringMatchingRule rule in this._invalidrules)
-            {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-                { return ComplianceStateValues.Invalid; }
-            }
-
-            foreach (StringMatchingRule rule in this._errorrules)
-            {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-                { return ComplianceStateValues.Error; }
-            }
-
-            foreach (StringMatchingRule rule in this._warningrules)
-            {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-                { return ComplianceStateValues.Warning; }
-            }
-
+            if (this._invalidrules.DoesStringMatch(Input) == true) { return ComplianceStateValues.Invalid; }
+            if (this._errorrules.DoesStringMatch(Input) == true) { return ComplianceStateValues.Error; }
+            if (this._warningrules.DoesStringMatch(Input) == true)  { return ComplianceStateValues.Warning; }
             if (this._okrules.Count == 0 ) { return ComplianceStateValues.OK; }
-
-            foreach (StringMatchingRule rule in this._okrules)
-            {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-                { return ComplianceStateValues.OK; }
-            }
+            if (this._okrules.DoesStringMatch(Input) == true) { return ComplianceStateValues.OK; }
 
             return this._defaultstate;
         }
