@@ -88,19 +88,10 @@ namespace TsGui
 
             foreach (XElement x in InputXml.Elements())
             {
-                string xname = x.Name.ToString();
-                switch (xname)
+                IQuery newquery = QueryFactory.GetQueryObject(x, this._controller);
+                if (newquery.Ignore == false)
                 {
-                    case "Query":
-                        IQuery newquery = QueryFactory.GetQueryObject(x, this._controller);
-                        if (newquery.Ignore == false)
-                        {
-                            return newquery.GetResultWrangler()?.GetString();
-                        }
-                        break;
-                    case "Value":
-                        if (x.Value == null) { return string.Empty; }
-                        else { return x.Value; }
+                    return newquery.GetResultWrangler().GetString();
                 }
             }
 

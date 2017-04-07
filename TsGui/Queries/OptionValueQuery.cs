@@ -21,7 +21,7 @@ using TsGui.Validation;
 
 namespace TsGui.Queries
 {
-    public class SourceOptionValueQuery: BaseQuery, IQuery
+    public class OptionValueQuery: BaseQuery, IQuery
     {
         private MainController _controller;
         private bool _processed = false;
@@ -29,7 +29,7 @@ namespace TsGui.Queries
         private ResultWrangler _processingwrangler = new ResultWrangler();
         private ResultWrangler _returnwrangler;
 
-        public SourceOptionValueQuery(XElement inputxml, MainController controller)
+        public OptionValueQuery(XElement inputxml, MainController controller)
         {
             this._controller = controller;
             this.LoadXml(inputxml);
@@ -78,11 +78,6 @@ namespace TsGui.Queries
             {
                 this._formatter = new ResultFormatter(x);
                 this._processingwrangler.AddResultFormatter(this._formatter);
-            }
-
-            foreach (XElement xignorerule in InputXml.Elements("Ignore"))
-            {
-                this._ignorerules.Add(new StringMatchingRule(xignorerule));
             }
         }
     }

@@ -13,41 +13,27 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// QueryList.cs - A list of queries 
-
-using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace TsGui.Queries
 {
-    public class QueryList
+    public class ValueOnly: IQuery
     {
-        private List<IQuery> _queries = new List<IQuery>();
-        private MainController _controller;
+        private ResultFormatter _formatter = new ResultFormatter();
+        private ResultWrangler _wrangler = new ResultWrangler();
 
-        public QueryList(MainController controller)
-        {
-            this._controller = controller;
-        }
+        public bool Ignore { get { return false; } }
 
-        public void LoadXml(XElement InputXml)
+        public ValueOnly(XElement InputXml)
         {
-            foreach (XElement x in InputXml.Elements())
-            {
-                IQuery newquery = QueryFactory.GetQueryObject(x, this._controller);
-                if (newquery != null) { this._queries.Add(newquery); }
-            }
+            this._formatter.Input = InputXml.Value;
+            this._wrangler.AddResultFormatter(this._formatter);
         }
 
         public ResultWrangler GetResultWrangler()
-        {
-            foreach (IQuery query in this._queries)
-            {
-                ResultWrangler wrangler = query.GetResultWrangler();
-                if (wrangler != null) { return wrangler; }
-            }
+        { return this._wrangler; }
 
-            return null;
-        }
+        public ResultWrangler ProcessQuery()
+        { return this._wrangler; }
     }
 }

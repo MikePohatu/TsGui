@@ -35,7 +35,6 @@ namespace TsGui.Queries
             this.LoadXml(InputXml);
         }
 
-
         private void LoadXml(XElement InputXml)
         {
             XAttribute xattrib;
