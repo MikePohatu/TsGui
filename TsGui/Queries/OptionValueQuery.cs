@@ -13,11 +13,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// EnvironmentVariableQuery.cs - queries environment variables through the desired logic (try sccm, then proces, etc etc)
+// OptionValueQuery.cs - queries environment variables through the desired logic (try sccm, then proces, etc etc)
 
-using System.Collections.Generic;
 using System.Xml.Linq;
-using TsGui.Validation;
 
 namespace TsGui.Queries
 {
@@ -44,8 +42,9 @@ namespace TsGui.Queries
 
         public ResultWrangler ProcessQuery()
         {
-            this._formatter.Input = this.GetSourceOptionValue(this._formatter.Name.Trim());
+            this._formatter.Input = this.GetSourceOptionValue(this._formatter.Name);
             this._processed = true;
+
             return this.SetReturnWrangler();
         }
 
@@ -60,7 +59,7 @@ namespace TsGui.Queries
 
         private ResultWrangler SetReturnWrangler()
         {
-            if (this.ShouldIgnore(this._formatter.Input) == true) { this._returnwrangler = null; }
+            if (this.ShouldIgnore(this._formatter.Value) == true) { this._returnwrangler = null; }
             else { this._returnwrangler = this._processingwrangler; }
             return this._returnwrangler;
         }

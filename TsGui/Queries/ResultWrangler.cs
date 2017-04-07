@@ -219,5 +219,17 @@ namespace TsGui.Queries
 
             return s;
         }
+
+        /// <summary>
+        /// Create a new ResultWrangler, using this as a template. Copy separator and IncludeNullValues
+        /// </summary>
+        /// <returns></returns>
+        public ResultWrangler Clone()
+        {
+            ResultWrangler newwrangler = new ResultWrangler();
+            newwrangler.Separator = this.Separator;
+            newwrangler.IncludeNullValues = this.IncludeNullValues;
+            return newwrangler;
+        }
     }
 }

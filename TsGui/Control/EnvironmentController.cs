@@ -91,7 +91,8 @@ namespace TsGui
                 IQuery newquery = QueryFactory.GetQueryObject(x, this._controller);
                 if (newquery.Ignore == false)
                 {
-                    return newquery.GetResultWrangler().GetString();
+                    s = newquery.GetResultWrangler().GetString();
+                    break;
                 }
             }
 

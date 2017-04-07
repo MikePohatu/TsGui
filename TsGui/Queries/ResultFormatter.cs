@@ -37,10 +37,7 @@ namespace TsGui.Queries
 
         private void LoadXml(XElement InputXml)
         {
-            XAttribute xattrib;
-
-            xattrib = InputXml.Attribute("Name");
-            if (xattrib != null) { this.Name = xattrib.Value; }
+            this.Name = XmlHandler.GetStringFromXAttribute(InputXml, "Name", this.Name);
 
             foreach (XElement xsetting in InputXml.Elements())
             {

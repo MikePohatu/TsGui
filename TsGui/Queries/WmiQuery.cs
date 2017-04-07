@@ -66,6 +66,7 @@ namespace TsGui.Queries
             //New sublists are created for each management object in the wrangler. 
             try
             {
+                if (this._processed == true ) { this._wrangler = this._wrangler.Clone(); }
                 this.AddWmiPropertiesToWrangler(this._wrangler, SystemConnector.GetWmiManagementObjectList(this._wql), this._propertyTemplates);
                 this._processed = true;
             }

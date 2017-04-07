@@ -27,6 +27,7 @@ namespace TsGui.Queries
         public ValueOnly(XElement InputXml)
         {
             this._formatter.Input = InputXml.Value;
+            this._wrangler.NewSubList(); 
             this._wrangler.AddResultFormatter(this._formatter);
         }
 
