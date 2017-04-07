@@ -78,6 +78,7 @@ namespace TsGui.Queries
 
         private ResultWrangler SetReturnWrangler()
         {
+            if (this._formatter.Input == null) { return null; }
             if (this.ShouldIgnore(this._formatter.Input) == true) { this._returnwrangler = null; }
             else { this._returnwrangler = this._processingwrangler; }
             return this._returnwrangler;

@@ -21,13 +21,13 @@ using System.Xml.Linq;
 using System.Windows.Media;
 using TsGui.Validation;
 using TsGui.View.Layout;
+using TsGui.Queries;
 
 namespace TsGui.View.GuiOptions
 {
     public abstract class ComplianceOptionBase : GuiOptionBase, IGuiOption, IValidationGuiOption
     {
         protected string _value;
-        protected XElement _queryxml;
         protected double _iconheight;
         protected double _iconwidth;
         protected SolidColorBrush _fillcolor;
@@ -38,6 +38,7 @@ namespace TsGui.View.GuiOptions
         protected IRootLayoutElement _rootelement;
         protected bool _showvalueinpopup;
         protected string _okHelpText;
+        protected QueryList _getvaluelist;
 
         //properties
         public double IconHeight
@@ -85,7 +86,8 @@ namespace TsGui.View.GuiOptions
             this._validationtooltiphandler = new ValidationToolTipHandler(this, this._controller);
 
             this.UserControl.DataContext = this;
-            this.SetDefaults();          
+            this.SetDefaults();
+            this._getvaluelist = new QueryList(this, MainController);       
         }
 
         //methods
@@ -129,6 +131,7 @@ namespace TsGui.View.GuiOptions
 
         public void OnComplianceRetry(IRootLayoutElement o, EventArgs e)
         {
+            this._getvaluelist.ProcessAllQueries();
             this.ProcessQuery();
             this.Validate();
         }
@@ -136,23 +139,27 @@ namespace TsGui.View.GuiOptions
         protected new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
+
+            XElement x;
+
             this.LoadLegacyXml(InputXml);
             this._okHelpText = this.HelpText;
             this._compliancehandler.AddCompliances(InputXml.Elements("Compliance"));
             this._showvalueinpopup = XmlHandler.GetBoolFromXElement(InputXml, "PopupShowValue", this._showvalueinpopup);
 
             //wrap the query in another to make it suitable for the controller. 
-            this._queryxml = InputXml.Element("GetValue");
+            x = InputXml.Element("GetValue");
+            if (x != null) { this._getvaluelist.LoadXml(x); }  
         } 
 
         protected void ProcessQuery()
         {
-            if (this._queryxml != null)
-            {
-                this._value = this._controller.EnvironmentController.GetStringValueFromList(this._queryxml);
-                this.UpdateState();
-            }
+            this._value = this._getvaluelist.GetResultWrangler()?.GetString();
+            this.UpdateState();
         }
+
+        private void RefreshValue()
+        { }
 
         private void UpdateState()
         {

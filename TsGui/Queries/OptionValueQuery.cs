@@ -1,4 +1,4 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
+﻿//    Copyright (C) 2017 Mike Pohatu
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,9 +13,11 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// OptionValueQuery.cs - queries environment variables through the desired logic (try sccm, then proces, etc etc)
+// OptionValueQuery.cs - queries an existing TsGui option
 
 using System.Xml.Linq;
+using TsGui.Options;
+using TsGui.Linking;
 
 namespace TsGui.Queries
 {
@@ -26,9 +28,17 @@ namespace TsGui.Queries
         private ResultFormatter _formatter;
         private ResultWrangler _processingwrangler = new ResultWrangler();
         private ResultWrangler _returnwrangler;
+        private IOption _owneroption;
+        private ILinkingTarget _targetoption;
 
-        public OptionValueQuery(XElement inputxml, MainController controller)
+        public OptionValueQuery(XElement inputxml, MainController controller, IOption owner)
         {
+            this._owneroption = owner;
+            if (owner is ILinkingTarget)
+            {
+                this._targetoption = (ILinkingTarget)owner;
+                
+            }
             this._controller = controller;
             this.LoadXml(inputxml);
             this.ProcessQuery();
@@ -55,6 +65,12 @@ namespace TsGui.Queries
                 return this._controller.LinkingLibrary.GetSourceOption(id)?.CurrentValue;
             }
             else { return null; }
+        }
+
+        public void OnLinkedSourceValueChanged(ILinkingSource source)
+        {
+            this.ProcessQuery();
+            this._targetoption?.RefreshValue();
         }
 
         private ResultWrangler SetReturnWrangler()

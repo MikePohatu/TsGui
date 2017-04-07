@@ -18,13 +18,14 @@
 
 using System.Xml.Linq;
 using System.Windows;
+using TsGui.Queries;
 
 namespace TsGui.View.GuiOptions
 {
     public class TsInfoBox : GuiOptionBase, IGuiOption
     {
         private string _controltext;
-
+        private QueryList _displayvaluelist;
         //Properties
 
         //Custom stuff for control
@@ -47,7 +48,9 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
             this.UserControl.DataContext = this;
             this.SetDefaults();
+            this._displayvaluelist = new QueryList(this, this._controller);
             this.LoadXml(InputXml);
+            this.RefreshControlText();
         }
 
         public new void LoadXml(XElement InputXml)
@@ -58,10 +61,13 @@ namespace TsGui.View.GuiOptions
 
             x = InputXml.Element("DisplayValue");
             if (x != null)
-            {
-                this.ControlText = this._controller.EnvironmentController.GetStringValueFromList(x);
-                if (this.ControlText == null) { this.ControlText = string.Empty; }
-            }
+            { this._displayvaluelist.LoadXml(x); }
+        }
+
+        private void RefreshControlText()
+        {
+            ResultWrangler wrangler = this._displayvaluelist.GetResultWrangler();
+            this.ControlText = wrangler.GetString();
         }
 
         private void SetDefaults()

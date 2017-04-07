@@ -20,10 +20,10 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Windows;
 using System;
-using System.Windows.Threading;
 
 using TsGui.Grouping;
 using TsGui.Validation;
+using TsGui.Queries;
 
 namespace TsGui.View.GuiOptions
 {
@@ -42,6 +42,7 @@ namespace TsGui.View.GuiOptions
         private ValidationHandler _validationhandler;
         private bool _nodefaultvalue;
         private string _noselectionmessage;
+        private QueryList _querylist;
 
 
         //properties
@@ -76,6 +77,7 @@ namespace TsGui.View.GuiOptions
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
             this._controller = MainController;
+            this._querylist = new QueryList(this, this._controller);
 
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
@@ -129,7 +131,13 @@ namespace TsGui.View.GuiOptions
 
                 if (x.Name == "Query")
                 {
-                    List<KeyValuePair<string, string>> kvlist = this._controller.EnvironmentController.GetKeyValueListFromList(x);
+                    XElement wrapx = new XElement("wrapx");
+                    wrapx.Add(x);
+                    QueryList newlist = new QueryList(this,this._controller);
+                    newlist.LoadXml(wrapx);
+
+                    List<KeyValuePair<string, string>> kvlist = newlist.GetResultWrangler().GetKeyValueList();
+                    //List<KeyValuePair<string, string>> kvlist = this._controller.EnvironmentController.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
                         TsDropDownListItem newoption = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting,this ,this._controller);

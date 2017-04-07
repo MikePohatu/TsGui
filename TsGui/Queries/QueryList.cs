@@ -17,11 +17,13 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
+using TsGui.Options;
 
 namespace TsGui.Queries
 {
     public class QueryList
     {
+        private IOption _owneroption;
         private List<IQuery> _queries = new List<IQuery>();
         private MainController _controller;
 
@@ -30,12 +32,21 @@ namespace TsGui.Queries
             this._controller = controller;
         }
 
+        public QueryList(IOption owner, MainController controller)
+        {
+            this._controller = controller;
+            this._owneroption = owner;
+        }
+
         public void LoadXml(XElement InputXml)
         {
-            foreach (XElement x in InputXml.Elements())
+            if (InputXml != null)
             {
-                IQuery newquery = QueryFactory.GetQueryObject(x, this._controller);
-                if (newquery != null) { this._queries.Add(newquery); }
+                foreach (XElement x in InputXml.Elements())
+                {
+                    IQuery newquery = QueryFactory.GetQueryObject(x, this._controller, this._owneroption);
+                    if (newquery != null) { this._queries.Add(newquery); }
+                }
             }
         }
 
@@ -48,6 +59,17 @@ namespace TsGui.Queries
             }
 
             return null;
+        }
+
+        public void Clear()
+        {
+            this._queries.Clear();
+        }
+
+        public void ProcessAllQueries()
+        {
+            foreach (IQuery query in this._queries)
+            { query.ProcessQuery(); }
         }
     }
 }

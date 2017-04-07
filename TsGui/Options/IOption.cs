@@ -15,12 +15,13 @@
 
 // IOption.cs - option interface. Base interface to apply to both GuiOptions and BlindOptions
 
+using TsGui.Linking;
+
 namespace TsGui.Options
 {
-    public interface IOption
+    public interface IOption: ILinkingSource
     {
         TsVariable Variable { get; }
-        string CurrentValue { get; }
         string LiveValue { get; }
         string VariableName { get; }
         string InactiveValue { get; }

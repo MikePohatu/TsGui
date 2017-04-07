@@ -22,6 +22,7 @@ using System;
 using System.Windows;
 using System.Xml.Linq;
 using TsGui.Linking;
+using TsGui.Queries;
 
 namespace TsGui.View.GuiOptions
 {
@@ -33,6 +34,7 @@ namespace TsGui.View.GuiOptions
         protected int _maxlength;
         private ValidationToolTipHandler _validationtooltiphandler;
         private ValidationHandler _validationhandler;
+        private QueryList _defaultvaluelist;
 
         //Properties
         #region
@@ -77,9 +79,10 @@ namespace TsGui.View.GuiOptions
         {
             this.Init(MainController);
             this.LoadXml(InputXml);
+            this.RefreshValue();
         }
 
-        protected TsFreeText(TsColumn Parent, MainController MainController): base(Parent, MainController)
+        protected TsFreeText(TsColumn Parent, MainController MainController) : base(Parent, MainController)
         {
             this.Init(MainController);
         }
@@ -88,6 +91,7 @@ namespace TsGui.View.GuiOptions
         {
             //this._controltext = string.Empty;
             this._controller = MainController;
+            this._defaultvaluelist = new QueryList(this, this._controller);
 
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
@@ -134,14 +138,8 @@ namespace TsGui.View.GuiOptions
                         x.AddFirst(xcurrentquery);
                     }
                 }
-
-                this._controltext = this._controller.EnvironmentController.GetStringValueFromList(x);
-                if (this._controltext == null) { this._controltext = string.Empty; }
-
-                //if required, remove invalid characters and truncate
-                string invalchars = this._validationhandler.GetAllInvalidCharacters();
-                if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
-                if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
+                this._defaultvaluelist.Clear();
+                this._defaultvaluelist.LoadXml(x);
             }            
         }
 
@@ -189,9 +187,15 @@ namespace TsGui.View.GuiOptions
         public void OnValidationChange()
         { this.Validate(); }
 
-        public void OnLinkedSourceValueChanged(ILinkingSource source)
+        public void RefreshValue()
         {
+            this._controltext = this._defaultvaluelist.GetResultWrangler().GetString();
+            if (this._controltext == null) { this._controltext = string.Empty; }
 
+            //if required, remove invalid characters and truncate
+            string invalchars = this._validationhandler.GetAllInvalidCharacters();
+            if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
+            if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
         }
     }
 }

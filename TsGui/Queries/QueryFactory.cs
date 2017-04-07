@@ -14,15 +14,15 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using System.Xml.Linq;
-using TsGui.Connectors;
 using TsGui.Diagnostics;
+using TsGui.Options;
 
 namespace TsGui.Queries
 {
     public static class QueryFactory
     {
 
-        public static IQuery GetQueryObject(XElement InputXml, MainController controller)
+        public static IQuery GetQueryObject(XElement InputXml, MainController controller, IOption owner )
         {
             if (InputXml == null) { return null; }
 
@@ -38,7 +38,7 @@ namespace TsGui.Queries
                     case "EnvironmentVariable":
                         return new EnvironmentVariableQuery(InputXml, controller.EnvironmentController.SccmConnector);
                     case "OptionValue":
-                        return new OptionValueQuery(InputXml, controller);
+                        return new OptionValueQuery(InputXml, controller, owner);
                     case "IF":
                         return new Conditional(InputXml, controller);
                     case "Value":

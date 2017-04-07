@@ -11,8 +11,6 @@ namespace TsGui.Queries
     {
         protected List<StringMatchingRule> _ignorerules = new List<StringMatchingRule>();
 
-        public bool Ignore { get; set; }
-
         protected void LoadXml(XElement InputXml)
         {
             foreach (XElement xignorerule in InputXml.Elements("Ignore"))
@@ -27,12 +25,10 @@ namespace TsGui.Queries
             {
                 if (ResultValidator.DoesStringMatchRule(rule, input) == true)
                 {
-                    this.Ignore = true;
-                    return this.Ignore;
+                    return true;
                 }
             }
-            this.Ignore = false;
-            return this.Ignore;
+            return false;
         }
     }
 }

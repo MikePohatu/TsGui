@@ -82,22 +82,22 @@ namespace TsGui
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        public string GetStringValueFromList(XElement InputXml)
-        {
-            string s = null;
+        //public string GetStringValueFromList_old(XElement InputXml)
+        //{
+        //    string s = null;
 
-            foreach (XElement x in InputXml.Elements())
-            {
-                IQuery newquery = QueryFactory.GetQueryObject(x, this._controller);
-                if (newquery.Ignore == false)
-                {
-                    s = newquery.GetResultWrangler().GetString();
-                    break;
-                }
-            }
+        //    foreach (XElement x in InputXml.Elements())
+        //    {
+        //        IQuery newquery = QueryFactory.GetQueryObject(x, this._controller);
+        //        if (newquery.Ignore == false)
+        //        {
+        //            s = newquery.GetResultWrangler().GetString();
+        //            break;
+        //        }
+        //    }
 
-            return s;
-        }
+        //    return s;
+        //}
 
 
         /// <summary>
@@ -105,36 +105,36 @@ namespace TsGui
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        public Dictionary<string, string> GetDictionaryFromList(XElement InputXml)
-        {
-            return this.GetResultWranglerFromQuery(InputXml).GetDictionary();
-        }
+        //public Dictionary<string, string> GetDictionaryFromList_old(XElement InputXml)
+        //{
+        //    return this.GetResultWranglerFromQuery(InputXml).GetDictionary();
+        //}
 
         /// <summary>
         /// Input a list of options as xml. Return a List<KeyValuePair<string,<string>> of results 
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        public List<KeyValuePair<string,string>> GetKeyValueListFromList(XElement InputXml)
-        {
-            return this.GetResultWranglerFromQuery(InputXml).GetKeyValueList();
-        }
+        //public List<KeyValuePair<string,string>> GetKeyValueListFromList_old(XElement InputXml)
+        //{
+        //    return this.GetResultWranglerFromQuery(InputXml).GetKeyValueList();
+        //}
 
 
         //worker method for the public getdictionary and getkeyvaluelist methods above. builds and returns the wrangler that
         //can return the data in the right format. 
-        private ResultWrangler GetResultWranglerFromQuery(XElement InputXml)
-        {
-            IQuery newquery = QueryFactory.GetQueryObject(InputXml, this._controller);
-            return newquery.ProcessQuery();
-        }
+        //private ResultWrangler GetResultWranglerFromQuery_old(XElement InputXml)
+        //{
+        //    IQuery newquery = QueryFactory.GetQueryObject(InputXml, this._controller);
+        //    return newquery.ProcessQuery();
+        //}
 
         /// <summary>
         /// Process a <Query Type="GuiOption"> block and return the ResultWrangler
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        private ResultWrangler GetResultWranglerFromGuiOption(XElement InputXml)
+        private ResultWrangler GetResultWranglerFromGuiOption_old(XElement InputXml)
         {
             ResultWrangler wrangler = new ResultWrangler();
             ResultFormatter rf;

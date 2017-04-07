@@ -18,6 +18,7 @@
 using System.Xml.Linq;
 using TsGui.Grouping;
 using TsGui.Linking;
+using TsGui.Queries;
 using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Options.NoUI
@@ -29,6 +30,7 @@ namespace TsGui.Options.NoUI
         private string _inactivevalue = "TSGUI_INACTIVE";
         private string _value = string.Empty;
         private bool _usecurrent = false;
+        private QueryList _setvaluelist;
 
         //properties
         public string ID { get; set; }
@@ -64,7 +66,9 @@ namespace TsGui.Options.NoUI
         //constructors     
         public NoUIOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent,MainController)
         {
+            this._setvaluelist = new QueryList(this, MainController);
             this.LoadXml(InputXml);
+            this.RefreshValue();
             this.NotifyUpdate();
         }
 
@@ -94,7 +98,8 @@ namespace TsGui.Options.NoUI
                     x.AddFirst(xcurrentquery);
                 }
 
-                this._value = this._controller.EnvironmentController.GetStringValueFromList(x);
+                this._setvaluelist.LoadXml(x);
+                //this._value = this._controller.EnvironmentController.GetStringValueFromList(x);
             }
 
 
@@ -105,6 +110,9 @@ namespace TsGui.Options.NoUI
                 this._controller.LinkingLibrary.AddSource(this);
             }
         }
+
+        private void RefreshValue()
+        { this._value = this._setvaluelist.GetResultWrangler()?.GetString(); }
 
         protected override void EvaluateGroups()
         {
