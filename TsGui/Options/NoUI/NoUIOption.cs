@@ -66,7 +66,7 @@ namespace TsGui.Options.NoUI
         //constructors     
         public NoUIOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent,MainController)
         {
-            this._setvaluelist = new QueryList(this, MainController);
+            this._setvaluelist = new QueryList(MainController);
             this.LoadXml(InputXml);
             this.RefreshValue();
             this.NotifyUpdate();

@@ -42,12 +42,10 @@ namespace TsGui.View.GuiOptions
         }
         public override TsVariable Variable { get { return null; } }
 
-        //public TsColumn Parent { get; set; }
-
         public TsTextBlock (XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
             this._controller = MainController;
-            this._displayvaluelist = new QueryList(this, this._controller);
+            this._displayvaluelist = new QueryList(this._controller);
             this.UserControl.DataContext = this;
             this._stringvalidation = new StringValidation(MainController);
             this.SetDefaults();

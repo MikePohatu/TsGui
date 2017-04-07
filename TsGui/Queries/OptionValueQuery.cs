@@ -16,7 +16,6 @@
 // OptionValueQuery.cs - queries an existing TsGui option
 
 using System.Xml.Linq;
-using TsGui.Options;
 using TsGui.Linking;
 
 namespace TsGui.Queries
@@ -28,13 +27,12 @@ namespace TsGui.Queries
         private ResultFormatter _formatter;
         private ResultWrangler _processingwrangler = new ResultWrangler();
         private ResultWrangler _returnwrangler;
-        private IOption _owneroption;
-        private ILinkTarget _targetoption;
+        private ILinkTarget _linktargetoption;
 
-        public OptionValueQuery(XElement inputxml, MainController controller, IOption owner)
+        public OptionValueQuery(XElement inputxml, MainController controller, ILinkTarget owner)
         {
-            this._owneroption = owner;
-            if (owner is ILinkTarget) { this._targetoption = (ILinkTarget)owner; }
+            this._linktargetoption = owner;
+            //if (owner is ILinkTarget) { this._targetoption = (ILinkTarget)owner; }
             this._controller = controller;
             this.LoadXml(inputxml);
             this._controller.LinkingLibrary.AddHandler(this._formatter.Name,this);
@@ -67,7 +65,7 @@ namespace TsGui.Queries
         public void OnLinkedSourceValueChanged(ILinkSource source, LinkingEventArgs e)
         {
             this.ProcessQuery();
-            this._targetoption?.RefreshValue();
+            this._linktargetoption?.RefreshValue();
         }
 
         private ResultWrangler SetReturnWrangler()

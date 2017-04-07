@@ -15,14 +15,14 @@
 
 using System.Xml.Linq;
 using TsGui.Diagnostics;
-using TsGui.Options;
+using TsGui.Linking;
 
 namespace TsGui.Queries
 {
     public static class QueryFactory
     {
 
-        public static IQuery GetQueryObject(XElement InputXml, MainController controller, IOption owner )
+        public static IQuery GetQueryObject(XElement InputXml, MainController controller, ILinkTarget owner )
         {
             if (InputXml == null) { return null; }
 
@@ -40,7 +40,7 @@ namespace TsGui.Queries
                     case "OptionValue":
                         return new OptionValueQuery(InputXml, controller, owner);
                     case "IF":
-                        return new Conditional(InputXml, controller);
+                        return new Conditional(InputXml, controller, owner);
                     case "Value":
                         return new ValueOnly(InputXml);
                     default:
@@ -48,7 +48,7 @@ namespace TsGui.Queries
                 }
             }
             else if (InputXml.Name.ToString() == "IF")
-            { return new Conditional(InputXml, controller); }
+            { return new Conditional(InputXml, controller, owner); }
 
             else if (InputXml.Name.ToString() == "Value")
             { return new ValueOnly(InputXml); }

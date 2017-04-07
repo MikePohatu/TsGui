@@ -87,14 +87,13 @@ namespace TsGui.View.GuiOptions
 
             this.UserControl.DataContext = this;
             this.SetDefaults();
-            this._getvaluelist = new QueryList(this, MainController);       
+            this._getvaluelist = new QueryList(MainController);       
         }
 
         //methods
         public bool Validate()
         {
             bool returnval = false;
-            //if (this._controller.StartupFinished == false) { return true; }
             this.UpdateState();
 
             if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }          

@@ -77,7 +77,7 @@ namespace TsGui.View.GuiOptions
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
             this._controller = MainController;
-            this._querylist = new QueryList(this, this._controller);
+            this._querylist = new QueryList(this._controller);
 
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
@@ -133,7 +133,7 @@ namespace TsGui.View.GuiOptions
                 {
                     XElement wrapx = new XElement("wrapx");
                     wrapx.Add(x);
-                    QueryList newlist = new QueryList(this,this._controller);
+                    QueryList newlist = new QueryList(this._controller);
                     newlist.LoadXml(wrapx);
 
                     List<KeyValuePair<string, string>> kvlist = newlist.GetResultWrangler().GetKeyValueList();

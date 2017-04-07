@@ -22,22 +22,36 @@ using TsGui.Validation;
 
 namespace TsGui.Queries
 {
-    public class Conditional: BaseQuery,IQuery
+    public class Conditional: BaseQuery,IQuery, ILinkingEventHandler, ILinkTarget
     {
+        private QueryList _sourcequerylist;
+        private QueryList _resultquerylist;
         private StringMatchingRuleSet _ruleset = new StringMatchingRuleSet();
-        private ResultWrangler _wrangler = new ResultWrangler();
         private MainController _controller;
+        private ILinkTarget _linktargetoption;
 
-        public Conditional(XElement inputxml, MainController controller)
+        public Conditional(XElement inputxml, MainController controller, ILinkTarget targetoption)
         {
             this._controller = controller;
-            this._controller.ConfigLoadFinished += this.OnControllerFinishedLoad;
+            this._sourcequerylist = new QueryList(this, this._controller);
+            this._resultquerylist = new QueryList(this, this._controller);
+            this._linktargetoption = targetoption;
             this.LoadXml(inputxml);
         }
 
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
+            XElement x;
+            x = InputXml.Element("Source");
+            if (x != null) { this._sourcequerylist.LoadXml(x); }
+
+            x = InputXml.Element("Ruleset");
+            if (x != null) { this._ruleset.LoadXml(x); }
+
+            x = InputXml.Element("Result");
+            if (x != null) { this._resultquerylist.LoadXml(x); }
+
             //<IF>
             //  <Source>
             //      <Query/>
@@ -46,30 +60,32 @@ namespace TsGui.Queries
             //      <Rule Type="StartsWith">test</Rule>
             //  </Ruleset>
             //  <Result>
-            //      <Query></Query>
-            //      <Value></Value>
+            //      <Query/>
             //  </Result>
             //</IF>
-            this._wrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._wrangler.Separator);
-            this._wrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._wrangler.IncludeNullValues);
-            this._wrangler.NewSubList();
-            //this.SourceValue = XmlHandler.GetStringFromXElement(InputXml, "Value", this.SourceID);
-        }
-
-        public void OnSourceValueChanged(ILinkSource source, EventArgs e)
-        {
 
         }
-
-        public void OnControllerFinishedLoad(object o, EventArgs e)
-        { }
 
         public ResultWrangler GetResultWrangler()
         {
-            return this._wrangler;
+            return this.ProcessQuery();
         }
 
         public ResultWrangler ProcessQuery()
-        { return this._wrangler; }
+        {
+            string sourcevalue = this._sourcequerylist.GetResultWrangler().GetString();
+            if (this._ruleset.DoesStringMatch(sourcevalue) == true)
+            { return this._resultquerylist.GetResultWrangler(); }
+            else { return null; }
+
+        }
+
+        public void RefreshValue()
+        {
+            this._linktargetoption.RefreshValue();
+        }
+
+        public void OnLinkedSourceValueChanged(ILinkSource source, LinkingEventArgs e)
+        { this.RefreshValue(); }
     }
 }

@@ -17,13 +17,13 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
-using TsGui.Options;
+using TsGui.Linking;
 
 namespace TsGui.Queries
 {
     public class QueryList
     {
-        private IOption _owneroption;
+        private ILinkTarget _owneroption;
         private List<IQuery> _queries = new List<IQuery>();
         private MainController _controller;
 
@@ -32,7 +32,7 @@ namespace TsGui.Queries
             this._controller = controller;
         }
 
-        public QueryList(IOption owner, MainController controller)
+        public QueryList(ILinkTarget owner, MainController controller)
         {
             this._controller = controller;
             this._owneroption = owner;
