@@ -23,7 +23,7 @@ using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Options.NoUI
 {
-    public class NoUIOption: GroupableBlindBase,IOption,ILinkingSource
+    public class NoUIOption: GroupableBlindBase,IOption,ILinkSource
     {
         public event IOptionValueChanged ValueChanged;
 

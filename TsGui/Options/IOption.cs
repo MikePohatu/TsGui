@@ -19,7 +19,7 @@ using TsGui.Linking;
 
 namespace TsGui.Options
 {
-    public interface IOption: ILinkingSource
+    public interface IOption: ILinkSource
     {
         TsVariable Variable { get; }
         string LiveValue { get; }

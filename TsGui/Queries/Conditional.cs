@@ -56,7 +56,7 @@ namespace TsGui.Queries
             //this.SourceValue = XmlHandler.GetStringFromXElement(InputXml, "Value", this.SourceID);
         }
 
-        public void OnSourceValueChanged(ILinkingSource source, EventArgs e)
+        public void OnSourceValueChanged(ILinkSource source, EventArgs e)
         {
 
         }

@@ -13,12 +13,12 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ILinkingTarget - Linking target options
+// ILinkingEventHandler.cs - can handle events from a linksource i.e. optionquery
 
 namespace TsGui.Linking
 {
-    public interface ILinkingTarget
+    public interface ILinkingEventHandler
     {
-        void RefreshValue();
+        void OnLinkedSourceValueChanged(ILinkSource source, LinkingEventArgs e);
     }
 }

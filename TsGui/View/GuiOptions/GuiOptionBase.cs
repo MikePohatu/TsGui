@@ -25,7 +25,7 @@ using TsGui.Diagnostics.Logging;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class GuiOptionBase : BaseLayoutElement, IOption, ILinkingSource
+    public abstract class GuiOptionBase : BaseLayoutElement, IOption, ILinkSource
     {
         public event IOptionValueChanged ValueChanged;
 

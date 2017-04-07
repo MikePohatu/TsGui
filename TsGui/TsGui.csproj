@@ -96,10 +96,11 @@
     <Compile Include="Helpers\ReverseComparer.cs" />
     <Compile Include="Images\Image.cs" />
     <Compile Include="Images\MultiImage.cs" />
+    <Compile Include="Linking\ILinkingEventHandler.cs" />
     <Compile Include="Queries\BaseQuery.cs" />
     <Compile Include="Queries\Conditional.cs" />
-    <Compile Include="Linking\ILinkingTarget.cs" />
-    <Compile Include="Linking\ILinkingSource.cs" />
+    <Compile Include="Linking\ILinkTarget.cs" />
+    <Compile Include="Linking\ILinkSource.cs" />
     <Compile Include="Linking\LinkingDelegates.cs" />
     <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />

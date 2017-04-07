@@ -21,7 +21,7 @@ using TsGui.Linking;
 
 namespace TsGui.Queries
 {
-    public class OptionValueQuery: BaseQuery, IQuery
+    public class OptionValueQuery: BaseQuery, IQuery, ILinkingEventHandler
     {
         private MainController _controller;
         private bool _processed = false;
@@ -29,18 +29,15 @@ namespace TsGui.Queries
         private ResultWrangler _processingwrangler = new ResultWrangler();
         private ResultWrangler _returnwrangler;
         private IOption _owneroption;
-        private ILinkingTarget _targetoption;
+        private ILinkTarget _targetoption;
 
         public OptionValueQuery(XElement inputxml, MainController controller, IOption owner)
         {
             this._owneroption = owner;
-            if (owner is ILinkingTarget)
-            {
-                this._targetoption = (ILinkingTarget)owner;
-                
-            }
+            if (owner is ILinkTarget) { this._targetoption = (ILinkTarget)owner; }
             this._controller = controller;
             this.LoadXml(inputxml);
+            this._controller.LinkingLibrary.AddHandler(this._formatter.Name,this);
             this.ProcessQuery();
         }
 
@@ -67,7 +64,7 @@ namespace TsGui.Queries
             else { return null; }
         }
 
-        public void OnLinkedSourceValueChanged(ILinkingSource source)
+        public void OnLinkedSourceValueChanged(ILinkSource source, LinkingEventArgs e)
         {
             this.ProcessQuery();
             this._targetoption?.RefreshValue();

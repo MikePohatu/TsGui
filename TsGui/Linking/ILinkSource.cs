@@ -13,11 +13,14 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// LinkingDelegates.cs - delegates for the Linking namespace. 
-
-using TsGui.Options;
+// ILinkingSource - Linking source option
 
 namespace TsGui.Linking
 {
-    public delegate void IOptionValueChanged(ILinkSource sender, LinkingEventArgs e);
+    public interface ILinkSource
+    {
+        string ID { get; }
+        string CurrentValue { get; }
+        event IOptionValueChanged ValueChanged;
+    }
 }

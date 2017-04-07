@@ -13,14 +13,12 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ILinkingSource - Linking source option
+// ILinkingTarget - Linking target options
 
 namespace TsGui.Linking
 {
-    public interface ILinkingSource
+    public interface ILinkTarget
     {
-        string ID { get; }
-        string CurrentValue { get; }
-        event IOptionValueChanged ValueChanged;
+        void RefreshValue();
     }
 }

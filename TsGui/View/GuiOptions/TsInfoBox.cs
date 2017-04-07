@@ -19,10 +19,11 @@
 using System.Xml.Linq;
 using System.Windows;
 using TsGui.Queries;
+using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsInfoBox : GuiOptionBase, IGuiOption
+    public class TsInfoBox : GuiOptionBase, IGuiOption, ILinkTarget
     {
         private string _controltext;
         private QueryList _displayvaluelist;
@@ -63,6 +64,9 @@ namespace TsGui.View.GuiOptions
             if (x != null)
             { this._displayvaluelist.LoadXml(x); }
         }
+
+        public void RefreshValue()
+        { this.RefreshControlText(); }
 
         private void RefreshControlText()
         {

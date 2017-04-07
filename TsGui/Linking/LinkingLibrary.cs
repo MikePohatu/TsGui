@@ -22,59 +22,59 @@ namespace TsGui.Linking
 {
     public class LinkingLibrary
     {
-        private Dictionary<string, ILinkingSource> _sources = new Dictionary<string, ILinkingSource>();
-        private Dictionary<string, List<ILinkingTarget>> _pendingtargets = new Dictionary<string, List<ILinkingTarget>>();
+        private Dictionary<string, ILinkSource> _sources = new Dictionary<string, ILinkSource>();
+        private Dictionary<string, List<ILinkingEventHandler>> _pendingqueries = new Dictionary<string, List<ILinkingEventHandler>>();
 
-        public ILinkingSource GetSourceOption(string ID)
+        public ILinkSource GetSourceOption(string ID)
         {
-            ILinkingSource option;
+            ILinkSource option;
             this._sources.TryGetValue(ID, out option);
             return option;
         }
 
-        public void AddTarget(string ID, ILinkingTarget NewTarget)
+        public void AddHandler(string ID, ILinkingEventHandler newhandler)
         {
-            ILinkingSource source;
+            ILinkSource source;
             if (this._sources.TryGetValue(ID, out source) == true)
             {
-                this.RegisterTargetToSource(source, NewTarget);
+                this.RegisterHandlerToSource(source, newhandler);
             }
             else
             {
-                List<ILinkingTarget> pendinglist;
-                if (this._pendingtargets.TryGetValue(ID, out pendinglist) == true)
-                { pendinglist.Add(NewTarget); }
+                List<ILinkingEventHandler> pendinglist;
+                if (this._pendingqueries.TryGetValue(ID, out pendinglist) == true)
+                { pendinglist.Add(newhandler); }
                 else
                 {
-                    pendinglist = new List<ILinkingTarget>();
-                    pendinglist.Add(NewTarget);
-                    this._pendingtargets.Add(ID, pendinglist);
+                    pendinglist = new List<ILinkingEventHandler>();
+                    pendinglist.Add(newhandler);
+                    this._pendingqueries.Add(ID, pendinglist);
                 }
             }
         }
 
-        public void AddSource(ILinkingSource NewSource)
+        public void AddSource(ILinkSource NewSource)
         {
-            List<ILinkingTarget> pendingtargetslist;
-            ILinkingSource testoption;
+            List<ILinkingEventHandler> pendinglist;
+            ILinkSource testoption;
 
             if (this._sources.TryGetValue(NewSource.ID, out testoption) == true ) { throw new InvalidOperationException("Duplicate ID found in LinkableLibrary: " + NewSource.ID); }
             else { this._sources.Add(NewSource.ID,NewSource); }
 
             //now register any pending targets and cleanup
-            if (this._pendingtargets.TryGetValue(NewSource.ID, out pendingtargetslist) == true)
+            if (this._pendingqueries.TryGetValue(NewSource.ID, out pendinglist) == true)
             {
-                foreach (ILinkingTarget target in pendingtargetslist)
+                foreach (ILinkingEventHandler handler in pendinglist)
                 {
-                    this.RegisterTargetToSource(NewSource, target);
+                    this.RegisterHandlerToSource(NewSource, handler);
                 }
-                this._pendingtargets.Remove(NewSource.ID);
+                this._pendingqueries.Remove(NewSource.ID);
             }
         }
 
-        private void RegisterTargetToSource(ILinkingSource Source, ILinkingTarget Target)
+        private void RegisterHandlerToSource(ILinkSource Source, ILinkingEventHandler Handler)
         {
-
+            Source.ValueChanged += Handler.OnLinkedSourceValueChanged;
         }
     }
 }
