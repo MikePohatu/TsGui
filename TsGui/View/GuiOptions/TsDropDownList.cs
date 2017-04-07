@@ -182,6 +182,7 @@ namespace TsGui.View.GuiOptions
                 }
             }
             this.CurrentItem = newdefault;
+            this.NotifyUpdate();
         }
 
         public void AddItemGroup(Group NewGroup)
