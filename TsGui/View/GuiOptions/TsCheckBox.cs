@@ -76,8 +76,8 @@ namespace TsGui.View.GuiOptions
             this.SetDefaults();
             this._setvaluelist = new QueryList(this, this._controller);          
             this.LoadXml(InputXml);
-            this.UserControl.IsEnabledChanged += this.OnChanged;
-            this.UserControl.IsVisibleChanged += this.OnChanged;
+            this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
+            this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
         }
 
 
@@ -130,17 +130,12 @@ namespace TsGui.View.GuiOptions
             else if (newvalue == this._valFalse ) { this.IsChecked = false; }
         }
 
-        private void CreateLinkTo(string id, bool Inverse)
-        {
-
-        }
-
-        private void OnChanged(object o, RoutedEventArgs e)
+        private void OnGroupStateChanged(object o, RoutedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
         }
 
-        private void OnChanged(object o, DependencyPropertyChangedEventArgs e)
+        private void OnGroupStateChanged(object o, DependencyPropertyChangedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
         }
