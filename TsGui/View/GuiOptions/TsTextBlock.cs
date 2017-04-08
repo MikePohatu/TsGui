@@ -19,10 +19,11 @@
 using System.Xml.Linq;
 using TsGui.Validation;
 using TsGui.Queries;
+using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsTextBlock: GuiOptionBase, IGuiOption
+    public class TsTextBlock: GuiOptionBase, IGuiOption, ILinkTarget
     {
         private string _controltext;
         private StringValidation _stringvalidation;
@@ -45,13 +46,14 @@ namespace TsGui.View.GuiOptions
         public TsTextBlock (XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
             this._controller = MainController;
-            this._displayvaluelist = new QueryList(this._controller);
+            this._displayvaluelist = new QueryList(this,this._controller);
             this.UserControl.DataContext = this;
             this._stringvalidation = new StringValidation(MainController);
             this.SetDefaults();
             this.Control = new TsTextBlockUI();
             this.Label = new TsLabelUI();
             this.LoadXml(InputXml);
+            this.RefreshValue();
         }
 
         private void SetDefaults()
@@ -66,7 +68,7 @@ namespace TsGui.View.GuiOptions
             XElement x;
 
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
-
+            this.ControlFormatting.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.ControlFormatting.Height);
             //load legacy options
             x = InputXml.Element("Disallowed");
             if (x != null) { this._stringvalidation.LoadLegacyXml(x); }
@@ -83,7 +85,7 @@ namespace TsGui.View.GuiOptions
             }
         }
 
-        private void RefreshValue()
+        public void RefreshValue()
         {
             this.ControlText = this._displayvaluelist.GetResultWrangler().GetString();
             if (this.ControlText == null) { this.ControlText = string.Empty; }
