@@ -23,7 +23,11 @@ namespace TsGui.Queries
         private ResultWrangler _wrangler = new ResultWrangler();
 
         public bool Ignore { get { return false; } }
-
+        public string Value
+        {
+            get { return this._formatter.Input; }
+            set { this._formatter.Input = value; }
+        }
         public ValueOnly(XElement InputXml)
         {
             this._formatter.Input = InputXml.Value;

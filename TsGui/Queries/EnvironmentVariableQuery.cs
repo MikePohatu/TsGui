@@ -23,21 +23,13 @@ namespace TsGui.Queries
     public class EnvironmentVariableQuery: BaseQuery, IQuery
     {
         private SccmConnector _sccmconnector;
-        private bool _processed = false;
         private ResultFormatter _formatter;
         private ResultWrangler _processingwrangler = new ResultWrangler();
-        private ResultWrangler _returnwrangler;
 
         public EnvironmentVariableQuery(XElement inputxml, SccmConnector sccmconnector)
         {
             this._sccmconnector = sccmconnector;
             this.LoadXml(inputxml);
-        }
-
-        public ResultWrangler GetResultWrangler()
-        {
-            if (this._processed == true) { return this._returnwrangler; }
-            else { return this.ProcessQuery(); }
         }
 
         //get and environmental variable, trying the sccm ts variables first
@@ -69,7 +61,7 @@ namespace TsGui.Queries
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        public ResultWrangler ProcessQuery()
+        public override ResultWrangler ProcessQuery()
         {
             this._formatter.Input = this.GetEnvironmentVariableValue(this._formatter.Name.Trim());
             this._processed = true;

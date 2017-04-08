@@ -27,10 +27,8 @@ namespace TsGui.Queries
 {
     public class WmiQuery: BaseQuery, IQuery
     {
-        private ResultWrangler _wrangler = new ResultWrangler();
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private string _wql;
-        private bool _processed = false;
 
         public WmiQuery() { }
 
@@ -45,8 +43,8 @@ namespace TsGui.Queries
 
             this._wql = InputXml.Element("Wql")?.Value;
 
-            this._wrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._wrangler.Separator);
-            this._wrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._wrangler.IncludeNullValues);
+            this._returnwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._returnwrangler.Separator);
+            this._returnwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._returnwrangler.IncludeNullValues);
 
             //make sure there is some WQL to query
             if (string.IsNullOrEmpty(this._wql)) { throw new InvalidOperationException("Empty WQL query in XML: " + Environment.NewLine + InputXml); }
@@ -54,20 +52,14 @@ namespace TsGui.Queries
             this._propertyTemplates = this.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
 
-        public ResultWrangler GetResultWrangler()
-        {
-            if (this._processed == true) { return this._wrangler; }
-            else { return this.ProcessQuery(); }
-        }
-
-        public ResultWrangler ProcessQuery()
+        public override ResultWrangler ProcessQuery()
         {
             //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
             //New sublists are created for each management object in the wrangler. 
             try
             {
-                if (this._processed == true ) { this._wrangler = this._wrangler.Clone(); }
-                this.AddWmiPropertiesToWrangler(this._wrangler, SystemConnector.GetWmiManagementObjectList(this._wql), this._propertyTemplates);
+                if (this._processed == true ) { this._returnwrangler = this._returnwrangler.Clone(); }
+                this.AddWmiPropertiesToWrangler(this._returnwrangler, SystemConnector.GetWmiManagementObjectList(this._wql), this._propertyTemplates);
                 this._processed = true;
             }
             catch (ManagementException e)
@@ -75,7 +67,7 @@ namespace TsGui.Queries
                 throw new TsGuiKnownException("WMI query caused an error:" + Environment.NewLine + this._wql, e.Message);
             }
 
-            return this._wrangler;
+            return this._returnwrangler;
         }
 
         private List<KeyValuePair<string, XElement>> GetTemplatesFromXmlElements(IEnumerable<XElement> Elements)

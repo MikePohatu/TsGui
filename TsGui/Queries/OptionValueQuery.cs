@@ -23,29 +23,23 @@ namespace TsGui.Queries
     public class OptionValueQuery: BaseQuery, IQuery, ILinkingEventHandler
     {
         private MainController _controller;
-        private bool _processed = false;
         private ResultFormatter _formatter;
         private ResultWrangler _processingwrangler = new ResultWrangler();
-        private ResultWrangler _returnwrangler;
         private ILinkTarget _linktargetoption;
 
         public OptionValueQuery(XElement inputxml, MainController controller, ILinkTarget owner)
         {
             this._linktargetoption = owner;
-            //if (owner is ILinkTarget) { this._targetoption = (ILinkTarget)owner; }
             this._controller = controller;
+            this.SetDefaults();
             this.LoadXml(inputxml);
             this._controller.LinkingLibrary.AddHandler(this._formatter.Name,this);
             this.ProcessQuery();
         }
 
-        public ResultWrangler GetResultWrangler()
-        {
-            if (this._processed == true) { return this._returnwrangler; }
-            else { return this.ProcessQuery(); }
-        }
+        
 
-        public ResultWrangler ProcessQuery()
+        public override ResultWrangler ProcessQuery()
         {
             this._formatter.Input = this.GetSourceOptionValue(this._formatter.Name);
             this._processed = true;
@@ -66,6 +60,11 @@ namespace TsGui.Queries
         {
             this.ProcessQuery();
             this._linktargetoption?.RefreshValue();
+        }
+
+        private void SetDefaults()
+        {
+            this._reprocess = true;
         }
 
         private ResultWrangler SetReturnWrangler()

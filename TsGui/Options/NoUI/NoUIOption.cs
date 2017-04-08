@@ -92,6 +92,7 @@ namespace TsGui.Options.NoUI
             if (xa != null)
             {
                 ValueOnly newvalue = new ValueOnly(InputXml);
+                newvalue.Value = xa.Value;
                 this._setvaluelist.AddQuery(newvalue);
             }
 

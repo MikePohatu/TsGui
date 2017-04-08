@@ -32,6 +32,7 @@ namespace TsGui.Queries
 
         public Conditional(XElement inputxml, MainController controller, ILinkTarget targetoption)
         {
+            this._reprocess = true;
             this._controller = controller;
             this._sourcequerylist = new QueryList(this, this._controller);
             this._resultquerylist = new QueryList(this, this._controller);
@@ -66,18 +67,18 @@ namespace TsGui.Queries
 
         }
 
-        public ResultWrangler GetResultWrangler()
+        public override ResultWrangler GetResultWrangler()
         {
             return this.ProcessQuery();
         }
 
-        public ResultWrangler ProcessQuery()
+        public override ResultWrangler ProcessQuery()
         {
             string sourcevalue = this._sourcequerylist.GetResultWrangler().GetString();
-            if (this._ruleset.DoesStringMatch(sourcevalue) == true)
+
+            if ((this._ruleset == null) || (this._ruleset.DoesStringMatch(sourcevalue)) == true)
             { return this._resultquerylist.GetResultWrangler(); }
             else { return null; }
-
         }
 
         public void RefreshValue()

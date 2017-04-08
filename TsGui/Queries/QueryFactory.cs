@@ -57,33 +57,98 @@ namespace TsGui.Queries
             { return null; }
         }
 
-        public static OptionValueQuery GetDefaultLinkToQuery(string SourceID, MainController controller, ILinkTarget owner)
+        public static IQuery GetLinkToQuery(string SourceID, MainController controller, ILinkTarget owner)
         {
-            //  < Source >
-            //      < Query Type = "OptionValue" >
-            //          < ID Name = "TestLink1" />
-            //      </ Query >
-            //  </ Source >
-            //  < Result >
-            //      < Query Type = "OptionValue" >
-            //          < ID Name = "TestLink1" />
-            //      </ Query >
-            //  </ Result >
-            
+            //      <Query Type = "OptionValue">
+            //          <ID Name = "TestLink1"/>
+            //      </Query>
 
             XElement sourcequeryx = new XElement("Query");
             sourcequeryx.Add(new XAttribute("Type", "OptionValue"));
+
             XElement idx = new XElement("ID");
             idx.Add(new XAttribute("Name", SourceID));
             sourcequeryx.Add(idx);
 
+            return new OptionValueQuery(sourcequeryx, controller, owner);
+        }
+
+        public static IQuery GetLinkTrueOnlyQuery(string SourceID, MainController controller, ILinkTarget owner)
+        {
+            //  <IF>
+            //      <Source>
+            //          <Query Type="OptionValue">
+            //              <ID Name="TestLink1"/>
+            //          </Query>
+            //      </Source>
+            //      <Ruleset>
+            //          <Rule Type="Equals">TRUE</Rule>
+            //      </Ruleset>
+            //      <Result>
+            //          <Query Type = "OptionValue">
+            //              <ID Name = "TestLink1"/>
+            //          </Query>
+            //      </Result>
+            //  </IF>
+
+            XElement queryx = new XElement("Query");
+            queryx.Add(new XAttribute("Type", "OptionValue"));
+            XElement idx = new XElement("ID");
+            idx.Add(new XAttribute("Name", SourceID));
+            queryx.Add(idx);
+            
+
+            XElement rulex = new XElement("Rule","TRUE");
+            rulex.Add(new XAttribute("Type", "Equals"));
+            XElement rulesetx = new XElement("Ruleset",rulex);
+
             XElement ifx = new XElement("IF");
-            XElement sourcex = new XElement("Source",sourcequeryx);
-            XElement resultx = new XElement("Result", sourcequeryx);
+            XElement sourcex = new XElement("Source", queryx);
+            XElement resultx = new XElement("Result", queryx);
             ifx.Add(sourcex);
+            ifx.Add(rulesetx);
             ifx.Add(resultx);
 
-            return new OptionValueQuery(sourcequeryx, controller, owner);
+            return new Conditional(ifx, controller, owner);
+        }
+
+        public static IQuery GetLinkFalseOnlyQuery(string SourceID, MainController controller, ILinkTarget owner)
+        {
+            //  <IF>
+            //      <Source>
+            //          <Query Type="OptionValue">
+            //              <ID Name="TestLink1"/>
+            //          </Query>
+            //      </Source>
+            //      <Ruleset>
+            //          <Rule Type="Equals">FALSE</Rule>
+            //      </Ruleset>
+            //      <Result>
+            //          <Query Type = "OptionValue">
+            //              <ID Name = "TestLink1"/>
+            //          </Query>
+            //      </Result>
+            //  </IF>
+
+            XElement queryx = new XElement("Query");
+            queryx.Add(new XAttribute("Type", "OptionValue"));
+            XElement idx = new XElement("ID");
+            idx.Add(new XAttribute("Name", SourceID));
+            queryx.Add(idx);
+
+
+            XElement rulex = new XElement("Rule", "FALSE");
+            rulex.Add(new XAttribute("Type", "Equals"));
+            XElement rulesetx = new XElement("Ruleset", rulex);
+
+            XElement ifx = new XElement("IF");
+            XElement sourcex = new XElement("Source", queryx);
+            XElement resultx = new XElement("Result", queryx);
+            ifx.Add(sourcex);
+            ifx.Add(rulesetx);
+            ifx.Add(resultx);
+
+            return new Conditional(ifx, controller, owner);
         }
     }
 }
