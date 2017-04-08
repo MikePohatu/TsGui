@@ -39,8 +39,8 @@ namespace TsGui.Validation
         {
             if (InputXml == null) { return; }
 
-            this.SetType(InputXml.Attribute("Type"));
             this.Content = InputXml.Value;
+            this.SetType(InputXml.Attribute("Type"));
             this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(InputXml, "CaseSensitive", false);
             this.GenerateMessage();
         }

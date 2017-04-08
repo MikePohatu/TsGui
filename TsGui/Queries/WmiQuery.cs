@@ -67,7 +67,8 @@ namespace TsGui.Queries
                 throw new TsGuiKnownException("WMI query caused an error:" + Environment.NewLine + this._wql, e.Message);
             }
 
-            return this._returnwrangler;
+            if (this.ShouldIgnore(this._returnwrangler.GetString()) == false) { return this._returnwrangler; }
+            else { return null; }
         }
 
         private List<KeyValuePair<string, XElement>> GetTemplatesFromXmlElements(IEnumerable<XElement> Elements)
