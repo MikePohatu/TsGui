@@ -159,17 +159,6 @@ namespace TsGui.View.GuiOptions
                 }
             }
 
-            //IEnumerable<XElement> xlist;
-
-            //xlist = InputXml.Elements("Toggle");
-            //if (xlist != null)
-            //{
-            //    foreach (XElement subx in xlist)
-            //    {
-            //        Toggle t = new Toggle(this, this._controller, subx);
-            //    }
-            //}
-
             if (this._istoggle == true) { this._controller.AddToggleControl(this); }
         }
 
@@ -183,15 +172,12 @@ namespace TsGui.View.GuiOptions
 
                 foreach (TsDropDownListItem item in this.VisibleOptions)
                 {
-                    if (item.IsActive == true)
+                    if ((item.Value == this._defaultvalue) || (index == 0))
                     {
-                        if ((item.Value == this._defaultvalue) || (index == 0))
-                        {
-                            newdefault = item;
-                            if (index > 0) { break; }
-                        }
-                        index++;
+                        newdefault = item;
+                        if (index > 0) { break; }
                     }
+                    index++;
                 }
             }
             this.CurrentItem = newdefault;
