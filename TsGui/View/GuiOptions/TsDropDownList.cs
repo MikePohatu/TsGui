@@ -24,10 +24,11 @@ using System;
 using TsGui.Grouping;
 using TsGui.Validation;
 using TsGui.Queries;
+using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsDropDownList: GuiOptionBase, IGuiOption, IToggleControl, IValidationGuiOption
+    public class TsDropDownList: GuiOptionBase, IGuiOption, IToggleControl, IValidationGuiOption, ILinkTarget
     {
         public event ToggleEvent ToggleEvent;
 
@@ -77,7 +78,7 @@ namespace TsGui.View.GuiOptions
         public TsDropDownList(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
         {
             this._controller = MainController;
-            this._querylist = new QueryList(this._controller);
+            this._querylist = new QueryList(this,this._controller);
 
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
@@ -144,19 +145,31 @@ namespace TsGui.View.GuiOptions
                         this.AddOption(newoption);
                         optionindex++;
                     }
+                } 
+
+                if (x.Name == "Toggle")
+                {
+                    Toggle t = new Toggle(this, this._controller, x);
+                    this._istoggle = true;
                 }
 
-                IEnumerable<XElement> xlist;
-
-                xlist = InputXml.Elements("Toggle");
-                if (xlist != null)
+                if (x.Name == "SetValue")
                 {
-                    foreach (XElement subx in xlist)
-                    {
-                        Toggle t = new Toggle(this, this._controller, subx);
-                    }
+                    this._querylist.LoadXml(x);
                 }
             }
+
+            //IEnumerable<XElement> xlist;
+
+            //xlist = InputXml.Elements("Toggle");
+            //if (xlist != null)
+            //{
+            //    foreach (XElement subx in xlist)
+            //    {
+            //        Toggle t = new Toggle(this, this._controller, subx);
+            //    }
+            //}
+
             if (this._istoggle == true) { this._controller.AddToggleControl(this); }
         }
 
@@ -183,6 +196,28 @@ namespace TsGui.View.GuiOptions
             }
             this.CurrentItem = newdefault;
             this.NotifyUpdate();
+        }
+
+        private void SetSelected(string value)
+        {
+            TsDropDownListItem newdefault = null;
+            bool changed = false;
+
+            foreach (TsDropDownListItem item in this.VisibleOptions)
+            {
+                if ((item.Value == value))
+                {
+                    newdefault = item;
+                    changed = true;
+                    break;
+                }
+            }
+
+            if (changed == true)
+            {
+                this.CurrentItem = newdefault;
+                this.NotifyUpdate();
+            }
         }
 
         public void AddItemGroup(Group NewGroup)
@@ -216,7 +251,7 @@ namespace TsGui.View.GuiOptions
         public void OnDropDownListItemGroupEvent()
         {
             //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => this.UpdateView()));
-            this.UpdateView();
+            this.OnOptionsListUpdated();
         }
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
@@ -227,7 +262,12 @@ namespace TsGui.View.GuiOptions
             this._dropdownlistui.Control.IsDropDownOpen = false;
         }
 
-        private void UpdateView()
+        public void RefreshValue()
+        {
+            this.SetSelected(this._querylist.GetResultWrangler().GetString());
+        }
+
+        private void OnOptionsListUpdated()
         {
             this.OnPropertyChanged(this, "VisibleOptions");
             this.SetComboBoxDefault();
