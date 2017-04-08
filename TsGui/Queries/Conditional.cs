@@ -40,6 +40,19 @@ namespace TsGui.Queries
             this.LoadXml(inputxml);
         }
 
+        #region
+        //<IF>
+        //  <Source>
+        //      <Query/>
+        //  </Source>
+        //  <Ruleset>
+        //      <Rule Type="StartsWith">test</Rule>
+        //  </Ruleset>
+        //  <Result>
+        //      <Query/>
+        //  </Result>
+        //</IF>
+        #endregion
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
@@ -52,19 +65,6 @@ namespace TsGui.Queries
 
             x = InputXml.Element("Result");
             if (x != null) { this._resultquerylist.LoadXml(x); }
-
-            //<IF>
-            //  <Source>
-            //      <Query/>
-            //  </Source>
-            //  <Ruleset>
-            //      <Rule Type="StartsWith">test</Rule>
-            //  </Ruleset>
-            //  <Result>
-            //      <Query/>
-            //  </Result>
-            //</IF>
-
         }
 
         public override ResultWrangler GetResultWrangler()

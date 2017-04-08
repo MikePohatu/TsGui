@@ -57,12 +57,13 @@ namespace TsGui.Queries
             { return null; }
         }
 
+        #region
+        //      <Query Type = "OptionValue">
+        //          <ID Name = "TestLink1"/>
+        //      </Query>
+        #endregion
         public static IQuery GetLinkToQuery(string SourceID, MainController controller, ILinkTarget owner)
         {
-            //      <Query Type = "OptionValue">
-            //          <ID Name = "TestLink1"/>
-            //      </Query>
-
             XElement sourcequeryx = new XElement("Query");
             sourcequeryx.Add(new XAttribute("Type", "OptionValue"));
 
@@ -73,30 +74,31 @@ namespace TsGui.Queries
             return new OptionValueQuery(sourcequeryx, controller, owner);
         }
 
+        #region
+        //  <IF>
+        //      <Source>
+        //          <Query Type="OptionValue">
+        //              <ID Name="TestLink1"/>
+        //          </Query>
+        //      </Source>
+        //      <Ruleset>
+        //          <Rule Type="Equals">TRUE</Rule>
+        //      </Ruleset>
+        //      <Result>
+        //          <Query Type = "OptionValue">
+        //              <ID Name = "TestLink1"/>
+        //          </Query>
+        //      </Result>
+        //  </IF>
+        #endregion
         public static IQuery GetLinkTrueOnlyQuery(string SourceID, MainController controller, ILinkTarget owner)
         {
-            //  <IF>
-            //      <Source>
-            //          <Query Type="OptionValue">
-            //              <ID Name="TestLink1"/>
-            //          </Query>
-            //      </Source>
-            //      <Ruleset>
-            //          <Rule Type="Equals">TRUE</Rule>
-            //      </Ruleset>
-            //      <Result>
-            //          <Query Type = "OptionValue">
-            //              <ID Name = "TestLink1"/>
-            //          </Query>
-            //      </Result>
-            //  </IF>
-
+            
             XElement queryx = new XElement("Query");
             queryx.Add(new XAttribute("Type", "OptionValue"));
             XElement idx = new XElement("ID");
             idx.Add(new XAttribute("Name", SourceID));
             queryx.Add(idx);
-            
 
             XElement rulex = new XElement("Rule","TRUE");
             rulex.Add(new XAttribute("Type", "Equals"));
@@ -112,24 +114,25 @@ namespace TsGui.Queries
             return new Conditional(ifx, controller, owner);
         }
 
+        #region
+        //  <IF>
+        //      <Source>
+        //          <Query Type="OptionValue">
+        //              <ID Name="TestLink1"/>
+        //          </Query>
+        //      </Source>
+        //      <Ruleset>
+        //          <Rule Type="Equals">FALSE</Rule>
+        //      </Ruleset>
+        //      <Result>
+        //          <Query Type = "OptionValue">
+        //              <ID Name = "TestLink1"/>
+        //          </Query>
+        //      </Result>
+        //  </IF>
+        #endregion
         public static IQuery GetLinkFalseOnlyQuery(string SourceID, MainController controller, ILinkTarget owner)
         {
-            //  <IF>
-            //      <Source>
-            //          <Query Type="OptionValue">
-            //              <ID Name="TestLink1"/>
-            //          </Query>
-            //      </Source>
-            //      <Ruleset>
-            //          <Rule Type="Equals">FALSE</Rule>
-            //      </Ruleset>
-            //      <Result>
-            //          <Query Type = "OptionValue">
-            //              <ID Name = "TestLink1"/>
-            //          </Query>
-            //      </Result>
-            //  </IF>
-
             XElement queryx = new XElement("Query");
             queryx.Add(new XAttribute("Type", "OptionValue"));
             XElement idx = new XElement("ID");
