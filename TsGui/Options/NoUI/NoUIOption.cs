@@ -79,12 +79,22 @@ namespace TsGui.Options.NoUI
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
 
             this.VariableName = XmlHandler.GetStringFromXAttribute(InputXml, "Variable", this.VariableName);
-            this._value = XmlHandler.GetStringFromXAttribute(InputXml, "Value", this._value);
+            
 
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
             this._usecurrent = XmlHandler.GetBoolFromXAttribute(InputXml, "UseCurrent", this._usecurrent);
 
             XElement x;
+
+            //this._value = XmlHandler.GetStringFromXAttribute(InputXml, "Value", this._value);
+            XAttribute xa;
+            xa = InputXml.Attribute("Value");
+            if (xa != null)
+            {
+                ValueOnly newvalue = new ValueOnly(InputXml);
+                this._setvaluelist.AddQuery(newvalue);
+            }
+
 
             x = InputXml.Element("SetValue");
             if (x != null)
@@ -103,7 +113,7 @@ namespace TsGui.Options.NoUI
             }
 
 
-            XAttribute xa = InputXml.Attribute("ID");
+            xa = InputXml.Attribute("ID");
             if (xa != null)
             {
                 this.ID = xa.Value;

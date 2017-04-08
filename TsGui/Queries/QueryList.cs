@@ -38,10 +38,28 @@ namespace TsGui.Queries
             this._owneroption = owner;
         }
 
+        public void AddQuery(IQuery query)
+        {
+            if (query == null) { return; }
+            this._queries.Add(query);
+        }
+
+        public void AddQueryFirst(IQuery query)
+        {
+            if (query == null) { return; }
+            this._queries.Insert(0,query);
+        }
+
         public void LoadXml(XElement InputXml)
         {
             if (InputXml != null)
             {
+                XAttribute xa = InputXml.Attribute("LinkTo");
+                if (xa != null)
+                {
+                    this._queries.Add(QueryFactory.GetDefaultLinkToQuery(xa.Value, this._controller, this._owneroption));
+                }
+
                 foreach (XElement x in InputXml.Elements())
                 {
                     IQuery newquery = QueryFactory.GetQueryObject(x, this._controller, this._owneroption);

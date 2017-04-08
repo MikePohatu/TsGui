@@ -56,5 +56,34 @@ namespace TsGui.Queries
             else
             { return null; }
         }
+
+        public static OptionValueQuery GetDefaultLinkToQuery(string SourceID, MainController controller, ILinkTarget owner)
+        {
+            //  < Source >
+            //      < Query Type = "OptionValue" >
+            //          < ID Name = "TestLink1" />
+            //      </ Query >
+            //  </ Source >
+            //  < Result >
+            //      < Query Type = "OptionValue" >
+            //          < ID Name = "TestLink1" />
+            //      </ Query >
+            //  </ Result >
+            
+
+            XElement sourcequeryx = new XElement("Query");
+            sourcequeryx.Add(new XAttribute("Type", "OptionValue"));
+            XElement idx = new XElement("ID");
+            idx.Add(new XAttribute("Name", SourceID));
+            sourcequeryx.Add(idx);
+
+            XElement ifx = new XElement("IF");
+            XElement sourcex = new XElement("Source",sourcequeryx);
+            XElement resultx = new XElement("Result", sourcequeryx);
+            ifx.Add(sourcex);
+            ifx.Add(resultx);
+
+            return new OptionValueQuery(sourcequeryx, controller, owner);
+        }
     }
 }
