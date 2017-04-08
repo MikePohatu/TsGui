@@ -68,7 +68,6 @@ namespace TsGui.View.GuiOptions
             XElement x;
 
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
-            this.ControlFormatting.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.ControlFormatting.Height);
             //load legacy options
             x = InputXml.Element("Disallowed");
             if (x != null) { this._stringvalidation.LoadLegacyXml(x); }
