@@ -23,14 +23,14 @@ using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Options.NoUI
 {
-    public class NoUIOption: GroupableBlindBase,IOption,ILinkSource
+    public class NoUIOption: GroupableBlindBase,IOption, ILinkTarget
     {
         public event IOptionValueChanged ValueChanged;
 
         private string _inactivevalue = "TSGUI_INACTIVE";
         private string _value = string.Empty;
         private bool _usecurrent = false;
-        private QueryList _setvaluelist;
+        private QueryList _querylist;
 
         //properties
         public string ID { get; set; }
@@ -66,7 +66,7 @@ namespace TsGui.Options.NoUI
         //constructors     
         public NoUIOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent,MainController)
         {
-            this._setvaluelist = new QueryList(MainController);
+            this._querylist = new QueryList(this,MainController);
             this.LoadXml(InputXml);
             this.RefreshValue();
             this.NotifyUpdate();
@@ -93,7 +93,7 @@ namespace TsGui.Options.NoUI
             {
                 ValueOnly newvalue = new ValueOnly(InputXml);
                 newvalue.Value = xa.Value;
-                this._setvaluelist.AddQuery(newvalue);
+                this._querylist.AddQuery(newvalue);
             }
 
 
@@ -109,7 +109,7 @@ namespace TsGui.Options.NoUI
                     x.AddFirst(xcurrentquery);
                 }
 
-                this._setvaluelist.LoadXml(x);
+                this._querylist.LoadXml(x);
                 //this._value = this._controller.EnvironmentController.GetStringValueFromList(x);
             }
 
@@ -122,8 +122,11 @@ namespace TsGui.Options.NoUI
             }
         }
 
-        private void RefreshValue()
-        { this._value = this._setvaluelist.GetResultWrangler()?.GetString(); }
+        public void RefreshValue()
+        {
+            this._value = this._querylist.GetResultWrangler()?.GetString();
+            this.NotifyUpdate();
+        }
 
         protected override void EvaluateGroups()
         {
@@ -138,8 +141,5 @@ namespace TsGui.Options.NoUI
             this.OnPropertyChanged(this, "LiveValue");
             this.ValueChanged?.Invoke(this,new LinkingEventArgs(this.CurrentValue));
         }
-
-        public void OnLinkedValueChanged()
-        { }
     }
 }

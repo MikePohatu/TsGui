@@ -74,7 +74,7 @@ namespace TsGui.Queries
 
         public override ResultWrangler ProcessQuery()
         {
-            string sourcevalue = this._sourcequerylist.GetResultWrangler().GetString();
+            string sourcevalue = this._sourcequerylist.GetResultWrangler()?.GetString();
 
             if ((this._ruleset == null) || (this._ruleset.DoesStringMatch(sourcevalue)) == true)
             { return this._resultquerylist.GetResultWrangler(); }

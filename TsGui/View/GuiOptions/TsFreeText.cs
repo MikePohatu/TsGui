@@ -26,7 +26,7 @@ using TsGui.Queries;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsFreeText: GuiOptionBase, IGuiOption, IValidationGuiOption, ILinkSource, ILinkTarget
+    public class TsFreeText: GuiOptionBase, IGuiOption, IValidationGuiOption, ILinkTarget
     {
         protected TsFreeTextUI _freetextui;
         protected string _controltext;
