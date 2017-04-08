@@ -102,5 +102,17 @@ namespace TsGui.Queries
             foreach (IQuery query in this._queries)
             { query.ProcessQuery(); }
         }
+
+        public List<ResultFormatter> GetAllResultFormatters()
+        {
+            List<ResultFormatter> formatterlist = new List<ResultFormatter>();
+
+            foreach (IQuery query in this._queries)
+            {
+                ResultWrangler wrangler = query.GetResultWrangler();
+                if (wrangler != null) { formatterlist.AddRange(wrangler.GetAllResultFormatters()); }
+            }
+            return formatterlist;
+        }
     }
 }

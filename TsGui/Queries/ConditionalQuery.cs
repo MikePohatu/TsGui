@@ -13,16 +13,15 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// Conditional.cs - IF rule for queries
+// ConditionalQuery.cs - IF query
 
-using System;
 using System.Xml.Linq;
 using TsGui.Linking;
 using TsGui.Validation;
 
 namespace TsGui.Queries
 {
-    public class Conditional: BaseQuery,IQuery, ILinkingEventHandler, ILinkTarget
+    public class ConditionalQuery: BaseQuery, ILinkingEventHandler, ILinkTarget
     {
         private QueryList _sourcequerylist;
         private QueryList _resultquerylist;
@@ -30,7 +29,7 @@ namespace TsGui.Queries
         private MainController _controller;
         private ILinkTarget _linktargetoption;
 
-        public Conditional(XElement inputxml, MainController controller, ILinkTarget targetoption)
+        public ConditionalQuery(XElement inputxml, MainController controller, ILinkTarget targetoption)
         {
             this._reprocess = true;
             this._controller = controller;

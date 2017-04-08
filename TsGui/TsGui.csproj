@@ -98,7 +98,8 @@
     <Compile Include="Images\MultiImage.cs" />
     <Compile Include="Linking\ILinkingEventHandler.cs" />
     <Compile Include="Queries\BaseQuery.cs" />
-    <Compile Include="Queries\Conditional.cs" />
+    <Compile Include="Queries\CombinedQuery.cs" />
+    <Compile Include="Queries\ConditionalQuery.cs" />
     <Compile Include="Linking\ILinkTarget.cs" />
     <Compile Include="Linking\ILinkSource.cs" />
     <Compile Include="Linking\LinkingDelegates.cs" />

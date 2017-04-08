@@ -19,12 +19,13 @@ using TsGui.Validation;
 
 namespace TsGui.Queries
 {
-    public abstract class BaseQuery
+    public abstract class BaseQuery: IQuery
     {
         protected List<StringMatchingRule> _ignorerules = new List<StringMatchingRule>();
         protected bool _reprocess = false;
         protected bool _processed = false;
-        protected ResultWrangler _returnwrangler = new ResultWrangler();
+        protected ResultWrangler _processingwrangler = new ResultWrangler();
+        protected ResultWrangler _returnwrangler;
 
         public virtual ResultWrangler GetResultWrangler()
         {

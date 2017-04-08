@@ -74,6 +74,30 @@ namespace TsGui.Queries
             this._currentIndex++;
         }
 
+        public void AddResultFormatters(List<ResultFormatter> Formatters)
+        {
+            foreach (ResultFormatter rf in Formatters)
+            { this.AddResultFormatter(rf); }
+        }
+
+
+        public List<ResultFormatter> GetAllResultFormatters()
+        {
+            List<ResultFormatter> formatterlist = new List<ResultFormatter>();
+            foreach (int i in this._keyvalues.Keys)
+            {
+                ResultFormatter rf;
+                if (this._keyvalues.TryGetValue(i, out rf) == true)
+                { formatterlist.Add(rf); }
+
+                List<ResultFormatter> rfs;
+                if (this._valuelists.TryGetValue(i, out rfs) == true)
+                { formatterlist.AddRange(rfs); }
+            }
+
+            return formatterlist;
+        }
+
         /// <summary>
         /// Concatenate ResultFormatter values into a single string
         /// </summary>

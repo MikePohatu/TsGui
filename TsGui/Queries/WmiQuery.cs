@@ -25,7 +25,7 @@ using TsGui.Connectors;
 
 namespace TsGui.Queries
 {
-    public class WmiQuery: BaseQuery, IQuery
+    public class WmiQuery: BaseQuery
     {
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private string _wql;
@@ -43,8 +43,8 @@ namespace TsGui.Queries
 
             this._wql = InputXml.Element("Wql")?.Value;
 
-            this._returnwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._returnwrangler.Separator);
-            this._returnwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._returnwrangler.IncludeNullValues);
+            this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
+            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
 
             //make sure there is some WQL to query
             if (string.IsNullOrEmpty(this._wql)) { throw new InvalidOperationException("Empty WQL query in XML: " + Environment.NewLine + InputXml); }
@@ -58,17 +58,20 @@ namespace TsGui.Queries
             //New sublists are created for each management object in the wrangler. 
             try
             {
-                if (this._processed == true ) { this._returnwrangler = this._returnwrangler.Clone(); }
-                this.AddWmiPropertiesToWrangler(this._returnwrangler, SystemConnector.GetWmiManagementObjectList(this._wql), this._propertyTemplates);
-                this._processed = true;
+                if (this._processed == true ) { this._processingwrangler = this._processingwrangler.Clone(); }
+                this.AddWmiPropertiesToWrangler(this._processingwrangler, SystemConnector.GetWmiManagementObjectList(this._wql), this._propertyTemplates);
             }
             catch (ManagementException e)
             {
                 throw new TsGuiKnownException("WMI query caused an error:" + Environment.NewLine + this._wql, e.Message);
             }
 
-            if (this.ShouldIgnore(this._returnwrangler.GetString()) == false) { return this._returnwrangler; }
-            else { return null; }
+            this._processed = true;
+            if (this.ShouldIgnore(this._processingwrangler.GetString()) == false)
+            { this._returnwrangler = this._processingwrangler; }
+            else { this._returnwrangler = null; }
+
+            return this._returnwrangler;
         }
 
         private List<KeyValuePair<string, XElement>> GetTemplatesFromXmlElements(IEnumerable<XElement> Elements)

@@ -24,7 +24,6 @@ namespace TsGui.Queries
     {
         private SccmConnector _sccmconnector;
         private ResultFormatter _formatter;
-        private ResultWrangler _processingwrangler = new ResultWrangler();
 
         public EnvironmentVariableQuery(XElement inputxml, SccmConnector sccmconnector)
         {

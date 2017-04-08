@@ -40,7 +40,9 @@ namespace TsGui.Queries
                     case "OptionValue":
                         return new OptionValueQuery(InputXml, controller, owner);
                     case "IF":
-                        return new Conditional(InputXml, controller, owner);
+                        return new ConditionalQuery(InputXml, controller, owner);
+                    case "Combined":
+                        return new CombinedQuery(InputXml, controller, owner);
                     case "Value":
                         return new ValueOnly(InputXml);
                     default:
@@ -48,7 +50,7 @@ namespace TsGui.Queries
                 }
             }
             else if (InputXml.Name.ToString() == "IF")
-            { return new Conditional(InputXml, controller, owner); }
+            { return new ConditionalQuery(InputXml, controller, owner); }
 
             else if (InputXml.Name.ToString() == "Value")
             { return new ValueOnly(InputXml); }
@@ -111,7 +113,7 @@ namespace TsGui.Queries
             ifx.Add(rulesetx);
             ifx.Add(resultx);
 
-            return new Conditional(ifx, controller, owner);
+            return new ConditionalQuery(ifx, controller, owner);
         }
 
         #region
@@ -151,7 +153,7 @@ namespace TsGui.Queries
             ifx.Add(rulesetx);
             ifx.Add(resultx);
 
-            return new Conditional(ifx, controller, owner);
+            return new ConditionalQuery(ifx, controller, owner);
         }
     }
 }

@@ -20,11 +20,10 @@ using TsGui.Linking;
 
 namespace TsGui.Queries
 {
-    public class OptionValueQuery: BaseQuery, IQuery, ILinkingEventHandler
+    public class OptionValueQuery: BaseQuery, ILinkingEventHandler
     {
         private MainController _controller;
         private ResultFormatter _formatter;
-        private ResultWrangler _processingwrangler = new ResultWrangler();
         private ILinkTarget _linktargetoption;
 
         public OptionValueQuery(XElement inputxml, MainController controller, ILinkTarget owner)
