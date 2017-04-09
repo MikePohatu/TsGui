@@ -23,7 +23,9 @@ namespace TsGui.Validation
 {
     public class StringMatchingRuleSet
     {
+        
         private List<StringMatchingRule> _rules = new List<StringMatchingRule>();
+        private AndOr _ruletype = AndOr.OR;
 
         public List<StringMatchingRule> Rules { get { return this._rules; } }
         public string LastFailedMatchMessage { get; set; }
@@ -37,6 +39,12 @@ namespace TsGui.Validation
                 StringMatchingRule newrule = new StringMatchingRule(subx);
                 this._rules.Add(newrule);
             }
+
+            XAttribute xa = InputXml.Attribute("Type");
+            if (xa != null)
+            {
+                if (xa.Value == "AND") { this._ruletype = AndOr.AND; }
+            }
         }
 
         public void Add(StringMatchingRule rule)
@@ -45,6 +53,26 @@ namespace TsGui.Validation
         public bool DoesStringMatch(string input)
         {
             this.LastFailedMatchMessage = string.Empty;
+
+            if (this._ruletype == AndOr.AND) { return this.AndComparison(input); }
+            else { return this.OrComparison(input); }
+        }
+
+        private bool AndComparison(string input)
+        {
+            string s = string.Empty;
+            foreach (StringMatchingRule rule in this._rules)
+            {
+                if (ResultValidator.DoesStringMatchRule(rule, input) == false)
+                { return false; }
+                else { s = s + rule.Message + Environment.NewLine; }
+            }
+            this.LastFailedMatchMessage = s;
+            return true;
+        }
+
+        private bool OrComparison(string input)
+        {
             string s = string.Empty;
             foreach (StringMatchingRule rule in this._rules)
             {
@@ -52,7 +80,6 @@ namespace TsGui.Validation
                 { return true; }
                 else { s = s + rule.Message + Environment.NewLine; }
             }
-
             this.LastFailedMatchMessage = s;
             return false;
         }

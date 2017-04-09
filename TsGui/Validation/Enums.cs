@@ -18,4 +18,5 @@
 namespace TsGui.Validation
 {
     public enum StringMatchingRuleType { StartsWith, EndsWith, Contains, Characters, RegEx, Equals, GreaterThan, GreaterThanOrEqualTo, LessThan, LessThanOrEqualTo, IsNumeric};
+    public enum AndOr { AND, OR }
 }
