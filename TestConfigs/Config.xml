@@ -1,180 +1,28 @@
-<TsGui>
-	<!-- The showgridlines option is used for assisting with layout design -->
-	<ShowGridLines />
-	
-	<Height>300</Height>
-	<Width>600</Width>
-	
+<TsGui LiveData="TRUE" >
+	<Height>330</Height>
+	<Width>500</Width>
+
+	<!--<ShowGridLines/>-->
 	<HardwareEval />
 	
 	<Heading>
-		<Title>Title Text</Title>
-		<Text>Text</Text>
-		<Bg-Color>#FF006AD4</Bg-Color>
-		<Font-Color>#FFFFFF</Font-Color>
+		<Title>TsGui</Title>
+		<Text>Task Sequence broken regex</Text>
 	</Heading>
 	
-	<!--
-	<Buttons>
-		<Next>-Next-</Next>
-		<Back>-Back-</Back>
-		<Cancel>-Cancel-</Cancel>
-		<Finish>-Finish-</Finish>
-	</Buttons>
-	-->
-	
-	<Footer>
-		<Text>Powered by TsGui - www.20road.com</Text>
-		<Height>17</Height>
-		<HAlign>right</HAlign>
-	</Footer>
-
-	<!-- ***** Simple config example **** -->
 	<Page>
-		<Row>
+		<Row>			
 			<Column>
-				<Width>300</Width>
-			</Column>
-			<Column>
-				<LabelWidth>110</LabelWidth>
-				<ControlWidth>160</ControlWidth>
+				<Width>250</Width>
 				<GuiOption Type="ComputerName">
-					<Validation>
+					<Validation ValidateEmpty="FALSE">
+						
+						<!-- Validation sections with available rule types -->					
 						<Valid>
-							<Rule Type="StartsWith">WM</Rule>
-							<!--<Rule Type="RegEx" CaseSensitive="TRUE">^(WM|WD)[0-9]{6}$</Rule>-->
+							<Rule Type="RegEx" CaseSensitive="TRUE">^(WM|WD[0-9]{6}$</Rule>
 						</Valid>
 					</Validation>
-					<Formatting>
-						<Control>
-							<Width>120</Width>
-						</Control>
-					</Formatting>
 				</GuiOption>
-			</Column>
-		</Row>
-		<Row>
-			<Column>
-				<Width>280</Width>
-				<LabelWidth>110</LabelWidth>
-				<ControlWidth>160</ControlWidth>
-				
-				<!-- GuiOptions -->
-				
-				
-				<!-- Note the InactiveValue option. This sets a new value if the
-				GuiOption is disabled/hidden-->
-				
-				<GuiOption Type="TextBlock">
-					<Formatting>
-						<Label>
-							<Width>70</Width>
-						</Label>
-					</Formatting>
-					<Label>Test Label</Label>
-					<DisplayValue>
-						<Value>Test</Value>
-					</DisplayValue>
-				</GuiOption>
-				
-				<!--CheckBox used as a toggle -->
-				<GuiOption Type="CheckBox" >
-					<Variable>TOGGLE_DISK</Variable>
-					<Label>Configure Disk</Label>
-					<HAlign>left</HAlign>
-					<!--<Checked/>
-					<TrueValue>True_Test</TrueValue>-->
-					<Toggle Group="Group_Disk">
-						<Hide/>
-						<Enabled>TRUE</Enabled>
-						<Disabled>FALSE</Disabled>
-					</Toggle>
-				</GuiOption>
-				
-				<GuiOption Type="DropDownList">
-					<!--<InactiveValue>3</InactiveValue>-->
-					<Group>Group_Disk</Group>
-					<Variable>OSDDiskIndex</Variable>
-					<Label>Disk</Label>
-					<DefaultValue>0</DefaultValue>
-					<Query Type="Wmi">
-						<Wql>select Index,Caption,Size FROM Win32_DiskDrive where MediaType='Fixed hard disk media'</Wql>
-						<Property Name="Index"/>
-						<Property Name="Index">
-							<Prefix>ID: </Prefix>
-						</Property>
-						<Property Name="Size">
-							<Calculate DecimalPlaces="2">VALUE/1073741824</Calculate>
-							<Prefix></Prefix>
-							<Append>GB</Append>
-						</Property>
-						<Property Name="Caption"/>					
-						<Separator>, </Separator>
-					</Query>
-				</GuiOption>
-				
-			</Column>
-		</Row>
-	</Page>
-	<Page>
-		<Group>Group_Disk</Group>
-		<Row>
-			<Column>
-							
-				<Width>280</Width>
-				<LabelWidth>110</LabelWidth>
-				<ControlWidth>160</ControlWidth>
-				
-				<GuiOption Type="Heading">
-					<Label>Experiments</Label>
-					<Formatting>
-						<Label>
-							<Font>
-								<Style>OBLIQUE</Style>
-								<Weight>BOLD</Weight>
-								<Size>14</Size>
-							</Font>
-						</Label>
-					</Formatting>
-				</GuiOption>
-			
-				<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
-					<Disallowed>
-						<Characters>`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
-					</Disallowed>
-					<Variable>OSDComputerName_FullQuery</Variable>
-					<Label>Computer Name:</Label>
-					<HelpText>Enter a computer name for the device</HelpText>
-					
-					<!-- Query for the default value. Return the first valid value. Note
-					the Ignore values for evaluating the value returned by the query -->
-					<DefaultValue>
-						<Query Type="EnvironmentVariable">
-							<Variable>OSDComputerName</Variable>
-							<Ignore>MINNT</Ignore>
-							<Ignore>MINWIN</Ignore>						
-						</Query>				
-						<Query Type="EnvironmentVariable">
-							<Variable>_SMSTSMachineName</Variable>
-							<Ignore>MINNT</Ignore>
-							<Ignore>MINWIN</Ignore>					
-						</Query>					
-						<!--<Query Type="EnvironmentVariable">
-							<Variable>ComputerName</Variable>
-							<Ignore>MINNT</Ignore>
-							<Ignore>MINWIN</Ignore>						
-						</Query>-->					
-						<Query Type="Wmi">
-							<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
-							<Ignore>No Asset Tag</Ignore>
-						</Query>					
-						<Query Type="Wmi">
-							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
-						</Query>
-					</DefaultValue>
-					
-					
-				</GuiOption>	
 			</Column>
 		</Row>
 	</Page>

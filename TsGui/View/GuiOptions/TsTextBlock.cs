@@ -86,12 +86,14 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            this.ControlText = this._displayvaluelist.GetResultWrangler().GetString();
+            this.ControlText = this._displayvaluelist.GetResultWrangler()?.GetString();
             if (this.ControlText == null) { this.ControlText = string.Empty; }
-
-            //if required, remove invalid characters and truncate
-            //if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this.DisallowedCharacters); }
-            if (this._stringvalidation.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this._stringvalidation.MaxLength); }
+            else
+            {
+                //if required, remove invalid characters and truncate
+                //if (!string.IsNullOrEmpty(this.DisallowedCharacters)) { this.ControlText = ResultValidator.RemoveInvalid(this.ControlText, this.DisallowedCharacters); }
+                if (this._stringvalidation.MaxLength > 0) { this.ControlText = ResultValidator.Truncate(this.ControlText, this._stringvalidation.MaxLength); }
+            }
         }
     }
 }

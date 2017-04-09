@@ -70,8 +70,7 @@ namespace TsGui.View.GuiOptions
 
         private void RefreshControlText()
         {
-            ResultWrangler wrangler = this._displayvaluelist.GetResultWrangler();
-            this.ControlText = wrangler.GetString();
+            this.ControlText = this._displayvaluelist.GetResultWrangler()?.GetString();
         }
 
         private void SetDefaults()

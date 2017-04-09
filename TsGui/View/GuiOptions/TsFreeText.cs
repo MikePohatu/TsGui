@@ -189,13 +189,15 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            this._controltext = this._defaultvaluelist.GetResultWrangler().GetString();
+            this._controltext = this._defaultvaluelist.GetResultWrangler()?.GetString();
             if (this._controltext == null) { this._controltext = string.Empty; }
-
-            //if required, remove invalid characters and truncate
-            string invalchars = this._validationhandler.GetAllInvalidCharacters();
-            if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
-            if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
+            else
+            {
+                //if required, remove invalid characters and truncate
+                string invalchars = this._validationhandler.GetAllInvalidCharacters();
+                if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
+                if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
+            }
         }
     }
 }
