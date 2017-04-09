@@ -84,7 +84,7 @@ namespace TsGui.Queries
         //          </Query>
         //      </Source>
         //      <Ruleset>
-        //          <Rule Type="Equals">TRUE</Rule>
+        //          <Rule Type="Equals">TRUE/FALSE</Rule>
         //      </Ruleset>
         //      <Result>
         //          <Query Type = "OptionValue">
@@ -93,7 +93,7 @@ namespace TsGui.Queries
         //      </Result>
         //  </IF>
         #endregion
-        public static IQuery GetLinkTrueOnlyQuery(string SourceID, MainController controller, ILinkTarget owner)
+        public static IQuery GetLinkTrueFalseOnlyQuery(string SourceID, MainController controller, ILinkTarget owner, bool truefalse)
         {
             
             XElement queryx = new XElement("Query");
@@ -102,49 +102,9 @@ namespace TsGui.Queries
             idx.Add(new XAttribute("Name", SourceID));
             queryx.Add(idx);
 
-            XElement rulex = new XElement("Rule","TRUE");
+            XElement rulex = new XElement("Rule",truefalse.ToString());
             rulex.Add(new XAttribute("Type", "Equals"));
             XElement rulesetx = new XElement("Ruleset",rulex);
-
-            XElement ifx = new XElement("IF");
-            XElement sourcex = new XElement("Source", queryx);
-            XElement resultx = new XElement("Result", queryx);
-            ifx.Add(sourcex);
-            ifx.Add(rulesetx);
-            ifx.Add(resultx);
-
-            return new ConditionalQuery(ifx, controller, owner);
-        }
-
-        #region
-        //  <IF>
-        //      <Source>
-        //          <Query Type="OptionValue">
-        //              <ID Name="TestLink1"/>
-        //          </Query>
-        //      </Source>
-        //      <Ruleset>
-        //          <Rule Type="Equals">FALSE</Rule>
-        //      </Ruleset>
-        //      <Result>
-        //          <Query Type = "OptionValue">
-        //              <ID Name = "TestLink1"/>
-        //          </Query>
-        //      </Result>
-        //  </IF>
-        #endregion
-        public static IQuery GetLinkFalseOnlyQuery(string SourceID, MainController controller, ILinkTarget owner)
-        {
-            XElement queryx = new XElement("Query");
-            queryx.Add(new XAttribute("Type", "OptionValue"));
-            XElement idx = new XElement("ID");
-            idx.Add(new XAttribute("Name", SourceID));
-            queryx.Add(idx);
-
-
-            XElement rulex = new XElement("Rule", "FALSE");
-            rulex.Add(new XAttribute("Type", "Equals"));
-            XElement rulesetx = new XElement("Ruleset", rulex);
 
             XElement ifx = new XElement("IF");
             XElement sourcex = new XElement("Source", queryx);

@@ -64,13 +64,13 @@ namespace TsGui.Queries
                 xa = InputXml.Attribute("LinkTrue");
                 if (xa != null)
                 {
-                    this._queries.Add(QueryFactory.GetLinkTrueOnlyQuery(xa.Value, this._controller, this._owneroption));
+                    this._queries.Add(QueryFactory.GetLinkTrueFalseOnlyQuery(xa.Value, this._controller, this._owneroption,true));
                 }
 
                 xa = InputXml.Attribute("LinkFalse");
                 if (xa != null)
                 {
-                    this._queries.Add(QueryFactory.GetLinkFalseOnlyQuery(xa.Value, this._controller, this._owneroption));
+                    this._queries.Add(QueryFactory.GetLinkTrueFalseOnlyQuery(xa.Value, this._controller, this._owneroption,false));
                 }
 
                 foreach (XElement x in InputXml.Elements())

@@ -34,7 +34,7 @@ namespace TsGui.Queries
             this._reprocess = true;
             this._controller = controller;
             this._sourcequerylist = new QueryList(this, this._controller);
-            this._resultquerylist = new QueryList(this, this._controller);
+            this._resultquerylist = new QueryList(this._controller);
             this._linktargetoption = targetoption;
             this.LoadXml(inputxml);
         }

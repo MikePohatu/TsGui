@@ -125,9 +125,12 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            string newvalue = this._setvaluelist?.GetResultWrangler()?.GetString();
-            if (newvalue == this._valTrue) { this.IsChecked = true; }
-            else if (newvalue == this._valFalse ) { this.IsChecked = false; }
+            string newvalue = this._setvaluelist.GetResultWrangler()?.GetString();
+            if (newvalue != this.CurrentValue)
+            {
+                if (newvalue == this._valTrue) { this.IsChecked = true; }
+                else if (newvalue == this._valFalse) { this.IsChecked = false; }
+            }
         }
 
         private void OnGroupStateChanged(object o, RoutedEventArgs e)

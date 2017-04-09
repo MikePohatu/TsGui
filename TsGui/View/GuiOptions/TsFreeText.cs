@@ -189,14 +189,19 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            this._controltext = this._defaultvaluelist.GetResultWrangler()?.GetString();
-            if (this._controltext == null) { this._controltext = string.Empty; }
-            else
+            string s = this._defaultvaluelist.GetResultWrangler()?.GetString();
+            if (s != null) 
             {
                 //if required, remove invalid characters and truncate
                 string invalchars = this._validationhandler.GetAllInvalidCharacters();
-                if (!string.IsNullOrEmpty(invalchars)) { this._controltext = ResultValidator.RemoveInvalid(this.ControlText, this._validationhandler.GetAllInvalidCharacters()); }
-                if (this.MaxLength > 0) { this._controltext = ResultValidator.Truncate(this.ControlText, this.MaxLength); }
+                if (!string.IsNullOrEmpty(invalchars)) { s = ResultValidator.RemoveInvalid(s, this._validationhandler.GetAllInvalidCharacters()); }
+                if (this.MaxLength > 0) { s = ResultValidator.Truncate(s, this.MaxLength); }
+                if (this._controltext != s)
+                {
+                    this._controltext = s;
+                    this.OnPropertyChanged(this, "ControlText");
+                    this.NotifyUpdate();
+                }
             }
         }
     }
