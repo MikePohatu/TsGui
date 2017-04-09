@@ -76,6 +76,7 @@ namespace TsGui.Diagnostics
             this.Icon = IconHelper.ConvertToImageSource(SystemIcons.Information);
             this._options = this._controller.OptionLibrary.Options;
             this.TsMainWindow = this._controller.TsMainWindow;
+            this._testingwindowui._logclearbtn.Click += this.OnLogClearClick;
             this._controller.ParentWindow.Loaded += this.OnParentWindowLoaded;
             this._controller.ParentWindow.Closed += this.OnParentWindowClosed;
             this._testingwindowui.Show();
@@ -117,6 +118,9 @@ namespace TsGui.Diagnostics
             }
             
         }
+
+        public void OnLogClearClick(object sender, RoutedEventArgs e)
+        { this.Logs = string.Empty; }
 
         private void SubscribeToLogs()
         {

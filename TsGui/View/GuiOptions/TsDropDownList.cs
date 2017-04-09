@@ -202,7 +202,6 @@ namespace TsGui.View.GuiOptions
             if (changed == true)
             {
                 this.CurrentItem = newdefault;
-                this.NotifyUpdate();
             }
         }
 
