@@ -25,7 +25,7 @@ namespace TsGui.View.GuiOptions
     public class TsImage : GuiOptionBase, IGuiOption
     {
         public Image Image { get; set; }
-        public TsVariable Variable { get { return null; } }
+        public override TsVariable Variable { get { return null; } }
         public override string CurrentValue { get { return this.Image.MultiImage.CurrentFilePath; } }
 
         //Constructor

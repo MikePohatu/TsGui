@@ -13,9 +13,27 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ValidationEnums.cs
+// LoggingReceiver.cs - Receives logs from the logging framework for use in testingwindow
 
-namespace TsGui.Validation
+using System;
+
+using NLog;
+using NLog.Targets;
+using NLog.Config;
+
+namespace TsGui.Diagnostics.Logging
 {
-    public enum StringValidationRuleType { StartsWith, EndsWith, Contains, Characters, RegEx, Equals, GreaterThan, GreaterThanOrEqualTo, LessThan, LessThanOrEqualTo, IsNumeric};
+    [Target("LiveDataWindow")]
+    public class LoggingReceiverNLog: TargetWithLayout, ILoggingReceiver
+    {
+        public event NewLog NewLogMessage;
+
+        public string LastMessage { get; set; }
+
+        protected override void Write(LogEventInfo logEvent)
+        {
+            this.LastMessage = this.Layout.Render(logEvent);
+            this.NewLogMessage?.Invoke(this,new EventArgs());
+        }
+    }
 }

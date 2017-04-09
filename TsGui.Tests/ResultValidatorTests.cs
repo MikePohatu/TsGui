@@ -118,19 +118,19 @@ namespace TsGui.Tests
         }
 
         [Test]
-        [TestCase("1", "4", StringValidationRuleType.LessThan, ExpectedResult = true)]
-        [TestCase("4", "4", StringValidationRuleType.LessThan, ExpectedResult = false)]
-        [TestCase("6", "4", StringValidationRuleType.LessThan, ExpectedResult = false)]
-        [TestCase("1", "-4", StringValidationRuleType.LessThan, ExpectedResult = false)]
-        [TestCase("-10", "-4", StringValidationRuleType.LessThan, ExpectedResult = true)]
-        [TestCase("1", "4",StringValidationRuleType.GreaterThan, ExpectedResult = false)]
-        [TestCase("4", "4", StringValidationRuleType.GreaterThan, ExpectedResult = false)]
-        [TestCase("6", "4", StringValidationRuleType.GreaterThan, ExpectedResult = true)]
-        [TestCase("1", "-4", StringValidationRuleType.GreaterThan, ExpectedResult = true)]
-        [TestCase("-10", "-4", StringValidationRuleType.GreaterThan, ExpectedResult = false)]
-        [TestCase("lte", "-4", StringValidationRuleType.GreaterThan, ExpectedResult = false)]
-        [TestCase("-10", "lte", StringValidationRuleType.GreaterThan, ExpectedResult = false)]
-        public bool DoesNumberComparisonMatchTest(string StringInput, string StringRuleContent, StringValidationRuleType Type)
+        [TestCase("1", "4", StringMatchingRuleType.LessThan, ExpectedResult = true)]
+        [TestCase("4", "4", StringMatchingRuleType.LessThan, ExpectedResult = false)]
+        [TestCase("6", "4", StringMatchingRuleType.LessThan, ExpectedResult = false)]
+        [TestCase("1", "-4", StringMatchingRuleType.LessThan, ExpectedResult = false)]
+        [TestCase("-10", "-4", StringMatchingRuleType.LessThan, ExpectedResult = true)]
+        [TestCase("1", "4",StringMatchingRuleType.GreaterThan, ExpectedResult = false)]
+        [TestCase("4", "4", StringMatchingRuleType.GreaterThan, ExpectedResult = false)]
+        [TestCase("6", "4", StringMatchingRuleType.GreaterThan, ExpectedResult = true)]
+        [TestCase("1", "-4", StringMatchingRuleType.GreaterThan, ExpectedResult = true)]
+        [TestCase("-10", "-4", StringMatchingRuleType.GreaterThan, ExpectedResult = false)]
+        [TestCase("lte", "-4", StringMatchingRuleType.GreaterThan, ExpectedResult = false)]
+        [TestCase("-10", "lte", StringMatchingRuleType.GreaterThan, ExpectedResult = false)]
+        public bool DoesNumberComparisonMatchTest(string StringInput, string StringRuleContent, StringMatchingRuleType Type)
         {
             return ResultValidator.DoesNumberComparisonMatch(StringInput, StringRuleContent,Type);
         }

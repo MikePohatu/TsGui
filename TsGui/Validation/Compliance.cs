@@ -14,7 +14,7 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 // Compliance.cs - responsible for storing rules that a string can be checked for compliance against
-using System;
+
 using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Grouping;
@@ -24,10 +24,10 @@ namespace TsGui.Validation
     public class Compliance: GroupableValidationBase
     {
 
-        private List<StringValidationRule> _okrules = new List<StringValidationRule>();
-        private List<StringValidationRule> _warningrules = new List<StringValidationRule>();
-        private List<StringValidationRule> _errorrules = new List<StringValidationRule>();
-        private List<StringValidationRule> _invalidrules = new List<StringValidationRule>();
+        private StringMatchingRuleSet _okrules = new StringMatchingRuleSet();
+        private StringMatchingRuleSet _warningrules = new StringMatchingRuleSet();
+        private StringMatchingRuleSet _errorrules = new StringMatchingRuleSet();
+        private StringMatchingRuleSet _invalidrules = new StringMatchingRuleSet();
         private int _defaultstate = ComplianceStateValues.Invalid;
         private MainController _controller;
 
@@ -43,57 +43,22 @@ namespace TsGui.Validation
 
         public void LoadXml(XElement InputXml)
         {
-            XElement x;
             IEnumerable<XElement> xlist;
 
             this.Message = XmlHandler.GetStringFromXElement(InputXml, "Message", this.Message);
             this._defaultstate = XmlHandler.GetComplianceStateValueFromXElement(InputXml, "DefaultState", this._defaultstate);
-            x = InputXml.Element("OK");
-            if (x != null)
-            {
-                foreach (XElement subx in x.Elements("Rule"))
-                {
-                    StringValidationRule newrule = new StringValidationRule(subx);
-                    this._okrules.Add(newrule);
-                }
-            }
 
-            x = InputXml.Element("Warning");
-            if (x != null)
-            {
-                foreach (XElement subx in x.Elements("Rule"))
-                {
-                    StringValidationRule newrule = new StringValidationRule(subx);
-                    this._warningrules.Add(newrule);
-                }
-            }
-
-            x = InputXml.Element("Error");
-            if (x != null)
-            {
-                foreach (XElement subx in x.Elements("Rule"))
-                {
-                    StringValidationRule newrule = new StringValidationRule(subx);
-                    this._errorrules.Add(newrule);
-                }
-            }
-
-            x = InputXml.Element("Invalid");
-            if (x != null)
-            {
-                foreach (XElement subx in x.Elements("Rule"))
-                {
-                    StringValidationRule newrule = new StringValidationRule(subx);
-                    this._invalidrules.Add(newrule);
-                }
-            }
+            this._okrules.LoadXml(InputXml.Element("OK"));
+            this._warningrules.LoadXml(InputXml.Element("Warning"));
+            this._errorrules.LoadXml(InputXml.Element("Error"));
+            this._invalidrules.LoadXml(InputXml.Element("Invalid"));
 
             xlist = InputXml.Elements("Group");
             if (xlist != null)
             {
                 foreach (XElement groupx in xlist)
                 {
-                    Group g = this._controller.GetGroupFromID(groupx.Value);
+                    Group g = this._controller.GroupLibrary.GetGroupFromID(groupx.Value);
                     this._groups.Add(g);
                     g.StateEvent += this.OnGroupStateChange;
                     ;
@@ -109,31 +74,11 @@ namespace TsGui.Validation
 
         public int EvaluateState(string Input)
         {
-            foreach (StringValidationRule rule in this._invalidrules)
-            {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-                { return ComplianceStateValues.Invalid; }
-            }
-
-            foreach (StringValidationRule rule in this._errorrules)
-            {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-                { return ComplianceStateValues.Error; }
-            }
-
-            foreach (StringValidationRule rule in this._warningrules)
-            {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-                { return ComplianceStateValues.Warning; }
-            }
-
+            if (this._invalidrules.DoesStringMatch(Input) == true) { return ComplianceStateValues.Invalid; }
+            if (this._errorrules.DoesStringMatch(Input) == true) { return ComplianceStateValues.Error; }
+            if (this._warningrules.DoesStringMatch(Input) == true)  { return ComplianceStateValues.Warning; }
             if (this._okrules.Count == 0 ) { return ComplianceStateValues.OK; }
-
-            foreach (StringValidationRule rule in this._okrules)
-            {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-                { return ComplianceStateValues.OK; }
-            }
+            if (this._okrules.DoesStringMatch(Input) == true) { return ComplianceStateValues.OK; }
 
             return this._defaultstate;
         }

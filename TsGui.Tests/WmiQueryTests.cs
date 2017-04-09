@@ -24,26 +24,15 @@ using TsGui.Queries;
 namespace TsGui.Tests
 {
     [TestFixture]
-    public class EnvironmentControllerTests
+    public class WmiQueryTests
     {
-
-        [Test]
-        [TestCase(null, ExpectedResult = null)]
-        [TestCase("ComputerName", ExpectedResult = "WIN10")]
-        public string GetEnvVarTest(string VariableName)
-        {
-            EnvironmentController controller = new EnvironmentController();
-            return controller.GetEnvVar(VariableName);
-        }
-
-
         [Test]
         [TestCaseSource("AddWmiPropertiesToWrangler_TestCases")]
-        public void AddWmiPropertiesToWrangler_Test(EnvironmentControllerTestArgs TestArgs)
+        public void AddWmiPropertiesToWrangler_Test(WmiQueryTestArgs TestArgs)
         {
             //protected void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
-            EnvironmentController envcontroller = new EnvironmentController();
-            PrivateObject obj = new PrivateObject(envcontroller);
+            WmiQuery query = new WmiQuery();
+            PrivateObject obj = new PrivateObject(query);
 
             object[] args = new object[3] { TestArgs.Wrangler, TestArgs.ManagementObjectList, TestArgs.PropertyTemplates };
             obj.Invoke("AddWmiPropertiesToWrangler",args);
@@ -65,7 +54,7 @@ namespace TsGui.Tests
             }
         }
 
-        private static EnvironmentControllerTestArgs AddWmiPropertiesToWrangler_TestArgs1(bool IncludeFalseValues)
+        private static WmiQueryTestArgs AddWmiPropertiesToWrangler_TestArgs1(bool IncludeFalseValues)
         {
             string expectedresult;
 
@@ -91,10 +80,10 @@ namespace TsGui.Tests
             objcollection.Add(batt1);
             objcollection.Add(batt2);
 
-            return new EnvironmentControllerTestArgs( expectedresult, wrangler, objcollection, proptemplates );
+            return new WmiQueryTestArgs( expectedresult, wrangler, objcollection, proptemplates );
         }
 
-        private static EnvironmentControllerTestArgs AddWmiPropertiesToWrangler_TestArgs2(bool IncludeFalseValues)
+        private static WmiQueryTestArgs AddWmiPropertiesToWrangler_TestArgs2(bool IncludeFalseValues)
         {
             string expectedresult;
 
@@ -117,10 +106,10 @@ namespace TsGui.Tests
             objcollection.Add(batt1);
             objcollection.Add(batt2);
 
-            return new EnvironmentControllerTestArgs(expectedresult, wrangler, objcollection, proptemplates);
+            return new WmiQueryTestArgs(expectedresult, wrangler, objcollection, proptemplates);
         }
 
-        private static EnvironmentControllerTestArgs AddWmiPropertiesToWrangler_TestArgs3()
+        private static WmiQueryTestArgs AddWmiPropertiesToWrangler_TestArgs3()
         {
             string expectedresult = "Test Model,Test_VM";
 
@@ -146,7 +135,7 @@ namespace TsGui.Tests
             List<ManagementObject> objcollection = new List<ManagementObject>();
             objcollection.Add(wmi1);
 
-            return new EnvironmentControllerTestArgs(expectedresult, wrangler, objcollection, proptemplates);
+            return new WmiQueryTestArgs(expectedresult, wrangler, objcollection, proptemplates);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using TsGui.Connectors;
 
 namespace TsGui.Tests
 {

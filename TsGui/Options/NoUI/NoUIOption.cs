@@ -17,16 +17,23 @@
 
 using System.Xml.Linq;
 using TsGui.Grouping;
+using TsGui.Linking;
+using TsGui.Queries;
+using TsGui.Diagnostics.Logging;
 
-namespace TsGui.NoUI
+namespace TsGui.Options.NoUI
 {
-    public class NoUIOption: GroupableBlindBase,IOption
+    public class NoUIOption: GroupableBlindBase,IOption, ILinkTarget
     {
+        public event IOptionValueChanged ValueChanged;
+
         private string _inactivevalue = "TSGUI_INACTIVE";
         private string _value = string.Empty;
         private bool _usecurrent = false;
+        private QueryList _querylist;
 
         //properties
+        public string ID { get; set; }
         public string VariableName { get; set; }
         public string InactiveValue
         {
@@ -59,7 +66,9 @@ namespace TsGui.NoUI
         //constructors     
         public NoUIOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent,MainController)
         {
+            this._querylist = new QueryList(this,MainController);
             this.LoadXml(InputXml);
+            this.RefreshValue();
             this.NotifyUpdate();
         }
 
@@ -70,12 +79,23 @@ namespace TsGui.NoUI
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
 
             this.VariableName = XmlHandler.GetStringFromXAttribute(InputXml, "Variable", this.VariableName);
-            this._value = XmlHandler.GetStringFromXAttribute(InputXml, "Value", this._value);
+            
 
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
             this._usecurrent = XmlHandler.GetBoolFromXAttribute(InputXml, "UseCurrent", this._usecurrent);
 
             XElement x;
+
+            //this._value = XmlHandler.GetStringFromXAttribute(InputXml, "Value", this._value);
+            XAttribute xa;
+            xa = InputXml.Attribute("Value");
+            if (xa != null)
+            {
+                ValueOnly newvalue = new ValueOnly(InputXml);
+                newvalue.Value = xa.Value;
+                this._querylist.AddQuery(newvalue);
+            }
+
 
             x = InputXml.Element("SetValue");
             if (x != null)
@@ -89,8 +109,23 @@ namespace TsGui.NoUI
                     x.AddFirst(xcurrentquery);
                 }
 
-                this._value = this._controller.GetValueFromList(x);
+                this._querylist.LoadXml(x);
+                //this._value = this._controller.EnvironmentController.GetStringValueFromList(x);
             }
+
+
+            xa = InputXml.Attribute("ID");
+            if (xa != null)
+            {
+                this.ID = xa.Value;
+                this._controller.LinkingLibrary.AddSource(this);
+            }
+        }
+
+        public void RefreshValue()
+        {
+            this._value = this._querylist.GetResultWrangler()?.GetString();
+            this.NotifyUpdate();
         }
 
         protected override void EvaluateGroups()
@@ -101,8 +136,10 @@ namespace TsGui.NoUI
 
         protected void NotifyUpdate()
         {
+            LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
+            this.ValueChanged?.Invoke(this,new LinkingEventArgs(this.CurrentValue));
         }
     }
 }

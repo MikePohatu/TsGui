@@ -18,13 +18,15 @@
 
 using System.Xml.Linq;
 using System.Windows;
+using TsGui.Queries;
+using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsInfoBox : GuiOptionBase, IGuiOption
+    public class TsInfoBox : GuiOptionBase, IGuiOption, ILinkTarget
     {
         private string _controltext;
-
+        private QueryList _displayvaluelist;
         //Properties
 
         //Custom stuff for control
@@ -38,7 +40,7 @@ namespace TsGui.View.GuiOptions
                 this.NotifyUpdate();
             }
         }
-        public TsVariable Variable { get { return new TsVariable(this.VariableName, this.ControlText); } }
+        public override TsVariable Variable { get { return new TsVariable(this.VariableName, this.ControlText); } }
 
         //constructor
         public TsInfoBox(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
@@ -47,7 +49,9 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
             this.UserControl.DataContext = this;
             this.SetDefaults();
+            this._displayvaluelist = new QueryList(this, this._controller);
             this.LoadXml(InputXml);
+            this.RefreshControlText();
         }
 
         public new void LoadXml(XElement InputXml)
@@ -58,10 +62,15 @@ namespace TsGui.View.GuiOptions
 
             x = InputXml.Element("DisplayValue");
             if (x != null)
-            {
-                this.ControlText = this._controller.GetValueFromList(x);
-                if (this.ControlText == null) { this.ControlText = string.Empty; }
-            }
+            { this._displayvaluelist.LoadXml(x); }
+        }
+
+        public void RefreshValue()
+        { this.RefreshControlText(); }
+
+        private void RefreshControlText()
+        {
+            this.ControlText = this._displayvaluelist.GetResultWrangler()?.GetString();
         }
 
         private void SetDefaults()

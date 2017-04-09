@@ -183,7 +183,7 @@ namespace TsGui.Validation
             else { return true; }
         }
 
-        public static bool DoesNumberComparisonMatch(string Input, string RuleContent, StringValidationRuleType Type)
+        public static bool DoesNumberComparisonMatch(string Input, string RuleContent, StringMatchingRuleType Type)
         {
             double inputnum;
             double rulenum;
@@ -191,20 +191,20 @@ namespace TsGui.Validation
             if (!double.TryParse(Input,out inputnum)) { return false; }
             if (!double.TryParse(RuleContent, out rulenum)) { return false; }
 
-            if (Type == StringValidationRuleType.LessThan)
+            if (Type == StringMatchingRuleType.LessThan)
             { return inputnum < rulenum; }
-            else if (Type == StringValidationRuleType.LessThanOrEqualTo)
+            else if (Type == StringMatchingRuleType.LessThanOrEqualTo)
             { return inputnum <= rulenum; }
-            else if (Type == StringValidationRuleType.GreaterThan)
+            else if (Type == StringMatchingRuleType.GreaterThan)
             { return inputnum > rulenum; }
-            else if (Type == StringValidationRuleType.GreaterThanOrEqualTo)
+            else if (Type == StringMatchingRuleType.GreaterThanOrEqualTo)
             { return inputnum >= rulenum; }
             else
             { throw new ArgumentException("Invalid StringValidationRuleType passed to StringNumberCompare"); }
 
         }
 
-        public static bool DoesStringMatchRule(StringValidationRule Rule, string Input)
+        public static bool DoesStringMatchRule(StringMatchingRule Rule, string Input)
         {
             bool result = false;
             string rulestring = Rule.Content;
@@ -224,37 +224,37 @@ namespace TsGui.Validation
 
             switch (Rule.Type)
             {
-                case StringValidationRuleType.Characters:
+                case StringMatchingRuleType.Characters:
                     result = DoesStringContainCharacters(Input, Rule.Content, Rule.IsCaseSensitive);
                     break;
-                case StringValidationRuleType.Contains:
+                case StringMatchingRuleType.Contains:
                     result = inputstring.Contains(rulestring);
                     break;
-                case StringValidationRuleType.EndsWith:
+                case StringMatchingRuleType.EndsWith:
                     result = inputstring.EndsWith(rulestring);
                     break;
-                case StringValidationRuleType.StartsWith:
+                case StringMatchingRuleType.StartsWith:
                     result = inputstring.StartsWith(rulestring);
                     break;
-                case StringValidationRuleType.RegEx:
+                case StringMatchingRuleType.RegEx:
                     result = DoesRegexMatch(Input, Rule.Content, Rule.IsCaseSensitive);
                     break;
-                case StringValidationRuleType.Equals:
+                case StringMatchingRuleType.Equals:
                     result = inputstring.Equals(rulestring);
                     break;
-                case StringValidationRuleType.LessThan:
+                case StringMatchingRuleType.LessThan:
                     result = DoesNumberComparisonMatch(Input, Rule.Content,Rule.Type);
                     break;
-                case StringValidationRuleType.GreaterThan:
+                case StringMatchingRuleType.GreaterThan:
                     result = DoesNumberComparisonMatch(Input,Rule.Content, Rule.Type);
                     break;
-                case StringValidationRuleType.LessThanOrEqualTo:
+                case StringMatchingRuleType.LessThanOrEqualTo:
                     result = DoesNumberComparisonMatch(Input, Rule.Content, Rule.Type);
                     break;
-                case StringValidationRuleType.GreaterThanOrEqualTo:
+                case StringMatchingRuleType.GreaterThanOrEqualTo:
                     result = DoesNumberComparisonMatch(Input, Rule.Content, Rule.Type);
                     break;
-                case StringValidationRuleType.IsNumeric:
+                case StringMatchingRuleType.IsNumeric:
                     result = IsNumeric(Input);
                     break;
                 default:

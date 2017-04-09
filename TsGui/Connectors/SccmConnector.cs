@@ -16,8 +16,11 @@
 // SccmConnector.cs - class to connect to the SCCM task sequence agent
 
 using System;
+using System.Runtime.InteropServices;
+using TsGui.Diagnostics.Logging;
 
-namespace TsGui
+
+namespace TsGui.Connectors
 {
     public class SccmConnector: ITsVariableOutput
     {
@@ -34,6 +37,7 @@ namespace TsGui
 
         public void AddVariable(TsVariable Variable)
         {
+            LoggerFacade.Info("TS variable applied: " + Variable.Name + ". Value: " + Variable.Value);
             objTSEnv.Value[Variable.Name] = Variable.Value;
         }
 
@@ -46,18 +50,18 @@ namespace TsGui
         public void Release()
         {
             // Release the comm objects.
-            if (System.Runtime.InteropServices.Marshal.IsComObject(this.objTSProgUI) == true)
+            if (Marshal.IsComObject(this.objTSProgUI) == true)
             {
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(this.objTSProgUI);
+                Marshal.ReleaseComObject(this.objTSProgUI);
             }
 
-            if (System.Runtime.InteropServices.Marshal.IsComObject(this.objTSEnv) == true)
+            if (Marshal.IsComObject(this.objTSEnv) == true)
             {
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(this.objTSEnv);
+                Marshal.ReleaseComObject(this.objTSEnv);
             }
         }
 
-        public string GetVariable(string Variable)
+        public string GetVariableValue(string Variable)
         {
             return objTSEnv.Value[Variable];
         }

@@ -23,6 +23,7 @@ using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 using TsGui.Validation;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.View.Layout
 {
@@ -94,8 +95,9 @@ namespace TsGui.View.Layout
 
         //Constructors
         public TsPage(XElement SourceXml, PageDefaults Defaults, MainController MainController):base (MainController)
-        { 
+        {
             //this._controller = Defaults.RootController;
+            LoggerFacade.Info("New page created");
             this.ShowGridLines = MainController.ShowGridLines;
             this._pageui = new TsPageUI(this);
             this.PageHeader = Defaults.PageHeader;

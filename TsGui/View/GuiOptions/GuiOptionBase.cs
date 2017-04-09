@@ -19,24 +19,24 @@ using System.Xml.Linq;
 using TsGui.View.Layout;
 using System.Windows.Controls;
 using System.Windows;
-using System.Windows.Data;
+using TsGui.Linking;
+using TsGui.Options;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class GuiOptionBase : BaseLayoutElement
+    public abstract class GuiOptionBase : BaseLayoutElement, IOption, ILinkSource
     {
+        public event IOptionValueChanged ValueChanged;
+
         private string _labeltext = string.Empty;
         private string _helptext = null;
         private string _inactivevalue = "TSGUI_INACTIVE";
-        private UserControl _usercontrol;
         private GuiOptionBaseUI _ui;
 
         //standard stuff
-        public UserControl Control
-        {
-            get { return this._usercontrol; }
-            set { this._usercontrol = value; this.OnPropertyChanged(this, "Control"); }
-        }
+        public string ID { get; set; }
+        public UserControl Control { get; set; }
         public UserControl Label { get; set; }
         public GuiOptionBaseUI UserControl
         {
@@ -60,6 +60,7 @@ namespace TsGui.View.GuiOptions
             set { this._helptext = value; this.OnPropertyChanged(this, "HelpText"); }
         }
         public abstract string CurrentValue { get; }
+        public abstract TsVariable Variable { get; }
         public string LiveValue
         {
             get
@@ -94,6 +95,13 @@ namespace TsGui.View.GuiOptions
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
             this.SetLayoutRightLeft();
+
+            XAttribute xa = InputXml.Attribute("ID");
+            if (xa != null)
+            {
+                this.ID = xa.Value;
+                this._controller.LinkingLibrary.AddSource(this);
+            }
         }
 
         protected override void EvaluateGroups()
@@ -111,20 +119,22 @@ namespace TsGui.View.GuiOptions
         {
             if (this.LabelOnRight == false)
             {
-                this.UserControl.RightPresenter.SetBinding(ContentPresenter.ContentProperty, new Binding("Control"));
-                this.UserControl.LeftPresenter.SetBinding(ContentPresenter.ContentProperty, new Binding("Label"));
+                this.UserControl.RightPresenter.Content = this.Control;
+                this.UserControl.LeftPresenter.Content = this.Label;
             }
             else
             {
-                this.UserControl.RightPresenter.SetBinding(ContentPresenter.ContentProperty, new Binding("Label"));
-                this.UserControl.LeftPresenter.SetBinding(ContentPresenter.ContentProperty, new Binding("Control"));
+                this.UserControl.RightPresenter.Content = this.Label;
+                this.UserControl.LeftPresenter.Content = this.Control;
             }
         }
 
         protected void NotifyUpdate()
         {
+            LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
+            this.ValueChanged?.Invoke(this, new LinkingEventArgs(this.CurrentValue));
         }
     }
 }

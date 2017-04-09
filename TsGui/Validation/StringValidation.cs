@@ -19,6 +19,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Grouping;
 
+
 namespace TsGui.Validation
 {
     public class StringValidation: GroupableValidationBase
@@ -26,8 +27,10 @@ namespace TsGui.Validation
         private bool _validateempty = true;
         private int _maxlength = int.MaxValue;
         private int _minlength = 0;
-        private List<StringValidationRule> _validrules = new List<StringValidationRule>();
-        private List<StringValidationRule> _invalidrules = new List<StringValidationRule>();
+        //private List<StringMatchingRule> _validrules = new List<StringMatchingRule>();
+        //private List<StringMatchingRule> _invalidrules = new List<StringMatchingRule>();
+        private StringMatchingRuleSet _validrules = new StringMatchingRuleSet();
+        private StringMatchingRuleSet _invalidrules = new StringMatchingRuleSet();
         private MainController _controller;
 
         //Properties
@@ -79,21 +82,23 @@ namespace TsGui.Validation
             x = InputXml.Element("Valid");
             if (x != null)
             {
-                foreach (XElement subx in x.Elements("Rule"))
-                {
-                    StringValidationRule newrule = new StringValidationRule(subx);
-                    this._validrules.Add(newrule);
-                }
+                this._validrules.LoadXml(x);
+                //foreach (XElement subx in x.Elements("Rule"))
+                //{
+                //    StringMatchingRule newrule = new StringMatchingRule(subx);
+                //    this._validrules.Add(newrule);
+                //}
             }
 
             x = InputXml.Element("Invalid");
             if (x != null)
             {
-                foreach (XElement subx in x.Elements("Rule"))
-                {
-                    StringValidationRule newrule = new StringValidationRule(subx);
-                    this._invalidrules.Add(newrule);
-                }
+                this._invalidrules.LoadXml(x);
+                //foreach (XElement subx in x.Elements("Rule"))
+                //{
+                //    StringMatchingRule newrule = new StringMatchingRule(subx);
+                //    this._invalidrules.Add(newrule);
+                //}
             }
 
             xlist = InputXml.Elements("Group");
@@ -101,10 +106,10 @@ namespace TsGui.Validation
             {
                 foreach (XElement groupx in xlist)
                 {
-                    Group g = this._controller.GetGroupFromID(groupx.Value);
+                    Group g = this._controller.GroupLibrary.GetGroupFromID(groupx.Value);
                     this._groups.Add(g);
                     g.StateEvent += this.OnGroupStateChange;
-;               }
+                }
             }
         }
 
@@ -119,7 +124,7 @@ namespace TsGui.Validation
                 x = x.Element("Characters");
                 if (x != null)
                 {
-                    StringValidationRule newrule = new StringValidationRule(StringValidationRuleType.Characters,x.Value);
+                    StringMatchingRule newrule = new StringMatchingRule(StringMatchingRuleType.Characters,x.Value);
                     this._invalidrules.Add(newrule);
                 }
             }
@@ -180,19 +185,24 @@ namespace TsGui.Validation
             bool result = false;
             string s = string.Empty;
 
-            foreach (StringValidationRule rule in this._invalidrules)
+            //foreach (StringMatchingRule rule in this._invalidrules)
+            //{
+            //    if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
+            //    {
+            //        s = s + rule.Message + Environment.NewLine;
+            //        result = true;
+            //    }
+            //}
+
+            if (this._invalidrules.DoesStringMatch(Input))
             {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-                {
-                    s = s + rule.Message + Environment.NewLine;
-                    result = true;
-                }
+                s = this._invalidrules.LastFailedMatchMessage;
+                result = true;
             }
 
             if (result == true)
             {
-                s = this.FailedValidationMessage + Environment.NewLine +  "Must not match any of: " + Environment.NewLine + s;
-                this.FailedValidationMessage = s;
+                this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine +  "Must not match any of: " + Environment.NewLine + s;
             }
 
             return result;
@@ -204,12 +214,16 @@ namespace TsGui.Validation
             if (this._validrules.Count == 0) { return true; }
 
             string s = string.Empty;
-            foreach (StringValidationRule rule in this._validrules)
-            {
-                if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-                { return true; }
-                else { s = s + rule.Message + Environment.NewLine; }               
-            }
+            //foreach (StringMatchingRule rule in this._validrules)
+            //{
+            //    if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
+            //    { return true; }
+            //    else { s = s + rule.Message + Environment.NewLine; }               
+            //}
+            if (this._validrules.DoesStringMatch(Input))
+            { return true; }
+            else
+            { s = this._validrules.LastFailedMatchMessage; }
 
             this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Must match one of: " + Environment.NewLine + s;
             return false;
@@ -219,9 +233,9 @@ namespace TsGui.Validation
         {
             if (this.IsActive == false) { return string.Empty; }
             string s = string.Empty;
-            foreach (StringValidationRule rule in this._invalidrules)
+            foreach (StringMatchingRule rule in this._invalidrules.Rules)
             {
-                if (rule.Type == StringValidationRuleType.Characters) { s = s + rule.Content; }
+                if (rule.Type == StringMatchingRuleType.Characters) { s = s + rule.Content; }
             }
             return s;
         }

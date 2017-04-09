@@ -24,26 +24,31 @@ using System.Windows;
 using System.ComponentModel;
 
 using TsGui.View.Layout;
-using TsGui.NoUI;
+using TsGui.Options.NoUI;
+using TsGui.Options;
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Diagnostics;
+using TsGui.Diagnostics.Logging;
+using TsGui.Linking;
 
 namespace TsGui
 {
     public class MainController
     {
         public event TsGuiWindowEventHandler WindowLoaded;
-        public event TsGuiWindowEventHandler WindowMoving;
+        public event TsGuiWindowMovingEventHandler WindowMoving;
         public event TsGuiWindowEventHandler WindowMouseUp;
+        public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
         private string _configpath;
         private bool _prodmode = false;
         private bool _finished = false;
-        private TsButtons _buttons = new TsButtons();     
+        private TsButtons _buttons = new TsButtons();
         private List<TsPage> _pages = new List<TsPage>();
-        private EnvironmentController _envController = new EnvironmentController();
-        private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
+        private EnvironmentController _envController;
+        private LinkingLibrary _linkinglibrary = new LinkingLibrary();
+        private GroupLibrary _grouplibrary = new GroupLibrary();
         private List<IToggleControl> _toggles = new List<IToggleControl>();
         private OptionLibrary _optionlibrary = new OptionLibrary();
         private HardwareEvaluator _chassischeck;
@@ -54,8 +59,11 @@ namespace TsGui
         private bool _showtestwindow = false;
 
         //properties
+        public LinkingLibrary LinkingLibrary { get { return this._linkinglibrary; } }
+        public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get { return this._optionlibrary; } }
+        public EnvironmentController EnvironmentController { get { return this._envController; } }
         public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
@@ -64,8 +72,12 @@ namespace TsGui
         //constructors
         public MainController(MainWindow ParentWindow, Arguments Arguments)
         {
+            LoggerFacade.Trace("MainController initialized");
+            this._envController = new EnvironmentController(this);
             this._configpath = Arguments.ConfigFile;
             this.ParentWindow = ParentWindow;
+            this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
+            this.ParentWindow.LocationChanged += this.OnWindowMoving;
             this.Init();          
         }
 
@@ -90,7 +102,8 @@ namespace TsGui
 
         public void CloseWithError(string Title, string Message)
         {
-            
+            LoggerFacade.Fatal("TsGui closing due to error: " + Title);
+            LoggerFacade.Fatal("Error message: " + Message);
             MessageBox.Show(Message,Title, MessageBoxButton.OK, MessageBoxImage.Error);
             this.ParentWindow.Closing -= this.OnWindowClosing;
             this.ParentWindow.Close();
@@ -145,6 +158,7 @@ namespace TsGui
             this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
             this.StartupFinished = true;
             if ((this._debug == true) || (this._showtestwindow == true)) { this._testingwindow = new TestingWindow(this); }
+            LoggerFacade.Info("*TsGui startup finished");
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
@@ -257,6 +271,8 @@ namespace TsGui
                     this._nouicontainer = new NoUIContainer(this, x);
                 }
             }
+            LoggerFacade.Info("Config load finished");
+            this.ConfigLoadFinished?.Invoke(this, null);
         }
 
         //add options from sub classes to the main library. used to generate the final list of 
@@ -287,42 +303,6 @@ namespace TsGui
             this._toggles.Add(ToogleControl);
         }
 
-        private Group CreateGroup(string ID)
-        {
-            Group group;
-            group = new Group(ID);
-            this._groups.Add(ID, group);
-            return group;
-        }
-
-        /// <summary>
-        /// Add a groupable element to a group
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <param name="Element"></param>
-        /// <returns></returns>
-        public Group AddToGroup (string ID, GroupableBase Element)
-        {
-            Group group = this.GetGroupFromID(ID);
-            group.Add(Element);
-            
-            return group;
-        }
-
-        /// <summary>
-        /// Get a group object, create if doesn't exist
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
-        public Group GetGroupFromID(string ID)
-        {
-            Group group;
-            this._groups.TryGetValue(ID, out group);
-            if (group == null) { group = this.CreateGroup(ID); }
-
-            return group;
-        }
-
         //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()
         {
@@ -349,7 +329,7 @@ namespace TsGui
 
             if (this._chassischeck != null)
             {
-                foreach (TsVariable var in this._chassischeck.GetTsVariables)
+                foreach (TsVariable var in this._chassischeck.GetTsVariables())
                 { this._envController.AddVariable(var); }
             }
 
@@ -384,7 +364,7 @@ namespace TsGui
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>
-        public void OnWindowMoving(object o, RoutedEventArgs e)
+        public void OnWindowMoving(object o, EventArgs e)
         {
             this.WindowMoving?.Invoke(o, e);
         }
@@ -397,27 +377,6 @@ namespace TsGui
         public void OnWindowMouseUp(object o, RoutedEventArgs e)
         {
             this.WindowMouseUp?.Invoke(o, e);
-        }
-
-        public String GetValueFromList(XElement InputXml)
-        {
-            return this._envController.GetValueFromList(InputXml);
-        }
-
-        public Dictionary<string, string> GetDictionaryFromList(XElement InputXml)
-        {
-            return this._envController.GetDictionaryFromList(InputXml);
-        }
-
-        public List<KeyValuePair<string, string>> GetKeyValueListFromList(XElement InputXml)
-        {
-            return this._envController.GetKeyValueListFromList(InputXml);
-        }
-
-
-        public String GetEnvVar(string VariableName)
-        {
-            return this._envController.GetEnvVar(VariableName);
         }
 
         private bool PromptTestMode()

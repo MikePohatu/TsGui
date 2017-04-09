@@ -20,7 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 
-namespace TsGui
+using TsGui.Diagnostics.Logging;
+
+namespace TsGui.Connectors
 {
     public class TestingConnector: ITsVariableOutput
     {
@@ -28,6 +30,7 @@ namespace TsGui
 
         public void AddVariable(TsVariable Variable)
         {
+            LoggerFacade.Info("Testing variable applied: " + Variable.Name + ". Value: " + Variable.Value);
             this.variables.Add(Variable);
         }
 

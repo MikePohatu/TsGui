@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Threading;
 
+using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
 
 namespace TsGui
@@ -11,19 +12,22 @@ namespace TsGui
     /// </summary>
     public partial class App : Application
     {
+        private MainController _controller;
+
         public Arguments Arguments;
         MainWindow _mainwindow;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            LoggingFrameworkHelpers.InitializeLogFramework();
 
             try { this.Arguments = new Arguments(Environment.GetCommandLineArgs()); }
             catch (Exception exc)
             {
                 string msg = exc.Message + Environment.NewLine;
                 MessageBox.Show(msg, "Command Line Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Shutdown(1);
+                this.Shutdown(1);
                 return;
             }
 
@@ -34,19 +38,27 @@ namespace TsGui
         {
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(this.OnUnhandledException);
+         
+            LoggerFacade.Info("*TsGui started - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             this._mainwindow = new MainWindow(this.Arguments);
+            this._controller = new MainController(this._mainwindow, this.Arguments);
         }
 
+
+        //Exception handler methods
+        #region
         public void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
         {
             args.Handled = true;
+            LoggerFacade.Fatal("OnDispatcherUnhandledException:" + args.Exception.Message );
             this.HandleException(sender, args.Exception,args.Exception.StackTrace);
         }
 
         public void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
         {
             Exception e = (Exception)args.ExceptionObject;
+            LoggerFacade.Fatal("OnUnhandledException:" + e.Message);
             this.HandleException(sender, e, e.StackTrace);     
         }
 
@@ -61,6 +73,8 @@ namespace TsGui
             }
 
         }
+        #endregion
+
 
         private void ShowErrorMessageAndClose(TsGuiKnownException e)
         {
@@ -70,8 +84,9 @@ namespace TsGui
 
         private void ShowErrorMessageAndClose(string Message)
         {
+            LoggerFacade.Fatal("Closing TsGui. Error message: " + Message);
             string msg = Message;
-            this._mainwindow.Controller.CloseWithError("Application Runtime Exception", msg);
+            this._controller.CloseWithError("Application Runtime Exception", msg);
         }
     }
 }

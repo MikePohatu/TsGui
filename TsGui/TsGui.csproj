@@ -57,6 +57,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.5\lib\net40\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -73,32 +77,57 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Arguments.cs" />
+    <Compile Include="Connectors\System\Kernel32Methods.cs" />
+    <Compile Include="Diagnostics\Logging\ILoggingReceiver.cs" />
+    <Compile Include="Diagnostics\Logging\LoggingDelegates.cs" />
+    <Compile Include="Diagnostics\DiagnosticsEnums.cs" />
     <Compile Include="Diagnostics\DiagnosticsHelper.cs" />
+    <Compile Include="Diagnostics\Logging\LoggerFacade.cs" />
+    <Compile Include="Diagnostics\Logging\LoggingFrameworkHelpers.cs" />
+    <Compile Include="Diagnostics\Logging\LoggingReceiverNLog.cs" />
     <Compile Include="Diagnostics\TestingWindow.cs" />
     <Compile Include="Diagnostics\TestingWindowUI.xaml.cs">
       <DependentUpon>TestingWindowUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="Diagnostics\TsGuiKnownException.cs" />
     <Compile Include="Grouping\GroupEnums.cs" />
+    <Compile Include="Grouping\GroupLibrary.cs" />
     <Compile Include="Helpers\DisplayInformation.cs" />
     <Compile Include="Helpers\ReverseComparer.cs" />
     <Compile Include="Images\Image.cs" />
     <Compile Include="Images\MultiImage.cs" />
-    <Compile Include="NoUI\NoUIOption.cs" />
-    <Compile Include="NoUI\NoUIContainer.cs" />
+    <Compile Include="Linking\ILinkingEventHandler.cs" />
+    <Compile Include="Queries\BaseQuery.cs" />
+    <Compile Include="Queries\CombinedQuery.cs" />
+    <Compile Include="Queries\ConditionalQuery.cs" />
+    <Compile Include="Linking\ILinkTarget.cs" />
+    <Compile Include="Linking\ILinkSource.cs" />
+    <Compile Include="Linking\LinkingDelegates.cs" />
+    <Compile Include="Linking\LinkingEventArgs.cs" />
+    <Compile Include="Linking\LinkingLibrary.cs" />
+    <Compile Include="Queries\QueryList.cs" />
+    <Compile Include="Queries\ValueOnly.cs" />
+    <Compile Include="Validation\StringMatchingRuleSet.cs" />
+    <Compile Include="Options\NoUI\NoUIOption.cs" />
+    <Compile Include="Options\NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
     <Compile Include="Events\Delegates.cs" />
-    <Compile Include="Control\IOption.cs" />
+    <Compile Include="Options\IOption.cs" />
     <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="Grouping\GroupableBlindBase.cs" />
     <Compile Include="Grouping\GroupingEventArgs.cs" />
+    <Compile Include="Queries\OptionValueQuery.cs" />
+    <Compile Include="Queries\EnvironmentVariableQuery.cs" />
+    <Compile Include="Queries\IQuery.cs" />
     <Compile Include="Queries\PrefixRule.cs" />
     <Compile Include="Queries\CalculateRule.cs" />
     <Compile Include="Queries\IQueryRule.cs" />
     <Compile Include="Queries\AppendRule.cs" />
+    <Compile Include="Queries\QueryFactory.cs" />
     <Compile Include="Queries\TruncateRule.cs" />
+    <Compile Include="Queries\WmiQuery.cs" />
     <Compile Include="Validation\Compliance.cs" />
     <Compile Include="Validation\ComplianceStateValues.cs" />
     <Compile Include="Validation\ComplianceHandler.cs" />
@@ -106,8 +135,8 @@
     <Compile Include="Validation\IValidationOwner.cs" />
     <Compile Include="Validation\StringValidation.cs" />
     <Compile Include="Grouping\GroupableUIElementBase.cs" />
-    <Compile Include="Validation\ValidationEnums.cs" />
-    <Compile Include="Validation\StringValidationRule.cs" />
+    <Compile Include="Validation\Enums.cs" />
+    <Compile Include="Validation\StringMatchingRule.cs" />
     <Compile Include="Validation\ValidationErrorToolTip.xaml.cs">
       <DependentUpon>ValidationErrorToolTip.xaml</DependentUpon>
     </Compile>
@@ -206,10 +235,10 @@
     <Compile Include="View\Layout\TsPageUI.xaml.cs">
       <DependentUpon>TsPageUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\OptionLibrary.cs" />
-    <Compile Include="Control\SccmConnector.cs" />
-    <Compile Include="Control\SystemConnector.cs" />
-    <Compile Include="Control\TestingConnector.cs" />
+    <Compile Include="Options\OptionLibrary.cs" />
+    <Compile Include="Connectors\SccmConnector.cs" />
+    <Compile Include="Connectors\SystemConnector.cs" />
+    <Compile Include="Connectors\TestingConnector.cs" />
     <Compile Include="Control\TsVariable.cs" />
     <Compile Include="Control\TsWindowAlerts.cs" />
     <Compile Include="Control\XmlHandler.cs" />
@@ -335,6 +364,14 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

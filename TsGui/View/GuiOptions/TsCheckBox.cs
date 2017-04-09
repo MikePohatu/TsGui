@@ -15,21 +15,25 @@
 
 // TsCheckBox.cs - combobox control for user input
 
+using System;
 using System.Xml.Linq;
 using System.Windows;
 using System.Collections.Generic;
 
 using TsGui.Grouping;
+using TsGui.Linking;
+using TsGui.Queries;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsCheckBox : GuiOptionBase, IGuiOption, IToggleControl
+    public class TsCheckBox : GuiOptionBase, IGuiOption, IToggleControl, ILinkTarget
     {
         public event ToggleEvent ToggleEvent;
 
         private bool _ischecked;
         private string _valTrue = "TRUE";
         private string _valFalse = "FALSE";
+        private QueryList _setvaluelist;
 
         public bool IsChecked
         {
@@ -51,7 +55,7 @@ namespace TsGui.View.GuiOptions
                 else { return this._valFalse; }
             }
         }
-        public TsVariable Variable
+        public override TsVariable Variable
         {
             get
             {
@@ -69,17 +73,17 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;           
             this.Control = new TsCheckBoxUI();
             this.Label = new TsLabelUI();
-            this.SetDefaults();           
+            this.SetDefaults();
+            this._setvaluelist = new QueryList(this, this._controller);          
             this.LoadXml(InputXml);
-            this.UserControl.IsEnabledChanged += this.OnChanged;
-            this.UserControl.IsVisibleChanged += this.OnChanged;
+            this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
+            this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
         }
 
 
         //Methods
         public new void LoadXml(XElement InputXml)
         {
-            #region
             XElement x;
             IEnumerable<XElement> xlist;
             this.LoadLegacyXml(InputXml);
@@ -104,7 +108,12 @@ namespace TsGui.View.GuiOptions
                     Toggle t = new Toggle(this, this._controller, subx); 
                 }  
             }
-            #endregion
+
+            x = InputXml.Element("SetValue");
+            if (x != null)
+            {
+                this._setvaluelist.LoadXml(x);
+            }
         }
 
         //fire an intial event to make sure things are set correctly. This is
@@ -114,12 +123,19 @@ namespace TsGui.View.GuiOptions
             this.ToggleEvent?.Invoke();
         }
 
-        private void OnChanged(object o, RoutedEventArgs e)
+        public void RefreshValue()
+        {
+            string newvalue = this._setvaluelist?.GetResultWrangler()?.GetString();
+            if (newvalue == this._valTrue) { this.IsChecked = true; }
+            else if (newvalue == this._valFalse ) { this.IsChecked = false; }
+        }
+
+        private void OnGroupStateChanged(object o, RoutedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
         }
 
-        private void OnChanged(object o, DependencyPropertyChangedEventArgs e)
+        private void OnGroupStateChanged(object o, DependencyPropertyChangedEventArgs e)
         {
             this.ToggleEvent?.Invoke();
         }

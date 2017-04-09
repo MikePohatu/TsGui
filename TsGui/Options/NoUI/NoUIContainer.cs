@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using TsGui.Grouping;
 
-namespace TsGui.NoUI
+namespace TsGui.Options.NoUI
 {
     public class NoUIContainer: GroupableBlindBase
     {
