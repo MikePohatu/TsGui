@@ -24,6 +24,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
              d:DesignHeight="40" d:DesignWidth="200">
-    <TextBlock x:Name="Control" Text="{Binding CurrentValue}" Style="{StaticResource ControlStyle}" TextWrapping="Wrap"
+    <TextBlock x:Name="Control" Text="{Binding CurrentValue, Converter={StaticResource XmlStringLine}}" Style="{StaticResource ControlStyle}" TextWrapping="Wrap"
                Foreground="{Binding ControlFormatting.FontColorBrush}"/>
 </UserControl>

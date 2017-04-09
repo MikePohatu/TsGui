@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <Converters:FontWeightConverter x:Key="FontWeight"/>
             <Converters:FontStyleConverter x:Key="FontStyle"/>
+            <Converters:XmlStringLineConverter x:Key="XmlStringLine"/>
 
             <Style x:Key="LabelStyle" TargetType="Label">
                 <Setter Property="Control.Height" Value="{Binding LabelFormatting.Height}"/>
@@ -105,7 +106,6 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-
 
             <Style x:Key="ComboBoxItemLabelStyle" TargetType="Label">
                 <Setter Property="Control.Height" Value="Auto"/>

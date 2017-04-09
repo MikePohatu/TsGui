@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="Arguments.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
+    <Compile Include="View\Layout\Converters\XmlStringLineConverter.cs" />
     <Compile Include="Diagnostics\Logging\ILoggingReceiver.cs" />
     <Compile Include="Diagnostics\Logging\LoggingDelegates.cs" />
     <Compile Include="Diagnostics\DiagnosticsEnums.cs" />
