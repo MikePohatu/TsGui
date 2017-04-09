@@ -48,9 +48,10 @@ namespace TsGui.Queries
 
         protected bool ShouldIgnore(string input)
         {
+            if ((this._ignoreempty == true) && (string.IsNullOrWhiteSpace(input) == true)) { return true; }
+
             foreach (StringMatchingRule rule in this._ignorerules)
             {
-                if ((this._ignoreempty == true) && (string.IsNullOrWhiteSpace(input) == true)) { return true; }
                 if (ResultValidator.DoesStringMatchRule(rule, input) == true)
                 {
                     return true;
