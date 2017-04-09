@@ -196,12 +196,8 @@ namespace TsGui.View.GuiOptions
                 string invalchars = this._validationhandler.GetAllInvalidCharacters();
                 if (!string.IsNullOrEmpty(invalchars)) { s = ResultValidator.RemoveInvalid(s, this._validationhandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { s = ResultValidator.Truncate(s, this.MaxLength); }
-                if (this._controltext != s)
-                {
-                    this._controltext = s;
-                    this.OnPropertyChanged(this, "ControlText");
-                    this.NotifyUpdate();
-                }
+
+                if (this.ControlText != s) { this.ControlText = s; }
             }
         }
     }
