@@ -8,11 +8,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TsGui")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A GUI frontend for SCCM task sequences")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("20Road")]
 [assembly: AssemblyProduct("Task Sequence Gui")]
-[assembly: AssemblyCopyright("Copyright © 20Road 2017")]
+[assembly: AssemblyCopyright("Copyright © Mike Pohatu 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
