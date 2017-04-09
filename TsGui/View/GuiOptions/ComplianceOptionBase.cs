@@ -154,11 +154,7 @@ namespace TsGui.View.GuiOptions
         protected void ProcessQuery()
         {
             this._value = this._getvaluelist.GetResultWrangler()?.GetString();
-            this.UpdateState();
         }
-
-        private void RefreshValue()
-        { }
 
         private void UpdateState()
         {
