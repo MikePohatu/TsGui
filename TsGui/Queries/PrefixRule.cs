@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// AppendRule.cs - used to add a string to the end of a string result
+// Prefix.cs - used to add a string to the start of a string result
 
 using System.Xml.Linq;
 
