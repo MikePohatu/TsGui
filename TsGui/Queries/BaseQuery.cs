@@ -26,6 +26,7 @@ namespace TsGui.Queries
         protected bool _processed = false;
         protected ResultWrangler _processingwrangler = new ResultWrangler();
         protected ResultWrangler _returnwrangler;
+        protected bool _ignoreempty = true;
 
         public virtual ResultWrangler GetResultWrangler()
         {
@@ -38,6 +39,7 @@ namespace TsGui.Queries
         protected void LoadXml(XElement InputXml)
         {
             this._reprocess = XmlHandler.GetBoolFromXAttribute(InputXml, "Reprocess", this._reprocess);
+            this._ignoreempty = XmlHandler.GetBoolFromXAttribute(InputXml, "IgnoreEmpty", this._ignoreempty);
             foreach (XElement xignorerule in InputXml.Elements("Ignore"))
             {
                 this._ignorerules.Add(new StringMatchingRule(xignorerule));
@@ -48,6 +50,7 @@ namespace TsGui.Queries
         {
             foreach (StringMatchingRule rule in this._ignorerules)
             {
+                if ((this._ignoreempty == true) && (string.IsNullOrWhiteSpace(input) == true)) { return true; }
                 if (ResultValidator.DoesStringMatchRule(rule, input) == true)
                 {
                     return true;
