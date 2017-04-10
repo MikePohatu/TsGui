@@ -62,8 +62,6 @@ namespace TsGui.Validation.StringMatching
 
         public bool DoesMatch(string input)
         {
-            this.Message = string.Empty;
-
             if (this._ruletype == AndOr.AND) { return this.AndComparison(input); }
             else { return this.OrComparison(input); }
         }
@@ -89,16 +87,14 @@ namespace TsGui.Validation.StringMatching
         private void BuildMessage()
         {
             string s = string.Empty;
-            if (this.Count == 0) { s = string.Empty; }
-            else { s = "("; }
 
             foreach (IStringMatchingRule rule in this._rules)
             {
-                if (s == "(") { s = s + rule.Message + Environment.NewLine; }
-                else { s = s + this._ruletype.ToString() + " " + rule.Message + Environment.NewLine; }
+                if (string.IsNullOrEmpty(s) == true) { s = rule.Message; }
+                else { s = s + Environment.NewLine + this._ruletype.ToString() + " " + rule.Message; }
             }
 
-            if (this.Count != 0) { s = s+ ")"; }
+            if (this.Count !=1) { s = "(" + s + ")"; }
 
             this.Message = s;
         }        
