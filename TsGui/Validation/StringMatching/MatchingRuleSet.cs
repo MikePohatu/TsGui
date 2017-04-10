@@ -42,7 +42,7 @@ namespace TsGui.Validation.StringMatching
             foreach (XElement subx in InputXml.Elements())
             {
                 IStringMatchingRule newrule = MatchingRuleFactory.GetRuleObject(subx);
-                this._rules.Add(newrule);
+                if (newrule != null) { this._rules.Add(newrule); }
             }
 
             XAttribute xa = InputXml.Attribute("Type");
@@ -50,10 +50,15 @@ namespace TsGui.Validation.StringMatching
             {
                 if (xa.Value == "AND") { this._ruletype = AndOr.AND; }
             }
+
+            this.BuildMessage();
         }
 
         public void Add(IStringMatchingRule rule)
-        { if (rule != null) { this._rules.Add(rule); } }
+        {
+            if (rule != null) { this._rules.Add(rule); }
+            this.BuildMessage();
+        }
 
         public bool DoesMatch(string input)
         {
@@ -65,29 +70,37 @@ namespace TsGui.Validation.StringMatching
 
         private bool AndComparison(string input)
         {
-            string s = string.Empty;
             foreach (IStringMatchingRule rule in this._rules)
             {
-                if (rule.DoesMatch(input) == false)
-                { return false; }
-                else { s = s + rule.Message + Environment.NewLine; }
+                if (rule.DoesMatch(input) == false) { return false; }
             }
-            this.Message = s;
             return true;
         }
 
         private bool OrComparison(string input)
         {
-            string s = string.Empty;
             foreach (IStringMatchingRule rule in this._rules)
             {
-                //if (ResultValidator.DoesStringMatchRule(rule, input) == true)
-                if (rule.DoesMatch(input) == true)
-                { return true; }
-                else { s = s + rule.Message + Environment.NewLine; }
+                if (rule.DoesMatch(input) == true) { return true; }
             }
-            this.Message = s;
             return false;
         }
+
+        private void BuildMessage()
+        {
+            string s = string.Empty;
+            if (this.Count == 0) { s = string.Empty; }
+            else { s = "("; }
+
+            foreach (IStringMatchingRule rule in this._rules)
+            {
+                if (s == "(") { s = s + rule.Message + Environment.NewLine; }
+                else { s = s + this._ruletype.ToString() + " " + rule.Message + Environment.NewLine; }
+            }
+
+            if (this.Count != 0) { s = s+ ")"; }
+
+            this.Message = s;
+        }        
     }
 }

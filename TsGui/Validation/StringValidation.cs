@@ -113,8 +113,6 @@ namespace TsGui.Validation
                 x = x.Element("Characters");
                 if (x != null)
                 {
-                    //StringMatchingRule newrule = new StringMatchingRule(StringMatchingRuleType.Characters,x.Value);
-                    //this._invalidrules.Add(new MatchingRuleFactory.GetRuleObject(x.Value));
                     Characters newrule = new Characters(new XElement("Rule", x.Value));
                     this._invalidrules.Add(newrule);
                 }
@@ -174,17 +172,11 @@ namespace TsGui.Validation
         {
             if (this.IsActive == false) { return false; }
             bool result = false;
-            string s = string.Empty;
 
             if (this._invalidrules.DoesMatch(Input))
             {
-                s = this._invalidrules.Message;
                 result = true;
-            }
-
-            if (result == true)
-            {
-                this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine +  "Must not match any of: " + Environment.NewLine + s;
+                this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Must not match any of: " + Environment.NewLine + this._invalidrules.Message;
             }
 
             return result;
@@ -195,15 +187,13 @@ namespace TsGui.Validation
             if (this.IsActive == false) { return true; }
             if (this._validrules.Count == 0) { return true; }
 
-            string s = string.Empty;
-
             if (this._validrules.DoesMatch(Input))
             { return true; }
             else
-            { s = this._validrules.Message; }
-
-            this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Must match one of: " + Environment.NewLine + s;
-            return false;
+            {
+                this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Must match one of: " + Environment.NewLine + this._validrules.Message;
+                return false;
+            }
         }
 
         public string GetAllInvalidCharacters()

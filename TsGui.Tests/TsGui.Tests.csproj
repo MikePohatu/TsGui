@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculatorTests.cs" />
+    <Compile Include="Validation\MatchingRuleTests.cs" />
     <Compile Include="WmiQueryTestArgs.cs" />
     <Compile Include="ResultValidatorTests.cs" />
     <Compile Include="WmiQueryTests.cs" />

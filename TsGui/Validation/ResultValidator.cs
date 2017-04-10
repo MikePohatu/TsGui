@@ -30,41 +30,41 @@ namespace TsGui.Validation
         /// <param name="InputXml"></param>
         /// <param name="Value"></param>
         /// <returns></returns>
-        public static bool ShouldIgnore(XElement InputXml, string Value)
-        {
-            if (Value == null) { return true; }
-            foreach (XElement xignore in InputXml.Elements("Ignore"))
-            {
-                //first check for empty value in the ignore entry i.e. it has been left in 
-                //the file but has no use
-                if (string.IsNullOrEmpty(xignore.Value.Trim())) { continue; }
+        //public static bool ShouldIgnore(XElement InputXml, string Value)
+        //{
+        //    if (Value == null) { return true; }
+        //    foreach (XElement xignore in InputXml.Elements("Ignore"))
+        //    {
+        //        //first check for empty value in the ignore entry i.e. it has been left in 
+        //        //the file but has no use
+        //        if (string.IsNullOrEmpty(xignore.Value.Trim())) { continue; }
 
-                bool toignore = false;
-                XAttribute attrib = xignore.Attribute("SearchType");
+        //        bool toignore = false;
+        //        XAttribute attrib = xignore.Attribute("SearchType");
                 
-                if (attrib != null)
-                {
-                    string s = xignore.Attribute("SearchType").Value;
-                    //run the correct search type. default is startswith
-                    if (s == "EndsWith")
-                    { toignore = Value.EndsWith(xignore.Value, StringComparison.OrdinalIgnoreCase); }
-                    else if (s == "Contains")
-                    { toignore = Value.ToUpper().Contains(xignore.Value.ToUpper()); }
-                    else if (s == "Equals")
-                    { toignore = Value.Equals(xignore.Value, StringComparison.OrdinalIgnoreCase); }
-                    else
-                    { toignore = Value.StartsWith(xignore.Value, StringComparison.OrdinalIgnoreCase); }
-                }
-                else
-                { toignore = Value.StartsWith(xignore.Value, StringComparison.OrdinalIgnoreCase); }
+        //        if (attrib != null)
+        //        {
+        //            string s = xignore.Attribute("SearchType").Value;
+        //            //run the correct search type. default is startswith
+        //            if (s == "EndsWith")
+        //            { toignore = Value.EndsWith(xignore.Value, StringComparison.OrdinalIgnoreCase); }
+        //            else if (s == "Contains")
+        //            { toignore = Value.ToUpper().Contains(xignore.Value.ToUpper()); }
+        //            else if (s == "Equals")
+        //            { toignore = Value.Equals(xignore.Value, StringComparison.OrdinalIgnoreCase); }
+        //            else
+        //            { toignore = Value.StartsWith(xignore.Value, StringComparison.OrdinalIgnoreCase); }
+        //        }
+        //        else
+        //        { toignore = Value.StartsWith(xignore.Value, StringComparison.OrdinalIgnoreCase); }
 
-                //Debug.WriteLine("toignore value: " + toignore);
-                if (toignore) { return true; }
-            }
+        //        //Debug.WriteLine("toignore value: " + toignore);
+        //        if (toignore) { return true; }
+        //    }
 
-            //match hasn't been found. Return false i.e. don't ignore
-            return false;
-        }
+        //    //match hasn't been found. Return false i.e. don't ignore
+        //    return false;
+        //}
 
         /// <summary>
         /// Truncate a string to the specified length
@@ -166,43 +166,43 @@ namespace TsGui.Validation
             else { return false; }
         } 
 
-        public static bool DoesRegexMatch(string Input, string Pattern, bool IsCaseSensitvie)
-        {
-            try
-            {
-                if (IsCaseSensitvie == true) { return Regex.IsMatch(Input, Pattern); }
-                else { return Regex.IsMatch(Input, Pattern, RegexOptions.IgnoreCase); }
-            }
-            catch (Exception e) { throw new TsGuiKnownException("Error processing RegEx: " + Pattern,e.Message); }
-        }
+        //public static bool DoesRegexMatch(string Input, string Pattern, bool IsCaseSensitvie)
+        //{
+        //    try
+        //    {
+        //        if (IsCaseSensitvie == true) { return Regex.IsMatch(Input, Pattern); }
+        //        else { return Regex.IsMatch(Input, Pattern, RegexOptions.IgnoreCase); }
+        //    }
+        //    catch (Exception e) { throw new TsGuiKnownException("Error processing RegEx: " + Pattern,e.Message); }
+        //}
 
-        public static bool IsNumeric(string Input)
-        {
-            double inputnum;
-            if (!double.TryParse(Input, out inputnum)) { return false; }
-            else { return true; }
-        }
+        //public static bool IsNumeric(string Input)
+        //{
+        //    double inputnum;
+        //    if (!double.TryParse(Input, out inputnum)) { return false; }
+        //    else { return true; }
+        //}
 
-        public static bool DoesNumberComparisonMatch(string Input, string RuleContent, StringMatchingRuleType Type)
-        {
-            double inputnum;
-            double rulenum;
+        //public static bool DoesNumberComparisonMatch(string Input, string RuleContent, StringMatchingRuleType Type)
+        //{
+        //    double inputnum;
+        //    double rulenum;
 
-            if (!double.TryParse(Input,out inputnum)) { return false; }
-            if (!double.TryParse(RuleContent, out rulenum)) { return false; }
+        //    if (!double.TryParse(Input,out inputnum)) { return false; }
+        //    if (!double.TryParse(RuleContent, out rulenum)) { return false; }
 
-            if (Type == StringMatchingRuleType.LessThan)
-            { return inputnum < rulenum; }
-            else if (Type == StringMatchingRuleType.LessThanOrEqualTo)
-            { return inputnum <= rulenum; }
-            else if (Type == StringMatchingRuleType.GreaterThan)
-            { return inputnum > rulenum; }
-            else if (Type == StringMatchingRuleType.GreaterThanOrEqualTo)
-            { return inputnum >= rulenum; }
-            else
-            { throw new ArgumentException("Invalid StringValidationRuleType passed to StringNumberCompare"); }
+        //    if (Type == StringMatchingRuleType.LessThan)
+        //    { return inputnum < rulenum; }
+        //    else if (Type == StringMatchingRuleType.LessThanOrEqualTo)
+        //    { return inputnum <= rulenum; }
+        //    else if (Type == StringMatchingRuleType.GreaterThan)
+        //    { return inputnum > rulenum; }
+        //    else if (Type == StringMatchingRuleType.GreaterThanOrEqualTo)
+        //    { return inputnum >= rulenum; }
+        //    else
+        //    { throw new ArgumentException("Invalid StringValidationRuleType passed to StringNumberCompare"); }
 
-        }
+        //}
 
         //public static bool DoesStringMatchRule(StringMatchingRule Rule, string Input)
         //{
