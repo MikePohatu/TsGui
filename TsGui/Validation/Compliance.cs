@@ -75,11 +75,11 @@ namespace TsGui.Validation
 
         public int EvaluateState(string Input)
         {
-            if (this._invalidrules.DoesStringMatch(Input) == true) { return ComplianceStateValues.Invalid; }
-            if (this._errorrules.DoesStringMatch(Input) == true) { return ComplianceStateValues.Error; }
-            if (this._warningrules.DoesStringMatch(Input) == true)  { return ComplianceStateValues.Warning; }
+            if (this._invalidrules.DoesMatch(Input) == true) { return ComplianceStateValues.Invalid; }
+            if (this._errorrules.DoesMatch(Input) == true) { return ComplianceStateValues.Error; }
+            if (this._warningrules.DoesMatch(Input) == true)  { return ComplianceStateValues.Warning; }
             if (this._okrules.Count == 0 ) { return ComplianceStateValues.OK; }
-            if (this._okrules.DoesStringMatch(Input) == true) { return ComplianceStateValues.OK; }
+            if (this._okrules.DoesMatch(Input) == true) { return ComplianceStateValues.OK; }
 
             return this._defaultstate;
         }

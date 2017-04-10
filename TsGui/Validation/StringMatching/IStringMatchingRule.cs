@@ -17,9 +17,7 @@ namespace TsGui.Validation.StringMatching
 {
     public interface IStringMatchingRule
     {
-        string Content { get; }
         bool DoesMatch(string input);
-        bool IsCaseSensitive { get; }
         string Message { get; }
     }
 }

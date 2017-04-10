@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// StringMatchingRuleSet.cs - stores and processes rules for a match 
+// MatchingRuleSet.cs - stores and processes rules for a match 
 
 using System;
 using System.Collections.Generic;
@@ -21,20 +21,25 @@ using System.Xml.Linq;
 
 namespace TsGui.Validation.StringMatching
 {
-    public class MatchingRuleSet
+    public class MatchingRuleSet: IStringMatchingRule
     {
         
         private List<IStringMatchingRule> _rules = new List<IStringMatchingRule>();
         private AndOr _ruletype = AndOr.OR;
 
         public List<IStringMatchingRule> Rules { get { return this._rules; } }
-        public string LastFailedMatchMessage { get; set; }
+        public string Message { get; set; }
         public int Count { get { return this._rules.Count; } }
+
+        public MatchingRuleSet(XElement inputxml)
+        { this.LoadXml(inputxml); }
+
+        public MatchingRuleSet() { }
 
         public void LoadXml(XElement InputXml)
         {
             if (InputXml == null) { return; }
-            foreach (XElement subx in InputXml.Elements("Rule"))
+            foreach (XElement subx in InputXml.Elements())
             {
                 IStringMatchingRule newrule = MatchingRuleFactory.GetRuleObject(subx);
                 this._rules.Add(newrule);
@@ -50,9 +55,9 @@ namespace TsGui.Validation.StringMatching
         public void Add(IStringMatchingRule rule)
         { if (rule != null) { this._rules.Add(rule); } }
 
-        public bool DoesStringMatch(string input)
+        public bool DoesMatch(string input)
         {
-            this.LastFailedMatchMessage = string.Empty;
+            this.Message = string.Empty;
 
             if (this._ruletype == AndOr.AND) { return this.AndComparison(input); }
             else { return this.OrComparison(input); }
@@ -67,7 +72,7 @@ namespace TsGui.Validation.StringMatching
                 { return false; }
                 else { s = s + rule.Message + Environment.NewLine; }
             }
-            this.LastFailedMatchMessage = s;
+            this.Message = s;
             return true;
         }
 
@@ -81,7 +86,7 @@ namespace TsGui.Validation.StringMatching
                 { return true; }
                 else { s = s + rule.Message + Environment.NewLine; }
             }
-            this.LastFailedMatchMessage = s;
+            this.Message = s;
             return false;
         }
     }

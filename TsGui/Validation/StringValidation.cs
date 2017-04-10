@@ -176,9 +176,9 @@ namespace TsGui.Validation
             bool result = false;
             string s = string.Empty;
 
-            if (this._invalidrules.DoesStringMatch(Input))
+            if (this._invalidrules.DoesMatch(Input))
             {
-                s = this._invalidrules.LastFailedMatchMessage;
+                s = this._invalidrules.Message;
                 result = true;
             }
 
@@ -197,10 +197,10 @@ namespace TsGui.Validation
 
             string s = string.Empty;
 
-            if (this._validrules.DoesStringMatch(Input))
+            if (this._validrules.DoesMatch(Input))
             { return true; }
             else
-            { s = this._validrules.LastFailedMatchMessage; }
+            { s = this._validrules.Message; }
 
             this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Must match one of: " + Environment.NewLine + s;
             return false;
@@ -212,7 +212,11 @@ namespace TsGui.Validation
             string s = string.Empty;
             foreach (IStringMatchingRule rule in this._invalidrules.Rules)
             {
-                if (rule is Characters) { s = s + rule.Content; }
+                if (rule is Characters)
+                {
+                    Characters charrule = (Characters)rule;
+                    s = s + charrule.Content;
+                }
             }
             return s;
         }

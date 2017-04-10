@@ -21,7 +21,11 @@ namespace TsGui.Validation.StringMatching
     {
         public static IStringMatchingRule GetRuleObject(XElement InputXml)
         {
+            string xname = InputXml?.Name.ToString();
             string type = XmlHandler.GetStringFromXAttribute(InputXml, "Type", string.Empty);
+
+            if (xname == "Ruleset")
+            { return new MatchingRuleSet(InputXml); }
 
             switch (type.ToLower())
             {

@@ -75,7 +75,7 @@ namespace TsGui.Queries
         {
             string sourcevalue = this._sourcequerylist.GetResultWrangler()?.GetString();
 
-            if (this._ruleset.DoesStringMatch(sourcevalue) == true)
+            if (this._ruleset.DoesMatch(sourcevalue) == true)
             { return this._resultquerylist.GetResultWrangler(); }
             else { return null; }
         }
