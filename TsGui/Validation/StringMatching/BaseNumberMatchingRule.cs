@@ -1,4 +1,4 @@
-﻿//    Copyright (C) 2017 Mike Pohatu
+﻿//    Copyright (C) 2016 Mike Pohatu
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,22 +13,25 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// LinkingDelegates.cs - delegates for the Linking namespace. 
+using System.Xml.Linq;
 
-using System;
-
-
-namespace TsGui.Linking
+namespace TsGui.Validation.StringMatching
 {
-    public class LinkingEventArgs: EventArgs
+    public abstract class BaseNumberMatchingRule : BaseMatchingRule
     {
-        public string CurrentValue { get; set; }
+        public BaseNumberMatchingRule(XElement inputxml) : base(inputxml) { }
 
-        public LinkingEventArgs(string currentvalue)
+        public bool DoesMatch(string input)
         {
-            this.CurrentValue = currentvalue;
+            double inputnum;
+            double rulenum;
+
+            if (!double.TryParse(input, out inputnum)) { return false; }
+            if (!double.TryParse(this.Content, out rulenum)) { return false; }
+
+            return this.Compare(inputnum, rulenum);
         }
 
-        public LinkingEventArgs() { }
+        protected abstract bool Compare(double input, double rulenumber);
     }
 }

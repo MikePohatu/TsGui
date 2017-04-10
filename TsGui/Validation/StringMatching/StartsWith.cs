@@ -1,4 +1,4 @@
-﻿//    Copyright (C) 2017 Mike Pohatu
+﻿//    Copyright (C) 2016 Mike Pohatu
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,22 +13,18 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// LinkingDelegates.cs - delegates for the Linking namespace. 
+using System.Xml.Linq;
 
-using System;
-
-
-namespace TsGui.Linking
+namespace TsGui.Validation.StringMatching
 {
-    public class LinkingEventArgs: EventArgs
+    public class StartsWith: BaseStringMatchingRule, IStringMatchingRule
     {
-        public string CurrentValue { get; set; }
+        public string Message { get { return "StartsWith: " + this.Content; } }
 
-        public LinkingEventArgs(string currentvalue)
-        {
-            this.CurrentValue = currentvalue;
-        }
+        public StartsWith(XElement inputxml):base(inputxml)
+        { }
 
-        public LinkingEventArgs() { }
+        protected override bool Compare(string input)
+        { return input.StartsWith(this._rulestring); }
     }
 }

@@ -55,7 +55,7 @@ namespace TsGui.Queries
             else { return null; }
         }
 
-        public void OnLinkedSourceValueChanged(ILinkSource source, LinkingEventArgs e)
+        public void OnLinkedSourceValueChanged()
         {
             this.ProcessQuery();
             this._linktargetoption?.RefreshValue();

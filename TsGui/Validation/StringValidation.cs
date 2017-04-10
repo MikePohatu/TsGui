@@ -18,6 +18,7 @@ using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Grouping;
+using TsGui.Validation.StringMatching;
 
 
 namespace TsGui.Validation
@@ -27,10 +28,8 @@ namespace TsGui.Validation
         private bool _validateempty = true;
         private int _maxlength = int.MaxValue;
         private int _minlength = 0;
-        //private List<StringMatchingRule> _validrules = new List<StringMatchingRule>();
-        //private List<StringMatchingRule> _invalidrules = new List<StringMatchingRule>();
-        private StringMatchingRuleSet _validrules = new StringMatchingRuleSet();
-        private StringMatchingRuleSet _invalidrules = new StringMatchingRuleSet();
+        private MatchingRuleSet _validrules = new MatchingRuleSet();
+        private MatchingRuleSet _invalidrules = new MatchingRuleSet();
         private MainController _controller;
 
         //Properties
@@ -83,22 +82,12 @@ namespace TsGui.Validation
             if (x != null)
             {
                 this._validrules.LoadXml(x);
-                //foreach (XElement subx in x.Elements("Rule"))
-                //{
-                //    StringMatchingRule newrule = new StringMatchingRule(subx);
-                //    this._validrules.Add(newrule);
-                //}
             }
 
             x = InputXml.Element("Invalid");
             if (x != null)
             {
                 this._invalidrules.LoadXml(x);
-                //foreach (XElement subx in x.Elements("Rule"))
-                //{
-                //    StringMatchingRule newrule = new StringMatchingRule(subx);
-                //    this._invalidrules.Add(newrule);
-                //}
             }
 
             xlist = InputXml.Elements("Group");
@@ -124,7 +113,9 @@ namespace TsGui.Validation
                 x = x.Element("Characters");
                 if (x != null)
                 {
-                    StringMatchingRule newrule = new StringMatchingRule(StringMatchingRuleType.Characters,x.Value);
+                    //StringMatchingRule newrule = new StringMatchingRule(StringMatchingRuleType.Characters,x.Value);
+                    //this._invalidrules.Add(new MatchingRuleFactory.GetRuleObject(x.Value));
+                    Characters newrule = new Characters(new XElement("Rule", x.Value));
                     this._invalidrules.Add(newrule);
                 }
             }
@@ -185,15 +176,6 @@ namespace TsGui.Validation
             bool result = false;
             string s = string.Empty;
 
-            //foreach (StringMatchingRule rule in this._invalidrules)
-            //{
-            //    if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-            //    {
-            //        s = s + rule.Message + Environment.NewLine;
-            //        result = true;
-            //    }
-            //}
-
             if (this._invalidrules.DoesStringMatch(Input))
             {
                 s = this._invalidrules.LastFailedMatchMessage;
@@ -214,12 +196,7 @@ namespace TsGui.Validation
             if (this._validrules.Count == 0) { return true; }
 
             string s = string.Empty;
-            //foreach (StringMatchingRule rule in this._validrules)
-            //{
-            //    if (ResultValidator.DoesStringMatchRule(rule, Input) == true)
-            //    { return true; }
-            //    else { s = s + rule.Message + Environment.NewLine; }               
-            //}
+
             if (this._validrules.DoesStringMatch(Input))
             { return true; }
             else
@@ -233,9 +210,9 @@ namespace TsGui.Validation
         {
             if (this.IsActive == false) { return string.Empty; }
             string s = string.Empty;
-            foreach (StringMatchingRule rule in this._invalidrules.Rules)
+            foreach (IStringMatchingRule rule in this._invalidrules.Rules)
             {
-                if (rule.Type == StringMatchingRuleType.Characters) { s = s + rule.Content; }
+                if (rule is Characters) { s = s + rule.Content; }
             }
             return s;
         }

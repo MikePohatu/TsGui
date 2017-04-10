@@ -204,64 +204,64 @@ namespace TsGui.Validation
 
         }
 
-        public static bool DoesStringMatchRule(StringMatchingRule Rule, string Input)
-        {
-            bool result = false;
-            string rulestring = Rule.Content;
-            string inputstring = Input;
+        //public static bool DoesStringMatchRule(StringMatchingRule Rule, string Input)
+        //{
+        //    bool result = false;
+        //    string rulestring = Rule.Content;
+        //    string inputstring = Input;
 
-            if (inputstring == null)
-            {
-                if (rulestring?.ToUpper() == "*NULL") { return true; }
-                else { return false; }
-            }
+        //    if (inputstring == null)
+        //    {
+        //        if (rulestring?.ToUpper() == "*NULL") { return true; }
+        //        else { return false; }
+        //    }
 
-            if (Rule.IsCaseSensitive == false)
-            {
-                rulestring = rulestring?.ToUpper();
-                inputstring = inputstring.ToUpper();
-            }
+        //    if (Rule.IsCaseSensitive == false)
+        //    {
+        //        rulestring = rulestring?.ToUpper();
+        //        inputstring = inputstring.ToUpper();
+        //    }
 
-            switch (Rule.Type)
-            {
-                case StringMatchingRuleType.Characters:
-                    result = DoesStringContainCharacters(Input, Rule.Content, Rule.IsCaseSensitive);
-                    break;
-                case StringMatchingRuleType.Contains:
-                    result = inputstring.Contains(rulestring);
-                    break;
-                case StringMatchingRuleType.EndsWith:
-                    result = inputstring.EndsWith(rulestring);
-                    break;
-                case StringMatchingRuleType.StartsWith:
-                    result = inputstring.StartsWith(rulestring);
-                    break;
-                case StringMatchingRuleType.RegEx:
-                    result = DoesRegexMatch(Input, Rule.Content, Rule.IsCaseSensitive);
-                    break;
-                case StringMatchingRuleType.Equals:
-                    result = inputstring.Equals(rulestring);
-                    break;
-                case StringMatchingRuleType.LessThan:
-                    result = DoesNumberComparisonMatch(Input, Rule.Content,Rule.Type);
-                    break;
-                case StringMatchingRuleType.GreaterThan:
-                    result = DoesNumberComparisonMatch(Input,Rule.Content, Rule.Type);
-                    break;
-                case StringMatchingRuleType.LessThanOrEqualTo:
-                    result = DoesNumberComparisonMatch(Input, Rule.Content, Rule.Type);
-                    break;
-                case StringMatchingRuleType.GreaterThanOrEqualTo:
-                    result = DoesNumberComparisonMatch(Input, Rule.Content, Rule.Type);
-                    break;
-                case StringMatchingRuleType.IsNumeric:
-                    result = IsNumeric(Input);
-                    break;
-                default:
-                    break;
-            }
-            return result;
-        }
+        //    switch (Rule.Type)
+        //    {
+        //        case StringMatchingRuleType.Characters:
+        //            result = DoesStringContainCharacters(Input, Rule.Content, Rule.IsCaseSensitive);
+        //            break;
+        //        case StringMatchingRuleType.Contains:
+        //            result = inputstring.Contains(rulestring);
+        //            break;
+        //        case StringMatchingRuleType.EndsWith:
+        //            result = inputstring.EndsWith(rulestring);
+        //            break;
+        //        case StringMatchingRuleType.StartsWith:
+        //            result = inputstring.StartsWith(rulestring);
+        //            break;
+        //        case StringMatchingRuleType.RegEx:
+        //            result = DoesRegexMatch(Input, Rule.Content, Rule.IsCaseSensitive);
+        //            break;
+        //        case StringMatchingRuleType.Equals:
+        //            result = inputstring.Equals(rulestring);
+        //            break;
+        //        case StringMatchingRuleType.LessThan:
+        //            result = DoesNumberComparisonMatch(Input, Rule.Content,Rule.Type);
+        //            break;
+        //        case StringMatchingRuleType.GreaterThan:
+        //            result = DoesNumberComparisonMatch(Input,Rule.Content, Rule.Type);
+        //            break;
+        //        case StringMatchingRuleType.LessThanOrEqualTo:
+        //            result = DoesNumberComparisonMatch(Input, Rule.Content, Rule.Type);
+        //            break;
+        //        case StringMatchingRuleType.GreaterThanOrEqualTo:
+        //            result = DoesNumberComparisonMatch(Input, Rule.Content, Rule.Type);
+        //            break;
+        //        case StringMatchingRuleType.IsNumeric:
+        //            result = IsNumeric(Input);
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //    return result;
+        //}
 
         public static bool OptionsValid(List<IValidationGuiOption> OptionList)
         {

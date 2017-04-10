@@ -18,16 +18,17 @@
 using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Grouping;
+using TsGui.Validation.StringMatching;
 
 namespace TsGui.Validation
 {
     public class Compliance: GroupableValidationBase
     {
 
-        private StringMatchingRuleSet _okrules = new StringMatchingRuleSet();
-        private StringMatchingRuleSet _warningrules = new StringMatchingRuleSet();
-        private StringMatchingRuleSet _errorrules = new StringMatchingRuleSet();
-        private StringMatchingRuleSet _invalidrules = new StringMatchingRuleSet();
+        private MatchingRuleSet _okrules = new MatchingRuleSet();
+        private MatchingRuleSet _warningrules = new MatchingRuleSet();
+        private MatchingRuleSet _errorrules = new MatchingRuleSet();
+        private MatchingRuleSet _invalidrules = new MatchingRuleSet();
         private int _defaultstate = ComplianceStateValues.Invalid;
         private MainController _controller;
 

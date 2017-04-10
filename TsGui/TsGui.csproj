@@ -78,6 +78,22 @@
     </Compile>
     <Compile Include="Arguments.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
+    <Compile Include="Validation\StringMatching\BaseMatchingRule.cs" />
+    <Compile Include="Validation\StringMatching\Characters.cs" />
+    <Compile Include="Validation\StringMatching\RegEx.cs" />
+    <Compile Include="Validation\StringMatching\IsNumeric.cs" />
+    <Compile Include="Validation\StringMatching\BaseNumberMatchingRule.cs" />
+    <Compile Include="Validation\StringMatching\BaseStringMatchingRule.cs" />
+    <Compile Include="Validation\StringMatching\LessThanOrEqualTo.cs" />
+    <Compile Include="Validation\StringMatching\LessThan.cs" />
+    <Compile Include="Validation\StringMatching\GreaterThanOrEqualTo.cs" />
+    <Compile Include="Validation\StringMatching\GreaterThan.cs" />
+    <Compile Include="Validation\StringMatching\Equals.cs" />
+    <Compile Include="Validation\StringMatching\Contains.cs" />
+    <Compile Include="Validation\StringMatching\IStringMatchingRule.cs" />
+    <Compile Include="Validation\StringMatching\MatchingRuleFactory.cs" />
+    <Compile Include="Validation\StringMatching\EndsWith.cs" />
+    <Compile Include="Validation\StringMatching\StartsWith.cs" />
     <Compile Include="View\Layout\Converters\XmlStringLineConverter.cs" />
     <Compile Include="Diagnostics\Logging\ILoggingReceiver.cs" />
     <Compile Include="Diagnostics\Logging\LoggingDelegates.cs" />
@@ -108,7 +124,7 @@
     <Compile Include="Linking\LinkingLibrary.cs" />
     <Compile Include="Queries\QueryList.cs" />
     <Compile Include="Queries\ValueOnly.cs" />
-    <Compile Include="Validation\StringMatchingRuleSet.cs" />
+    <Compile Include="Validation\StringMatching\MatchingRuleSet.cs" />
     <Compile Include="Options\NoUI\NoUIOption.cs" />
     <Compile Include="Options\NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />
@@ -137,7 +153,6 @@
     <Compile Include="Validation\StringValidation.cs" />
     <Compile Include="Grouping\GroupableUIElementBase.cs" />
     <Compile Include="Validation\Enums.cs" />
-    <Compile Include="Validation\StringMatchingRule.cs" />
     <Compile Include="Validation\ValidationErrorToolTip.xaml.cs">
       <DependentUpon>ValidationErrorToolTip.xaml</DependentUpon>
     </Compile>

@@ -19,5 +19,5 @@ using TsGui.Options;
 
 namespace TsGui.Linking
 {
-    public delegate void IOptionValueChanged(ILinkSource sender, LinkingEventArgs e);
+    public delegate void IOptionValueChanged();
 }

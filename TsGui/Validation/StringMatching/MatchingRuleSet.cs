@@ -13,21 +13,21 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// LinkingRuleProcesssor.cs - stores and processes rules for a match 
+// StringMatchingRuleSet.cs - stores and processes rules for a match 
 
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace TsGui.Validation
+namespace TsGui.Validation.StringMatching
 {
-    public class StringMatchingRuleSet
+    public class MatchingRuleSet
     {
         
-        private List<StringMatchingRule> _rules = new List<StringMatchingRule>();
+        private List<IStringMatchingRule> _rules = new List<IStringMatchingRule>();
         private AndOr _ruletype = AndOr.OR;
 
-        public List<StringMatchingRule> Rules { get { return this._rules; } }
+        public List<IStringMatchingRule> Rules { get { return this._rules; } }
         public string LastFailedMatchMessage { get; set; }
         public int Count { get { return this._rules.Count; } }
 
@@ -36,7 +36,7 @@ namespace TsGui.Validation
             if (InputXml == null) { return; }
             foreach (XElement subx in InputXml.Elements("Rule"))
             {
-                StringMatchingRule newrule = new StringMatchingRule(subx);
+                IStringMatchingRule newrule = MatchingRuleFactory.GetRuleObject(subx);
                 this._rules.Add(newrule);
             }
 
@@ -47,7 +47,7 @@ namespace TsGui.Validation
             }
         }
 
-        public void Add(StringMatchingRule rule)
+        public void Add(IStringMatchingRule rule)
         { if (rule != null) { this._rules.Add(rule); } }
 
         public bool DoesStringMatch(string input)
@@ -61,9 +61,9 @@ namespace TsGui.Validation
         private bool AndComparison(string input)
         {
             string s = string.Empty;
-            foreach (StringMatchingRule rule in this._rules)
+            foreach (IStringMatchingRule rule in this._rules)
             {
-                if (ResultValidator.DoesStringMatchRule(rule, input) == false)
+                if (rule.DoesMatch(input) == false)
                 { return false; }
                 else { s = s + rule.Message + Environment.NewLine; }
             }
@@ -74,9 +74,10 @@ namespace TsGui.Validation
         private bool OrComparison(string input)
         {
             string s = string.Empty;
-            foreach (StringMatchingRule rule in this._rules)
+            foreach (IStringMatchingRule rule in this._rules)
             {
-                if (ResultValidator.DoesStringMatchRule(rule, input) == true)
+                //if (ResultValidator.DoesStringMatchRule(rule, input) == true)
+                if (rule.DoesMatch(input) == true)
                 { return true; }
                 else { s = s + rule.Message + Environment.NewLine; }
             }

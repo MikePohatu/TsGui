@@ -1,4 +1,4 @@
-﻿//    Copyright (C) 2017 Mike Pohatu
+﻿//    Copyright (C) 2016 Mike Pohatu
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,22 +13,26 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// LinkingDelegates.cs - delegates for the Linking namespace. 
+using System.Xml.Linq;
 
-using System;
-
-
-namespace TsGui.Linking
+namespace TsGui.Validation.StringMatching
 {
-    public class LinkingEventArgs: EventArgs
+    public abstract class BaseMatchingRule
     {
-        public string CurrentValue { get; set; }
+        public string Content { get; set; }
+        public bool IsCaseSensitive { get; set; }
 
-        public LinkingEventArgs(string currentvalue)
+        public BaseMatchingRule() { }
+
+        public BaseMatchingRule(XElement inputxml)
+        { this.LoadXml(inputxml); }
+
+        protected void LoadXml(XElement inputxml)
         {
-            this.CurrentValue = currentvalue;
-        }
+            if (inputxml == null) { return; }
 
-        public LinkingEventArgs() { }
+            this.Content = inputxml.Value;
+            this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(inputxml, "CaseSensitive", false); 
+        }
     }
 }

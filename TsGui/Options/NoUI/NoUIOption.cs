@@ -139,7 +139,7 @@ namespace TsGui.Options.NoUI
             LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
-            this.ValueChanged?.Invoke(this,new LinkingEventArgs(this.CurrentValue));
+            this.ValueChanged?.Invoke();
         }
     }
 }

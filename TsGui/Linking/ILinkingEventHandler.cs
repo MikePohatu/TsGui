@@ -19,6 +19,6 @@ namespace TsGui.Linking
 {
     public interface ILinkingEventHandler
     {
-        void OnLinkedSourceValueChanged(ILinkSource source, LinkingEventArgs e);
+        void OnLinkedSourceValueChanged();
     }
 }

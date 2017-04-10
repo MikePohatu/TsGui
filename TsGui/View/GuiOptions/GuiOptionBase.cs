@@ -131,10 +131,10 @@ namespace TsGui.View.GuiOptions
 
         protected void NotifyUpdate()
         {
-            LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
-            this.ValueChanged?.Invoke(this, new LinkingEventArgs(this.CurrentValue));
+            LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
+            this.ValueChanged?.Invoke();
         }
     }
 }

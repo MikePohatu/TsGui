@@ -1,4 +1,4 @@
-﻿//    Copyright (C) 2017 Mike Pohatu
+﻿//    Copyright (C) 2016 Mike Pohatu
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,22 +13,13 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// LinkingDelegates.cs - delegates for the Linking namespace. 
-
-using System;
-
-
-namespace TsGui.Linking
+namespace TsGui.Validation.StringMatching
 {
-    public class LinkingEventArgs: EventArgs
+    public interface IStringMatchingRule
     {
-        public string CurrentValue { get; set; }
-
-        public LinkingEventArgs(string currentvalue)
-        {
-            this.CurrentValue = currentvalue;
-        }
-
-        public LinkingEventArgs() { }
+        string Content { get; }
+        bool DoesMatch(string input);
+        bool IsCaseSensitive { get; }
+        string Message { get; }
     }
 }

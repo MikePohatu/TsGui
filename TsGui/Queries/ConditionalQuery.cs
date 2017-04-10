@@ -17,7 +17,7 @@
 
 using System.Xml.Linq;
 using TsGui.Linking;
-using TsGui.Validation;
+using TsGui.Validation.StringMatching;
 
 namespace TsGui.Queries
 {
@@ -25,7 +25,7 @@ namespace TsGui.Queries
     {
         private QueryList _sourcequerylist;
         private QueryList _resultquerylist;
-        private StringMatchingRuleSet _ruleset = new StringMatchingRuleSet();
+        private MatchingRuleSet _ruleset = new MatchingRuleSet();
         private MainController _controller;
         private ILinkTarget _linktargetoption;
 
@@ -75,7 +75,7 @@ namespace TsGui.Queries
         {
             string sourcevalue = this._sourcequerylist.GetResultWrangler()?.GetString();
 
-            if ((this._ruleset == null) || (this._ruleset.DoesStringMatch(sourcevalue)) == true)
+            if (this._ruleset.DoesStringMatch(sourcevalue) == true)
             { return this._resultquerylist.GetResultWrangler(); }
             else { return null; }
         }
@@ -85,7 +85,7 @@ namespace TsGui.Queries
             this._linktargetoption.RefreshValue();
         }
 
-        public void OnLinkedSourceValueChanged(ILinkSource source, LinkingEventArgs e)
+        public void OnLinkedSourceValueChanged()
         { this.RefreshValue(); }
     }
 }

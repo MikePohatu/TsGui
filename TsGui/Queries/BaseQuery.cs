@@ -15,13 +15,13 @@
 
 using System.Xml.Linq;
 using System.Collections.Generic;
-using TsGui.Validation;
+using TsGui.Validation.StringMatching;
 
 namespace TsGui.Queries
 {
     public abstract class BaseQuery: IQuery
     {
-        protected List<StringMatchingRule> _ignorerules = new List<StringMatchingRule>();
+        protected List<IStringMatchingRule> _ignorerules = new List<IStringMatchingRule>();
         protected bool _reprocess = false;
         protected bool _processed = false;
         protected ResultWrangler _processingwrangler = new ResultWrangler();
@@ -42,7 +42,7 @@ namespace TsGui.Queries
             this._ignoreempty = XmlHandler.GetBoolFromXAttribute(InputXml, "IgnoreEmpty", this._ignoreempty);
             foreach (XElement xignorerule in InputXml.Elements("Ignore"))
             {
-                this._ignorerules.Add(new StringMatchingRule(xignorerule));
+                this._ignorerules.Add(MatchingRuleFactory.GetRuleObject(xignorerule));
             }
         }
 
@@ -50,9 +50,9 @@ namespace TsGui.Queries
         {
             if ((this._ignoreempty == true) && (string.IsNullOrWhiteSpace(input) == true)) { return true; }
 
-            foreach (StringMatchingRule rule in this._ignorerules)
+            foreach (IStringMatchingRule rule in this._ignorerules)
             {
-                if (ResultValidator.DoesStringMatchRule(rule, input) == true)
+                if (rule.DoesMatch(input) == true)
                 {
                     return true;
                 }

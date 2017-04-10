@@ -70,7 +70,7 @@ namespace TsGui.Queries
             this._linktargetoption.RefreshValue();
         }
 
-        public void OnLinkedSourceValueChanged(ILinkSource source, LinkingEventArgs e)
+        public void OnLinkedSourceValueChanged()
         { this.RefreshValue(); }
     }
 }
