@@ -40,7 +40,15 @@ namespace TsGui.Options.NoUI
             get { return this._inactivevalue; }
             set { this._inactivevalue = value; }
         }
-        public string CurrentValue { get { return this._value; } }
+        public string CurrentValue
+        {
+            get { return this._value; }
+            set
+            {
+                this._value = value;
+                this.NotifyUpdate();
+            }
+        }
         public TsVariable Variable
         {
             get
@@ -64,12 +72,17 @@ namespace TsGui.Options.NoUI
             }
         }
         //constructors     
-        public NoUIOption(NoUIContainer Parent, IDirector MainController, XElement InputXml) : base(Parent,MainController)
+        public NoUIOption(NoUIContainer Parent, IDirector director, XElement InputXml) : base(Parent, director)
         {
-            this._querylist = new QueryList(this,MainController);
+            this._querylist = new QueryList(this, director);
             this.LoadXml(InputXml);
             this.RefreshValue();
             this.NotifyUpdate();
+        }
+
+        public NoUIOption(IDirector director):base (director)
+        {
+            this._querylist = new QueryList(this, director);
         }
 
         //public methods

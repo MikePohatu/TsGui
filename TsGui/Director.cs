@@ -127,6 +127,8 @@ namespace TsGui
                 return;
             }
 
+            this.PopulateHwOptions();
+
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
             if (this._prodmode == true)
@@ -327,12 +329,6 @@ namespace TsGui
                 }
             }
 
-            if (this._chassischeck != null)
-            {
-                foreach (TsVariable var in this._chassischeck.GetTsVariables())
-                { this._envController.AddVariable(var); }
-            }
-
             this._finished = true;
             this.ParentWindow.Close();
         }
@@ -395,6 +391,21 @@ namespace TsGui
 
             if (result == MessageBoxResult.Yes) return true;
             else return false;
+        }
+
+        private void PopulateHwOptions()
+        {
+            if (this._chassischeck != null)
+            {
+                foreach (TsVariable var in this._chassischeck.GetTsVariables())
+                {
+                    NoUIOption newhwoption = new NoUIOption(this);
+                    newhwoption.VariableName = var.Name;
+                    newhwoption.CurrentValue = var.Value;
+                    newhwoption.ID = var.Name;
+                    this._optionlibrary.Add(newhwoption);
+                }
+            }
         }
     }
 }

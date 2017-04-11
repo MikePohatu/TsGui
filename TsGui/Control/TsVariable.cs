@@ -45,7 +45,7 @@ namespace TsGui
 
         public TsVariable (string Name, string Value)
         {
-            this._name = Name;
+            this.Name = Name;
             this.Value = Value;
         }
     }

@@ -80,6 +80,8 @@ TestingWindowUI.xaml - shows live data at runtime
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="_variablecolumn" Header="Variable" Binding="{Binding VariableName}" 
                             Width="Auto"/>
+                <DataGridTextColumn x:Name="_idcolumn" Header="ID" Binding="{Binding ID}" 
+                            Width="Auto"/>
                 <DataGridTextColumn x:Name="_valuecolumn" Header="Value" Binding="{Binding LiveValue}" 
                             MinWidth="130" Width="Auto"/>
             </DataGrid.Columns>
