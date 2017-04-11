@@ -109,7 +109,7 @@ namespace TsGui
             this.ParentWindow.Close();
         }
 
-        public void Startup()
+        private void Startup()
         {
             this.StartupFinished = false;
             this._prodmode = this._envController.Init();

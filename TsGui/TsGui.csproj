@@ -81,6 +81,7 @@
     <Compile Include="IDirector.cs" />
     <Compile Include="Validation\StringMatching\BaseMatchingRule.cs" />
     <Compile Include="Validation\StringMatching\Characters.cs" />
+    <Compile Include="Validation\StringMatching\MatchingRuleLibrary.cs" />
     <Compile Include="Validation\StringMatching\RegEx.cs" />
     <Compile Include="Validation\StringMatching\IsNumeric.cs" />
     <Compile Include="Validation\StringMatching\BaseNumberMatchingRule.cs" />
@@ -125,7 +126,7 @@
     <Compile Include="Linking\LinkingLibrary.cs" />
     <Compile Include="Queries\QueryList.cs" />
     <Compile Include="Queries\ValueOnly.cs" />
-    <Compile Include="Validation\StringMatching\MatchingRuleSet.cs" />
+    <Compile Include="Validation\StringMatching\RuleSet.cs" />
     <Compile Include="Options\NoUI\NoUIOption.cs" />
     <Compile Include="Options\NoUI\NoUIContainer.cs" />
     <Compile Include="Calculator\CalculatorEnums.cs" />

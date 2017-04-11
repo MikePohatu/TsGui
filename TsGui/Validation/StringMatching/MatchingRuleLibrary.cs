@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// MatchingRuleSet.cs - stores and processes rules for a match 
+// MatchingRuleLibrary.cs - stores and processes rules for a match 
 
 using System;
 using System.Collections.Generic;
@@ -21,82 +21,65 @@ using System.Xml.Linq;
 
 namespace TsGui.Validation.StringMatching
 {
-    public class MatchingRuleSet: IStringMatchingRule
+    public class MatchingRuleLibrary
     {
-        
+
         private List<IStringMatchingRule> _rules = new List<IStringMatchingRule>();
-        private AndOr _ruletype = AndOr.OR;
+        private string _message = null;
 
         public List<IStringMatchingRule> Rules { get { return this._rules; } }
-        public string Message { get; set; }
+        public string Message
+        {
+            get
+            {
+                if (this._message == null) { return this.BuildMessage(); }
+                else { return this._message; }
+            }
+        }
+
         public int Count { get { return this._rules.Count; } }
 
-        public MatchingRuleSet(XElement inputxml)
+        public MatchingRuleLibrary(XElement inputxml)
         { this.LoadXml(inputxml); }
 
-        public MatchingRuleSet() { }
+        public MatchingRuleLibrary() { }
 
         public void LoadXml(XElement InputXml)
         {
             if (InputXml == null) { return; }
             foreach (XElement subx in InputXml.Elements())
             {
-                IStringMatchingRule newrule = MatchingRuleFactory.GetRuleObject(subx);
+                IStringMatchingRule newrule = MatchingRuleFactory.GetRootRuleObject(subx);
                 if (newrule != null) { this._rules.Add(newrule); }
             }
-
-            XAttribute xa = InputXml.Attribute("Type");
-            if (xa != null)
-            {
-                if (xa.Value == "AND") { this._ruletype = AndOr.AND; }
-            }
-
-            this.BuildMessage();
         }
 
         public void Add(IStringMatchingRule rule)
         {
             if (rule != null) { this._rules.Add(rule); }
-            this.BuildMessage();
         }
 
         public bool DoesMatch(string input)
         {
-            if (this._ruletype == AndOr.AND) { return this.AndComparison(input); }
-            else { return this.OrComparison(input); }
-        }
-
-        private bool AndComparison(string input)
-        {
             foreach (IStringMatchingRule rule in this._rules)
             {
-                if (rule.DoesMatch(input) == false) { return false; }
-            }
-            return true;
-        }
-
-        private bool OrComparison(string input)
-        {
-            foreach (IStringMatchingRule rule in this._rules)
-            {
-                if (rule.DoesMatch(input) == true) { return true; }
+                if (rule.DoesMatch(input)) { return true; }
             }
             return false;
         }
 
-        private void BuildMessage()
+        private string BuildMessage()
         {
             string s = string.Empty;
 
             foreach (IStringMatchingRule rule in this._rules)
             {
-                if (string.IsNullOrEmpty(s) == true) { s = rule.Message; }
-                else { s = s + Environment.NewLine + this._ruletype.ToString() + " " + rule.Message; }
+                if (string.IsNullOrEmpty(s) == true) { s = "• " + rule.Message; }
+                else { s = s + Environment.NewLine + "• " + rule.Message; }
             }
 
-            if (this.Count !=1) { s = "(" + s + ")"; }
-
-            this.Message = s;
-        }        
+            this._message = s;
+            return s;
+        }
     }
 }

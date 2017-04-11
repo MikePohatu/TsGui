@@ -19,13 +19,21 @@ namespace TsGui.Validation.StringMatching
 {
     public static class MatchingRuleFactory
     {
+        public static IStringMatchingRule GetRootRuleObject(XElement InputXml)
+        {
+            IStringMatchingRule newrule = GetRuleObject(InputXml);
+            RuleSet testset = newrule as RuleSet;
+            if (testset != null) { testset.IsChild = false; }
+            return newrule;
+        }
+
         public static IStringMatchingRule GetRuleObject(XElement InputXml)
         {
             string xname = InputXml?.Name.ToString();
             string type = XmlHandler.GetStringFromXAttribute(InputXml, "Type", string.Empty);
 
             if (xname == "Ruleset")
-            { return new MatchingRuleSet(InputXml); }
+            { return new RuleSet(InputXml); }
 
             switch (type.ToLower())
             {

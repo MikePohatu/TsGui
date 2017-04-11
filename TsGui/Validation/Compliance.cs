@@ -25,10 +25,10 @@ namespace TsGui.Validation
     public class Compliance: GroupableValidationBase
     {
 
-        private MatchingRuleSet _okrules = new MatchingRuleSet();
-        private MatchingRuleSet _warningrules = new MatchingRuleSet();
-        private MatchingRuleSet _errorrules = new MatchingRuleSet();
-        private MatchingRuleSet _invalidrules = new MatchingRuleSet();
+        private MatchingRuleLibrary _okrules = new MatchingRuleLibrary();
+        private MatchingRuleLibrary _warningrules = new MatchingRuleLibrary();
+        private MatchingRuleLibrary _errorrules = new MatchingRuleLibrary();
+        private MatchingRuleLibrary _invalidrules = new MatchingRuleLibrary();
         private int _defaultstate = ComplianceStateValues.Invalid;
         private IDirector _controller;
 

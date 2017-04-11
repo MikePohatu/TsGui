@@ -25,7 +25,7 @@ namespace TsGui.Queries
     {
         private QueryList _sourcequerylist;
         private QueryList _resultquerylist;
-        private MatchingRuleSet _ruleset = new MatchingRuleSet();
+        private RuleSet _ruleset = new RuleSet();
         private IDirector _controller;
         private ILinkTarget _linktargetoption;
 

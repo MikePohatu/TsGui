@@ -28,8 +28,8 @@ namespace TsGui.Validation
         private bool _validateempty = true;
         private int _maxlength = int.MaxValue;
         private int _minlength = 0;
-        private MatchingRuleSet _validrules = new MatchingRuleSet();
-        private MatchingRuleSet _invalidrules = new MatchingRuleSet();
+        private MatchingRuleLibrary _validrules = new MatchingRuleLibrary();
+        private MatchingRuleLibrary _invalidrules = new MatchingRuleLibrary();
         private IDirector _controller;
 
         //Properties
@@ -176,7 +176,7 @@ namespace TsGui.Validation
             if (this._invalidrules.DoesMatch(Input))
             {
                 result = true;
-                this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Must not match any of: " + Environment.NewLine + this._invalidrules.Message;
+                this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Must not match any of: " + Environment.NewLine + this._invalidrules.Message + Environment.NewLine;
             }
 
             return result;
@@ -191,7 +191,7 @@ namespace TsGui.Validation
             { return true; }
             else
             {
-                this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Must match one of: " + Environment.NewLine + this._validrules.Message;
+                this.FailedValidationMessage = this.FailedValidationMessage + Environment.NewLine + "Must match one of: " + Environment.NewLine + this._validrules.Message + Environment.NewLine;
                 return false;
             }
         }
