@@ -25,12 +25,12 @@ using TsGui.Linking;
 
 namespace TsGui.Tests
 {
-    public class TestDirector:IDirector
+    public class TestDirector
     {
-        public event TsGuiWindowEventHandler WindowLoaded;
-        public event TsGuiWindowMovingEventHandler WindowMoving;
-        public event TsGuiWindowEventHandler WindowMouseUp;
-        public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
+        //public event TsGuiWindowEventHandler WindowLoaded;
+        //public event TsGuiWindowMovingEventHandler WindowMoving;
+        //public event TsGuiWindowEventHandler WindowMouseUp;
+        //public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
         //properties
         public LinkingLibrary LinkingLibrary { get; }
