@@ -27,7 +27,7 @@ namespace TsGui.Images
         private double _width;
         private double _height;
         private MultiImage _multiimage;
-        private MainController _controller;
+        private IDirector _controller;
         private string _file;
 
         public string File
@@ -59,14 +59,14 @@ namespace TsGui.Images
         }
 
         //constructors
-        public Image(XElement InputXml, MainController MainController)
+        public Image(XElement InputXml, IDirector MainController)
         {
             this._controller = MainController;
             this.SetDefaults();
             this.LoadXml(InputXml);
         }
 
-        public Image(MainController MainController)
+        public Image(IDirector MainController)
         {
             this._controller = MainController;
             this.SetDefaults();

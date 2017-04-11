@@ -43,7 +43,7 @@ namespace TsGui.View.GuiOptions
         }
         public override TsVariable Variable { get { return null; } }
 
-        public TsTextBlock (XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
+        public TsTextBlock (XElement InputXml, TsColumn Parent, IDirector MainController): base (Parent, MainController)
         {
             this._controller = MainController;
             this._displayvaluelist = new QueryList(this,this._controller);

@@ -81,7 +81,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //constructor
-        public ComplianceOptionBase(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
+        public ComplianceOptionBase(XElement InputXml, TsColumn Parent, IDirector MainController): base (Parent, MainController)
         {
             this.Label = new TsLabelUI();
             this._rootelement = this.GetRootElement();

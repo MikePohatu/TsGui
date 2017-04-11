@@ -34,11 +34,11 @@ namespace TsGui.Validation
         private Popup _popup;
         private ValidationErrorToolTip _validationerrortooltip;
         private GuiOptionBase _guioption;
-        private MainController _controller;
+        private IDirector _controller;
         private bool _windowloaded = false;
 
         //Constructor
-        public ValidationToolTipHandler(GuiOptionBase GuiOption, MainController MainController)
+        public ValidationToolTipHandler(GuiOptionBase GuiOption, IDirector MainController)
         {
             this._guioption = GuiOption;
             this._controller = MainController;

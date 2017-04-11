@@ -26,10 +26,10 @@ namespace TsGui.Queries
         private QueryList _sourcequerylist;
         private QueryList _resultquerylist;
         private MatchingRuleSet _ruleset = new MatchingRuleSet();
-        private MainController _controller;
+        private IDirector _controller;
         private ILinkTarget _linktargetoption;
 
-        public ConditionalQuery(XElement inputxml, MainController controller, ILinkTarget targetoption)
+        public ConditionalQuery(XElement inputxml, IDirector controller, ILinkTarget targetoption)
         {
             this._reprocess = true;
             this._controller = controller;

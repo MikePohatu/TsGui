@@ -68,12 +68,12 @@ namespace TsGui.View.Layout
         public BaseLayoutElement Parent { get; set; }
 
         //constructors
-        public BaseLayoutElement(MainController MainController):base (MainController)
+        public BaseLayoutElement(IDirector MainController):base (MainController)
         {
             this.SetDefaults();
         }
 
-        public BaseLayoutElement(BaseLayoutElement Parent, MainController MainController):base (Parent,MainController)
+        public BaseLayoutElement(BaseLayoutElement Parent, IDirector MainController):base (Parent,MainController)
         {
             this.Parent = Parent;
             this.SetDefaults();

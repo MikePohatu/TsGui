@@ -24,10 +24,10 @@ namespace TsGui.Queries
     public class CombinedQuery: BaseQuery, ILinkTarget, ILinkingEventHandler
     {
         private QueryList _querylist;
-        private MainController _controller;
+        private IDirector _controller;
         private ILinkTarget _linktargetoption;
 
-        public CombinedQuery(XElement inputxml, MainController controller, ILinkTarget targetoption)
+        public CombinedQuery(XElement inputxml, IDirector controller, ILinkTarget targetoption)
         {
             this._querylist = new QueryList(this, controller);
             this._processingwrangler = new ResultWrangler();

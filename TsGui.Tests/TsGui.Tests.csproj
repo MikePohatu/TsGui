@@ -39,12 +39,17 @@
       <HintPath>..\packages\NUnit.3.6.1\lib\net40\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculatorTests.cs" />
+    <Compile Include="TestDirector.cs" />
     <Compile Include="Validation\MatchingRuleTests.cs" />
     <Compile Include="WmiQueryTestArgs.cs" />
     <Compile Include="ResultValidatorTests.cs" />

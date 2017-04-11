@@ -40,7 +40,7 @@ namespace TsGui.View.Layout
 
         //constructor
         #region
-        public TsRow (XElement SourceXml,int PageIndex, BaseLayoutElement Parent, MainController MainController): base (Parent,MainController)
+        public TsRow (XElement SourceXml,int PageIndex, BaseLayoutElement Parent, IDirector MainController): base (Parent,MainController)
         {
 
             this._controller = MainController;

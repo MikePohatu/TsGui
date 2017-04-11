@@ -27,7 +27,7 @@ namespace TsGui.View.GuiOptions
     {
 
         //constructor
-        public TsTrafficLight(XElement InputXml, TsColumn Parent, MainController MainController): base (InputXml, Parent, MainController)
+        public TsTrafficLight(XElement InputXml, TsColumn Parent, IDirector MainController): base (InputXml, Parent, MainController)
         {           
             this.Control = new TsTrafficLightUI();
             this._validationtooltiphandler.SetTarget(this.Control);

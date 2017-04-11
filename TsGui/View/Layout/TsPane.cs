@@ -25,7 +25,7 @@ namespace TsGui.View.Layout
 {
     public class TsPane: ViewModelBase
     {
-        private MainController _controller;
+        private IDirector _controller;
         private double _width;
         private double _height;
         private TsPaneUI _paneui;
@@ -55,18 +55,18 @@ namespace TsGui.View.Layout
         }
 
         //Constructor
-        public TsPane(MainController MainController)
+        public TsPane(IDirector MainController)
         {
             this.Init(MainController);         
         }
 
-        public TsPane(XElement InputXml, MainController MainController)
+        public TsPane(XElement InputXml, IDirector MainController)
         {
             this.Init(MainController);
             this.LoadXml(InputXml);
         }
 
-        private void Init(MainController MainController)
+        private void Init(IDirector MainController)
         {
             this._controller = MainController;
             this.PaneUI = new TsPaneUI();

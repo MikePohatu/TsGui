@@ -78,7 +78,7 @@ namespace TsGui.View.Layout
         
         
         //Constructors
-        public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml, MainController MainController):base(Parent, MainController)
+        public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml, IDirector MainController):base(Parent, MainController)
         {
             this.Height = Template.Height;
             this.Title = Template.Title;
@@ -90,7 +90,7 @@ namespace TsGui.View.Layout
             this.Init(SourceXml, MainController);
         }
 
-        public TsPageHeader(XElement SourceXml, MainController MainController): base (MainController)
+        public TsPageHeader(XElement SourceXml, IDirector MainController): base (MainController)
         {
             this.ShowGridLines = _controller.ShowGridLines;
             this.SetDefaults();
@@ -98,7 +98,7 @@ namespace TsGui.View.Layout
             this.Init(SourceXml, MainController);
         }
 
-        public TsPageHeader(MainController MainController) : base(MainController)
+        public TsPageHeader(IDirector MainController) : base(MainController)
         {
             this.SetDefaults();
         }
@@ -116,7 +116,7 @@ namespace TsGui.View.Layout
             this.BgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF006AD4"));
         }
 
-        private void Init (XElement SourceXml, MainController MainController)
+        private void Init (XElement SourceXml, IDirector MainController)
         {
             this.UI = new TsPageHeaderUI();
             this.UI.DataContext = this;

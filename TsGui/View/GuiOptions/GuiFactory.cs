@@ -25,7 +25,7 @@ namespace TsGui.View.GuiOptions
 {
     public static class GuiFactory
     {
-        public static IGuiOption CreateGuiOption(XElement OptionXml, TsColumn Parent, MainController RootController)
+        public static IGuiOption CreateGuiOption(XElement OptionXml, TsColumn Parent, IDirector RootController)
         {
             XAttribute xtype = OptionXml.Attribute("Type");
             if (xtype == null) { throw new ArgumentException("Missing Type attribute on GuiOption" + Environment.NewLine); }

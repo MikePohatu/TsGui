@@ -24,7 +24,7 @@ namespace TsGui.Validation
 {
     public class ComplianceHandler
     {
-        private MainController _controller;
+        private IDirector _controller;
         private List<Compliance> _compliances = new List<Compliance>();
         private IValidationOwner _owner;
 
@@ -34,7 +34,7 @@ namespace TsGui.Validation
         public string FailedValidationMessage { get; set; }
         #endregion
 
-        public ComplianceHandler(IValidationOwner Owner, MainController MainController)
+        public ComplianceHandler(IValidationOwner Owner, IDirector MainController)
         {
             this._owner = Owner;
             this._controller = MainController;

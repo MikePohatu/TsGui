@@ -24,7 +24,7 @@ namespace TsGui.Validation
 {
     public class ValidationHandler
     {
-        private MainController _controller;
+        private IDirector _controller;
         private List<StringValidation> _validations = new List<StringValidation>();
         private XElement _legacyxml = new XElement("Legacy");
         private IValidationOwner _owner;
@@ -37,7 +37,7 @@ namespace TsGui.Validation
         public int MaxLength { get { return this.GetMaxLength(); } }
         #endregion
 
-        public ValidationHandler(IValidationOwner Owner, MainController MainController)
+        public ValidationHandler(IValidationOwner Owner, IDirector MainController)
         {
             this._owner = Owner;
             this._controller = MainController;

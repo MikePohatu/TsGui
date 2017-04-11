@@ -41,7 +41,7 @@ namespace TsGui.View.GuiOptions
 {
     public class TsComputerName : TsFreeText
     {
-        public TsComputerName(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
+        public TsComputerName(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent, MainController)
         {
             base.LoadXml(this.BuildDefaultXml());
             base.LoadXml(InputXml);

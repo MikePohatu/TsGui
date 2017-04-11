@@ -22,7 +22,7 @@ namespace TsGui.Queries
     public static class QueryFactory
     {
 
-        public static IQuery GetQueryObject(XElement InputXml, MainController controller, ILinkTarget owner )
+        public static IQuery GetQueryObject(XElement InputXml, IDirector controller, ILinkTarget owner )
         {
             if (InputXml == null) { return null; }
 
@@ -64,7 +64,7 @@ namespace TsGui.Queries
         //          <ID Name = "TestLink1"/>
         //      </Query>
         #endregion
-        public static IQuery GetLinkToQuery(string SourceID, MainController controller, ILinkTarget owner)
+        public static IQuery GetLinkToQuery(string SourceID, IDirector controller, ILinkTarget owner)
         {
             XElement sourcequeryx = new XElement("Query");
             sourcequeryx.Add(new XAttribute("Type", "OptionValue"));
@@ -93,7 +93,7 @@ namespace TsGui.Queries
         //      </Result>
         //  </IF>
         #endregion
-        public static IQuery GetLinkTrueFalseOnlyQuery(string SourceID, MainController controller, ILinkTarget owner, bool truefalse)
+        public static IQuery GetLinkTrueFalseOnlyQuery(string SourceID, IDirector controller, ILinkTarget owner, bool truefalse)
         {
             
             XElement queryx = new XElement("Query");

@@ -22,7 +22,7 @@ namespace TsGui.View.Layout
         public double Height { get; set; }
         public TsPageHeader PageHeader { get; set; }
         public TsButtons Buttons { get; set; }
-        public MainController RootController { get; set; }
+        public IDirector RootController { get; set; }
         public TsMainWindow Parent { get; set; }
         public TsTable Table { get; set; }
         public TsPane LeftPane { get; set; }

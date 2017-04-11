@@ -75,7 +75,7 @@ namespace TsGui.View.GuiOptions
         }
         
         
-        public GuiOptionBase(TsColumn Parent, MainController MainController):base(Parent,MainController)
+        public GuiOptionBase(TsColumn Parent, IDirector MainController):base(Parent,MainController)
         {
             this.UserControl = new GuiOptionBaseUI();
         }

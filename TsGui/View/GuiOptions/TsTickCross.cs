@@ -32,7 +32,7 @@ namespace TsGui.View.GuiOptions
         private TsWarnUI _warnui;
 
         //constructor
-        public TsTickCross(XElement InputXml, TsColumn Parent, MainController MainController): base (InputXml, Parent, MainController)
+        public TsTickCross(XElement InputXml, TsColumn Parent, IDirector MainController): base (InputXml, Parent, MainController)
         {
             this._crossui = new TsCrossUI();
             this._tickui = new TsTickUI();

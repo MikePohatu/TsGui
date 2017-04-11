@@ -30,13 +30,13 @@ namespace TsGui.Validation
         private MatchingRuleSet _errorrules = new MatchingRuleSet();
         private MatchingRuleSet _invalidrules = new MatchingRuleSet();
         private int _defaultstate = ComplianceStateValues.Invalid;
-        private MainController _controller;
+        private IDirector _controller;
 
         //properties
         public string Message { get; set; }
         public string FailedComplianceMessage { get; set; }
 
-        public Compliance(MainController MainController)
+        public Compliance(IDirector MainController)
         {
             this._controller = MainController;
             this.IsActive = true;

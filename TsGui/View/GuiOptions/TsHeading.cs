@@ -36,7 +36,7 @@ namespace TsGui.View.GuiOptions
         public override TsVariable Variable { get { return null; } }
 
         //constructor
-        public TsHeading(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
+        public TsHeading(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent, MainController)
         {
             this.ControlText = string.Empty;
             this.Control = new TsHeadingUI();

@@ -67,8 +67,8 @@ namespace TsGui.Grouping
         }
 
         //Constructor
-        public GroupableUIElementBase(MainController MainController) : base(MainController) { }
-        public GroupableUIElementBase(GroupableUIElementBase Parent, MainController MainController): base(Parent, MainController)
+        public GroupableUIElementBase(IDirector MainController) : base(MainController) { }
+        public GroupableUIElementBase(GroupableUIElementBase Parent, IDirector MainController): base(Parent, MainController)
         {
             this._parent = Parent;
             this._parent.GroupingStateChange += this.OnParentGroupingStateChange;

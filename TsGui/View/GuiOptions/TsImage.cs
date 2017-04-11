@@ -29,7 +29,7 @@ namespace TsGui.View.GuiOptions
         public override string CurrentValue { get { return this.Image.MultiImage.CurrentFilePath; } }
 
         //Constructor
-        public TsImage(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent,MainController)
+        public TsImage(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
         {
             this.Control = new TsImageUI();
             this.Label = new TsLabelUI();

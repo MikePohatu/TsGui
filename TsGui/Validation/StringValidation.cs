@@ -30,7 +30,7 @@ namespace TsGui.Validation
         private int _minlength = 0;
         private MatchingRuleSet _validrules = new MatchingRuleSet();
         private MatchingRuleSet _invalidrules = new MatchingRuleSet();
-        private MainController _controller;
+        private IDirector _controller;
 
         //Properties
 
@@ -54,7 +54,7 @@ namespace TsGui.Validation
         }
         #endregion
 
-        public StringValidation(MainController MainController)
+        public StringValidation(IDirector MainController)
         {
             this._controller = MainController;
             this.SetDefaults();

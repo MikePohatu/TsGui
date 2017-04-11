@@ -64,7 +64,7 @@ namespace TsGui.Options.NoUI
             }
         }
         //constructors     
-        public NoUIOption(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent,MainController)
+        public NoUIOption(NoUIContainer Parent, IDirector MainController, XElement InputXml) : base(Parent,MainController)
         {
             this._querylist = new QueryList(this,MainController);
             this.LoadXml(InputXml);

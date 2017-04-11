@@ -34,7 +34,7 @@ using TsGui.Linking;
 
 namespace TsGui
 {
-    public class MainController
+    public class Director: IDirector
     {
         public event TsGuiWindowEventHandler WindowLoaded;
         public event TsGuiWindowMovingEventHandler WindowMoving;
@@ -70,7 +70,7 @@ namespace TsGui
         public bool ShowGridLines { get; set; }
 
         //constructors
-        public MainController(MainWindow ParentWindow, Arguments Arguments)
+        public Director(MainWindow ParentWindow, Arguments Arguments)
         {
             LoggerFacade.Trace("MainController initialized");
             this._envController = new EnvironmentController(this);

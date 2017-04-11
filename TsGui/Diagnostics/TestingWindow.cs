@@ -34,7 +34,7 @@ namespace TsGui.Diagnostics
 {
     public class TestingWindow: ViewModelBase
     {
-        private MainController _controller;
+        private IDirector _controller;
         private TestingWindowUI _testingwindowui;
         private ObservableCollection<IOption> _options;
         private int _currentscaling;
@@ -65,7 +65,7 @@ namespace TsGui.Diagnostics
             set { this._logs = value; this.OnPropertyChanged(this, "Logs"); }
         }
 
-        public TestingWindow(MainController Controller)
+        public TestingWindow(IDirector Controller)
         {
             this._controller = Controller;
             this.SubscribeToLogs();             

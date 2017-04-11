@@ -27,11 +27,11 @@ namespace TsGui.Options.NoUI
         private List<NoUIContainer> _containers = new List<NoUIContainer>();
         
         //constructors
-        public NoUIContainer(MainController MainController,XElement InputXml) : base(MainController)
+        public NoUIContainer(IDirector MainController,XElement InputXml) : base(MainController)
         {
             this.LoadXml(InputXml);
         }
-        public NoUIContainer(NoUIContainer Parent, MainController MainController, XElement InputXml) : base(Parent, MainController)
+        public NoUIContainer(NoUIContainer Parent, IDirector MainController, XElement InputXml) : base(Parent, MainController)
         {
             this.LoadXml(InputXml);
         }

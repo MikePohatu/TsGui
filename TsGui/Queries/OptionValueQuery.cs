@@ -22,11 +22,11 @@ namespace TsGui.Queries
 {
     public class OptionValueQuery: BaseQuery, ILinkingEventHandler
     {
-        private MainController _controller;
+        private IDirector _controller;
         private ResultFormatter _formatter;
         private ILinkTarget _linktargetoption;
 
-        public OptionValueQuery(XElement inputxml, MainController controller, ILinkTarget owner)
+        public OptionValueQuery(XElement inputxml, IDirector controller, ILinkTarget owner)
         {
             this._linktargetoption = owner;
             this._controller = controller;

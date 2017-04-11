@@ -25,13 +25,13 @@ namespace TsGui.Grouping
     public class Toggle
     {
         private Group _group;
-        private MainController _controller;
+        private IDirector _controller;
         private Dictionary<string, bool> _toggleValMappings = new Dictionary<string, bool>();
         private bool _hiddenMode = false;
         private bool _inverse = false;
         private IToggleControl _option;
 
-        public Toggle(IToggleControl GuiOption, MainController MainController, XElement InputXml)
+        public Toggle(IToggleControl GuiOption, IDirector MainController, XElement InputXml)
         {
             this._controller = MainController;
             this._option = GuiOption;

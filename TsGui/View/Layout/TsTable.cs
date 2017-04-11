@@ -32,7 +32,7 @@ namespace TsGui.View.Layout
         private List<IValidationGuiOption> _validationoptions = new List<IValidationGuiOption>();
         private Grid _grid;
         private BaseLayoutElement _parent;
-        private MainController _controller;
+        private IDirector _controller;
 
         //Properties
         #region
@@ -42,12 +42,12 @@ namespace TsGui.View.Layout
         #endregion
 
         //Constructors
-        public TsTable(XElement SourceXml, BaseLayoutElement Parent, MainController MainController, Grid ExistingGrid)
+        public TsTable(XElement SourceXml, BaseLayoutElement Parent, IDirector MainController, Grid ExistingGrid)
         {
             this.Init(SourceXml, Parent, MainController, ExistingGrid);
         }
 
-        public TsTable(XElement SourceXml, BaseLayoutElement Parent, MainController MainController)
+        public TsTable(XElement SourceXml, BaseLayoutElement Parent, IDirector MainController)
         {
             
             Grid g = new Grid();
@@ -56,7 +56,7 @@ namespace TsGui.View.Layout
         }
 
         //methods
-        private void Init(XElement SourceXml, BaseLayoutElement Parent, MainController MainController, Grid Grid)
+        private void Init(XElement SourceXml, BaseLayoutElement Parent, IDirector MainController, Grid Grid)
         {
             this._controller = MainController;
             this._parent = Parent;

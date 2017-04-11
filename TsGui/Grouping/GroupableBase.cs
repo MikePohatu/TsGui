@@ -23,7 +23,7 @@ namespace TsGui.Grouping
 {
     public abstract class GroupableBase: ViewModelBase
     {
-        protected MainController _controller;
+        protected IDirector _controller;
         protected bool _isactive = true;
         protected List<Group> _groups = new List<Group>();
         protected bool _purgeinactive = false;
@@ -36,12 +36,12 @@ namespace TsGui.Grouping
         }
 
         //Constructor
-        public GroupableBase(MainController MainController)
+        public GroupableBase(IDirector MainController)
         {
             this._controller = MainController;
         }
 
-        public GroupableBase(GroupableBase Parent, MainController MainController)
+        public GroupableBase(GroupableBase Parent, IDirector MainController)
         {
             this._controller = MainController;
             this._purgeinactive = Parent.PurgeInactive;

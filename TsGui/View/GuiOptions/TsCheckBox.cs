@@ -68,7 +68,7 @@ namespace TsGui.View.GuiOptions
 
 
         //Constructor
-        public TsCheckBox(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent,MainController)
+        public TsCheckBox(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
         {
             this.UserControl.DataContext = this;           
             this.Control = new TsCheckBoxUI();

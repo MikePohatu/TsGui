@@ -43,7 +43,7 @@ namespace TsGui.View.GuiOptions
         public override TsVariable Variable { get { return new TsVariable(this.VariableName, this.ControlText); } }
 
         //constructor
-        public TsInfoBox(XElement InputXml, TsColumn Parent, MainController MainController) : base(Parent, MainController)
+        public TsInfoBox(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent, MainController)
         {
             this.Control = new TsInfoBoxUI();
             this.Label = new TsLabelUI();

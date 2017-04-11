@@ -25,14 +25,14 @@ namespace TsGui.Queries
     {
         private ILinkTarget _owneroption;
         private List<IQuery> _queries = new List<IQuery>();
-        private MainController _controller;
+        private IDirector _controller;
 
-        public QueryList(MainController controller)
+        public QueryList(IDirector controller)
         {
             this._controller = controller;
         }
 
-        public QueryList(ILinkTarget owner, MainController controller)
+        public QueryList(ILinkTarget owner, IDirector controller)
         {
             this._controller = controller;
             this._owneroption = owner;

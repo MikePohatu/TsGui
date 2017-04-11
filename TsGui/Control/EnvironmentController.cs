@@ -31,12 +31,12 @@ namespace TsGui
     {
         private ITsVariableOutput _outputconnector;
         private SccmConnector _sccmconnector;
-        private MainController _controller;
+        private IDirector _controller;
 
         public SccmConnector SccmConnector { get { return this._sccmconnector; } }
         public ITsVariableOutput OutputConnector { get { return this._outputconnector; } }
 
-        public EnvironmentController(MainController maincontroller)
+        public EnvironmentController(IDirector maincontroller)
         { this._controller = maincontroller; }
 
         public bool Init()

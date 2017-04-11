@@ -12,7 +12,7 @@ namespace TsGui
     /// </summary>
     public partial class App : Application
     {
-        private MainController _controller;
+        private IDirector _controller;
 
         public Arguments Arguments;
         MainWindow _mainwindow;
@@ -42,7 +42,7 @@ namespace TsGui
             LoggerFacade.Info("*TsGui started - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             this._mainwindow = new MainWindow(this.Arguments);
-            this._controller = new MainController(this._mainwindow, this.Arguments);
+            this._controller = new Director(this._mainwindow, this.Arguments);
         }
 
 

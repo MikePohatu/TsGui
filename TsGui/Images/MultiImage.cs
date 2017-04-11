@@ -40,7 +40,7 @@ namespace TsGui.Images
         private int _currentscaling;
         private SortedDictionary<int, BitmapImage> _images;
         private BitmapImage _currentimage;
-        private MainController _controller;
+        private IDirector _controller;
 
         public int CurrentScaling
         {
@@ -56,7 +56,7 @@ namespace TsGui.Images
         {
             get { return this._currentimage?.UriSource.LocalPath; }
         }
-        public MultiImage (string FileName, MainController MainController)
+        public MultiImage (string FileName, IDirector MainController)
         {
             this._controller = MainController;
             this._controller.WindowLoaded += this.OnWindowLoaded;

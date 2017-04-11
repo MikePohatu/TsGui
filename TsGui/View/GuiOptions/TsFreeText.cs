@@ -75,19 +75,19 @@ namespace TsGui.View.GuiOptions
         #endregion
 
         //Constructor
-        public TsFreeText(XElement InputXml, TsColumn Parent, MainController MainController): base (Parent, MainController)
+        public TsFreeText(XElement InputXml, TsColumn Parent, IDirector MainController): base (Parent, MainController)
         {
             this.Init(MainController);
             this.LoadXml(InputXml);
             this.RefreshValue();
         }
 
-        protected TsFreeText(TsColumn Parent, MainController MainController) : base(Parent, MainController)
+        protected TsFreeText(TsColumn Parent, IDirector MainController) : base(Parent, MainController)
         {
             this.Init(MainController);
         }
 
-        private void Init(MainController MainController)
+        private void Init(IDirector MainController)
         {
             //this._controltext = string.Empty;
             this._controller = MainController;
