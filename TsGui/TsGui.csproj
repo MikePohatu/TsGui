@@ -125,7 +125,7 @@
     <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />
     <Compile Include="Queries\QueryList.cs" />
-    <Compile Include="Queries\ValueOnly.cs" />
+    <Compile Include="Queries\ValueOnlyQuery.cs" />
     <Compile Include="Validation\StringMatching\RuleSet.cs" />
     <Compile Include="Options\NoUI\NoUIOption.cs" />
     <Compile Include="Options\NoUI\NoUIContainer.cs" />

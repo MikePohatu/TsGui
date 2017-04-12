@@ -20,6 +20,7 @@ using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Queries;
 using TsGui.Diagnostics.Logging;
+using TsGui.Diagnostics;
 
 namespace TsGui.Options.NoUI
 {
@@ -31,9 +32,22 @@ namespace TsGui.Options.NoUI
         private string _value = string.Empty;
         private bool _usecurrent = false;
         private QueryList _querylist;
+        private string _id;
 
         //properties
-        public string ID { get; set; }
+        public string ID
+        {
+            get { return this._id; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value) == true) { throw new TsGuiKnownException("Empty ID set on NoUI option", ""); }
+                if (this._id != value)
+                {
+                    this._id = value;
+                    this._controller.LinkingLibrary.AddSource(this);
+                }
+            }
+        }
         public string VariableName { get; set; }
         public string InactiveValue
         {
@@ -104,7 +118,7 @@ namespace TsGui.Options.NoUI
             xa = InputXml.Attribute("Value");
             if (xa != null)
             {
-                ValueOnly newvalue = new ValueOnly(InputXml);
+                ValueOnlyQuery newvalue = new ValueOnlyQuery(InputXml);
                 newvalue.Value = xa.Value;
                 this._querylist.AddQuery(newvalue);
             }
@@ -131,7 +145,6 @@ namespace TsGui.Options.NoUI
             if (xa != null)
             {
                 this.ID = xa.Value;
-                this._controller.LinkingLibrary.AddSource(this);
             }
         }
 
@@ -139,6 +152,15 @@ namespace TsGui.Options.NoUI
         {
             this._value = this._querylist.GetResultWrangler()?.GetString();
             this.NotifyUpdate();
+        }
+
+        public void ImportFromTsVariable(TsVariable var)
+        {
+            this.VariableName = var.Name;
+            ValueOnlyQuery newvoquery = new ValueOnlyQuery(var.Value);
+            this._querylist.AddQuery(newvoquery);
+            this.ID = var.Name;
+            this.RefreshValue();
         }
 
         protected override void EvaluateGroups()

@@ -400,9 +400,7 @@ namespace TsGui
                 foreach (TsVariable var in this._chassischeck.GetTsVariables())
                 {
                     NoUIOption newhwoption = new NoUIOption(this);
-                    newhwoption.VariableName = var.Name;
-                    newhwoption.CurrentValue = var.Value;
-                    newhwoption.ID = var.Name;
+                    newhwoption.ImportFromTsVariable(var);
                     this._optionlibrary.Add(newhwoption);
                 }
             }

@@ -17,7 +17,7 @@ using System.Xml.Linq;
 
 namespace TsGui.Queries
 {
-    public class ValueOnly: IQuery
+    public class ValueOnlyQuery: IQuery
     {
         private ResultFormatter _formatter = new ResultFormatter();
         private ResultWrangler _wrangler = new ResultWrangler();
@@ -28,10 +28,17 @@ namespace TsGui.Queries
             get { return this._formatter.Input; }
             set { this._formatter.Input = value; }
         }
-        public ValueOnly(XElement InputXml)
+        public ValueOnlyQuery(XElement InputXml)
         {
             this._formatter.Input = InputXml.Value;
             this._wrangler.NewSubList(); 
+            this._wrangler.AddResultFormatter(this._formatter);
+        }
+
+        public ValueOnlyQuery(string value)
+        {
+            this._formatter.Input = value;
+            this._wrangler.NewSubList();
             this._wrangler.AddResultFormatter(this._formatter);
         }
 

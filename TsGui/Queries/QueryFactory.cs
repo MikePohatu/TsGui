@@ -44,7 +44,7 @@ namespace TsGui.Queries
                     case "Combined":
                         return new CombinedQuery(InputXml, controller, owner);
                     case "Value":
-                        return new ValueOnly(InputXml);
+                        return new ValueOnlyQuery(InputXml);
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
                 }
@@ -53,7 +53,7 @@ namespace TsGui.Queries
             { return new ConditionalQuery(InputXml, controller, owner); }
 
             else if (InputXml.Name.ToString() == "Value")
-            { return new ValueOnly(InputXml); }
+            { return new ValueOnlyQuery(InputXml); }
 
             else
             { return null; }
