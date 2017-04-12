@@ -112,9 +112,8 @@ namespace TsGui.Options.NoUI
             this._usecurrent = XmlHandler.GetBoolFromXAttribute(InputXml, "UseCurrent", this._usecurrent);
 
             XElement x;
-
-            //this._value = XmlHandler.GetStringFromXAttribute(InputXml, "Value", this._value);
             XAttribute xa;
+
             xa = InputXml.Attribute("Value");
             if (xa != null)
             {
@@ -137,7 +136,6 @@ namespace TsGui.Options.NoUI
                 }
 
                 this._querylist.LoadXml(x);
-                //this._value = this._controller.EnvironmentController.GetStringValueFromList(x);
             }
 
 
