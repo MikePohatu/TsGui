@@ -51,7 +51,7 @@ namespace TsGui.Diagnostics
             get {
                 return this.WindowMaxHeight - this._testingwindowui._positiongrid.ActualHeight - 
                     this._testingwindowui._screengrid.ActualHeight - this._testingwindowui._logtextbox.ActualHeight - 
-                    this._testingwindowui._logtitle.ActualHeight - 100; }
+                    this._testingwindowui._logtitle.ActualHeight - 140; }
         }
         public int CurrentScaling
         {
