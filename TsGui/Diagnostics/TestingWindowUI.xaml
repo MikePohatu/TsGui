@@ -35,8 +35,16 @@ TestingWindowUI.xaml - shows live data at runtime
         </Style>
     </Window.Resources>
 
-    <StackPanel Orientation="Vertical" Width="Auto" VerticalAlignment="Top" Margin="10" Height="Auto">
-        <Grid x:Name="_positiongrid" Margin="0,5,0,5" Width="100" HorizontalAlignment="Left">
+    <Grid x:Name="_parentgrid" Width="Auto" VerticalAlignment="Top" Margin="10" Height="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" x:Name="_positiongrid" Margin="0,5,0,5" Width="100" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition/>
@@ -52,7 +60,7 @@ TestingWindowUI.xaml - shows live data at runtime
             <TextBlock Text="Top: " Grid.Column="0" Grid.Row="2"/>
             <TextBlock Text="{Binding TsMainWindow.WindowLocation.Top}" Grid.Column="1" Grid.Row="2"/>
         </Grid>
-        <Grid x:Name="_screengrid" Margin="0,5,0,5" HorizontalAlignment="Left">
+        <Grid Grid.Row="1" x:Name="_screengrid" Margin="0,5,0,5" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="130"/>
                 <ColumnDefinition/>
@@ -71,27 +79,38 @@ TestingWindowUI.xaml - shows live data at runtime
             <TextBlock Text="{Binding ScreenHeight}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"/>
             <TextBlock Text="{Binding CurrentScaling}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left"/>
         </Grid>
-        <DataGrid x:Name="_optionsgrid" ItemsSource="{Binding Options}" AlternatingRowBackground="LightGray"
-                  AlternationCount="2" AutoGenerateColumns="False" HeadersVisibility="Column"  
-                  Margin="0,0,0,10" FrozenColumnCount="1" HorizontalAlignment="Left" EnableRowVirtualization="False"
-                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}" 
-                  IsReadOnly="True" Height="Auto" MaxHeight="{Binding OptionsGridMaxHeight}"
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <DataGrid.Columns>
-                <DataGridTextColumn x:Name="_variablecolumn" Header="Variable" Binding="{Binding VariableName}" 
-                            Width="Auto"/>
-                <DataGridTextColumn x:Name="_idcolumn" Header="ID" Binding="{Binding ID}" 
-                            Width="Auto"/>
-                <DataGridTextColumn x:Name="_valuecolumn" Header="Value" Binding="{Binding LiveValue}" 
-                            MinWidth="130" Width="Auto"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <TextBlock x:Name="_logtitle" Text="Log output" FontWeight="Bold"/>
-        <Grid x:Name="_wrapper" HorizontalAlignment="Stretch">
+
+        <Grid x:Name="_optionswrappergrid" Grid.Row="2" HorizontalAlignment="Stretch">
+            <DataGrid x:Name="_optionsgrid" ItemsSource="{Binding Options}" AlternatingRowBackground="LightGray"
+                      AlternationCount="2" AutoGenerateColumns="False" HeadersVisibility="Column" 
+                      Margin="0,0,0,10" FrozenColumnCount="1" HorizontalAlignment="Left" EnableRowVirtualization="False"
+                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}"
+                      IsReadOnly="True" Height="Auto" MaxHeight="{Binding OptionsGridMaxHeight}"
+                      ScrollViewer.CanContentScroll="True" 
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="_variablecolumn" Header="Variable" Binding="{Binding VariableName}" 
+                                Width="Auto"/>
+                    <DataGridTextColumn x:Name="_idcolumn" Header="ID" Binding="{Binding ID}" 
+                                Width="Auto"/>
+                    <DataGridTextColumn x:Name="_valuecolumn" Header="Value" Binding="{Binding LiveValue}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        
+        <TextBlock Grid.Row="3" x:Name="_logtitle" Text="Log output" FontWeight="Bold"/>
+        
+        <Grid Grid.Row="4" x:Name="_wrapper" HorizontalAlignment="Stretch">
             <TextBox x:Name="_logtextbox" Text="{Binding Logs}" HorizontalAlignment="Stretch" Background="LightGray" Height="100" Width="{Binding ElementName=_wrapper,Path=ActualWidth}"
                    ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" />
         </Grid>
-        <Button x:Name="_logclearbtn" Content="Clear" Width="50" HorizontalAlignment="Right" Margin="2,2,0,0"></Button>
 
-    </StackPanel>
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" x:Name="_logclearbtn" Content="Clear" Width="50" HorizontalAlignment="Right" Margin="2,2,0,0"></Button>
+        </Grid>
+    </Grid>
 </Window>

@@ -17,6 +17,8 @@
 
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System;
 using System.Drawing;
 using System.Windows.Media;
@@ -122,6 +124,25 @@ namespace TsGui.Diagnostics
         public void OnLogClearClick(object sender, RoutedEventArgs e)
         { this.Logs = string.Empty; }
 
+        public void OnTestingWindowRendered(object sender, EventArgs e)
+        {
+            this.ResizeGrids();
+            this._testingwindowui._optionsgrid.EnableRowVirtualization = false;
+            this._testingwindowui._valuecolumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+            this._testingwindowui.SizeChanged += this.OnTestingWindowSizeChanged;
+        }
+
+        public void OnTestingWindowSizeChanged(object o, EventArgs e)
+        {
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.ResizeGrids()));
+        }
+
+        private void ResizeGrids()
+        {
+            this._testingwindowui._optionswrappergrid.Width = this._testingwindowui._parentgrid.ActualWidth;
+            this._testingwindowui._optionsgrid.Width = this._testingwindowui._optionswrappergrid.ActualWidth;
+        }
+
         private void SubscribeToLogs()
         {
             foreach (ILoggingReceiver receiver in LoggingFrameworkHelpers.GetLoggingReceivers())
@@ -139,6 +160,7 @@ namespace TsGui.Diagnostics
             this._testingwindowui = new TestingWindowUI();
             this._testingwindowui.DataContext = this;
             this._testingwindowui.Closed += this.OnWindowClosed;
+            this._testingwindowui.ContentRendered += this.OnTestingWindowRendered;
         }
     }
 }
