@@ -24,8 +24,9 @@ For Each file In objScriptParentFolder.Files
 		wscript.echo file.name
 		objFSO.CopyFile file.path,file.ParentFolder & "\\Config.xml"
 		objShell.Run strScriptParentFolder & "\\" & newExe
-		objShell.Run strScriptParentFolder & "\\" & referenceExe
-		
+		if (intFileNumber < 13) then
+			objShell.Run strScriptParentFolder & "\\" & referenceExe
+		end if
 		WScript.Echo "Press [ENTER] to continue..."
 		' Read dummy input. This call will not return until [ENTER] is pressed.
 		WScript.StdIn.ReadLine

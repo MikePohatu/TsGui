@@ -1,249 +1,69 @@
-<TsGui LiveData="TRUE">
-	<Height>400</Height>
-	<Width>400</Width>
-	
+<TsGui>
+	<Height>250</Height>
+	<Width>300</Width>
+
 	<HardwareEval />
 	
 	<Heading>
-		<Title>Option linking example config</Title>
-		<Text></Text>
-		<Height>60</Height>
+		<Title>TsGui</Title>
+		<Text>Testing validation on dropdownlist</Text>
 	</Heading>
-	
+
 	<Page>
 		<Column>
 			<Formatting>
-				<LeftCellWidth>255</LeftCellWidth>
-				<RightCellWidth>100</RightCellWidth>
+				<LeftCellWidth>110</LeftCellWidth>
+				<RightCellWidth>160</RightCellWidth>
 			</Formatting>
 			
-			<GuiOption Type="ComputerName" ID="link_name">
+			<GuiOption Type="CheckBox">
+				<Variable>TOGGLE_Test</Variable>
+				<Label>Test group enabled</Label>
+				<HAlign>left</HAlign>
+				
+				<Toggle Group="Group_Test">
+					<Enabled>TRUE</Enabled>
+					<Disabled>FALSE</Disabled>
+				</Toggle>
+			</GuiOption>
+			
+			<GuiOption Type="ComputerName">
 				<Validation ValidateEmpty="FALSE">
-					
-					<!-- Validation sections with available rule types -->					
-					<Valid>
-						<Ruleset Type="OR">
-							<Ruleset Type="AND">
-								<Rule Type="StartsWith">test</Rule>
-								<Rule Type="Contains">12</Rule>
-							</Ruleset>
-							<Ruleset Type="AND">
-								<Rule Type="StartsWith">blah</Rule>
-								<Rule Type="Contains">34</Rule>
-							</Ruleset>
-						</Ruleset>
-						<Rule Type="EndsWith">Z</Rule>
-					</Valid>
+					<Group>Group_Test</Group>
+				
+					<Message>TEST - ComputerName can't start with AB</Message>			
 					<Invalid>
-						<Rule Type="EndsWith">Q</Rule>
+						<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
 					</Invalid>
 				</Validation>
-			</GuiOption>	
-				
-			<GuiOption Type="FreeText">
-			
-				<Variable>FreeTextTest</Variable>
-				<Label>FreeTextTest</Label>
-				<DefaultValue>
-					<Query Type="IfElse">
-						<IF>
-							<Source>
-								<Query Type="OptionValue">
-									<ID Name="TsGui_IsLaptop"/>
-								</Query>
-							</Source>
-							<Ruleset>
-								<Rule Type="Equals">FALSE</Rule>
-							</Ruleset>
-							<Result>
-								<Value>This is not a laptop</Value>
-							</Result>
-						</IF>
-						<ELSE>
-							<Query Type="OptionValue">
-								<ID Name="link_name"/>
-							</Query>
-							<Value>This is a laptop</Value>
-						</ELSE>
-					</Query>
-					
-				</DefaultValue>
-				<!--<Validation ValidateEmpty="FALSE">				
-					<Valid>
-						<Ruleset Type="OR">
-							<Ruleset Type="AND">
-								<Rule Type="StartsWith">test</Rule>
-								<Rule Type="Contains">12</Rule>
-							</Ruleset>
-							<Ruleset Type="AND">
-								<Rule Type="StartsWith">blah</Rule>
-								<Rule Type="Contains">34</Rule>
-							</Ruleset>
-						</Ruleset>
-					</Valid>
-				</Validation>-->
 			</GuiOption>
 			
-			<GuiOption Type="CheckBox" ID="link_source">
-				<Variable>link_source</Variable>
-				<Label>SOURCE</Label>
-				<HAlign>left</HAlign>
-			</GuiOption>
-			
-			<GuiOption Type="CheckBox">
-				<Variable>linkto</Variable>
-				<Label>Match SOURCE</Label>
-				<HAlign>right</HAlign>
-				<Checked/>
-				<SetValue LinkTo="link_source"/>
-			</GuiOption>
-			
-			<GuiOption Type="CheckBox">
-				<Variable>linktrue</Variable>
-				<Label>Check when SOURCE is checked</Label>
-				<HAlign>right</HAlign>
-				<SetValue LinkTrue="link_source"/>
-			</GuiOption>
-
-			<GuiOption Type="CheckBox">
-				<Variable>linkfalse</Variable>
-				<Label>Uncheck when SOURCE is unchecked</Label>
-				<HAlign>right</HAlign>
-				<SetValue LinkFalse="link_source"/>
-			</GuiOption>
-
-			<GuiOption Type="CheckBox">
-				<Variable>linktest</Variable>
-				<Label>Check when computername meets validation rules</Label>
-				<HAlign>right</HAlign>
-				<SetValue>
-					<Query Type="IfElse">
-						<IF>
-							<Source>
-								<Query Type="OptionValue">
-									<ID Name="link_name"/>
-								</Query>
-							</Source>
-							<Ruleset>
-								<Ruleset Type="OR">
-									<Ruleset Type="AND">
-										<Rule Type="StartsWith">test</Rule>
-										<Rule Type="Contains">12</Rule>
-									</Ruleset>
-									<Ruleset Type="AND">
-										<Rule Type="StartsWith">blah</Rule>
-										<Rule Type="Contains">34</Rule>
-									</Ruleset>
-								</Ruleset>
-								<Rule Type="EndsWith">Z</Rule>
-							</Ruleset>
-							<Result>
-								<Value>TRUE</Value>
-							</Result>
-						</IF>
-						<ELSE>
-							<Value>FALSE</Value>
-						</ELSE>
-					</Query>
-				</SetValue>
-				<Formatting>
-					<LeftCellWidth>330</LeftCellWidth>
-					<RightCellWidth>25</RightCellWidth>
-				</Formatting>
-			</GuiOption>
-			
-			<GuiOption Type="FreeText">
-				<Variable>FreeTextTarget</Variable>
-				<Label>Free text target</Label>
-				<DefaultValue>
-					<Query Type="IfElse">
-						<IF>
-							<Source>
-								<Query Type="OptionValue">
-									<ID Name="link_source"/>
-								</Query>
-							</Source>
-							<Ruleset>
-								<Rule Type="Equals">TRUE</Rule>
-							</Ruleset>
-							<Result>
-								<Value>TestLinkTrue</Value>
-							</Result>
-						</IF>
-					</Query>
-				</DefaultValue>
-			</GuiOption>
-			
-			<GuiOption Type="DropDownList" ID="Country_1">
-				<!-- The NoSelectionMessage element overrides the default "Please select a value" text when nothing is selected by the user -->
-				<NoSelectionMessage>Please select something</NoSelectionMessage>
-				<Variable>Country</Variable>
-				<Label>Country:</Label>
+			<GuiOption Type="DropDownList" NoDefaultValue="TRUE">
+				<Variable>IT_Team</Variable>
+				<Label>Team:</Label>
+				<!--<DefaultValue>Desktop</DefaultValue>-->
 				<Option>
-					<Text>Australia</Text>
-					<Value>AU</Value>
+					<Text>Desktop</Text>
+					<Value>Desktop</Value>
 				</Option>
 				<Option>
-					<Text>New Zealand</Text>
-					<Value>NZ</Value>
+					<Text>Infrastructure</Text>
+					<Value>Inf</Value>
 				</Option>
 				<Option>
-					<Text>USA</Text>
-					<Value>USA</Value>
+					<Text>Service Desk</Text>
+					<Value>SD</Value>
 				</Option>
-				<SetValue>
-					<Query Type="IfElse">
-						<IF>
-							<Source>
-								<Query Type="OptionValue">
-									<ID Name="link_source"/>
-								</Query>
-							</Source>
-							<Ruleset>
-								<Rule Type="Equals">TRUE</Rule>
-							</Ruleset>
-							<Result>
-								<Value>USA</Value>
-							</Result>
-						</IF>
-					</Query>
-				</SetValue>
-			</GuiOption>
-			
-			<GuiOption Type="TextBlock">
-				<Variable>INFO_SystemInfo</Variable>
-				<Label>System Info:</Label>
 				
+				<Validation ValidateEmpty="FALSE">
+					<Group>Group_Test</Group>
 				
-				<!-- Query for the display value. Return the first valid value. Note
-				the Ignore values for evaluating the value returned by the query -->
-				<DisplayValue>
-					<Query Type="Combined">
-						<Query Type="Wmi">
-							<Wql>select Model from Win32_ComputerSystem</Wql>
-							<Property Name="Model">
-								<Append>\r\n</Append>
-							</Property>
-						</Query>
-						<Query Type="Wmi">
-							<Wql>SELECT TotalPhysicalMemory FROM Win32_ComputerSystem</Wql>
-							<Property Name="TotalPhysicalMemory">
-								<Calculate DecimalPlaces="0">VALUE/1073741824</Calculate>
-								<Append>GB Memory</Append>
-							</Property>
-						</Query>
-					</Query>
-				</DisplayValue>
-				<Formatting>
-					<LeftCellWidth>100</LeftCellWidth>
-					<RightCellWidth>200</RightCellWidth>
-					<Control>
-						<Height>50</Height>
-					</Control>
-					<Label>
-						<VerticalAlignment>Top</VerticalAlignment>
-					</Label>
-				</Formatting>
+					<Message>Desktop not valid when check box ticked</Message>			
+					<Invalid>
+						<!--Rule Type="Equals" CaseSensitive="TRUE">Desktop</Rule>-->
+						<Rule Type="RegEx" CaseSensitive="TRUE">(Desktop)</Rule>
+					</Invalid>
+				</Validation>
 			</GuiOption>
 		</Column>
 	</Page>
