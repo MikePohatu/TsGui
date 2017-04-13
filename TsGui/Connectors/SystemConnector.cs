@@ -57,14 +57,15 @@ namespace TsGui.Connectors
             try
             {
                 WqlObjectQuery wqlQuery = new WqlObjectQuery(WmiQuery);
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery);
-
-                foreach (ManagementObject m in searcher.Get())
-                {
-                    foreach (PropertyData propdata in m.Properties)
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery))
+                { 
+                    foreach (ManagementObject m in searcher.Get())
                     {
-                        s = s + propdata.Value;
-                    }                    
+                        foreach (PropertyData propdata in m.Properties)
+                        {
+                            s = s + propdata.Value;
+                        }
+                    }
                 }
 
                 if (String.IsNullOrEmpty(s)) { return null; }
@@ -72,7 +73,6 @@ namespace TsGui.Connectors
             }
             catch
             {
-                //Debug.WriteLine("Exception thrown in SystemConnector: GetWmiQuery");
                 return null;
             }
             
@@ -83,9 +83,8 @@ namespace TsGui.Connectors
             try
             {
                 WqlObjectQuery wqlQuery = new WqlObjectQuery(WmiQuery);
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery);
-
-                return searcher.Get();
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery))
+                { return searcher.Get(); }  
             }
             catch
             {
@@ -95,13 +94,14 @@ namespace TsGui.Connectors
 
         public static List<ManagementObject> GetWmiManagementObjectList(string WmiQuery)
         {
-            ManagementObjectCollection collection = GetWmiManagementObjectCollection(WmiQuery);
             List<ManagementObject> list = new List<ManagementObject>();
-            foreach (ManagementObject m in collection)
+            using (ManagementObjectCollection collection = GetWmiManagementObjectCollection(WmiQuery))
             {
-                list.Add(m);
+                foreach (ManagementObject m in collection)
+                {
+                    list.Add(m);
+                }
             }
-
             return list;
         }
     }
