@@ -39,8 +39,8 @@ namespace TsGui.Queries
                         return new EnvironmentVariableQuery(InputXml, controller.EnvironmentController.SccmConnector);
                     case "OptionValue":
                         return new OptionValueQuery(InputXml, controller, owner);
-                    case "IF":
-                        return new ConditionalQuery(InputXml, controller, owner);
+                    case "IfElse":
+                        return new IfElseQuery(InputXml, controller, owner);
                     case "Combined":
                         return new CombinedQuery(InputXml, controller, owner);
                     case "Value":
@@ -49,8 +49,6 @@ namespace TsGui.Queries
                         throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
                 }
             }
-            else if (InputXml.Name.ToString() == "IF")
-            { return new ConditionalQuery(InputXml, controller, owner); }
 
             else if (InputXml.Name.ToString() == "Value")
             { return new ValueOnlyQuery(InputXml); }
@@ -113,7 +111,7 @@ namespace TsGui.Queries
             ifx.Add(rulesetx);
             ifx.Add(resultx);
 
-            return new ConditionalQuery(ifx, controller, owner);
+            return new Conditional(ifx, controller, owner);
         }
     }
 }

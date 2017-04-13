@@ -13,7 +13,6 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// QueryList.cs - A list of queries 
 
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -36,6 +35,13 @@ namespace TsGui.Queries
         {
             this._controller = controller;
             this._owneroption = owner;
+        }
+
+        public QueryList(XElement inputxml, ILinkTarget owner, IDirector controller)
+        {
+            this._controller = controller;
+            this._owneroption = owner;
+            this.LoadXml(inputxml);
         }
 
         public void AddQuery(IQuery query)

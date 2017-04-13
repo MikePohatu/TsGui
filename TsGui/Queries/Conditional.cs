@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ConditionalQuery.cs - IF query
+// Conditional.cs - IF -> then processing
 
 using System.Xml.Linq;
 using TsGui.Linking;
@@ -21,7 +21,7 @@ using TsGui.Validation.StringMatching;
 
 namespace TsGui.Queries
 {
-    public class ConditionalQuery: BaseQuery, ILinkingEventHandler, ILinkTarget
+    public class Conditional: BaseQuery
     {
         private QueryList _sourcequerylist;
         private QueryList _resultquerylist;
@@ -29,13 +29,13 @@ namespace TsGui.Queries
         private IDirector _controller;
         private ILinkTarget _linktargetoption;
 
-        public ConditionalQuery(XElement inputxml, IDirector controller, ILinkTarget targetoption)
+        public Conditional(XElement inputxml, IDirector controller, ILinkTarget targetoption)
         {
             this._reprocess = true;
             this._controller = controller;
-            this._sourcequerylist = new QueryList(this, this._controller);
-            this._resultquerylist = new QueryList(this._controller);
             this._linktargetoption = targetoption;
+            this._sourcequerylist = new QueryList(this._linktargetoption, this._controller);
+            this._resultquerylist = new QueryList(this._controller);
             this.LoadXml(inputxml);
         }
 
@@ -79,13 +79,5 @@ namespace TsGui.Queries
             { return this._resultquerylist.GetResultWrangler(); }
             else { return null; }
         }
-
-        public void RefreshValue()
-        {
-            this._linktargetoption.RefreshValue();
-        }
-
-        public void OnLinkedSourceValueChanged()
-        { this.RefreshValue(); }
     }
 }

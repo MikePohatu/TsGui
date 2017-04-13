@@ -15,7 +15,7 @@
 
 // CombinedQuery.cs - combine multiple queries
 
-using System.Collections.Generic;
+
 using System.Xml.Linq;
 using TsGui.Linking;
 
