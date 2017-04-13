@@ -27,6 +27,7 @@ namespace TsGui.View.GuiOptions
 {
     public class TsTickCross: ComplianceOptionBase
     {
+        private ContentChanger _contentchanger;
         private TsCrossUI _crossui;
         private TsTickUI _tickui;
         private TsWarnUI _warnui;
@@ -34,11 +35,12 @@ namespace TsGui.View.GuiOptions
         //constructor
         public TsTickCross(XElement InputXml, TsColumn Parent, IDirector MainController): base (InputXml, Parent, MainController)
         {
+            this._contentchanger = new ContentChanger();
             this._crossui = new TsCrossUI();
             this._tickui = new TsTickUI();
             this._warnui = new TsWarnUI();
 
-            this.Control = this._tickui;
+            this.Control = this._contentchanger;
             this._validationtooltiphandler.SetTarget(this.UserControl);
             this.SetDefaults();
             this.LoadXml(InputXml);
@@ -48,9 +50,9 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ControlFormatting.Width = 20;
-            this.ControlFormatting.Height = 20;
-            this.ControlFormatting.Margin = new Thickness(0);
+            //this.ControlFormatting.Width = 20;
+            //this.ControlFormatting.Height = 20;
+            this.ControlFormatting.Padding = new Thickness(2);
         }
 
         private new void LoadXml(XElement InputXml)
@@ -66,33 +68,32 @@ namespace TsGui.View.GuiOptions
         private void SetUI(int State)
         {
             this._state = State;
-            this.Control = null;
             switch (State)
             {
                 case ComplianceStateValues.Inactive:
                     this.FillColor.Color = Colors.LightGray;
                     this.StrokeColor.Color = Colors.Gray;
-                    this.Control = this._warnui;
+                    this._contentchanger.Presenter.Content = this._warnui;
                     break;
                 case ComplianceStateValues.OK:
                     this.FillColor.Color = Colors.Green;
                     this.StrokeColor.Color = Colors.DarkGreen;
-                    this.Control = this._tickui;
+                    this._contentchanger.Presenter.Content = this._tickui;
                     break;
                 case ComplianceStateValues.Warning:
                     this.FillColor.Color = Colors.Orange;
                     this.FillColor.Color = Colors.DarkOrange;
-                    this.Control = this._warnui;
+                    this._contentchanger.Presenter.Content = this._warnui;
                     break;
                 case ComplianceStateValues.Error:
                     this.FillColor.Color = Colors.Red;
                     this.StrokeColor.Color = Colors.OrangeRed;
-                    this.Control = this._crossui;
+                    this._contentchanger.Presenter.Content = this._crossui;
                     break;
                 case ComplianceStateValues.Invalid:
                     this.FillColor.Color = Colors.Red;
                     this.StrokeColor.Color = Colors.OrangeRed;
-                    this.Control = this._crossui;
+                    this._contentchanger.Presenter.Content = this._crossui;
                     break;
                 default:
                     throw new ArgumentException("State is not valid");

@@ -97,6 +97,9 @@
     <Compile Include="Validation\StringMatching\MatchingRuleFactory.cs" />
     <Compile Include="Validation\StringMatching\EndsWith.cs" />
     <Compile Include="Validation\StringMatching\StartsWith.cs" />
+    <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
+      <DependentUpon>ContentChanger.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Layout\Converters\XmlStringLineConverter.cs" />
     <Compile Include="Diagnostics\Logging\ILoggingReceiver.cs" />
     <Compile Include="Diagnostics\Logging\LoggingDelegates.cs" />
@@ -271,6 +274,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Validation\ValidationErrorToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GuiOptions\ContentChanger.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

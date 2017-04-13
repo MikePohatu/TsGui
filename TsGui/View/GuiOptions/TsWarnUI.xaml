@@ -25,12 +25,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         xmlns:local="clr-namespace:TsGui.View.GuiOptions"
         mc:Ignorable="d" 
         d:DesignHeight="20" d:DesignWidth="20" x:Name="usercontrol">
-    <Grid Margin="0"  Style="{StaticResource ControlStyle}">
-        <Canvas>
-            <Path Name="CrossMark" Stroke="Black" StrokeThickness="0.5" StrokeLineJoin="Round" StrokeEndLineCap="Round" Fill="#FFD52B" Data="M0,20 20,20 10,0 0,20" Stretch="UniformTofill" />
-            <!--<Ellipse Name="ibg" Canvas.Left="0" Canvas.Top="0" Height="20" Width="20" Stroke="DarkOrange" Fill="Orange" StrokeThickness="0.5" />-->
-            <Rectangle Name="ibase" Canvas.Top="5.5" Canvas.Left="8.5" Height="8" Width="3" RadiusX="1.5" RadiusY="1.5" Fill="Black" Stretch="Fill" />
-            <Ellipse Name="idot" Canvas.Bottom="0.5" Canvas.Left="8.5" Margin="0,0,0,1.5" Height="3" Width="3" Fill="Black" Stretch="UniformTofill" />
-        </Canvas>
+    <Grid Style="{StaticResource ControlStyle}">
+        <Path Name="WarnTriangle" Stroke="Black" StrokeThickness="1.5" StrokeLineJoin="Round" StrokeEndLineCap="Round" Fill="#FFD52B" Data="M10,0 0,20 20,20Z M9.5,7 9.9,13 10.1,13 10.5,7Z M9.8,16.5 10.2,16.5 10.2,16.9 9.8,16.9Z" Stretch="Uniform" />
     </Grid>
 </UserControl>
