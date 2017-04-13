@@ -50,8 +50,6 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            //this.ControlFormatting.Width = 20;
-            //this.ControlFormatting.Height = 20;
             this.ControlFormatting.Padding = new Thickness(2);
         }
 
