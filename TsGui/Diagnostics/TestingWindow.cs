@@ -136,7 +136,7 @@ namespace TsGui.Diagnostics
         {
             if (this._pendingresize < 2)
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.ResizeGrids()));
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() => this.ResizeGrids()));
                 this._pendingresize++;
             } 
         }
