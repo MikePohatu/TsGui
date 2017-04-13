@@ -73,7 +73,7 @@ TestingWindowUI.xaml - shows live data at runtime
         </Grid>
         <DataGrid x:Name="_optionsgrid" ItemsSource="{Binding Options}" AlternatingRowBackground="LightGray"
                   AlternationCount="2" AutoGenerateColumns="False" HeadersVisibility="Column"  
-                  Margin="0,0,0,10" FrozenColumnCount="1" HorizontalAlignment="Left"
+                  Margin="0,0,0,10" FrozenColumnCount="1" HorizontalAlignment="Left" EnableRowVirtualization="False"
                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}" 
                   IsReadOnly="True" Height="Auto" MaxHeight="{Binding OptionsGridMaxHeight}"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
