@@ -215,7 +215,6 @@
       <DependentUpon>TsHeadingUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsInfoBox.cs" />
-    <Compile Include="View\GuiOptions\TsTextBlock.cs" />
     <Compile Include="View\GuiOptions\TsInfoBoxUI.xaml.cs">
       <DependentUpon>TsInfoBoxUI.xaml</DependentUpon>
     </Compile>
@@ -266,9 +265,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="View\Layout\Formatting.cs" />
-    <Compile Include="View\GuiOptions\TsTextBlockUI.xaml.cs">
-      <DependentUpon>TsTextBlockUI.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\ViewModelBase.cs" />
     <Page Include="Diagnostics\TestingWindowUI.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -342,10 +338,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\GuiOptions\TsDropDownListUI.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\GuiOptions\TsTextBlockUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

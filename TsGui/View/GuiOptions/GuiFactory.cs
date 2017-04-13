@@ -33,14 +33,7 @@ namespace TsGui.View.GuiOptions
             LoggerFacade.Info("Creating GuiOption, type: " + xtype.Value);
 
             #region
-            if (xtype.Value == "TextBlock")
-            {
-                TsTextBlock tb = new TsTextBlock(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(tb);
-                return tb;
-            }
-
-            else if (xtype.Value == "DropDownList")
+            if (xtype.Value == "DropDownList")
             {
                 TsDropDownList ddl = new TsDropDownList(OptionXml, Parent, RootController);
                 RootController.AddOptionToLibary(ddl);
