@@ -18,7 +18,6 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System;
 using System.Drawing;
 using System.Windows.Media;
@@ -36,6 +35,7 @@ namespace TsGui.Diagnostics
 {
     public class TestingWindow: ViewModelBase
     {
+        private int _pendingresize = 0;
         private IDirector _controller;
         private TestingWindowUI _testingwindowui;
         private ObservableCollection<IOption> _options;
@@ -134,13 +134,18 @@ namespace TsGui.Diagnostics
 
         public void OnTestingWindowSizeChanged(object o, EventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.ResizeGrids()));
+            if (this._pendingresize < 2)
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.ResizeGrids()));
+                this._pendingresize++;
+            } 
         }
 
         private void ResizeGrids()
         {
             this._testingwindowui._optionswrappergrid.Width = this._testingwindowui._parentgrid.ActualWidth;
             this._testingwindowui._optionsgrid.Width = this._testingwindowui._optionswrappergrid.ActualWidth;
+            this._pendingresize--;
         }
 
         private void SubscribeToLogs()
