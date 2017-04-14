@@ -15,6 +15,7 @@
 
 //  NoUIOption.cs - used to create TsVariables but aren't shown in the gui. 
 
+using System;
 using System.Xml.Linq;
 using TsGui.Grouping;
 using TsGui.Linking;
@@ -159,6 +160,24 @@ namespace TsGui.Options.NoUI
             this._querylist.AddQuery(newvoquery);
             this.ID = var.Name;
             this.RefreshValue();
+        }
+
+        protected void LoadSetValueXml(XElement inputxml)
+        {
+            XAttribute xusecurrent = inputxml.Attribute("UseCurrent");
+            if (xusecurrent != null)
+            {
+                //default behaviour is to check if the ts variable is already set. If it is, set that as the default i.e. add a query for 
+                //an environment variable to the start of the query list. 
+                if (!string.Equals(xusecurrent.Value, "false", StringComparison.OrdinalIgnoreCase))
+                {
+                    XElement xcurrentquery = new XElement("Query", new XElement("Variable", this.VariableName));
+                    xcurrentquery.Add(new XAttribute("Type", "EnvironmentVariable"));
+                    inputxml.AddFirst(xcurrentquery);
+                }
+            }
+            this._querylist.Clear();
+            this._querylist.LoadXml(inputxml);
         }
 
         protected override void EvaluateGroups()

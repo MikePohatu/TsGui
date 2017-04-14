@@ -43,7 +43,6 @@ namespace TsGui.View.GuiOptions
         private ValidationHandler _validationhandler;
         private bool _nodefaultvalue;
         private string _noselectionmessage;
-        private QueryList _querylist;
 
 
         //properties
@@ -151,11 +150,6 @@ namespace TsGui.View.GuiOptions
                 {
                     Toggle t = new Toggle(this, this._controller, x);
                     this._istoggle = true;
-                }
-
-                if (x.Name == "SetValue")
-                {
-                    this._querylist.LoadXml(x);
                 }
             }
 

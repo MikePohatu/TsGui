@@ -15,6 +15,7 @@
 
 // GuiOptionBase.cs - base parts for all GuiOptions
 
+using System;
 using System.Xml.Linq;
 using TsGui.View.Layout;
 using System.Windows.Controls;
@@ -22,6 +23,7 @@ using System.Windows;
 using TsGui.Linking;
 using TsGui.Options;
 using TsGui.Diagnostics.Logging;
+using TsGui.Queries;
 
 namespace TsGui.View.GuiOptions
 {
@@ -33,6 +35,7 @@ namespace TsGui.View.GuiOptions
         private string _helptext = null;
         private string _inactivevalue = "TSGUI_INACTIVE";
         private GuiOptionBaseUI _ui;
+        protected QueryList _querylist;
 
         //standard stuff
         public string ID { get; set; }
@@ -75,7 +78,7 @@ namespace TsGui.View.GuiOptions
         }
         
         
-        public GuiOptionBase(TsColumn Parent, IDirector MainController):base(Parent,MainController)
+        public GuiOptionBase(TsColumn Parent, IDirector director):base(Parent, director)
         {
             this.UserControl = new GuiOptionBaseUI();
         }
@@ -102,12 +105,36 @@ namespace TsGui.View.GuiOptions
                 this.ID = xa.Value;
                 this._controller.LinkingLibrary.AddSource(this);
             }
+
+            x = InputXml.Element("SetValue");
+            if (x != null)
+            {
+                this.LoadSetValueXml(x);
+            }
         }
 
         protected override void EvaluateGroups()
         {
             base.EvaluateGroups();
             this.NotifyUpdate();
+        }
+
+        protected void LoadSetValueXml(XElement inputxml)
+        {
+            XAttribute xusecurrent = inputxml.Attribute("UseCurrent");
+            if (xusecurrent != null)
+            {
+                //default behaviour is to check if the ts variable is already set. If it is, set that as the default i.e. add a query for 
+                //an environment variable to the start of the query list. 
+                if (!string.Equals(xusecurrent.Value, "false", StringComparison.OrdinalIgnoreCase))
+                {
+                    XElement xcurrentquery = new XElement("Query", new XElement("Variable", this.VariableName));
+                    xcurrentquery.Add(new XAttribute("Type", "EnvironmentVariable"));
+                    inputxml.AddFirst(xcurrentquery);
+                }
+            }
+            this._querylist.Clear();
+            this._querylist.LoadXml(inputxml);
         }
 
         private void SetDefaults()

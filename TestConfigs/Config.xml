@@ -44,7 +44,7 @@
 			
 				<Variable>FreeTextTest</Variable>
 				<Label>FreeTextTest</Label>
-				<DefaultValue>
+				<SetValue>
 					<Query Type="IfElse">
 						<IF>
 							<Source>
@@ -67,7 +67,7 @@
 						</ELSE>
 					</Query>
 					
-				</DefaultValue>
+				</SetValue>
 				<!--<Validation ValidateEmpty="FALSE">				
 					<Valid>
 						<Ruleset Type="OR">
@@ -95,21 +95,27 @@
 				<Label>Match SOURCE</Label>
 				<HAlign>right</HAlign>
 				<Checked/>
-				<SetValue LinkTo="link_source"/>
+				<SetValue>
+					<Query Type="LinkTo">link_source</Query>
+				</SetValue>
 			</GuiOption>
 			
 			<GuiOption Type="CheckBox">
 				<Variable>linktrue</Variable>
 				<Label>Check when SOURCE is checked</Label>
 				<HAlign>right</HAlign>
-				<SetValue LinkTrue="link_source"/>
+				<SetValue>
+					<Query Type="LinkTrue">link_source</Query>
+				</SetValue>
 			</GuiOption>
 
 			<GuiOption Type="CheckBox">
 				<Variable>linkfalse</Variable>
 				<Label>Uncheck when SOURCE is unchecked</Label>
 				<HAlign>right</HAlign>
-				<SetValue LinkFalse="link_source"/>
+				<SetValue>
+					<Query Type="LinkFalse">link_source</Query>
+				</SetValue>
 			</GuiOption>
 
 			<GuiOption Type="CheckBox">
@@ -155,7 +161,7 @@
 			<GuiOption Type="FreeText">
 				<Variable>FreeTextTarget</Variable>
 				<Label>Free text target</Label>
-				<DefaultValue>
+				<SetValue>
 					<Query Type="IfElse">
 						<IF>
 							<Source>
@@ -171,7 +177,7 @@
 							</Result>
 						</IF>
 					</Query>
-				</DefaultValue>
+				</SetValue>
 			</GuiOption>
 			
 			<GuiOption Type="DropDownList" ID="Country_1">
@@ -217,7 +223,7 @@
 				
 				<!-- Query for the display value. Return the first valid value. Note
 				the Ignore values for evaluating the value returned by the query -->
-				<DisplayValue>
+				<SetValue>
 					<Query Type="Combined">
 						<Query Type="Wmi">
 							<Wql>select Model from Win32_ComputerSystem</Wql>
@@ -233,7 +239,7 @@
 							</Property>
 						</Query>
 					</Query>
-				</DisplayValue>
+				</SetValue>
 				<Formatting>
 					<LeftCellWidth>100</LeftCellWidth>
 					<RightCellWidth>200</RightCellWidth>
