@@ -33,7 +33,6 @@ namespace TsGui.View.GuiOptions
         private bool _ischecked;
         private string _valTrue = "TRUE";
         private string _valFalse = "FALSE";
-        private QueryList _setvaluelist;
 
         public bool IsChecked
         {
@@ -74,7 +73,7 @@ namespace TsGui.View.GuiOptions
             this.Control = new TsCheckBoxUI();
             this.Label = new TsLabelUI();
             this.SetDefaults();
-            this._setvaluelist = new QueryList(this, this._controller);          
+            this._querylist = new QueryList(this, this._controller);          
             this.LoadXml(InputXml);
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
@@ -108,12 +107,6 @@ namespace TsGui.View.GuiOptions
                     Toggle t = new Toggle(this, this._controller, subx); 
                 }  
             }
-
-            x = InputXml.Element("SetValue");
-            if (x != null)
-            {
-                this._setvaluelist.LoadXml(x);
-            }
         }
 
         //fire an intial event to make sure things are set correctly. This is
@@ -125,7 +118,7 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            string newvalue = this._setvaluelist.GetResultWrangler()?.GetString();
+            string newvalue = this._querylist.GetResultWrangler()?.GetString();
             if (newvalue != this.CurrentValue)
             {
                 if (newvalue == this._valTrue) { this.IsChecked = true; }

@@ -39,7 +39,6 @@ namespace TsGui.View.GuiOptions
         protected IRootLayoutElement _rootelement;
         protected bool _showvalueinpopup;
         protected string _okHelpText;
-        protected QueryList _getvaluelist;
 
         //properties
         public double IconHeight
@@ -81,7 +80,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //constructor
-        public ComplianceOptionBase(XElement InputXml, TsColumn Parent, IDirector MainController): base (Parent, MainController)
+        public ComplianceOptionBase(XElement InputXml, TsColumn Parent, IDirector director): base (Parent, director)
         {
             this.Label = new TsLabelUI();
             this._rootelement = this.GetRootElement();
@@ -89,12 +88,11 @@ namespace TsGui.View.GuiOptions
 
             this.FillColor = new SolidColorBrush(Colors.Blue);
             this.StrokeColor = new SolidColorBrush(Colors.Blue);
-            this._compliancehandler = new ComplianceHandler(this, MainController);
+            this._compliancehandler = new ComplianceHandler(this, director);
             this._validationtooltiphandler = new ValidationToolTipHandler(this, this._controller);
-
+            this._querylist = new QueryList(director);
             this.UserControl.DataContext = this;
-            this.SetDefaults();
-            this._getvaluelist = new QueryList(MainController);       
+            this.SetDefaults();      
         }
 
         //methods
@@ -137,7 +135,7 @@ namespace TsGui.View.GuiOptions
 
         public void OnComplianceRetry(IRootLayoutElement o, EventArgs e)
         {
-            this._getvaluelist.ProcessAllQueries();
+            this._querylist.ProcessAllQueries();
             this.ProcessQuery();
             this.Validate();
         }
@@ -153,14 +151,14 @@ namespace TsGui.View.GuiOptions
             this._compliancehandler.AddCompliances(InputXml.Elements("Compliance"));
             this._showvalueinpopup = XmlHandler.GetBoolFromXElement(InputXml, "PopupShowValue", this._showvalueinpopup);
 
-            //wrap the query in another to make it suitable for the controller. 
+            //wrap the query in another to make it suitable for the querylist. 
             x = InputXml.Element("GetValue");
-            if (x != null) { this._getvaluelist.LoadXml(x); }  
+            if (x != null) { this._querylist.LoadXml(x); }  
         } 
 
         protected void ProcessQuery()
         {
-            this._value = this._getvaluelist.GetResultWrangler()?.GetString();
+            this._value = this._querylist.GetResultWrangler()?.GetString();
         }
 
         protected void UpdateState()

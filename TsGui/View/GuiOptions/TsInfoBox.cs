@@ -26,7 +26,6 @@ namespace TsGui.View.GuiOptions
     public class TsInfoBox : GuiOptionBase, IGuiOption, ILinkTarget
     {
         private string _controltext;
-        private QueryList _displayvaluelist;
         //Properties
 
         //Custom stuff for control
@@ -49,7 +48,7 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
             this.UserControl.DataContext = this;
             this.SetDefaults();
-            this._displayvaluelist = new QueryList(this, this._controller);
+            this._querylist = new QueryList(this, this._controller);
             this.LoadXml(InputXml);
             this.RefreshControlText();
         }
@@ -62,7 +61,7 @@ namespace TsGui.View.GuiOptions
 
             x = InputXml.Element("DisplayValue");
             if (x != null)
-            { this._displayvaluelist.LoadXml(x); }
+            { this.LoadSetValueXml(x); }
         }
 
         public void RefreshValue()
@@ -70,7 +69,7 @@ namespace TsGui.View.GuiOptions
 
         private void RefreshControlText()
         {
-            this.ControlText = this._displayvaluelist.GetResultWrangler()?.GetString();
+            this.ControlText = this._querylist.GetResultWrangler()?.GetString();
         }
 
         private void SetDefaults()

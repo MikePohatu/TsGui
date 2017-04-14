@@ -34,7 +34,6 @@ namespace TsGui.View.GuiOptions
         protected int _maxlength;
         private ValidationToolTipHandler _validationtooltiphandler;
         private ValidationHandler _validationhandler;
-        private QueryList _defaultvaluelist;
 
         //Properties
         #region
@@ -91,7 +90,7 @@ namespace TsGui.View.GuiOptions
         {
             //this._controltext = string.Empty;
             this._controller = MainController;
-            this._defaultvaluelist = new QueryList(this, this._controller);
+            this._querylist = new QueryList(this, this._controller);
 
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
@@ -126,20 +125,7 @@ namespace TsGui.View.GuiOptions
             x = InputXml.Element("DefaultValue");
             if (x != null)
             {
-                XAttribute xusecurrent = x.Attribute("UseCurrent");
-                if (xusecurrent != null)
-                {
-                    //default behaviour is to check if the ts variable is already set. If it is, set that as the default i.e. add a query for 
-                    //an environment variable to the start of the query list. 
-                    if (!string.Equals(xusecurrent.Value, "false", StringComparison.OrdinalIgnoreCase))
-                    {
-                        XElement xcurrentquery = new XElement("Query", new XElement("Variable", this.VariableName));
-                        xcurrentquery.Add(new XAttribute("Type", "EnvironmentVariable"));
-                        x.AddFirst(xcurrentquery);
-                    }
-                }
-                this._defaultvaluelist.Clear();
-                this._defaultvaluelist.LoadXml(x);
+                this.LoadSetValueXml(x);
             }            
         }
 
@@ -189,7 +175,7 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            string s = this._defaultvaluelist.GetResultWrangler()?.GetString();
+            string s = this._querylist.GetResultWrangler()?.GetString();
             if (s != null) 
             {
                 //if required, remove invalid characters and truncate
