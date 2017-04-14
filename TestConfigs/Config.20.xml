@@ -1,0 +1,194 @@
+<TsGui LiveData="TRUE">
+	<Height>400</Height>
+	<Width>350</Width>
+	
+	<Heading>
+		<Title>Option linking example config</Title>
+		<Text></Text>
+		<Height>60</Height>
+	</Heading>
+	
+	<Page>
+		<Formatting>
+			<LeftCellWidth>100</LeftCellWidth>
+			<RightCellWidth>50</RightCellWidth>
+		</Formatting>
+		<Column>
+			
+			
+			<GuiOption Type="ComputerName" ID="link_name"/>
+					
+			<GuiOption Type="CheckBox" ID="link_source">
+				<Variable>link_source</Variable>
+				<Label>SOURCE</Label>
+				<HAlign>left</HAlign>
+			</GuiOption>
+			
+			<!-- *** The compliance GuiOption. *** -->	
+			<GuiOption Type="TickCross">
+				<Variable>TickCross_1</Variable>
+				<Label>OK TRUE</Label>
+				<SetValue>
+					<Query Type="OptionValue">
+						<ID Name="link_source"/>
+					</Query>
+				</SetValue>
+				
+				<!-- The compliance sections. The rules are the same as for validation. For all availble rule
+				types, see Config_Validation.xml example file -->
+				<Compliance>
+					<DefaultState>Error</DefaultState>
+					<OK>
+						<Rule Type="Equals">TRUE</Rule>
+					</OK>
+				</Compliance>
+			</GuiOption>
+			
+			<GuiOption Type="TickCross">
+				<Variable>TickCross_2</Variable>
+				<Label>OK FALSE</Label>
+				<SetValue>
+					<Query Type="OptionValue">
+						<ID Name="link_source"/>
+					</Query>
+				</SetValue>
+				
+				<!-- The compliance sections. The rules are the same as for validation. For all availble rule
+				types, see Config_Validation.xml example file -->
+				<Compliance>
+					<DefaultState>Warning</DefaultState>
+					<OK>
+						<Rule Type="Equals">FALSE</Rule>
+					</OK>
+				</Compliance>
+			</GuiOption>
+			
+			<GuiOption Type="TickCross">
+				<Variable>TickCross_3</Variable>
+				<Label>Warning FALSE</Label>
+				<SetValue>
+					<Query Type="OptionValue">
+						<ID Name="link_source"/>
+					</Query>
+				</SetValue>
+				
+				<!-- The compliance sections. The rules are the same as for validation. For all availble rule
+				types, see Config_Validation.xml example file -->
+				<Compliance>						
+					<Warning>
+						<Rule Type="Equals">FALSE</Rule>
+					</Warning>
+				</Compliance>
+			</GuiOption>
+			
+			<GuiOption Type="TickCross">
+				<Variable>TickCross_4</Variable>
+				<Label>Warning TRUE</Label>
+				<SetValue>
+					<Query Type="OptionValue">
+						<ID Name="link_source"/>
+					</Query>
+				</SetValue>
+				
+				<!-- The compliance sections. The rules are the same as for validation. For all availble rule
+				types, see Config_Validation.xml example file -->
+				<Compliance>						
+					<Warning>
+						<Rule Type="Equals">TRUE</Rule>
+					</Warning>
+				</Compliance>
+			</GuiOption>
+			
+			<GuiOption Type="ComplianceRefreshButton">
+				<ButtonText>Refresh</ButtonText>
+				<Formatting>
+					<LabelOnRight>TRUE</LabelOnRight>
+				</Formatting>
+				<HAlign>left</HAlign>
+			</GuiOption>
+		</Column>
+		
+		
+		<!-- TrafficLights -->
+		<Column>
+			
+			<GuiOption Type="Heading"/>
+			<GuiOption Type="Heading"/>
+			
+			<!-- *** The compliance GuiOption. *** -->	
+			<GuiOption Type="TrafficLight">
+				<Variable>TrafficLight_1</Variable>
+				<Label>OK TRUE</Label>
+				<SetValue>
+					<Query Type="OptionValue">
+						<ID Name="link_source"/>
+					</Query>
+				</SetValue>
+				
+				<!-- The compliance sections. The rules are the same as for validation. For all availble rule
+				types, see Config_Validation.xml example file -->
+				<Compliance>
+					<DefaultState>Error</DefaultState>
+					<OK>
+						<Rule Type="Equals">TRUE</Rule>
+					</OK>
+				</Compliance>
+			</GuiOption>
+			
+			<GuiOption Type="TrafficLight">
+				<Variable>TrafficLight_2</Variable>
+				<Label>OK FALSE</Label>
+				<SetValue>
+					<Query Type="OptionValue">
+						<ID Name="link_source"/>
+					</Query>
+				</SetValue>
+				
+				<!-- The compliance sections. The rules are the same as for validation. For all availble rule
+				types, see Config_Validation.xml example file -->
+				<Compliance>	
+					<DefaultState>Warning</DefaultState>
+					<OK>
+						<Rule Type="Equals">FALSE</Rule>
+					</OK>
+				</Compliance>
+			</GuiOption>
+			
+			<GuiOption Type="TrafficLight">
+				<Variable>TrafficLight_3</Variable>
+				<Label>Warning FALSE</Label>
+				<SetValue>
+					<Query Type="OptionValue">
+						<ID Name="link_source"/>
+					</Query>
+				</SetValue>
+				
+				<!-- The compliance sections. The rules are the same as for validation. For all availble rule
+				types, see Config_Validation.xml example file -->
+				<Compliance>						
+					<Warning>
+						<Rule Type="Equals">FALSE</Rule>
+					</Warning>
+				</Compliance>
+			</GuiOption>
+			
+			<GuiOption Type="TrafficLight">
+				<Variable>TrafficLight_4</Variable>
+				<Label>Warning TRUE</Label>
+				<SetValue>
+					<Query Type="OptionValue">
+						<ID Name="link_source"/>
+					</Query>
+				</SetValue>
+				
+				<!-- The compliance sections. The rules are the same as for validation. For all availble rule
+				types, see Config_Validation.xml example file -->
+				<Compliance>						
+					<Warning>
+						<Rule Type="Equals">TRUE</Rule>
+					</Warning>
+				</Compliance>
+			</GuiOption>
+		</Column>
+	</Page>
+</TsGui>
