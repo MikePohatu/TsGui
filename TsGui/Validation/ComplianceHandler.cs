@@ -91,7 +91,7 @@ namespace TsGui.Validation
                 }
             }
             if (active == true) { return s; }
-            else { return string.Empty; }
+            else { return null; }
         }
 
         public string GetNonOkValidationMessages(string Input)
