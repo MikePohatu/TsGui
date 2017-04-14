@@ -88,7 +88,6 @@ namespace TsGui.View.GuiOptions
 
         private void Init(IDirector MainController)
         {
-            //this._controltext = string.Empty;
             this._controller = MainController;
             this._querylist = new QueryList(this, this._controller);
 
@@ -125,7 +124,7 @@ namespace TsGui.View.GuiOptions
             x = InputXml.Element("DefaultValue");
             if (x != null)
             {
-                this.LoadSetValueXml(x);
+                this.LoadSetValueXml(x,false);
             }            
         }
 
@@ -147,7 +146,6 @@ namespace TsGui.View.GuiOptions
 
         public bool Validate()
         {
-            //if (this._controller.StartupFinished == false) { return true; }
             if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
 
             bool newvalid = this._validationhandler.IsValid(this.ControlText);

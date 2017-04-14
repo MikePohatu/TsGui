@@ -65,7 +65,7 @@
 				<!-- Note the InactiveValue option. This sets a new value if the
 				GuiOption is disabled/hidden-->
 				
-				<GuiOption Type="TextBlock">
+				<GuiOption Type="InfoBox">
 					<Formatting>
 						<Label>
 							<Width>70</Width>

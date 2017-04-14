@@ -109,7 +109,7 @@ namespace TsGui.View.GuiOptions
             x = InputXml.Element("SetValue");
             if (x != null)
             {
-                this.LoadSetValueXml(x);
+                this.LoadSetValueXml(x,true);
             }
         }
 
@@ -119,7 +119,7 @@ namespace TsGui.View.GuiOptions
             this.NotifyUpdate();
         }
 
-        protected void LoadSetValueXml(XElement inputxml)
+        protected void LoadSetValueXml(XElement inputxml, bool clearbeforeload)
         {
             XAttribute xusecurrent = inputxml.Attribute("UseCurrent");
             if (xusecurrent != null)
@@ -133,7 +133,7 @@ namespace TsGui.View.GuiOptions
                     inputxml.AddFirst(xcurrentquery);
                 }
             }
-            this._querylist.Clear();
+            if (clearbeforeload == true) { this._querylist.Clear(); }
             this._querylist.LoadXml(inputxml);
         }
 

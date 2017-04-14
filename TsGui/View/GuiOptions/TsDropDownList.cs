@@ -28,15 +28,14 @@ using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsDropDownList: GuiOptionBase, IGuiOption, IToggleControl, IValidationGuiOption, ILinkTarget
+    public class TsDropDownList : GuiOptionBase, IGuiOption, IToggleControl, IValidationGuiOption, ILinkTarget
     {
         public event ToggleEvent ToggleEvent;
 
         private TsDropDownListUI _dropdownlistui;
-        private string _defaultvalue;
         private TsDropDownListItem _currentitem;
         private List<TsDropDownListItem> _items = new List<TsDropDownListItem>();
-        private Dictionary<string,Group> _itemGroups = new Dictionary<string,Group>();
+        private Dictionary<string, Group> _itemGroups = new Dictionary<string, Group>();
         private bool _istoggle = false;
         private string _validationtext;
         private ValidationToolTipHandler _validationtooltiphandler;
@@ -74,10 +73,10 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsDropDownList(XElement InputXml, TsColumn Parent, IDirector MainController): base (Parent, MainController)
+        public TsDropDownList(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent, MainController)
         {
             this._controller = MainController;
-            this._querylist = new QueryList(this,this._controller);
+            this._querylist = new QueryList(this, this._controller);
 
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
@@ -107,16 +106,22 @@ namespace TsGui.View.GuiOptions
             IEnumerable<XElement> inputElements = InputXml.Elements();
 
             this._validationhandler.AddValidations(InputXml.Elements("Validation"));
-            this._defaultvalue = XmlHandler.GetStringFromXElement(InputXml, "DefaultValue", this._defaultvalue);
             this._nodefaultvalue = XmlHandler.GetBoolFromXAttribute(InputXml, "NoDefaultValue", this._nodefaultvalue);
             this._noselectionmessage = XmlHandler.GetStringFromXElement(InputXml, "NoSelectionMessage", this._noselectionmessage);
 
             foreach (XElement x in inputElements)
             {
-                //read in an option and add to a dictionary for later use
-                if (x.Name == "Option")
+                //the base loadxml will create queries before this so will win
+                if (x.Name == "DefaultValue")
                 {
-                    TsDropDownListItem newoption = new TsDropDownListItem(optionindex, x, this.ControlFormatting,this,this._controller);
+                    IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this._controller, this);
+                    this._querylist.AddQuery(defquery);
+                }
+                
+                //read in an option and add to a dictionary for later use
+                else if (x.Name == "Option")
+                {
+                    TsDropDownListItem newoption = new TsDropDownListItem(optionindex, x, this.ControlFormatting, this, this._controller);
                     this.AddOption(newoption);
                     optionindex++;
 
@@ -129,7 +134,7 @@ namespace TsGui.View.GuiOptions
                     }
                 }
 
-                if (x.Name == "Query")
+                else if (x.Name == "Query")
                 {
                     XElement wrapx = new XElement("wrapx");
                     wrapx.Add(x);
@@ -137,16 +142,15 @@ namespace TsGui.View.GuiOptions
                     newlist.LoadXml(wrapx);
 
                     List<KeyValuePair<string, string>> kvlist = newlist.GetResultWrangler().GetKeyValueList();
-                    //List<KeyValuePair<string, string>> kvlist = this._controller.EnvironmentController.GetKeyValueListFromList(x);
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        TsDropDownListItem newoption = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting,this ,this._controller);
+                        TsDropDownListItem newoption = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting, this, this._controller);
                         this.AddOption(newoption);
                         optionindex++;
                     }
-                } 
+                }
 
-                if (x.Name == "Toggle")
+                else if (x.Name == "Toggle")
                 {
                     Toggle t = new Toggle(this, this._controller, x);
                     this._istoggle = true;
@@ -163,10 +167,10 @@ namespace TsGui.View.GuiOptions
             if (this._nodefaultvalue == false)
             {
                 int index = 0;
-
+                string defaultval = this._querylist.GetResultWrangler()?.GetString();
                 foreach (TsDropDownListItem item in this.VisibleOptions)
                 {
-                    if ((item.Value == this._defaultvalue) || (index == 0))
+                    if ((item.Value == defaultval) || (index == 0))
                     {
                         newdefault = item;
                         if (index > 0) { break; }
@@ -229,7 +233,6 @@ namespace TsGui.View.GuiOptions
 
         public void OnDropDownListItemGroupEvent()
         {
-            //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => this.UpdateView()));
             this.OnOptionsListUpdated();
         }
 

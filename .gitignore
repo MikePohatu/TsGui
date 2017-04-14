@@ -193,3 +193,4 @@ ModelManifest.xml
 /TestConfigs/TsGui.0.9.4.1.exe
 /TestConfigs/NLog.dll
 /TestConfigs/Config.xml
+/TestConfigs/NLog.config.old

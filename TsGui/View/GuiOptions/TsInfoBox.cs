@@ -26,9 +26,8 @@ namespace TsGui.View.GuiOptions
     public class TsInfoBox : GuiOptionBase, IGuiOption, ILinkTarget
     {
         private string _controltext;
+        
         //Properties
-
-        //Custom stuff for control
         public override string CurrentValue { get { return this._controltext; } }
         public string ControlText
         {
@@ -39,7 +38,16 @@ namespace TsGui.View.GuiOptions
                 this.NotifyUpdate();
             }
         }
-        public override TsVariable Variable { get { return new TsVariable(this.VariableName, this.ControlText); } }
+        public override TsVariable Variable
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(this.VariableName) == false)
+                { return new TsVariable(this.VariableName, this.ControlText); }
+                else
+                { return null; }
+            }
+        }
 
         //constructor
         public TsInfoBox(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent, MainController)
@@ -61,7 +69,7 @@ namespace TsGui.View.GuiOptions
 
             x = InputXml.Element("DisplayValue");
             if (x != null)
-            { this.LoadSetValueXml(x); }
+            { this.LoadSetValueXml(x,false); }
         }
 
         public void RefreshValue()
