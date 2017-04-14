@@ -22,10 +22,11 @@ using System.Windows.Media;
 using TsGui.Validation;
 using TsGui.View.Layout;
 using TsGui.Queries;
+using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class ComplianceOptionBase : GuiOptionBase, IGuiOption, IValidationGuiOption
+    public abstract class ComplianceOptionBase : GuiOptionBase, IGuiOption, IValidationGuiOption, ILinkTarget
     {
         protected string _value;
         protected double _iconheight;
@@ -90,7 +91,7 @@ namespace TsGui.View.GuiOptions
             this.StrokeColor = new SolidColorBrush(Colors.Blue);
             this._compliancehandler = new ComplianceHandler(this, director);
             this._validationtooltiphandler = new ValidationToolTipHandler(this, this._controller);
-            this._querylist = new QueryList(director);
+            this._querylist = new QueryList(this,director);
             this.UserControl.DataContext = this;
             this.SetDefaults();      
         }
@@ -134,6 +135,11 @@ namespace TsGui.View.GuiOptions
         { this.Validate(); }
 
         public void OnComplianceRetry(IRootLayoutElement o, EventArgs e)
+        {
+            this.RefreshValue();
+        }
+
+        public void RefreshValue()
         {
             this._querylist.ProcessAllQueries();
             this.ProcessQuery();
