@@ -22,7 +22,7 @@ namespace TsGui.Queries
     public static class QueryFactory
     {
 
-        public static IQuery GetQueryObject(XElement InputXml, IDirector controller, ILinkTarget owner )
+        public static IQuery GetQueryObject(XElement InputXml, IDirector director, ILinkTarget owner )
         {
             if (InputXml == null) { return null; }
 
@@ -36,15 +36,21 @@ namespace TsGui.Queries
                     case "Wmi":
                         return new WmiQuery(InputXml);
                     case "EnvironmentVariable":
-                        return new EnvironmentVariableQuery(InputXml, controller.EnvironmentController.SccmConnector);
+                        return new EnvironmentVariableQuery(InputXml, director.EnvironmentController.SccmConnector);
                     case "OptionValue":
-                        return new OptionValueQuery(InputXml, controller, owner);
+                        return new OptionValueQuery(InputXml, director, owner);
                     case "IfElse":
-                        return new IfElseQuery(InputXml, controller, owner);
+                        return new IfElseQuery(InputXml, director, owner);
                     case "Combined":
-                        return new CombinedQuery(InputXml, controller, owner);
+                        return new CombinedQuery(InputXml, director, owner);
                     case "Value":
                         return new ValueOnlyQuery(InputXml);
+                    case "LinkFalse":
+                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, director, owner, false);
+                    case "LinkTo":
+                        return GetLinkToQuery(InputXml.Value, director, owner);
+                    case "LinkTrue":
+                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, director, owner, true);
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
                 }

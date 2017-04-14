@@ -60,25 +60,6 @@ namespace TsGui.Queries
         {
             if (InputXml != null)
             {
-                XAttribute xa;
-                xa = InputXml.Attribute("LinkTo");
-                if (xa != null)
-                {
-                    this._queries.Add(QueryFactory.GetLinkToQuery(xa.Value, this._controller, this._owneroption));
-                }
-
-                xa = InputXml.Attribute("LinkTrue");
-                if (xa != null)
-                {
-                    this._queries.Add(QueryFactory.GetLinkTrueFalseOnlyQuery(xa.Value, this._controller, this._owneroption,true));
-                }
-
-                xa = InputXml.Attribute("LinkFalse");
-                if (xa != null)
-                {
-                    this._queries.Add(QueryFactory.GetLinkTrueFalseOnlyQuery(xa.Value, this._controller, this._owneroption,false));
-                }
-
                 foreach (XElement x in InputXml.Elements())
                 {
                     IQuery newquery = QueryFactory.GetQueryObject(x, this._controller, this._owneroption);
