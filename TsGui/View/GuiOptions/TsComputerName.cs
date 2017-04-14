@@ -86,7 +86,7 @@ namespace TsGui.View.GuiOptions
             validation.Add(new XElement("MinLength", "1"));
             validation.Add(new XElement("MaxLength", "15"));
 
-            XElement def = new XElement("DefaultValue");
+            XElement def = new XElement("SetValue");
 
             def.Add(new XAttribute("UseCurrent", "False"));
             def.Add(osdvar);
