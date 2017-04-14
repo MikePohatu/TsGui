@@ -216,7 +216,7 @@
 				</SetValue>
 			</GuiOption>
 			
-			<GuiOption Type="TextBlock">
+			<GuiOption Type="InfoBox">
 				<Variable>INFO_SystemInfo</Variable>
 				<Label>System Info:</Label>
 				
