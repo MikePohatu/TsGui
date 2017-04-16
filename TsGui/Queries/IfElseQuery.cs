@@ -72,7 +72,6 @@ namespace TsGui.Queries
                 }
                 else if (xname.Equals("ELSE", StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    //IQuery elsequery = QueryFactory.GetQueryObject(element, this._director, this._targetoption);
                     this._else = new QueryList(element,this._targetoption,this._director);
                 }
             }

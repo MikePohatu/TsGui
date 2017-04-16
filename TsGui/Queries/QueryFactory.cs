@@ -81,7 +81,7 @@ namespace TsGui.Queries
         }
 
         #region
-        //  <IF>
+        //  <Query Type="IfElse">
         //      <Source>
         //          <Query Type="OptionValue">
         //              <ID Name="TestLink1"/>
@@ -95,29 +95,32 @@ namespace TsGui.Queries
         //              <ID Name = "TestLink1"/>
         //          </Query>
         //      </Result>
-        //  </IF>
+        //  </Query>
         #endregion
         public static IQuery GetLinkTrueFalseOnlyQuery(string SourceID, IDirector controller, ILinkTarget owner, bool truefalse)
         {
             
-            XElement queryx = new XElement("Query");
-            queryx.Add(new XAttribute("Type", "OptionValue"));
+            XElement sharedqueryx = new XElement("Query");
+            sharedqueryx.Add(new XAttribute("Type", "OptionValue"));
             XElement idx = new XElement("ID");
             idx.Add(new XAttribute("Name", SourceID));
-            queryx.Add(idx);
+            sharedqueryx.Add(idx);
 
             XElement rulex = new XElement("Rule",truefalse.ToString());
             rulex.Add(new XAttribute("Type", "Equals"));
             XElement rulesetx = new XElement("Ruleset",rulex);
 
-            XElement ifx = new XElement("IF");
-            XElement sourcex = new XElement("Source", queryx);
-            XElement resultx = new XElement("Result", queryx);
+            XElement ifx = new XElement("IF");            
+            XElement sourcex = new XElement("Source", sharedqueryx);
+            XElement resultx = new XElement("Result", sharedqueryx);
             ifx.Add(sourcex);
             ifx.Add(rulesetx);
             ifx.Add(resultx);
 
-            return new Conditional(ifx, controller, owner);
+            XElement ifelsex = new XElement("Query", ifx);
+            ifelsex.Add(new XAttribute("Type", "IfElse"));
+
+            return new IfElseQuery(ifelsex, controller, owner);
         }
     }
 }

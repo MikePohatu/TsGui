@@ -21,7 +21,7 @@ using TsGui.Validation.StringMatching;
 
 namespace TsGui.Queries
 {
-    public class Conditional: BaseQuery
+    public class Conditional
     {
         private QueryList _sourcequerylist;
         private QueryList _resultquerylist;
@@ -31,7 +31,6 @@ namespace TsGui.Queries
 
         public Conditional(XElement inputxml, IDirector controller, ILinkTarget targetoption)
         {
-            this._reprocess = true;
             this._controller = controller;
             this._linktargetoption = targetoption;
             this._sourcequerylist = new QueryList(this._linktargetoption, this._controller);
@@ -52,9 +51,8 @@ namespace TsGui.Queries
         //  </Result>
         //</IF>
         #endregion
-        public new void LoadXml(XElement InputXml)
+        public void LoadXml(XElement InputXml)
         {
-            base.LoadXml(InputXml);
             XElement x;
             x = InputXml.Element("Source");
             if (x != null) { this._sourcequerylist.LoadXml(x); }
@@ -66,12 +64,12 @@ namespace TsGui.Queries
             if (x != null) { this._resultquerylist.LoadXml(x); }
         }
 
-        public override ResultWrangler GetResultWrangler()
+        public ResultWrangler GetResultWrangler()
         {
             return this.ProcessQuery();
         }
 
-        public override ResultWrangler ProcessQuery()
+        public ResultWrangler ProcessQuery()
         {
             string sourcevalue = this._sourcequerylist.GetResultWrangler()?.GetString();
 

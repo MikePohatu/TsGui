@@ -15,7 +15,6 @@
 
 // RuleSet.cs - List of rules for AND/OR
 
-using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
@@ -88,6 +87,8 @@ namespace TsGui.Validation.StringMatching
 
         private bool OrComparison(string input)
         {
+            if (this._rules.Count == 0) { return true; }
+
             foreach (IStringMatchingRule rule in this._rules)
             {
                 if (rule.DoesMatch(input) == true) { return true; }

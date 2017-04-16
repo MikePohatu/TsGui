@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Xml.Linq;
 
-using TsGui.Validation;
 using TsGui.Validation.StringMatching;
 
 
