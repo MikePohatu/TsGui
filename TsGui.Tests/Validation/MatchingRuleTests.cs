@@ -40,12 +40,17 @@ namespace TsGui.Tests.Validation
         [TestCase("fa", "", "IsNumeric", true, ExpectedResult = false)]
         [TestCase("-", "", "IsNumeric", true, ExpectedResult = false)]
         [TestCase(null, "blah", "Equals",false, ExpectedResult = false)]
+        [TestCase(null, "*NULL", "Equals", false, ExpectedResult = true)]
+        [TestCase(null, "", "Equals", false, ExpectedResult = false)]
+        [TestCase(null, "Test", "StartsWith", false, ExpectedResult = false)]
+        [TestCase(null, "Test", "EndsWith", false, ExpectedResult = false)]
+        [TestCase(null, "Test", "Contains", false, ExpectedResult = false)]
         public bool RuleTest(string TestString, string RuleString, string SearchType, bool CaseSensitive)
         {
-            XElement xignore = new XElement("Rule", RuleString);
+            XElement xrule = new XElement("Rule", RuleString);
 
-            xignore.Add(new XAttribute("Type", SearchType));
-            IStringMatchingRule rule = MatchingRuleFactory.GetRuleObject(xignore);
+            xrule.Add(new XAttribute("Type", SearchType));
+            IStringMatchingRule rule = MatchingRuleFactory.GetRuleObject(xrule);
 
             return rule.DoesMatch(TestString);
         }

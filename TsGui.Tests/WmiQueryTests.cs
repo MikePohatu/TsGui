@@ -51,6 +51,7 @@ namespace TsGui.Tests
                 yield return new TestCaseData(AddWmiPropertiesToWrangler_TestArgs2(true));
                 yield return new TestCaseData(AddWmiPropertiesToWrangler_TestArgs2(false));
                 yield return new TestCaseData(AddWmiPropertiesToWrangler_TestArgs3());
+                yield return new TestCaseData(AddWmiPropertiesToWrangler_TestArgsNull());
             }
         }
 
@@ -134,6 +135,25 @@ namespace TsGui.Tests
 
             List<ManagementObject> objcollection = new List<ManagementObject>();
             objcollection.Add(wmi1);
+
+            return new WmiQueryTestArgs(expectedresult, wrangler, objcollection, proptemplates);
+        }
+
+        private static WmiQueryTestArgs AddWmiPropertiesToWrangler_TestArgsNull()
+        {
+            string expectedresult = null;
+
+            //protected void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
+            List<KeyValuePair<string, XElement>> proptemplates = new List<KeyValuePair<string, XElement>>();
+
+            XElement propx = new XElement("Property");
+            propx.Add(new XAttribute("Name", "BatteryStatus"));
+            proptemplates.Add(new KeyValuePair<string, XElement>("BatteryStatus", propx));
+
+            ResultWrangler wrangler = new ResultWrangler();
+            wrangler.Separator = null;
+
+            List<ManagementObject> objcollection = new List<ManagementObject>();
 
             return new WmiQueryTestArgs(expectedresult, wrangler, objcollection, proptemplates);
         }

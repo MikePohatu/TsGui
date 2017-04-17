@@ -30,18 +30,21 @@ namespace TsGui.Validation.StringMatching
         public bool DoesMatch(string input)
         {
             string inputstring;
-            if (input == null) { inputstring = string.Empty; }
-            else
+
+            inputstring = input;
+            if (this.IsCaseSensitive == false)
             {
-                inputstring = input;
-                if (this.IsCaseSensitive == false)
-                {
-                    inputstring = inputstring.ToUpper();
-                }
+                inputstring = inputstring?.ToUpper();
             }
             return Compare(inputstring);
         }
 
         protected abstract bool Compare(string input);
+
+        protected string ReplaceNullWithEmpty(string input)
+        {
+            if (input == null) { return string.Empty; }
+            else { return input; }
+        }
     }
 }

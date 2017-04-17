@@ -180,6 +180,20 @@
 				</SetValue>
 			</GuiOption>
 			
+			<GuiOption Type="FreeText">
+				<Variable>Link_append_example</Variable>
+				<Label>Link append example</Label>
+				<SetValue>
+					<Query Type="OptionValue">
+						<!-- The <ID> element can be used in the same way as a <Property> element in a WMI
+						query i.e. Append, Prefix, Truncate, Calculate. See Config_Queries for exmaples -->
+						<ID Name="link_name">
+							<Append>-Append</Append>
+						</ID>
+					</Query>
+				</SetValue>
+			</GuiOption>
+			
 			<GuiOption Type="DropDownList" ID="Country_1">
 				<!-- The NoSelectionMessage element overrides the default "Please select a value" text when nothing is selected by the user -->
 				<NoSelectionMessage>Please select something</NoSelectionMessage>

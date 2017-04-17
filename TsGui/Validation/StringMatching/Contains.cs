@@ -25,6 +25,8 @@ namespace TsGui.Validation.StringMatching
         { }
 
         protected override bool Compare(string input)
-        { return input.Contains(this._rulestring); }
+        {
+            return this.ReplaceNullWithEmpty(input).Contains(this._rulestring);
+        }
     }
 }

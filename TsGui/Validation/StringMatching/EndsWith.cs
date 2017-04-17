@@ -24,6 +24,6 @@ namespace TsGui.Validation.StringMatching
         public EndsWith(XElement inputxml):base(inputxml) { }
 
         protected override bool Compare(string input)
-        { return input.EndsWith(this._rulestring); }
+        { return this.ReplaceNullWithEmpty(input).EndsWith(this._rulestring); }
     }
 }

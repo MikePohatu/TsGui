@@ -25,6 +25,12 @@ namespace TsGui.Validation.StringMatching
         { }
 
         protected override bool Compare(string input)
-        { return input.Equals(this._rulestring); }
+        {
+            if (input == null)
+            {
+                if (this._rulestring?.ToUpper() == "*NULL") { return true; }
+                else { return false; }
+            }
+            return input.Equals(this._rulestring); }
     }
 }

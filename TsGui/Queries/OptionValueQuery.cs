@@ -30,6 +30,7 @@ namespace TsGui.Queries
         {
             this._linktargetoption = owner;
             this._controller = controller;
+            this._ignoreempty = false;
             this.SetDefaults();
             this.LoadXml(inputxml);
             this._controller.LinkingLibrary.AddHandler(this._formatter.Name,this);

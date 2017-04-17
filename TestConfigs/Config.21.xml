@@ -1,0 +1,194 @@
+<TsGui LiveData="TRUE">
+	<Height>400</Height>
+	<Width>350</Width>
+	
+	<Heading>
+		<Title>Option linking example config</Title>
+		<Text></Text>
+		<Height>60</Height>
+	</Heading>
+	
+	<Page>
+		<Formatting>
+			<LeftCellWidth>150</LeftCellWidth>
+			<RightCellWidth>150</RightCellWidth>
+		</Formatting>
+		<Row>
+			<Column>
+				<GuiOption Type="ComputerName" ID="link_name"/>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>Name_empty</Variable>
+					<Label>ComputerName empty</Label>
+					<HAlign>left</HAlign>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="link_name"/>
+									</Query>
+								</Source>
+								<Ruleset Type="AND">
+									<Rule Type="Equals"></Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<ELSE>
+								<Value>FALSE</Value>
+							</ELSE>
+						</Query>
+					</SetValue>
+				</GuiOption>
+				
+				<GuiOption Type="DropDownList" ID="link_department">
+					<Variable>Department</Variable>
+					<Label>Department:</Label>
+					<SetValue>
+						<Value>IT</Value>
+					</SetValue>
+					
+					<Option>
+						<Text>Finance</Text>
+						<Value>Finance</Value>
+					</Option>
+					<Option>
+						<Text>HR</Text>
+						<Value>HR</Value>
+					</Option>
+					<Option>
+						<Text>IT</Text>
+						<Value>IT</Value>
+					</Option>
+					<Option>
+						<Text>Project Office</Text>
+						<Value>PMO</Value>
+					</Option>
+					
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>TOGGLE_Apps</Variable>
+					<Label>Additional applications</Label>
+					<HAlign>left</HAlign>
+					
+					<Toggle Group="Group_Apps">
+						<Enabled>TRUE</Enabled>
+						<Disabled>FALSE</Disabled>
+						<Hide/>
+					</Toggle>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+	
+	<Page>
+		<Group>Group_Apps</Group>
+		<Formatting>
+			<LeftCellWidth>100</LeftCellWidth>
+			<RightCellWidth>50</RightCellWidth>
+		</Formatting>
+		<Row>
+			<Column>
+				<GuiOption Type="CheckBox">
+					<Variable>APP_Project</Variable>
+					<Label>MS Project</Label>
+					<HAlign>right</HAlign>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="link_department"/>
+									</Query>
+								</Source>
+								<Ruleset Type="AND">
+									<Rule Type="Equals">PMO</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="link_department"/>
+									</Query>
+								</Source>
+								<Ruleset Type="AND">
+									<Rule Type="Equals">IT</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<ELSE>
+								<Value>FALSE</Value>
+							</ELSE>
+						</Query>
+					</SetValue>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>APP_Visio</Variable>
+					<Label>MS Visio</Label>
+					<HAlign>right</HAlign>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="link_department"/>
+									</Query>
+								</Source>
+								<Ruleset Type="AND">
+									<Rule Type="Equals">IT</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<ELSE>
+								<Value>FALSE</Value>
+							</ELSE>
+						</Query>
+					</SetValue>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>APP_Notepad</Variable>
+					<Label>Notepad++</Label>
+					<HAlign>right</HAlign>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="link_department"/>
+									</Query>
+								</Source>
+								<Ruleset Type="AND">
+									<Rule Type="Equals">IT</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<ELSE>
+								<Value>FALSE</Value>
+							</ELSE>
+						</Query>
+					</SetValue>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>APP_7zip</Variable>
+					<Label>7zip</Label>
+					<HAlign>right</HAlign>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>
