@@ -28,6 +28,6 @@
                  BorderThickness="1" 
                  Padding="7,5,7,5" HorizontalContentAlignment="Left" VerticalAlignment="Top"
                  Template="{StaticResource TextBoxBaseControlTemplate}"
-                 Text="{Binding ValidationText}"/>
+                 Text="{Binding ValidationText, Converter={StaticResource XmlStringLine}}"/>
     </Grid>
 </UserControl>
