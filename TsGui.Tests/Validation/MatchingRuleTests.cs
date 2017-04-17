@@ -43,8 +43,14 @@ namespace TsGui.Tests.Validation
         [TestCase(null, "*NULL", "Equals", false, ExpectedResult = true)]
         [TestCase(null, "", "Equals", false, ExpectedResult = false)]
         [TestCase(null, "Test", "StartsWith", false, ExpectedResult = false)]
+        [TestCase(null, "Test", "Characters", false, ExpectedResult = false)]
         [TestCase(null, "Test", "EndsWith", false, ExpectedResult = false)]
         [TestCase(null, "Test", "Contains", false, ExpectedResult = false)]
+        [TestCase(null, "0", "GreaterThan", false, ExpectedResult = false)]
+        [TestCase(null, "0", "LessThan", false, ExpectedResult = false)]
+        [TestCase(null, "0", "GreaterThanOrEqualTo", false, ExpectedResult = false)]
+        [TestCase(null, "0", "LessThanOrEqualTo", false, ExpectedResult = false)]
+        [TestCase(null, "^[a-z0-9_-]{6,18}$", "RegEx", false, ExpectedResult = false)]
         public bool RuleTest(string TestString, string RuleString, string SearchType, bool CaseSensitive)
         {
             XElement xrule = new XElement("Rule", RuleString);

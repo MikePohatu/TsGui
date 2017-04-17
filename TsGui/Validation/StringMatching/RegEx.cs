@@ -28,10 +28,13 @@ namespace TsGui.Validation.StringMatching
 
         public bool DoesMatch(string input)
         {
+            string s;
+            if (input == null) { s = string.Empty; }
+            else { s = input; }
             try
             {
-                if (this.IsCaseSensitive == true) { return Regex.IsMatch(input, this.Content); }
-                else { return Regex.IsMatch(input, this.Content, RegexOptions.IgnoreCase); }
+                if (this.IsCaseSensitive == true) { return Regex.IsMatch(s, this.Content); }
+                else { return Regex.IsMatch(s, this.Content, RegexOptions.IgnoreCase); }
             }
             catch (Exception e) { throw new TsGuiKnownException("Error processing RegEx: " + this.Content, e.Message); }
         }

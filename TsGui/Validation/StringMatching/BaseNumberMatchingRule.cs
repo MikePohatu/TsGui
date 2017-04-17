@@ -13,7 +13,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+using System;
 using System.Xml.Linq;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Validation.StringMatching
 {
@@ -26,8 +28,16 @@ namespace TsGui.Validation.StringMatching
             double inputnum;
             double rulenum;
 
-            if (!double.TryParse(input, out inputnum)) { return false; }
-            if (!double.TryParse(this.Content, out rulenum)) { return false; }
+            if (!double.TryParse(input, out inputnum))
+            {
+                LoggerFacade.Warn("Failed to convert input to number: " + input);
+                return false;
+            }
+            if (!double.TryParse(this.Content, out rulenum))
+            {
+                LoggerFacade.Warn("Failed to convert rule content to number: " + this.Content);
+                return false;
+            }
 
             return this.Compare(inputnum, rulenum);
         }
