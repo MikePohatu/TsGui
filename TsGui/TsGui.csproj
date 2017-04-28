@@ -239,7 +239,7 @@
     <Compile Include="View\Layout\WindowLocation.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
     <Compile Include="Validation\ResultValidator.cs" />
-    <Compile Include="Control\EnvironmentController.cs" />
+    <Compile Include="EnvironmentController.cs" />
     <Compile Include="Calculator\Calculator.cs" />
     <Compile Include="Queries\ResultWrangler.cs" />
     <Compile Include="Queries\ResultFormatter.cs" />
@@ -249,9 +249,9 @@
     <Compile Include="Grouping\IGroupableUIElement.cs" />
     <Compile Include="Grouping\IGroupChild.cs" />
     <Compile Include="Grouping\Toggle.cs" />
-    <Compile Include="Control\HardwareEvaluator.cs" />
+    <Compile Include="HardwareEvaluator.cs" />
     <Compile Include="View\GuiOptions\IValidationGuiOption.cs" />
-    <Compile Include="Control\ITsVariableOutput.cs" />
+    <Compile Include="ITsVariableOutput.cs" />
     <Compile Include="Grouping\IToggleControl.cs" />
     <Compile Include="View\Layout\TsPageUI.xaml.cs">
       <DependentUpon>TsPageUI.xaml</DependentUpon>
@@ -260,9 +260,9 @@
     <Compile Include="Connectors\SccmConnector.cs" />
     <Compile Include="Connectors\SystemConnector.cs" />
     <Compile Include="Connectors\TestingConnector.cs" />
-    <Compile Include="Control\TsVariable.cs" />
-    <Compile Include="Control\TsWindowAlerts.cs" />
-    <Compile Include="Control\XmlHandler.cs" />
+    <Compile Include="TsVariable.cs" />
+    <Compile Include="TsWindowAlerts.cs" />
+    <Compile Include="XmlHandler.cs" />
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
