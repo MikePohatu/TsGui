@@ -194,3 +194,4 @@ ModelManifest.xml
 /TestConfigs/NLog.dll
 /TestConfigs/Config.xml
 /TestConfigs/NLog.config.old
+/TsGui.Tests/testauth.xml
