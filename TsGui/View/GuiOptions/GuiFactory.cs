@@ -84,13 +84,19 @@ namespace TsGui.View.GuiOptions
             }
             else if (xtype.Value == "Image")
             {
-                TsImage img = new TsImage(OptionXml, Parent, RootController);
-                return img;
+                TsImage option = new TsImage(OptionXml, Parent, RootController);
+                return option;
             }
             else if (xtype.Value == "ComplianceRefreshButton")
             {
-                TsComplianceRefreshButton crb = new TsComplianceRefreshButton(OptionXml, Parent, RootController);
-                return crb;
+                TsComplianceRefreshButton option = new TsComplianceRefreshButton(OptionXml, Parent, RootController);
+                return option;
+            }
+            else if (xtype.Value == "PasswordBox")
+            {
+                TsPasswordBox option = new TsPasswordBox(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(option);
+                return option;
             }
             else
             { return null; }

@@ -64,6 +64,8 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Xaml" />
@@ -77,6 +79,12 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Arguments.cs" />
+    <Compile Include="Authentication\ActiveDirectoryAuthentication.cs" />
+    <Compile Include="Authentication\ActiveDirectoryMethods.cs" />
+    <Compile Include="Authentication\AuthenticationEnums.cs" />
+    <Compile Include="Authentication\AuthLibrary.cs" />
+    <Compile Include="Authentication\IAuth.cs" />
+    <Compile Include="Authentication\IPassword.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="IDirector.cs" />
     <Compile Include="Queries\IfElseQuery.cs" />
@@ -99,6 +107,10 @@
     <Compile Include="Validation\StringMatching\StartsWith.cs" />
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
       <DependentUpon>ContentChanger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GuiOptions\TsPasswordBox.cs" />
+    <Compile Include="View\GuiOptions\TsPasswordBoxUI.xaml.cs">
+      <DependentUpon>TsPasswordBoxUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Layout\Converters\XmlStringLineConverter.cs" />
     <Compile Include="Diagnostics\Logging\ILoggingReceiver.cs" />
@@ -278,6 +290,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\GuiOptions\ContentChanger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GuiOptions\TsPasswordBoxUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
