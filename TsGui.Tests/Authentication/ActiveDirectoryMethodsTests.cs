@@ -15,9 +15,11 @@
 
 
 using NUnit.Framework;
-using TsGui.Authentication;
 using System.Collections.Generic;
 using System.Security;
+using TsGui.Authentication.ActiveDirectory;
+using TsGui.Authentication;
+
 namespace TsGui.Tests.Authentication
 {
     [TestFixture]

@@ -26,11 +26,13 @@ namespace TsGui.View.GuiOptions
 {
     public class TsPasswordBox: GuiOptionBase, IGuiOption, IPassword
     {
+        private string _authid;
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;
 
         //Properties
         #region
+        public string AuthID { get { return this._authid; } }
         public SecureString SecurePassword { get { return this._passwordboxui.PasswordBox.SecurePassword; } }
         public override string CurrentValue { get { return null; } }
         public int MaxLength
@@ -76,10 +78,10 @@ namespace TsGui.View.GuiOptions
             this.LabelText = "Password:";
         }
 
-        public new void LoadXml(XElement InputXml)
+        private new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-
+            this._authid = XmlHandler.GetStringFromXAttribute(InputXml, "AuthID", this._authid);
             this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", this.MaxLength);          
         }
     }

@@ -79,11 +79,14 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Arguments.cs" />
-    <Compile Include="Authentication\ActiveDirectoryAuthentication.cs" />
-    <Compile Include="Authentication\ActiveDirectoryMethods.cs" />
+    <Compile Include="Authentication\ActiveDirectory\ActiveDirectoryAuthentication.cs" />
+    <Compile Include="Authentication\ActiveDirectory\ActiveDirectoryMethods.cs" />
+    <Compile Include="Authentication\AuthenticationBroker.cs" />
+    <Compile Include="Authentication\AuthenticationDelegates.cs" />
     <Compile Include="Authentication\AuthenticationEnums.cs" />
     <Compile Include="Authentication\AuthLibrary.cs" />
     <Compile Include="Authentication\IAuth.cs" />
+    <Compile Include="Authentication\IUsername.cs" />
     <Compile Include="Authentication\IPassword.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="IDirector.cs" />
@@ -108,6 +111,7 @@
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
       <DependentUpon>ContentChanger.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\GuiOptions\TsUsername.cs" />
     <Compile Include="View\GuiOptions\TsPasswordBox.cs" />
     <Compile Include="View\GuiOptions\TsPasswordBoxUI.xaml.cs">
       <DependentUpon>TsPasswordBoxUI.xaml</DependentUpon>

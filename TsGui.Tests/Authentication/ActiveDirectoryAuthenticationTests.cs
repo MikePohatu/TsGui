@@ -16,6 +16,8 @@
 
 using NUnit.Framework;
 using TsGui.Authentication;
+using TsGui.Authentication.ActiveDirectory;
+
 using System.Collections.Generic;
 using System.Security;
 namespace TsGui.Tests.Authentication

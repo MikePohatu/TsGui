@@ -14,13 +14,11 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-using System.Security;
-
 namespace TsGui.Authentication
 {
-    public interface IPassword
+    public interface IUsername
     {
         string AuthID { get; }
-        SecureString SecurePassword { get; }
+        string Username { get; }
     }
 }

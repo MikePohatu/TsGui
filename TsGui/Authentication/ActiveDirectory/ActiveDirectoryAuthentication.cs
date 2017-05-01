@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Net;
 
-namespace TsGui.Authentication
+namespace TsGui.Authentication.ActiveDirectory
 {
-    public class ActiveDirectoryAuthentication: IAuth
+    public class ActiveDirectoryAuthentication : IAuth
     {
         private NetworkCredential _netcredential;
         private AuthState _state;
@@ -38,11 +38,6 @@ namespace TsGui.Authentication
             get { return this._netcredential.SecurePassword; }
             set { this._netcredential.SecurePassword = value; }
         }
-        public string Domain
-        {
-            get { return this._netcredential.Domain; }
-            set { this._netcredential.Domain = value; }
-        }
         public List<string> RequiredGroups { get; set; } 
 
         public ActiveDirectoryAuthentication(string authuser, SecureString authpw, string domain, List<string> groups)
@@ -56,8 +51,8 @@ namespace TsGui.Authentication
         {
             try
             {
-                this.Context = new PrincipalContext(ContextType.Domain, this.Domain, this.Username, this._netcredential.Password);
-                if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context,this.Username,this.RequiredGroups) == true)
+                this.Context = new PrincipalContext(ContextType.Domain, this._netcredential.Domain, this._netcredential.UserName, this._netcredential.Password);
+                if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context,this._netcredential.UserName,this.RequiredGroups) == true)
                 { return AuthState.Authorised; }
                 else { return AuthState.NotAuthorised; }
                 

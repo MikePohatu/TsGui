@@ -23,7 +23,7 @@ using System.DirectoryServices.AccountManagement;
 using System.Collections.Generic;
 using TsGui.Diagnostics.Logging;
 
-namespace TsGui.Authentication
+namespace TsGui.Authentication.ActiveDirectory
 {
     public static class ActiveDirectoryMethods
     {
