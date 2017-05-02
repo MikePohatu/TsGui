@@ -75,15 +75,15 @@ namespace TsGui.View.GuiOptions
         //Constructor
         public TsDropDownList(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent, MainController)
         {
-            this._controller = MainController;
-            this._querylist = new QueryList(this, this._controller);
+            this._director = MainController;
+            this._querylist = new QueryList(this, this._director);
 
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
             this.Label = new TsLabelUI();
 
             this._validationhandler = new ValidationHandler(this, MainController);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._controller);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
 
             this.UserControl.DataContext = this;
             this.SetDefaults();
@@ -91,7 +91,7 @@ namespace TsGui.View.GuiOptions
             this.RegisterForItemGroupEvents();
             this.SetComboBoxDefault();
 
-            this._controller.WindowLoaded += this.OnLoadReload;
+            this._director.WindowLoaded += this.OnLoadReload;
             this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
             this.UserControl.IsEnabledChanged += this.OnActiveChanged;
             this.UserControl.IsVisibleChanged += this.OnActiveChanged;
@@ -114,14 +114,14 @@ namespace TsGui.View.GuiOptions
                 //the base loadxml will create queries before this so will win
                 if (x.Name == "DefaultValue")
                 {
-                    IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this._controller, this);
+                    IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this._director, this);
                     this._querylist.AddQuery(defquery);
                 }
                 
                 //read in an option and add to a dictionary for later use
                 else if (x.Name == "Option")
                 {
-                    TsDropDownListItem newoption = new TsDropDownListItem(optionindex, x, this.ControlFormatting, this, this._controller);
+                    TsDropDownListItem newoption = new TsDropDownListItem(optionindex, x, this.ControlFormatting, this, this._director);
                     this.AddOption(newoption);
                     optionindex++;
 
@@ -129,7 +129,7 @@ namespace TsGui.View.GuiOptions
                     foreach (XElement togglex in togglexlist)
                     {
                         togglex.Add(new XElement("Enabled", newoption.Value));
-                        Toggle t = new Toggle(this, this._controller, togglex);
+                        Toggle t = new Toggle(this, this._director, togglex);
                         this._istoggle = true;
                     }
                 }
@@ -138,13 +138,13 @@ namespace TsGui.View.GuiOptions
                 {
                     XElement wrapx = new XElement("wrapx");
                     wrapx.Add(x);
-                    QueryList newlist = new QueryList(this._controller);
+                    QueryList newlist = new QueryList(this._director);
                     newlist.LoadXml(wrapx);
 
                     List<KeyValuePair<string, string>> kvlist = newlist.GetResultWrangler().GetKeyValueList();
                     foreach (KeyValuePair<string, string> kv in kvlist)
                     {
-                        TsDropDownListItem newoption = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting, this, this._controller);
+                        TsDropDownListItem newoption = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting, this, this._director);
                         this.AddOption(newoption);
                         optionindex++;
                     }
@@ -152,12 +152,12 @@ namespace TsGui.View.GuiOptions
 
                 else if (x.Name == "Toggle")
                 {
-                    Toggle t = new Toggle(this, this._controller, x);
+                    Toggle t = new Toggle(this, this._director, x);
                     this._istoggle = true;
                 }
             }
 
-            if (this._istoggle == true) { this._controller.AddToggleControl(this); }
+            if (this._istoggle == true) { this._director.AddToggleControl(this); }
         }
 
         private void SetComboBoxDefault()
@@ -276,7 +276,7 @@ namespace TsGui.View.GuiOptions
 
         private bool Validate(bool CheckSelectionMade)
         {
-            if (this._controller.StartupFinished == false) { return true; }
+            if (this._director.StartupFinished == false) { return true; }
             if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
             if ((CheckSelectionMade == true) && (this._dropdownlistui.Control.SelectedItem == null))
             {

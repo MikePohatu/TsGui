@@ -98,6 +98,12 @@ namespace TsGui.View.GuiOptions
                 RootController.AddOptionToLibary(option);
                 return option;
             }
+            else if (xtype.Value == "UsernameBox")
+            {
+                TsUsernameBox option = new TsUsernameBox(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(option);
+                return option;
+            }
             else
             { return null; }
             #endregion

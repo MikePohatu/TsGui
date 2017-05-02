@@ -31,6 +31,7 @@ using TsGui.Grouping;
 using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using TsGui.Linking;
+using TsGui.Authentication;
 
 namespace TsGui
 {
@@ -51,6 +52,7 @@ namespace TsGui
         private GroupLibrary _grouplibrary = new GroupLibrary();
         private List<IToggleControl> _toggles = new List<IToggleControl>();
         private OptionLibrary _optionlibrary = new OptionLibrary();
+        private AuthLibrary _authlibrary = new AuthLibrary();
         private HardwareEvaluator _chassischeck;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
@@ -59,6 +61,7 @@ namespace TsGui
         private bool _showtestwindow = false;
 
         //properties
+        public AuthLibrary AuthLibrary { get { return this._authlibrary; } }
         public LinkingLibrary LinkingLibrary { get { return this._linkinglibrary; } }
         public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }

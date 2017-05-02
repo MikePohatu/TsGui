@@ -111,7 +111,7 @@
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
       <DependentUpon>ContentChanger.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\GuiOptions\TsUsername.cs" />
+    <Compile Include="View\GuiOptions\TsUsernameBox.cs" />
     <Compile Include="View\GuiOptions\TsPasswordBox.cs" />
     <Compile Include="View\GuiOptions\TsPasswordBoxUI.xaml.cs">
       <DependentUpon>TsPasswordBoxUI.xaml</DependentUpon>

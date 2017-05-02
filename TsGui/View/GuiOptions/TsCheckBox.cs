@@ -73,7 +73,7 @@ namespace TsGui.View.GuiOptions
             this.Control = new TsCheckBoxUI();
             this.Label = new TsLabelUI();
             this.SetDefaults();
-            this._querylist = new QueryList(this, this._controller);          
+            this._querylist = new QueryList(this, this._director);          
             this.LoadXml(InputXml);
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
@@ -100,11 +100,11 @@ namespace TsGui.View.GuiOptions
             xlist = InputXml.Elements("Toggle");
             if (xlist != null)
             {
-                this._controller.AddToggleControl(this);
+                this._director.AddToggleControl(this);
 
                 foreach (XElement subx in xlist)
                 {
-                    Toggle t = new Toggle(this, this._controller, subx); 
+                    Toggle t = new Toggle(this, this._director, subx); 
                 }  
             }
         }

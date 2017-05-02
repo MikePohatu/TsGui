@@ -45,7 +45,7 @@ namespace TsGui.Options.NoUI
                 if (this._id != value)
                 {
                     this._id = value;
-                    this._controller.LinkingLibrary.AddSource(this);
+                    this._director.LinkingLibrary.AddSource(this);
                 }
             }
         }

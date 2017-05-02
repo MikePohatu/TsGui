@@ -16,7 +16,7 @@
 // LinkableLibrary.cs - stores GuiOptions against their ID
 
 using System.Collections.Generic;
-using System;
+using TsGui.Diagnostics;
 
 namespace TsGui.Linking
 {
@@ -58,7 +58,7 @@ namespace TsGui.Linking
             List<ILinkingEventHandler> pendinglist;
             ILinkSource testoption;
 
-            if (this._sources.TryGetValue(NewSource.ID, out testoption) == true ) { throw new InvalidOperationException("Duplicate ID found in LinkableLibrary: " + NewSource.ID); }
+            if (this._sources.TryGetValue(NewSource.ID, out testoption) == true ) { throw new TsGuiKnownException("Duplicate ID found in LinkableLibrary: " + NewSource.ID,""); }
             else { this._sources.Add(NewSource.ID,NewSource); }
 
             //now register any pending targets and cleanup

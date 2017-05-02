@@ -44,12 +44,12 @@ namespace TsGui.Options.NoUI
             {
                 if (opx.Name == "NoUIOption")
                 {
-                    this.AddOption(new NoUIOption(this, this._controller, opx));
+                    this.AddOption(new NoUIOption(this, this._director, opx));
                 }
 
                 else if (opx.Name == "Container")
                 {
-                    this._containers.Add(new NoUIContainer(this,this._controller, opx));
+                    this._containers.Add(new NoUIContainer(this,this._director, opx));
                 }
             }
         }
@@ -57,7 +57,7 @@ namespace TsGui.Options.NoUI
         private void AddOption (IOption Option)
         {
             this._options.Add(Option);
-            this._controller.AddOptionToLibary(Option);
+            this._director.AddOptionToLibary(Option);
         }
     }
 }

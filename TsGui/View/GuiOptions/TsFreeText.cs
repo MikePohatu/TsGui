@@ -88,18 +88,18 @@ namespace TsGui.View.GuiOptions
 
         private void Init(IDirector MainController)
         {
-            this._controller = MainController;
-            this._querylist = new QueryList(this, this._controller);
+            this._director = MainController;
+            this._querylist = new QueryList(this, this._director);
 
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
             this.Label = new TsLabelUI();
 
             this._validationhandler = new ValidationHandler(this,MainController);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this,this._controller);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this,this._director);
 
             this.UserControl.DataContext = this;
-            this._controller.WindowLoaded += this.OnWindowLoaded;
+            this._director.WindowLoaded += this.OnWindowLoaded;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
             this.UserControl.IsEnabledChanged += this.OnValidationEvent;
             this.SetDefaults();

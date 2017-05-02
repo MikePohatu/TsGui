@@ -60,7 +60,7 @@ namespace TsGui.View.GuiOptions
 
         private void CreateImage(XElement InputXml)
         {
-            this.Image = new Image(InputXml, this._controller);
+            this.Image = new Image(InputXml, this._director);
             //this.VariableName = this.Image.File;
         }
 

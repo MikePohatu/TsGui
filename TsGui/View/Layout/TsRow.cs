@@ -43,7 +43,7 @@ namespace TsGui.View.Layout
         public TsRow (XElement SourceXml,int PageIndex, BaseLayoutElement Parent, IDirector MainController): base (Parent,MainController)
         {
 
-            this._controller = MainController;
+            this._director = MainController;
             this.Index = PageIndex;
             this._rowpanel = new Grid();
             this._rowpanel.Name = "_rowpanel";
@@ -70,7 +70,7 @@ namespace TsGui.View.Layout
             {
                 foreach (XElement xColumn in xlist)
                 {
-                    TsColumn c = new TsColumn(xColumn, colIndex, this, this._controller);
+                    TsColumn c = new TsColumn(xColumn, colIndex, this, this._director);
 
                     this._columns.Add(c);
 

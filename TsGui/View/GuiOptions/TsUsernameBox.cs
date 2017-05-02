@@ -14,26 +14,40 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using TsGui.Authentication;
+using TsGui.Diagnostics;
 using System.Xml.Linq;
+using System;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsUsername : TsFreeText,IUsername
+    public class TsUsernameBox : TsFreeText,IUsername
     {
         private string _authid;
         public string AuthID { get { return this._authid; } }
         public string Username { get { return this.CurrentValue; } }
 
-        public TsUsername(XElement InputXml, TsColumn parent, IDirector director) : base(parent, director)
+        public TsUsernameBox(XElement InputXml, TsColumn parent, IDirector director) : base(parent, director)
         {
-            
+            this.SetDefaults();
+            this.LoadXml(InputXml);
             this.RefreshValue();
+        }
+
+        private void SetDefaults()
+        {
+            this.LabelText = "Username:";
         }
 
         private new void LoadXml(XElement inputxml)
         {
             base.LoadXml(inputxml);
-            this._authid = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", this._authid);
+            XAttribute x = inputxml.Attribute("AuthID");
+            if (x != null)
+            {
+                this._authid = x.Value;
+                this._director.AuthLibrary.AddUsernameSource(this._authid, this);
+            }
+            else { throw new TsGuiKnownException("Missing AuthID in config", inputxml.ToString()); }
         }
     }
 }

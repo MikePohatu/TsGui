@@ -122,16 +122,16 @@ namespace TsGui.View.Layout
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
 
             x = InputXml.Element("Heading");
-            if (x != null) { this.PageHeader = new TsPageHeader(this,this.PageHeader,x,this._controller); }
+            if (x != null) { this.PageHeader = new TsPageHeader(this,this.PageHeader,x,this._director); }
 
             x = InputXml.Element("LeftPane");
-            if (x != null) { this.LeftPane = new TsPane(x, this._controller); }
+            if (x != null) { this.LeftPane = new TsPane(x, this._director); }
 
             x = InputXml.Element("RightPane");
-            if (x != null) { this.RightPane = new TsPane(x, this._controller); }
+            if (x != null) { this.RightPane = new TsPane(x, this._director); }
 
             //create the table adn bind it to the content
-            this._table = new TsTable(InputXml, this, this._controller);
+            this._table = new TsTable(InputXml, this, this._director);
             this._pageui.MainTablePresenter.Content = this._table.Grid;
             this._pageui.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
             this._pageui.RightPanePresenter.Content = this.RightPane?.PaneUI;
@@ -145,7 +145,7 @@ namespace TsGui.View.Layout
 
         public void Cancel()
         {
-            this._controller.Cancel();
+            this._director.Cancel();
         }
 
         public void MovePrevious()
@@ -154,7 +154,7 @@ namespace TsGui.View.Layout
             { option.ClearToolTips(); }
 
             this.ReleaseThisPage();
-            this._controller.MovePrevious();
+            this._director.MovePrevious();
         }
 
         public void MoveNext()
@@ -162,7 +162,7 @@ namespace TsGui.View.Layout
             if (this.OptionsValid() == true)
             {
                 this.ReleaseThisPage();
-                this._controller.MoveNext();
+                this._director.MoveNext();
             }
         }
 
@@ -170,7 +170,7 @@ namespace TsGui.View.Layout
         {
             if (this.OptionsValid() == true)
             {
-                this._controller.Finish();
+                this._director.Finish();
             }
         }
 

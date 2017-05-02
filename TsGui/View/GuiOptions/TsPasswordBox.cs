@@ -16,11 +16,13 @@
 // TsPasswordBox.cs - Control for passwords. These can only connected to auth, will not create 
 // TsVariables because of security issues
 
+using System;
 using System.Security;
 using System.Windows;
 using System.Xml.Linq;
 using TsGui.Queries;
 using TsGui.Authentication;
+using TsGui.Diagnostics;
 
 namespace TsGui.View.GuiOptions
 {
@@ -47,9 +49,9 @@ namespace TsGui.View.GuiOptions
         #endregion
 
         //Constructor
-        public TsPasswordBox(XElement InputXml, TsColumn Parent, IDirector MainController): base (Parent, MainController)
+        public TsPasswordBox(XElement InputXml, TsColumn Parent, IDirector director): base (Parent, director)
         {
-            this.Init(MainController);
+            this.Init(director);
             this.LoadXml(InputXml);
         }
 
@@ -60,8 +62,8 @@ namespace TsGui.View.GuiOptions
 
         private void Init(IDirector MainController)
         {
-            this._controller = MainController;
-            this._querylist = new QueryList(this._controller);
+            this._director = MainController;
+            this._querylist = new QueryList(this._director);
 
             this._passwordboxui = new TsPasswordBoxUI();
             this.Control = this._passwordboxui;
@@ -78,11 +80,17 @@ namespace TsGui.View.GuiOptions
             this.LabelText = "Password:";
         }
 
-        private new void LoadXml(XElement InputXml)
+        private new void LoadXml(XElement inputxml)
         {
-            base.LoadXml(InputXml);
-            this._authid = XmlHandler.GetStringFromXAttribute(InputXml, "AuthID", this._authid);
-            this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", this.MaxLength);          
+            base.LoadXml(inputxml);
+            this.MaxLength = XmlHandler.GetIntFromXAttribute(inputxml, "MaxLength", this.MaxLength);
+            XAttribute x = inputxml.Attribute("AuthID");
+            if (x != null)
+            {
+                this._authid = x.Value;
+                this._director.AuthLibrary.AddPasswordSource(this._authid, this);
+            }  
+            else { throw new TsGuiKnownException("Missing AuthID in config:", inputxml.ToString()); }      
         }
     }
 }

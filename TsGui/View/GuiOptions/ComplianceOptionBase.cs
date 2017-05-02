@@ -90,7 +90,7 @@ namespace TsGui.View.GuiOptions
             this.FillColor = new SolidColorBrush(Colors.Blue);
             this.StrokeColor = new SolidColorBrush(Colors.Blue);
             this._compliancehandler = new ComplianceHandler(this, director);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._controller);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
             this._querylist = new QueryList(this,director);
             this.UserControl.DataContext = this;
             this.SetDefaults();      

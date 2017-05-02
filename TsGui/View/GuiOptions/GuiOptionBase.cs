@@ -103,7 +103,7 @@ namespace TsGui.View.GuiOptions
             if (xa != null)
             {
                 this.ID = xa.Value;
-                this._controller.LinkingLibrary.AddSource(this);
+                this._director.LinkingLibrary.AddSource(this);
             }
 
             x = InputXml.Element("SetValue");

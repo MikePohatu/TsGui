@@ -22,6 +22,7 @@ using TsGui.Options;
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Linking;
+using TsGui.Authentication;
 
 namespace TsGui
 {
@@ -33,6 +34,7 @@ namespace TsGui
         event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
         //properties
+        AuthLibrary AuthLibrary { get; }
         LinkingLibrary LinkingLibrary { get; }
         GroupLibrary GroupLibrary { get; }
         TsMainWindow TsMainWindow { get; set; }
