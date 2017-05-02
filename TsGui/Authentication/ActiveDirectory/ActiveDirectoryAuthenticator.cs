@@ -21,7 +21,7 @@ using System.Net;
 
 namespace TsGui.Authentication.ActiveDirectory
 {
-    public class ActiveDirectoryAuthentication : IAuth
+    public class ActiveDirectoryAuthenticator : IAuthenticator
     {
         private NetworkCredential _netcredential;
         private AuthState _state;
@@ -40,7 +40,7 @@ namespace TsGui.Authentication.ActiveDirectory
         }
         public List<string> RequiredGroups { get; set; } 
 
-        public ActiveDirectoryAuthentication(string authuser, SecureString authpw, string domain, List<string> groups)
+        public ActiveDirectoryAuthenticator(string authuser, SecureString authpw, string domain, List<string> groups)
         {
             this._state = AuthState.AccessDenied;
             this._netcredential = new NetworkCredential(authuser, authpw, domain);

@@ -19,7 +19,7 @@ namespace TsGui.Authentication
 {
     public class AuthenticationBroker
     {
-        private IAuth _auth;
+        private IAuthenticator _auth;
         private string _authid;
 
         public IPassword PasswordSource { get; set; }

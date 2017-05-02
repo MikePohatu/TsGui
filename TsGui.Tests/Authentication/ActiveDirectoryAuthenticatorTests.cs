@@ -23,7 +23,7 @@ using System.Security;
 namespace TsGui.Tests.Authentication
 {
     [TestFixture]
-    public class ActiveDirectoryAuthenticationTests
+    public class ActiveDirectoryAuthenticatorTests
     {
         
 
@@ -31,11 +31,11 @@ namespace TsGui.Tests.Authentication
         #region
         [Test]
         [TestCaseSource("ActiveDirectoryAuthentication_Authenticate_TestCases")]
-        public void AuthenticateTest(ActiveDirectoryAuthenticationTestArgs args)
+        public void AuthenticateTest(ActiveDirectoryAuthenticatorTestArgs args)
         {
             SecureString secpw = GetSecureStringFromString(args.AuthPassword);
 
-            ActiveDirectoryAuthentication adauth = new ActiveDirectoryAuthentication(args.AuthUser, secpw, args.Domain,args.Groups);
+            ActiveDirectoryAuthenticator adauth = new ActiveDirectoryAuthenticator(args.AuthUser, secpw, args.Domain,args.Groups);
             AuthState state = adauth.Authenticate();
             NUnit.Framework.Assert.AreEqual(args.ExpectedResult, state);
         }
@@ -44,10 +44,10 @@ namespace TsGui.Tests.Authentication
         {
             get
             {
-                yield return new TestCaseData(new ActiveDirectoryAuthenticationTestArgs(null, null, null, null, AuthState.Authorised));
-                yield return new TestCaseData(new ActiveDirectoryAuthenticationTestArgs(null, "asdf", null, null, AuthState.AccessDenied));
-                yield return new TestCaseData(new ActiveDirectoryAuthenticationTestArgs(null, null, null, new List<string> { "SCCM Admins" }, AuthState.NotAuthorised));
-                yield return new TestCaseData(new ActiveDirectoryAuthenticationTestArgs(null, null, null, new List<string> { "Domain Users" }, AuthState.Authorised));
+                yield return new TestCaseData(new ActiveDirectoryAuthenticatorTestArgs(null, null, null, null, AuthState.Authorised));
+                yield return new TestCaseData(new ActiveDirectoryAuthenticatorTestArgs(null, "asdf", null, null, AuthState.AccessDenied));
+                yield return new TestCaseData(new ActiveDirectoryAuthenticatorTestArgs(null, null, null, new List<string> { "SCCM Admins" }, AuthState.NotAuthorised));
+                yield return new TestCaseData(new ActiveDirectoryAuthenticatorTestArgs(null, null, null, new List<string> { "Domain Users" }, AuthState.Authorised));
             }
         }
         #endregion

@@ -52,8 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\ActiveDirectoryMethodsTestArgs.cs" />
-    <Compile Include="Authentication\ActiveDirectoryAuthenticationTestArgs.cs" />
-    <Compile Include="Authentication\ActiveDirectoryAuthenticationTests.cs" />
+    <Compile Include="Authentication\ActiveDirectoryAuthenticatorTestArgs.cs" />
+    <Compile Include="Authentication\ActiveDirectoryAuthenticatorTests.cs" />
     <Compile Include="Authentication\ActiveDirectoryMethodsTests.cs" />
     <Compile Include="CalculatorTests.cs" />
     <Compile Include="TestDirector.cs" />

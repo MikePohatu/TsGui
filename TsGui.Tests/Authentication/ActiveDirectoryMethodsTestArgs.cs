@@ -21,12 +21,12 @@ namespace TsGui.Tests.Authentication
 {
     public class ActiveDirectoryMethodsTestArgs
     {
-        public ActiveDirectoryAuthenticationTestArgs AuthArgs { get; set; }
+        public ActiveDirectoryAuthenticatorTestArgs AuthArgs { get; set; }
         public bool ExpectedResult { get; set; }
         public string UserName { get; set; }
         public List<string> Groups { get; set; }
 
-        public ActiveDirectoryMethodsTestArgs(ActiveDirectoryAuthenticationTestArgs authargs, string user, List<string> groups, bool expectedresult)
+        public ActiveDirectoryMethodsTestArgs(ActiveDirectoryAuthenticatorTestArgs authargs, string user, List<string> groups, bool expectedresult)
         {
             this.AuthArgs = authargs;
             this.UserName = user;

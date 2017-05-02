@@ -31,9 +31,9 @@ namespace TsGui.Tests.Authentication
         [TestCaseSource("ActiveDirectoryAuthentication_IsMemberOfGroupsTest_TestCases")]
         public void IsMemberOfGroupsTest(ActiveDirectoryMethodsTestArgs args)
         {
-            ActiveDirectoryAuthenticationTestArgs authargs = args.AuthArgs;
+            ActiveDirectoryAuthenticatorTestArgs authargs = args.AuthArgs;
             SecureString secpw = GetSecureStringFromString(authargs.AuthPassword);
-            ActiveDirectoryAuthentication adauth = new ActiveDirectoryAuthentication(authargs.AuthUser, secpw, authargs.Domain, args.Groups);
+            ActiveDirectoryAuthenticator adauth = new ActiveDirectoryAuthenticator(authargs.AuthUser, secpw, authargs.Domain, args.Groups);
             adauth.Authenticate();
             bool result = ActiveDirectoryMethods.IsUserMemberOfGroups(adauth.Context, args.UserName, args.Groups);
             NUnit.Framework.Assert.AreEqual(args.ExpectedResult,result);
@@ -43,7 +43,7 @@ namespace TsGui.Tests.Authentication
         {
             get
             {
-                ActiveDirectoryAuthenticationTestArgs authargs = new ActiveDirectoryAuthenticationTestArgs(null, null, null, null, AuthState.Authorised);
+                ActiveDirectoryAuthenticatorTestArgs authargs = new ActiveDirectoryAuthenticatorTestArgs(null, null, null, null, AuthState.Authorised);
                 yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs,"mikep", new List<string> { "Domain Admins" }, true));
                 yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "mikep", new List<string> { "Enterprise Admins" }, true));
                 yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "mikep", new List<string> { "Domain Users" }, true));

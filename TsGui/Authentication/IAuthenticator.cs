@@ -17,7 +17,7 @@ using System.Security;
 
 namespace TsGui.Authentication
 {
-    public interface IAuth
+    public interface IAuthenticator
     {
         SecureString SecurePassword { get; set; }
         string Username { get; set; }

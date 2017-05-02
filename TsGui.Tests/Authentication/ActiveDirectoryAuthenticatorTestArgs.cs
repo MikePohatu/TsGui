@@ -20,7 +20,7 @@ using TsGui.Authentication;
 
 namespace TsGui.Tests.Authentication
 {
-    public class ActiveDirectoryAuthenticationTestArgs
+    public class ActiveDirectoryAuthenticatorTestArgs
     {
         public AuthState ExpectedResult { get; set; }
         public string AuthUser { get; set; }
@@ -29,7 +29,7 @@ namespace TsGui.Tests.Authentication
         public string Domain { get; set; }
         public List<string> Groups { get; set; }
 
-        public ActiveDirectoryAuthenticationTestArgs(string authuser, string authpw, string domain, List<string> groups, AuthState expectedresult)
+        public ActiveDirectoryAuthenticatorTestArgs(string authuser, string authpw, string domain, List<string> groups, AuthState expectedresult)
         {
             try { this.ReadConfigFile(); }
             catch { }
