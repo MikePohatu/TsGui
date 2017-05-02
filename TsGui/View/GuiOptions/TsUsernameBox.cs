@@ -13,10 +13,10 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+using System.Windows;
 using TsGui.Authentication;
 using TsGui.Diagnostics;
 using System.Xml.Linq;
-using System;
 
 namespace TsGui.View.GuiOptions
 {
@@ -24,7 +24,7 @@ namespace TsGui.View.GuiOptions
     {
         private string _authid;
         public string AuthID { get { return this._authid; } }
-        public string Username { get { return this.CurrentValue; } }
+        public string Username { get { return this._controltext; } }
 
         public TsUsernameBox(XElement InputXml, TsColumn parent, IDirector director) : base(parent, director)
         {

@@ -1,4 +1,4 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
+﻿//    Copyright (C) 2017 Mike Pohatu
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,19 +13,20 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsComplianceRefreshButton.cs - button for retrying compliance rules on a page
-
 using System.Xml.Linq;
 using System.Windows;
 using TsGui.View.Layout;
+using TsGui.Actions;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsComplianceRefreshButton : GuiOptionBase, IGuiOption
+    public class TsActionButton : GuiOptionBase, IGuiOption
     {
         private IRootLayoutElement _rootelement;
         private string _buttontext;
         private TsButtonUI _ui;
+        private IAction _action;
 
         public override string CurrentValue { get { return null; } }
         public override TsVariable Variable { get { return null; } }
@@ -40,37 +41,42 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsComplianceRefreshButton(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
+        public TsActionButton(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
         {
             this._rootelement = this.GetRootElement();
 
-            this.UserControl.DataContext = this;           
+            this.UserControl.DataContext = this;
             this._ui = new TsButtonUI();
             this.Control = this._ui;
             this._ui.RetryButton.Click += this.OnButtonClick;
 
             this.Label = new TsLabelUI();
-            this.SetDefaults();           
+            this.SetDefaults();
             this.LoadXml(InputXml);
         }
 
 
         //Methods
-        public new void LoadXml(XElement InputXml)
+        public new void LoadXml(XElement inputxml)
         {
             //load the xml for the base class stuff
-            base.LoadXml(InputXml);
-            this.ButtonText = XmlHandler.GetStringFromXElement(InputXml, "ButtonText", this.ButtonText);
+            base.LoadXml(inputxml);
+            this.ButtonText = XmlHandler.GetStringFromXElement(inputxml, "ButtonText", this.ButtonText);
+
+            XElement x;
+            x = inputxml.Element("Action");
+            if (x != null) { this._action = ActionFactory.CreateAction(x, this._director); }
         }
 
         public void OnButtonClick(object o, RoutedEventArgs e)
         {
-            this._rootelement.RaiseComplianceRetryEvent();
+            LoggerFacade.Info("Action button clicked");
+            this._action.RunAction();
         }
 
         private void SetDefaults()
         {
-            this.ButtonText = "Refresh";
+            this.ButtonText = "Apply";
             this.ControlFormatting.Height = 25;
             this.ControlFormatting.Width = 60;
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;

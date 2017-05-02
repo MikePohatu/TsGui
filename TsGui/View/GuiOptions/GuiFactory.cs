@@ -104,6 +104,12 @@ namespace TsGui.View.GuiOptions
                 RootController.AddOptionToLibary(option);
                 return option;
             }
+            else if (xtype.Value == "ActionButton")
+            {
+                TsActionButton option = new TsActionButton(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(option);
+                return option;
+            }
             else
             { return null; }
             #endregion

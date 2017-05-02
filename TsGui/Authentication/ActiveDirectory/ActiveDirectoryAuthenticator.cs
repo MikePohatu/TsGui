@@ -18,6 +18,7 @@ using System.Security;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Net;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Authentication.ActiveDirectory
 {
@@ -25,6 +26,7 @@ namespace TsGui.Authentication.ActiveDirectory
     {
         private NetworkCredential _netcredential;
         private AuthState _state;
+        private AuthenticationBroker _broker;
 
         public PrincipalContext Context { get; set; }
         public AuthState State { get { return this._state; } }
@@ -40,25 +42,35 @@ namespace TsGui.Authentication.ActiveDirectory
         }
         public List<string> RequiredGroups { get; set; } 
 
-        public ActiveDirectoryAuthenticator(string authuser, SecureString authpw, string domain, List<string> groups)
+        public ActiveDirectoryAuthenticator(string domain)
         {
             this._state = AuthState.AccessDenied;
-            this._netcredential = new NetworkCredential(authuser, authpw, domain);
-            this.RequiredGroups = groups;
+            this._netcredential = new NetworkCredential();
+            this._netcredential.Domain = domain;
+            this.RequiredGroups = new List<string>();
         }
 
         public AuthState Authenticate()
         {
+            LoggerFacade.Info("Authenticating user:" + this._netcredential.UserName + " against domain " + this._netcredential.Domain);
             try
             {
                 this.Context = new PrincipalContext(ContextType.Domain, this._netcredential.Domain, this._netcredential.UserName, this._netcredential.Password);
                 if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context,this._netcredential.UserName,this.RequiredGroups) == true)
-                { return AuthState.Authorised; }
-                else { return AuthState.NotAuthorised; }
+                {
+                    LoggerFacade.Info("Active Directory authorised");
+                    return AuthState.Authorised;
+                }
+                else
+                {
+                    LoggerFacade.Info("Active Directory not authorised");
+                    return AuthState.NotAuthorised;
+                }
                 
             }
             catch
             {
+                LoggerFacade.Info("Active Directory access denied");
                 return AuthState.AccessDenied;
             }
 

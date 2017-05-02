@@ -75,6 +75,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\ADAuthenticationAction.cs" />
+    <Compile Include="Actions\ActionFactory.cs" />
+    <Compile Include="Actions\IAction.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -85,6 +88,7 @@
     <Compile Include="Authentication\AuthenticationDelegates.cs" />
     <Compile Include="Authentication\AuthenticationEnums.cs" />
     <Compile Include="Authentication\AuthLibrary.cs" />
+    <Compile Include="Authentication\IAuthenticationComponent.cs" />
     <Compile Include="Authentication\IAuthenticator.cs" />
     <Compile Include="Authentication\IUsername.cs" />
     <Compile Include="Authentication\IPassword.cs" />
@@ -111,6 +115,7 @@
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
       <DependentUpon>ContentChanger.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\GuiOptions\TsActionButton.cs" />
     <Compile Include="View\GuiOptions\TsUsernameBox.cs" />
     <Compile Include="View\GuiOptions\TsPasswordBox.cs" />
     <Compile Include="View\GuiOptions\TsPasswordBoxUI.xaml.cs">
@@ -182,8 +187,8 @@
     <Compile Include="Validation\ValidationToolTipHandler.cs" />
     <Compile Include="View\GuiOptions\GuiOptionGridFormatting.cs" />
     <Compile Include="View\GuiOptions\TsComplianceRefreshButton.cs" />
-    <Compile Include="View\GuiOptions\TsComplianceRefreshButtonUI.xaml.cs">
-      <DependentUpon>TsComplianceRefreshButtonUI.xaml</DependentUpon>
+    <Compile Include="View\GuiOptions\TsButtonUI.xaml.cs">
+      <DependentUpon>TsButtonUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsTickCross.cs" />
     <Compile Include="View\GuiOptions\TsWarnUI.xaml.cs">
@@ -301,7 +306,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\GuiOptions\TsComplianceRefreshButtonUI.xaml">
+    <Page Include="View\GuiOptions\TsButtonUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

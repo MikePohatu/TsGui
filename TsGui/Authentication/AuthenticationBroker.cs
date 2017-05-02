@@ -14,34 +14,31 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using System.Xml.Linq;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Authentication
 {
     public class AuthenticationBroker
     {
-        private IAuthenticator _auth;
+        //protected IAuthenticator _authenticator;
         private string _authid;
 
+        public IAuthenticator Authenticator { get; set; }
         public IPassword PasswordSource { get; set; }
         public IUsername UsernameSource { get; set; }
         public string AuthID { get { return this._authid; } }
 
-        public void OnPasswordSourceChange()
-        {
-            this._auth.SecurePassword = this.PasswordSource.SecurePassword;
-        }
-
-        public void OnUsernameSourceChange()
-        {
-            this._auth.Username = this.UsernameSource.Username;
-        }
+        public AuthenticationBroker(string authid)
+        { this._authid = authid; }
 
         public AuthState Authenticate()
-        { return this._auth.Authenticate(); }
-
-        private void LoadXml(XElement inputxml)
         {
-            this._authid = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", this._authid);
+            AuthState retstate;
+            if (this.Authenticator != null ) { retstate = this.Authenticator.Authenticate(); }
+            else { retstate = AuthState.AuthError; }
+
+            LoggerFacade.Info("Authentication broker returned " + retstate.ToString());
+            return retstate;
         }
     }
 }

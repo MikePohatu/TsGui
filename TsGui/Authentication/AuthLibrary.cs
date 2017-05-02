@@ -22,6 +22,7 @@ namespace TsGui.Authentication
         private Dictionary<string, IUsername> _usernames = new Dictionary<string, IUsername>();
         private Dictionary<string, IPassword> _passwords = new Dictionary<string, IPassword>();
         private Dictionary<string, AuthenticationBroker> _brokers = new Dictionary<string, AuthenticationBroker>();
+        //private Dictionary<string, IAuthBrokerConsumer> _pendingbrokerconsumers = new Dictionary<string, IAuthBrokerConsumer>();
 
         public IUsername GetUsername(string ID)
         {
@@ -37,6 +38,17 @@ namespace TsGui.Authentication
             return option;
         }
 
+        public AuthenticationBroker GetBroker(string id)
+        {
+            AuthenticationBroker broker;
+            if (this._brokers.TryGetValue(id, out broker) == true) { return broker; }
+            else
+            {
+                broker = new AuthenticationBroker(id);
+                this.AddBroker(id, broker);
+                return broker;
+            }
+        }
 
         public void AddBroker(string AuthID, AuthenticationBroker newbroker)
         {

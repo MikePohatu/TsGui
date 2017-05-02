@@ -28,6 +28,8 @@ namespace TsGui.View.GuiOptions
 {
     public class TsPasswordBox: GuiOptionBase, IGuiOption, IPassword
     {
+        public event AuthValueChanged AuthValueChanged;
+
         private string _authid;
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;

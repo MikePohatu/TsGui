@@ -1,4 +1,4 @@
-﻿//    Copyright (C) 2017 Mike Pohatu
+﻿//    Copyright (C) 2016 Mike Pohatu
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,8 +13,10 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-namespace TsGui.Authentication
+namespace TsGui.Actions
 {
-    public enum AuthState { AccessDenied, Authorised, NotAuthorised, AuthError }
+    public interface IAction
+    {
+        void RunAction();
+    }
 }
