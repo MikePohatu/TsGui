@@ -28,8 +28,6 @@ namespace TsGui.View.GuiOptions
 {
     public class TsPasswordBox: GuiOptionBase, IGuiOption, IPassword
     {
-        public event AuthValueChanged AuthValueChanged;
-
         private string _authid;
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;
@@ -38,6 +36,7 @@ namespace TsGui.View.GuiOptions
         #region
         public string AuthID { get { return this._authid; } }
         public SecureString SecurePassword { get { return this._passwordboxui.PasswordBox.SecurePassword; } }
+        public string Password { get { return this._passwordboxui.PasswordBox.Password; } }
         public override string CurrentValue { get { return null; } }
         public int MaxLength
         {
@@ -90,7 +89,7 @@ namespace TsGui.View.GuiOptions
             if (x != null)
             {
                 this._authid = x.Value;
-                this._director.AuthLibrary.AddPasswordSource(this._authid, this);
+                this._director.AuthLibrary.AddPasswordSource(this);
             }  
             else { throw new TsGuiKnownException("Missing AuthID in config:", inputxml.ToString()); }      
         }

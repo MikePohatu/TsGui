@@ -24,39 +24,44 @@ namespace TsGui.Authentication.ActiveDirectory
 {
     public class ActiveDirectoryAuthenticator : IAuthenticator
     {
-        private NetworkCredential _netcredential;
+        //private NetworkCredential _netcredential;
         private AuthState _state;
-        private AuthenticationBroker _broker;
+        //private AuthenticationBroker _broker;
+        private string _domain;
 
         public PrincipalContext Context { get; set; }
         public AuthState State { get { return this._state; } }
-        public string Username
-        {
-            get { return this._netcredential.UserName; }
-            set { this._netcredential.UserName = value; }
-        }
-        public SecureString SecurePassword
-        {
-            get { return this._netcredential.SecurePassword; }
-            set { this._netcredential.SecurePassword = value; }
-        }
+        public IPassword PasswordSource { get; set; }
+        public IUsername UsernameSource { get; set; }
+        public string AuthID { get; set; }
+        //public string Username
+        //{
+        //    get { return this._netcredential.UserName; }
+        //    set { this._netcredential.UserName = value; }
+        //}
+        //public SecureString SecurePassword
+        //{
+        //    get { return this._netcredential.SecurePassword; }
+        //    set { this._netcredential.SecurePassword = value; }
+        //}
         public List<string> RequiredGroups { get; set; } 
 
-        public ActiveDirectoryAuthenticator(string domain)
+        public ActiveDirectoryAuthenticator(string authid, string domain)
         {
+            this.AuthID = authid;
             this._state = AuthState.AccessDenied;
-            this._netcredential = new NetworkCredential();
-            this._netcredential.Domain = domain;
+            //this._netcredential = new NetworkCredential();
+            this._domain = domain;
             this.RequiredGroups = new List<string>();
         }
 
         public AuthState Authenticate()
         {
-            LoggerFacade.Info("Authenticating user:" + this._netcredential.UserName + " against domain " + this._netcredential.Domain);
+            LoggerFacade.Info("Authenticating user:" + this.UsernameSource.Username + " against domain " + this._domain);
             try
             {
-                this.Context = new PrincipalContext(ContextType.Domain, this._netcredential.Domain, this._netcredential.UserName, this._netcredential.Password);
-                if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context,this._netcredential.UserName,this.RequiredGroups) == true)
+                this.Context = new PrincipalContext(ContextType.Domain, this._domain, this.UsernameSource.Username, this.PasswordSource.Password);
+                if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context,this.UsernameSource.Username,this.RequiredGroups) == true)
                 {
                     LoggerFacade.Info("Active Directory authorised");
                     return AuthState.Authorised;

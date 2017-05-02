@@ -84,7 +84,6 @@
     <Compile Include="Arguments.cs" />
     <Compile Include="Authentication\ActiveDirectory\ActiveDirectoryAuthenticator.cs" />
     <Compile Include="Authentication\ActiveDirectory\ActiveDirectoryMethods.cs" />
-    <Compile Include="Authentication\AuthenticationBroker.cs" />
     <Compile Include="Authentication\AuthenticationDelegates.cs" />
     <Compile Include="Authentication\AuthenticationEnums.cs" />
     <Compile Include="Authentication\AuthLibrary.cs" />

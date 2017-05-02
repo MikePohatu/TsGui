@@ -19,8 +19,11 @@ namespace TsGui.Authentication
 {
     public interface IAuthenticator
     {
-        SecureString SecurePassword { get; set; }
-        string Username { get; set; }
+        //SecureString SecurePassword { get; set; }
+        //string Username { get; set; }
+        string AuthID { get; }
         AuthState Authenticate();
+        IPassword PasswordSource { get; set; }
+        IUsername UsernameSource { get; set; }
     }
 }

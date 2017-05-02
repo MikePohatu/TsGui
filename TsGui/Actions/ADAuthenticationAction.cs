@@ -25,7 +25,7 @@ namespace TsGui.Actions
         //private ActiveDirectoryAuthenticator _authenticator;
         private string _authid;
         private IDirector _director;
-        private AuthenticationBroker _broker;
+        private ActiveDirectoryAuthenticator _authenticator;
         private string _domain;
 
         public string AuthID { get { return this._authid; } }
@@ -34,30 +34,33 @@ namespace TsGui.Actions
         {
             this._director = director;
             this.LoadXml(inputxml);
-            this._broker.Authenticator = new ActiveDirectoryAuthenticator(this._domain);
+            
         }
 
         public void RunAction()
         {
-            this._broker.Authenticate();
+            this._authenticator.Authenticate();
         }
 
         private void LoadXml(XElement inputxml)
         {
-            XAttribute xa = inputxml.Attribute("AuthID");
-            if (xa != null)
-            {
-                this._authid = xa.Value;
-                this._broker = this._director.AuthLibrary.GetBroker(this._authid);
-            }
-            else { throw new TsGuiKnownException("Missing AuthID attribute in config", inputxml.ToString()); }
-
             XElement xe = inputxml.Element("Domain");
             if (xe != null)
             {
                 this._domain = xe.Value;
             }
             else { throw new TsGuiKnownException("Missing Domain in config", inputxml.ToString()); }
+
+            XAttribute xa = inputxml.Attribute("AuthID");
+            if (xa != null)
+            {
+                this._authid = xa.Value;
+                this._authenticator = new ActiveDirectoryAuthenticator(this._authid,this._domain);
+                this._director.AuthLibrary.AddAuthenticator(this._authenticator);
+            }
+            else { throw new TsGuiKnownException("Missing AuthID attribute in config", inputxml.ToString()); }
+
+            
         }
     }
 }

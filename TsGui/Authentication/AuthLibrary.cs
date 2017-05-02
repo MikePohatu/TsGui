@@ -21,7 +21,7 @@ namespace TsGui.Authentication
     {
         private Dictionary<string, IUsername> _usernames = new Dictionary<string, IUsername>();
         private Dictionary<string, IPassword> _passwords = new Dictionary<string, IPassword>();
-        private Dictionary<string, AuthenticationBroker> _brokers = new Dictionary<string, AuthenticationBroker>();
+        private Dictionary<string, IAuthenticator> _authenticators = new Dictionary<string, IAuthenticator>();
         //private Dictionary<string, IAuthBrokerConsumer> _pendingbrokerconsumers = new Dictionary<string, IAuthBrokerConsumer>();
 
         public IUsername GetUsername(string ID)
@@ -38,63 +38,45 @@ namespace TsGui.Authentication
             return option;
         }
 
-        public AuthenticationBroker GetBroker(string id)
+        public void AddUsernameSource(IUsername newusersource)
         {
-            AuthenticationBroker broker;
-            if (this._brokers.TryGetValue(id, out broker) == true) { return broker; }
-            else
+            IAuthenticator auth;
+            if (this._authenticators.TryGetValue(newusersource.AuthID, out auth) == true)
             {
-                broker = new AuthenticationBroker(id);
-                this.AddBroker(id, broker);
-                return broker;
+                auth.UsernameSource = newusersource;
             }
+            else
+            { this._usernames.Add(newusersource.AuthID, newusersource); }
         }
 
-        public void AddBroker(string AuthID, AuthenticationBroker newbroker)
+        public void AddPasswordSource(IPassword newpwsource)
         {
-            bool pendingtasks = false;
-
-            IUsername user;
-            if (this._usernames.TryGetValue(AuthID, out user) == true)
+            IAuthenticator auth;
+            if (this._authenticators.TryGetValue(newpwsource.AuthID, out auth) == true)
             {
-                newbroker.UsernameSource = user;
-                this._usernames.Remove(AuthID);
+                auth.PasswordSource = newpwsource;
             }
             else
-            { pendingtasks = true; }
+            { this._passwords.Add(newpwsource.AuthID, newpwsource); }
+        }
+
+        public void AddAuthenticator(IAuthenticator newauth)
+        {
+            IUsername user;
+            if (this._usernames.TryGetValue(newauth.AuthID, out user) == true)
+            {
+                newauth.UsernameSource = user;
+                this._usernames.Remove(newauth.AuthID);
+            }
 
             IPassword pass;
-            if (this._passwords.TryGetValue(AuthID, out pass) == true)
+            if (this._passwords.TryGetValue(newauth.AuthID, out pass) == true)
             {
-                newbroker.PasswordSource = pass;
-                this._passwords.Remove(AuthID);
+                newauth.PasswordSource = pass;
+                this._passwords.Remove(newauth.AuthID);
             }
-            else
-            { pendingtasks = true; }
 
-            if (pendingtasks == true) { this._brokers.Add(AuthID, newbroker); }
-        }
-
-        public void AddUsernameSource(string AuthID, IUsername newusersource)
-        {
-            AuthenticationBroker broker;
-            if (this._brokers.TryGetValue(AuthID, out broker) == true)
-            {
-                broker.UsernameSource = newusersource;
-            }
-            else
-            { this._usernames.Add(AuthID, newusersource); }
-        }
-
-        public void AddPasswordSource(string AuthID, IPassword newpwsource)
-        {
-            AuthenticationBroker broker;
-            if (this._brokers.TryGetValue(AuthID, out broker) == true)
-            {
-                broker.PasswordSource = newpwsource;
-            }
-            else
-            { this._passwords.Add(AuthID, newpwsource); }
+            this._authenticators.Add(newauth.AuthID, newauth);
         }
     }
 }

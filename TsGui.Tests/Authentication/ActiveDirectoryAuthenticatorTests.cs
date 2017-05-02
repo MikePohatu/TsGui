@@ -33,9 +33,13 @@ namespace TsGui.Tests.Authentication
         [TestCaseSource("ActiveDirectoryAuthentication_Authenticate_TestCases")]
         public void AuthenticateTest(ActiveDirectoryAuthenticatorTestArgs args)
         {
-            SecureString secpw = GetSecureStringFromString(args.AuthPassword);
-
-            ActiveDirectoryAuthenticator adauth = new ActiveDirectoryAuthenticator(args.AuthUser, secpw, args.Domain,args.Groups);
+            ActiveDirectoryAuthenticator adauth = new ActiveDirectoryAuthenticator("testid", args.Domain);
+            ActiveDirectoryAuthenticatorTestSource source = new ActiveDirectoryAuthenticatorTestSource();
+            adauth.PasswordSource = source;
+            adauth.UsernameSource = source;
+            source.Username = args.AuthUser;
+            source.SecurePassword = GetSecureStringFromString(args.AuthPassword);
+            adauth.RequiredGroups = args.Groups;
             AuthState state = adauth.Authenticate();
             NUnit.Framework.Assert.AreEqual(args.ExpectedResult, state);
         }

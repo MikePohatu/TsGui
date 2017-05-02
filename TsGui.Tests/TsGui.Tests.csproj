@@ -51,6 +51,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\ActiveDirectoryAuthenticatorTestSource.cs" />
     <Compile Include="Authentication\ActiveDirectoryMethodsTestArgs.cs" />
     <Compile Include="Authentication\ActiveDirectoryAuthenticatorTestArgs.cs" />
     <Compile Include="Authentication\ActiveDirectoryAuthenticatorTests.cs" />
