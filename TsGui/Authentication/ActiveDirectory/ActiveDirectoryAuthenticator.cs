@@ -14,19 +14,15 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-using System.Security;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
-using System.Net;
 using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Authentication.ActiveDirectory
 {
     public class ActiveDirectoryAuthenticator : IAuthenticator
     {
-        //private NetworkCredential _netcredential;
         private AuthState _state;
-        //private AuthenticationBroker _broker;
         private string _domain;
 
         public PrincipalContext Context { get; set; }
@@ -34,23 +30,12 @@ namespace TsGui.Authentication.ActiveDirectory
         public IPassword PasswordSource { get; set; }
         public IUsername UsernameSource { get; set; }
         public string AuthID { get; set; }
-        //public string Username
-        //{
-        //    get { return this._netcredential.UserName; }
-        //    set { this._netcredential.UserName = value; }
-        //}
-        //public SecureString SecurePassword
-        //{
-        //    get { return this._netcredential.SecurePassword; }
-        //    set { this._netcredential.SecurePassword = value; }
-        //}
         public List<string> RequiredGroups { get; set; } 
 
         public ActiveDirectoryAuthenticator(string authid, string domain)
         {
             this.AuthID = authid;
             this._state = AuthState.AccessDenied;
-            //this._netcredential = new NetworkCredential();
             this._domain = domain;
             this.RequiredGroups = new List<string>();
         }
@@ -80,19 +65,5 @@ namespace TsGui.Authentication.ActiveDirectory
             }
 
         }
-
-        //private bool IsValidLogin()
-        //{
-        //    bool authed = false;
-        //    try
-        //    {
-        //        DirectoryEntry entry = new DirectoryEntry("LDAP://" + this.Domain, this._netcredential.UserName, this._netcredential.Password);
-        //        object nativeObject = entry.NativeObject;
-        //        authed = true;
-        //    }
-        //    catch (DirectoryServicesCOMException) { }
-
-        //    return authed;
-        //}
     }
 }

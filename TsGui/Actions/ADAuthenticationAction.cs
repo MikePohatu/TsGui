@@ -22,7 +22,6 @@ namespace TsGui.Actions
 {
     public class ADAuthenticationAction: IAction, IAuthenticationComponent
     {
-        //private ActiveDirectoryAuthenticator _authenticator;
         private string _authid;
         private IDirector _director;
         private ActiveDirectoryAuthenticator _authenticator;

@@ -39,10 +39,9 @@ namespace TsGui.Tests.Authentication
             source.Username = authargs.AuthUser;
             source.SecurePassword = GetSecureStringFromString(authargs.AuthPassword);
             adauth.RequiredGroups = args.AuthArgs.Groups;
-            //adauth.UsernameSource = authargs.AuthUser, secpw, authargs.Domain, args.Groups
             adauth.Authenticate();
             bool result = ActiveDirectoryMethods.IsUserMemberOfGroups(adauth.Context, args.UserName, args.Groups);
-            NUnit.Framework.Assert.AreEqual(args.ExpectedResult,result);
+            Assert.AreEqual(args.ExpectedResult,result);
         }
 
         public static IEnumerable<TestCaseData> ActiveDirectoryAuthentication_IsMemberOfGroupsTest_TestCases
