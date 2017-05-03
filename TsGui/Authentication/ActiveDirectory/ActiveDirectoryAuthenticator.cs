@@ -22,6 +22,8 @@ namespace TsGui.Authentication.ActiveDirectory
 {
     public class ActiveDirectoryAuthenticator : IAuthenticator
     {
+        public event AuthValueChanged AuthStateChanged;
+
         private AuthState _state;
         private string _domain;
 
@@ -43,27 +45,35 @@ namespace TsGui.Authentication.ActiveDirectory
         public AuthState Authenticate()
         {
             LoggerFacade.Info("Authenticating user:" + this.UsernameSource.Username + " against domain " + this._domain);
+            AuthState newstate;
             try
             {
                 this.Context = new PrincipalContext(ContextType.Domain, this._domain, this.UsernameSource.Username, this.PasswordSource.Password);
                 if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context,this.UsernameSource.Username,this.RequiredGroups) == true)
                 {
                     LoggerFacade.Info("Active Directory authorised");
-                    return AuthState.Authorised;
+                    newstate = AuthState.Authorised;
                 }
                 else
                 {
                     LoggerFacade.Info("Active Directory not authorised");
-                    return AuthState.NotAuthorised;
+                    newstate = AuthState.NotAuthorised;
                 }
                 
             }
             catch
             {
                 LoggerFacade.Info("Active Directory access denied");
-                return AuthState.AccessDenied;
+                newstate = AuthState.AccessDenied;
             }
 
+            if (newstate != this._state)
+            {
+                this._state = newstate;
+                this.AuthStateChanged?.Invoke();
+            }
+
+            return newstate;
         }
     }
 }

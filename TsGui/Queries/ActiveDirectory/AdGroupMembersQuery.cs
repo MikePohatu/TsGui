@@ -99,6 +99,11 @@ namespace TsGui.Queries.ActiveDirectory
             return this._returnwrangler;
         }
 
+        public void OnAuthenticatorStateChange()
+        {
+
+        }
+
         private List<KeyValuePair<string, XElement>> GetTemplatesFromXmlElements(IEnumerable<XElement> Elements)
         {
             List<KeyValuePair<string, XElement>> templates = new List<KeyValuePair<string, XElement>>();

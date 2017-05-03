@@ -42,6 +42,7 @@ namespace TsGui.View.GuiOptions
         private ValidationHandler _validationhandler;
         private bool _nodefaultvalue;
         private string _noselectionmessage;
+        private List<QueryList> _querylists = new List<QueryList>();
 
 
         //properties
