@@ -141,12 +141,16 @@ namespace TsGui.View.GuiOptions
                     QueryList newlist = new QueryList(this._director);
                     newlist.LoadXml(wrapx);
 
-                    List<KeyValuePair<string, string>> kvlist = newlist.GetResultWrangler().GetKeyValueList();
-                    foreach (KeyValuePair<string, string> kv in kvlist)
+                    ResultWrangler wrangler = newlist.GetResultWrangler();
+                    if (wrangler != null)
                     {
-                        TsDropDownListItem newoption = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting, this, this._director);
-                        this.AddOption(newoption);
-                        optionindex++;
+                        List<KeyValuePair<string, string>> kvlist = wrangler.GetKeyValueList();
+                        foreach (KeyValuePair<string, string> kv in kvlist)
+                        {
+                            TsDropDownListItem newoption = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting, this, this._director);
+                            this.AddOption(newoption);
+                            optionindex++;
+                        }
                     }
                 }
 

@@ -89,11 +89,14 @@
     <Compile Include="Authentication\AuthLibrary.cs" />
     <Compile Include="Authentication\IAuthenticationComponent.cs" />
     <Compile Include="Authentication\IAuthenticator.cs" />
+    <Compile Include="Authentication\IAuthenticatorConsumer.cs" />
     <Compile Include="Authentication\IUsername.cs" />
     <Compile Include="Authentication\IPassword.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="IDirector.cs" />
+    <Compile Include="Queries\ActiveDirectory\ADGroupMembersQuery.cs" />
     <Compile Include="Queries\IfElseQuery.cs" />
+    <Compile Include="Queries\PropertyInterogation.cs" />
     <Compile Include="Validation\StringMatching\BaseMatchingRule.cs" />
     <Compile Include="Validation\StringMatching\Characters.cs" />
     <Compile Include="Validation\StringMatching\MatchingRuleLibrary.cs" />

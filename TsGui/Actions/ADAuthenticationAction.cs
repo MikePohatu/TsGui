@@ -20,25 +20,27 @@ using System.Xml.Linq;
 
 namespace TsGui.Actions
 {
-    public class ADAuthenticationAction: IAction, IAuthenticationComponent
+    public class ADAuthenticationAction: IAction, IAuthenticatorConsumer
     {
         private string _authid;
         private IDirector _director;
-        private ActiveDirectoryAuthenticator _authenticator;
+        
         private string _domain;
 
         public string AuthID { get { return this._authid; } }
+        public IAuthenticator Authenticator { get; set; }
 
         public ADAuthenticationAction(XElement inputxml, IDirector director)
         {
             this._director = director;
             this.LoadXml(inputxml);
-            
+            this._director.AuthLibrary.AddAuthenticator(new ActiveDirectoryAuthenticator(this._authid, this._domain));
+            this._director.AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public void RunAction()
         {
-            this._authenticator.Authenticate();
+            this.Authenticator.Authenticate();
         }
 
         private void LoadXml(XElement inputxml)
@@ -54,12 +56,8 @@ namespace TsGui.Actions
             if (xa != null)
             {
                 this._authid = xa.Value;
-                this._authenticator = new ActiveDirectoryAuthenticator(this._authid,this._domain);
-                this._director.AuthLibrary.AddAuthenticator(this._authenticator);
             }
             else { throw new TsGuiKnownException("Missing AuthID attribute in config", inputxml.ToString()); }
-
-            
         }
     }
 }

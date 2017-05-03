@@ -16,6 +16,7 @@
 using System.Xml.Linq;
 using TsGui.Diagnostics;
 using TsGui.Linking;
+using TsGui.Queries.ActiveDirectory;
 
 namespace TsGui.Queries
 {
@@ -51,6 +52,8 @@ namespace TsGui.Queries
                         return GetLinkToQuery(InputXml.Value, director, owner);
                     case "LinkTrue":
                         return GetLinkTrueFalseOnlyQuery(InputXml.Value, director, owner, true);
+                    case "ADGroupMembers":
+                        return new ADGroupMembersQuery(InputXml, director, owner);
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
                 }

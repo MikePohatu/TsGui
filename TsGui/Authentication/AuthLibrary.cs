@@ -22,7 +22,7 @@ namespace TsGui.Authentication
         private Dictionary<string, IUsername> _usernames = new Dictionary<string, IUsername>();
         private Dictionary<string, IPassword> _passwords = new Dictionary<string, IPassword>();
         private Dictionary<string, IAuthenticator> _authenticators = new Dictionary<string, IAuthenticator>();
-        //private Dictionary<string, IAuthBrokerConsumer> _pendingbrokerconsumers = new Dictionary<string, IAuthBrokerConsumer>();
+        private Dictionary<string, List<IAuthenticatorConsumer>> _pendingconsumers = new Dictionary<string, List<IAuthenticatorConsumer>>();
 
         public IUsername GetUsername(string ID)
         {
@@ -36,6 +36,24 @@ namespace TsGui.Authentication
             IPassword option;
             this._passwords.TryGetValue(ID, out option);
             return option;
+        }
+
+        public void AddAuthenticatorConsumer(IAuthenticatorConsumer consumer)
+        {
+            IAuthenticator auth;
+            if (this._authenticators.TryGetValue(consumer.AuthID,out auth) == true)
+            { consumer.Authenticator = auth; }
+            else
+            {
+                List<IAuthenticatorConsumer> consumerlist;
+                if (this._pendingconsumers.TryGetValue(consumer.AuthID,out consumerlist) != true)
+                {
+                    consumerlist = new List<IAuthenticatorConsumer>();
+                    this._pendingconsumers.Add(consumer.AuthID, consumerlist);
+                }
+
+                consumerlist.Add(consumer);
+            }
         }
 
         public void AddUsernameSource(IUsername newusersource)
@@ -74,6 +92,20 @@ namespace TsGui.Authentication
             {
                 newauth.PasswordSource = pass;
                 this._passwords.Remove(newauth.AuthID);
+            }
+
+            List<IAuthenticatorConsumer> consumerlist;
+            if (this._pendingconsumers.TryGetValue(newauth.AuthID, out consumerlist) == true)
+            {
+                foreach (IAuthenticatorConsumer consumer in consumerlist)
+                {
+                    if (consumer.AuthID.Equals(newauth.AuthID))
+                    {
+                        consumer.Authenticator = newauth;
+                    }
+                }
+
+                this._pendingconsumers.Remove(newauth.AuthID);
             }
 
             this._authenticators.Add(newauth.AuthID, newauth);
