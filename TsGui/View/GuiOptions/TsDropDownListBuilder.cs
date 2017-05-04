@@ -59,8 +59,7 @@ namespace TsGui.View.GuiOptions
                         foreach (KeyValuePair<string, string> kv in kvlist)
                         {
                             TsDropDownListItem newoption = new TsDropDownListItem(kv.Key, kv.Value, this._parentdropdown.ControlFormatting, this._parentdropdown, this._director);
-                            newlist.Add(newoption);
-                            
+                            if (string.IsNullOrWhiteSpace(newoption.Text) == false) { newlist.Add(newoption); } //ignore items with empty text 
                         }
                     }
                     i++;
