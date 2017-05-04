@@ -89,7 +89,7 @@ namespace TsGui.View.GuiOptions
         private void Init(IDirector MainController)
         {
             this._director = MainController;
-            this._querylist = new QueryList(this, this._director);
+            this._querylist = new QueryPriorityList(this, this._director);
 
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
@@ -184,5 +184,8 @@ namespace TsGui.View.GuiOptions
                 if (this.ControlText != s) { this.ControlText = s; }
             }
         }
+
+        public void RefreshAll()
+        { this.RefreshValue(); }
     }
 }

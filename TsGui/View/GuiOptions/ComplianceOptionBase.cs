@@ -91,7 +91,7 @@ namespace TsGui.View.GuiOptions
             this.StrokeColor = new SolidColorBrush(Colors.Blue);
             this._compliancehandler = new ComplianceHandler(this, director);
             this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
-            this._querylist = new QueryList(this,director);
+            this._querylist = new QueryPriorityList(this,director);
             this.UserControl.DataContext = this;
             this.SetDefaults();      
         }
@@ -144,6 +144,11 @@ namespace TsGui.View.GuiOptions
             this._querylist.ProcessAllQueries();
             this.ProcessQuery();
             this.Validate();
+        }
+
+        public void RefreshAll()
+        {
+            this.RefreshValue();
         }
 
         protected new void LoadXml(XElement InputXml)

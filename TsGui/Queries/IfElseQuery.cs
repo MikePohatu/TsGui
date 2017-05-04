@@ -23,7 +23,7 @@ namespace TsGui.Queries
     public class IfElseQuery: BaseQuery, ILinkingEventHandler, ILinkTarget
     {
         private List<Conditional> _conditions = new List<Conditional>();
-        private QueryList _else;
+        private QueryPriorityList _else;
         private IDirector _director;
         private ILinkTarget _targetoption;
 
@@ -54,6 +54,11 @@ namespace TsGui.Queries
             this._targetoption.RefreshValue();
         }
 
+        public void RefreshAll()
+        {
+            this._targetoption.RefreshAll();
+        }
+
         public void OnLinkedSourceValueChanged()
         { this.RefreshValue(); }
 
@@ -72,7 +77,7 @@ namespace TsGui.Queries
                 }
                 else if (xname.Equals("ELSE", StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    this._else = new QueryList(element,this._targetoption,this._director);
+                    this._else = new QueryPriorityList(element,this._targetoption,this._director);
                 }
             }
         }

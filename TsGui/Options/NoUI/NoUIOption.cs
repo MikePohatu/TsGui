@@ -32,7 +32,7 @@ namespace TsGui.Options.NoUI
         private string _inactivevalue = "TSGUI_INACTIVE";
         private string _value = string.Empty;
         private bool _usecurrent = false;
-        private QueryList _querylist;
+        private QueryPriorityList _querylist;
         private string _id;
 
         //properties
@@ -89,7 +89,7 @@ namespace TsGui.Options.NoUI
         //constructors     
         public NoUIOption(NoUIContainer Parent, IDirector director, XElement InputXml) : base(Parent, director)
         {
-            this._querylist = new QueryList(this, director);
+            this._querylist = new QueryPriorityList(this, director);
             this.LoadXml(InputXml);
             this.RefreshValue();
             this.NotifyUpdate();
@@ -97,7 +97,7 @@ namespace TsGui.Options.NoUI
 
         public NoUIOption(IDirector director):base (director)
         {
-            this._querylist = new QueryList(this, director);
+            this._querylist = new QueryPriorityList(this, director);
         }
 
         //public methods
@@ -151,6 +151,11 @@ namespace TsGui.Options.NoUI
         {
             this._value = this._querylist.GetResultWrangler()?.GetString();
             this.NotifyUpdate();
+        }
+
+        public void RefreshAll()
+        {
+            this.RefreshValue();
         }
 
         public void ImportFromTsVariable(TsVariable var)

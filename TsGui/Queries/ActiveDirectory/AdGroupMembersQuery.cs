@@ -29,6 +29,8 @@ namespace TsGui.Queries.ActiveDirectory
 {
     public class ADGroupMembersQuery : BaseQuery, IAuthenticatorConsumer//, ILinkingEventHandler
     {
+        //public event QueryProcessed Reprocessed;
+
         private IDirector _director;
         private ILinkTarget _linktargetoption;
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
@@ -38,7 +40,11 @@ namespace TsGui.Queries.ActiveDirectory
         public IAuthenticator Authenticator
         {
             get { return this._authenticator; }
-            set { this._authenticator = value as ActiveDirectoryAuthenticator; }
+            set
+            {
+                this._authenticator = value as ActiveDirectoryAuthenticator;
+                this._authenticator.AuthStateChanged += this.OnAuthenticatorStateChange;
+            }
         }
         public string AuthID { get; set; }
         public ADGroupMembersQuery() { }
@@ -48,7 +54,7 @@ namespace TsGui.Queries.ActiveDirectory
             this._linktargetoption = owner;
             this._director = director;
             this.LoadXml(InputXml);
-            //this._controller.LinkingLibrary.AddHandler(this._formatter.Name, this);
+            this._director.AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public new void LoadXml(XElement InputXml)
@@ -101,7 +107,8 @@ namespace TsGui.Queries.ActiveDirectory
 
         public void OnAuthenticatorStateChange()
         {
-
+            this.ProcessQuery();
+            this._linktargetoption?.RefreshAll();
         }
 
         private List<KeyValuePair<string, XElement>> GetTemplatesFromXmlElements(IEnumerable<XElement> Elements)

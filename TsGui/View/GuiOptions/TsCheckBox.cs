@@ -73,7 +73,7 @@ namespace TsGui.View.GuiOptions
             this.Control = new TsCheckBoxUI();
             this.Label = new TsLabelUI();
             this.SetDefaults();
-            this._querylist = new QueryList(this, this._director);          
+            this._querylist = new QueryPriorityList(this, this._director);          
             this.LoadXml(InputXml);
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
@@ -124,6 +124,11 @@ namespace TsGui.View.GuiOptions
                 if (newvalue == this._valTrue) { this.IsChecked = true; }
                 else if (newvalue == this._valFalse) { this.IsChecked = false; }
             }
+        }
+
+        public void RefreshAll()
+        {
+            this.RefreshValue();
         }
 
         private void OnGroupStateChanged(object o, RoutedEventArgs e)

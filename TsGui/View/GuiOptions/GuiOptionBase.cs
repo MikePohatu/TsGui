@@ -35,7 +35,7 @@ namespace TsGui.View.GuiOptions
         private string _helptext = null;
         private string _inactivevalue = "TSGUI_INACTIVE";
         private GuiOptionBaseUI _ui;
-        protected QueryList _querylist;
+        protected QueryPriorityList _querylist;
 
         //standard stuff
         public string ID { get; set; }

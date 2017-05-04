@@ -64,7 +64,7 @@ namespace TsGui.View.GuiOptions
         private void Init(IDirector MainController)
         {
             this._director = MainController;
-            this._querylist = new QueryList(this._director);
+            this._querylist = new QueryPriorityList(this._director);
 
             this._passwordboxui = new TsPasswordBoxUI();
             this.Control = this._passwordboxui;

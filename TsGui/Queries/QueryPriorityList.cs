@@ -20,24 +20,24 @@ using TsGui.Linking;
 
 namespace TsGui.Queries
 {
-    public class QueryList
+    public class QueryPriorityList
     {
         private ILinkTarget _owneroption;
         private List<IQuery> _queries = new List<IQuery>();
         private IDirector _director;
 
-        public QueryList(IDirector director)
+        public QueryPriorityList(IDirector director)
         {
             this._director = director;
         }
 
-        public QueryList(ILinkTarget owner, IDirector director)
+        public QueryPriorityList(ILinkTarget owner, IDirector director)
         {
             this._director = director;
             this._owneroption = owner;
         }
 
-        public QueryList(XElement inputxml, ILinkTarget owner, IDirector director)
+        public QueryPriorityList(XElement inputxml, ILinkTarget owner, IDirector director)
         {
             this._director = director;
             this._owneroption = owner;

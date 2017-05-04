@@ -152,7 +152,7 @@
     <Compile Include="Linking\LinkingDelegates.cs" />
     <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />
-    <Compile Include="Queries\QueryList.cs" />
+    <Compile Include="Queries\QueryPriorityList.cs" />
     <Compile Include="Queries\ValueOnlyQuery.cs" />
     <Compile Include="Validation\StringMatching\RuleSet.cs" />
     <Compile Include="Options\NoUI\NoUIOption.cs" />

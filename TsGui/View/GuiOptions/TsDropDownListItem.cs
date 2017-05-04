@@ -24,27 +24,26 @@ namespace TsGui.View.GuiOptions
     public class TsDropDownListItem: GroupableUIElementBase
     {
         private TsDropDownList _dropdownlist;
-        public int Index { get; set; }
         public string Value { get; set; }
         public string Text { get; set; }
         public Formatting ItemFormatting { get; set; }
 
-        public TsDropDownListItem(int Index, string Value, string Text, Formatting Formatting, TsDropDownList Parent, IDirector MainController):base(MainController)
+        public TsDropDownListItem(string Value, string Text, Formatting Formatting, TsDropDownList Parent, IDirector MainController):base(MainController)
         { 
-            this.Init(Index, Formatting, Parent);
+            this.Init(Formatting, Parent);
             this.Value = Value;
             this.Text = Text; 
         }
 
-        public TsDropDownListItem(int Index, XElement InputXml, Formatting Formatting, TsDropDownList Parent, IDirector MainController) : base(MainController)
+        public TsDropDownListItem(XElement InputXml, Formatting Formatting, TsDropDownList Parent, IDirector MainController) : base(MainController)
         {
-            this.Init(Index, Formatting, Parent);
+            this.Init(Formatting, Parent);
             this.Text = XmlHandler.GetStringFromXElement(InputXml, "Text", this.Text);
             this.Value = XmlHandler.GetStringFromXElement(InputXml, "Value", this.Value);
             base.LoadXml(InputXml);
         }
 
-        private void Init(int Index, Formatting Formatting, TsDropDownList Parent)
+        private void Init(Formatting Formatting, TsDropDownList Parent)
         {
             this.ItemFormatting = Formatting;
             this._dropdownlist = Parent;

@@ -20,5 +20,6 @@ namespace TsGui.Linking
     public interface ILinkTarget
     {
         void RefreshValue();
+        void RefreshAll();
     }
 }
