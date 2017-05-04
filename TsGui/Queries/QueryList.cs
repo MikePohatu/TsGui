@@ -24,22 +24,22 @@ namespace TsGui.Queries
     {
         private ILinkTarget _owneroption;
         private List<IQuery> _queries = new List<IQuery>();
-        private IDirector _controller;
+        private IDirector _director;
 
-        public QueryList(IDirector controller)
+        public QueryList(IDirector director)
         {
-            this._controller = controller;
+            this._director = director;
         }
 
-        public QueryList(ILinkTarget owner, IDirector controller)
+        public QueryList(ILinkTarget owner, IDirector director)
         {
-            this._controller = controller;
+            this._director = director;
             this._owneroption = owner;
         }
 
-        public QueryList(XElement inputxml, ILinkTarget owner, IDirector controller)
+        public QueryList(XElement inputxml, ILinkTarget owner, IDirector director)
         {
-            this._controller = controller;
+            this._director = director;
             this._owneroption = owner;
             this.LoadXml(inputxml);
         }
@@ -62,7 +62,7 @@ namespace TsGui.Queries
             {
                 foreach (XElement x in InputXml.Elements())
                 {
-                    IQuery newquery = QueryFactory.GetQueryObject(x, this._controller, this._owneroption);
+                    IQuery newquery = QueryFactory.GetQueryObject(x, this._director, this._owneroption);
                     if (newquery != null) { this._queries.Add(newquery); }
                 }
             }
