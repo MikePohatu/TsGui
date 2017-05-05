@@ -52,6 +52,7 @@ namespace TsGui.View.GuiOptions
                 QueryPriorityList qlist;
                 if (this._querylists.TryGetValue(i, out qlist) == true)
                 {
+                    qlist.ProcessAllQueries();
                     ResultWrangler wrangler = qlist.GetResultWrangler();
                     if (wrangler != null)
                     {

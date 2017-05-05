@@ -78,7 +78,11 @@ namespace TsGui.Queries.ActiveDirectory
 
         public override ResultWrangler ProcessQuery()
         {
-            if (this._authenticator?.State != AuthState.Authorised) { return null; }
+            if (this._authenticator?.State != AuthState.Authorised)
+            {
+                this._returnwrangler = null;
+                return null;
+            }
 
             //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
             //New sublists are created for each management object in the wrangler. 
