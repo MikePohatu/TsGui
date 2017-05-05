@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using TsGui.Diagnostics.Logging;
@@ -44,25 +44,35 @@ namespace TsGui.Authentication.ActiveDirectory
 
         public AuthState Authenticate()
         {
-            LoggerFacade.Info("Authenticating user:" + this.UsernameSource.Username + " against domain " + this._domain);
+            LoggerFacade.Info("Authenticating user: " + this.UsernameSource.Username + " against domain " + this._domain);
             AuthState newstate;
             try
             {
-                this.Context = new PrincipalContext(ContextType.Domain, this._domain, this.UsernameSource.Username, this.PasswordSource.Password);
-                if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context,this.UsernameSource.Username,this.RequiredGroups) == true)
+                this.Context = new PrincipalContext(ContextType.Domain, this._domain);
+                bool auth = this.Context.ValidateCredentials(this.UsernameSource.Username, this.PasswordSource.Password);
+                if (auth == true)
                 {
-                    LoggerFacade.Info("Active Directory authorised");
-                    newstate = AuthState.Authorised;
+                    if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context, this.UsernameSource.Username, this.RequiredGroups) == true)
+                    {
+                        LoggerFacade.Info("Active Directory authorised");
+                        newstate = AuthState.Authorised;
+                    }
+                    else
+                    {
+                        LoggerFacade.Info("Active Directory not authorised");
+                        newstate = AuthState.NotAuthorised;
+                    }
                 }
                 else
                 {
-                    LoggerFacade.Info("Active Directory not authorised");
-                    newstate = AuthState.NotAuthorised;
+                    //LoggerFacade.Warn(e.Message);
+                    LoggerFacade.Info("Active Directory access denied");
+                    newstate = AuthState.AccessDenied;
                 }
-                
             }
-            catch
+            catch (Exception e)
             {
+                LoggerFacade.Warn(e.Message);
                 LoggerFacade.Info("Active Directory access denied");
                 newstate = AuthState.AccessDenied;
             }
