@@ -29,8 +29,6 @@ namespace TsGui.Queries.ActiveDirectory
 {
     public class ADGroupMembersQuery : BaseQuery, IAuthenticatorConsumer//, ILinkingEventHandler
     {
-        //public event QueryProcessed Reprocessed;
-
         private IDirector _director;
         private ILinkTarget _linktargetoption;
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
@@ -63,15 +61,12 @@ namespace TsGui.Queries.ActiveDirectory
 
             this.AuthID = XmlHandler.GetStringFromXAttribute(InputXml, "AuthID", this.AuthID);
             this._groupname = InputXml.Element("GroupName")?.Value;
-            //make sure there is some WQL to query
+            //make sure there is a group to query
             if (string.IsNullOrEmpty(this._groupname)) { throw new TsGuiKnownException("No group specified in XML: ", InputXml.ToString()); }
 
 
             this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
             this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
-
-            //make sure there is some WQL to query
-            if (string.IsNullOrEmpty(this._groupname)) { throw new InvalidOperationException("Empty WQL query in XML: " + Environment.NewLine + InputXml); }
 
             this._propertyTemplates = this.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
