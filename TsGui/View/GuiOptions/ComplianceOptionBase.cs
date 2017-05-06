@@ -91,7 +91,7 @@ namespace TsGui.View.GuiOptions
             this.StrokeColor = new SolidColorBrush(Colors.Blue);
             this._compliancehandler = new ComplianceHandler(this, director);
             this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
-            this._querylist = new QueryPriorityList(this,director);
+            this._setvaluequerylist = new QueryPriorityList(this,director);
             this.UserControl.DataContext = this;
             this.SetDefaults();      
         }
@@ -141,7 +141,7 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            this._querylist.ProcessAllQueries();
+            this._setvaluequerylist.ProcessAllQueries();
             this.ProcessQuery();
             this.Validate();
         }
@@ -164,12 +164,12 @@ namespace TsGui.View.GuiOptions
 
             //wrap the query in another to make it suitable for the querylist. 
             x = InputXml.Element("GetValue");
-            if (x != null) { this._querylist.LoadXml(x); }  
+            if (x != null) { this._setvaluequerylist.LoadXml(x); }  
         } 
 
         protected void ProcessQuery()
         {
-            this._value = this._querylist.GetResultWrangler()?.GetString();
+            this._value = this._setvaluequerylist.GetResultWrangler()?.GetString();
         }
 
         protected void UpdateState()

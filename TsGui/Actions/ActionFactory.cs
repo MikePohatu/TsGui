@@ -29,9 +29,9 @@ namespace TsGui.Actions
             LoggerFacade.Info("Creating Action, type: " + xtype.Value);
 
             #region
-            if (xtype.Value == "ADAuthentication")
+            if (xtype.Value == "Authentication")
             {
-                var action = new ADAuthenticationAction(inputxml, director);
+                var action = new AuthenticationAction(inputxml, director);
                 return action;
             }
 

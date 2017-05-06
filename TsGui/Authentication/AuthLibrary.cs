@@ -38,6 +38,13 @@ namespace TsGui.Authentication
             return option;
         }
 
+        public IAuthenticator GetAuthenticator(string ID)
+        {
+            IAuthenticator option;
+            this._authenticators.TryGetValue(ID, out option);
+            return option;
+        }
+
         public void AddAuthenticatorConsumer(IAuthenticatorConsumer consumer)
         {
             IAuthenticator auth;

@@ -77,7 +77,7 @@ namespace TsGui.View.GuiOptions
         public TsDropDownList(XElement InputXml, TsColumn Parent, IDirector director) : base(Parent, director)
         {
             this._director = director;
-            this._querylist = new QueryPriorityList(this, this._director);
+            this._setvaluequerylist = new QueryPriorityList(this, this._director);
             this._builder = new TsDropDownListBuilder(this, this._director);
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
@@ -117,7 +117,7 @@ namespace TsGui.View.GuiOptions
                 if (x.Name == "DefaultValue")
                 {
                     IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this._director, this);
-                    this._querylist.AddQuery(defquery);
+                    this._setvaluequerylist.AddQuery(defquery);
                 }
                 
                 //read in an option and add to a dictionary for later use
@@ -163,7 +163,7 @@ namespace TsGui.View.GuiOptions
             if (this._nodefaultvalue == false)
             {
                 int index = 0;
-                string defaultval = this._querylist.GetResultWrangler()?.GetString();
+                string defaultval = this._setvaluequerylist.GetResultWrangler()?.GetString();
                 foreach (TsDropDownListItem item in this.VisibleOptions)
                 {
                     if ((item.Value == defaultval) || (index == 0))
@@ -242,13 +242,14 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            this.SetSelected(this._querylist.GetResultWrangler().GetString());
+            this.SetSelected(this._setvaluequerylist.GetResultWrangler()?.GetString());
         }
 
         public void RefreshAll()
         {
             this._builder.Rebuild();
             this.OnPropertyChanged(this, "VisibleOptions");
+            this.SetSelected(this._setvaluequerylist.GetResultWrangler()?.GetString());
         }
 
         private void OnOptionsListUpdated()

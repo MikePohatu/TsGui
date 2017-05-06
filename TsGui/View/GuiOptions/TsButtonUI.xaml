@@ -25,5 +25,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="20"
              >
-    <Button x:Name="RetryButton" Content="{Binding ButtonText}" Style="{StaticResource ControlStyle}" Template="{DynamicResource ButtonControlTemplate}"/>
+    <Button x:Name="button" Content="{Binding ButtonText}" Style="{StaticResource ControlStyle}" 
+            Template="{DynamicResource ButtonControlTemplate}" IsDefault="{Binding IsDefault}"/>
 </UserControl>

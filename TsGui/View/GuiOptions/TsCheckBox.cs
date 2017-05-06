@@ -73,7 +73,7 @@ namespace TsGui.View.GuiOptions
             this.Control = new TsCheckBoxUI();
             this.Label = new TsLabelUI();
             this.SetDefaults();
-            this._querylist = new QueryPriorityList(this, this._director);          
+            this._setvaluequerylist = new QueryPriorityList(this, this._director);          
             this.LoadXml(InputXml);
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
@@ -118,7 +118,7 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            string newvalue = this._querylist.GetResultWrangler()?.GetString();
+            string newvalue = this._setvaluequerylist.GetResultWrangler()?.GetString();
             if (newvalue != this.CurrentValue)
             {
                 if (newvalue == this._valTrue) { this.IsChecked = true; }

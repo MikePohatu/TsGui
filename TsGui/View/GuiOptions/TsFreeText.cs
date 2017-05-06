@@ -89,7 +89,7 @@ namespace TsGui.View.GuiOptions
         private void Init(IDirector MainController)
         {
             this._director = MainController;
-            this._querylist = new QueryPriorityList(this, this._director);
+            this._setvaluequerylist = new QueryPriorityList(this, this._director);
 
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
@@ -173,7 +173,7 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            string s = this._querylist.GetResultWrangler()?.GetString();
+            string s = this._setvaluequerylist.GetResultWrangler()?.GetString();
             if (s != null) 
             {
                 //if required, remove invalid characters and truncate

@@ -35,7 +35,7 @@ namespace TsGui.View.GuiOptions
         private string _helptext = null;
         private string _inactivevalue = "TSGUI_INACTIVE";
         private GuiOptionBaseUI _ui;
-        protected QueryPriorityList _querylist;
+        protected QueryPriorityList _setvaluequerylist;
 
         //standard stuff
         public string ID { get; set; }
@@ -133,8 +133,8 @@ namespace TsGui.View.GuiOptions
                     inputxml.AddFirst(xcurrentquery);
                 }
             }
-            if (clearbeforeload == true) { this._querylist.Clear(); }
-            this._querylist.LoadXml(inputxml);
+            if (clearbeforeload == true) { this._setvaluequerylist.Clear(); }
+            this._setvaluequerylist.LoadXml(inputxml);
         }
 
         private void SetDefaults()

@@ -56,7 +56,7 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
             this.UserControl.DataContext = this;
             this.SetDefaults();
-            this._querylist = new QueryPriorityList(this, this._director);
+            this._setvaluequerylist = new QueryPriorityList(this, this._director);
             this.LoadXml(InputXml);
             this.RefreshControlText();
         }
@@ -80,7 +80,7 @@ namespace TsGui.View.GuiOptions
 
         private void RefreshControlText()
         {
-            this.ControlText = this._querylist.GetResultWrangler()?.GetString();
+            this.ControlText = this._setvaluequerylist.GetResultWrangler()?.GetString();
         }
 
         private void SetDefaults()

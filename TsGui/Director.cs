@@ -218,6 +218,11 @@ namespace TsGui
                 if (x != null)
                 { this._chassischeck = new HardwareEvaluator(); }
 
+                foreach (XElement xauth in SourceXml.Elements("Authentication"))
+                {
+                    this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth, this));
+                }
+
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
                 PageDefaults pagedef = new PageDefaults();
 

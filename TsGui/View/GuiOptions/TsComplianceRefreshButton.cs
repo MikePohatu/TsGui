@@ -47,7 +47,7 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;           
             this._ui = new TsButtonUI();
             this.Control = this._ui;
-            this._ui.RetryButton.Click += this.OnButtonClick;
+            this._ui.button.Click += this.OnButtonClick;
 
             this.Label = new TsLabelUI();
             this.SetDefaults();           

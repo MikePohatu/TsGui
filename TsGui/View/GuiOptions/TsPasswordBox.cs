@@ -56,15 +56,10 @@ namespace TsGui.View.GuiOptions
             this.LoadXml(InputXml);
         }
 
-        protected TsPasswordBox(TsColumn Parent, IDirector MainController) : base(Parent, MainController)
-        {
-            this.Init(MainController);
-        }
-
         private void Init(IDirector MainController)
         {
             this._director = MainController;
-            this._querylist = new QueryPriorityList(this._director);
+            this._setvaluequerylist = new QueryPriorityList(this._director);
 
             this._passwordboxui = new TsPasswordBoxUI();
             this.Control = this._passwordboxui;

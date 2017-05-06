@@ -75,7 +75,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\ADAuthenticationAction.cs" />
+    <Compile Include="Actions\AuthenticationAction.cs" />
     <Compile Include="Actions\ActionFactory.cs" />
     <Compile Include="Actions\IAction.cs" />
     <Compile Include="App.xaml.cs">
@@ -86,6 +86,7 @@
     <Compile Include="Authentication\ActiveDirectory\ActiveDirectoryMethods.cs" />
     <Compile Include="Authentication\AuthenticationDelegates.cs" />
     <Compile Include="Authentication\AuthenticationEnums.cs" />
+    <Compile Include="Authentication\AuthenticationFactory.cs" />
     <Compile Include="Authentication\AuthLibrary.cs" />
     <Compile Include="Authentication\IAuthenticationComponent.cs" />
     <Compile Include="Authentication\IAuthenticator.cs" />

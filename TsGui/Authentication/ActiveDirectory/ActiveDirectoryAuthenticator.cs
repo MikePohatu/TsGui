@@ -14,9 +14,11 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using System;
+using System.Xml.Linq;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using TsGui.Diagnostics.Logging;
+using TsGui.Diagnostics;
 
 namespace TsGui.Authentication.ActiveDirectory
 {
@@ -34,11 +36,10 @@ namespace TsGui.Authentication.ActiveDirectory
         public string AuthID { get; set; }
         public List<string> RequiredGroups { get; set; } 
 
-        public ActiveDirectoryAuthenticator(string authid, string domain)
+        public ActiveDirectoryAuthenticator(XElement inputxml)
         {
-            this.AuthID = authid;
+            this.LoadXml(inputxml);
             this._state = AuthState.AccessDenied;
-            this._domain = domain;
             this.RequiredGroups = new List<string>();
         }
 
@@ -83,6 +84,17 @@ namespace TsGui.Authentication.ActiveDirectory
 
             this.SetState(newstate);
             return newstate;
+        }
+
+        private void LoadXml(XElement inputxml)
+        {
+            this.AuthID = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
+            if (string.IsNullOrWhiteSpace(this.AuthID) == true)
+            { throw new TsGuiKnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
+
+            this._domain = XmlHandler.GetStringFromXAttribute(inputxml, "Domain", null);
+            if (string.IsNullOrWhiteSpace(this._domain) == true)
+            { throw new TsGuiKnownException("Missing Domain attribute in XML:", inputxml.ToString()); }
         }
 
         private void SetState(AuthState newstate)

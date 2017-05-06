@@ -27,6 +27,7 @@ namespace TsGui.View.GuiOptions
         private string _buttontext;
         private TsButtonUI _ui;
         private IAction _action;
+        private bool _isdefault;
 
         public override string CurrentValue { get { return null; } }
         public override TsVariable Variable { get { return null; } }
@@ -39,6 +40,15 @@ namespace TsGui.View.GuiOptions
                 this.OnPropertyChanged(this, "ButtonText");
             }
         }
+        public bool IsDefault
+        {
+            get { return this._isdefault; }
+            set
+            {
+                this._isdefault = value;
+                this.OnPropertyChanged(this, "IsDefault");
+            }
+        }
 
         //Constructor
         public TsActionButton(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
@@ -48,7 +58,7 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;
             this._ui = new TsButtonUI();
             this.Control = this._ui;
-            this._ui.RetryButton.Click += this.OnButtonClick;
+            this._ui.button.Click += this.OnButtonClick;
 
             this.Label = new TsLabelUI();
             this.SetDefaults();
@@ -66,6 +76,8 @@ namespace TsGui.View.GuiOptions
             XElement x;
             x = inputxml.Element("Action");
             if (x != null) { this._action = ActionFactory.CreateAction(x, this._director); }
+
+            this.IsDefault = XmlHandler.GetBoolFromXAttribute(inputxml, "IsDefault", this.IsDefault);
         }
 
         public void OnButtonClick(object o, RoutedEventArgs e)
@@ -76,6 +88,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
+            this._isdefault = false;
             this.ButtonText = "Apply";
             this.ControlFormatting.Height = 25;
             this.ControlFormatting.Width = 60;
