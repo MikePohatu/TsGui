@@ -14,7 +14,7 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-
+using System.Windows;
 using System.Linq;
 using System.Text;
 using System.Security.Principal;
@@ -27,37 +27,38 @@ namespace TsGui.Authentication.ActiveDirectory
 {
     public static class ActiveDirectoryMethods
     {
-        public static bool IsUserMemberOfGroups(PrincipalContext context, string username, List<string> groups)
+        public static bool IsUserMemberOfGroups(PrincipalContext context, string samaccountname, List<string> groups)
         {
-            UserPrincipal user = UserPrincipal.FindByIdentity(context, username);
-            
-            if (user != null)
+            using (UserPrincipal user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, samaccountname))
             {
-                GroupPrincipal prigroup = GetPrimaryGroup(context,user);
-                PrincipalSearchResult<Principal> usergroups = user.GetAuthorizationGroups();
-
-                if (groups == null) { return true; }
-
-                foreach (string groupname in groups)
+                if (user != null)
                 {
-                    using (GroupPrincipal group = GroupPrincipal.FindByIdentity(context, groupname))
-                    {
-                        if (group == null) { LoggerFacade.Warn("Group not found: " + groupname); }
-                        else
-                        {
-                            //work around issue where IsMemherOf always returns false on users primary group
-                            if (group.Equals(prigroup)) { return true; }
+                    GroupPrincipal prigroup = GetPrimaryGroup(context, user);
+                    PrincipalSearchResult<Principal> usergroups = user.GetAuthorizationGroups();
 
-                            //now do normal processing
-                            bool ismember = user.IsMemberOf(group);
-                            if (ismember == false) { return false; }
+                    if (groups == null) { return true; }
+
+                    foreach (string groupname in groups)
+                    {
+                        using (GroupPrincipal group = GroupPrincipal.FindByIdentity(context, groupname))
+                        {
+                            if (group == null) { LoggerFacade.Warn("Group not found: " + groupname); }
+                            else
+                            {
+                                //work around issue where IsMemherOf always returns false on users primary group
+                                if (group.Equals(prigroup)) { return true; }
+
+                                //now do normal processing
+                                bool ismember = user.IsMemberOf(group);
+                                if (ismember == false) { return false; }
+                            }
                         }
                     }
+                    return true;
                 }
-                return true;
-            }
 
-            else { throw new NoMatchingPrincipalException("User not found: " + username); }
+                else { throw new NoMatchingPrincipalException("User not found: " + samaccountname); }
+            }
         }
 
         public static GroupPrincipal GetPrimaryGroup(PrincipalContext context, UserPrincipal user)

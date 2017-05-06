@@ -44,46 +44,54 @@ namespace TsGui.Authentication.ActiveDirectory
 
         public AuthState Authenticate()
         {
+            if (string.IsNullOrWhiteSpace(this.UsernameSource.Username) == true)
+            {
+                LoggerFacade.Warn("Cannot autheticate with empty username");
+                this.SetState(AuthState.AccessDenied);
+                return AuthState.AccessDenied;
+            }
+            if (string.IsNullOrEmpty(this.PasswordSource.Password) == true)
+            {
+                LoggerFacade.Warn("Cannot autheticate with empty password");
+                this.SetState(AuthState.AccessDenied);
+                return AuthState.AccessDenied;
+            }
+
             LoggerFacade.Info("Authenticating user: " + this.UsernameSource.Username + " against domain " + this._domain);
             AuthState newstate;
             try
             {
-                this.Context = new PrincipalContext(ContextType.Domain, this._domain);
-                bool auth = this.Context.ValidateCredentials(this.UsernameSource.Username, this.PasswordSource.Password);
-                if (auth == true)
+                this.Context = new PrincipalContext(ContextType.Domain, this._domain, this.UsernameSource.Username, this.PasswordSource.Password);
+
+                if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context, this.UsernameSource.Username, this.RequiredGroups) == true)
                 {
-                    if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context, this.UsernameSource.Username, this.RequiredGroups) == true)
-                    {
-                        LoggerFacade.Info("Active Directory authorised");
-                        newstate = AuthState.Authorised;
-                    }
-                    else
-                    {
-                        LoggerFacade.Info("Active Directory not authorised");
-                        newstate = AuthState.NotAuthorised;
-                    }
+                    LoggerFacade.Info("Active Directory authorised");
+                    newstate = AuthState.Authorised;
                 }
                 else
                 {
-                    //LoggerFacade.Warn(e.Message);
-                    LoggerFacade.Info("Active Directory access denied");
-                    newstate = AuthState.AccessDenied;
+                    LoggerFacade.Info("Active Directory not authorised");
+                    newstate = AuthState.NotAuthorised;
                 }
             }
             catch (Exception e)
             {
-                LoggerFacade.Warn(e.Message);
-                LoggerFacade.Info("Active Directory access denied");
+                LoggerFacade.Error("Active Directory authentication access denied");
+                LoggerFacade.Trace(e.Message + Environment.NewLine + e.StackTrace);
                 newstate = AuthState.AccessDenied;
             }
 
+            this.SetState(newstate);
+            return newstate;
+        }
+
+        private void SetState(AuthState newstate)
+        {
             if (newstate != this._state)
             {
                 this._state = newstate;
                 this.AuthStateChanged?.Invoke();
             }
-
-            return newstate;
         }
     }
 }
