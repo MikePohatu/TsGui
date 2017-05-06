@@ -95,9 +95,11 @@
     <Compile Include="Authentication\IPassword.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="IDirector.cs" />
+    <Compile Include="Queries\ActiveDirectory\ADOrgUnitQuery.cs" />
     <Compile Include="Queries\ActiveDirectory\ADGroupMembersQuery.cs" />
     <Compile Include="Queries\IfElseQuery.cs" />
     <Compile Include="Queries\PropertyInterogation.cs" />
+    <Compile Include="Queries\QueryHelpers.cs" />
     <Compile Include="Validation\StringMatching\BaseMatchingRule.cs" />
     <Compile Include="Validation\StringMatching\Characters.cs" />
     <Compile Include="Validation\StringMatching\MatchingRuleLibrary.cs" />

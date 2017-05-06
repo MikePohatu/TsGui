@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
+using TsGui.Queries;
 using TsGui.Linking;
 using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication;
@@ -27,12 +28,12 @@ using System.DirectoryServices.AccountManagement;
 
 namespace TsGui.Queries.ActiveDirectory
 {
-    public class ADGroupMembersQuery : BaseQuery, IAuthenticatorConsumer
+    public class ADOrgUnitQuery : BaseQuery, IAuthenticatorConsumer
     {
         private IDirector _director;
         private ILinkTarget _linktargetoption;
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
-        private string _groupname;
+        private string _baseou;
         private ActiveDirectoryAuthenticator _authenticator;
 
         public IAuthenticator Authenticator
@@ -46,7 +47,7 @@ namespace TsGui.Queries.ActiveDirectory
         }
         public string AuthID { get; set; }
 
-        public ADGroupMembersQuery(XElement InputXml, IDirector director, ILinkTarget owner)
+        public ADOrgUnitQuery(XElement InputXml, IDirector director, ILinkTarget owner)
         {
             this._linktargetoption = owner;
             this._director = director;
@@ -59,9 +60,9 @@ namespace TsGui.Queries.ActiveDirectory
             base.LoadXml(InputXml);
 
             this.AuthID = XmlHandler.GetStringFromXAttribute(InputXml, "AuthID", this.AuthID);
-            this._groupname = InputXml.Element("GroupName")?.Value;
+            this._baseou = InputXml.Element("BaseOU")?.Value;
             //make sure there is a group to query
-            if (string.IsNullOrEmpty(this._groupname)) { throw new TsGuiKnownException("No group specified in XML: ", InputXml.ToString()); }
+            if (string.IsNullOrEmpty(this._baseou)) { throw new TsGuiKnownException("No BaseOU specified in XML: ", InputXml.ToString()); }
 
 
             this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
@@ -83,16 +84,16 @@ namespace TsGui.Queries.ActiveDirectory
             try
             {
                 if (this._processed == true ) { this._processingwrangler = this._processingwrangler.Clone(); }
-                using (GroupPrincipal group = GroupPrincipal.FindByIdentity(this._authenticator.Context, this._groupname))
+                using (GroupPrincipal group = GroupPrincipal.FindByIdentity(this._authenticator.Context, this._baseou))
                 {
-                    if (group == null) { LoggerFacade.Warn("Group not found: " + this._groupname); }
+                    if (group == null) { LoggerFacade.Warn("Group not found: " + this._baseou); }
                     else
                     { this.AddPropertiesToWrangler(this._processingwrangler, group.Members, this._propertyTemplates); }
                 }
             }
             catch (Exception e)
             {
-                throw new TsGuiKnownException("Active Directory group query caused an error:" + Environment.NewLine + this._groupname, e.Message);
+                throw new TsGuiKnownException("Active Directory group query caused an error:" + Environment.NewLine + this._baseou, e.Message);
             }
 
             this._processed = true;
@@ -108,6 +109,8 @@ namespace TsGui.Queries.ActiveDirectory
             this.ProcessQuery();
             this._linktargetoption?.RefreshAll();
         }
+
+        
 
         private void AddPropertiesToWrangler(ResultWrangler wrangler, PrincipalCollection objectlist, List<KeyValuePair<string, XElement>> PropertyTemplates)
         {
