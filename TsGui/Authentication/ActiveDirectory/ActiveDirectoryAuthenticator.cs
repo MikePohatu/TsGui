@@ -76,7 +76,7 @@ namespace TsGui.Authentication.ActiveDirectory
             }
             catch (Exception e)
             {
-                LoggerFacade.Error("Active Directory authentication access denied");
+                LoggerFacade.Warn("Active Directory access denied");
                 LoggerFacade.Trace(e.Message + Environment.NewLine + e.StackTrace);
                 newstate = AuthState.AccessDenied;
             }
