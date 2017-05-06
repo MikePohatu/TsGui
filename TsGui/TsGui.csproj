@@ -120,8 +120,13 @@
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
       <DependentUpon>ContentChanger.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\GuiOptions\Trees\IBranch.cs" />
+    <Compile Include="View\GuiOptions\Trees\TsTree.cs" />
     <Compile Include="View\GuiOptions\TsActionButton.cs" />
     <Compile Include="View\GuiOptions\TsDropDownListBuilder.cs" />
+    <Compile Include="View\GuiOptions\Trees\TsTreeViewUI.xaml.cs">
+      <DependentUpon>TsTreeViewUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GuiOptions\TsUsernameBox.cs" />
     <Compile Include="View\GuiOptions\TsPasswordBox.cs" />
     <Compile Include="View\GuiOptions\TsPasswordBoxUI.xaml.cs">
@@ -307,6 +312,10 @@
     <Page Include="View\GuiOptions\ContentChanger.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GuiOptions\Trees\TsTreeViewUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\GuiOptions\TsPasswordBoxUI.xaml">
       <SubType>Designer</SubType>

@@ -17,6 +17,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Security;
+using System.Xml.Linq;
 using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication;
 
@@ -32,7 +33,10 @@ namespace TsGui.Tests.Authentication
         public void IsMemberOfGroupsTest(ActiveDirectoryMethodsTestArgs args)
         {
             ActiveDirectoryAuthenticatorTestArgs authargs = args.AuthArgs;
-            ActiveDirectoryAuthenticator adauth = new ActiveDirectoryAuthenticator("testid",authargs.Domain);
+            XElement x = new XElement("Authentication");
+            x.Add(new XAttribute("AuthID", "testid"));
+            x.Add(new XAttribute("Domain", authargs.Domain));
+            ActiveDirectoryAuthenticator adauth = new ActiveDirectoryAuthenticator(x);
             ActiveDirectoryAuthenticatorTestSource source = new ActiveDirectoryAuthenticatorTestSource();
             adauth.PasswordSource = source;
             adauth.UsernameSource = source;

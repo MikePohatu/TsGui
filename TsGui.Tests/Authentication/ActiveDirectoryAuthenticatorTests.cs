@@ -17,7 +17,7 @@
 using NUnit.Framework;
 using TsGui.Authentication;
 using TsGui.Authentication.ActiveDirectory;
-
+using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Security;
 namespace TsGui.Tests.Authentication
@@ -33,7 +33,10 @@ namespace TsGui.Tests.Authentication
         [TestCaseSource("ActiveDirectoryAuthentication_Authenticate_TestCases")]
         public void AuthenticateTest(ActiveDirectoryAuthenticatorTestArgs args)
         {
-            ActiveDirectoryAuthenticator adauth = new ActiveDirectoryAuthenticator("testid", args.Domain);
+            XElement x = new XElement("Authentication");
+            x.Add(new XAttribute("AuthID", "testid"));
+            x.Add(new XAttribute("Domain", args.Domain));
+            ActiveDirectoryAuthenticator adauth = new ActiveDirectoryAuthenticator(x);
             ActiveDirectoryAuthenticatorTestSource source = new ActiveDirectoryAuthenticatorTestSource();
             adauth.PasswordSource = source;
             adauth.UsernameSource = source;
