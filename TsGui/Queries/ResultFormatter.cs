@@ -24,9 +24,20 @@ namespace TsGui.Queries
     public class ResultFormatter
     {
         private List<IQueryRule> _rules = new List<IQueryRule>();
+        private string _value;
+        private string _input;
+
         public string Name { get; set; }
-        public string Input { get; set; }
-        public string Value { get { return this.Process(); } }
+        public string Input
+        {
+            get { return this._input; }
+            set
+            {
+                this._input = value;
+                this._value = this.Process();
+            }
+        }
+        public string Value { get { return this._value; } }
 
         public ResultFormatter() { }
 
@@ -63,7 +74,7 @@ namespace TsGui.Queries
 
         private string Process()
         {
-            string s = this.Input;
+            string s = this._input;
 
             if (string.IsNullOrEmpty(s)) { return s; }
 

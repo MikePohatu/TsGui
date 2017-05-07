@@ -102,7 +102,6 @@ namespace TsGui.View.GuiOptions
         //Methods
         public new void LoadXml(XElement InputXml)
         {
-            int optionindex = 0;
             base.LoadXml(InputXml);
 
             IEnumerable<XElement> inputElements = InputXml.Elements();
@@ -125,7 +124,6 @@ namespace TsGui.View.GuiOptions
                 {
                     TsDropDownListItem newoption = new TsDropDownListItem(x, this.ControlFormatting, this, this._director);
                     this._builder.Add(newoption);
-                    optionindex++;
 
                     IEnumerable<XElement> togglexlist = x.Elements("Toggle");
                     foreach (XElement togglex in togglexlist)

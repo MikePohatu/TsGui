@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ResultWrangler.cs - deals with multiple results e.g. concatenating, filtering etc
+// ResultWrangler.cs - deals with multiple results e.g. concatenating, listing etc
 
 using System.Collections.Generic;
 
@@ -23,12 +23,12 @@ namespace TsGui.Queries
     {
         //two dictionaries, one for the keys i.e. the first value, and another for the values as a list. 
         //the two have matching keys to link the keys dictionary to the lists dictionary. 
-        private Dictionary<int,List<ResultFormatter>> _valuelists;
-        private Dictionary<int, ResultFormatter> _keyvalues;
+        private Dictionary<int,List<ResultFormatter>> _valuelists = new Dictionary<int, List<ResultFormatter>>();
+        private Dictionary<int, ResultFormatter> _keyvalues = new Dictionary<int, ResultFormatter>();
+        private Dictionary<int, List<ResultWrangler>> _subwranglers = new Dictionary<int, List<ResultWrangler>>();
 
         //the following two variables track the lists and position in the lists.
-        private int _currentIndex;    //current index in the current list
-        private int _currentValue;         //current result in the lists
+        private int _currentresultlist;         //current result in the lists
 
         public string Separator { get; set; }
         public bool IncludeNullValues { get; set; }
@@ -36,25 +36,21 @@ namespace TsGui.Queries
 
         public ResultWrangler()
         {
-            this._valuelists = new Dictionary<int, List<ResultFormatter>>();
-            this._keyvalues = new Dictionary<int, ResultFormatter>();
             this.IncludeNullValues = true;
             this.Separator = ", ";
-            this._currentValue = -1;
-            this._currentIndex = 0;
+            this._currentresultlist = -1;
         }
 
 
         /// <summary>
         /// Create a new List<ResultFormatter> and set it as current
         /// </summary>
-        public void NewSubList()
+        public void NewResultList()
         {
-            this._currentValue++;
-            this._currentIndex = 0;     //reset the current index
+            this._currentresultlist++;
 
             List<ResultFormatter> newlist = new List<ResultFormatter>();
-            this._valuelists.Add(this._currentValue, newlist);
+            this._valuelists.Add(this._currentresultlist, newlist);
         }
 
         /// <summary>
@@ -63,15 +59,14 @@ namespace TsGui.Queries
         /// <param name="Formatter"></param>
         public void AddResultFormatter(ResultFormatter Formatter)
         {
-            if (this._currentIndex == 0) { this._keyvalues.Add(this._currentValue, Formatter); }
+            ResultFormatter keyresult;
+            if (this._keyvalues.TryGetValue(this._currentresultlist, out keyresult) == false) { this._keyvalues.Add(this._currentresultlist, Formatter); }
             else
             {
                 List<ResultFormatter> currentlist;
-                this._valuelists.TryGetValue(this._currentValue, out currentlist);
+                this._valuelists.TryGetValue(this._currentresultlist, out currentlist);
                 currentlist.Add(Formatter);
             }
-
-            this._currentIndex++;
         }
 
         public void AddResultFormatters(List<ResultFormatter> Formatters)
@@ -80,6 +75,17 @@ namespace TsGui.Queries
             { this.AddResultFormatter(rf); }
         }
 
+        public void AddSubWrangler(ResultWrangler wrangler)
+        {
+            List<ResultWrangler> wranglerlist;
+            if (this._subwranglers.TryGetValue(this._currentresultlist,out wranglerlist) == true) { wranglerlist.Add(wrangler); }
+            else
+            {
+                wranglerlist = new List<ResultWrangler>();
+                wranglerlist.Add(wrangler);
+                this._subwranglers.Add(this._currentresultlist, wranglerlist);
+            }
+        }
 
         public List<ResultFormatter> GetAllResultFormatters()
         {
@@ -148,6 +154,7 @@ namespace TsGui.Queries
         public string GetString()
         { return this.GetString(this.Separator); }
 
+        public new string ToString() { return this.GetString(); }
         /// <summary>
         /// Get the _results list in a list of Key/Value pair format. First item in the list is the key, remainder is 
         /// concatenated with the specified separator
@@ -157,13 +164,13 @@ namespace TsGui.Queries
         public List<KeyValuePair<string, string>> GetKeyValueList(string Separator)
         {
             //first check to make sure a new sublist has actually been created. if not reutrn null
-            if (_currentValue == -1) { return null; }
+            if (_currentresultlist == -1) { return null; }
 
             List<KeyValuePair<string, string>> returnkvlist = new List<KeyValuePair<string, string>>();
             ResultFormatter _tempRF;
             List<ResultFormatter> _tempRFList;
 
-            for (int i = 0; i <= this._currentValue; i++)
+            for (int i = 0; i <= this._currentresultlist; i++)
             {
                 string concatlist = "";
                 string value = "";
@@ -189,13 +196,13 @@ namespace TsGui.Queries
         public Dictionary<string, string> GetDictionary(string Separator)
         {
             //first check to make sure a new sublist has actually been created. if not reutrn null
-            if (_currentValue == -1) { return null; }
+            if (_currentresultlist == -1) { return null; }
 
             Dictionary<string, string> returndic = new Dictionary<string, string>();
             ResultFormatter _tempRF;
             List<ResultFormatter> _tempRFList;
 
-            for (int i = 0; i <= this._currentValue; i++)
+            for (int i = 0; i <= this._currentresultlist; i++)
             {
                 string concatlist = "";
                 string value = "";
@@ -222,13 +229,13 @@ namespace TsGui.Queries
             string s = null;
 
             //first check to make sure a new sublist has actually been created. if not reutrn null
-            if (_currentValue == -1) { return null; }
+            if (_currentresultlist == -1) { return null; }
 
             ResultFormatter _tempRF;
             List<ResultFormatter> _tempRFListMain = new List<ResultFormatter>();
             List<ResultFormatter> _tempRFList;
 
-            for (int i = 0; i <= this._currentValue; i++)
+            for (int i = 0; i <= this._currentresultlist; i++)
             {
 
                 if (this._keyvalues.TryGetValue(i, out _tempRF))

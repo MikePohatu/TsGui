@@ -120,8 +120,7 @@
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
       <DependentUpon>ContentChanger.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\GuiOptions\Trees\IBranch.cs" />
-    <Compile Include="View\GuiOptions\Trees\TsTree.cs" />
+    <Compile Include="View\GuiOptions\Trees\TsTreeView.cs" />
     <Compile Include="View\GuiOptions\TsActionButton.cs" />
     <Compile Include="View\GuiOptions\TsDropDownListBuilder.cs" />
     <Compile Include="View\GuiOptions\Trees\TsTreeViewUI.xaml.cs">

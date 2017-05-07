@@ -27,7 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
     <TreeView ItemsSource="{Binding Branches}" Style="{StaticResource ControlStyle}" SelectedValuePath="Value">
         <TreeView.ItemTemplate>
-            <HierarchicalDataTemplate ItemsSource="{Binding Branches}" DataType="{x:Type local:IBranch}">
+            <HierarchicalDataTemplate ItemsSource="{Binding Branches}">
                 <TreeViewItem Header="{Binding Text}"/>
             </HierarchicalDataTemplate>
         </TreeView.ItemTemplate>
