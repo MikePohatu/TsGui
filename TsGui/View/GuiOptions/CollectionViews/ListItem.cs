@@ -13,10 +13,11 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsDropDownListItem.cs - class to hold entries in dropdownlist
+
 using System.Xml.Linq;
 using System.Collections.Generic;
-
+using System.Collections;
+using System.Windows.Data;
 using TsGui.View.Layout;
 using TsGui.Grouping;
 using TsGui.Diagnostics.Logging;
@@ -29,7 +30,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public string Value { get; set; }
         public string Text { get; set; }
         public Formatting ItemFormatting { get; set; }
-        public List<ListItem> ListItems { get; set; }
+        public List<ListItem> ItemsList { get; set; }
+        public CompositeCollection ItemsTree { get; set; }
 
         public ListItem(string Value, string Text, Formatting Formatting, CollectionViewGuiOptionBase parentlist, IDirector MainController):base(MainController)
         { 
@@ -43,12 +45,15 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this.Init(Formatting, parentlist);
             this.LoadXml(InputXml);
+            
+            this.ItemsTree = new CompositeCollection();
+            this.ItemsTree.Add(new CollectionContainer { Collection = this.ItemsList });
             LoggerFacade.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
         }
 
         private void Init(Formatting Formatting, CollectionViewGuiOptionBase parentlist)
         {
-            this.ListItems = new List<ListItem>();
+            this.ItemsList = new List<ListItem>();
             this.ItemFormatting = Formatting;
             this._parent = parentlist;
         }
@@ -70,7 +75,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 else if (x.Name == "Option")
                 {
                     ListItem item = new ListItem(x, this.ItemFormatting, this._parent, this._director);
-                    this.ListItems.Add(item);
+                    this.ItemsList.Add(item);
                 }
             }
         }

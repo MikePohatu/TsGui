@@ -14,6 +14,8 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using System.Xml.Linq;
+using System.Collections;
+using System.Windows.Data;
 using System.Collections.Generic;
 using TsGui.Queries;
 using TsGui.Diagnostics.Logging;
@@ -28,6 +30,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         private IDirector _director;
         private Dictionary<int, QueryPriorityList> _querylists = new Dictionary<int, QueryPriorityList>();
         private Dictionary<int, ListItem> _staticitems = new Dictionary<int, ListItem>();
+
         public List<ListItem> Items { get; set; }
 
         public ListBuilder(CollectionViewGuiOptionBase parent, IDirector director)
@@ -71,6 +74,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 i++;
             }
             this.Items = newlist;
+
             LoggerFacade.Debug("ListBuilder rebuild finished");
             return newlist;
         }
