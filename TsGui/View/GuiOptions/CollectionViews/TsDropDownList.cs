@@ -26,27 +26,19 @@ using TsGui.Validation;
 using TsGui.Queries;
 using TsGui.Linking;
 
-namespace TsGui.View.GuiOptions
+namespace TsGui.View.GuiOptions.CollectionViews
 {
-    public class TsDropDownList : GuiOptionBase, IGuiOption, IToggleControl, IValidationGuiOption, ILinkTarget
+    public class TsDropDownList : CollectionViewGuiOptionBase, IValidationGuiOption
     {
-        public event ToggleEvent ToggleEvent;
-
-        private TsDropDownListBuilder _builder;
         private TsDropDownListUI _dropdownlistui;
-        private TsDropDownListItem _currentitem;
-        private Dictionary<string, Group> _itemGroups = new Dictionary<string, Group>();
-        private bool _istoggle = false;
-        private string _validationtext;
-        private ValidationToolTipHandler _validationtooltiphandler;
-        private ValidationHandler _validationhandler;
-        private bool _nodefaultvalue;
-        private string _noselectionmessage;
-        private List<QueryPriorityList> _querylists = new List<QueryPriorityList>();
+        private ListItem _currentitem;
+
+        
+        //private List<QueryPriorityList> _querylists = new List<QueryPriorityList>();
 
 
         //properties
-        public List<TsDropDownListItem> VisibleOptions { get { return this._builder.Items.Where(x => x.IsEnabled == true).ToList(); } }
+        public List<ListItem> VisibleOptions { get { return this._builder.Items.Where(x => x.IsEnabled == true).ToList(); } }
         public override TsVariable Variable
         {
             get
@@ -61,7 +53,7 @@ namespace TsGui.View.GuiOptions
         {
             get { return this._currentitem?.Value; }
         }
-        public TsDropDownListItem CurrentItem
+        public ListItem CurrentItem
         {
             get { return this._currentitem; }
             set { this._currentitem = value; this.OnPropertyChanged(this, "CurrentItem"); }
@@ -74,11 +66,9 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsDropDownList(XElement InputXml, TsColumn Parent, IDirector director) : base(Parent, director)
+        public TsDropDownList(XElement InputXml, TsColumn Parent, IDirector director) : base(InputXml,Parent, director)
         {
-            this._director = director;
             this._setvaluequerylist = new QueryPriorityList(this, this._director);
-            this._builder = new TsDropDownListBuilder(this, this._director);
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
             this.Label = new TsLabelUI();
@@ -122,7 +112,7 @@ namespace TsGui.View.GuiOptions
                 //read in an option and add to a dictionary for later use
                 else if (x.Name == "Option")
                 {
-                    TsDropDownListItem newoption = new TsDropDownListItem(x, this.ControlFormatting, this, this._director);
+                    ListItem newoption = new ListItem(x, this.ControlFormatting, this, this._director);
                     this._builder.Add(newoption);
 
                     IEnumerable<XElement> togglexlist = x.Elements("Toggle");
@@ -156,13 +146,13 @@ namespace TsGui.View.GuiOptions
 
         private void SetComboBoxDefault()
         {
-            TsDropDownListItem newdefault = null;
+            ListItem newdefault = null;
 
             if (this._nodefaultvalue == false)
             {
                 int index = 0;
                 string defaultval = this._setvaluequerylist.GetResultWrangler()?.GetString();
-                foreach (TsDropDownListItem item in this.VisibleOptions)
+                foreach (ListItem item in this.VisibleOptions)
                 {
                     if ((item.Value == defaultval) || (index == 0))
                     {
@@ -178,10 +168,10 @@ namespace TsGui.View.GuiOptions
 
         private void SetSelected(string value)
         {
-            TsDropDownListItem newdefault = null;
+            ListItem newdefault = null;
             bool changed = false;
 
-            foreach (TsDropDownListItem item in this.VisibleOptions)
+            foreach (ListItem item in this.VisibleOptions)
             {
                 if ((item.Value == value))
                 {
@@ -197,33 +187,12 @@ namespace TsGui.View.GuiOptions
             }
         }
 
-        public void AddItemGroup(Group NewGroup)
-        {
-            Group g;
-            this._itemGroups.TryGetValue(NewGroup.ID, out g);
-            if (g == null) { this._itemGroups.Add(NewGroup.ID, NewGroup); }
-        }
 
 
         public void ClearToolTips()
         { this._validationtooltiphandler.Clear(); }
 
-        //fire an intial event to make sure things are set correctly. This is
-        //called by the controller once everything is loaded
-        public void InitialiseToggle()
-        { this.ToggleEvent?.Invoke(); }
-
-        private void OnSelectionChanged(object o, RoutedEventArgs e)
-        {
-            this.Validate(false);
-            this.NotifyUpdate();
-            this.ToggleEvent?.Invoke();
-        }
-
-        private void OnActiveChanged(object o, DependencyPropertyChangedEventArgs e)
-        {
-            this.ToggleEvent?.Invoke();
-        }
+        
 
         public void OnDropDownListItemGroupEvent()
         {
@@ -238,12 +207,12 @@ namespace TsGui.View.GuiOptions
             this._dropdownlistui.Control.IsDropDownOpen = false;
         }
 
-        public void RefreshValue()
+        public override void RefreshValue()
         {
             this.SetSelected(this._setvaluequerylist.GetResultWrangler()?.GetString());
         }
 
-        public void RefreshAll()
+        public override void RefreshAll()
         {
             this._builder.Rebuild();
             this.OnPropertyChanged(this, "VisibleOptions");
@@ -272,7 +241,7 @@ namespace TsGui.View.GuiOptions
 
 
 
-        private bool Validate(bool CheckSelectionMade)
+        public override bool Validate(bool CheckSelectionMade)
         {
             if (this._director.StartupFinished == false) { return true; }
             if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }

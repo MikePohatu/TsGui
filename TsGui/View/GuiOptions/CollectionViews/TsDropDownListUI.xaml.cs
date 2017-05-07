@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TsGui.View.GuiOptions
+namespace TsGui.View.GuiOptions.CollectionViews
 {
     /// <summary>
     /// Interaction logic for TsDropDownListUI.xaml

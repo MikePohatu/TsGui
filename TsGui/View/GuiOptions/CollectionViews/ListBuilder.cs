@@ -17,31 +17,31 @@ using System.Collections.Generic;
 using TsGui.Queries;
 using TsGui.Diagnostics.Logging;
 
-namespace TsGui.View.GuiOptions
+namespace TsGui.View.GuiOptions.CollectionViews
 {
-    public class TsDropDownListBuilder
+    public class ListBuilder
     {
         private int _lastindex = 0;
-        private TsDropDownList _parentdropdown;
+        private CollectionViewGuiOptionBase _parent;
         private IDirector _director;
         private Dictionary<int, QueryPriorityList> _querylists = new Dictionary<int, QueryPriorityList>();
-        private Dictionary<int, TsDropDownListItem> _staticitems = new Dictionary<int, TsDropDownListItem>();
-        public List<TsDropDownListItem> Items { get; set; }
+        private Dictionary<int, ListItem> _staticitems = new Dictionary<int, ListItem>();
+        public List<ListItem> Items { get; set; }
 
-        public TsDropDownListBuilder(TsDropDownList parent, IDirector director)
+        public ListBuilder(CollectionViewGuiOptionBase parent, IDirector director)
         {
             this._director = director;
-            this._parentdropdown = parent;
+            this._parent = parent;
         }
 
-        public List<TsDropDownListItem> Rebuild()
+        public List<ListItem> Rebuild()
         {
-            LoggerFacade.Debug("TsDropDownListBuilder rebuild initialised");
+            LoggerFacade.Debug("ListBuilder rebuild initialised");
             int i = 0;
-            List<TsDropDownListItem> newlist = new List<TsDropDownListItem>();
+            List<ListItem> newlist = new List<ListItem>();
             while (i <= this._lastindex)
             {
-                TsDropDownListItem staticitem;
+                ListItem staticitem;
                 if (this._staticitems.TryGetValue(i,out staticitem) == true)
                 {
                     newlist.Add(staticitem);
@@ -59,7 +59,7 @@ namespace TsGui.View.GuiOptions
                         List<KeyValuePair<string, string>> kvlist = wrangler.GetKeyValueList();
                         foreach (KeyValuePair<string, string> kv in kvlist)
                         {
-                            TsDropDownListItem newoption = new TsDropDownListItem(kv.Key, kv.Value, this._parentdropdown.ControlFormatting, this._parentdropdown, this._director);
+                            ListItem newoption = new ListItem(kv.Key, kv.Value, this._parent.ControlFormatting, this._parent, this._director);
                             if (string.IsNullOrWhiteSpace(newoption.Text) == false) { newlist.Add(newoption); } //ignore items with empty text 
                         }
                     }
@@ -69,11 +69,11 @@ namespace TsGui.View.GuiOptions
                 i++;
             }
             this.Items = newlist;
-            LoggerFacade.Debug("TsDropDownListBuilder rebuild finished");
+            LoggerFacade.Debug("ListBuilder rebuild finished");
             return newlist;
         }
 
-        public void Add(TsDropDownListItem item)
+        public void Add(ListItem item)
         {
             this._lastindex++;
             this._staticitems.Add(this._lastindex, item);

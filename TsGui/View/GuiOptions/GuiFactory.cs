@@ -20,6 +20,7 @@ using System;
 using System.Xml.Linq;
 using System.Windows;
 using TsGui.Diagnostics.Logging;
+using TsGui.View.GuiOptions.CollectionViews;
 
 namespace TsGui.View.GuiOptions
 {

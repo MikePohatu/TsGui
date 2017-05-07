@@ -19,40 +19,40 @@ using System.Xml.Linq;
 using TsGui.View.Layout;
 using TsGui.Grouping;
 
-namespace TsGui.View.GuiOptions
+namespace TsGui.View.GuiOptions.CollectionViews
 {
-    public class TsDropDownListItem: GroupableUIElementBase
+    public class ListItem: GroupableUIElementBase
     {
-        private TsDropDownList _dropdownlist;
+        private CollectionViewGuiOptionBase _parentlist;
         public string Value { get; set; }
         public string Text { get; set; }
         public Formatting ItemFormatting { get; set; }
 
-        public TsDropDownListItem(string Value, string Text, Formatting Formatting, TsDropDownList Parent, IDirector MainController):base(MainController)
+        public ListItem(string Value, string Text, Formatting Formatting, CollectionViewGuiOptionBase parentlist, IDirector MainController):base(MainController)
         { 
-            this.Init(Formatting, Parent);
+            this.Init(Formatting, parentlist);
             this.Value = Value;
             this.Text = Text; 
         }
 
-        public TsDropDownListItem(XElement InputXml, Formatting Formatting, TsDropDownList Parent, IDirector MainController) : base(MainController)
+        public ListItem(XElement InputXml, Formatting Formatting, CollectionViewGuiOptionBase parentlist, IDirector MainController) : base(MainController)
         {
-            this.Init(Formatting, Parent);
+            this.Init(Formatting, parentlist);
             this.Text = XmlHandler.GetStringFromXElement(InputXml, "Text", this.Text);
             this.Value = XmlHandler.GetStringFromXElement(InputXml, "Value", this.Value);
             base.LoadXml(InputXml);
         }
 
-        private void Init(Formatting Formatting, TsDropDownList Parent)
+        private void Init(Formatting Formatting, CollectionViewGuiOptionBase parentlist)
         {
             this.ItemFormatting = Formatting;
-            this._dropdownlist = Parent;
+            this._parentlist = parentlist;
         }
 
         protected override Group AddGroup(string GroupID)
         {
             Group g = base.AddGroup(GroupID);
-            this._dropdownlist.AddItemGroup(g);
+            this._parentlist.AddItemGroup(g);
             return g;
         }
     }

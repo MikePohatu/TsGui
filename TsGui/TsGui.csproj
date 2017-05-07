@@ -117,13 +117,14 @@
     <Compile Include="Validation\StringMatching\MatchingRuleFactory.cs" />
     <Compile Include="Validation\StringMatching\EndsWith.cs" />
     <Compile Include="Validation\StringMatching\StartsWith.cs" />
+    <Compile Include="View\GuiOptions\CollectionViews\CollectionViewGuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
       <DependentUpon>ContentChanger.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\GuiOptions\Trees\TsTreeView.cs" />
+    <Compile Include="View\GuiOptions\CollectionViews\TsTreeView.cs" />
     <Compile Include="View\GuiOptions\TsActionButton.cs" />
-    <Compile Include="View\GuiOptions\TsDropDownListBuilder.cs" />
-    <Compile Include="View\GuiOptions\Trees\TsTreeViewUI.xaml.cs">
+    <Compile Include="View\GuiOptions\CollectionViews\ListBuilder.cs" />
+    <Compile Include="View\GuiOptions\CollectionViews\TsTreeViewUI.xaml.cs">
       <DependentUpon>TsTreeViewUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsUsernameBox.cs" />
@@ -224,7 +225,7 @@
       <DependentUpon>TsTrafficLightUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsComputerName.cs" />
-    <Compile Include="View\GuiOptions\TsDropDownListItem.cs" />
+    <Compile Include="View\GuiOptions\CollectionViews\ListItem.cs" />
     <Compile Include="View\GuiOptions\TsLabelUI.xaml.cs">
       <DependentUpon>TsLabelUI.xaml</DependentUpon>
     </Compile>
@@ -236,8 +237,8 @@
     <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\IGuiOption.cs" />
-    <Compile Include="View\GuiOptions\TsDropDownList.cs" />
-    <Compile Include="View\GuiOptions\TsDropDownListUI.xaml.cs">
+    <Compile Include="View\GuiOptions\CollectionViews\TsDropDownList.cs" />
+    <Compile Include="View\GuiOptions\CollectionViews\TsDropDownListUI.xaml.cs">
       <DependentUpon>TsDropDownListUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsFreeTextUI.xaml.cs">
@@ -312,7 +313,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\GuiOptions\Trees\TsTreeViewUI.xaml">
+    <Page Include="View\GuiOptions\CollectionViews\TsTreeViewUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -383,7 +384,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\GuiOptions\TsDropDownListUI.xaml">
+    <Page Include="View\GuiOptions\CollectionViews\TsDropDownListUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

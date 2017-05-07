@@ -24,7 +24,7 @@ using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Queries;
 
-namespace TsGui.View.GuiOptions.Trees
+namespace TsGui.View.GuiOptions.CollectionViews
 {
     public class TsTreeView : GuiOptionBase, IGuiOption, ILinkTarget
     {
