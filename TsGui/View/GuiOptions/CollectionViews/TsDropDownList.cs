@@ -28,53 +28,21 @@ using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
-    public class TsDropDownList : CollectionViewGuiOptionBase, IValidationGuiOption
+    public class TsDropDownList : CollectionViewGuiOptionBase
     {
         private TsDropDownListUI _dropdownlistui;
-        private ListItem _currentitem;
-
-        
-        //private List<QueryPriorityList> _querylists = new List<QueryPriorityList>();
-
 
         //properties
         public List<ListItem> VisibleOptions { get { return this._builder.Items.Where(x => x.IsEnabled == true).ToList(); } }
-        public override TsVariable Variable
-        {
-            get
-            {
-                if ((this.IsActive == false) && (this.PurgeInactive == true))
-                { return null; }
-                else
-                { return new TsVariable(this.VariableName, this.CurrentValue); }
-            }
-        }
-        public override string CurrentValue
-        {
-            get { return this._currentitem?.Value; }
-        }
-        public ListItem CurrentItem
-        {
-            get { return this._currentitem; }
-            set { this._currentitem = value; this.OnPropertyChanged(this, "CurrentItem"); }
-        }
-        public bool IsValid { get { return this.Validate(); } }
-        public string ValidationText
-        {
-            get { return this._validationtext; }
-            set { this._validationtext = value; this.OnPropertyChanged(this, "ValidationText"); }
-        }
+        
 
         //Constructor
         public TsDropDownList(XElement InputXml, TsColumn Parent, IDirector director) : base(InputXml,Parent, director)
         {
-            this._setvaluequerylist = new QueryPriorityList(this, this._director);
+            
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
             this.Label = new TsLabelUI();
-
-            this._validationhandler = new ValidationHandler(this, director);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
 
             this.UserControl.DataContext = this;
             this.SetDefaults();
@@ -94,54 +62,54 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             base.LoadXml(InputXml);
 
-            IEnumerable<XElement> inputElements = InputXml.Elements();
+            //IEnumerable<XElement> inputElements = InputXml.Elements();
 
-            this._validationhandler.AddValidations(InputXml.Elements("Validation"));
-            this._nodefaultvalue = XmlHandler.GetBoolFromXAttribute(InputXml, "NoDefaultValue", this._nodefaultvalue);
-            this._noselectionmessage = XmlHandler.GetStringFromXElement(InputXml, "NoSelectionMessage", this._noselectionmessage);
+            //this._validationhandler.AddValidations(InputXml.Elements("Validation"));
+            //this._nodefaultvalue = XmlHandler.GetBoolFromXAttribute(InputXml, "NoDefaultValue", this._nodefaultvalue);
+            //this._noselectionmessage = XmlHandler.GetStringFromXElement(InputXml, "NoSelectionMessage", this._noselectionmessage);
 
-            foreach (XElement x in inputElements)
-            {
-                //the base loadxml will create queries before this so will win
-                if (x.Name == "DefaultValue")
-                {
-                    IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this._director, this);
-                    this._setvaluequerylist.AddQuery(defquery);
-                }
+            //foreach (XElement x in inputElements)
+            //{
+            //    //the base loadxml will create queries before this so will win
+            //    if (x.Name == "DefaultValue")
+            //    {
+            //        IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this._director, this);
+            //        this._setvaluequerylist.AddQuery(defquery);
+            //    }
                 
-                //read in an option and add to a dictionary for later use
-                else if (x.Name == "Option")
-                {
-                    ListItem newoption = new ListItem(x, this.ControlFormatting, this, this._director);
-                    this._builder.Add(newoption);
+            //    //read in an option and add to a dictionary for later use
+            //    else if (x.Name == "Option")
+            //    {
+            //        ListItem newoption = new ListItem(x, this.ControlFormatting, this, this._director);
+            //        this._builder.Add(newoption);
 
-                    IEnumerable<XElement> togglexlist = x.Elements("Toggle");
-                    foreach (XElement togglex in togglexlist)
-                    {
-                        togglex.Add(new XElement("Enabled", newoption.Value));
-                        Toggle t = new Toggle(this, this._director, togglex);
-                        this._istoggle = true;
-                    }
-                }
+            //        IEnumerable<XElement> togglexlist = x.Elements("Toggle");
+            //        foreach (XElement togglex in togglexlist)
+            //        {
+            //            togglex.Add(new XElement("Enabled", newoption.Value));
+            //            Toggle t = new Toggle(this, this._director, togglex);
+            //            this._istoggle = true;
+            //        }
+            //    }
 
-                else if (x.Name == "Query")
-                {
-                    XElement wrapx = new XElement("wrapx");
-                    wrapx.Add(x);
-                    QueryPriorityList newlist = new QueryPriorityList(this,this._director);
-                    newlist.LoadXml(wrapx);
+            //    else if (x.Name == "Query")
+            //    {
+            //        XElement wrapx = new XElement("wrapx");
+            //        wrapx.Add(x);
+            //        QueryPriorityList newlist = new QueryPriorityList(this,this._director);
+            //        newlist.LoadXml(wrapx);
 
-                    this._builder.Add(newlist);
-                }
+            //        this._builder.Add(newlist);
+            //    }
 
-                else if (x.Name == "Toggle")
-                {
-                    Toggle t = new Toggle(this, this._director, x);
-                    this._istoggle = true;
-                }
-            }
+            //    else if (x.Name == "Toggle")
+            //    {
+            //        Toggle t = new Toggle(this, this._director, x);
+            //        this._istoggle = true;
+            //    }
+            //}
 
-            if (this._istoggle == true) { this._director.AddToggleControl(this); }
+            //if (this._istoggle == true) { this._director.AddToggleControl(this); }
         }
 
         private void SetComboBoxDefault()
@@ -187,13 +155,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
             }
         }
 
-
-
-        public void ClearToolTips()
-        { this._validationtooltiphandler.Clear(); }
-
-        
-
         public void OnDropDownListItemGroupEvent()
         {
             this.OnOptionsListUpdated();
@@ -225,50 +186,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.SetComboBoxDefault();
         }
 
-        private void SetDefaults()
-        {
-            this._nodefaultvalue = false;
-            this._noselectionmessage = "Please select a value";
-            this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
-        }
-
-        public void OnValidationChange()
-        { this.Validate(false); }
-
-        public bool Validate()
-        { return this.Validate(true); }
-
-
-
-        public override bool Validate(bool CheckSelectionMade)
-        {
-            if (this._director.StartupFinished == false) { return true; }
-            if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
-            if ((CheckSelectionMade == true) && (this._dropdownlistui.Control.SelectedItem == null))
-            {
-                this.ValidationText = _noselectionmessage;
-                this._validationtooltiphandler.ShowError();
-                return false;
-            }
-
-            bool newvalid = this._validationhandler.IsValid(this.CurrentValue);
-
-            if (newvalid == false)
-            {
-                string validationmessage = this._validationhandler.ValidationMessage;
-                string s = "\"" + this.CurrentItem.Text + "\" is invalid" + Environment.NewLine;
-                if (string.IsNullOrEmpty(validationmessage)) { s = s + _validationhandler.FailedValidationMessage; }
-                else { s = s + validationmessage; }
-
-                this.ValidationText = s;
-                this._validationtooltiphandler.ShowError();
-            }
-            else { this._validationtooltiphandler.Clear(); }
-
-            return newvalid;
-        }
-
+        
         private void RegisterForItemGroupEvents()
         {
             foreach (Group g in this._itemGroups.Values)
