@@ -31,7 +31,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public string Text { get; set; }
         public Formatting ItemFormatting { get; set; }
         public List<ListItem> ItemsList { get; set; }
-        public CompositeCollection ItemsTree { get; set; }
 
         public ListItem(string Value, string Text, Formatting Formatting, CollectionViewGuiOptionBase parentlist, IDirector MainController):base(MainController)
         { 
@@ -45,9 +44,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this.Init(Formatting, parentlist);
             this.LoadXml(InputXml);
-            
-            this.ItemsTree = new CompositeCollection();
-            this.ItemsTree.Add(new CollectionContainer { Collection = this.ItemsList });
             LoggerFacade.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
         }
 

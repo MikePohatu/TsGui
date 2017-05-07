@@ -27,10 +27,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
     <TreeView x:Name="TreeView" ItemsSource="{Binding VisibleOptions}" Style="{StaticResource ControlStyle}" SelectedValuePath="Value">
         <TreeView.ItemTemplate>
-            <HierarchicalDataTemplate ItemsSource="{Binding Path=ItemsTree}">
+            <HierarchicalDataTemplate ItemsSource="{Binding Path=ItemsList}">
                 <Label x:Name="TreeViewListLabel" Content="{Binding Text}" IsEnabled="{Binding IsEnabled}" Style="{StaticResource CollectionItemLabelStyle}"/>
                 <HierarchicalDataTemplate.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Path=ItemsTree}">
+                    <HierarchicalDataTemplate ItemsSource="{Binding Path=ItemsList}">
                         <Label x:Name="TreeViewListLabel" Content="{Binding Text}" IsEnabled="{Binding IsEnabled}" Style="{StaticResource CollectionItemLabelStyle}"/>
                     </HierarchicalDataTemplate>
                 </HierarchicalDataTemplate.ItemTemplate>
