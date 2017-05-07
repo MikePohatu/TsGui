@@ -25,10 +25,15 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="300">
 
-    <TreeView ItemsSource="{Binding Branches}" Style="{StaticResource ControlStyle}" SelectedValuePath="Value">
+    <TreeView x:Name="TreeView" ItemsSource="{Binding VisibleOptions}" Style="{StaticResource ControlStyle}" SelectedValuePath="Value">
         <TreeView.ItemTemplate>
-            <HierarchicalDataTemplate ItemsSource="{Binding Branches}">
-                <TreeViewItem Header="{Binding Text}"/>
+            <HierarchicalDataTemplate ItemsSource="{Binding Path=ListItems}">
+                <Label x:Name="TreeViewListLabel" Content="{Binding Text}" IsEnabled="{Binding IsEnabled}" Style="{StaticResource CollectionItemLabelStyle}"/>
+                <HierarchicalDataTemplate.ItemTemplate>
+                    <DataTemplate>
+                        <Label x:Name="TreeViewListLabel" Content="{Binding Text}" IsEnabled="{Binding IsEnabled}" Style="{StaticResource CollectionItemLabelStyle}"/>
+                    </DataTemplate>
+                </HierarchicalDataTemplate.ItemTemplate>
             </HierarchicalDataTemplate>
         </TreeView.ItemTemplate>
     </TreeView>

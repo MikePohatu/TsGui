@@ -13,168 +13,67 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// TsCheckBox.cs - combobox control for user input
 
 using System;
 using System.Xml.Linq;
-using System.Windows;
+using System.Linq;
 using System.Collections.Generic;
 
-using TsGui.Grouping;
+using TsGui.Validation;
 using TsGui.Linking;
 using TsGui.Queries;
+using System.Windows;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
-    public class TsTreeView : GuiOptionBase, IGuiOption, ILinkTarget
+    public class TsTreeView : CollectionViewGuiOptionBase, IGuiOption, ILinkTarget
     {
-        //public event ToggleEvent ToggleEvent;
-
-        private string _val;
-
-        //public override string CurrentValue { get { return this.ControlText; } }
-        public override string CurrentValue { get { return this._val; } }
-        public override TsVariable Variable
-        {
-            get
-            {
-                if ((this.IsActive == false) && (PurgeInactive == true))
-                { return null; }
-                else
-                { return new TsVariable(this.VariableName, this.CurrentValue); }
-            }
-        }
-
+        private TsTreeViewUI _treeviewui;
+        public List<ListItem> VisibleOptions { get { return this._builder.Items; } }
 
         //Constructor
-        public TsTreeView(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
-        {
-            this.UserControl.DataContext = this;           
-            this.Control = new TsTreeViewUI();
+        public TsTreeView(XElement InputXml, TsColumn Parent, IDirector director) : base(Parent, director)
+        {        
+            this._treeviewui = new TsTreeViewUI();
+            this.Control = this._treeviewui;
             this.Label = new TsLabelUI();
-            this.SetDefaults();
-            this._setvaluequerylist = new QueryPriorityList(this, this._director);          
+            this.UserControl.DataContext = this;
+            this._validationhandler = new ValidationHandler(this, director);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
+
+            this.SetDefaults();      
             this.LoadXml(InputXml);
-            //this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
-            //this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
+            this._builder.Rebuild();
+
+            this._treeviewui.TreeView.SelectedItemChanged += this.OnTreeViewSelectedItemChanged;
         }
 
-
-        //Methods
-        public new void LoadXml(XElement InputXml)
+        protected override void SetSelected(string value)
         {
-            base.LoadXml(InputXml);
+            ListItem newdefault = null;
+            bool changed = false;
 
-            IEnumerable<XElement> inputElements = InputXml.Elements();
+            //foreach (ListItem item in this.VisibleOptions)
+            //{
+            //    if ((item.Value == value))
+            //    {
+            //        newdefault = item;
+            //        changed = true;
+            //        break;
+            //    }
+            //}
 
-            //this._validationhandler.AddValidations(InputXml.Elements("Validation"));
-            //this._nodefaultvalue = XmlHandler.GetBoolFromXAttribute(InputXml, "NoDefaultValue", this._nodefaultvalue);
-            //this._noselectionmessage = XmlHandler.GetStringFromXElement(InputXml, "NoSelectionMessage", this._noselectionmessage);
-
-            foreach (XElement x in inputElements)
+            if (changed == true)
             {
-                //the base loadxml will create queries before this so will win
-                if (x.Name == "DefaultValue")
-                {
-                    IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this._director, this);
-                    this._setvaluequerylist.AddQuery(defquery);
-                }
-
-                //read in an option and add to a dictionary for later use
-                //else if (x.Name == "Option")
-                //{
-                //    TsDropDownListItem newoption = new TsDropDownListItem(x, this.ControlFormatting, this, this._director);
-                //    this._builder.Add(newoption);
-
-                //    IEnumerable<XElement> togglexlist = x.Elements("Toggle");
-                //    foreach (XElement togglex in togglexlist)
-                //    {
-                //        togglex.Add(new XElement("Enabled", newoption.Value));
-                //        Toggle t = new Toggle(this, this._director, togglex);
-                //        this._istoggle = true;
-                //    }
-                //}
-
-                //else if (x.Name == "Query")
-                //{
-                //    XElement wrapx = new XElement("wrapx");
-                //    wrapx.Add(x);
-                //    QueryPriorityList newlist = new QueryPriorityList(this, this._director);
-                //    newlist.LoadXml(wrapx);
-
-                //    this._builder.Add(newlist);
-                //}
-
-                //else if (x.Name == "Toggle")
-                //{
-                //    Toggle t = new Toggle(this, this._director, x);
-                //    this._istoggle = true;
-                //}
-            }
-
-            //if (this._istoggle == true) { this._director.AddToggleControl(this); }
-        }
-
-        //fire an intial event to make sure things are set correctly. This is
-        //called by the controller once everything is loaded
-        //public void InitialiseToggle()
-        //{
-        //    this.ToggleEvent?.Invoke();
-        //}
-
-        public void RefreshValue()
-        {
-
-        }
-
-        public void RefreshAll()
-        {
-            this.RefreshValue();
-        }
-
-        //private void OnGroupStateChanged(object o, RoutedEventArgs e)
-        //{
-        //    this.ToggleEvent?.Invoke();
-        //}
-
-        //private void OnGroupStateChanged(object o, DependencyPropertyChangedEventArgs e)
-        //{
-        //    this.ToggleEvent?.Invoke();
-        //}
-
-        private void SetDefaults()
-        {
-            this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
-            this.ControlFormatting.Margin = new Thickness(1, 1, 1, 1);
-            this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
-        }
-
-        private void LoadLegacyXml(XElement InputXml)
-        {
-            XElement x;
-
-            x = InputXml.Element("HAlign");
-            if (x != null)
-            {
-                string s = x.Value.ToUpper();
-                switch (s)
-                {
-                    case "RIGHT":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Right;
-                        break;
-                    case "LEFT":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Left;
-                        break;
-                    case "CENTER":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
-                        break;
-                    case "STRETCH":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
-                        break;
-                    default:
-                        break;
-                }
+                this.CurrentItem = newdefault;
             }
         }
+
+        private void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            this.CurrentItem = (ListItem)this._treeviewui.TreeView.SelectedItem;
+            this.OnSelectionChanged(sender, e);
+        }
+
     }
 }

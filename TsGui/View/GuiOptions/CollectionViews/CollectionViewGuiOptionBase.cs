@@ -22,10 +22,9 @@ namespace TsGui.View.GuiOptions.CollectionViews
         protected string _noselectionmessage;
         protected ListBuilder _builder;
         protected Dictionary<string, Group> _itemGroups = new Dictionary<string, Group>();
-        protected bool _istoggle = false;
-
-        //public override abstract string CurrentValue { get; }
-        //public override abstract TsVariable Variable { get; }
+        
+        //properties
+        public bool IsToggle { get; set; }
         public override TsVariable Variable
         {
             get
@@ -52,14 +51,15 @@ namespace TsGui.View.GuiOptions.CollectionViews
             set { this._validationtext = value; this.OnPropertyChanged(this, "ValidationText"); }
         }
 
-        public CollectionViewGuiOptionBase(XElement InputXml, TsColumn Parent, IDirector director) : base(Parent, director)
+        //Constructor
+        public CollectionViewGuiOptionBase(TsColumn Parent, IDirector director) : base(Parent, director)
         {
             this._setvaluequerylist = new QueryPriorityList(this, this._director);
             this._builder = new ListBuilder(this, this._director);
-            this._validationhandler = new ValidationHandler(this, director);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
         }
 
+
+        //Methods
         public void AddItemGroup(Group NewGroup)
         {
             Group g;
@@ -70,14 +70,13 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-
-            IEnumerable<XElement> inputElements = InputXml.Elements();
+            this._builder.LoadXml(InputXml);
 
             this._validationhandler.AddValidations(InputXml.Elements("Validation"));
             this._nodefaultvalue = XmlHandler.GetBoolFromXAttribute(InputXml, "NoDefaultValue", this._nodefaultvalue);
             this._noselectionmessage = XmlHandler.GetStringFromXElement(InputXml, "NoSelectionMessage", this._noselectionmessage);
 
-            foreach (XElement x in inputElements)
+            foreach (XElement x in InputXml.Elements())
             {
                 //the base loadxml will create queries before this so will win
                 if (x.Name == "DefaultValue")
@@ -86,44 +85,15 @@ namespace TsGui.View.GuiOptions.CollectionViews
                     this._setvaluequerylist.AddQuery(defquery);
                 }
 
-                //read in an option and add to a dictionary for later use
-                else if (x.Name == "Option")
-                {
-                    ListItem newoption = new ListItem(x, this.ControlFormatting, this, this._director);
-                    this._builder.Add(newoption);
-
-                    IEnumerable<XElement> togglexlist = x.Elements("Toggle");
-                    foreach (XElement togglex in togglexlist)
-                    {
-                        togglex.Add(new XElement("Enabled", newoption.Value));
-                        Toggle t = new Toggle(this, this._director, togglex);
-                        this._istoggle = true;
-                    }
-                }
-
-                else if (x.Name == "Query")
-                {
-                    XElement wrapx = new XElement("wrapx");
-                    wrapx.Add(x);
-                    QueryPriorityList newlist = new QueryPriorityList(this, this._director);
-                    newlist.LoadXml(wrapx);
-
-                    this._builder.Add(newlist);
-                }
-
                 else if (x.Name == "Toggle")
                 {
                     Toggle t = new Toggle(this, this._director, x);
-                    this._istoggle = true;
+                    this.IsToggle = true;
                 }
             }
 
-            if (this._istoggle == true) { this._director.AddToggleControl(this); }
+            if (this.IsToggle == true) { this._director.AddToggleControl(this); }
         }
-
-        //public abstract bool Validate(bool CheckSelectionMade);
-        public abstract void RefreshValue();
-        public abstract void RefreshAll();
 
         //fire an intial event to make sure things are set correctly. This is
         //called by the controller once everything is loaded
@@ -166,6 +136,20 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             return newvalid;
         }
+
+        public void RefreshValue()
+        {
+            this.SetSelected(this._setvaluequerylist.GetResultWrangler()?.GetString());
+        }
+
+        public void RefreshAll()
+        {
+            this._builder.Rebuild();
+            this.OnPropertyChanged(this, "VisibleOptions");
+            this.SetSelected(this._setvaluequerylist.GetResultWrangler()?.GetString());
+        }
+
+        protected abstract void SetSelected(string input);
 
         protected void SetDefaults()
         {

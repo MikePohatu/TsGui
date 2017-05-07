@@ -111,6 +111,12 @@ namespace TsGui.View.GuiOptions
                 RootController.AddOptionToLibary(option);
                 return option;
             }
+            else if (xtype.Value == "TreeView")
+            {
+                TsTreeView option = new TsTreeView(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(option);
+                return option;
+            }
             else
             { return null; }
             #endregion

@@ -13,9 +13,11 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Queries;
 using TsGui.Diagnostics.Logging;
+using TsGui.Grouping;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -83,6 +85,29 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this._lastindex++;
             this._querylists.Add(this._lastindex, list);
+        }
+
+        public void LoadXml(XElement inputxml)
+        {
+            foreach (XElement x in inputxml.Elements())
+            {
+                //read in an option and add to a dictionary for later use
+                if (x.Name == "Option")
+                {
+                    ListItem newoption = new ListItem(x, this._parent.ControlFormatting, this._parent, this._director);
+                    this.Add(newoption);
+                }
+
+                else if (x.Name == "Query")
+                {
+                    XElement wrapx = new XElement("wrapx");
+                    wrapx.Add(x);
+                    QueryPriorityList newlist = new QueryPriorityList(this._parent, this._director);
+                    newlist.LoadXml(wrapx);
+
+                    this.Add(newlist);
+                }
+            }
         }
     }
 }
