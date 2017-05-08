@@ -202,7 +202,11 @@
       <DependentUpon>TsButtonUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsTickCross.cs" />
-    <Compile Include="View\GuiOptions\TsWarnUI.xaml.cs">
+    <Compile Include="View\Symbols\SymbolFactory.cs" />
+    <Compile Include="View\Symbols\TsOuUI.xaml.cs">
+      <DependentUpon>TsOuUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Symbols\TsWarnUI.xaml.cs">
       <DependentUpon>TsWarnUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsImage.cs" />
@@ -214,14 +218,14 @@
       <DependentUpon>TsImageUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\ComplianceOptionBase.cs" />
-    <Compile Include="View\GuiOptions\TsCrossUI.xaml.cs">
+    <Compile Include="View\Symbols\TsCrossUI.xaml.cs">
       <DependentUpon>TsCrossUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsTrafficLight.cs" />
-    <Compile Include="View\GuiOptions\TsTickUI.xaml.cs">
+    <Compile Include="View\Symbols\TsTickUI.xaml.cs">
       <DependentUpon>TsTickUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\GuiOptions\TsTrafficLightUI.xaml.cs">
+    <Compile Include="View\Symbols\TsTrafficLightUI.xaml.cs">
       <DependentUpon>TsTrafficLightUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsComputerName.cs" />
@@ -325,7 +329,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\GuiOptions\TsWarnUI.xaml">
+    <Page Include="View\Symbols\TsOuUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Symbols\TsWarnUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -333,15 +341,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\GuiOptions\TsCrossUI.xaml">
+    <Page Include="View\Symbols\TsCrossUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\GuiOptions\TsTickUI.xaml">
+    <Page Include="View\Symbols\TsTickUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\GuiOptions\TsTrafficLightUI.xaml">
+    <Page Include="View\Symbols\TsTrafficLightUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

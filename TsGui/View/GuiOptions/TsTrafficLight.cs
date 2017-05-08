@@ -20,6 +20,7 @@ using System.Xml.Linq;
 using TsGui.Validation;
 using System.Windows.Media;
 using System;
+using TsGui.View.Symbols;
 
 namespace TsGui.View.GuiOptions
 {

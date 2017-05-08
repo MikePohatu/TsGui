@@ -18,7 +18,8 @@ using System;
 using System.Xml.Linq;
 using System.Linq;
 using System.Collections.Generic;
-
+using System.Windows.Controls;
+using TsGui.View.Symbols;
 using TsGui.Validation;
 using TsGui.Linking;
 using TsGui.Queries;
@@ -33,10 +34,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         //Constructor
         public TsTreeView(XElement InputXml, TsColumn Parent, IDirector director) : base(Parent, director)
-        {        
+        {
             this._treeviewui = new TsTreeViewUI();
             this.Control = this._treeviewui;
             this.Label = new TsLabelUI();
+            this.Icon = new TsOuUI();
             this.UserControl.DataContext = this;
             this._validationhandler = new ValidationHandler(this, director);
             this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);

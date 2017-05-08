@@ -25,13 +25,21 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="300">
 
-    <TreeView x:Name="TreeView" ItemsSource="{Binding VisibleOptions}" Style="{StaticResource ControlStyle}" SelectedValuePath="Value">
+    <TreeView x:Name="TreeView" ItemsSource="{Binding VisibleOptions}" Style="{StaticResource ControlStyle}"
+              SelectedValuePath="Value" ScrollViewer.VerticalScrollBarVisibility="Auto"
+              ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
         <TreeView.ItemTemplate>
             <HierarchicalDataTemplate ItemsSource="{Binding Path=ItemsList}">
-                <Label x:Name="TreeViewListLabel" Content="{Binding Text}" IsEnabled="{Binding IsEnabled}" Style="{StaticResource CollectionItemLabelStyle}"/>
+                <StackPanel Orientation="Horizontal">
+                    <ContentPresenter Content="{Binding Icon}" Margin="2" Height="12" Width="12"/>
+                    <Label x:Name="TreeViewListLabel" Content="{Binding Text}" Margin="2" IsEnabled="{Binding IsEnabled}" Style="{StaticResource CollectionItemLabelStyle}"/>
+                </StackPanel>
                 <HierarchicalDataTemplate.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Path=ItemsList}">
-                        <Label x:Name="TreeViewListLabel" Content="{Binding Text}" IsEnabled="{Binding IsEnabled}" Style="{StaticResource CollectionItemLabelStyle}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentPresenter Content="{Binding Icon}" Margin="2" Height="12" Width="12"/>
+                            <Label x:Name="TreeViewListLabel" Content="{Binding Text}" Margin="2" IsEnabled="{Binding IsEnabled}" Style="{StaticResource CollectionItemLabelStyle}"/>
+                        </StackPanel>
                     </HierarchicalDataTemplate>
                 </HierarchicalDataTemplate.ItemTemplate>
             </HierarchicalDataTemplate>

@@ -1,13 +1,13 @@
 ﻿using System.Windows.Controls;
 
-namespace TsGui.View.GuiOptions
+namespace TsGui.View.Symbols
 {
     /// <summary>
     /// Interaction logic for TsComplianceCheckUI.xaml
     /// </summary>
-    public partial class TsTrafficLightUI : UserControl
+    public partial class TsOuUI : UserControl
     {
-        public TsTrafficLightUI()
+        public TsOuUI()
         {
             InitializeComponent();
         }

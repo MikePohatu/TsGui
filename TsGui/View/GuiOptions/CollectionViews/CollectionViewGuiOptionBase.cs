@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Collections.Generic;
 using System.Collections;
-using System.Windows.Data;
+using System.Windows.Controls;
 using System.Xml.Linq;
 using System;
 
@@ -15,7 +15,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
     public abstract class CollectionViewGuiOptionBase : GuiOptionBase, IGuiOption, IToggleControl, ILinkTarget, IValidationGuiOption
     {
         public event ToggleEvent ToggleEvent;
-
         
         protected ListItem _currentitem;
         protected string _validationtext;
@@ -25,9 +24,10 @@ namespace TsGui.View.GuiOptions.CollectionViews
         protected string _noselectionmessage;
         protected ListBuilder _builder;
         protected Dictionary<string, Group> _itemGroups = new Dictionary<string, Group>();
-
+        
         //properties
         public bool IsToggle { get; set; }
+        public UserControl Icon { get; set; }
         public override TsVariable Variable
         {
             get

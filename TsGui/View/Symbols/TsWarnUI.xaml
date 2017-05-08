@@ -17,15 +17,15 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -->
 
-<UserControl x:Class="TsGui.View.GuiOptions.TsTrafficLightUI"
+<UserControl x:Class="TsGui.View.Symbols.TsWarnUI"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:local="clr-namespace:TsGui.View.GuiOptions"
+        xmlns:local="clr-namespace:TsGui.View.Symbols"
         mc:Ignorable="d" 
-        d:DesignHeight="20" d:DesignWidth="20">
-    <StackPanel Style="{StaticResource ControlStyle}">
-        <Ellipse x:Name="TrafficLight" Style="{StaticResource TrafficLightStyle}"/>
-    </StackPanel>
+        d:DesignHeight="20" d:DesignWidth="20" x:Name="usercontrol">
+    <Grid Style="{StaticResource ControlStyle}">
+        <Path Name="WarnTriangle" Stroke="Black" StrokeThickness="1.2" StrokeLineJoin="Round" StrokeEndLineCap="Round" Fill="#FFD52B" Data="M10,0 0,20 20,20Z M9.5,7.3 9.9,13 10.1,13 10.5,7.3Z M9.8,16.5 10.2,16.5 10.2,16.9 9.8,16.9Z" Stretch="Uniform" />
+    </Grid>
 </UserControl>

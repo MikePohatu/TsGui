@@ -17,10 +17,11 @@
 using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Collections;
-using System.Windows.Data;
+using System.Windows.Controls;
 using TsGui.View.Layout;
 using TsGui.Grouping;
 using TsGui.Diagnostics.Logging;
+using TsGui.View.Symbols;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -31,6 +32,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public string Text { get; set; }
         public Formatting ItemFormatting { get; set; }
         public List<ListItem> ItemsList { get; set; }
+        public UserControl Icon { get; set; }
 
         public ListItem(string Value, string Text, Formatting Formatting, CollectionViewGuiOptionBase parentlist, IDirector MainController):base(MainController)
         { 
@@ -49,6 +51,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         private void Init(Formatting Formatting, CollectionViewGuiOptionBase parentlist)
         {
+            this.Icon = SymbolFactory.Copy(parentlist.Icon);
             this.ItemsList = new List<ListItem>();
             this.ItemFormatting = Formatting;
             this._parent = parentlist;
