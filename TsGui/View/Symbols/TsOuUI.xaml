@@ -26,7 +26,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
         mc:Ignorable="d" 
         d:DesignHeight="20" d:DesignWidth="20" x:Name="usercontrol">
     <Grid Style="{StaticResource ControlStyle}">
-        <Path Name="back" VerticalAlignment="Top" Stroke="Black" StrokeThickness="0.5" StrokeLineJoin="Round" StrokeEndLineCap="Round" Fill="#d4ba79" Data="M0.35016026,2.7708333 L18.621693,2.8929348 18.424116,0.060905108 10,0 8.6698718,1.2788462 1.6698718,1.2788462 z" Stretch="Uniform" Height="3.469" Margin="0.359,0,0.391,0"/>
-        <Path Name="fore" Stroke="Black" StrokeThickness="0.5" StrokeLineJoin="Round" StrokeEndLineCap="Round" Fill="#fedc8a" Data="M0,3 V17 H20 V3Z" Stretch="Uniform"/>
+        <Path Name="back" VerticalAlignment="Top" Stroke="Black" StrokeThickness="0.5" StrokeLineJoin="Round" StrokeEndLineCap="Round" Fill="#d4ba79" Data="M0.33121631,4.1010217 L18.730334,3.9592883 17.938243,-1.047773E-15 10,0 8.3752719,1.7 2.2832093,1.7 z" Stretch="Uniform" Height="4.708" Margin="0.34,0,0.281,0"/>
+        <Path Name="fore" Stroke="Black" StrokeThickness="0.5" StrokeLineJoin="Round" StrokeEndLineCap="Round" Fill="#fedc8a" Data="M0,3 V17 H20 V3Z" Stretch="Uniform" Margin="0,1,0,-1"/>
     </Grid>
 </UserControl>
