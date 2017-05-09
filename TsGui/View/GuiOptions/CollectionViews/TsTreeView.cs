@@ -38,7 +38,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this._treeviewui = new TsTreeViewUI();
             this.Control = this._treeviewui;
             this.Label = new TsLabelUI();
-            this.Icon = new TsOuUI();
+            this.Icon = new TsFolderUI();
             this.UserControl.DataContext = this;
             this._validationhandler = new ValidationHandler(this, director);
             this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);

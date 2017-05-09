@@ -5,9 +5,9 @@ namespace TsGui.View.Symbols
     /// <summary>
     /// Interaction logic for TsComplianceCheckUI.xaml
     /// </summary>
-    public partial class TsOuUI : UserControl
+    public partial class TsFolderUI : UserControl
     {
-        public TsOuUI()
+        public TsFolderUI()
         {
             InitializeComponent();
         }

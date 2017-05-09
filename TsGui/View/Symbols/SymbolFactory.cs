@@ -14,7 +14,7 @@ namespace TsGui.View.Symbols
 
             if (type == "OuUI")
             {
-                return new TsOuUI();
+                return new TsFolderUI();
             }
             else if (type == "Cross")
             {
@@ -42,9 +42,9 @@ namespace TsGui.View.Symbols
             string type = control.GetType().ToString();
             LoggerFacade.Info("Creating symbol, type: " + type);
 
-            if (type == "TsGui.View.Symbols.TsOuUI")
+            if (type == "TsGui.View.Symbols.TsFolderUI")
             {
-                return new TsOuUI();
+                return new TsFolderUI();
             }
             else if (type == "TsGui.View.Symbols.TsCrossUI")
             {

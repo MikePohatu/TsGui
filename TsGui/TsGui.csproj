@@ -203,8 +203,8 @@
     </Compile>
     <Compile Include="View\GuiOptions\TsTickCross.cs" />
     <Compile Include="View\Symbols\SymbolFactory.cs" />
-    <Compile Include="View\Symbols\TsOuUI.xaml.cs">
-      <DependentUpon>TsOuUI.xaml</DependentUpon>
+    <Compile Include="View\Symbols\TsFolderUI.xaml.cs">
+      <DependentUpon>TsFolderUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Symbols\TsWarnUI.xaml.cs">
       <DependentUpon>TsWarnUI.xaml</DependentUpon>
@@ -329,7 +329,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Symbols\TsOuUI.xaml">
+    <Page Include="View\Symbols\TsFolderUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
