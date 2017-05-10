@@ -90,9 +90,9 @@ namespace TsGui.Queries
             { query.ProcessQuery(); }
         }
 
-        public List<ResultFormatter> GetAllResultFormatters()
+        public List<PropertyFormatter> GetAllResultFormatters()
         {
-            List<ResultFormatter> formatterlist = new List<ResultFormatter>();
+            List<PropertyFormatter> formatterlist = new List<PropertyFormatter>();
 
             foreach (IQuery query in this._queries)
             {

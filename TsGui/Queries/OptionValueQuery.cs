@@ -23,7 +23,7 @@ namespace TsGui.Queries
     public class OptionValueQuery: BaseQuery, ILinkingEventHandler
     {
         private IDirector _controller;
-        private ResultFormatter _formatter;
+        private PropertyFormatter _formatter;
         private ILinkTarget _linktargetoption;
 
         public OptionValueQuery(XElement inputxml, IDirector controller, ILinkTarget owner)
@@ -80,12 +80,12 @@ namespace TsGui.Queries
 
             XElement x;
 
-            this._processingwrangler.NewResultList();
+            this._processingwrangler.NewPropertyList();
             
             x = InputXml.Element("ID");
             if (x != null)
             {
-                this._formatter = new ResultFormatter(x);
+                this._formatter = new PropertyFormatter(x);
                 this._processingwrangler.AddResultFormatter(this._formatter);
             }
         }

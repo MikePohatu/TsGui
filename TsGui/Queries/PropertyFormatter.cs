@@ -13,15 +13,15 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ResultFormatter.cs - provides additional formatting/processing for a query result e.g.
-// processing math on the result, prefix and postfix
+// ResultFormatter.cs - provides additional formatting/processing for a property
+// for a query result e.g. processing math on the result, prefix and postfix
 
 using System.Xml.Linq;
 using System.Collections.Generic;
 
 namespace TsGui.Queries
 {
-    public class ResultFormatter
+    public class PropertyFormatter
     {
         private List<IQueryRule> _rules = new List<IQueryRule>();
         private string _value;
@@ -39,9 +39,9 @@ namespace TsGui.Queries
         }
         public string Value { get { return this._value; } }
 
-        public ResultFormatter() { }
+        public PropertyFormatter() { }
 
-        public ResultFormatter(XElement InputXml)
+        public PropertyFormatter(XElement InputXml)
         {
             this.LoadXml(InputXml);
         }

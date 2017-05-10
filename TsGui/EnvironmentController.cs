@@ -137,11 +137,11 @@ namespace TsGui
         private ResultWrangler GetResultWranglerFromGuiOption_old(XElement InputXml)
         {
             ResultWrangler wrangler = new ResultWrangler();
-            ResultFormatter rf;
+            PropertyFormatter rf;
             XElement x;
             XAttribute xattrib;
 
-            wrangler.NewResultList();
+            wrangler.NewPropertyList();
 
             x = InputXml.Element("ID");
             if (x != null)
@@ -151,12 +151,12 @@ namespace TsGui
                 xattrib = x.Attribute("Name");
                 if (xattrib == null)
                 {
-                    rf = new ResultFormatter();
+                    rf = new PropertyFormatter();
                     rf.Name = x.Value;
                 }
                 else
                 {
-                    rf = new ResultFormatter(x);
+                    rf = new PropertyFormatter(x);
                 }
 
                 wrangler.AddResultFormatter(rf);

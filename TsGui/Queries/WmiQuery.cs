@@ -78,15 +78,15 @@ namespace TsGui.Queries
         {
             foreach (ManagementObject m in WmiObjectList)
             {
-                Wrangler.NewResultList();
-                ResultFormatter rf = null;
+                Wrangler.NewPropertyList();
+                PropertyFormatter rf = null;
 
                 //if properties have been specified in the xml, query them directly in order
                 if (PropertyTemplates.Count != 0)
                 {
                     foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
                     {
-                        rf = new ResultFormatter(template.Value);
+                        rf = new PropertyFormatter(template.Value);
                         rf.Input = m.GetPropertyValue(template.Key)?.ToString();
                         Wrangler.AddResultFormatter(rf);
                     }
@@ -96,7 +96,7 @@ namespace TsGui.Queries
                 {
                     foreach (PropertyData property in m.Properties)
                     {
-                        rf = new ResultFormatter();
+                        rf = new PropertyFormatter();
                         rf.Input = property.Value?.ToString();
                         Wrangler.AddResultFormatter(rf);
                     }

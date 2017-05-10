@@ -23,8 +23,8 @@ namespace TsGui.Queries
     {
         //two dictionaries, one for the keys i.e. the first value, and another for the values as a list. 
         //the two have matching keys to link the keys dictionary to the lists dictionary. 
-        private Dictionary<int,List<ResultFormatter>> _valuelists = new Dictionary<int, List<ResultFormatter>>();
-        private Dictionary<int, ResultFormatter> _keyvalues = new Dictionary<int, ResultFormatter>();
+        private Dictionary<int,List<PropertyFormatter>> _valuelists = new Dictionary<int, List<PropertyFormatter>>();
+        private Dictionary<int, PropertyFormatter> _keyvalues = new Dictionary<int, PropertyFormatter>();
         private Dictionary<int, List<ResultWrangler>> _subwranglers = new Dictionary<int, List<ResultWrangler>>();
 
         //the following two variables track the lists and position in the lists.
@@ -45,11 +45,11 @@ namespace TsGui.Queries
         /// <summary>
         /// Create a new List<ResultFormatter> and set it as current
         /// </summary>
-        public void NewResultList()
+        public void NewPropertyList()
         {
             this._currentresultlist++;
 
-            List<ResultFormatter> newlist = new List<ResultFormatter>();
+            List<PropertyFormatter> newlist = new List<PropertyFormatter>();
             this._valuelists.Add(this._currentresultlist, newlist);
         }
 
@@ -57,21 +57,21 @@ namespace TsGui.Queries
         /// Add a ResultFormatter to the ResultWrangler's current list 
         /// </summary>
         /// <param name="Formatter"></param>
-        public void AddResultFormatter(ResultFormatter Formatter)
+        public void AddResultFormatter(PropertyFormatter Formatter)
         {
-            ResultFormatter keyresult;
+            PropertyFormatter keyresult;
             if (this._keyvalues.TryGetValue(this._currentresultlist, out keyresult) == false) { this._keyvalues.Add(this._currentresultlist, Formatter); }
             else
             {
-                List<ResultFormatter> currentlist;
+                List<PropertyFormatter> currentlist;
                 this._valuelists.TryGetValue(this._currentresultlist, out currentlist);
                 currentlist.Add(Formatter);
             }
         }
 
-        public void AddResultFormatters(List<ResultFormatter> Formatters)
+        public void AddResultFormatters(List<PropertyFormatter> Formatters)
         {
-            foreach (ResultFormatter rf in Formatters)
+            foreach (PropertyFormatter rf in Formatters)
             { this.AddResultFormatter(rf); }
         }
 
@@ -87,16 +87,16 @@ namespace TsGui.Queries
             }
         }
 
-        public List<ResultFormatter> GetAllResultFormatters()
+        public List<PropertyFormatter> GetAllResultFormatters()
         {
-            List<ResultFormatter> formatterlist = new List<ResultFormatter>();
+            List<PropertyFormatter> formatterlist = new List<PropertyFormatter>();
             foreach (int i in this._keyvalues.Keys)
             {
-                ResultFormatter rf;
+                PropertyFormatter rf;
                 if (this._keyvalues.TryGetValue(i, out rf) == true)
                 { formatterlist.Add(rf); }
 
-                List<ResultFormatter> rfs;
+                List<PropertyFormatter> rfs;
                 if (this._valuelists.TryGetValue(i, out rfs) == true)
                 { formatterlist.AddRange(rfs); }
             }
@@ -110,13 +110,13 @@ namespace TsGui.Queries
         /// <param name="Results"></param>
         /// <param name="Separator"></param>
         /// <returns></returns>
-        public string ConcatenateResultValues(List<ResultFormatter> Results, string Separator)
+        public string ConcatenateResultValues(List<PropertyFormatter> Results, string Separator)
         {
             string s = "";
             string tempval = null;
             int i = 0;
 
-            foreach (ResultFormatter result in Results)
+            foreach (PropertyFormatter result in Results)
             {
                 tempval = result.Value;
 
@@ -167,8 +167,8 @@ namespace TsGui.Queries
             if (_currentresultlist == -1) { return null; }
 
             List<KeyValuePair<string, string>> returnkvlist = new List<KeyValuePair<string, string>>();
-            ResultFormatter _tempRF;
-            List<ResultFormatter> _tempRFList;
+            PropertyFormatter _tempRF;
+            List<PropertyFormatter> _tempRFList;
 
             for (int i = 0; i <= this._currentresultlist; i++)
             {
@@ -199,8 +199,8 @@ namespace TsGui.Queries
             if (_currentresultlist == -1) { return null; }
 
             Dictionary<string, string> returndic = new Dictionary<string, string>();
-            ResultFormatter _tempRF;
-            List<ResultFormatter> _tempRFList;
+            PropertyFormatter _tempRF;
+            List<PropertyFormatter> _tempRFList;
 
             for (int i = 0; i <= this._currentresultlist; i++)
             {
@@ -231,9 +231,9 @@ namespace TsGui.Queries
             //first check to make sure a new sublist has actually been created. if not reutrn null
             if (_currentresultlist == -1) { return null; }
 
-            ResultFormatter _tempRF;
-            List<ResultFormatter> _tempRFListMain = new List<ResultFormatter>();
-            List<ResultFormatter> _tempRFList;
+            PropertyFormatter _tempRF;
+            List<PropertyFormatter> _tempRFListMain = new List<PropertyFormatter>();
+            List<PropertyFormatter> _tempRFList;
 
             for (int i = 0; i <= this._currentresultlist; i++)
             {

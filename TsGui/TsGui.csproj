@@ -278,7 +278,7 @@
     <Compile Include="EnvironmentController.cs" />
     <Compile Include="Calculator\Calculator.cs" />
     <Compile Include="Queries\ResultWrangler.cs" />
-    <Compile Include="Queries\ResultFormatter.cs" />
+    <Compile Include="Queries\PropertyFormatter.cs" />
     <Compile Include="Grouping\GroupDelegates.cs" />
     <Compile Include="Grouping\Group.cs" />
     <Compile Include="View\GuiOptions\GuiFactory.cs" />
