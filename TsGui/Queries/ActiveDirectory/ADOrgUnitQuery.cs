@@ -116,7 +116,7 @@ namespace TsGui.Queries.ActiveDirectory
         {
             foreach (UserPrincipal user in objectlist)
             {
-                wrangler.NewPropertyList();
+                wrangler.NewResult();
                 PropertyFormatter rf = null;
 
                 //if properties have been specified in the xml, query them directly in order

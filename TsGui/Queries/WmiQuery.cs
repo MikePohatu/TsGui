@@ -78,7 +78,7 @@ namespace TsGui.Queries
         {
             foreach (ManagementObject m in WmiObjectList)
             {
-                Wrangler.NewPropertyList();
+                Wrangler.NewResult();
                 PropertyFormatter rf = null;
 
                 //if properties have been specified in the xml, query them directly in order

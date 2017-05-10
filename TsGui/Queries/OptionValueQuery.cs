@@ -80,7 +80,7 @@ namespace TsGui.Queries
 
             XElement x;
 
-            this._processingwrangler.NewPropertyList();
+            this._processingwrangler.NewResult();
             
             x = InputXml.Element("ID");
             if (x != null)

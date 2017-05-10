@@ -84,7 +84,7 @@ namespace TsGui.Queries
             XElement x;
             XAttribute xattrib;
 
-            this._processingwrangler.NewPropertyList();
+            this._processingwrangler.NewResult();
             
             x = InputXml.Element("Variable");
             if (x != null)

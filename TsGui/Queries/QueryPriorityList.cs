@@ -90,14 +90,14 @@ namespace TsGui.Queries
             { query.ProcessQuery(); }
         }
 
-        public List<PropertyFormatter> GetAllResultFormatters()
+        public List<PropertyFormatter> GetAllPropertyFormatters()
         {
             List<PropertyFormatter> formatterlist = new List<PropertyFormatter>();
 
             foreach (IQuery query in this._queries)
             {
                 ResultWrangler wrangler = query.GetResultWrangler();
-                if (wrangler != null) { formatterlist.AddRange(wrangler.GetAllResultFormatters()); }
+                if (wrangler != null) { formatterlist.AddRange(wrangler.GetAllPropertyFormatters()); }
             }
             return formatterlist;
         }

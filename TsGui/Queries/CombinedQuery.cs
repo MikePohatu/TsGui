@@ -57,8 +57,8 @@ namespace TsGui.Queries
         public override ResultWrangler ProcessQuery()
         {
             this._processingwrangler = this._processingwrangler.Clone();
-            this._processingwrangler.NewPropertyList();
-            this._processingwrangler.AddResultFormatters(this._querylist.GetAllResultFormatters());
+            this._processingwrangler.NewResult();
+            this._processingwrangler.AddPropertyFormatters(this._querylist.GetAllPropertyFormatters());
 
             string s = this._processingwrangler.GetString();
             if (this.ShouldIgnore(s) == false) { return this._processingwrangler; }

@@ -31,14 +31,14 @@ namespace TsGui.Queries
         public ValueOnlyQuery(XElement InputXml)
         {
             this._formatter.Input = InputXml.Value;
-            this._wrangler.NewPropertyList(); 
+            this._wrangler.NewResult(); 
             this._wrangler.AddResultFormatter(this._formatter);
         }
 
         public ValueOnlyQuery(string value)
         {
             this._formatter.Input = value;
-            this._wrangler.NewPropertyList();
+            this._wrangler.NewResult();
             this._wrangler.AddResultFormatter(this._formatter);
         }
 

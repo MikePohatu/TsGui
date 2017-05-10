@@ -141,7 +141,7 @@ namespace TsGui
             XElement x;
             XAttribute xattrib;
 
-            wrangler.NewPropertyList();
+            wrangler.NewResult();
 
             x = InputXml.Element("ID");
             if (x != null)
