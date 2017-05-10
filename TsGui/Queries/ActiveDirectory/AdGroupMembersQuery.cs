@@ -123,7 +123,7 @@ namespace TsGui.Queries.ActiveDirectory
                     {
                         rf = new PropertyFormatter(template.Value);
                         rf.Input = PropertyInterogation.GetStringFromPropertyValue(user, template.Key);
-                        wrangler.AddResultFormatter(rf);
+                        wrangler.AddPropertyFormatter(rf);
                     }
                 }
             }

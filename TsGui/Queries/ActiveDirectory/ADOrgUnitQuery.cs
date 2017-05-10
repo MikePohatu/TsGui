@@ -25,6 +25,7 @@ using TsGui.Authentication;
 using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using System.DirectoryServices.AccountManagement;
+using System.DirectoryServices;
 
 namespace TsGui.Queries.ActiveDirectory
 {
@@ -84,11 +85,16 @@ namespace TsGui.Queries.ActiveDirectory
             try
             {
                 if (this._processed == true ) { this._processingwrangler = this._processingwrangler.Clone(); }
-                using (GroupPrincipal group = GroupPrincipal.FindByIdentity(this._authenticator.Context, this._baseou))
+                using (DirectoryEntry de = new DirectoryEntry(this._baseou))
                 {
-                    if (group == null) { LoggerFacade.Warn("Group not found: " + this._baseou); }
-                    else
-                    { this.AddPropertiesToWrangler(this._processingwrangler, group.Members, this._propertyTemplates); }
+                    using (DirectorySearcher searcher = new DirectorySearcher(de, "(objectCategory=organizationalUnit)"))
+                    {
+                        searcher.SearchScope = SearchScope.Subtree;
+                        foreach (SearchResult result in searcher.FindAll())
+                        {
+                            //orgUnits.Add(res.Path);
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -110,7 +116,34 @@ namespace TsGui.Queries.ActiveDirectory
             this._linktargetoption?.RefreshAll();
         }
 
-        
+        private Result AddResult(DirectoryEntry baseou, List<KeyValuePair<string, XElement>> PropertyTemplates)
+        {
+            Result r = new Result();
+
+            if (PropertyTemplates.Count != 0)
+            {
+                foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
+                {
+                    PropertyFormatter pf = new PropertyFormatter(template.Value);
+                    pf.Input = baseou.Properties[pf.Name].ToString();
+                    r.Add(pf);
+                }
+            }
+
+            var childOUs = baseou.Children;
+            if (childOUs != null)
+            {
+                ResultWrangler wrangler = new ResultWrangler();
+                foreach (DirectoryEntry de in childOUs)
+                {
+                    wrangler.AddResult(this.AddResult(de, PropertyTemplates));
+                }
+                r.Branch = wrangler;
+            }
+            
+
+            return r;
+        }
 
         private void AddPropertiesToWrangler(ResultWrangler wrangler, PrincipalCollection objectlist, List<KeyValuePair<string, XElement>> PropertyTemplates)
         {
@@ -126,7 +159,7 @@ namespace TsGui.Queries.ActiveDirectory
                     {
                         rf = new PropertyFormatter(template.Value);
                         rf.Input = PropertyInterogation.GetStringFromPropertyValue(user, template.Key);
-                        wrangler.AddResultFormatter(rf);
+                        wrangler.AddPropertyFormatter(rf);
                     }
                 }
             }

@@ -102,7 +102,7 @@ namespace TsGui.Queries
                     this._formatter = new PropertyFormatter(x);
                 }
 
-                this._processingwrangler.AddResultFormatter(this._formatter);
+                this._processingwrangler.AddPropertyFormatter(this._formatter);
             }
         }
     }

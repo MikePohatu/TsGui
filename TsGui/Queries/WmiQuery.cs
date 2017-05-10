@@ -88,7 +88,7 @@ namespace TsGui.Queries
                     {
                         rf = new PropertyFormatter(template.Value);
                         rf.Input = m.GetPropertyValue(template.Key)?.ToString();
-                        Wrangler.AddResultFormatter(rf);
+                        Wrangler.AddPropertyFormatter(rf);
                     }
                 }
                 //if properties not set, add them all 
@@ -98,7 +98,7 @@ namespace TsGui.Queries
                     {
                         rf = new PropertyFormatter();
                         rf.Input = property.Value?.ToString();
-                        Wrangler.AddResultFormatter(rf);
+                        Wrangler.AddPropertyFormatter(rf);
                     }
                 }
             }

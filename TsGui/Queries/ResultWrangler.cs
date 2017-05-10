@@ -53,11 +53,20 @@ namespace TsGui.Queries
             this._results.Add(this._currentresultlist, new Result());
         }
 
+        public void AddResult(Result r)
+        {
+            if (r != null)
+            {
+                this._currentresultlist++;
+                this._results.Add(this._currentresultlist, r);
+            }
+        }
+
         /// <summary>
         /// Add a ResultFormatter to the ResultWrangler's current list 
         /// </summary>
         /// <param name="Formatter"></param>
-        public void AddResultFormatter(PropertyFormatter Formatter)
+        public void AddPropertyFormatter(PropertyFormatter Formatter)
         {
             Result result;
             this._results.TryGetValue(this._currentresultlist, out result);
@@ -67,7 +76,7 @@ namespace TsGui.Queries
         public void AddPropertyFormatters(List<PropertyFormatter> Formatters)
         {
             foreach (PropertyFormatter rf in Formatters)
-            { this.AddResultFormatter(rf); }
+            { this.AddPropertyFormatter(rf); }
         }
 
         public List<PropertyFormatter> GetAllPropertyFormatters()

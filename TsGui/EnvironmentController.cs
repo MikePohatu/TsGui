@@ -159,7 +159,7 @@ namespace TsGui
                     rf = new PropertyFormatter(x);
                 }
 
-                wrangler.AddResultFormatter(rf);
+                wrangler.AddPropertyFormatter(rf);
             }
 
             return wrangler;

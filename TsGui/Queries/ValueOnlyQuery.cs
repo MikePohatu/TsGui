@@ -32,14 +32,14 @@ namespace TsGui.Queries
         {
             this._formatter.Input = InputXml.Value;
             this._wrangler.NewResult(); 
-            this._wrangler.AddResultFormatter(this._formatter);
+            this._wrangler.AddPropertyFormatter(this._formatter);
         }
 
         public ValueOnlyQuery(string value)
         {
             this._formatter.Input = value;
             this._wrangler.NewResult();
-            this._wrangler.AddResultFormatter(this._formatter);
+            this._wrangler.AddPropertyFormatter(this._formatter);
         }
 
         public ResultWrangler GetResultWrangler()
