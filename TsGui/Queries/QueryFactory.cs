@@ -54,6 +54,8 @@ namespace TsGui.Queries
                         return GetLinkTrueFalseOnlyQuery(InputXml.Value, director, owner, true);
                     case "ADGroupMembers":
                         return new ADGroupMembersQuery(InputXml, director, owner);
+                    case "ADOU":
+                        return new ADOrgUnitQuery(InputXml, director, owner);
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
                 }

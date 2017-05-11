@@ -134,36 +134,36 @@ namespace TsGui
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        private ResultWrangler GetResultWranglerFromGuiOption_old(XElement InputXml)
-        {
-            ResultWrangler wrangler = new ResultWrangler();
-            PropertyFormatter rf;
-            XElement x;
-            XAttribute xattrib;
+        //private ResultWrangler GetResultWranglerFromGuiOption_old(XElement InputXml)
+        //{
+        //    ResultWrangler wrangler = new ResultWrangler();
+        //    PropertyFormatter rf;
+        //    XElement x;
+        //    XAttribute xattrib;
 
-            wrangler.NewResult();
+        //    wrangler.NewResult();
 
-            x = InputXml.Element("ID");
-            if (x != null)
-            {
-                //check for new xml syntax. If the name attribute doesn't exist, setup for the 
-                //legacy layout.
-                xattrib = x.Attribute("Name");
-                if (xattrib == null)
-                {
-                    rf = new PropertyFormatter();
-                    rf.Name = x.Value;
-                }
-                else
-                {
-                    rf = new PropertyFormatter(x);
-                }
+        //    x = InputXml.Element("ID");
+        //    if (x != null)
+        //    {
+        //        //check for new xml syntax. If the name attribute doesn't exist, setup for the 
+        //        //legacy layout.
+        //        xattrib = x.Attribute("Name");
+        //        if (xattrib == null)
+        //        {
+        //            rf = new PropertyFormatter();
+        //            rf.Name = x.Value;
+        //        }
+        //        else
+        //        {
+        //            rf = new PropertyFormatter(x);
+        //        }
 
-                wrangler.AddPropertyFormatter(rf);
-            }
+        //        wrangler.AddPropertyFormatter(rf);
+        //    }
 
-            return wrangler;
-        }
+        //    return wrangler;
+        //}
 
         //release the output connectors.
         public void Release()

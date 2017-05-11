@@ -33,6 +33,7 @@ namespace TsGui.Authentication.ActiveDirectory
         public AuthState State { get { return this._state; } }
         public IPassword PasswordSource { get; set; }
         public IUsername UsernameSource { get; set; }
+        public string Domain { get { return this._domain; } }
         public string AuthID { get; set; }
         public List<string> RequiredGroups { get; set; } 
 

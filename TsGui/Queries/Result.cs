@@ -17,12 +17,13 @@ namespace TsGui.Queries
     public class Result
     {
         public List<PropertyFormatter> Properties { get; set; }
-        public ResultWrangler Branch { get; set; }
+        public List<Result> SubResults { get; set; }
         public PropertyFormatter KeyProperty { get; set; }
 
         public Result()
         {
             this.Properties = new List<PropertyFormatter>();
+            this.SubResults = new List<Result>();
         }
 
         public void Add(PropertyFormatter newpropertyformatter)
@@ -35,7 +36,8 @@ namespace TsGui.Queries
         {
             List<PropertyFormatter> l = new List<PropertyFormatter>();
             l.AddRange(this.Properties);
-            l.AddRange(Branch.GetAllPropertyFormatters());
+            foreach (Result r in this.SubResults)
+            { l.AddRange(r.GetAllPropertyFormatters()); }
             return l;
         }
     }

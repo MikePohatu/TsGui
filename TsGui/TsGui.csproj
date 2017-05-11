@@ -101,6 +101,7 @@
     <Compile Include="Queries\PropertyInterogation.cs" />
     <Compile Include="Queries\QueryHelpers.cs" />
     <Compile Include="Queries\Result.cs" />
+    <Compile Include="Queries\Trees\KeyValueTreeNode.cs" />
     <Compile Include="Validation\StringMatching\BaseMatchingRule.cs" />
     <Compile Include="Validation\StringMatching\Characters.cs" />
     <Compile Include="Validation\StringMatching\MatchingRuleLibrary.cs" />

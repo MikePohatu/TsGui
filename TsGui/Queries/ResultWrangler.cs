@@ -16,24 +16,19 @@
 // ResultWrangler.cs - deals with multiple results e.g. concatenating, listing etc
 
 using System.Collections.Generic;
+using TsGui.Queries.Trees;
 
 namespace TsGui.Queries
 {
     public class ResultWrangler
     {
-        //two dictionaries, one for the keys i.e. the first value, and another for the values as a list. 
-        //the two have matching keys to link the keys dictionary to the lists dictionary. 
-        //private Dictionary<int,List<PropertyFormatter>> _valuelists = new Dictionary<int, List<PropertyFormatter>>();
-        //private Dictionary<int, PropertyFormatter> _keyvalues = new Dictionary<int, PropertyFormatter>();
-        //private Dictionary<int, ResultWrangler> _branches = new Dictionary<int, ResultWrangler>();
+
         private Dictionary<int, Result> _results = new Dictionary<int, Result>();
 
-        //the following two variables track the lists and position in the lists.
-        private int _currentresultlist;         //current result in the lists
+        private int _currentresultlist;         //current working result in the dictionary
 
         public string Separator { get; set; }
         public bool IncludeNullValues { get; set; }
-
 
         public ResultWrangler()
         {
@@ -42,14 +37,20 @@ namespace TsGui.Queries
             this._currentresultlist = -1;
         }
 
+        public List<Result> GetResults()
+        {
+            List<Result> rlist = new List<Result>();
+            foreach (Result r in this._results.Values)
+            { rlist.Add(r); }
+            return rlist;
+        }
 
         /// <summary>
-        /// Create a new List<ResultFormatter> and set it as current
+        /// Create a new List<PropertyFormatter> and set it as current
         /// </summary>
         public void NewResult()
         {
             this._currentresultlist++;
-
             this._results.Add(this._currentresultlist, new Result());
         }
 
@@ -63,7 +64,7 @@ namespace TsGui.Queries
         }
 
         /// <summary>
-        /// Add a ResultFormatter to the ResultWrangler's current list 
+        /// Add a PropertyFormatter to the ResultWrangler's current list 
         /// </summary>
         /// <param name="Formatter"></param>
         public void AddPropertyFormatter(PropertyFormatter Formatter)
@@ -90,21 +91,48 @@ namespace TsGui.Queries
             return l;
         }
 
+        public List<KeyValueTreeNode> GetKeyValueTree()
+        {
+            if (_currentresultlist == -1) { return null; }
+            List<KeyValueTreeNode> tree = new List<KeyValueTreeNode>();
+
+            foreach (Result r in this._results.Values)
+            {
+                tree.Add(CreateKeyValueTreeNode(r));
+            }
+
+            return tree;
+        }
+
+        private KeyValueTreeNode CreateKeyValueTreeNode(Result result)
+        {
+            KeyValueTreeNode newnode = new KeyValueTreeNode();
+            string value = result.KeyProperty.Value;
+            string concatlist = this.ConcatenatePropertyValues(result.Properties, Separator);
+
+            newnode.Value = new KeyValuePair<string, string>(value, concatlist);
+            foreach (Result subresult in result.SubResults)
+            {
+                newnode.Nodes.Add(CreateKeyValueTreeNode(subresult));
+            }
+            return newnode;
+        } 
+
         /// <summary>
-        /// Concatenate ResultFormatter values into a single string
+        /// Concatenate PropertyFormatter values into a single string
         /// </summary>
-        /// <param name="Results"></param>
+        /// <param name="properties"></param>
         /// <param name="Separator"></param>
         /// <returns></returns>
-        public string ConcatenateResultValues(List<PropertyFormatter> Results, string Separator)
+        public string ConcatenatePropertyValues(List<PropertyFormatter> properties, string Separator)
         {
             string s = "";
             string tempval = null;
             int i = 0;
 
-            foreach (PropertyFormatter result in Results)
+            foreach (PropertyFormatter property in properties)
             {
-                tempval = result.Value;
+                tempval = property.Value;
 
                 if (this.IncludeNullValues || !string.IsNullOrEmpty(tempval))
                 {
@@ -127,7 +155,6 @@ namespace TsGui.Queries
         { return this.GetDictionary(this.Separator); }
 
 
-
         /// <summary>
         /// Get the _results list in a list of Key/Value pair format. First item in the list is the key, remainder is 
         /// concatenated with the separator set in the wrangler object 
@@ -141,6 +168,7 @@ namespace TsGui.Queries
         { return this.GetString(this.Separator); }
 
         public new string ToString() { return this.GetString(); }
+
         /// <summary>
         /// Get the _results list in a list of Key/Value pair format. First item in the list is the key, remainder is 
         /// concatenated with the specified separator
@@ -157,7 +185,7 @@ namespace TsGui.Queries
             foreach (Result r in this._results.Values)
             {
                 string value = r.KeyProperty.Value;
-                string concatlist = this.ConcatenateResultValues(r.Properties, Separator);
+                string concatlist = this.ConcatenatePropertyValues(r.Properties, Separator);
 
                 returnkvlist.Add(new KeyValuePair<string,string>( value, concatlist));
             }
@@ -181,7 +209,7 @@ namespace TsGui.Queries
             foreach (Result r in this._results.Values)
             {
                 string value = r.KeyProperty.Value;
-                string concatlist = this.ConcatenateResultValues(r.Properties, Separator); 
+                string concatlist = this.ConcatenatePropertyValues(r.Properties, Separator); 
 
                 returndic.Add(value, concatlist);
             }
@@ -207,7 +235,7 @@ namespace TsGui.Queries
                 tempRFListMain.AddRange(r.Properties);
             }
 
-            return this.ConcatenateResultValues(tempRFListMain, Separator);
+            return this.ConcatenatePropertyValues(tempRFListMain, Separator);
         }
 
         /// <summary>

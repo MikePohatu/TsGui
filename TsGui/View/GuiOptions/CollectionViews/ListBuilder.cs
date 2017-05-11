@@ -19,7 +19,7 @@ using System.Windows.Data;
 using System.Collections.Generic;
 using TsGui.Queries;
 using TsGui.Diagnostics.Logging;
-using TsGui.Grouping;
+using TsGui.Queries.Trees;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -61,11 +61,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
                     ResultWrangler wrangler = qlist.GetResultWrangler();
                     if (wrangler != null)
                     {
-                        List<KeyValuePair<string, string>> kvlist = wrangler.GetKeyValueList();
-                        foreach (KeyValuePair<string, string> kv in kvlist)
+                        List<KeyValueTreeNode> kvlist = wrangler.GetKeyValueTree();
+                        foreach (KeyValueTreeNode node in kvlist)
                         {
-                            ListItem newoption = new ListItem(kv.Key, kv.Value, this._parent.ControlFormatting, this._parent, this._director);
-                            if (string.IsNullOrWhiteSpace(newoption.Text) == false) { newlist.Add(newoption); } //ignore items with empty text 
+                            //ListItem newoption = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent, this._director);
+                            newlist.Add(this.CreateItem(node));
                         }
                     }
                     i++;
@@ -112,6 +112,16 @@ namespace TsGui.View.GuiOptions.CollectionViews
                     this.Add(newlist);
                 }
             }
+        }
+
+        public ListItem CreateItem(KeyValueTreeNode node)
+        {
+            ListItem newitem = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent, this._director);
+            foreach (KeyValueTreeNode subnode in node.Nodes)
+            {
+                newitem.ItemsList.Add(this.CreateItem(subnode));
+            }
+            return newitem;
         }
     }
 }

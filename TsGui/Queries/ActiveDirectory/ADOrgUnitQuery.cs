@@ -85,21 +85,16 @@ namespace TsGui.Queries.ActiveDirectory
             try
             {
                 if (this._processed == true ) { this._processingwrangler = this._processingwrangler.Clone(); }
-                using (DirectoryEntry de = new DirectoryEntry(this._baseou))
+                string fullbaseou = "LDAP://" + this._authenticator.Domain + "/" + this._baseou;
+                using (DirectoryEntry de = new DirectoryEntry(fullbaseou, this._authenticator.UsernameSource.Username,this._authenticator.PasswordSource.Password))
                 {
-                    using (DirectorySearcher searcher = new DirectorySearcher(de, "(objectCategory=organizationalUnit)"))
-                    {
-                        searcher.SearchScope = SearchScope.Subtree;
-                        foreach (SearchResult result in searcher.FindAll())
-                        {
-                            //orgUnits.Add(res.Path);
-                        }
-                    }
+                    this._processingwrangler.AddResult(this.QueryDirectoryEntry(de));
                 }
             }
             catch (Exception e)
             {
-                throw new TsGuiKnownException("Active Directory group query caused an error:" + Environment.NewLine + this._baseou, e.Message);
+                //throw new TsGuiKnownException("Active Directory OU query caused an error", e.Message);
+                LoggerFacade.Warn("Active Directory OU query caused an error: " + e.Message);
             }
 
             this._processed = true;
@@ -116,53 +111,60 @@ namespace TsGui.Queries.ActiveDirectory
             this._linktargetoption?.RefreshAll();
         }
 
-        private Result AddResult(DirectoryEntry baseou, List<KeyValuePair<string, XElement>> PropertyTemplates)
+        private Result QueryDirectoryEntry(DirectoryEntry baseou)
         {
-            Result r = new Result();
+            Result returnresult = this.CreateBaseResult(baseou, this._propertyTemplates);
 
-            if (PropertyTemplates.Count != 0)
+            //now query for sub OUs
+            using (DirectorySearcher searcher = new DirectorySearcher(baseou, "(objectCategory=organizationalUnit)"))
             {
-                foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
+                searcher.SearchScope = SearchScope.OneLevel;
+                foreach (SearchResult searchresult in searcher.FindAll())
                 {
-                    PropertyFormatter pf = new PropertyFormatter(template.Value);
-                    pf.Input = baseou.Properties[pf.Name].ToString();
-                    r.Add(pf);
-                }
-            }
-
-            var childOUs = baseou.Children;
-            if (childOUs != null)
-            {
-                ResultWrangler wrangler = new ResultWrangler();
-                foreach (DirectoryEntry de in childOUs)
-                {
-                    wrangler.AddResult(this.AddResult(de, PropertyTemplates));
-                }
-                r.Branch = wrangler;
-            }
-            
-
-            return r;
-        }
-
-        private void AddPropertiesToWrangler(ResultWrangler wrangler, PrincipalCollection objectlist, List<KeyValuePair<string, XElement>> PropertyTemplates)
-        {
-            foreach (UserPrincipal user in objectlist)
-            {
-                wrangler.NewResult();
-                PropertyFormatter rf = null;
-
-                //if properties have been specified in the xml, query them directly in order
-                if (PropertyTemplates.Count != 0)
-                {
-                    foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
+                    using (DirectoryEntry subde = searchresult.GetDirectoryEntry())
                     {
-                        rf = new PropertyFormatter(template.Value);
-                        rf.Input = PropertyInterogation.GetStringFromPropertyValue(user, template.Key);
-                        wrangler.AddPropertyFormatter(rf);
+                        Result subresult = this.QueryDirectoryEntry(subde);
+                        returnresult.SubResults.Add(subresult);
                     }
                 }
             }
+            return returnresult;
+        }
+
+        private Result CreateBaseResult(DirectoryEntry baseou, List<KeyValuePair<string, XElement>> propertytemplates)
+        {
+            Result r = new Result();
+            
+            if (propertytemplates.Count != 0)
+            {
+                foreach (KeyValuePair<string, XElement> template in propertytemplates)
+                {
+                    PropertyFormatter pf = new PropertyFormatter(template.Value);
+                    if (baseou.Properties[pf.Name] != null && baseou.Properties[pf.Name].Count > 0)
+                    {
+                        pf.Input = baseou.Properties[pf.Name][0].ToString();
+                        r.Add(pf);
+                    }
+                        
+                }
+            }
+            else
+            {
+                foreach (PropertyCollection pc in baseou.Properties)
+                {
+                    if (pc.Count > 0)
+                    {
+                        foreach (string s in pc.Values)
+                        {
+                            PropertyFormatter pf = new PropertyFormatter();
+                            pf.Input = s;
+                            r.Add(pf);
+                        }
+                    }                   
+                }
+            }
+
+            return r;
         }
     }
 }
