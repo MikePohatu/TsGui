@@ -13,58 +13,13 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-using System;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using System.Xml.Linq;
 
-using TsGui.Diagnostics;
 
 namespace TsGui.Validation
 {
     public static class ResultValidator
     {
-        /// <summary>
-        /// Check xml value against ignore strings. Return true if the value should be ignored
-        /// </summary>
-        /// <param name="InputXml"></param>
-        /// <param name="Value"></param>
-        /// <returns></returns>
-        //public static bool ShouldIgnore(XElement InputXml, string Value)
-        //{
-        //    if (Value == null) { return true; }
-        //    foreach (XElement xignore in InputXml.Elements("Ignore"))
-        //    {
-        //        //first check for empty value in the ignore entry i.e. it has been left in 
-        //        //the file but has no use
-        //        if (string.IsNullOrEmpty(xignore.Value.Trim())) { continue; }
-
-        //        bool toignore = false;
-        //        XAttribute attrib = xignore.Attribute("SearchType");
-                
-        //        if (attrib != null)
-        //        {
-        //            string s = xignore.Attribute("SearchType").Value;
-        //            //run the correct search type. default is startswith
-        //            if (s == "EndsWith")
-        //            { toignore = Value.EndsWith(xignore.Value, StringComparison.OrdinalIgnoreCase); }
-        //            else if (s == "Contains")
-        //            { toignore = Value.ToUpper().Contains(xignore.Value.ToUpper()); }
-        //            else if (s == "Equals")
-        //            { toignore = Value.Equals(xignore.Value, StringComparison.OrdinalIgnoreCase); }
-        //            else
-        //            { toignore = Value.StartsWith(xignore.Value, StringComparison.OrdinalIgnoreCase); }
-        //        }
-        //        else
-        //        { toignore = Value.StartsWith(xignore.Value, StringComparison.OrdinalIgnoreCase); }
-
-        //        //Debug.WriteLine("toignore value: " + toignore);
-        //        if (toignore) { return true; }
-        //    }
-
-        //    //match hasn't been found. Return false i.e. don't ignore
-        //    return false;
-        //}
 
         /// <summary>
         /// Truncate a string to the specified length
@@ -165,103 +120,6 @@ namespace TsGui.Validation
             if (StringValue.Length >= MinLength) { return true; }
             else { return false; }
         } 
-
-        //public static bool DoesRegexMatch(string Input, string Pattern, bool IsCaseSensitvie)
-        //{
-        //    try
-        //    {
-        //        if (IsCaseSensitvie == true) { return Regex.IsMatch(Input, Pattern); }
-        //        else { return Regex.IsMatch(Input, Pattern, RegexOptions.IgnoreCase); }
-        //    }
-        //    catch (Exception e) { throw new TsGuiKnownException("Error processing RegEx: " + Pattern,e.Message); }
-        //}
-
-        //public static bool IsNumeric(string Input)
-        //{
-        //    double inputnum;
-        //    if (!double.TryParse(Input, out inputnum)) { return false; }
-        //    else { return true; }
-        //}
-
-        //public static bool DoesNumberComparisonMatch(string Input, string RuleContent, StringMatchingRuleType Type)
-        //{
-        //    double inputnum;
-        //    double rulenum;
-
-        //    if (!double.TryParse(Input,out inputnum)) { return false; }
-        //    if (!double.TryParse(RuleContent, out rulenum)) { return false; }
-
-        //    if (Type == StringMatchingRuleType.LessThan)
-        //    { return inputnum < rulenum; }
-        //    else if (Type == StringMatchingRuleType.LessThanOrEqualTo)
-        //    { return inputnum <= rulenum; }
-        //    else if (Type == StringMatchingRuleType.GreaterThan)
-        //    { return inputnum > rulenum; }
-        //    else if (Type == StringMatchingRuleType.GreaterThanOrEqualTo)
-        //    { return inputnum >= rulenum; }
-        //    else
-        //    { throw new ArgumentException("Invalid StringValidationRuleType passed to StringNumberCompare"); }
-
-        //}
-
-        //public static bool DoesStringMatchRule(StringMatchingRule Rule, string Input)
-        //{
-        //    bool result = false;
-        //    string rulestring = Rule.Content;
-        //    string inputstring = Input;
-
-        //    if (inputstring == null)
-        //    {
-        //        if (rulestring?.ToUpper() == "*NULL") { return true; }
-        //        else { return false; }
-        //    }
-
-        //    if (Rule.IsCaseSensitive == false)
-        //    {
-        //        rulestring = rulestring?.ToUpper();
-        //        inputstring = inputstring.ToUpper();
-        //    }
-
-        //    switch (Rule.Type)
-        //    {
-        //        case StringMatchingRuleType.Characters:
-        //            result = DoesStringContainCharacters(Input, Rule.Content, Rule.IsCaseSensitive);
-        //            break;
-        //        case StringMatchingRuleType.Contains:
-        //            result = inputstring.Contains(rulestring);
-        //            break;
-        //        case StringMatchingRuleType.EndsWith:
-        //            result = inputstring.EndsWith(rulestring);
-        //            break;
-        //        case StringMatchingRuleType.StartsWith:
-        //            result = inputstring.StartsWith(rulestring);
-        //            break;
-        //        case StringMatchingRuleType.RegEx:
-        //            result = DoesRegexMatch(Input, Rule.Content, Rule.IsCaseSensitive);
-        //            break;
-        //        case StringMatchingRuleType.Equals:
-        //            result = inputstring.Equals(rulestring);
-        //            break;
-        //        case StringMatchingRuleType.LessThan:
-        //            result = DoesNumberComparisonMatch(Input, Rule.Content,Rule.Type);
-        //            break;
-        //        case StringMatchingRuleType.GreaterThan:
-        //            result = DoesNumberComparisonMatch(Input,Rule.Content, Rule.Type);
-        //            break;
-        //        case StringMatchingRuleType.LessThanOrEqualTo:
-        //            result = DoesNumberComparisonMatch(Input, Rule.Content, Rule.Type);
-        //            break;
-        //        case StringMatchingRuleType.GreaterThanOrEqualTo:
-        //            result = DoesNumberComparisonMatch(Input, Rule.Content, Rule.Type);
-        //            break;
-        //        case StringMatchingRuleType.IsNumeric:
-        //            result = IsNumeric(Input);
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //    return result;
-        //}
 
         public static bool OptionsValid(List<IValidationGuiOption> OptionList)
         {
