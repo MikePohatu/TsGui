@@ -13,14 +13,12 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-using System.Security;
-
 namespace TsGui.Authentication
 {
     public interface IAuthenticator
     {
-        //SecureString SecurePassword { get; set; }
-        //string Username { get; set; }
+        event AuthValueChanged AuthStateChanged;
+        AuthState State { get; }
         string AuthID { get; }
         AuthState Authenticate();
         IPassword PasswordSource { get; set; }
