@@ -57,6 +57,7 @@
     <Compile Include="Authentication\ActiveDirectoryAuthenticatorTests.cs" />
     <Compile Include="Authentication\ActiveDirectoryMethodsTests.cs" />
     <Compile Include="CalculatorTests.cs" />
+    <Compile Include="Queries\WebServices\WebServiceQueryTests.cs" />
     <Compile Include="TestDirector.cs" />
     <Compile Include="Validation\MatchingRuleTests.cs" />
     <Compile Include="WmiQueryTestArgs.cs" />
