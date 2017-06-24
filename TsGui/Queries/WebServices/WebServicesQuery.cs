@@ -38,7 +38,7 @@ namespace TsGui.Queries.WebServices
         private ILinkTarget _linktargetoption;
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private IAuthenticator _authenticator;
-        
+
         public IAuthenticator Authenticator
         {
             get { return this._authenticator; }
@@ -74,72 +74,26 @@ namespace TsGui.Queries.WebServices
             foreach (XElement x in InputXml.Elements("Parameter"))
             {
                 XAttribute xa = x.Attribute("Name");
-                this._parameters.Add(new KeyValuePair<string, string>(xa.Value,x.Value));
+                if (xa == null) { throw new TsGuiKnownException("Missing Name attribute in XML: " + x.ToString(), ""); }
+                this._parameters.Add(new KeyValuePair<string, string>(xa.Value, x.Value));
             }
         }
 
         public override ResultWrangler ProcessQuery()
         {
-            if (this._authenticator?.State != AuthState.Authorised)
-            {
-                this._returnwrangler = null;
-                return null;
-            }
-
-            string methodparameters = null;
-            foreach (KeyValuePair<string, string> param in this._parameters)
-            {
-                if (string.IsNullOrWhiteSpace(methodparameters)) { methodparameters = param.Key + "=" + param.Value; }
-                else { methodparameters = methodparameters + "&" + param.Key + "=" + param.Value; }
-            }
-
-            try
-            {
-                if (this._processed == true ) { this._processingwrangler = this._processingwrangler.Clone(); }
-                //to add code
-
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(this._serviceurl + @"\" + this._method);
-
-                req.Method = "POST";
-                //req.ContentType = "application/x-www-form-urlencoded";
-
-                byte[] byteArray = Encoding.UTF8.GetBytes(methodparameters);
-                req.ContentLength = byteArray.Length;
-                Stream dataStream = req.GetRequestStream();
-                dataStream.Write(byteArray, 0, byteArray.Length);
-                dataStream.Close();
-
-                try
-                {
-                    HttpWebResponse response = (HttpWebResponse)req.GetResponse();
-                    dataStream = response.GetResponseStream();
-                    StreamReader SR = new StreamReader(dataStream, Encoding.Unicode);
-                    this.Response = SR.ReadToEnd();
-                    response.Close();
-                    dataStream.Close();
-                    SR.Close();
-                    req.Abort();
-                }
-                catch { req.Abort(); }
+            //if (this._authenticator?.State != AuthState.Authorised)
+            //{
+            //    this._returnwrangler = null;
+            //    return null;
+            //}
 
 
-                //HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(this._serviceurl + @"\" + this._method);
-
-                //request.Method = "POST";
-                ////request.Headers
-                ////request.ContentType = "application/xml";
-                //HttpWebResponse webResponse = (HttpWebResponse)request.GetResponse();
-
-                //using (WebResponse response = request.GetResponse())
-                //{
-                //    this.Response = response.ContentType;
-                //}
-                Debug.WriteLine("Response: " + this.Response);
-            }
-            catch (Exception e)
-            {
-                throw new TsGuiKnownException("Web Services query caused an error:" + Environment.NewLine, e.Message);
-            }
+            //try
+            //{
+            if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
+            //to add code
+            this.Response = this.CallWebMethod();
+            Debug.WriteLine(this.Response);
 
             this._processed = true;
             if (this.ShouldIgnore(this._processingwrangler.GetString()) == false)
@@ -153,6 +107,51 @@ namespace TsGui.Queries.WebServices
         {
             this.ProcessQuery();
             this._linktargetoption?.RefreshAll();
+        }
+
+        public byte[] GetParametersByteArray(List<KeyValuePair<string, string>> parameterlist)
+        {
+            string s = "";
+            foreach (KeyValuePair<string, string> param in parameterlist)
+            {
+                if (string.IsNullOrWhiteSpace(s)) { s = param.Key + "=" + param.Value; }
+                else { s = s + "&" + param.Key + "=" + param.Value; }
+            }
+            Debug.WriteLine(s);
+            UTF8Encoding encoding = new UTF8Encoding();
+            return encoding.GetBytes(s);
+        }
+
+        private string CallWebMethod()
+        {
+            byte[] requestData = this.GetParametersByteArray(this._parameters);
+            //Debug.WriteLine(requestData);
+
+            string uri = this._serviceurl + "/" + this._method;
+            HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(uri);
+            httpRequest.Method = "POST";
+            httpRequest.KeepAlive = false;
+            httpRequest.ContentType = "application/x-www-form-urlencoded";
+            httpRequest.ContentLength = requestData.Length;
+            //httpRequest.Timeout = 30000;
+            HttpWebResponse httpResponse = null;
+            string response = string.Empty;
+            try
+            {
+                httpRequest.GetRequestStream().Write(requestData, 0, requestData.Length);
+                httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                Stream baseStream = httpResponse.GetResponseStream();
+                StreamReader responseStreamReader = new StreamReader(baseStream);
+                response = responseStreamReader.ReadToEnd();
+                responseStreamReader.Close();
+            }
+            catch (WebException e)
+            {
+                //const string CONST_ERROR_FORMAT = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Exception><{0}Error>{1}<InnerException>{2}</InnerException></{0}Error></Exception>";
+                //response = string.Format(CONST_ERROR_FORMAT, this._method, e.ToString(), (e.InnerException != null ? e.InnerException.ToString() : string.Empty));
+                throw new TsGuiKnownException("Web error", "Web error");
+            }
+            return response;
         }
     }
 }

@@ -23,16 +23,19 @@ namespace TsGui.Tests
     public class WebServiceQueryTests
     {
         [Test]
-        [TestCase("GetCMDeviceCollections", new string[]{"secret", "a4f6accb-0746-4c94-a9d3-e700ae8109e0", "filter", ""}, ExpectedResult = "stuff")]       
+        [TestCase("GetCMDiscoveredUsers", new string[]{"secret", "a4f6accb-0746-4c94-a9d3-e700ae8109e0"}, 
+            ExpectedResult = @"<?xml version=""1.0"" encoding=""UTF - 8""?>< ArrayOfCMUser xmlns = ""http://www.scconfigmgr.com"" xmlns: xsi = ""http://www.w3.org/2001/XMLSchema-instance"" xmlns: xsd = ""http://www.w3.org/2001/XMLSchema"" /> ")]       
         public string BasicWebServiceTest(string Method, string[] Parameters)
         {
-            XElement conf = new XElement("Query");
+            XElement conf = new XElement("Query");            
+            conf.Add(new XElement("ServiceURL", "http://sccm/ConfigMgrWebService/ConfigMgr.asmx"));
             conf.Add(new XElement("Method", Method));
             conf.Add(new XAttribute("AuthID", "TestCase"));
             for (int i=0;i<Parameters.GetLength(0);i=i+2)
             {
                 XElement x = new XElement("Parameter", Parameters[i+1]);
-                x.Add(new XAttribute("Name", Parameters[i]));               
+                x.Add(new XAttribute("Name", Parameters[i]));
+                conf.Add(x);              
             }
 
             TestDirector director = new TestDirector();

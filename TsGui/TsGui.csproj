@@ -101,6 +101,7 @@
     <Compile Include="Queries\QueryHelpers.cs" />
     <Compile Include="Queries\Result.cs" />
     <Compile Include="Queries\Trees\KeyValueTreeNode.cs" />
+    <Compile Include="Queries\WebServices\WebServiceDiscovery.cs" />
     <Compile Include="Queries\WebServices\WebServicesQuery.cs" />
     <Compile Include="Validation\StringMatching\BaseMatchingRule.cs" />
     <Compile Include="Validation\StringMatching\Characters.cs" />
@@ -453,7 +454,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
