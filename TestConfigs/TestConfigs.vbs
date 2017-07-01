@@ -1,7 +1,7 @@
 option explicit
 
 Dim newExe: newExe = "TsGui.exe"
-Dim referenceExe: referenceExe = "TsGui.0.9.6.3.exe"
+Dim referenceExe: referenceExe = "TsGui.1.0.0.0.exe"
 
 Dim objShell: Set objShell = CreateObject("Wscript.Shell")
 Dim objFSO: Set objFSO = CreateObject("Scripting.FileSystemObject")
@@ -24,9 +24,9 @@ For Each file In objScriptParentFolder.Files
 		wscript.echo file.name
 		objFSO.CopyFile file.path,file.ParentFolder & "\\Config.xml"
 		objShell.Run strScriptParentFolder & "\\" & newExe
-		if (intFileNumber < 13) then
+		'if (intFileNumber < 13) then
 			objShell.Run strScriptParentFolder & "\\" & referenceExe
-		end if
+		'end if
 		WScript.Echo "Press [ENTER] to continue..."
 		' Read dummy input. This call will not return until [ENTER] is pressed.
 		WScript.StdIn.ReadLine
