@@ -79,6 +79,7 @@
     <Compile Include="Arguments.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="IDirector.cs" />
+    <Compile Include="Queries\GuiVariableQuery.cs" />
     <Compile Include="Queries\IfElseQuery.cs" />
     <Compile Include="Validation\StringMatching\BaseMatchingRule.cs" />
     <Compile Include="Validation\StringMatching\Characters.cs" />
