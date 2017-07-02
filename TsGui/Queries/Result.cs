@@ -35,6 +35,7 @@ namespace TsGui.Queries
         public List<PropertyFormatter> GetAllPropertyFormatters()
         {
             List<PropertyFormatter> l = new List<PropertyFormatter>();
+            if (this.KeyProperty != null) { l.Add(this.KeyProperty); }
             l.AddRange(this.Properties);
             foreach (Result r in this.SubResults)
             { l.AddRange(r.GetAllPropertyFormatters()); }
