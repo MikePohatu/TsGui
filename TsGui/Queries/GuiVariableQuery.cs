@@ -24,7 +24,7 @@ namespace TsGui.Queries
 {
     public class GuiVariableQuery: BaseQuery, ILinkingEventHandler
     {
-        private ResultFormatter _formatter;
+        private PropertyFormatter _formatter;
         private IDirector _director;
         private ILinkTarget _linktargetoption;
         private List<IOption> _options = new List<IOption>();
@@ -34,43 +34,46 @@ namespace TsGui.Queries
             this._linktargetoption = owner;
             this._director = director;            
             this.LoadXml(inputxml);
-            this.GetExistingOptions();
-            this._director.OptionLibrary.OptionAdded += this.OnOptionAddedToLibrary;
-            this.ProcessQuery();
+            this.AddExistingOptions();      //add and register any existing options
+            this._director.OptionLibrary.OptionAdded += this.OnOptionAddedToLibrary; //register to get any new options
+            this.ProcessAndRefresh();
         }
 
-        private void GetExistingOptions()
+        private void AddExistingOptions()
         {
             foreach (IOption opt in this._director.OptionLibrary.Options)
             {
                 if (opt.VariableName.Equals(this._formatter.Name,StringComparison.OrdinalIgnoreCase))
                 {
-                    this._options.Add(opt);
-                    opt.ValueChanged += this.OnLinkedSourceValueChanged;
+                    this.AddOption(opt);
                 }
             }
         }
 
-        //get and environmental variable from the list of relevant options
-        public string GetVariableValue(string variablename)
+        //get the current variable value from the list of relevant options
+        private string GetVariableValue()
         {
-            if (!string.IsNullOrEmpty(variablename))
+            if (!string.IsNullOrEmpty(this._formatter.Name))
             {
                 string s = string.Empty;
                 foreach (IOption opt in this._options)
                 {
                     if (opt.IsActive == true) { s = opt.CurrentValue; }
                 }
-                //add code
                 return s;
             }
             else { return null; }
         }
 
-        public void OnLinkedSourceValueChanged()
+        private void ProcessAndRefresh()
         {
             this.ProcessQuery();
             this._linktargetoption?.RefreshValue();
+        }
+
+        public void OnLinkedSourceValueChanged()
+        {
+            this.ProcessAndRefresh();
         }
 
         /// <summary>
@@ -80,7 +83,7 @@ namespace TsGui.Queries
         /// <returns></returns>
         public override ResultWrangler ProcessQuery()
         {
-            this._formatter.Input = this.GetVariableValue(this._formatter.Name.Trim());
+            this._formatter.Input = this.GetVariableValue();
             this._processed = true;
             return this.SetReturnWrangler();         
         }
@@ -97,9 +100,15 @@ namespace TsGui.Queries
         {
             if (option.VariableName.Equals(this._formatter.Name,StringComparison.OrdinalIgnoreCase))
             {
-                this._options.Add(option);
-                option.ValueChanged += this.OnLinkedSourceValueChanged;
+                this.AddOption(option);
+                this.ProcessAndRefresh();
             }
+        }
+
+        private void AddOption(IOption option)
+        {
+            this._options.Add(option);
+            option.ValueChanged += this.OnLinkedSourceValueChanged;
         }
 
         private new void LoadXml(XElement InputXml)
@@ -109,7 +118,7 @@ namespace TsGui.Queries
             XElement x;
             XAttribute xattrib;
 
-            this._processingwrangler.NewSubList();
+            this._processingwrangler.NewResult();
             
             x = InputXml.Element("Variable");
             if (x != null)
@@ -119,15 +128,15 @@ namespace TsGui.Queries
                 xattrib = x.Attribute("Name");
                 if (xattrib == null)
                 {
-                    this._formatter = new ResultFormatter();
+                    this._formatter = new PropertyFormatter();
                     this._formatter.Name = x.Value;
                 }
                 else
                 {
-                    this._formatter = new ResultFormatter(x);
+                    this._formatter = new PropertyFormatter(x);
                 }
 
-                this._processingwrangler.AddResultFormatter(this._formatter);
+                this._processingwrangler.AddPropertyFormatter(this._formatter);
             }
         }
     }
