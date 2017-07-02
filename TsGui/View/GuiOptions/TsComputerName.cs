@@ -72,6 +72,7 @@ namespace TsGui.View.GuiOptions
             assettag.Add(new XAttribute("Type", "Wmi"));
             assettag.Add(new XElement("Wql", "SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure"));
             assettag.Add(new XElement("Ignore", "No Asset Tag"));
+            assettag.Add(new XElement("Ignore", "NoAssetInformat"));
 
             XElement serial = new XElement("Query");
             serial.Add(new XAttribute("Type", "Wmi"));

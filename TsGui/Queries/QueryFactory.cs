@@ -36,6 +36,8 @@ namespace TsGui.Queries
                 {
                     case "Wmi":
                         return new WmiQuery(InputXml);
+                    case "GuiVariable":
+                        return new GuiVariableQuery(InputXml, director, owner);
                     case "EnvironmentVariable":
                         return new EnvironmentVariableQuery(InputXml, director.EnvironmentController.SccmConnector);
                     case "OptionValue":
