@@ -41,11 +41,11 @@ namespace TsGui.Queries
 
         private void AddExistingOptions()
         {
-            foreach (IOption opt in this._director.OptionLibrary.Options)
+            foreach (IOption option in this._director.OptionLibrary.Options)
             {
-                if (opt.VariableName.Equals(this._formatter.Name,StringComparison.OrdinalIgnoreCase))
+                if ((!string.IsNullOrEmpty(option.VariableName)) && (option.VariableName.Equals(this._formatter.Name, StringComparison.OrdinalIgnoreCase)))
                 {
-                    this.AddOption(opt);
+                    this.AddOption(option);
                 }
             }
         }
@@ -98,7 +98,7 @@ namespace TsGui.Queries
 
         public void OnOptionAddedToLibrary(IOption option, EventArgs e)
         {
-            if (option.VariableName.Equals(this._formatter.Name,StringComparison.OrdinalIgnoreCase))
+            if ((!string.IsNullOrEmpty(option.VariableName)) && ( option.VariableName.Equals(this._formatter.Name,StringComparison.OrdinalIgnoreCase)))
             {
                 this.AddOption(option);
                 this.ProcessAndRefresh();
