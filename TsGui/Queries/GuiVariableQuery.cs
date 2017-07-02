@@ -15,6 +15,7 @@
 
 // GuiVariableQuery.cs - queries gui variables
 using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using TsGui.Options;
 using TsGui.Linking;
@@ -26,28 +27,39 @@ namespace TsGui.Queries
         private ResultFormatter _formatter;
         private IDirector _director;
         private ILinkTarget _linktargetoption;
+        private List<IOption> _options = new List<IOption>();
 
         public GuiVariableQuery(XElement inputxml, IDirector director, ILinkTarget owner)
         {
             this._linktargetoption = owner;
-            this._director = director;
+            this._director = director;            
             this.LoadXml(inputxml);
-            this._director.LinkingLibrary.AddHandler(this._formatter.Name, this);
+            this.GetExistingOptions();
+            this._director.OptionLibrary.OptionAdded += this.OnOptionAddedToLibrary;
             this.ProcessQuery();
         }
 
-        //get and environmental variable, trying the sccm ts variables first
+        private void GetExistingOptions()
+        {
+            foreach (IOption opt in this._director.OptionLibrary.Options)
+            {
+                if (opt.VariableName.Equals(this._formatter.Name,StringComparison.OrdinalIgnoreCase))
+                {
+                    this._options.Add(opt);
+                    opt.ValueChanged += this.OnLinkedSourceValueChanged;
+                }
+            }
+        }
+
+        //get and environmental variable from the list of relevant options
         public string GetVariableValue(string variablename)
         {
             if (!string.IsNullOrEmpty(variablename))
             {
                 string s = string.Empty;
-                foreach (IOption opt in this._director.OptionLibrary.Options)
+                foreach (IOption opt in this._options)
                 {
-                    if ((opt.IsActive == true) && (opt.VariableName.Equals("",StringComparison.OrdinalIgnoreCase)))
-                    {
-                        s = opt.CurrentValue;
-                    }
+                    if (opt.IsActive == true) { s = opt.CurrentValue; }
                 }
                 //add code
                 return s;
@@ -81,7 +93,14 @@ namespace TsGui.Queries
             return this._returnwrangler;
         }
 
-        
+        public void OnOptionAddedToLibrary(IOption option, EventArgs e)
+        {
+            if (option.VariableName.Equals(this._formatter.Name,StringComparison.OrdinalIgnoreCase))
+            {
+                this._options.Add(option);
+                option.ValueChanged += this.OnLinkedSourceValueChanged;
+            }
+        }
 
         private new void LoadXml(XElement InputXml)
         {
