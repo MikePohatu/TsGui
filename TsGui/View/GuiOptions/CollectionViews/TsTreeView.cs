@@ -13,16 +13,12 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-using System;
 using System.Xml.Linq;
-using System.Linq;
-using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Collections.Generic;
 using TsGui.View.Symbols;
 using TsGui.Validation;
 using TsGui.Linking;
-using TsGui.Queries;
 using System.Windows;
 
 namespace TsGui.View.GuiOptions.CollectionViews
@@ -46,36 +42,54 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.SetDefaults();      
             this.LoadXml(InputXml);
             this._builder.Rebuild();
+            this.SetListViewDefault();
 
             this._treeviewui.TreeView.SelectedItemChanged += this.OnTreeViewSelectedItemChanged;
+            this.UserControl.IsEnabledChanged += this.OnActiveChanged;
+            this.UserControl.IsVisibleChanged += this.OnActiveChanged;
         }
 
         protected override void SetSelected(string value)
         {
             ListItem newdefault = null;
-            bool changed = false;
 
-            //foreach (ListItem item in this.VisibleOptions)
-            //{
-            //    if ((item.Value == value))
-            //    {
-            //        newdefault = item;
-            //        changed = true;
-            //        break;
-            //    }
-            //}
+            foreach (ListItem item in this.VisibleOptions)
+            {
+                if ((item.Focusable == true) && (item.Value == value))
+                {
+                    newdefault = item;
+                    break;
+                }
+                ListItem subitem = item.NavigateToValue(value);
+                if (subitem != null)
+                {
+                    newdefault = subitem;
+                    break;
+                }
+            }
 
-            if (changed == true)
+            if (newdefault != null)
             {
                 this.CurrentItem = newdefault;
+                newdefault.IsSelected = true;
             }
         }
 
         private void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            this.CurrentItem = (ListItem)this._treeviewui.TreeView.SelectedItem;
+            ListItem item = (ListItem)this._treeviewui.TreeView.SelectedItem;
+            if (item.Focusable == true) { this.CurrentItem = item; }
             this.OnSelectionChanged(sender, e);
         }
 
+        private void SetListViewDefault()
+        {
+            if (this._nodefaultvalue == false)
+            {
+                string defaultval = this._setvaluequerylist.GetResultWrangler()?.GetString();
+                this.SetSelected(defaultval);
+            }
+            this.NotifyUpdate();
+        }
     }
 }

@@ -13,10 +13,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
+using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using System.Collections;
 using System.Windows.Controls;
 using TsGui.View.Layout;
 using TsGui.Grouping;
@@ -25,17 +24,31 @@ using TsGui.View.Symbols;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
-    public class ListItem: GroupableUIElementBase
+    public class ListItem : GroupableUIElementBase
     {
         private CollectionViewGuiOptionBase _parent;
+        private bool _isselected;
+        private bool _isexpanded;
+
         public string Value { get; set; }
         public string Text { get; set; }
+        public bool Focusable { get; set; }
+        public bool IsSelected
+        {
+            get { return this._isselected; }
+            set { this._isselected = value; this.OnPropertyChanged(this, "IsSelected"); }
+        }
+        public bool IsExpanded
+        {
+            get { return this._isexpanded; }
+            set { this._isexpanded = value; this.OnPropertyChanged(this, "IsExpanded"); }
+        }
         public Formatting ItemFormatting { get; set; }
         public List<ListItem> ItemsList { get; set; }
         public UserControl Icon { get; set; }
 
-        public ListItem(string Value, string Text, Formatting Formatting, CollectionViewGuiOptionBase parentlist, IDirector MainController):base(MainController)
-        { 
+        public ListItem(string Value, string Text, Formatting Formatting, CollectionViewGuiOptionBase parentlist, IDirector MainController) : base(MainController)
+        {
             this.Init(Formatting, parentlist);
             this.Value = Value;
             this.Text = Text;
@@ -49,8 +62,30 @@ namespace TsGui.View.GuiOptions.CollectionViews
             LoggerFacade.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
         }
 
+        public ListItem NavigateToValue(string Value)
+        {
+            foreach (ListItem item in this.ItemsList)
+            {
+                if ((item.Focusable == true) && (Value.Equals(item.Value, StringComparison.OrdinalIgnoreCase)))
+                {
+                    item.IsSelected = true;
+                    this.IsExpanded = true;
+                    return item;
+                }
+                ListItem subitem = item.NavigateToValue(Value);
+                if (subitem != null)
+                {
+                    subitem.IsSelected = true;
+                    this.IsExpanded = true;
+                    return subitem;
+                }
+            }
+            return null;
+        }
+
         private void Init(Formatting Formatting, CollectionViewGuiOptionBase parentlist)
         {
+            this.Focusable = true;
             this.Icon = SymbolFactory.Copy(parentlist.Icon);
             this.ItemsList = new List<ListItem>();
             this.ItemFormatting = Formatting;
@@ -62,6 +97,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
             base.LoadXml(inputxml);
             this.Text = XmlHandler.GetStringFromXElement(inputxml, "Text", this.Text);
             this.Value = XmlHandler.GetStringFromXElement(inputxml, "Value", this.Value);
+            this.Focusable = XmlHandler.GetBoolFromXAttribute(inputxml, "Selectable", this.Focusable);
+            this.Focusable = XmlHandler.GetBoolFromXElement(inputxml, "Selectable", this.Focusable);
 
             foreach (XElement x in inputxml.Elements())
             {

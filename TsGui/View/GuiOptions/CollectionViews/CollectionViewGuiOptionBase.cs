@@ -81,7 +81,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             foreach (XElement x in InputXml.Elements())
             {
-                //the base loadxml will create queries before this so will win
+                //the base loadxml will create queries before this so it will win
                 if (x.Name == "DefaultValue")
                 {
                     IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this._director, this);
@@ -173,7 +173,5 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this.ToggleEvent?.Invoke();
         }
-
-        
     }
 }

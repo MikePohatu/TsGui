@@ -52,8 +52,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
             this.UserControl.IsEnabledChanged += this.OnActiveChanged;
             this.UserControl.IsVisibleChanged += this.OnActiveChanged;
-
-            
         }
 
         private void SetComboBoxDefault()
