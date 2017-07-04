@@ -79,6 +79,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             ListItem item = (ListItem)this._treeviewui.TreeView.SelectedItem;
             if (item.Focusable == true) { this.CurrentItem = item; }
+            else { this.CurrentItem = null; }
             this.OnSelectionChanged(sender, e);
         }
 

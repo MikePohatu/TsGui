@@ -36,7 +36,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public bool IsSelected
         {
             get { return this._isselected; }
-            set { this._isselected = value; this.OnPropertyChanged(this, "IsSelected"); }
+            set {
+                if (this.Focusable == true) { this._isselected = value; }
+                else { this._isselected = false; }
+                this.OnPropertyChanged(this, "IsSelected");
+            }
         }
         public bool IsExpanded
         {
@@ -68,14 +72,12 @@ namespace TsGui.View.GuiOptions.CollectionViews
             {
                 if ((item.Focusable == true) && (Value.Equals(item.Value, StringComparison.OrdinalIgnoreCase)))
                 {
-                    item.IsSelected = true;
                     this.IsExpanded = true;
                     return item;
                 }
                 ListItem subitem = item.NavigateToValue(Value);
                 if (subitem != null)
                 {
-                    subitem.IsSelected = true;
                     this.IsExpanded = true;
                     return subitem;
                 }

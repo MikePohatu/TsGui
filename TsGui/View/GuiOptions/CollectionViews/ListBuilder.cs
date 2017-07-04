@@ -14,8 +14,6 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using System.Xml.Linq;
-using System.Collections;
-using System.Windows.Data;
 using System.Collections.Generic;
 using TsGui.Queries;
 using TsGui.Diagnostics.Logging;
