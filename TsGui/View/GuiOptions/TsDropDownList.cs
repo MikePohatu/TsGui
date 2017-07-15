@@ -246,7 +246,7 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            this.SetSelected(this._querylist.GetResultWrangler().GetString());
+            this.SetSelected(this._querylist.GetResultWrangler()?.GetString());
         }
 
         private void OnOptionsListUpdated()
