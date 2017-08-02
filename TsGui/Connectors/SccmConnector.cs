@@ -22,17 +22,16 @@ using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Connectors
 {
-    public class SccmConnector: ITsVariableOutput
+    public class SccmConnector : ITsVariableOutput
     {
         dynamic objTSProgUI;
         dynamic objTSEnv;
-        //bool hidden;
 
         public SccmConnector()
         {
-            //hidden = false;
             objTSEnv = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TSEnvironment"));
-            objTSProgUI = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TsProgressUI"));
+            try { objTSProgUI = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TsProgressUI")); }
+            catch { LoggerFacade.Warn("Unable to attach to task sequence progress dialog"); }
         }
 
         public void AddVariable(TsVariable Variable)
@@ -42,17 +41,19 @@ namespace TsGui.Connectors
         }
 
         public void Hide()
-        {           
-            objTSProgUI.CloseProgressDialog();
-            //this.hidden = true;
+        {
+            objTSProgUI?.CloseProgressDialog();
         }
 
         public void Release()
         {
             // Release the comm objects.
-            if (Marshal.IsComObject(this.objTSProgUI) == true)
+            if (this.objTSProgUI != null)
             {
-                Marshal.ReleaseComObject(this.objTSProgUI);
+                if (Marshal.IsComObject(this.objTSProgUI) == true)
+                {
+                    Marshal.ReleaseComObject(this.objTSProgUI);
+                }
             }
 
             if (Marshal.IsComObject(this.objTSEnv) == true)
