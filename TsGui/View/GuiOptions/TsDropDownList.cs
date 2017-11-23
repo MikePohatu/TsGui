@@ -117,7 +117,7 @@ namespace TsGui.View.GuiOptions
                     IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this._controller, this);
                     this._querylist.AddQuery(defquery);
                 }
-                
+
                 //read in an option and add to a dictionary for later use
                 else if (x.Name == "Option")
                 {
@@ -141,12 +141,16 @@ namespace TsGui.View.GuiOptions
                     QueryList newlist = new QueryList(this._controller);
                     newlist.LoadXml(wrapx);
 
-                    List<KeyValuePair<string, string>> kvlist = newlist.GetResultWrangler().GetKeyValueList();
-                    foreach (KeyValuePair<string, string> kv in kvlist)
+                    ResultWrangler newwrangler = newlist.GetResultWrangler();
+                    if (newwrangler != null)
                     {
-                        TsDropDownListItem newoption = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting, this, this._controller);
-                        this.AddOption(newoption);
-                        optionindex++;
+                        List<KeyValuePair<string, string>> kvlist = newwrangler.GetKeyValueList();
+                        foreach (KeyValuePair<string, string> kv in kvlist)
+                        {
+                            TsDropDownListItem newoption = new TsDropDownListItem(optionindex, kv.Key, kv.Value, this.ControlFormatting, this, this._controller);
+                            this.AddOption(newoption);
+                            optionindex++;
+                        }
                     }
                 }
 
