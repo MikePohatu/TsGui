@@ -51,7 +51,7 @@ namespace TsGui
         private GroupLibrary _grouplibrary = new GroupLibrary();
         private List<IToggleControl> _toggles = new List<IToggleControl>();
         private OptionLibrary _optionlibrary = new OptionLibrary();
-        private HardwareEvaluator _chassischeck;
+        private HardwareEvaluator _hardwareevaluator;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
         private bool _livedata = false;
@@ -213,7 +213,7 @@ namespace TsGui
                 //turn hardware eval on or off
                 x = SourceXml.Element("HardwareEval");
                 if (x != null)
-                { this._chassischeck = new HardwareEvaluator(); }
+                { this._hardwareevaluator = new HardwareEvaluator(); }
 
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
                 PageDefaults pagedef = new PageDefaults();
@@ -395,9 +395,9 @@ namespace TsGui
 
         private void PopulateHwOptions()
         {
-            if (this._chassischeck != null)
+            if (this._hardwareevaluator != null)
             {
-                foreach (TsVariable var in this._chassischeck.GetTsVariables())
+                foreach (TsVariable var in this._hardwareevaluator.GetTsVariables())
                 {
                     NoUIOption newhwoption = new NoUIOption(this);
                     newhwoption.ImportFromTsVariable(var);

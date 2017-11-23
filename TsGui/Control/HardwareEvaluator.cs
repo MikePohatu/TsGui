@@ -30,11 +30,17 @@ namespace TsGui
         private bool _isdesktop = false;
         private bool _isserver = false;
         private bool _isvm = false;
+        private string _ipaddresses = string.Empty;
+        private string _defaultgateways = string.Empty;
+        private string _dhcpserver = string.Empty;
 
         public bool IsLaptop { get { return this._islaptop; } }
         public bool IsDesktop { get { return this._isdesktop; } }
         public bool IsServer { get { return this._isserver; } }
         public bool IsVirtualMachine { get { return this._isvm; } }
+        public string IPv4Addresses { get { return this._ipaddresses; } }
+        public string DefaultGateways { get { return this._defaultgateways; } }
+        public string DHCPServer { get { return this._dhcpserver; } }
 
         public HardwareEvaluator()
         {
@@ -56,6 +62,10 @@ namespace TsGui
 
             if (_isvm) { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "TRUE")); }
             else { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "FALSE")); }
+
+            vars.Add(new TsVariable("TsGui_IPAddresses", this._ipaddresses));
+            vars.Add(new TsVariable("TsGui_DefaultGateway", this._defaultgateways));
+            vars.Add(new TsVariable("TsGui_DHCPServer", this._dhcpserver));
 
             return vars;
         }
@@ -127,6 +137,28 @@ namespace TsGui
                             { break; }
                     }
                 }
+            }
+
+            //ip info gather
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(@"Select DefaultIPGateway,IPAddress,DHCPServer from Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'True'"))
+            {
+                string[] ipaddresses = (string[])m["IPAddress"];
+
+                foreach (string s in ipaddresses)
+                {
+                    if (this._ipaddresses==string.Empty) { this._ipaddresses = s; }
+                    else { this._ipaddresses = this._ipaddresses + ", " + s ; }
+                }
+
+                string[] defaultgateways = (string[])m["DefaultIPGateway"];
+                foreach (string s in defaultgateways)
+                {
+                    if (this._defaultgateways == string.Empty) { this._defaultgateways = s; }
+                    else { this._defaultgateways = this._defaultgateways + ", " + s; }
+                }
+
+                string svr = (string)m["DHCPServer"];
+                if (svr != null) { this._dhcpserver = svr; }
             }
         }
     }
