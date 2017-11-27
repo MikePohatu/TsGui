@@ -150,18 +150,27 @@ namespace TsGui
             {
                 string[] ipaddresses = (string[])m["IPAddress"];
 
-                foreach (string s in ipaddresses)
+                if (ipaddresses != null)
                 {
-                    if (s.Contains(":")) { this._ipaddresses6 = AppendToStringList(this._ipaddresses6, s); }
-                    else { this._ipaddresses4 = AppendToStringList(this._ipaddresses4, s); }
-                    
+                    foreach (string s in ipaddresses)
+                    {
+                        if (string.IsNullOrEmpty(s) == false)
+                        {
+                            if (s.Contains(":")) { this._ipaddresses6 = AppendToStringList(this._ipaddresses6, s); }
+                            else { this._ipaddresses4 = AppendToStringList(this._ipaddresses4, s); }
+                        }
+                    }
                 }
+                    
 
                 string[] defaultgateways = (string[])m["DefaultIPGateway"];
-                foreach (string s in defaultgateways)
+                if (defaultgateways != null)
                 {
-                    if (s.Contains(":")) { this._defaultgateways6 = AppendToStringList(this._defaultgateways6, s); }
-                    else { this._defaultgateways4 = AppendToStringList(this._defaultgateways4, s); }
+                    foreach (string s in defaultgateways)
+                    {
+                        if (s.Contains(":")) { this._defaultgateways6 = AppendToStringList(this._defaultgateways6, s); }
+                        else { this._defaultgateways4 = AppendToStringList(this._defaultgateways4, s); }
+                    }
                 }
 
                 string svr = (string)m["DHCPServer"];
@@ -172,7 +181,7 @@ namespace TsGui
         private static string AppendToStringList(string basestring, string newstring)
         {
             string s;
-            if (basestring == string.Empty) { s = newstring; }
+            if (string.IsNullOrWhiteSpace(basestring)) { s = newstring; }
             else { s = basestring + ", " + newstring; }
             return s;
         }
