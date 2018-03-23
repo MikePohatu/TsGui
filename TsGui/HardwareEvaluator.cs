@@ -30,11 +30,21 @@ namespace TsGui
         private bool _isdesktop = false;
         private bool _isserver = false;
         private bool _isvm = false;
+        private string _ipaddresses4 = string.Empty;
+        private string _ipaddresses6 = string.Empty;
+        private string _defaultgateways4 = string.Empty;
+        private string _defaultgateways6 = string.Empty;
+        private string _dhcpserver = string.Empty;
 
         public bool IsLaptop { get { return this._islaptop; } }
         public bool IsDesktop { get { return this._isdesktop; } }
         public bool IsServer { get { return this._isserver; } }
         public bool IsVirtualMachine { get { return this._isvm; } }
+        public string IPv4Addresses4 { get { return this._ipaddresses4; } }
+        public string IPv4Addresses6 { get { return this._ipaddresses6; } }
+        public string DefaultGateways4 { get { return this._defaultgateways4; } }
+        public string DefaultGateways6 { get { return this._defaultgateways6; } }
+        public string DHCPServer { get { return this._dhcpserver; } }
 
         public HardwareEvaluator()
         {
@@ -56,6 +66,12 @@ namespace TsGui
 
             if (_isvm) { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "TRUE")); }
             else { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "FALSE")); }
+
+            vars.Add(new TsVariable("TsGui_IPv4", this._ipaddresses4));
+            vars.Add(new TsVariable("TsGui_IPv6", this._ipaddresses6));
+            vars.Add(new TsVariable("TsGui_DefaultGateway4", this._defaultgateways4));
+            vars.Add(new TsVariable("TsGui_DefaultGateway6", this._defaultgateways6));
+            vars.Add(new TsVariable("TsGui_DHCPServer", this._dhcpserver));
 
             return vars;
         }
@@ -128,6 +144,46 @@ namespace TsGui
                     }
                 }
             }
+
+            //ip info gather
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(@"Select DefaultIPGateway,IPAddress,DHCPServer from Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'True'"))
+            {
+                string[] ipaddresses = (string[])m["IPAddress"];
+
+                if (ipaddresses != null)
+                {
+                    foreach (string s in ipaddresses)
+                    {
+                        if (string.IsNullOrEmpty(s) == false)
+                        {
+                            if (s.Contains(":")) { this._ipaddresses6 = AppendToStringList(this._ipaddresses6, s); }
+                            else { this._ipaddresses4 = AppendToStringList(this._ipaddresses4, s); }
+                        }
+                    }
+                }
+                    
+
+                string[] defaultgateways = (string[])m["DefaultIPGateway"];
+                if (defaultgateways != null)
+                {
+                    foreach (string s in defaultgateways)
+                    {
+                        if (s.Contains(":")) { this._defaultgateways6 = AppendToStringList(this._defaultgateways6, s); }
+                        else { this._defaultgateways4 = AppendToStringList(this._defaultgateways4, s); }
+                    }
+                }
+
+                string svr = (string)m["DHCPServer"];
+                if (svr != null) { this._dhcpserver = svr; }
+            }
+        }
+
+        private static string AppendToStringList(string basestring, string newstring)
+        {
+            string s;
+            if (string.IsNullOrWhiteSpace(basestring)) { s = newstring; }
+            else { s = basestring + ", " + newstring; }
+            return s;
         }
     }
 }

@@ -31,7 +31,6 @@ using TsGui.Grouping;
 using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using TsGui.Linking;
-using TsGui.Authentication;
 
 namespace TsGui
 {
@@ -52,8 +51,7 @@ namespace TsGui
         private GroupLibrary _grouplibrary = new GroupLibrary();
         private List<IToggleControl> _toggles = new List<IToggleControl>();
         private OptionLibrary _optionlibrary = new OptionLibrary();
-        private AuthLibrary _authlibrary = new AuthLibrary();
-        private HardwareEvaluator _chassischeck;
+        private HardwareEvaluator _hardwareevaluator;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
         private bool _livedata = false;
@@ -61,7 +59,6 @@ namespace TsGui
         private bool _showtestwindow = false;
 
         //properties
-        public AuthLibrary AuthLibrary { get { return this._authlibrary; } }
         public LinkingLibrary LinkingLibrary { get { return this._linkinglibrary; } }
         public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
@@ -216,12 +213,7 @@ namespace TsGui
                 //turn hardware eval on or off
                 x = SourceXml.Element("HardwareEval");
                 if (x != null)
-                { this._chassischeck = new HardwareEvaluator(); }
-
-                foreach (XElement xauth in SourceXml.Elements("Authentication"))
-                {
-                    this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth, this));
-                }
+                { this._hardwareevaluator = new HardwareEvaluator(); }
 
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
                 PageDefaults pagedef = new PageDefaults();
@@ -403,9 +395,9 @@ namespace TsGui
 
         private void PopulateHwOptions()
         {
-            if (this._chassischeck != null)
+            if (this._hardwareevaluator != null)
             {
-                foreach (TsVariable var in this._chassischeck.GetTsVariables())
+                foreach (TsVariable var in this._hardwareevaluator.GetTsVariables())
                 {
                     NoUIOption newhwoption = new NoUIOption(this);
                     newhwoption.ImportFromTsVariable(var);
