@@ -55,7 +55,9 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this.Init(Formatting, parentlist);
             this.Value = Value;
-            this.Text = Text;
+            if (string.IsNullOrEmpty(Text)) { this.Text = ""; }
+            else { this.Text = Text; }
+
             LoggerFacade.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
         }
 
