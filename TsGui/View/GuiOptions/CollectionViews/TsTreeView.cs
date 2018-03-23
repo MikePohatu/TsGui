@@ -51,6 +51,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         protected override void SetSelected(string value)
         {
+            if (string.IsNullOrWhiteSpace(value) == true ) { return; }
             ListItem newdefault = null;
 
             foreach (ListItem item in this.VisibleOptions)

@@ -68,6 +68,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         public ListItem NavigateToValue(string Value)
         {
+            if (Value == null) { return null; }
             foreach (ListItem item in this.ItemsList)
             {
                 if ((item.Focusable == true) && (Value.Equals(item.Value, StringComparison.OrdinalIgnoreCase)))
