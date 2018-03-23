@@ -35,6 +35,7 @@ namespace TsGui.View.Layout
         private Thickness _pageMargin = new Thickness(0, 0, 0, 0);
         private string _footerText;
         private double _footerHeight;
+        private bool _topmost = true;
         private HorizontalAlignment _footerHAlignment;
         private bool _gridlines = false;
         private WindowLocation _windowlocation;
@@ -78,6 +79,15 @@ namespace TsGui.View.Layout
             {
                 this._pageMargin = value;
                 this.OnPropertyChanged(this, "PageMargin");
+            }
+        }
+        public bool TopMost
+        {
+            get { return this._topmost; }
+            set
+            {
+                this._topmost = value;
+                this.OnPropertyChanged(this, "TopMost");
             }
         }
         //public SolidColorBrush HeadingBgColor { get; set; }
@@ -165,6 +175,7 @@ namespace TsGui.View.Layout
                     GuiFactory.LoadHAlignment(x, ref this._footerHAlignment);
                 }
 
+                this.TopMost = XmlHandler.GetBoolFromXElement(SourceXml, "TopMost", this.TopMost);
                 this.WindowTitle = XmlHandler.GetStringFromXElement(SourceXml, "Title", this.WindowTitle);
                 this.Width = XmlHandler.GetDoubleFromXElement(SourceXml, "Width", this.Width);
                 this.Height = XmlHandler.GetDoubleFromXElement(SourceXml, "Height", this.Height);

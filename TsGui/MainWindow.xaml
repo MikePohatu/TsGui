@@ -27,7 +27,7 @@ MainWindow.xaml - wrapper window for the app. Includes footer.
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}"
         Left="{Binding WindowLocation.Left, Mode=TwoWay}" Top="{Binding WindowLocation.Top, Mode=TwoWay}" 
-        Topmost="False" 
+        Topmost="{Binding TopMost}" 
         WindowStyle="None" MouseLeftButtonDown="OnMouseDown" ResizeMode="NoResize"
         AllowsTransparency="True" Background="Transparent"
         >
