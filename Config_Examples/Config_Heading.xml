@@ -1,0 +1,91 @@
+<TsGui LiveData="TRUE">
+	<Height>350</Height>
+	<Width>370</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI queries example</Text>
+		<Bg-Color>#FF006AD4</Bg-Color>
+		<Font-Color>#FFFFFF</Font-Color>
+		<Height>90</Height>
+		<Row>
+			<Formatting>
+				<LeftCellWidth>80</LeftCellWidth>
+				<RightCellWidth>100</RightCellWidth>
+				<Label>
+					<Font>
+						<Color>White</Color>
+					</Font>	
+				</Label>
+				<Control>
+					<Font>
+						<Color>White</Color>
+					</Font>	
+				</Control>
+			</Formatting>
+			
+			
+			<Column>
+				<GuiOption Type="InfoBox" MaxLength="20">
+					<Variable>INFO_LogonServer</Variable>
+					<Label>LogonServer: </Label>
+					
+					<!-- Query for the default value. Return the first valid value. Note
+					the Ignore values for evaluating the value returned by the query -->
+					<SetValue>
+						<Query Type="EnvironmentVariable">
+							<Variable>
+								<Name>LogonServer</Name>
+							</Variable>
+						</Query>
+					</SetValue>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>100</LeftCellWidth>
+					<RightCellWidth>250</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="ComputerName"/>
+			</Column>
+		</Row>
+	</Page>
+	
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>100</LeftCellWidth>
+					<RightCellWidth>250</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="InfoBox" MaxLength="20">
+					<Variable>INFO_Memory</Variable>
+					<Label>Memory: </Label>
+					<HelpText>Memory the device</HelpText>
+					
+					<!-- Query for the default value. Return the first valid value. Note
+					the Ignore values for evaluating the value returned by the query -->
+					<SetValue>
+						<Query Type="Wmi">
+							<Wql>SELECT TotalPhysicalMemory FROM Win32_ComputerSystem</Wql>
+							<Property Name="TotalPhysicalMemory">
+								<Calculate DecimalPlaces="0">VALUE/1048576</Calculate>
+								<Append> MB</Append>
+							</Property>
+						</Query>
+					</SetValue>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>
+		

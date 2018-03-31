@@ -1,0 +1,211 @@
+<TsGui LiveData="TRUE" Debug="FALSE">
+	<!-- The showgridlines option is used for assisting with layout design
+	<ShowGridLines /> 
+	-->
+	<Height>300</Height>
+	<Width>600</Width>
+	
+	<HardwareEval />
+	
+	<Heading>
+		<Title>Title Text</Title>
+		<Text>Text</Text>
+		<Bg-Color>#FF006AD4</Bg-Color>
+		<Font-Color>#FFFFFF</Font-Color>
+	</Heading>
+	
+	<Buttons>
+		<Next>Next</Next>
+		<Back>Back</Back>
+		<Cancel>Cancel</Cancel>
+		<Finish>Finish</Finish>
+	</Buttons>
+
+	<Footer>
+		<Text>Powered by TsGui - www.20road.com</Text>
+		<Height>17</Height>
+		<HAlign>right</HAlign>
+	</Footer>
+
+	<!-- ***** Simple config example **** -->
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<Width>280</Width>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>160</RightCellWidth>
+				</Formatting>
+				
+				<!-- GuiOptions -->
+				<GuiOption Type="ComputerName" />
+				
+				<GuiOption Type="FreeText">
+					<Variable>Engineer</Variable>
+					<Label>Engineer name:</Label>
+					<SetValue>
+						<Value>Jane Doe</Value>
+					</SetValue>
+					<HelpText>Enter the user to be using this device</HelpText>
+				</GuiOption>
+				
+				<GuiOption Type="DropDownList">
+					<Variable>IT_Team</Variable>
+					<Label>Team:</Label>
+					<SetValue>
+						<Value>Desktop</Value>
+					</SetValue>
+					<Option>
+						<Text>Desktop</Text>
+						<Value>Desktop</Value>
+					</Option>
+					<Option>
+						<Text>Infrastructure</Text>
+						<Value>Inf</Value>
+					</Option>
+					<Option>
+						<Text>Service Desk</Text>
+						<Value>SD</Value>
+					</Option>
+				</GuiOption>	
+				
+				<GuiOption Type="CheckBox">
+					<Variable>MsOffice</Variable>
+					<Label>Microsoft Office</Label>
+					<HAlign>right</HAlign>
+				</GuiOption>
+			</Column>
+
+			<!-- **** Advanced config options  **** -->
+			<Column>
+				<Formatting>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>160</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="Heading">
+					<Label>Additional Info</Label>
+					<Bold /> 
+				</GuiOption>
+				
+				
+				<!-- Infobox control. Creates a non interactive text box containing information either set statically using a <Value> tag or a query. 
+				This GuiOption creates a Task Sequence Variable so the value can be used e.g. display the serial number and also use it later in a script. 
+				Takes similar structure as freetext and dropdownlist queries. Query result will be truncated to MaxLength, and Disallowed characters removed --> 
+				<GuiOption Type="InfoBox" MaxLength="20">
+					<Disallowed>
+						<Characters>='-</Characters>
+					</Disallowed>
+					<Variable>INFO_Serial</Variable>
+					<Label>Serial: </Label>
+					<HelpText>Serial number of the device</HelpText>
+					
+					<!-- Query for the display value. Return the first valid value. Note
+					the Ignore values for evaluating the value returned by the query -->
+					<SetValue>
+						<Query Type="Wmi">
+							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
+							<Ignore>Parallels</Ignore>
+							<Ignore>VMWare</Ignore>
+						</Query>
+						<Value>Virtual machine</Value>
+					</SetValue>
+				</GuiOption>
+				
+				<GuiOption Type="InfoBox" MaxLength="20">
+					<Variable>INFO_Memory</Variable>
+					<Label>Memory: </Label>
+					<HelpText>Memory the device</HelpText>
+					
+					<!-- Query for the default value. Return the first valid value. Note
+					the Ignore values for evaluating the value returned by the query -->
+					<SetValue>
+						<Query Type="Wmi">
+							<Wql>SELECT TotalPhysicalMemory FROM Win32_ComputerSystem</Wql>
+							<Property Name="TotalPhysicalMemory">
+								<Calculate DecimalPlaces="0">VALUE/1048576</Calculate>
+								<Append> MB</Append>
+							</Property>
+						</Query>
+					</SetValue>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+	
+
+	<Page>
+		<Heading>
+			<Title>Title text override</Title>
+			<Text>Text override</Text>
+		</Heading>
+		<Row>
+			<Column>
+				<Formatting>
+					<Width>360</Width>
+					<LeftCellWidth>150</LeftCellWidth>
+					<RightCellWidth>200</RightCellWidth>
+				</Formatting>
+				
+				<!-- GuiOptions -->
+				
+				<!-- Advanced freetext with queries. This one is the equivalent of the ComputerName GuiOption type-->
+				<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
+					<Disallowed>
+						<Characters>`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
+					</Disallowed>
+					<Variable>OSDComputerName_FullQuery</Variable>
+					<Label>Computer Name:</Label>
+					<HelpText>Enter a computer name for the device</HelpText>
+					
+					<!-- Query for the default value. Return the first valid value. Note
+					the Ignore values for evaluating the value returned by the query -->
+					<SetValue>
+						<Query Type="EnvironmentVariable">
+							<Variable>OSDComputerName</Variable>
+							<Ignore>MINNT</Ignore>
+							<Ignore>MINWIN</Ignore>						
+						</Query>				
+						<Query Type="EnvironmentVariable">
+							<Variable>_SMSTSMachineName</Variable>
+							<Ignore>MINNT</Ignore>
+							<Ignore>MINWIN</Ignore>					
+						</Query>					
+						<Query Type="EnvironmentVariable">
+							<Variable>ComputerName</Variable>
+							<Ignore>MINNT</Ignore>
+							<Ignore>MINWIN</Ignore>						
+						</Query>					
+						<Query Type="Wmi">
+							<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
+							<Ignore>No Asset Tag</Ignore>
+						</Query>					
+						<Query Type="Wmi">
+							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
+						</Query>
+					</SetValue>
+				</GuiOption>	
+
+				<!--DropDownList with no default option set-->
+				<GuiOption Type="DropDownList" NoDefaultValue="TRUE">
+					<!-- The NoSelectionMessage element overrides the default "Please select a value" text when nothing is selected by the user -->
+					<NoSelectionMessage>Please select something</NoSelectionMessage>
+					<Variable>Country</Variable>
+					<Label>Country:</Label>
+					<Option>
+						<Text>Australia</Text>
+						<Value>AU</Value>
+					</Option>
+					<Option>
+						<Text>New Zealand</Text>
+						<Value>NZ</Value>
+					</Option>
+					<Option>
+						<Text>USA</Text>
+						<Value>USA</Value>
+					</Option>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>

@@ -1,0 +1,241 @@
+<TsGui LiveData="TRUE">
+	<Height>250</Height>
+	<Width>450</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI groups and toggles example config</Text>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>140</LeftCellWidth>
+					<RightCellWidth>130</RightCellWidth>
+				</Formatting>
+
+				<!--CheckBox used as a toggle -->
+				<GuiOption Type="CheckBox">
+					<Variable>TOGGLE_Apps</Variable>
+					<Label>Additional applications</Label>
+					<HAlign>left</HAlign>
+					
+					<Toggle Group="Group_Apps">
+						<Enabled>TRUE</Enabled>
+						<Disabled>FALSE</Disabled>
+						<Hide/>
+					</Toggle>
+				</GuiOption>
+				
+				<!-- 
+				DropDownList being used as a toggle
+				Each option used as a separate toggle
+				-->
+				<GuiOption Type="DropDownList">
+					<Variable>VAR_Country</Variable>
+					<Label>Country:</Label>
+					<SetValue>
+						<Value>NZ</Value>
+					</SetValue>
+					<Option>
+						<Toggle Group="Group_NZ">
+							<Hide/>
+						</Toggle>
+						<Text>NZ</Text>
+						<Value>NZ</Value>
+					</Option>
+					<Option>
+						<Toggle Group="Group_AUS">
+							<Hide/>
+						</Toggle>
+						<Text>AUS</Text>
+						<Value>AUS</Value>
+					</Option>
+					<Option>
+						<Toggle Group="Group_USA">
+							<Hide/>
+						</Toggle>
+						<Text>USA</Text>
+						<Value>USA</Value>
+					</Option>
+				</GuiOption>
+				
+				<!-- Groups being applied to dropdownlist items/options. Note that
+				a group changes on an option, the dropdownlist will reset to the default
+				value. 
+				** This option is not supported on .Net 4.6.1. See known issues in release notes.
+				-->
+				<GuiOption Type="DropDownList">
+					<Variable>VAR_Department</Variable>
+					<Label>Department:</Label>
+					<SetValue>
+						<Value>HR</Value>
+					</SetValue>
+					<Option>
+						<Group>Group_NZ</Group>
+						<Group>Group_USA</Group>
+						<Toggle Group="Group_IT">
+							<Hide/>
+						</Toggle>
+						<Text>IT</Text>
+						<Value>IT</Value>
+					</Option>
+					<Option>
+						<Group>Group_NZ</Group>
+						<Group>Group_USA</Group>
+						<Group>Group_AUS</Group>
+						<Text>Human Resources</Text>
+						<Toggle Group="Group_HR">
+							<Hide/>
+						</Toggle>
+						<Value>HR</Value>
+					</Option>
+					<Option>
+						<Group>Group_NZ</Group>
+						<Group>Group_AUS</Group>
+						<Text>Project Office</Text>
+						<Value>PMO</Value>
+					</Option>
+				</GuiOption>
+				
+				<!-- 
+				DropDownList being used as a toggle
+				Single toggle enabled by specific values
+				-->
+				<GuiOption Type="DropDownList">
+					<Group>Group_IT</Group>
+					<Variable>VAR_IT_Teams</Variable>
+					<Label>Team:</Label>
+					<SetValue>
+						<Value>Desktop</Value>
+					</SetValue>
+					<Toggle Group="Group_EngineeringTeams">
+						<Enabled>Desktop</Enabled>
+						<Enabled>Server</Enabled>
+						<Enabled>ServiceDesk</Enabled>
+						<Hide/>
+					</Toggle>
+					<Option>
+						<Text>Business Analysts</Text>
+						<Value>BA</Value>
+					</Option>
+					<Option>
+						<Text>Desktop</Text>
+						<Value>Desktop</Value>
+					</Option>
+					<Option>
+						<Text>Server</Text>
+						<Value>Server</Value>
+					</Option>
+					<Option>
+						<Text>Service Desk</Text>
+						<Value>ServiceDesk</Value>
+					</Option>
+				</GuiOption>
+			</Column>
+			
+			<!-- Group members-->
+			
+			<!-- Parent column with group membership.
+			Disable/hide will propogate down-->
+			<Column>
+				<Group>Group_Apps</Group>
+
+				<Formatting>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>160</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="CheckBox">				
+					<Variable>VAR_Office2013</Variable>
+					<Label>Office 2013</Label>
+					<HAlign>left</HAlign>
+					<Checked/>
+				</GuiOption>
+				
+				<!-- Multiple group memberships
+				If any group is enabled, the option will be enabled
+				If none are enabled, if a group is hidden, the option will be hidden
+				Otherwise, the option will be disabled
+				-->
+				<GuiOption Type="CheckBox">	
+					<Group>Group_PMO</Group>
+					<Group>Group_IT</Group>
+					<Variable>VAR_Project2013</Variable>
+					<Label>Project 2013</Label>
+					<HAlign>left</HAlign>
+					<Checked/>
+				</GuiOption>
+				
+				<!--  PurgeInactive attribute set. This will stop the Task Sequence variable from 
+				being created if disabled or hidden -->
+				<GuiOption Type="CheckBox" PurgeInactive="TRUE">	
+					<Group>Group_EngineeringTeams</Group>
+					<InactiveValue>No_Visio</InactiveValue>
+					<Variable>VAR_Visio2013</Variable>
+					<Label>Visio 2013</Label>
+					<HAlign>left</HAlign>
+					<Checked/>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">	
+					<Group>Group_HR</Group>
+					<Variable>VAR_HR1</Variable>
+					<Label>HR App1</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+			</Column>
+			
+			<!-- Parent column with group membership.
+			Enable/disable hide/unhide will propogate down-->
+			<Column>
+				<Group>Group_Apps</Group>
+				
+				<Formatting>
+					<Width>200</Width>
+					<LeftCellWidth>120</LeftCellWidth>
+					<RightCellWidth>80</RightCellWidth>
+				</Formatting>
+				
+				<!-- GuiOptions -->
+				<GuiOption Type="Heading">
+					<Label>Applications</Label>
+					<Bold /> 
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_MsOffice</Variable>
+					<Label>Microsoft Office</Label>
+					<HAlign>right</HAlign>
+					<Checked />
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_MsAccess</Variable>
+					<Label>Microsoft Access</Label>
+					<HAlign>right</HAlign>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_MsVisio</Variable>
+					<Label>Microsoft Visio</Label>
+					<HAlign>right</HAlign>
+				</GuiOption>
+				
+				<!-- Note the InactiveValue option. This sets a new value if the
+				GuiOption is disabled/hidden-->
+				<GuiOption Type="CheckBox">
+					<Group>Group_PMO</Group>
+					<Group>Group_IT</Group>
+					<InactiveValue>No_Project</InactiveValue>
+					<Variable>App_MsProject</Variable>
+					<Label>Microsoft Project</Label>
+					<HAlign>right</HAlign>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>

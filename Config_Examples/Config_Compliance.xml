@@ -1,0 +1,149 @@
+<TsGui>
+	<Height>250</Height>
+	<Width>300</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI compliance example config</Text>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>160</RightCellWidth>
+				</Formatting>
+				
+				<!-- This checkbox is used as a toggle for the compliance checks below. If photoshop is installed
+				the minimum memory requirement is higher -->
+				<GuiOption Type="CheckBox">
+					<Variable>App_Photoshop</Variable>
+					<Label>Photoshop</Label>
+					<HAlign>left</HAlign>
+					
+					<!-- Note the use of multiple toggles to turn different compliance sections on and off -->
+					<Toggle Group="Group_Photoshop">
+						<Enabled>TRUE</Enabled>
+						<Disabled>FALSE</Disabled>
+					</Toggle>
+					
+					<Toggle Group="Group_No_Photoshop">
+						<Enabled>FALSE</Enabled>
+						<Disabled>TRUE</Disabled>
+					</Toggle>
+				</GuiOption>
+					
+				<!-- *** The compliance GuiOption. *** -->	
+				<GuiOption Type="TickCross">
+					<Variable>Compliance_InstalledMemory</Variable>
+					<Label>System Memory</Label>
+					<SetValue>
+						<Query Type="Wmi">
+							<Wql>SELECT TotalPhysicalMemory from Win32_ComputerSystem</Wql>
+							<Property Name="TotalPhysicalMemory">
+								<Calculate DecimalPlaces="0">VALUE/1073741824</Calculate>
+							</Property>	
+							<Separator></Separator>
+						</Query>
+					</SetValue>
+					
+					<!-- The compliance sections. The rules are the same as for validation. For all availble rule
+					types, see Config_Validation.xml example file -->
+					<Compliance>
+						<Group>Group_No_Photoshop</Group>
+						
+						<Message>Tooltip message to display on validation error</Message>			
+						<OK>
+							<Rule Type="GreaterThanOrEqualTo">8</Rule>
+						</OK>
+						<Warning>
+							<Rule Type="LessThan">8</Rule>
+						</Warning>
+						<Error>
+							<Rule Type="LessThan">4</Rule>
+						</Error>
+						<Invalid>
+							<Rule Type="LessThan">2</Rule>
+						</Invalid>
+					</Compliance>
+					
+					<Compliance>
+						<Group>Group_Photoshop</Group>
+						
+						<Message>You may not have enough memory to run Photoshop</Message>
+						<OK>
+							<Rule Type="GreaterThanOrEqualTo">16</Rule>
+						</OK>
+						<Warning>
+							<Rule Type="LessThan">16</Rule>
+						</Warning>
+						<Error>
+							<Rule Type="LessThan">8</Rule>
+						</Error>
+						<Invalid>
+							<Rule Type="LessThan">4</Rule>
+						</Invalid>
+					</Compliance>
+				</GuiOption>
+				
+				<!-- Option to check whether the device is connected to power -->
+				<GuiOption Type="TrafficLight">
+					<Variable>Compliance_PowerStatus</Variable>
+					<Label>Power connection</Label>
+					<ShowComplianceValue>FALSE</ShowComplianceValue>
+					<SetValue>
+						<Query Type="Wmi">
+							<Wql>SELECT BatteryStatus FROM Win32_Battery</Wql>
+							<Property Name="BatteryStatus"/>	
+							<Separator></Separator>
+						</Query>
+					</SetValue>
+					<Compliance>
+						<Message>Please connect the power</Message>		
+						<DefaultState>Warning</DefaultState>
+						<OK>
+							<Rule Type="Contains">2</Rule>
+							<Rule Type="Equals">*NULL</Rule>
+						</OK>
+					</Compliance>
+				</GuiOption>
+				
+				<!-- Option to check whether the wifi is connected -->
+				<GuiOption Type="TrafficLight">
+					<Variable>Compliance_WifiStatus</Variable>
+					<Label>Wifi connection</Label>
+					<ShowComplianceValue>FALSE</ShowComplianceValue>
+					<SetValue>
+						<Query Type="Wmi">
+							<Wql>SELECT * FROM Win32_NetworkAdapter WHERE (AdapterType="Ethernet 802.3") AND (NetConnectionStatus=2)</Wql>
+							<Property Name="Name"/>	
+							<Separator></Separator>
+						</Query>
+					</SetValue>
+					<Compliance>
+						<Message>Please disconnect the wifi</Message>
+						<DefaultState>Warning</DefaultState>
+						<Invalid>
+							<Rule Type="Contains">Wireless</Rule>
+							<Rule Type="Contains">Wifi</Rule>
+							<Rule Type="Contains">WLAN</Rule>
+						</Invalid>
+					</Compliance>
+				</GuiOption>
+				
+				<!-- Button to reprocess queries and re-evaluate compliance rules. Re-checks compliance 
+				options on the page -->
+				<GuiOption Type="ComplianceRefreshButton">
+					<ButtonText>Refresh</ButtonText>
+					<Formatting>
+						<LabelOnRight>TRUE</LabelOnRight>
+					</Formatting>
+					<HAlign>left</HAlign>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>

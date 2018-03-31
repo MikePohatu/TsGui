@@ -83,7 +83,7 @@ namespace TsGui.View.GuiOptions
         public void OnButtonClick(object o, RoutedEventArgs e)
         {
             LoggerFacade.Info("Action button clicked");
-            this._action.RunAction();
+            this._action?.RunAction();
         }
 
         private void SetDefaults()

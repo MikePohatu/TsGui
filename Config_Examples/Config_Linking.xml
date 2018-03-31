@@ -1,0 +1,168 @@
+<TsGui LiveData="TRUE">
+	<Height>400</Height>
+	<Width>350</Width>
+	
+	<Heading>
+		<Title>Option linking example config</Title>
+		<Text></Text>
+		<Height>60</Height>
+	</Heading>
+	
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>200</LeftCellWidth>
+					<RightCellWidth>100</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="ComputerName" ID="link_name"/> <!-- The ID attribute is used to identify a linking source -->
+						
+				<GuiOption Type="CheckBox" ID="link_source"> 
+					<Variable>link_source</Variable>
+					<Label>SOURCE</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>linkto</Variable>
+					<Label>Match SOURCE</Label>
+					<HAlign>right</HAlign>
+					<Checked/>
+					<SetValue>
+						<Query Type="LinkTo">link_source</Query> <!-- A LinkTo query is shorthand for "Set the value to whatever the source is whenever the source changes" -->
+					</SetValue>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>linktrue</Variable>
+					<Label>Check when SOURCE is checked</Label>
+					<HAlign>right</HAlign>
+					<SetValue>
+						<Query Type="LinkTrue">link_source</Query> <!-- A LinkTo query is shorthand for "Set the value to TRUE when the source value is set to TRUE" -->
+					</SetValue>
+				</GuiOption>
+
+				<GuiOption Type="CheckBox">
+					<Variable>linkfalse</Variable>
+					<Label>Uncheck when SOURCE is unchecked</Label>
+					<HAlign>right</HAlign>
+					<SetValue>
+						<Query Type="LinkFalse">link_source</Query> <!-- A LinkTo query is shorthand for "Set the value to FALSE when the source value is set to FALSE" -->
+					</SetValue>
+				</GuiOption>
+
+				
+				<!-- A more advanced query based on the value of another option.  -->
+				<GuiOption Type="CheckBox">
+					<Variable>linktest</Variable>
+					<Label>Computername starts with "test" and contains "12"</Label>
+					<HAlign>right</HAlign>
+					<SetValue>
+						<!-- IfElse query is used -->
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="link_name"/>
+									</Query>
+								</Source>
+								<Ruleset Type="AND">
+									<Rule Type="StartsWith">test</Rule>
+									<Rule Type="Contains">12</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<ELSE>
+								<Value>FALSE</Value>
+							</ELSE>
+						</Query>
+					</SetValue>
+					<Formatting>
+						<LeftCellWidth>250</LeftCellWidth>
+						<RightCellWidth>50</RightCellWidth>
+					</Formatting>
+				</GuiOption>
+				
+				
+				<!-- IfElse used to set the value of a FreeText.  -->
+				<GuiOption Type="FreeText">
+					<Variable>FreeTextTarget</Variable>
+					<Label>Free text target</Label>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="link_source"/>
+									</Query>
+								</Source>
+								<Ruleset>
+									<Rule Type="Equals">TRUE</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TestLinkTrue</Value>
+								</Result>
+							</IF>
+						</Query>
+					</SetValue>
+				</GuiOption>
+				
+				<!-- OptionValue query used to set the value of a FreeText. Appends text to the source -->
+				<GuiOption Type="FreeText">
+					<Variable>Link_append_example</Variable>
+					<Label>Link append example</Label>
+					<SetValue>
+						<Query Type="OptionValue">
+							<!-- The <ID> element can be used in the same way as a <Property> element in a WMI
+							query i.e. Append, Prefix, Truncate, Calculate. See Config_Queries.xml for exmaples -->
+							<ID Name="link_name">
+								<Append>-Append</Append>
+							</ID>
+						</Query>
+					</SetValue>
+				</GuiOption>
+				
+				<!-- IfElse used to set the value of a dropdown. Be sure to set the Result to the value of the 
+				desired option, not the text -->
+				<GuiOption Type="DropDownList" ID="Country_1">
+					<Variable>Country</Variable>
+					<Label>Country:</Label>
+					<Option>
+						<Text>Australia</Text>
+						<Value>AU</Value>
+					</Option>
+					<Option>
+						<Text>New Zealand</Text>
+						<Value>NZ</Value>
+					</Option>
+					<Option>
+						<Text>USA</Text>
+						<Value>USA</Value>
+					</Option>
+					
+					
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="link_source"/>
+									</Query>
+								</Source>
+								<Ruleset>
+									<Rule Type="Equals">TRUE</Rule>
+								</Ruleset>
+								<Result>
+									<Value>USA</Value>
+								</Result>
+							</IF>
+						</Query>
+					</SetValue>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>

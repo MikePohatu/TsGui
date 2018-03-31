@@ -1,0 +1,72 @@
+<TsGui LiveData="TRUE">
+	<Height>350</Height>
+	<Width>370</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI queries example</Text>
+	</Heading>
+
+	<Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="home.local"/>
+	
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>100</LeftCellWidth>
+					<RightCellWidth>250</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="ComputerName" ID="link_name"/>
+				
+				<GuiOption Type="UsernameBox" AuthID="ad_auth" ID="link_user">
+					<Variable>VAR_Username</Variable>
+					<SetValue>
+						<Value></Value>
+					</SetValue>
+				</GuiOption>
+				
+				<GuiOption Type="PasswordBox" AuthID="ad_auth">
+					<Variable>VAR_Password</Variable>
+				</GuiOption>
+				
+				<GuiOption Type="ActionButton" ID="link_actionbtn" IsDefault="TRUE">
+					<Variable>VAR_ActionButton</Variable>
+					<Action Type="Authentication" AuthID="ad_auth"/>
+				</GuiOption>
+				
+				<GuiOption Type="DropDownList">
+					<Variable>AD_User</Variable>
+					<Label>AD User</Label>
+
+					<Query Type="ADGroupMembers" AuthID="ad_auth">
+						<GroupName>Domain Users</GroupName>
+						<Property Name="DistinguishedName"/>
+						<Property Name="DisplayName"/>				
+						<!--<Separator>, </Separator>-->
+					</Query>
+				</GuiOption>
+				
+				<GuiOption Type="TreeView">
+					<Variable>AD_OU</Variable>
+					<Label>AD OU</Label>
+
+					<Query Type="ADOU" AuthID="ad_auth">
+						<BaseOU>OU=LAB,DC=home,DC=local</BaseOU>
+						<Property Name="distinguishedName"/>
+						<Property Name="Name"/>				
+						<!--<Separator>, </Separator>-->
+					</Query>
+					<Formatting>
+						<Control>
+							<!--<Width>190</Width>-->
+							<Height>100</Height>							
+						</Control>
+					</Formatting>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>

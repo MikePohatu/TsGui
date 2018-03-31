@@ -1,0 +1,204 @@
+<TsGui LiveData="TRUE">
+	<Height>350</Height>
+	<Width>370</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI queries example</Text>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>100</LeftCellWidth>
+					<RightCellWidth>250</RightCellWidth>
+				</Formatting>
+				
+				<!-- ComputerName option with custom default value set -->
+				<GuiOption Type="ComputerName">
+					<SetValue>
+						<Query Type="Wmi">
+							<Wql>SELECT * FROM Win32_OperatingSystem</Wql>
+							<Property Name="LocalDateTime">
+								<Truncate Type="KeepFromStart">6</Truncate>	<!-- Truncate Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
+								<Truncate Type="KeepFromEnd">4</Truncate>
+								<Prefix>PC-</Prefix>
+							</Property>
+							<Separator></Separator>
+							<IncludeNullValues>TRUE</IncludeNullValues>
+						</Query>
+					</SetValue>				
+				</GuiOption>
+				
+				<!-- InfoBox querying a variable from within the GUI. This is the equivalent of the variables that will be created when finish is clicked -->				
+				<GuiOption Type="InfoBox" MaxLength="20">
+					<Variable>INFO_GuiOpt</Variable>
+					<Label>Disk ID: </Label>
+					
+					<!-- Note the GuiVariable type -->
+					<SetValue>
+						<Query Type="GuiVariable">
+							<Variable Name="OSDDiskIndex"/>					
+						</Query>
+					</SetValue>
+				</GuiOption>	
+					
+				<!--This option presents a DropDownList of available fixed harddisks 
+				for the partition and format step in SCCM task sequences-->
+				<GuiOption Type="DropDownList">
+					<Variable>OSDDiskIndex</Variable>
+					<Label>Disk</Label>
+					<SetValue>
+						<Value>0</Value>
+					</SetValue>
+					
+					<!-- Option list built from Wmi query -->
+					<Query Type="Wmi">
+						<Wql>select Index,Caption,Size FROM Win32_DiskDrive where MediaType='Fixed hard disk media'</Wql>
+						<Property Name="Index"/>
+						<Property Name="Index">
+							<Prefix>ID: </Prefix>
+						</Property>
+						<Property Name="Size">
+							<Calculate DecimalPlaces="2">VALUE/1073741824</Calculate>
+							<Prefix></Prefix>
+							<Append>GB</Append>
+						</Property>
+						<Property Name="Caption"/>					
+						<Separator>, </Separator>
+					</Query>
+				</GuiOption>
+				
+				
+				<GuiOption Type="FreeText" ID="asset_details">
+					<Variable>AssetDetails</Variable>
+					<Label>Asset details:</Label>
+					
+					<!-- Query for the default value. Return the first valid value. Note
+					the Ignore values for evaluating the value returned by the query. Also note 
+					the IgnoreEmpty option. By default, a result that is empty or made up of 
+					whitespace is ignored -->
+					<SetValue>				
+						<Query Type="Wmi" IgnoreEmpty="FALSE">
+							<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
+							<Ignore>No Asset Tag</Ignore>
+						</Query>					
+						<Query Type="Wmi">
+							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
+						</Query>
+					</SetValue>
+				</GuiOption>
+				
+				<!-- FreeText with default value set by IfElse query -->
+				<GuiOption Type="InfoBox">
+					<Label>Notifications</Label>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<!-- Source of IF condition is the value of another option. -->
+									<Query Type="OptionValue">
+										<ID Name="asset_details"/>
+									</Query>
+								</Source>
+								
+								<!-- Ruleset to compare the Source value against. Type is AND or OR. Default is OR.
+								Note that RuleSets can be nested to give a (A OR B OR (C AND D)) type structure -->
+								<Ruleset Type="OR">
+									<Rule Type="Equals"></Rule>
+									<Rule Type="Equals"> </Rule>
+									<Ruleset Type="AND">
+										<Rule Type="StartsWith">*</Rule>
+										<Rule Type="Contains">Test</Rule>
+									</Ruleset>
+								</Ruleset>
+								
+								<!-- The result to return if the ruleset matches -->
+								<Result>
+									<Value>There is no asset tag set in BIOS</Value>
+								</Result>
+							</IF>
+							<ELSE>
+								<Value>System appears OK</Value>
+							</ELSE>
+						</Query>				
+					</SetValue>
+				</GuiOption>
+				
+				<!-- InfoBox populated by a Combined query. Queries are concatenated together -->
+				<GuiOption Type="InfoBox">
+					<Label>System info:</Label>
+					<SetValue>
+						<Query Type="Combined">
+							<Query Type="Wmi">
+								<Wql>SELECT * FROM Win32_ComputerSystem</Wql>
+								<Property Name="Manufacturer">
+									<Prefix>Manufacturer: </Prefix>
+									<Append>\r\n</Append>
+								</Property>
+								<Property Name="Model">
+									<Prefix>Model: </Prefix>
+									<Append>\r\n</Append>
+								</Property>
+								<Separator></Separator>
+								<IncludeNullValues>TRUE</IncludeNullValues>
+							</Query>
+							<Value>Device Type: </Value> <!-- Within the system, <Value> elements are treated as queries, so can be used here-->
+							
+							<!-- IfElse with multiple IF statements. The first one to match and return a valid result wins -->
+							<Query Type="IfElse">
+								<IF>
+									<Source>
+										<!-- Source of IF condition is the value of another option. -->
+										<Query Type="OptionValue">
+											<ID Name="TsGui_IsVirtualMachine"/>
+										</Query>
+									</Source>
+									
+									<!-- Ruleset to compare the Source value against -->
+									<Ruleset>
+										<Rule Type="Equals">TRUE</Rule>
+									</Ruleset>
+									
+									<!-- The result to return if the ruleset matches -->
+									<Result>
+										<Value>Virtual Machine</Value>
+									</Result>
+								</IF>
+								<IF>
+									<Source>
+										<!-- Source of IF condition is the value of another option. -->
+										<Query Type="OptionValue">
+											<ID Name="TsGui_IsLaptop"/>
+										</Query>
+									</Source>
+									
+									<!-- Ruleset to compare the Source value against -->
+									<Ruleset>
+										<Rule Type="Equals">TRUE</Rule>
+									</Ruleset>
+									
+									<!-- The result to return if the ruleset matches -->
+									<Result>
+										<Value>Laptop/Mobile device</Value>
+									</Result>
+								</IF>
+								<ELSE>
+									<Value>Desktop Device</Value>
+								</ELSE>
+							</Query>
+						</Query>				
+					</SetValue>
+					<Formatting>
+						<Label>
+							<VerticalAlignment>Top</VerticalAlignment>
+						</Label>
+					</Formatting>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>
