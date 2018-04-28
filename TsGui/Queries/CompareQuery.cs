@@ -64,16 +64,25 @@ namespace TsGui.Queries
         {
             ResultWrangler wrangler = new ResultWrangler();
 
-            foreach (IQuery query in this._querylist.Queries)
+            string first = this._querylist.Queries[0]?.GetResultWrangler()?.GetString();
+
+            for (int i = 1; i < this._querylist.Queries.Count; i++)
             {
+                string second = this._querylist.Queries[i].GetResultWrangler()?.GetString();
                 wrangler.NewResult();
                 FormattedProperty prop = new FormattedProperty();
                 prop.Name = "Result";
+
+                if (first == second)
+                {
+                    prop.Input = this._truevalue;
+                }
+                else
+                {
+                    prop.Input = this._falsevalue;
+                }
+                wrangler.AddFormattedProperty(prop);
             }
-            //prop.Input = this._falsevalue;
-
-
-            //wrangler.AddFormattedProperty(prop);
 
             return wrangler;
         }

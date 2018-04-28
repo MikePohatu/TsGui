@@ -25,17 +25,10 @@ namespace TsGui.Queries
     {
         private Dictionary<int, Result> _results = new Dictionary<int, Result>();
 
-        private int _currentresultlist;         //current working result in the dictionary
+        private int _currentresultlist = -1;         //current working result in the dictionary
 
-        public string Separator { get; set; }
-        public bool IncludeNullValues { get; set; }
-
-        public ResultWrangler()
-        {
-            this.IncludeNullValues = true;
-            this.Separator = ", ";
-            this._currentresultlist = -1;
-        }
+        public string Separator { get; set; } = ", ";
+        public bool IncludeNullValues { get; set; } = true;
 
         public List<Result> GetResults()
         {

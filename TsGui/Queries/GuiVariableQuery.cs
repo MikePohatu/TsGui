@@ -136,7 +136,7 @@ namespace TsGui.Queries
                     this._formatter = new FormattedProperty(x);
                 }
 
-                this._processingwrangler.AddPropertyFormatter(this._formatter);
+                this._processingwrangler.AddFormattedProperty(this._formatter);
             }
         }
     }

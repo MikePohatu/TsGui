@@ -114,16 +114,16 @@ namespace TsGui.Queries.ActiveDirectory
             foreach (UserPrincipal user in objectlist)
             {
                 wrangler.NewResult();
-                FormattedProperty rf = null;
+                FormattedProperty prop = null;
 
                 //if properties have been specified in the xml, query them directly in order
                 if (PropertyTemplates.Count != 0)
                 {
                     foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
                     {
-                        rf = new FormattedProperty(template.Value);
-                        rf.Input = PropertyInterogation.GetStringFromPropertyValue(user, template.Key);
-                        wrangler.AddPropertyFormatter(rf);
+                        prop = new FormattedProperty(template.Value);
+                        prop.Input = PropertyInterogation.GetStringFromPropertyValue(user, template.Key);
+                        wrangler.AddFormattedProperty(prop);
                     }
                 }
             }
