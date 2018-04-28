@@ -19,7 +19,7 @@ namespace TsGui.Queries
 {
     public class ValueOnlyQuery: IQuery
     {
-        private PropertyFormatter _formatter = new PropertyFormatter();
+        private FormattedProperty _formatter = new FormattedProperty();
         private ResultWrangler _wrangler = new ResultWrangler();
 
         public bool Ignore { get { return false; } }

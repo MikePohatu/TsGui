@@ -32,7 +32,7 @@ namespace TsGui.Validation.StringMatching
             if (inputxml == null) { return; }
 
             this.Content = inputxml.Value;
-            this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(inputxml, "CaseSensitive", false); 
+            this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(inputxml, "CaseSensitive", this.IsCaseSensitive); 
         }
     }
 }

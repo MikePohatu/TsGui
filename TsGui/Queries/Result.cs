@@ -7,7 +7,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// Result.cs - encapsulates the results from a query i.e the key value, the properties
+// Result.cs - encapsulates a result from a query i.e the properties, the key value, 
 // and any branch/sub results associated with it
 
 using System.Collections.Generic;
@@ -16,29 +16,23 @@ namespace TsGui.Queries
 {
     public class Result
     {
-        public List<PropertyFormatter> Properties { get; set; }
-        public List<Result> SubResults { get; set; }
-        public PropertyFormatter KeyProperty { get; set; }
+        public List<FormattedProperty> Properties { get; set; } = new List<FormattedProperty>();
+        public List<Result> SubResults { get; set; } = new List<Result>(); //used for tree structures
+        public FormattedProperty KeyProperty { get; set; }
 
-        public Result()
+        public void Add(FormattedProperty newproperty)
         {
-            this.Properties = new List<PropertyFormatter>();
-            this.SubResults = new List<Result>();
+            if (this.KeyProperty == null) { this.KeyProperty = newproperty; }
+            else { this.Properties.Add(newproperty); }
         }
 
-        public void Add(PropertyFormatter newpropertyformatter)
+        public List<FormattedProperty> GetAllFormattedProperties()
         {
-            if (this.KeyProperty == null) { this.KeyProperty = newpropertyformatter; }
-            else { this.Properties.Add(newpropertyformatter); }
-        }
-
-        public List<PropertyFormatter> GetAllPropertyFormatters()
-        {
-            List<PropertyFormatter> l = new List<PropertyFormatter>();
+            List<FormattedProperty> l = new List<FormattedProperty>();
             if (this.KeyProperty != null) { l.Add(this.KeyProperty); }
             l.AddRange(this.Properties);
             foreach (Result r in this.SubResults)
-            { l.AddRange(r.GetAllPropertyFormatters()); }
+            { l.AddRange(r.GetAllFormattedProperties()); }
             return l;
         }
     }

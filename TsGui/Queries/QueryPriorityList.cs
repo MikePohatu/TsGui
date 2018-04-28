@@ -26,6 +26,8 @@ namespace TsGui.Queries
         private List<IQuery> _queries = new List<IQuery>();
         private IDirector _director;
 
+        public List<IQuery> Queries { get { return this._queries; } }
+
         public QueryPriorityList(IDirector director)
         {
             this._director = director;
@@ -90,9 +92,9 @@ namespace TsGui.Queries
             { query.ProcessQuery(); }
         }
 
-        public List<PropertyFormatter> GetAllPropertyFormatters()
+        public List<FormattedProperty> GetAllPropertyFormatters()
         {
-            List<PropertyFormatter> formatterlist = new List<PropertyFormatter>();
+            List<FormattedProperty> formatterlist = new List<FormattedProperty>();
 
             foreach (IQuery query in this._queries)
             {

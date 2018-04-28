@@ -46,6 +46,8 @@ namespace TsGui.Queries
                         return new IfElseQuery(InputXml, director, owner);
                     case "Combined":
                         return new CombinedQuery(InputXml, director, owner);
+                    case "Compare":
+                        return new CompareQuery(InputXml, director, owner);
                     case "Value":
                         return new ValueOnlyQuery(InputXml);
                     case "LinkFalse":

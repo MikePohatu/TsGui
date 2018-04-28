@@ -33,24 +33,14 @@ namespace TsGui.View.GuiOptions
 
         private string _labeltext = string.Empty;
         private string _helptext = null;
-        private string _inactivevalue = "TSGUI_INACTIVE";
-        private GuiOptionBaseUI _ui;
         protected QueryPriorityList _setvaluequerylist;
 
         //standard stuff
         public string ID { get; set; }
         public UserControl Control { get; set; }
         public UserControl Label { get; set; }
-        public GuiOptionBaseUI UserControl
-        {
-            get { return this._ui; }
-            set { this._ui = value; }
-        }
-        public string InactiveValue
-        {
-            get { return this._inactivevalue; }
-            set { this._inactivevalue = value; }
-        }
+        public GuiOptionBaseUI UserControl { get; set; }
+        public string InactiveValue { get; set; } = "TSGUI_INACTIVE";
         public string VariableName { get; set; }
         public string LabelText
         {
@@ -72,7 +62,7 @@ namespace TsGui.View.GuiOptions
                 else
                 {
                     if (this._purgeinactive == true) { return "*PURGED*"; }
-                    else { return this._inactivevalue; }
+                    else { return this.InactiveValue; }
                 }
             }
         }

@@ -23,7 +23,7 @@ namespace TsGui.Queries
     public class EnvironmentVariableQuery: BaseQuery, IQuery
     {
         private SccmConnector _sccmconnector;
-        private PropertyFormatter _formatter;
+        private FormattedProperty _formatter;
 
         public EnvironmentVariableQuery(XElement inputxml, SccmConnector sccmconnector)
         {
@@ -94,15 +94,15 @@ namespace TsGui.Queries
                 xattrib = x.Attribute("Name");
                 if (xattrib == null)
                 {
-                    this._formatter = new PropertyFormatter();
+                    this._formatter = new FormattedProperty();
                     this._formatter.Name = x.Value;
                 }
                 else
                 {
-                    this._formatter = new PropertyFormatter(x);
+                    this._formatter = new FormattedProperty(x);
                 }
 
-                this._processingwrangler.AddPropertyFormatter(this._formatter);
+                this._processingwrangler.AddFormattedProperty(this._formatter);
             }
         }
     }

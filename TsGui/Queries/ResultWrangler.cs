@@ -13,7 +13,8 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ResultWrangler.cs - deals with multiple results e.g. concatenating, listing etc
+// ResultWrangler.cs - takes a list of results, and outputs various formats 
+// e.g. concatenating, listing, key-value pairs etc
 
 using System.Collections.Generic;
 using TsGui.Queries.Trees;
@@ -22,7 +23,6 @@ namespace TsGui.Queries
 {
     public class ResultWrangler
     {
-
         private Dictionary<int, Result> _results = new Dictionary<int, Result>();
 
         private int _currentresultlist;         //current working result in the dictionary
@@ -46,7 +46,7 @@ namespace TsGui.Queries
         }
 
         /// <summary>
-        /// Create a new List<PropertyFormatter> and set it as current
+        /// Create a new List<FormattedProperty> and set it as current
         /// </summary>
         public void NewResult()
         {
@@ -67,25 +67,25 @@ namespace TsGui.Queries
         /// Add a PropertyFormatter to the ResultWrangler's current list 
         /// </summary>
         /// <param name="Formatter"></param>
-        public void AddPropertyFormatter(PropertyFormatter Formatter)
+        public void AddFormattedProperty(FormattedProperty Formatter)
         {
             Result result;
             this._results.TryGetValue(this._currentresultlist, out result);
             result.Add(Formatter); 
         }
 
-        public void AddPropertyFormatters(List<PropertyFormatter> Formatters)
+        public void AddFormattedProperties(List<FormattedProperty> Formatters)
         {
-            foreach (PropertyFormatter rf in Formatters)
-            { this.AddPropertyFormatter(rf); }
+            foreach (FormattedProperty rf in Formatters)
+            { this.AddFormattedProperty(rf); }
         }
 
-        public List<PropertyFormatter> GetAllPropertyFormatters()
+        public List<FormattedProperty> GetAllPropertyFormatters()
         {
-            List<PropertyFormatter> l = new List<PropertyFormatter>();
+            List<FormattedProperty> l = new List<FormattedProperty>();
             foreach (Result r in this._results.Values)
             {
-                l.AddRange(r.GetAllPropertyFormatters());
+                l.AddRange(r.GetAllFormattedProperties());
             }
 
             return l;
@@ -119,18 +119,18 @@ namespace TsGui.Queries
         } 
 
         /// <summary>
-        /// Concatenate PropertyFormatter values into a single string
+        /// Concatenate FormattedProperty values into a single string
         /// </summary>
         /// <param name="properties"></param>
         /// <param name="Separator"></param>
         /// <returns></returns>
-        public string ConcatenatePropertyValues(List<PropertyFormatter> properties, string Separator)
+        public string ConcatenatePropertyValues(List<FormattedProperty> properties, string Separator)
         {
             string s = "";
             string tempval = null;
             int i = 0;
 
-            foreach (PropertyFormatter property in properties)
+            foreach (FormattedProperty property in properties)
             {
                 tempval = property.Value;
 
@@ -227,7 +227,7 @@ namespace TsGui.Queries
             //first check to make sure a new sublist has actually been created. if not reutrn null
             if (_currentresultlist == -1) { return null; }
 
-            List<PropertyFormatter> tempRFListMain = new List<PropertyFormatter>();
+            List<FormattedProperty> tempRFListMain = new List<FormattedProperty>();
 
             foreach (Result r in this._results.Values)
             {

@@ -97,6 +97,7 @@
     <Compile Include="Options\OptionDelegates.cs" />
     <Compile Include="Queries\ActiveDirectory\ADOrgUnitQuery.cs" />
     <Compile Include="Queries\ActiveDirectory\ADGroupMembersQuery.cs" />
+    <Compile Include="Queries\CompareQuery.cs" />
     <Compile Include="Queries\GuiVariableQuery.cs" />
     <Compile Include="Queries\IfElseQuery.cs" />
     <Compile Include="Queries\PropertyInterogation.cs" />
@@ -283,7 +284,7 @@
     <Compile Include="EnvironmentController.cs" />
     <Compile Include="Calculator\Calculator.cs" />
     <Compile Include="Queries\ResultWrangler.cs" />
-    <Compile Include="Queries\PropertyFormatter.cs" />
+    <Compile Include="Queries\FormattedProperty.cs" />
     <Compile Include="Grouping\GroupDelegates.cs" />
     <Compile Include="Grouping\Group.cs" />
     <Compile Include="View\GuiOptions\GuiFactory.cs" />

@@ -139,7 +139,7 @@ namespace TsGui.Queries.ActiveDirectory
             {
                 foreach (KeyValuePair<string, XElement> template in propertytemplates)
                 {
-                    PropertyFormatter pf = new PropertyFormatter(template.Value);
+                    FormattedProperty pf = new FormattedProperty(template.Value);
                     if (baseou.Properties[pf.Name] != null && baseou.Properties[pf.Name].Count > 0)
                     {
                         pf.Input = baseou.Properties[pf.Name][0].ToString();
@@ -156,7 +156,7 @@ namespace TsGui.Queries.ActiveDirectory
                     {
                         foreach (string s in pc.Values)
                         {
-                            PropertyFormatter pf = new PropertyFormatter();
+                            FormattedProperty pf = new FormattedProperty();
                             pf.Input = s;
                             r.Add(pf);
                         }

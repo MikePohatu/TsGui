@@ -13,7 +13,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// CombinedQuery.cs - combine multiple queries
+// CompareQuery.cs - compare multiple queries and return a result
 
 
 using System.Xml.Linq;
@@ -21,16 +21,17 @@ using TsGui.Linking;
 
 namespace TsGui.Queries
 {
-    public class CombinedQuery: BaseQuery, ILinkTarget, ILinkingEventHandler
+    public class CompareQuery: BaseQuery, ILinkTarget, ILinkingEventHandler
     {
         private QueryPriorityList _querylist;
         private IDirector _controller;
         private ILinkTarget _linktargetoption;
+        private string _truevalue = "TRUE";
+        private string _falsevalue = "FALSE";
 
-        public CombinedQuery(XElement inputxml, IDirector controller, ILinkTarget targetoption)
+        public CompareQuery(XElement inputxml, IDirector controller, ILinkTarget targetoption)
         {
             this._querylist = new QueryPriorityList(this, controller);
-            this._processingwrangler = new ResultWrangler();
             this._processingwrangler.Separator = string.Empty;
             this._reprocess = true;
             this._controller = controller;
@@ -44,8 +45,13 @@ namespace TsGui.Queries
             
             foreach (XElement x in InputXml.Elements())
             {
-                IQuery newquery = QueryFactory.GetQueryObject(x, this._controller, this);
-                if (newquery != null) { this._querylist.AddQuery(newquery); }
+                if (x.Name == "TrueValue") { this._truevalue = x.Value; }
+                else if (x.Name == "FalseValue") { this._falsevalue = x.Value; }
+                else
+                {
+                    IQuery newquery = QueryFactory.GetQueryObject(x, this._controller, this);
+                    if (newquery != null) { this._querylist.AddQuery(newquery); }
+                }
             }
         }
 
@@ -56,13 +62,20 @@ namespace TsGui.Queries
 
         public override ResultWrangler ProcessQuery()
         {
-            this._processingwrangler = this._processingwrangler.Clone();
-            this._processingwrangler.NewResult();
-            this._processingwrangler.AddFormattedProperties(this._querylist.GetAllPropertyFormatters());
+            ResultWrangler wrangler = new ResultWrangler();
 
-            string s = this._processingwrangler.GetString();
-            if (this.ShouldIgnore(s) == false) { return this._processingwrangler; }
-            else { return null; }
+            foreach (IQuery query in this._querylist.Queries)
+            {
+                wrangler.NewResult();
+                FormattedProperty prop = new FormattedProperty();
+                prop.Name = "Result";
+            }
+            //prop.Input = this._falsevalue;
+
+
+            //wrangler.AddFormattedProperty(prop);
+
+            return wrangler;
         }
 
         public void RefreshValue()

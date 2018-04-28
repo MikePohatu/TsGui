@@ -24,7 +24,7 @@ namespace TsGui.Queries
 {
     public class GuiVariableQuery: BaseQuery, ILinkingEventHandler
     {
-        private PropertyFormatter _formatter;
+        private FormattedProperty _formatter;
         private IDirector _director;
         private ILinkTarget _linktargetoption;
         private List<IOption> _options = new List<IOption>();
@@ -128,12 +128,12 @@ namespace TsGui.Queries
                 xattrib = x.Attribute("Name");
                 if (xattrib == null)
                 {
-                    this._formatter = new PropertyFormatter();
+                    this._formatter = new FormattedProperty();
                     this._formatter.Name = x.Value;
                 }
                 else
                 {
-                    this._formatter = new PropertyFormatter(x);
+                    this._formatter = new FormattedProperty(x);
                 }
 
                 this._processingwrangler.AddPropertyFormatter(this._formatter);
