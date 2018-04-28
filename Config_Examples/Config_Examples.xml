@@ -1,8 +1,19 @@
+<!--
+GuiOption types:
+<GuiOption Type="ComputerName" />
+<GuiOption Type="FreeText">
+<GuiOption Type="DropDownList">
+<GuiOption Type="CheckBox">
+<GuiOption Type="InfoBox">
+<GuiOption Type="Heading">
+<GuiOption Type="TreeView">
+-->
+
 <TsGui LiveData="TRUE" Debug="FALSE">
 	<!-- The showgridlines option is used for assisting with layout design
 	<ShowGridLines /> 
 	-->
-	<Height>300</Height>
+	<Height>350</Height>
 	<Width>600</Width>
 	
 	<HardwareEval />
@@ -190,15 +201,71 @@
 				<GuiOption Type="DropDownList" NoDefaultValue="TRUE">
 					<!-- The NoSelectionMessage element overrides the default "Please select a value" text when nothing is selected by the user -->
 					<NoSelectionMessage>Please select something</NoSelectionMessage>
-					<Variable>Country</Variable>
-					<Label>Country:</Label>
+					<Variable>Department</Variable>
+					<Label>Department:</Label>
+					<Option>
+						<Text>Human Resources</Text>
+						<Value>HR</Value>
+					</Option>
+					<Option>
+						<Text>Finance</Text>
+						<Value>Finance</Value>
+					</Option>
+					<Option>
+						<Text>Info Tech</Text>
+						<Value>IT</Value>
+					</Option>
+				</GuiOption>
+				
+				<GuiOption Type="TreeView">
+					<!-- The NoSelectionMessage element overrides the default "Please select a value" text when nothing is selected by the user -->
+					<NoSelectionMessage>Please select something</NoSelectionMessage>
+					<Variable>Location</Variable>
+					<Label>Location:</Label>
+					<SetValue>
+						<Value>Takapuna</Value>
+					</SetValue>
 					<Option>
 						<Text>Australia</Text>
 						<Value>AU</Value>
 					</Option>
-					<Option>
+					<!-- Setting the Selectable attribute to FALSE will make this behave as a 'root node' for collapsing etc, but will not be 
+					selectable -->
+					<Option Selectable="FALSE">
 						<Text>New Zealand</Text>
 						<Value>NZ</Value>
+						<Option>
+							<Text>Auckland</Text>
+							<Value>Akl</Value>
+							<Option>
+								<Text>Takapuna</Text>
+								<Value>Takapuna</Value>
+								<Option>
+									<Text>Street1</Text>
+									<Value>Street1</Value>
+									<Option>
+										<Text>House1</Text>
+										<Value>House1</Value>
+									</Option>
+									<Option>
+										<Text>House2</Text>
+										<Value>House2</Value>
+									</Option>
+								</Option>
+								<Option>
+									<Text>Street2</Text>
+									<Value>Street2</Value>
+								</Option>
+							</Option>
+							<Option>
+								<Text>North Shore</Text>
+								<Value>NorthShore</Value>
+							</Option>
+						</Option>
+						<Option>
+							<Text>Wellington</Text>
+							<Value>Wlg</Value>
+						</Option>
 					</Option>
 					<Option>
 						<Text>USA</Text>

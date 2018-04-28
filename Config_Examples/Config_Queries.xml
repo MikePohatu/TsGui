@@ -1,3 +1,29 @@
+<!--
+Query types:
+
+*Standard queries
+<Query Type="Combined">
+<Query Type="Compare">
+<Query Type="GuiVariable">
+<Query Type="IfElse">
+<Query Type="Wmi">
+
+*Option linking queries - see Config_Linking.xml
+<Query Type="LinkTrue">
+<Query Type="LinkFalse">
+<Query Type="LinkTo">
+<Query Type="OptionValue">
+
+*Active Directory queries (BETA) - see Config_AD.xml
+<Query Type="ADGroupMembers">
+<Query Type="ADOU"> (see Config_AD.xml)
+
+
+
+
+
+-->
+
 <TsGui LiveData="TRUE">
 	<Height>350</Height>
 	<Width>370</Width>
@@ -200,7 +226,7 @@
 				</GuiOption>
 				
 				<!-- Traffic light using a Compare query, used for string comparison. 
-				The compare returns a value of TRUE if they match, FALSE if not -->
+				By default, the compare returns a value of TRUE if they match, FALSE if not -->
 				<GuiOption Type="TrafficLight">
 					<Variable>Compliance_Domain</Variable>
 					<Label>Domain DNS</Label>
@@ -208,9 +234,9 @@
 					<SetValue>
 						<!-- The Compare query, comparing the values from two other queries -->
 						<Query Type="Compare">
-							<Query Type="OptionValue">
-								<ID Name="domainselect"/>
-							</Query>
+							<TrueValue>TRUE</TrueValue>
+							<FalseValue>FALSE</FalseValue>
+							<Value>localdomain</Value>
 							<Query Type="Wmi">
 								<Wql>select DNSDomain from Win32_NetworkAdapterConfiguration WHERE IPEnabled='True'</Wql>
 								<Property Name="DNSDomain"/>	
@@ -218,7 +244,7 @@
 						</Query>
 					</SetValue>
 					<Compliance>
-						<Message>Domain does not match current DNS Domain</Message>		
+						<Message>Current DNS Domain does not match requires configuration</Message>		
 						<DefaultState>Warning</DefaultState>
 						<OK>
 							<Rule Type="Equals">TRUE</Rule>
