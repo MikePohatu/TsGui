@@ -198,6 +198,33 @@
 						</Label>
 					</Formatting>
 				</GuiOption>
+				
+				<!-- Traffic light using a Compare query, used for string comparison. 
+				The compare returns a value of TRUE if they match, FALSE if not -->
+				<GuiOption Type="TrafficLight">
+					<Variable>Compliance_Domain</Variable>
+					<Label>Domain DNS</Label>
+					<ShowComplianceValue>FALSE</ShowComplianceValue>
+					<SetValue>
+						<!-- The Compare query, comparing the values from two other queries -->
+						<Query Type="Compare">
+							<Query Type="OptionValue">
+								<ID Name="domainselect"/>
+							</Query>
+							<Query Type="Wmi">
+								<Wql>select DNSDomain from Win32_NetworkAdapterConfiguration WHERE IPEnabled='True'</Wql>
+								<Property Name="DNSDomain"/>	
+							</Query>
+						</Query>
+					</SetValue>
+					<Compliance>
+						<Message>Domain does not match current DNS Domain</Message>		
+						<DefaultState>Warning</DefaultState>
+						<OK>
+							<Rule Type="Equals">TRUE</Rule>
+						</OK>
+					</Compliance>
+				</GuiOption>
 			</Column>
 		</Row>
 	</Page>

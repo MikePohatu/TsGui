@@ -62,6 +62,9 @@ namespace TsGui.Queries
 
         public override ResultWrangler ProcessQuery()
         {
+            //if someone hasn't supplied to queries to compare, just return null i.e. invalid result
+            if (this._querylist.Queries.Count <2) { return null; } 
+
             ResultWrangler wrangler = new ResultWrangler();
 
             string first = this._querylist.Queries[0]?.GetResultWrangler()?.GetString();
