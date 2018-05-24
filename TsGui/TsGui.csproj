@@ -80,6 +80,8 @@
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="IDirector.cs" />
     <Compile Include="Queries\IfElseQuery.cs" />
+    <Compile Include="Queries\ToLowerRule.cs" />
+    <Compile Include="Queries\ToUpperRule.cs" />
     <Compile Include="Validation\StringMatching\BaseMatchingRule.cs" />
     <Compile Include="Validation\StringMatching\Characters.cs" />
     <Compile Include="Validation\StringMatching\MatchingRuleLibrary.cs" />
