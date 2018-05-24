@@ -14,6 +14,13 @@ Query types:
 <Query Type="LinkTo">
 <Query Type="OptionValue">
 
+*Property formatting options
+<Calculate>
+<Prefix>
+<Append>
+<ToUpper/>
+<ToLower/>
+<Truncate> - Truncate Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart
 -->
 <TsGui LiveData="TRUE">
 	<Height>350</Height>
@@ -42,7 +49,7 @@ Query types:
 							<Property Name="LocalDateTime">
 								<Truncate Type="KeepFromStart">6</Truncate>	<!-- Truncate Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
 								<Truncate Type="KeepFromEnd">4</Truncate>
-								<Prefix>PC-</Prefix>
+								<Prefix>PC-</Prefix>								
 							</Property>
 							<Separator></Separator>
 							<IncludeNullValues>TRUE</IncludeNullValues>
@@ -72,7 +79,9 @@ Query types:
 							<Prefix></Prefix>
 							<Append>GB</Append>
 						</Property>
-						<Property Name="Caption"/>					
+						<Property Name="Caption">
+							<ToUpper/>  <!-- Convert the result to upper case. There is also <ToLower/> -->
+						</Property>
 						<Separator>, </Separator>
 					</Query>
 				</GuiOption>
