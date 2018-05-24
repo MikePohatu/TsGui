@@ -66,6 +66,12 @@ namespace TsGui.Queries
                     case "Truncate":
                         this._rules.Add(new TruncateRule(xsetting));
                         break;
+                    case "ToUpper":
+                        this._rules.Add(new ToUpperRule());
+                        break;
+                    case "ToLower":
+                        this._rules.Add(new ToLowerRule());
+                        break;
                     default:
                         break;
                 }
