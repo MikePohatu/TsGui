@@ -1,0 +1,92 @@
+<TsGui>
+	<Height>250</Height>
+	<Width>300</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Formatting</Text>
+	</Heading>
+
+	<WindowLocation>
+		<Left>100</Left>								
+		<Top>20</Top>
+		<StartupLocation>Manual</StartupLocation>		<!-- Manual | Center -->
+	</WindowLocation>
+	
+	<Buttons>
+		<Next>=Next=</Next>
+		<Back>=Back=</Back>
+		<Cancel>=Cancel=</Cancel>
+		<Finish>=Finish=</Finish>
+		<Formatting>
+			<!--<Width>Auto</Width>
+			<Height>Auto</Height>-->
+			<CornerRadius>5</CornerRadius>
+			<HorizontalAlignment>Right</HorizontalAlignment>
+			<Font>
+				<Weight>Normal</Weight>		<!-- Options available: Normal, Bold, ExtraBold, Light -->
+				<Size>11</Size>	
+				<Style>Normal</Style>		<!-- Options available: Normal, Italic, Oblique -->
+				<Color>Black</Color>
+			</Font>	
+		</Formatting>
+	</Buttons>
+	
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>160</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="ComputerName">
+					<Formatting>
+						<LabelOnRight>FALSE</LabelOnRight>
+						<Height>Auto</Height>
+						<Width>Auto</Width>
+						<Padding>0</Padding>
+						<LeftCellWidth>110</LeftCellWidth>
+						<RightCellWidth>160</RightCellWidth>
+						
+						<Label>
+							<Width>Auto</Width>
+							<Height>Auto</Height>
+							
+							<Padding>2,2,2,2</Padding>
+							<Margin>2,2,2,2</Margin>
+							<VerticalAlignment>Bottom</VerticalAlignment>		<!-- Options available: Top, Bottom, Center, Stretch -->
+							<HorizontalAlignment>Stretch</HorizontalAlignment> 	<!-- Options available: Left, Right, Center, Stretch -->
+							<TextAlignment>Left</TextAlignment>					<!-- Options available: Left, Right, Center -->
+							<Font>
+								<Weight>Normal</Weight>		<!-- Options available: Normal, Bold, ExtraBold, Light -->
+								<Size>11</Size>	
+								<Style>Normal</Style>		<!-- Options available: Normal, Italic, Oblique -->
+								<Color>Black</Color>
+							</Font>							
+						</Label>
+							
+						<Control>
+							<Width>Auto</Width>
+							<Height>Auto</Height>
+							
+							<Padding>2,2,2,2</Padding>
+							<Margin>2,2,2,2</Margin>
+							<VerticalAlignment>Bottom</VerticalAlignment>		<!-- Options available: Top, Bottom, Center, Stretch -->
+							<HorizontalAlignment>Stretch</HorizontalAlignment> 	<!-- Options available: Left, Right, Center, Stretch -->
+							<TextAlignment>Left</TextAlignment>					<!-- Options available: Left, Right, Center -->
+							<Font>
+								<Weight>Normal</Weight>		<!-- Options available: Normal, Bold, ExtraBold, Light -->
+								<Size>11</Size>	
+								<Style>Normal</Style>		<!-- Options available: Normal, Italic, Oblique -->
+								<Color>Black</Color>
+							</Font>								
+						</Control>
+					</Formatting>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>

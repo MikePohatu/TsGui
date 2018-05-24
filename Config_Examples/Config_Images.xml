@@ -1,0 +1,70 @@
+<TsGui>
+	<Height>500</Height>
+	<Width>300</Width>
+	
+	<Heading>
+		<Title>Example config</Title>
+		<Text></Text>
+		<Height>60</Height>
+		<Image>
+			<File>TsGui-TextLogo1.png</File>
+			<!--<Width>100</Width>-->
+			<Height>50</Height>
+			<Stretch>UniformToFill</Stretch>
+			<!-- Default stretch is UniformToFill. For details on stretch modes, please see the following link:
+			https://msdn.microsoft.com/en-us/library/system.windows.media.stretch(v=vs.110).aspx -->
+		</Image>
+	</Heading>
+
+	<!-- Panes config -->
+	<LeftPane>
+		<Width>50</Width>
+		<Image>
+			<File>water.jpg</File>
+			<Width>50</Width>
+			<!--<Height>170</Height>-->
+			<Stretch>UniformToFill</Stretch>					
+		</Image>
+	</LeftPane>
+	
+	<!-- Panes config -->
+	<RightPane>
+		<Width>50</Width>
+		<Image>
+			<File>water.jpg</File>
+			<Width>50</Width>
+			<!--<Height>170</Height>-->
+			<Stretch>UniformToFill</Stretch>					
+		</Image>
+	</RightPane>
+	
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>80</LeftCellWidth>
+					<RightCellWidth>80</RightCellWidth>
+				</Formatting>
+				
+				
+				<GuiOption Type="Image">
+					<Image>
+						<File>image1.jpg</File>
+						<!--<Width>100</Width>-->
+						<Height>170</Height>
+						<Stretch>Uniform</Stretch>					
+					</Image>
+				</GuiOption>
+				
+				<GuiOption Type="Image">
+					<Image>
+						<File>image2.jpg</File>
+						<!--<Width>100</Width>-->
+						<Height>170</Height>
+						<Stretch>Uniform</Stretch>					
+					</Image>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>

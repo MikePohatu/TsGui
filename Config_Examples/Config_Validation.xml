@@ -1,0 +1,96 @@
+<TsGui>
+	<Height>250</Height>
+	<Width>300</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI base config</Text>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>160</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="ComputerName">
+					<Validation ValidateEmpty="FALSE">
+						<!--<Group>Group_1</Group>-->
+					
+						<Message>Tooltip message to display on validation error</Message>			
+						<MaxLength>15</MaxLength>
+						<MinLength>1</MinLength>
+						
+						<!-- Validation sections with available rule types -->					
+						<Valid>
+							<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
+							<Rule Type="EndsWith">AB</Rule>
+							<Rule Type="Contains">AB</Rule>
+							<Rule Type="Characters">1234567890</Rule>
+							<Rule Type="RegEx" CaseSensitive="TRUE">^(WM|WD)[0-9]{6}$</Rule>
+							<!--<Rule Type="IsNumeric"/>-->
+							<!--<Rule Type="GreaterThan">10</Rule>-->
+							<!--<Rule Type="GreaterThanOrEqualTo">10</Rule>-->
+							<!--<Rule Type="LessThan">10</Rule>-->
+							<!--<Rule Type="LessThanOrEqualTo">10</Rule>-->
+						</Valid>
+						<Invalid>
+							<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
+							<Rule Type="EndsWith">YZ</Rule>
+							<Rule Type="Contains">YZ</Rule>
+							<Rule Type="Characters">`~!@#$%^*()</Rule>
+							<Rule Type="RegEx" CaseSensitive="TRUE">^(YZ|XZ)[0-9]{6}$</Rule>
+							<Rule Type="Equals" CaseSensitive="TRUE">*NULL</Rule> <!-- *NULL is returned if the WMI query returns a null result -->
+							
+						</Invalid>
+					</Validation>
+				</GuiOption>
+				
+				
+				<!-- Example DropDownList with validation applied. This example will allow a 
+				device to be not domain joined, but IT will be the only valid option from the
+				DropDownList -->
+				<GuiOption Type="CheckBox">
+					<Variable>TOGGLE_DomainJoined</Variable>
+					<Label>Domain joined: </Label>
+					<HAlign>left</HAlign>
+					<Checked/>
+					
+					<Toggle Group="Group_NotDomainJoined">
+						<Enabled>FALSE</Enabled>
+					</Toggle>
+				</GuiOption>
+					
+				<GuiOption Type="DropDownList" NoDefaultValue="TRUE">
+					<Variable>VAR_Department</Variable>
+					<Label>Department:</Label>
+					<Option>
+						<Text>IT</Text>
+						<Value>IT</Value>
+					</Option>
+					<Option>
+						<Text>Sales</Text>
+						<Value>Sales</Value>
+					</Option>
+					<Option>
+						<Text>Marketing</Text>
+						<Value>Marketing</Value>
+					</Option>
+					
+					<Validation ValidateEmpty="FALSE">
+						<Group>Group_NotDomainJoined</Group>
+					
+						<Message>Desktop must be domain joined unless built for IT</Message>			
+						<Valid>
+							<Rule Type="Equals" CaseSensitive="TRUE">IT</Rule>
+						</Valid>
+					</Validation>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>

@@ -1,0 +1,69 @@
+<TsGui LiveData="TRUE">
+	<Height>300</Height>
+	<Width>300</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI</Text>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>160</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="ComputerName" />
+				
+				<!--CheckBox used as a toggle -->
+				<GuiOption Type="CheckBox">
+					<Variable>TOGGLE_Test</Variable>
+					<Label>Test group enabled</Label>
+					<HAlign>left</HAlign>
+					
+					<Toggle Group="Group_Test">
+						<Enabled>TRUE</Enabled>
+						<Disabled>FALSE</Disabled>
+					</Toggle>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+	
+	<NoUI>
+		<!-- NoUIOptions function like GuiOptions but without the user interface -->
+		<NoUIOption Variable="NoUIOption_1" Value="NoUIOption_1_Val"/>
+		<NoUIOption Variable="NoUIOption_2">
+			<SetValue>
+				<Query Type="Wmi">
+					<Wql>SELECT * FROM Win32_OperatingSystem</Wql>
+					<Property Name="LocalDateTime">
+						<Truncate Type="KeepFromStart">6</Truncate>	<!-- Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
+						<Truncate Type="KeepFromEnd">4</Truncate>
+						<Prefix>PC-</Prefix>
+					</Property>
+					<Separator></Separator>
+				</Query>
+			</SetValue>
+		</NoUIOption>
+		
+		<!-- Containers are used for for inheritance purposes. They function like pages, rows, and columns, e.g. 
+		group membership effects all NoUIOptions and Containers below. -->
+		<Container>
+			<Group>Group_Test</Group>
+			<NoUIOption Variable="NoUIOption_3" Value="NoUIOption_3_Val"/>
+			<NoUIOption>
+				<Variable>NoUIOption_4</Variable>
+				<SetValue>
+					<Value>NoUIOption_4_Val</Value>
+				</SetValue>
+				<InactiveValue>NoUIOption_4_Inactive</InactiveValue>
+			</NoUIOption>
+			<NoUIOption Variable="NoUIOption_5" Value="NoUIOption_5_Val" PurgeInactive="TRUE"/>
+		</Container>
+	</NoUI>
+</TsGui>
