@@ -3,8 +3,9 @@ Release date: 25 May 2018
 
 *New features 
 	Added <ToUpper> and <ToLower> options for formatting properties 
+	Added type lists to top of Config_Examples.xml and Config_Queries.xml to finding things quicker
 
-
+============================================
 Version 1.0.6.1
 Release date: 28 Nov 2017
 
