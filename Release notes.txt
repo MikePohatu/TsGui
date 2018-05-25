@@ -1,0 +1,328 @@
+Version 1.0.6.3
+Release date: 26 May 2018
+
+*New features 
+	Added <CharacterCasing> option to FreeText (and by extension ComputerName) GuiOption.
+	Made updates to Config_Queries.xml to show EnvironmentVariable using Append, Prefix, Truncate type rules.
+
+============================================
+Version 1.0.6.2
+Release date: 25 May 2018
+
+*New features 
+	Added <ToUpper> and <ToLower> options for formatting properties 
+	Added type lists to top of Config_Examples.xml and Config_Queries.xml to finding things quicker
+
+============================================
+Version 1.0.6.1
+Release date: 28 Nov 2017
+
+*Fixes
+	Fixed null reference execption when default gateway is empty
+
+============================================
+Version 1.0.6.0
+Release date: 27 Nov 2017
+
+*Fixes
+	Fixed exception caused by WMI returning null objects to a Drop Down List
+
+*New features 
+	Added IP info to Hardware Evaluation with the following variables:
+		TsGui_IPv4
+		TsGui_IPv6
+		TsGui_DefaultGateway4
+		TsGui_DefaultGateway6
+		TsGui_DHCPServer
+
+============================================
+Version 1.0.4.0
+Release date: 2 Aug 2017
+
+*Fixes
+	Fixed code that will cause errors if TsGui is used as a prestart command.
+
+*Known Issues
+	1. If running ADK 1703, you now have to add WinPE-HTA in addition to WinPE-NetFX. See here for details: 
+	   https://msdn.microsoft.com/en-us/windows/hardware/commercialize/manufacture/desktop/winpe-add-packages--optional-components-reference
+	2. In a DropDownList, adding individual options to groups is not supported on .Net 4.6.0 or .Net 4.6.1. A bug in .Net will cause intermitent crashes. 
+	   This applies to ADK for Windows 10 1511. Please upgrade your 1511 boot images to ADK 10 1607 if this applies to you. For more details on the .Net 
+	   bug, see here: https://connect.microsoft.com/VisualStudio/feedback/details/1660886/system-windows-controls-combobox-coerceisselectionboxhighlighted-bug
+
+
+============================================
+Version 1.0.3.0
+Release date: 16 July 2017
+
+*Fixes
+	Fixed null reference exception in DropDownList when using option linking and If/Else queries
+	Added previously undocumented Invert toggle attribute Config_Groups_and_Toggles.xml examples file
+
+*Known Issues
+	1. If running ADK 1703, you now have to add WinPE-HTA in addition to WinPE-NetFX. See here for details: 
+	   https://msdn.microsoft.com/en-us/windows/hardware/commercialize/manufacture/desktop/winpe-add-packages--optional-components-reference
+	2. In a DropDownList, adding individual options to groups is not supported on .Net 4.6.0 or .Net 4.6.1. A bug in .Net will cause intermitent crashes. 
+	   This applies to ADK for Windows 10 1511. Please upgrade your 1511 boot images to ADK 10 1607 if this applies to you. For more details on the .Net 
+	   bug, see here: https://connect.microsoft.com/VisualStudio/feedback/details/1660886/system-windows-controls-combobox-coerceisselectionboxhighlighted-bug
+
+
+
+============================================
+Version 1.0.2.0
+Release date: 1 July 2017
+
+*Fixes
+	When using an OptionValue query as the result for a IfElse query, a change in the source for the OptionValue would not trigger a re-evaluation of the IfElse. A change on the result will trigger an update
+	Added additional rule to ignore NoAssetInformat when querying BIOS for ComputerName GuiOptions
+
+*Known Issues
+	1. If running ADK 1703, you now have to add WinPE-HTA in addition to WinPE-NetFX. See here for details: 
+	   https://msdn.microsoft.com/en-us/windows/hardware/commercialize/manufacture/desktop/winpe-add-packages--optional-components-reference
+	2. In a DropDownList, adding individual options to groups is not supported on .Net 4.6.0 or .Net 4.6.1. A bug in .Net will cause intermitent crashes. 
+	   This applies to ADK for Windows 10 1511. Please upgrade your 1511 boot images to ADK 10 1607 if this applies to you. For more details on the .Net 
+	   bug, see here: https://connect.microsoft.com/VisualStudio/feedback/details/1660886/system-windows-controls-combobox-coerceisselectionboxhighlighted-bug
+
+
+============================================
+Version 1.0.0.0
+Release date: 16 April 2017
+
+*New features 
+	Added "OptionValue" query type to query other GuiOptions a.k.a. option linking. See Config_Linking.xml for examples 
+	Added "IfElse" query type to set values based on conditional logic
+	Added "LinkTo", "LinkTrue", and "LinkFalse" query types. These are query types are shorthand for common IfElse queries
+	Added "Combined" query type to put multiple query results together
+	Added AND/OR functionality to rules for compliance, validation, and IF queries
+	Added support for multiple lines in InfoBox. Use \r\n for newline
+	Integrated NLog for logging. This can be configured in NLog.config (which also contains links to documentation)
+	Added logging view to LiveData window.
+	Added ID field for option linking to LiveData window
+	Added hardware evaluation values to LiveData 
+	Added "TickCross" compliance GuiOption. Identical config to TrafficLight.
+	Added CornerRadius formatting option for buttons
+	Added ability to set the selected option in a DropDownList via query using <SetValue> config
+	Standardised config piece that sets values for a GuiOption, e.g. <DefaultValue>, <DisplayValue>, <SetValue> etc, to <SetValue>. Old values will continue to work
+
+*Fixes
+	General code cleanup and optimisations.
+
+**Important notes
+	Please be sure to copy NLog.dll and NLog.config with the new TsGui.exe. If these files are not present TsGui will not launch. 
+
+*Known Issues
+	1. If running ADK 1703, you now have to add WinPE-HTA in addition to WinPE-NetFX. See here for details: 
+	   https://msdn.microsoft.com/en-us/windows/hardware/commercialize/manufacture/desktop/winpe-add-packages--optional-components-reference
+	2. In a DropDownList, adding individual options to groups is not supported on .Net 4.6.0 or .Net 4.6.1. A bug in .Net will cause intermitent crashes. 
+	   This applies to ADK for Windows 10 1511. Please upgrade your 1511 boot images to ADK 10 1607 if this applies to you. For more details on the .Net 
+	   bug, see here: https://connect.microsoft.com/VisualStudio/feedback/details/1660886/system-windows-controls-combobox-coerceisselectionboxhighlighted-bug
+
+
+============================================
+Version 0.9.7.2
+Release date: 15 March 2017
+
+*New features
+	Added ability to added each option in a DropDownList to a group (see known issues). If group is disabled the option will be removed from the dropdown. See Config_Groups_and_Toggles.xml
+	Added IncludeNullValues options for queries. If one of the properties is null/empty, setting this to false will stop it being included in your query result
+
+*Fixes
+	Fixed issue queries weren't always returning the expected results
+	Fixed crash caused by queries that returns a null WMI property
+	Tweaked example power test compliance rule to allow for multiple batteries
+
+*Known Issues
+	1. In a DropDownList, adding individual options to groups is not supported on .Net 4.6.0 or .Net 4.6.1. A bug in .Net will cause intermitent crashes. 
+	   This applies to ADK for Windows 10 1511. Please upgrade your 1511 boot images to ADK 10 1607 if this applies to you. For more details on the .Net 
+	   bug, see here: https://connect.microsoft.com/VisualStudio/feedback/details/1660886/system-windows-controls-combobox-coerceisselectionboxhighlighted-bug
+
+
+============================================
+Version 0.9.7.1
+Release date: 6 March 2017
+
+*Fixes
+	Fixed issue where image wasn't being sized as desired
+
+
+============================================
+Version 0.9.7.0
+Release date: 5 March 2017
+
+*New features
+	Added compliance a.k.a. pre-flight checks. This is a new TrafficLight GuiOption. See Config_Compliance.xml for examples
+	Added image support. See Config_Images.xml for examples
+	Added ability to add GuiOptions to the header area
+	Added image tag to header to add an image/logo in the right hand side of the header. 
+	Added ability to add multiple toggles to a single Checkbox or DropDownList GuiOption
+	Added additional rule options for validation (also available in compliance)
+	Added right and left panes to the page area
+	Added ability for validation and compliance rules to deal with and build rules on null values. Query will return *NULL
+	Added config_demo.xml for an example with a customised config and a combination of configuration options
+
+*Fixes
+	Fixed ShowGridLines option not always behaving as expected
+	Changes for better error handling
+
+
+============================================
+Version 0.9.6.7
+Release date: 18 December 2016
+
+*New Features
+	Added Live Data window which shows the current values in the running TsGui. See Config_Examples.xml for usage
+
+*Fixes
+	Fixed TsGui not opening center screen by default in WinPE.
+
+
+============================================
+Version 0.9.6.6
+Release date: 5 December 2016
+
+*Fixes
+	Fixed an issue where if the NoDefaultValue option was used with a DropDownList used as a toggle, the groups would be enabled rather than disabled. 
+
+
+============================================
+Version 0.9.6.5
+Release date: 2 December 2016
+
+*New features
+	Added <NoUI> section for creating task sequence variables without displaying anything in the GUI
+	Added NoDefaultValue attribute to DropDownList. User will be prompted to select a value
+	Added validation options to DropDownList. You can now make specified options invalid based on group/toggles
+	Added "Equals" rule type for validation
+*Fixes
+	VMware Workstation VMs are now detected as virtual machines
+	Validation error popups are now more consistent in displaying on the correct side
+	Improved error handling of invalid RegEx expressions
+
+
+============================================
+Version 0.9.6.3
+Release date: 23 November 2016
+
+*New features
+	Added WindowLocation option to control where the window is positioned. Set the StartupLocation to Manual to set a manual position. See Config_Formatting.xml
+
+*Fixes
+	Fixed inheritance not working for the <PurgeInactive> options
+	
+
+
+============================================
+Version 0.9.6.2
+Release date: 17 November 2016
+
+*Fixes
+	Fixed issue where invalid characters not being removed properly when FreeText default is set from a query.
+	
+
+============================================
+Version 0.9.6.1
+Release date: 16 November 2016
+
+*New features
+	Added Truncate option to query. See Config_Queries.xml for example xml. **WARNING - see changes below
+
+*Fixes
+	Parallels virtual machines now detect properly with TsGui_IsVirtualMachine
+
+*Changes
+	Append, Prefix, Truncate, Calculate options in a query property will now process in order from top to bottom. Make sure calculations are above 
+	append or prefix options containing text. 
+	
+	
+
+============================================
+Version: 0.9.6.0
+Release date: 8 November 2016
+
+*New features
+	Added string validation options for FreeText/ComputerName GuiOption. This can be used to enforce naming standards
+	Added "tsgui -config xxx.xml" command line option to specify alternate config file.**
+	Added ability to set label and control widths for each individual GuiOption
+	Added ability to set the GuiOption control on the left rather than the right
+	Added Rows in addition to Columns to give more layout options. 
+	Added new formatting section to xml to give more layout/design options
+	General code tidy up
+
+*Additional notes
+	Note that there are some changes to the XML schema, but legacy configs will work fine
+	Config_Examples.xml has been split apart to help make examples easier to find and follow
+	**If you use the ServiceUI template, please download the new version
+============================================
+Version: 0.9.4.1
+Release date: 1 October 2016
+
+*New features
+	New "InfoBox" GuiOption. This allows you to display information from a WMI query or environment variable in the same
+	way as with FreeText or DropDownList option, but in a read-only form. Usefull for displaying system information to the user.
+
+============================================
+Version: 0.9.4.0
+Release date: 13 September 2016
+
+*New features
+	DropDownList can now be built from a WMI query e.g. to list available disks
+	Added more comments and descriptions to Config_Examples.xml
+
+
+============================================
+Version: 0.9.3.3
+Release date: 25 August 2016
+
+*New features
+	Added ability to customise the text on the buttons e.g. to change language. See <Buttons> section in Config_Examples.xml
+
+
+============================================
+Version: 0.9.3.2
+Release date: 21 August 2016
+
+*Bug fixes
+	Fixed an issue where if a DropDownList as used with multiple toggles, sometimes elements would not be unhidden correctly 
+	Fixed an issue where elements weren't sizing correctly
+
+
+============================================
+Version: 0.9.3.1
+Release date: 19 August 2016
+
+*Bug fixes
+	Fixed an issue where PurgeInactive attribute was not applying correctly. 
+
+============================================
+Version: 0.9.3.0
+Release date: 18 August 2016
+
+*New features
+	Added ValidateEmpty attribute for FreeText options. To ignore validation rules for empty fields add attribute like example below:
+		<GuiOption Type="FreeText" MinLength="3" MaxLength="3" ValidateEmpty="FALSE">
+
+	Added Groups and Toggles. These can be combined to disabled or hide parts of the GUI based on selected options. For more information see the how-to information on 20road.com
+
+
+
+============================================
+Version: 0.9.2.2
+Release date: 8 August 2016
+
+*New features
+	Added options for basic branding
+		1. Font-Color & Bg-Color to set colors in the Heading section
+		2. New footer for "Powered by xxxx" type branding. This also adds a little extra height to the window. You may need to increase your height a little to compensate. Set footer height to 0 to disable. 
+
+	An invalid freetext box will now be highlighted red so the user knows which one needs attention
+
+*Bux fixes
+	Fixed an issue where a query for a freetext option that returns a null result causes an application exception
+	Fixed an issue where the HelpText options were not displaying properly.
+
+
+
+============================================
+Version: 0.9.1.4
+Release date: 28 July 2016
+
+Initial release
