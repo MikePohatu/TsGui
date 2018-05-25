@@ -173,17 +173,17 @@ GuiOption types:
 					the Ignore values for evaluating the value returned by the query -->
 					<SetValue>
 						<Query Type="EnvironmentVariable">
-							<Variable>OSDComputerName</Variable>
+							<Variable Name="OSDComputerName"/>
 							<Ignore>MINNT</Ignore>
 							<Ignore>MINWIN</Ignore>						
 						</Query>				
 						<Query Type="EnvironmentVariable">
-							<Variable>_SMSTSMachineName</Variable>
+							<Variable Name="_SMSTSMachineName"/>
 							<Ignore>MINNT</Ignore>
 							<Ignore>MINWIN</Ignore>					
 						</Query>					
 						<Query Type="EnvironmentVariable">
-							<Variable>ComputerName</Variable>
+							<Variable Name="ComputerName"/>
 							<Ignore>MINNT</Ignore>
 							<Ignore>MINWIN</Ignore>						
 						</Query>					

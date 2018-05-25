@@ -251,6 +251,43 @@ Query types:
 						</OK>
 					</Compliance>
 				</GuiOption>
+				
+				<!-- FreeText using EnvironmentVariable quries-->
+				<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
+					<Disallowed>
+						<Characters>`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
+					</Disallowed>
+					<Variable>OSDComputerName_FullQuery</Variable>
+					<Label>Computer Name:</Label>
+					<HelpText>Enter a computer name for the device</HelpText>
+					
+					<!-- Query for the default value. Return the first valid value. Note
+					the Ignore values for evaluating the value returned by the query -->
+					<SetValue>
+						<Query Type="EnvironmentVariable">
+							<Variable Name="OSDComputerName"/>
+							<Ignore>MINNT</Ignore>
+							<Ignore>MINWIN</Ignore>						
+						</Query>				
+						<Query Type="EnvironmentVariable">
+							<Variable Name="_SMSTSMachineName"/>
+							<Ignore>MINNT</Ignore>
+							<Ignore>MINWIN</Ignore>					
+						</Query>					
+						<Query Type="EnvironmentVariable">
+							<Variable Name="ComputerName"/>
+							<Ignore>MINNT</Ignore>
+							<Ignore>MINWIN</Ignore>						
+						</Query>					
+						<Query Type="Wmi">
+							<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
+							<Ignore>No Asset Tag</Ignore>
+						</Query>					
+						<Query Type="Wmi">
+							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
+						</Query>
+					</SetValue>
+				</GuiOption>
 			</Column>
 		</Row>
 	</Page>
