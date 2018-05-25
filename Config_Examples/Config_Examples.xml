@@ -7,6 +7,10 @@ GuiOption types:
 <GuiOption Type="InfoBox">
 <GuiOption Type="Heading">
 <GuiOption Type="TreeView">
+
+<GuiOption Type="TrafficLight"> - See Config_Compliance.xml
+<GuiOption Type="TickCross"> - See Config_Compliance.xml
+<GuiOption Type="ComplianceRefreshButton"> - See Config_Compliance.xml
 -->
 
 <TsGui LiveData="TRUE" Debug="FALSE">
@@ -168,6 +172,7 @@ GuiOption types:
 					<Variable>OSDComputerName_FullQuery</Variable>
 					<Label>Computer Name:</Label>
 					<HelpText>Enter a computer name for the device</HelpText>
+					<CharacterCasing>Normal</CharacterCasing> <!-- Sets and enforces the case of text. Options are Normal, Upper, and Lower -->
 					
 					<!-- Query for the default value. Return the first valid value. Note
 					the Ignore values for evaluating the value returned by the query -->
@@ -183,7 +188,7 @@ GuiOption types:
 							<Ignore>MINWIN</Ignore>					
 						</Query>					
 						<Query Type="EnvironmentVariable">
-							<Variable Name="ComputerName"/>
+							<Variable Name="ComputerName"/>		
 							<Ignore>MINNT</Ignore>
 							<Ignore>MINWIN</Ignore>						
 						</Query>					
@@ -195,7 +200,7 @@ GuiOption types:
 							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
 						</Query>
 					</SetValue>
-				</GuiOption>	
+				</GuiOption>		
 
 				<!--DropDownList with no default option set-->
 				<GuiOption Type="DropDownList" NoDefaultValue="TRUE">

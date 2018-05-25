@@ -17,11 +17,6 @@ Query types:
 *Active Directory queries (BETA) - see Config_AD.xml
 <Query Type="ADGroupMembers">
 <Query Type="ADOU"> (see Config_AD.xml)
-
-
-
-
-
 -->
 
 <TsGui LiveData="TRUE">
