@@ -1,3 +1,11 @@
+Version 1.0.6.3
+Release date: 26 May 2018
+
+*New features 
+	Added <CharacterCasing> option to FreeText (and by extension ComputerName) GuiOption.
+	Made updates to Config_Queries.xml to show EnvironmentVariable using Append, Prefix, Truncate type rules.
+
+============================================
 Version 1.0.6.2
 Release date: 25 May 2018
 

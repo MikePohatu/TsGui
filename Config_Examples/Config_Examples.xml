@@ -173,22 +173,23 @@ GuiOption types:
 					<Variable>OSDComputerName_FullQuery</Variable>
 					<Label>Computer Name:</Label>
 					<HelpText>Enter a computer name for the device</HelpText>
+					<CharacterCasing>Normal</CharacterCasing> <!-- Sets and enforces the case of text. Options are Normal, Upper, and Lower -->
 					
 					<!-- Query for the default value. Return the first valid value. Note
 					the Ignore values for evaluating the value returned by the query -->
 					<SetValue>
 						<Query Type="EnvironmentVariable">
-							<Variable>OSDComputerName</Variable>
+							<Variable Name="OSDComputerName"/>
 							<Ignore>MINNT</Ignore>
 							<Ignore>MINWIN</Ignore>						
 						</Query>				
 						<Query Type="EnvironmentVariable">
-							<Variable>_SMSTSMachineName</Variable>
+							<Variable Name="_SMSTSMachineName"/>
 							<Ignore>MINNT</Ignore>
 							<Ignore>MINWIN</Ignore>					
 						</Query>					
 						<Query Type="EnvironmentVariable">
-							<Variable>ComputerName</Variable>
+							<Variable Name="ComputerName"/>		
 							<Ignore>MINNT</Ignore>
 							<Ignore>MINWIN</Ignore>						
 						</Query>					

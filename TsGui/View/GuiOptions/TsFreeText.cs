@@ -23,27 +23,29 @@ using System.Windows;
 using System.Xml.Linq;
 using TsGui.Linking;
 using TsGui.Queries;
+using System.Windows.Controls;
 
 namespace TsGui.View.GuiOptions
 {
     public class TsFreeText: GuiOptionBase, IGuiOption, IValidationGuiOption, ILinkTarget
     {
         protected TsFreeTextUI _freetextui;
-        protected string _controltext;
-        protected string _validationtext;
-        protected int _maxlength;
+
         private ValidationToolTipHandler _validationtooltiphandler;
         private ValidationHandler _validationhandler;
 
         //Properties
         #region
         //Custom stuff for control
+        protected string _controltext;
         public string ControlText
         {
             get { return this._controltext; }
             set
             {
-                this._controltext = value;
+                if (this._charactercasing == CharacterCasing.Normal) { this._controltext = value; }
+                else if (this._charactercasing == CharacterCasing.Upper) { this._controltext = value?.ToUpper(); }
+                else if (this._charactercasing == CharacterCasing.Lower) { this._controltext = value?.ToLower(); }
                 this.OnPropertyChanged(this, "ControlText");
                 this.NotifyUpdate();
                 this.Validate();
@@ -51,6 +53,8 @@ namespace TsGui.View.GuiOptions
         }
         public override string CurrentValue { get { return this._controltext; } }
         public bool IsValid { get { return this.Validate(); } }
+
+        protected int _maxlength;
         public int MaxLength
         {
             get { return this._maxlength; }
@@ -66,10 +70,19 @@ namespace TsGui.View.GuiOptions
                 { return new TsVariable(this.VariableName, this.ControlText); }
             }
         }
+
+        protected string _validationtext;
         public string ValidationText
         {
             get { return this._validationtext; }
             set { this._validationtext = value; this.OnPropertyChanged(this, "ValidationText"); }
+        }
+
+        protected CharacterCasing _charactercasing = CharacterCasing.Normal;
+        public CharacterCasing CharacterCasing
+        {
+            get { return this._charactercasing; }
+            set { this._charactercasing = value; this.OnPropertyChanged(this, "CharacterCasing"); }
         }
         #endregion
 
@@ -125,7 +138,17 @@ namespace TsGui.View.GuiOptions
             if (x != null)
             {
                 this.LoadSetValueXml(x,false);
-            }            
+            }
+
+            x = InputXml.Element("CharacterCasing");
+            if (x?.Value != null)
+            {
+                if (x.Value.Equals("Upper", StringComparison.OrdinalIgnoreCase))
+                { this.CharacterCasing = CharacterCasing.Upper; }
+                else if (x.Value.Equals("Lower", StringComparison.OrdinalIgnoreCase))
+                { this.CharacterCasing = CharacterCasing.Lower; }
+
+            }
         }
 
         //Handle UI events
