@@ -63,11 +63,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config_Examples", "Config_E
 		Config_Examples\Config_Validation.xml = Config_Examples\Config_Validation.xml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{26985436-357A-4831-AE41-11A7BB02C08D}"
-	ProjectSection(SolutionItems) = preProject
-		Utilities\CreateTaskSequenceOptions.ps1 = Utilities\CreateTaskSequenceOptions.ps1
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,7 +85,6 @@ Global
 		{D9C93D96-C808-4EF5-980A-E06BA28C6BDF} = {13E6ECDF-E7F4-4B16-878A-557717F95D2D}
 		{2A195006-2C40-40FF-8760-60312D1A22A1} = {D9C93D96-C808-4EF5-980A-E06BA28C6BDF}
 		{F012FFCD-0CC6-4119-9660-42D17D16739F} = {13E6ECDF-E7F4-4B16-878A-557717F95D2D}
-		{26985436-357A-4831-AE41-11A7BB02C08D} = {13E6ECDF-E7F4-4B16-878A-557717F95D2D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F449318D-0A35-4D27-854D-AD2BA82BA7AA}
