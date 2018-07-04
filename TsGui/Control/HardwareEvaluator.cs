@@ -26,7 +26,7 @@ namespace TsGui
 {
     public class HardwareEvaluator
     {
-        private bool _islaptop = false;
+        private string _namespace = @"root\CIMV2";
         private bool _isdesktop = false;
         private bool _isserver = false;
         private bool _isvm = false;
@@ -36,7 +36,8 @@ namespace TsGui
         private string _defaultgateways6 = string.Empty;
         private string _dhcpserver = string.Empty;
 
-        public bool IsLaptop { get { return this._islaptop; } }
+        public bool IsLaptop { get; private set; } = false;
+
         public bool IsDesktop { get { return this._isdesktop; } }
         public bool IsServer { get { return this._isserver; } }
         public bool IsVirtualMachine { get { return this._isvm; } }
@@ -55,7 +56,7 @@ namespace TsGui
         {
             List<TsVariable> vars = new List<TsVariable>();
 
-            if (_islaptop) { vars.Add(new TsVariable("TsGui_IsLaptop", "TRUE")); }
+            if (IsLaptop) { vars.Add(new TsVariable("TsGui_IsLaptop", "TRUE")); }
             else { vars.Add(new TsVariable("TsGui_IsLaptop", "FALSE")); }
 
             if (_isdesktop) { vars.Add(new TsVariable("TsGui_IsDesktop", "TRUE")); }
@@ -79,7 +80,7 @@ namespace TsGui
         private void Evaluate()
         {
             //virtual machine tests
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection("select Model,Manufacturer from Win32_ComputerSystem"))
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(this._namespace, "select Model,Manufacturer from Win32_ComputerSystem"))
             {
                 string model = (string)m["Model"];
                 string maker = (string)m["Manufacturer"];
@@ -116,7 +117,7 @@ namespace TsGui
             }
 
             //chassis type tests
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection("select ChassisTypes from Win32_SystemEnclosure"))
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(this._namespace,"select ChassisTypes from Win32_SystemEnclosure"))
             {
                 Int16[] chassistypes = (Int16[])m["ChassisTypes"];
 
@@ -126,7 +127,7 @@ namespace TsGui
                     {
                         case 8: case 9: case 10: case 11:  case 12: case 14: case 18: case 21:
                             {
-                                this._islaptop = true;
+                                this.IsLaptop = true;
                                 break;
                             }
                         case 3: case 4: case 5:  case 6: case 7: case 15: case 16:
@@ -146,7 +147,7 @@ namespace TsGui
             }
 
             //ip info gather
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(@"Select DefaultIPGateway,IPAddress,DHCPServer from Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'True'"))
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(this._namespace, @"Select DefaultIPGateway,IPAddress,DHCPServer from Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'True'"))
             {
                 string[] ipaddresses = (string[])m["IPAddress"];
 

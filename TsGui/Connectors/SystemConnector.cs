@@ -19,6 +19,7 @@
 using System;
 using System.Management;
 using System.Collections.Generic;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Connectors
 {
@@ -51,13 +52,12 @@ namespace TsGui.Connectors
         }
 
         //get a value from WMI
-        public static string GetWmiString(string WmiQuery)
+        public static string GetWmiString(string NameSpace, string WmiQuery)
         {
             string s = null;
             try
-            {
-                WqlObjectQuery wqlQuery = new WqlObjectQuery(WmiQuery);
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery))
+            { 
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(NameSpace,WmiQuery))
                 { 
                     foreach (ManagementObject m in searcher.Get())
                     {
@@ -73,33 +73,37 @@ namespace TsGui.Connectors
             }
             catch
             {
+                LoggerFacade.Error("Error running query against namespace " + NameSpace + ": " + WmiQuery);
                 return null;
             }
             
         }
 
-        public static ManagementObjectCollection GetWmiManagementObjectCollection(string WmiQuery)
+        public static ManagementObjectCollection GetWmiManagementObjectCollection(string NameSpace, string WmiQuery)
         {
             try
             {
-                WqlObjectQuery wqlQuery = new WqlObjectQuery(WmiQuery);
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(wqlQuery))
-                { return searcher.Get(); }  
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(NameSpace, WmiQuery))
+                { return searcher.Get(); }
             }
             catch
             {
+                LoggerFacade.Error("Error running query against namespace " + NameSpace + ": " + WmiQuery);
                 return null;
             }
         }
 
-        public static List<ManagementObject> GetWmiManagementObjectList(string WmiQuery)
+        public static List<ManagementObject> GetWmiManagementObjectList(string NameSpace, string WmiQuery)
         {
             List<ManagementObject> list = new List<ManagementObject>();
-            using (ManagementObjectCollection collection = GetWmiManagementObjectCollection(WmiQuery))
+            using (ManagementObjectCollection collection = GetWmiManagementObjectCollection(NameSpace, WmiQuery))
             {
-                foreach (ManagementObject m in collection)
+                if (collection != null)
                 {
-                    list.Add(m);
+                    foreach (ManagementObject m in collection)
+                    {
+                        list.Add(m);
+                    }
                 }
             }
             return list;

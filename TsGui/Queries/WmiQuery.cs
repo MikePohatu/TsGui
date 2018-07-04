@@ -27,6 +27,7 @@ namespace TsGui.Queries
 {
     public class WmiQuery: BaseQuery
     {
+        private string _namespace = @"root\CIMV2";
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private string _wql;
 
@@ -41,7 +42,8 @@ namespace TsGui.Queries
         {
             base.LoadXml(InputXml);
 
-            this._wql = InputXml.Element("Wql")?.Value;
+            this._wql = XmlHandler.GetStringFromXElement(InputXml, "Wql", this._namespace);
+            this._namespace = XmlHandler.GetStringFromXElement(InputXml, "NameSpace", this._namespace);
 
             this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
             this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
@@ -59,7 +61,7 @@ namespace TsGui.Queries
             try
             {
                 if (this._processed == true ) { this._processingwrangler = this._processingwrangler.Clone(); }
-                this.AddWmiPropertiesToWrangler(this._processingwrangler, SystemConnector.GetWmiManagementObjectList(this._wql), this._propertyTemplates);
+                this.AddWmiPropertiesToWrangler(this._processingwrangler, SystemConnector.GetWmiManagementObjectList(this._namespace, this._wql), this._propertyTemplates);
             }
             catch (ManagementException e)
             {
