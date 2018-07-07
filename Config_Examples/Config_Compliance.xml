@@ -36,7 +36,7 @@
 					</Toggle>
 				</GuiOption>
 					
-				<!-- *** The compliance GuiOption. *** -->	
+				<!-- *** The compliance GuiOption. You can use either TrafficLight or TickCross *** -->	
 				<GuiOption Type="TickCross">
 					<Variable>Compliance_InstalledMemory</Variable>
 					<Label>System Memory</Label>

@@ -30,6 +30,16 @@
 					</Toggle>
 				</GuiOption>
 				
+				<!-- Use of the invert attribute. Disable group instead of enable when toggle triggered and 
+				vice versa -->
+				<GuiOption Type="CheckBox">
+					<Variable>TOGGLE_Apps_Invert</Variable>
+					<Label>Invert applications</Label>
+					<HAlign>left</HAlign>
+					
+					<Toggle Group="Group_Apps_Invert" Invert="TRUE"/>
+				</GuiOption>
+				
 				<!-- 
 				DropDownList being used as a toggle
 				Each option used as a separate toggle

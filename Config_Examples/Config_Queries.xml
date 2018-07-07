@@ -5,8 +5,10 @@ Query types:
 <Query Type="Combined">
 <Query Type="Compare">
 <Query Type="GuiVariable">
+<Query Type="EnvironmentVariable">
 <Query Type="IfElse">
 <Query Type="Wmi">
+<Query Type="Value"> - static value, equivalent of <Value>
 
 *Option linking queries - see Config_Linking.xml
 <Query Type="LinkTrue">
@@ -17,6 +19,14 @@ Query types:
 *Active Directory queries (BETA) - see Config_AD.xml
 <Query Type="ADGroupMembers">
 <Query Type="ADOU"> (see Config_AD.xml)
+
+*Property formatting options
+<Calculate>
+<Prefix>
+<Append>
+<ToUpper/>
+<ToLower/>
+<Truncate> - Truncate Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart
 -->
 
 <TsGui LiveData="TRUE">
