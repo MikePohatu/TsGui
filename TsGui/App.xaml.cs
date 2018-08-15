@@ -51,8 +51,17 @@ namespace TsGui
         public void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
         {
             args.Handled = true;
-            LoggerFacade.Fatal("OnDispatcherUnhandledException:" + args.Exception.Message );
-            this.HandleException(sender, args.Exception,args.Exception.StackTrace);
+            if (args.Exception is System.IO.FileNotFoundException)
+            {
+                LoggerFacade.Error("System.IO.FileNotFoundException logged. This is a known issue with DragDrop");
+            }
+            else
+            {
+                LoggerFacade.Fatal("OnDispatcherUnhandledException:" + args.Exception.ToString());
+                LoggerFacade.Fatal("OnDispatcherUnhandledException:" + args.Exception.Message);
+                this.HandleException(sender, args.Exception, args.Exception.StackTrace);
+            }
+            
         }
 
         public void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
