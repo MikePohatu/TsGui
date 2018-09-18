@@ -125,17 +125,40 @@ namespace TsGui
                 {
                     switch (i)
                     {
-                        case 8: case 9: case 10: case 11:  case 12: case 14: case 18: case 21:
+                        case 8:
+                        case 9:
+                        case 10:
+                        case 11:
+                        case 12:
+                        case 14:
+                        case 18:
+                        case 21:
+                        case 30:
+                        case 31:
+                        case 32:
                             {
                                 this.IsLaptop = true;
                                 break;
                             }
-                        case 3: case 4: case 5:  case 6: case 7: case 15: case 16:
+                        case 3:
+                        case 4:
+                        case 5:
+                        case 6:
+                        case 7:
+                        case 15:
+                        case 16:
+                        case 24:
+                        case 34:
+                        case 35:
+                        case 36:
                             {
                                 this._isdesktop = true;
                                 break;
                             }
                         case 23:
+                        case 25:
+                        case 28:
+                        case 29:
                             {
                                 this._isserver = true;
                                 break;
