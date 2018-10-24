@@ -35,6 +35,7 @@ namespace TsGui
         public bool IsVirtualMachine { get; private set; } = false;
         public bool IsConvertible { get; private set; } = false;
         public bool IsDetachable { get; private set; } = false;
+        public bool IsTablet { get; private set; } = false;
         public string IPv4Addresses4 { get; private set; } = string.Empty;
         public string IPv4Addresses6 { get; private set; } = string.Empty;
         public string DefaultGateways4 { get; private set; } = string.Empty;
@@ -67,6 +68,9 @@ namespace TsGui
 
             if (IsDetachable) { vars.Add(new TsVariable("TsGui_IsDetachable", "TRUE")); }
             else { vars.Add(new TsVariable("TsGui_IsDetachable", "FALSE")); }
+
+            if (IsTablet) { vars.Add(new TsVariable("TsGui_IsTablet", "TRUE")); }
+            else { vars.Add(new TsVariable("TsGui_IsTablet", "FALSE")); }
 
             vars.Add(new TsVariable("TsGui_IPv4", this.IPv4Addresses4));
             vars.Add(new TsVariable("TsGui_IPv6", this.IPv4Addresses6));
@@ -133,9 +137,14 @@ namespace TsGui
                         case 14:
                         case 18:
                         case 21:
+                            {
+                                this.IsLaptop = true;
+                                break;
+                            }
                         case 30:
                             {
                                 this.IsLaptop = true;
+                                this.IsTablet = true;
                                 break;
                             }
                         case 31:
