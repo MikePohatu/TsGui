@@ -15,6 +15,7 @@
 
 // HardwareEvaluator.cs - class to identify hardware type
 // ChassisTypes - https://technet.microsoft.com/en-us/library/ee156537.aspx
+// updated: https://blogs.technet.microsoft.com/brandonlinton/2017/09/15/updated-win32_systemenclosure-chassis-types/ 
 
 using System;
 using System.Collections.Generic;
@@ -27,25 +28,19 @@ namespace TsGui
     public class HardwareEvaluator
     {
         private string _namespace = @"root\CIMV2";
-        private bool _isdesktop = false;
-        private bool _isserver = false;
-        private bool _isvm = false;
-        private string _ipaddresses4 = string.Empty;
-        private string _ipaddresses6 = string.Empty;
-        private string _defaultgateways4 = string.Empty;
-        private string _defaultgateways6 = string.Empty;
-        private string _dhcpserver = string.Empty;
 
         public bool IsLaptop { get; private set; } = false;
-
-        public bool IsDesktop { get { return this._isdesktop; } }
-        public bool IsServer { get { return this._isserver; } }
-        public bool IsVirtualMachine { get { return this._isvm; } }
-        public string IPv4Addresses4 { get { return this._ipaddresses4; } }
-        public string IPv4Addresses6 { get { return this._ipaddresses6; } }
-        public string DefaultGateways4 { get { return this._defaultgateways4; } }
-        public string DefaultGateways6 { get { return this._defaultgateways6; } }
-        public string DHCPServer { get { return this._dhcpserver; } }
+        public bool IsDesktop { get; private set; } = false;
+        public bool IsServer { get; private set; } = false;
+        public bool IsVirtualMachine { get; private set; } = false;
+        public bool IsConvertible { get; private set; } = false;
+        public bool IsDetachable { get; private set; } = false;
+        public bool IsTablet { get; private set; } = false;
+        public string IPv4Addresses4 { get; private set; } = string.Empty;
+        public string IPv4Addresses6 { get; private set; } = string.Empty;
+        public string DefaultGateways4 { get; private set; } = string.Empty;
+        public string DefaultGateways6 { get; private set; } = string.Empty;
+        public string DHCPServer { get; private set; } = string.Empty;
 
         public HardwareEvaluator()
         {
@@ -59,20 +54,29 @@ namespace TsGui
             if (IsLaptop) { vars.Add(new TsVariable("TsGui_IsLaptop", "TRUE")); }
             else { vars.Add(new TsVariable("TsGui_IsLaptop", "FALSE")); }
 
-            if (_isdesktop) { vars.Add(new TsVariable("TsGui_IsDesktop", "TRUE")); }
+            if (IsDesktop) { vars.Add(new TsVariable("TsGui_IsDesktop", "TRUE")); }
             else { vars.Add(new TsVariable("TsGui_IsDesktop", "FALSE")); }
 
-            if (_isserver) { vars.Add(new TsVariable("TsGui_IsServer", "TRUE")); }
+            if (IsServer) { vars.Add(new TsVariable("TsGui_IsServer", "TRUE")); }
             else { vars.Add(new TsVariable("TsGui_IsServer", "FALSE")); }
 
-            if (_isvm) { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "TRUE")); }
+            if (IsVirtualMachine) { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "TRUE")); }
             else { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "FALSE")); }
 
-            vars.Add(new TsVariable("TsGui_IPv4", this._ipaddresses4));
-            vars.Add(new TsVariable("TsGui_IPv6", this._ipaddresses6));
-            vars.Add(new TsVariable("TsGui_DefaultGateway4", this._defaultgateways4));
-            vars.Add(new TsVariable("TsGui_DefaultGateway6", this._defaultgateways6));
-            vars.Add(new TsVariable("TsGui_DHCPServer", this._dhcpserver));
+            if (IsConvertible) { vars.Add(new TsVariable("TsGui_IsConvertible", "TRUE")); }
+            else { vars.Add(new TsVariable("TsGui_IsConvertible", "FALSE")); }
+
+            if (IsDetachable) { vars.Add(new TsVariable("TsGui_IsDetachable", "TRUE")); }
+            else { vars.Add(new TsVariable("TsGui_IsDetachable", "FALSE")); }
+
+            if (IsTablet) { vars.Add(new TsVariable("TsGui_IsTablet", "TRUE")); }
+            else { vars.Add(new TsVariable("TsGui_IsTablet", "FALSE")); }
+
+            vars.Add(new TsVariable("TsGui_IPv4", this.IPv4Addresses4));
+            vars.Add(new TsVariable("TsGui_IPv6", this.IPv4Addresses6));
+            vars.Add(new TsVariable("TsGui_DefaultGateway4", this.DefaultGateways4));
+            vars.Add(new TsVariable("TsGui_DefaultGateway6", this.DefaultGateways6));
+            vars.Add(new TsVariable("TsGui_DHCPServer", this.DHCPServer));
 
             return vars;
         }
@@ -87,31 +91,31 @@ namespace TsGui
                 //vmware
                 if (model.Contains("VMware"))
                 {
-                    this._isvm = true;
+                    this.IsVirtualMachine = true;
                     break;
                 }
                 //hyper-v
                 if (model == "Virtual Machine")
                 {
-                    this._isvm = true;
+                    this.IsVirtualMachine = true;
                     break;
                 }
                 //virtualbox
                 if (model.Contains("VirtualBox"))
                 {
-                    this._isvm = true;
+                    this.IsVirtualMachine = true;
                     break;
                 }
                 //Xen
                 if (maker.Contains("Xen"))
                 {
-                    this._isvm = true;
+                    this.IsVirtualMachine = true;
                     break;
                 }
                 //Parallels
                 if (model.Contains("Parallels"))
                 {
-                    this._isvm = true;
+                    this.IsVirtualMachine = true;
                     break;
                 }
             }
@@ -133,11 +137,26 @@ namespace TsGui
                         case 14:
                         case 18:
                         case 21:
+                            {
+                                this.IsLaptop = true;
+                                break;
+                            }
                         case 30:
+                            {
+                                this.IsLaptop = true;
+                                this.IsTablet = true;
+                                break;
+                            }
                         case 31:
+                            {
+                                this.IsLaptop = true;
+                                this.IsConvertible = true;
+                                break;
+                            }
                         case 32:
                             {
                                 this.IsLaptop = true;
+                                this.IsDetachable = true;
                                 break;
                             }
                         case 3:
@@ -152,7 +171,7 @@ namespace TsGui
                         case 35:
                         case 36:
                             {
-                                this._isdesktop = true;
+                                this.IsDesktop = true;
                                 break;
                             }
                         case 23:
@@ -160,7 +179,7 @@ namespace TsGui
                         case 28:
                         case 29:
                             {
-                                this._isserver = true;
+                                this.IsServer = true;
                                 break;
                             }
                         default:
@@ -180,8 +199,8 @@ namespace TsGui
                     {
                         if (string.IsNullOrEmpty(s) == false)
                         {
-                            if (s.Contains(":")) { this._ipaddresses6 = AppendToStringList(this._ipaddresses6, s); }
-                            else { this._ipaddresses4 = AppendToStringList(this._ipaddresses4, s); }
+                            if (s.Contains(":")) { this.IPv4Addresses6 = AppendToStringList(this.IPv4Addresses6, s); }
+                            else { this.IPv4Addresses4 = AppendToStringList(this.IPv4Addresses4, s); }
                         }
                     }
                 }
@@ -192,13 +211,13 @@ namespace TsGui
                 {
                     foreach (string s in defaultgateways)
                     {
-                        if (s.Contains(":")) { this._defaultgateways6 = AppendToStringList(this._defaultgateways6, s); }
-                        else { this._defaultgateways4 = AppendToStringList(this._defaultgateways4, s); }
+                        if (s.Contains(":")) { this.DefaultGateways6 = AppendToStringList(this.DefaultGateways6, s); }
+                        else { this.DefaultGateways4 = AppendToStringList(this.DefaultGateways4, s); }
                     }
                 }
 
                 string svr = (string)m["DHCPServer"];
-                if (svr != null) { this._dhcpserver = svr; }
+                if (svr != null) { this.DHCPServer = svr; }
             }
         }
 
