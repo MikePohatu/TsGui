@@ -104,16 +104,14 @@ namespace TsGui.Grouping
                 return;
             }
 
-            this._toggleValMappings.TryGetValue(val, out newenabled);
-
             if (this._option.IsActive == false)
             {
                 this.DisableGroup();
                 return;
             }
-
-            if (this._option.IsActive == true)
+            else
             {
+                this._toggleValMappings.TryGetValue(val, out newenabled);
                 if (!this._inverse)
                 {
                     if (newenabled == true) { this.EnableGroup(); }
@@ -125,7 +123,6 @@ namespace TsGui.Grouping
                     else { this.EnableGroup(); }
                 }
             }
-            else { this.DisableGroup(); }
         }
 
         private void DisableGroup()

@@ -42,6 +42,7 @@ namespace TsGui.View.Layout
         public TsPane LeftPane { get; set; }
         public TsPane RightPane { get; set; }
         public TsPageHeader PageHeader { get; set; }
+        public string PageId { get; set; } = string.Empty;
         public TsPage NextActivePage
         {
             get
@@ -104,7 +105,8 @@ namespace TsGui.View.Layout
             this.LeftPane = Defaults.LeftPane;
             this.RightPane = Defaults.RightPane;
 
-            this._pageui.Loaded += this.OnWindowLoaded;          
+            this._pageui.Loaded += this.OnWindowLoaded;
+            this.GroupingStateChange += this.OnPageHide;
             this._pageui.DataContext = this;
             this._pageui.ButtonGrid.DataContext = Defaults.Buttons;
 
@@ -118,6 +120,7 @@ namespace TsGui.View.Layout
             base.LoadXml(InputXml);
             XElement x;
 
+            this.PageId = XmlHandler.GetStringFromXAttribute(InputXml, "PageId", this.PageId);
             this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
 
@@ -196,9 +199,12 @@ namespace TsGui.View.Layout
             TsButtons.Update(this, this._pageui);
         }
 
-        public void OnSurroundingPageHide(object o, GroupingEventArgs e)
+        public void OnPageHide(object o, GroupingEventArgs e)
         {
-            if (e.GroupStateChanged == GroupStateChanged.IsHidden) { this.Update(); }
+            if (e.GroupStateChanged == GroupStateChanged.IsHidden)
+            {
+                this._controller.CurrentPage.Update();
+            }
         }
 
         public void RaiseComplianceRetryEvent()
@@ -208,16 +214,12 @@ namespace TsGui.View.Layout
 
         private void ConnectNextPage(TsPage NewNextPage)
         {
-            if (this.NextPage != null) { this.NextPage.GroupingStateChange -= this.OnSurroundingPageHide; }
             this._nextpage = NewNextPage;
-            if (this._nextpage != null) { this._nextpage.GroupingStateChange += this.OnSurroundingPageHide; }
         }
 
         private void ConnectPrevPage(TsPage NewPrevPage)
         {           
-            if (this.PreviousPage != null) { this.PreviousPage.GroupingStateChange -= this.OnSurroundingPageHide; }
             this._previouspage = NewPrevPage;
-            if (this._previouspage != null) { this._previouspage.GroupingStateChange += this.OnSurroundingPageHide; }
         }
     }
 }
