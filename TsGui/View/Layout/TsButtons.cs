@@ -27,9 +27,30 @@ namespace TsGui.View.Layout
         private string _buttonTextCancel;
         private string _buttonTextBack;
         private Formatting _controlformatting;
+        private Visibility _cancelvisibility = Visibility.Visible;
+        private bool _cancelenabled = true;
 
         //Properties
         #region
+
+        public Visibility CancelVisibility
+        {
+            get { return this._cancelvisibility; }
+            set
+            {
+                this._cancelvisibility = value;
+                this.OnPropertyChanged(this, "CancelVisibility");
+            }
+        }
+        public bool CancelEnabled
+        {
+            get { return this._cancelenabled; }
+            set
+            {
+                this._cancelenabled = value;
+                this.OnPropertyChanged(this, "CancelEnabled");
+            }
+        }
         public Formatting ControlFormatting
         {
             get { return this._controlformatting; }
@@ -96,6 +117,13 @@ namespace TsGui.View.Layout
 
             x = InputXml.Element("Formatting");
             if (x != null) { this._controlformatting.LoadXml(x); }
+
+            x = InputXml.Element("HideCancel");
+            if (x != null)
+            {
+                if (x.Value.ToUpper() == "TRUE") { this.CancelVisibility = Visibility.Collapsed; }
+                else if (x.Value.ToUpper() == "DISABLED") { this.CancelEnabled = false; }
+            }
         }
 
 

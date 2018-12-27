@@ -34,6 +34,7 @@ GuiOption types:
 		<Back>Back</Back>
 		<Cancel>Cancel</Cancel>
 		<Finish>Finish</Finish>
+		<HideCancel>FALSE</HideCancel> <!-- Set this to TRUE to remove the cancel button from the GUI. -->
 	</Buttons>
 
 	<Footer>
