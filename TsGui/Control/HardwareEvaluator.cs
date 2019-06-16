@@ -231,7 +231,7 @@ namespace TsGui
                 }
 
                 string svr = (string)m["DHCPServer"];
-                if (svr != null) { this.DHCPServer = svr; }
+                if (string.IsNullOrWhiteSpace(svr) == false) { this.DHCPServer = AppendToStringList(this.DHCPServer, svr); }
             }
         }
 
