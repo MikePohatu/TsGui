@@ -36,8 +36,10 @@ namespace TsGui
         public bool IsConvertible { get; private set; } = false;
         public bool IsDetachable { get; private set; } = false;
         public bool IsTablet { get; private set; } = false;
-        public string IPv4Addresses4 { get; private set; } = string.Empty;
-        public string IPv4Addresses6 { get; private set; } = string.Empty;
+        public string IPAddresses4 { get; private set; } = string.Empty;
+        public string IPAddresses6 { get; private set; } = string.Empty;
+        public string IPNetMask4 { get; private set; } = string.Empty;
+        public string IPNetMask6 { get; private set; } = string.Empty;
         public string DefaultGateways4 { get; private set; } = string.Empty;
         public string DefaultGateways6 { get; private set; } = string.Empty;
         public string DHCPServer { get; private set; } = string.Empty;
@@ -72,10 +74,12 @@ namespace TsGui
             if (IsTablet) { vars.Add(new TsVariable("TsGui_IsTablet", "TRUE")); }
             else { vars.Add(new TsVariable("TsGui_IsTablet", "FALSE")); }
 
-            vars.Add(new TsVariable("TsGui_IPv4", this.IPv4Addresses4));
-            vars.Add(new TsVariable("TsGui_IPv6", this.IPv4Addresses6));
+            vars.Add(new TsVariable("TsGui_IPv4", this.IPAddresses4));
+            vars.Add(new TsVariable("TsGui_IPv6", this.IPAddresses6));
             vars.Add(new TsVariable("TsGui_DefaultGateway4", this.DefaultGateways4));
             vars.Add(new TsVariable("TsGui_DefaultGateway6", this.DefaultGateways6));
+            vars.Add(new TsVariable("TsGui_IPSubetMask4", this.IPNetMask4));
+            vars.Add(new TsVariable("TsGui_IPSubnetMask6", this.IPNetMask6));
             vars.Add(new TsVariable("TsGui_DHCPServer", this.DHCPServer));
 
             return vars;
@@ -189,7 +193,7 @@ namespace TsGui
             }
 
             //ip info gather
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(this._namespace, @"Select DefaultIPGateway,IPAddress,DHCPServer from Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'True'"))
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(this._namespace, @"Select DefaultIPGateway,IPAddress,IPSubnet,DHCPServer from Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'True'"))
             {
                 string[] ipaddresses = (string[])m["IPAddress"];
 
@@ -199,8 +203,8 @@ namespace TsGui
                     {
                         if (string.IsNullOrEmpty(s) == false)
                         {
-                            if (s.Contains(":")) { this.IPv4Addresses6 = AppendToStringList(this.IPv4Addresses6, s); }
-                            else { this.IPv4Addresses4 = AppendToStringList(this.IPv4Addresses4, s); }
+                            if (s.Contains(":")) { this.IPAddresses6 = AppendToStringList(this.IPAddresses6, s); }
+                            else { this.IPAddresses4 = AppendToStringList(this.IPAddresses4, s); }
                         }
                     }
                 }
@@ -216,8 +220,18 @@ namespace TsGui
                     }
                 }
 
+                string[] netmasks = (string[])m["IPSubnet"];
+                if (netmasks != null)
+                {
+                    foreach (string s in netmasks)
+                    {
+                        if (s.Contains(".")) { this.IPNetMask4 = AppendToStringList(this.IPNetMask4, s); }
+                        else { this.IPNetMask6 = AppendToStringList(this.IPNetMask6, s); }
+                    }
+                }
+
                 string svr = (string)m["DHCPServer"];
-                if (svr != null) { this.DHCPServer = svr; }
+                if (string.IsNullOrWhiteSpace(svr) == false) { this.DHCPServer = AppendToStringList(this.DHCPServer, svr); }
             }
         }
 
