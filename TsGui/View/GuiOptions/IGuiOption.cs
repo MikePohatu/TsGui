@@ -13,8 +13,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// IGuiOption_2.cs - controls to apply to the gui. 
+// IGuiOption.cs - controls to apply to the gui. 
 
+using System.Windows.Controls;
 using TsGui.Grouping;
 using TsGui.Options;
 
@@ -23,5 +24,6 @@ namespace TsGui.View.GuiOptions
     public interface IGuiOption: IGroupChild, IOption
     {
         GuiOptionBaseUI UserControl { get; }
+        Control InteractiveControl { get; }
     }
 }

@@ -106,6 +106,7 @@ namespace TsGui.View.GuiOptions
 
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
+            this.InteractiveControl = this._freetextui.TextBox;
             this.Label = new TsLabelUI();
 
             this._validationhandler = new ValidationHandler(this,MainController);
@@ -114,6 +115,7 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;
             this._director.WindowLoaded += this.OnWindowLoaded;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
+            this._freetextui.TextBox.GotFocus += this.OnGotFocus;
             this.UserControl.IsEnabledChanged += this.OnValidationEvent;
             this.SetDefaults();
         }
@@ -153,6 +155,10 @@ namespace TsGui.View.GuiOptions
 
         //Handle UI events
         #region
+        public void OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            this._freetextui.TextBox.SelectAll();
+        }
 
         public void OnValidationEvent(bool b)
         { this.Validate(); }

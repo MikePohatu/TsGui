@@ -37,7 +37,7 @@ MainWindow.xaml - wrapper window for the app. Includes footer.
             <RowDefinition x:Name="FooterRow" Height="{Binding FooterHeight}" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" >
-            <Frame Name="ContentArea" Background="Transparent" NavigationUIVisibility="Hidden"/>
+            <Frame Name="ContentArea" Background="Transparent" NavigationUIVisibility="Hidden" Focusable="False"/>
         </Grid>
 
         <Grid x:Name="FooterGrid" Grid.Row="1" Margin="0,0,0,0" ShowGridLines="{Binding ShowGridLines}">

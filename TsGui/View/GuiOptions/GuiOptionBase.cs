@@ -52,6 +52,7 @@ namespace TsGui.View.GuiOptions
             get { return this._helptext; }
             set { this._helptext = value; this.OnPropertyChanged(this, "HelpText"); }
         }
+        public virtual Control InteractiveControl { get; set; }
         public abstract string CurrentValue { get; }
         public abstract TsVariable Variable { get; }
         public string LiveValue

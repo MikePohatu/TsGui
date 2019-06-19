@@ -69,8 +69,10 @@ namespace TsGui.View.GuiOptions
         //Constructor
         public TsCheckBox(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
         {
-            this.UserControl.DataContext = this;           
-            this.Control = new TsCheckBoxUI();
+            this.UserControl.DataContext = this;
+            TsCheckBoxUI cbui = new TsCheckBoxUI();
+            this.Control = cbui;
+            this.InteractiveControl = cbui.CheckBox;
             this.Label = new TsLabelUI();
             this.SetDefaults();
             this._setvaluequerylist = new QueryPriorityList(this, this._director);          
@@ -79,8 +81,6 @@ namespace TsGui.View.GuiOptions
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
         }
 
-
-        //Methods
         public new void LoadXml(XElement InputXml)
         {
             XElement x;
