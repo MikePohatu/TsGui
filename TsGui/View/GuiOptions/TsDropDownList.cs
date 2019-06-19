@@ -80,6 +80,7 @@ namespace TsGui.View.GuiOptions
 
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
+            this.InteractiveControl = this._dropdownlistui.Control;
             this.Label = new TsLabelUI();
 
             this._validationhandler = new ValidationHandler(this, MainController);

@@ -18,12 +18,14 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows;
+using System.Windows.Threading;
 
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 using TsGui.Validation;
 using TsGui.Diagnostics.Logging;
+using System;
 
 namespace TsGui.View.Layout
 {
@@ -88,9 +90,17 @@ namespace TsGui.View.Layout
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>
-        public void OnWindowLoaded(object o, RoutedEventArgs e)
+        public void OnPageLoaded(object o, RoutedEventArgs e)
         {
             this.PageWindowLoaded?.Invoke(o,e);
+            foreach (IGuiOption opt in this._table.Options)
+            {
+                if (opt.IsEnabled && opt.InteractiveControl?.Focusable == true)
+                {
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() => opt.InteractiveControl.Focus()));
+                    break;
+                }
+            }
         }
         #endregion
 
@@ -105,7 +115,8 @@ namespace TsGui.View.Layout
             this.LeftPane = Defaults.LeftPane;
             this.RightPane = Defaults.RightPane;
 
-            this._pageui.Loaded += this.OnWindowLoaded;
+            this._pageui.Loaded += this.OnPageLoaded;
+
             this.GroupingStateChange += this.OnPageHide;
             this._pageui.DataContext = this;
             this._pageui.ButtonGrid.DataContext = Defaults.Buttons;
@@ -196,7 +207,7 @@ namespace TsGui.View.Layout
             this._pageui.HeaderPresenter.Content = this.PageHeader.UI;
             this._pageui.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
             this._pageui.RightPanePresenter.Content = this.RightPane?.PaneUI;
-            TsButtons.Update(this, this._pageui);
+            TsButtons.Update(this, this._pageui);            
         }
 
         public void OnPageHide(object o, GroupingEventArgs e)

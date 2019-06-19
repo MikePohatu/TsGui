@@ -24,6 +24,7 @@
         <TextBox x:Name="ToolTipTextBox" TextWrapping="Wrap" 
                  AcceptsReturn="True"
                  BorderBrush="Red"
+                 Focusable="False"
                  Margin="5,1,5,1" Width="Auto" Height="Auto" 
                  BorderThickness="1" 
                  Padding="7,5,7,5" HorizontalContentAlignment="Left" VerticalAlignment="Top"
