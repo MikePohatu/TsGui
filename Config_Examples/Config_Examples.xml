@@ -166,11 +166,12 @@ GuiOption types:
 				
 				<!-- GuiOptions -->
 				
-				<!-- Advanced freetext with queries. This one is the equivalent of the ComputerName GuiOption type-->
-				<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
-					<Disallowed>
-						<Characters>`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
-					</Disallowed>
+				<!-- Advanced freetext with queries. This one is the equivalent of the ComputerName GuiOption type. 
+				Note the MaxLength attribute in the GuiOption element vs the one in the Validation section. MaxLength in 
+				validation will let you keep typing beyond 15 characters. When set on the GuiOption, it will set the MaxLength
+				property on the actual textbox, so you won't be able to type more than 15 characters. There is no equivalent 
+				MinLength property on a textbox, so you will need to use validation rules for MinLength functionality -->
+				<GuiOption Type="FreeText" MaxLength="15">
 					<Variable>OSDComputerName_FullQuery</Variable>
 					<Label>Computer Name:</Label>
 					<HelpText>Enter a computer name for the device</HelpText>
@@ -197,11 +198,22 @@ GuiOption types:
 						<Query Type="Wmi">
 							<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
 							<Ignore>No Asset Tag</Ignore>
+              <Ignore>No Asset Information</Ignore>
+              <Ignore>NoAssetInformat</Ignore>
 						</Query>					
 						<Query Type="Wmi">
 							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
 						</Query>
 					</SetValue>
+          
+          <!-- For validation examples, see Config_Validation.xml and the associated how-to video -->
+          <Validation ValidateEmpty="TRUE">
+            <MaxLength>15</MaxLength>
+            <MinLength>1</MinLength>
+            <Invalid>
+              <Rule Type="Characters">`~!@#$%^*()+={}[]\\/|,.? :;"'>&amp;&lt;</Rule>
+            </Invalid>
+          </Validation>
 				</GuiOption>	
 			</Column>
 		</Row>

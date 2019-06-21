@@ -17,23 +17,50 @@
 // specifically for Windows computer names. Effective FreeText XML below. 
 
 //setup the default values for a computer name i.e.
-//<DefaultValue>
-//	<Query Type=EnvironmentVariable>
-//		<Ignore>MINNT</Ignore>
-//      <Variable>_SMSTSMachineName</Variable>
-//  </Query>
-//	<Query Type=EnvironmentVariable>
-//		<Ignore>MINNT</Ignore>
-//      <Variable>ComputerName</Variable>
-//  </Query>
-//	<Query Type=Wmi>
-//		<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
-//      <Ignore>No Asset Tag</Ignore>
-//	</Query>
-//	<Query Type=Wmi>
-//		<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
-//	</Query>
-//</DefaultValue>
+//	<GuiOption Type="FreeText" MaxLength="15">
+//		<Variable>OSDComputerName_FullQuery</Variable>
+//		<Label>Computer Name:</Label>
+//		<HelpText>Enter a computer name for the device</HelpText>
+//		<CharacterCasing>Normal</CharacterCasing> <!-- Sets and enforces the case of text. Options are Normal, Upper, and Lower -->
+
+//		<!-- Query for the default value. Return the first valid value. Note
+//		the Ignore values for evaluating the value returned by the query -->
+//		<SetValue UseCurrent="False">
+//			<Query Type="EnvironmentVariable">
+//				<Variable Name="OSDComputerName"/>
+//				<Ignore>MINNT</Ignore>
+//				<Ignore>MINWIN</Ignore>						
+//			</Query>				
+//			<Query Type="EnvironmentVariable">
+//				<Variable Name="_SMSTSMachineName"/>
+//				<Ignore>MINNT</Ignore>
+//				<Ignore>MINWIN</Ignore>					
+//			</Query>					
+//			<Query Type="EnvironmentVariable">
+//				<Variable Name="ComputerName"/>		
+//				<Ignore>MINNT</Ignore>
+//				<Ignore>MINWIN</Ignore>						
+//			</Query>					
+//			<Query Type="Wmi">
+//				<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
+//				<Ignore>No Asset Tag</Ignore>
+//              <Ignore>No Asset Information</Ignore>
+//              <Ignore>NoAssetInformat</Ignore>
+//			</Query>					
+//			<Query Type="Wmi">
+//				<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
+//			</Query>
+//		</SetValue>
+
+//      <!-- For validation examples, see Config_Validation.xml and the associated how-to video -->
+//      <Validation ValidateEmpty="TRUE">
+//          <MaxLength>15</MaxLength>
+//          <MinLength>1</MinLength>
+//          <Invalid>
+//              <Rule Type="Characters">`~!@#$%^*()+={}[]\\/|,.? :;"'>&amp;&lt;</Rule>
+//          </Invalid>
+//      </Validation>
+//  </GuiOption>	
 
 using System.Xml.Linq;
 
@@ -80,6 +107,8 @@ namespace TsGui.View.GuiOptions
             serial.Add(new XElement("Wql", "SELECT SerialNumber FROM Win32_BIOS"));
 
             XElement validation = new XElement("Validation");
+            validation.Add(new XAttribute("ValidateEmpty", "TRUE"));
+
             XElement invalid = new XElement("Invalid");
             XElement rule = new XElement("Rule", "`~!@#$%^&*()+={}[]\\/|<>,.? :;\"'");
             rule.Add(new XAttribute("Type", "Characters"));
