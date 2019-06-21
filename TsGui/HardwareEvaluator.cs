@@ -92,35 +92,42 @@ namespace TsGui
             {
                 string model = (string)m["Model"];
                 string maker = (string)m["Manufacturer"];
-                //vmware
-                if (model.Contains("VMware"))
+                if (string.IsNullOrWhiteSpace(model) == false)
                 {
-                    this.IsVirtualMachine = true;
-                    break;
+                    //vmware
+                    if (model.Contains("VMware"))
+                    {
+                        this.IsVirtualMachine = true;
+                        break;
+                    }
+                    //hyper-v
+                    if (model == "Virtual Machine")
+                    {
+                        this.IsVirtualMachine = true;
+                        break;
+                    }
+                    //virtualbox
+                    if (model.Contains("VirtualBox"))
+                    {
+                        this.IsVirtualMachine = true;
+                        break;
+                    }
+                    //Parallels
+                    if (model.Contains("Parallels"))
+                    {
+                        this.IsVirtualMachine = true;
+                        break;
+                    }
                 }
-                //hyper-v
-                if (model == "Virtual Machine")
+
+                if (string.IsNullOrWhiteSpace(maker) == false)
                 {
-                    this.IsVirtualMachine = true;
-                    break;
-                }
-                //virtualbox
-                if (model.Contains("VirtualBox"))
-                {
-                    this.IsVirtualMachine = true;
-                    break;
-                }
-                //Xen
-                if (maker.Contains("Xen"))
-                {
-                    this.IsVirtualMachine = true;
-                    break;
-                }
-                //Parallels
-                if (model.Contains("Parallels"))
-                {
-                    this.IsVirtualMachine = true;
-                    break;
+                    //Xen
+                    if (maker.Contains("Xen"))
+                    {
+                        this.IsVirtualMachine = true;
+                        break;
+                    }
                 }
             }
 
