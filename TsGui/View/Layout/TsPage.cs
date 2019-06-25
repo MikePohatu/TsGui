@@ -19,7 +19,8 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Threading;
-
+using System.Windows.Input
+;
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
@@ -120,6 +121,7 @@ namespace TsGui.View.Layout
             this.GroupingStateChange += this.OnPageHide;
             this._pageui.DataContext = this;
             this._pageui.ButtonGrid.DataContext = Defaults.Buttons;
+            this._pageui.KeyDown += this.OnKeyDown;
 
             this.LoadXml(SourceXml);
             this.Update();
@@ -164,16 +166,19 @@ namespace TsGui.View.Layout
 
         public void MovePrevious()
         {
-            foreach (IValidationGuiOption option in this._table.ValidationOptions)
-            { option.ClearToolTips(); }
+            if ( this._previouspage != null)
+            {
+                foreach (IValidationGuiOption option in this._table.ValidationOptions)
+                { option.ClearToolTips(); }
 
-            this.ReleaseThisPage();
-            this._controller.MovePrevious();
+                this.ReleaseThisPage();
+                this._controller.MovePrevious();
+            }
         }
 
         public void MoveNext()
         {
-            if (this.OptionsValid() == true)
+            if (this._nextpage != null && this.OptionsValid() == true)
             {
                 this.ReleaseThisPage();
                 this._controller.MoveNext();
@@ -231,6 +236,22 @@ namespace TsGui.View.Layout
         private void ConnectPrevPage(TsPage NewPrevPage)
         {           
             this._previouspage = NewPrevPage;
+        }
+
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+            {
+                if (e.SystemKey == Key.Right)
+                {
+                    this.MoveNext();
+                }
+                else if (e.SystemKey == Key.Left)
+                {
+                    this.MovePrevious();
+                }
+                e.Handled = true;
+            }
         }
     }
 }
