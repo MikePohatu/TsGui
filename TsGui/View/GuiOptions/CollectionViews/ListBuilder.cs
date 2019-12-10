@@ -104,7 +104,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 {
                     XElement wrapx = new XElement("wrapx");
                     wrapx.Add(x);
-                    QueryPriorityList newlist = new QueryPriorityList(this._parent, this._director);
+                    QueryPriorityList newlist = new QueryPriorityList(this._parent);
                     newlist.LoadXml(wrapx);
 
                     this.Add(newlist);

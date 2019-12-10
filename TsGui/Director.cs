@@ -37,6 +37,14 @@ namespace TsGui
 {
     public class Director: IDirector
     {
+        private static Director _instance;
+
+        public static Director Instance { get
+            {
+                if (Director._instance == null) { Director._instance = new Director(); }
+                return Director._instance;
+            } 
+        }
         public event TsGuiWindowEventHandler WindowLoaded;
         public event TsGuiWindowMovingEventHandler WindowMoving;
         public event TsGuiWindowEventHandler WindowMouseUp;
@@ -73,21 +81,22 @@ namespace TsGui
         public bool ShowGridLines { get; set; }
 
         //constructors
-        public Director(MainWindow ParentWindow, Arguments Arguments)
+        private Director()
         {
-            LoggerFacade.Trace("MainController initialized");
+            Director._instance = this;        
+        }
+
+        //Wrap a generic exception handler to get some useful information in the event of a 
+        //crash. 
+        public void Init(MainWindow ParentWindow, Arguments Arguments)
+        {
+            LoggerFacade.Trace("MainController initializing");
             this._envController = new EnvironmentController(this);
             this._configpath = Arguments.ConfigFile;
             this.ParentWindow = ParentWindow;
             this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
             this.ParentWindow.LocationChanged += this.OnWindowMoving;
-            this.Init();          
-        }
 
-        //Wrap a generic exception handler to get some useful information in the event of a 
-        //crash. 
-        private void Init()
-        {
             try { this.Startup(); }
             catch (TsGuiKnownException exc)
             {

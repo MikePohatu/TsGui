@@ -40,7 +40,9 @@ namespace TsGui.Validation.StringMatching
         public int Count { get { return this._rules.Count; } }
 
         public MatchingRuleLibrary(XElement inputxml)
-        { this.LoadXml(inputxml); }
+        {
+            this.LoadXml(inputxml); 
+        }
 
         public MatchingRuleLibrary() { }
 

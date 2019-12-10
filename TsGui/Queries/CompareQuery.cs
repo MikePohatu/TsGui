@@ -31,7 +31,7 @@ namespace TsGui.Queries
 
         public CompareQuery(XElement inputxml, IDirector controller, ILinkTarget targetoption)
         {
-            this._querylist = new QueryPriorityList(this, controller);
+            this._querylist = new QueryPriorityList(this);
             this._processingwrangler.Separator = string.Empty;
             this._reprocess = true;
             this._controller = controller;

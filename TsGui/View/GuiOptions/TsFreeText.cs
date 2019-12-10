@@ -102,7 +102,7 @@ namespace TsGui.View.GuiOptions
         private void Init(IDirector MainController)
         {
             this._director = MainController;
-            this._setvaluequerylist = new QueryPriorityList(this, this._director);
+            this._setvaluequerylist = new QueryPriorityList(this);
 
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;

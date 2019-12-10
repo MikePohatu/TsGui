@@ -75,7 +75,7 @@ namespace TsGui.View.GuiOptions
             this.InteractiveControl = cbui.CheckBox;
             this.Label = new TsLabelUI();
             this.SetDefaults();
-            this._setvaluequerylist = new QueryPriorityList(this, this._director);          
+            this._setvaluequerylist = new QueryPriorityList(this);          
             this.LoadXml(InputXml);
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;

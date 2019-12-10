@@ -77,7 +77,7 @@ namespace TsGui.Queries
                 }
                 else if (xname.Equals("ELSE", StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    this._else = new QueryPriorityList(element,this._targetoption,this._director);
+                    this._else = new QueryPriorityList(element,this._targetoption);
                 }
             }
         }

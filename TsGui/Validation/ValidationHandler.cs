@@ -46,7 +46,7 @@ namespace TsGui.Validation
         public void AddValidation(XElement InputXml)
         {
             if (InputXml == null) { return; }
-            StringValidation sv = new StringValidation(this._controller);
+            StringValidation sv = new StringValidation();
             sv.LoadXml(InputXml);
             this.AddValidation(sv);
         }
@@ -75,7 +75,7 @@ namespace TsGui.Validation
             x = InputXml.Element("MinLength");
             if (x != null) { result.Add(x); }
 
-            StringValidation sv = new StringValidation(this._controller);
+            StringValidation sv = new StringValidation();
             sv.LoadLegacyXml(result);
             this.AddValidation(sv);
         }

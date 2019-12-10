@@ -28,9 +28,8 @@ namespace TsGui.Validation
         private bool _validateempty = true;
         private int _maxlength = int.MaxValue;
         private int _minlength = 0;
-        private MatchingRuleLibrary _validrules = new MatchingRuleLibrary();
-        private MatchingRuleLibrary _invalidrules = new MatchingRuleLibrary();
-        private IDirector _controller;
+        private MatchingRuleLibrary _validrules;
+        private MatchingRuleLibrary _invalidrules;
 
         //Properties
 
@@ -54,9 +53,10 @@ namespace TsGui.Validation
         }
         #endregion
 
-        public StringValidation(IDirector MainController)
+        public StringValidation()
         {
-            this._controller = MainController;
+            this._validrules = new MatchingRuleLibrary();
+            this._invalidrules = new MatchingRuleLibrary();
             this.SetDefaults();
 
         }
@@ -95,7 +95,7 @@ namespace TsGui.Validation
             {
                 foreach (XElement groupx in xlist)
                 {
-                    Group g = this._controller.GroupLibrary.GetGroupFromID(groupx.Value);
+                    Group g = Director.Instance.GroupLibrary.GetGroupFromID(groupx.Value);
                     this._groups.Add(g);
                     g.StateEvent += this.OnGroupStateChange;
                 }

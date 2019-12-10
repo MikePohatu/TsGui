@@ -57,7 +57,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         //Constructor
         public CollectionViewGuiOptionBase(TsColumn Parent, IDirector director) : base(Parent, director)
         {
-            this._setvaluequerylist = new QueryPriorityList(this, this._director);
+            this._setvaluequerylist = new QueryPriorityList(this);
             this._builder = new ListBuilder(this, this._director);
         }
 

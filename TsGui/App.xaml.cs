@@ -12,7 +12,7 @@ namespace TsGui
     /// </summary>
     public partial class App : Application
     {
-        private IDirector _controller;
+        //private IDirector _controller;
 
         public Arguments Arguments;
         MainWindow _mainwindow;
@@ -42,7 +42,8 @@ namespace TsGui
             LoggerFacade.Info("*TsGui started - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             this._mainwindow = new MainWindow(this.Arguments);
-            this._controller = new Director(this._mainwindow, this.Arguments);
+            Director.Instance.Init(this._mainwindow, this.Arguments);
+            //this._controller = new Director(this._mainwindow, this.Arguments);
         }
 
 
@@ -86,7 +87,7 @@ namespace TsGui
         {
             LoggerFacade.Fatal("Closing TsGui. Error message: " + Message);
             string msg = Message;
-            this._controller.CloseWithError("Application Runtime Exception", msg);
+            Director.Instance.CloseWithError("Application Runtime Exception", msg);
         }
     }
 }

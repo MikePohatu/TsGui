@@ -89,7 +89,7 @@ namespace TsGui.Options.NoUI
         //constructors     
         public NoUIOption(NoUIContainer Parent, IDirector director, XElement InputXml) : base(Parent, director)
         {
-            this._querylist = new QueryPriorityList(this, director);
+            this._querylist = new QueryPriorityList(this);
             this.LoadXml(InputXml);
             this.RefreshValue();
             this.NotifyUpdate();
@@ -97,7 +97,7 @@ namespace TsGui.Options.NoUI
 
         public NoUIOption(IDirector director):base (director)
         {
-            this._querylist = new QueryPriorityList(this, director);
+            this._querylist = new QueryPriorityList(this);
         }
 
         //public methods
