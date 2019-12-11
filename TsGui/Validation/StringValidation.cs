@@ -19,7 +19,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Grouping;
 using TsGui.Validation.StringMatching;
-
+using TsGui.Linking;
 
 namespace TsGui.Validation
 {
@@ -28,6 +28,7 @@ namespace TsGui.Validation
         private bool _validateempty = true;
         private int _maxlength = int.MaxValue;
         private int _minlength = 0;
+        private ILinkTarget _owner;
         private MatchingRuleLibrary _validrules;
         private MatchingRuleLibrary _invalidrules;
 
@@ -53,10 +54,11 @@ namespace TsGui.Validation
         }
         #endregion
 
-        public StringValidation()
+        public StringValidation(ILinkTarget owner)
         {
-            this._validrules = new MatchingRuleLibrary();
-            this._invalidrules = new MatchingRuleLibrary();
+            this._owner = owner;
+            this._validrules = new MatchingRuleLibrary(owner);
+            this._invalidrules = new MatchingRuleLibrary(owner);
             this.SetDefaults();
 
         }
@@ -113,7 +115,7 @@ namespace TsGui.Validation
                 x = x.Element("Characters");
                 if (x != null)
                 {
-                    Characters newrule = new Characters(new XElement("Rule", x.Value));
+                    Characters newrule = new Characters(new XElement("Rule", x.Value), this._owner);
                     this._invalidrules.Add(newrule);
                 }
             }

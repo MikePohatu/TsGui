@@ -33,9 +33,9 @@ namespace TsGui.Validation.StringMatching
             this._setvaluequerylist = new QueryPriorityList(owner);
         }
 
-        public BaseMatchingRule(XElement inputxml)
+        public BaseMatchingRule(XElement inputxml, ILinkTarget owner)
         {
-            this._setvaluequerylist = new QueryPriorityList();
+            this._setvaluequerylist = new QueryPriorityList(owner);
             this.LoadXml(inputxml); 
         }
 

@@ -30,7 +30,7 @@ namespace TsGui.Queries.ActiveDirectory
     public class ADGroupMembersQuery : BaseQuery, IAuthenticatorConsumer
     {
         private IDirector _director;
-        private ILinkTarget _linktargetoption;
+        
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private string _groupname;
         private ActiveDirectoryAuthenticator _authenticator;
@@ -46,9 +46,8 @@ namespace TsGui.Queries.ActiveDirectory
         }
         public string AuthID { get; set; }
 
-        public ADGroupMembersQuery(XElement InputXml, IDirector director, ILinkTarget owner)
+        public ADGroupMembersQuery(XElement InputXml, IDirector director, ILinkTarget owner): base(owner)
         {
-            this._linktargetoption = owner;
             this._director = director;
             this.LoadXml(InputXml);
             this._director.AuthLibrary.AddAuthenticatorConsumer(this);
@@ -106,7 +105,7 @@ namespace TsGui.Queries.ActiveDirectory
         public void OnAuthenticatorStateChange()
         {
             this.ProcessQuery();
-            this._linktargetoption?.RefreshAll();
+            this._owner?.RefreshAll();
         }
 
         private void AddPropertiesToWrangler(ResultWrangler wrangler, PrincipalCollection objectlist, List<KeyValuePair<string, XElement>> PropertyTemplates)

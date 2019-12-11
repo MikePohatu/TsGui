@@ -26,12 +26,10 @@ namespace TsGui.Queries
     {
         private FormattedProperty _formatter;
         private IDirector _director;
-        private ILinkTarget _linktargetoption;
         private List<IOption> _options = new List<IOption>();
 
-        public GuiVariableQuery(XElement inputxml, IDirector director, ILinkTarget owner)
+        public GuiVariableQuery(XElement inputxml, IDirector director, ILinkTarget owner): base(owner)
         {
-            this._linktargetoption = owner;
             this._director = director;            
             this.LoadXml(inputxml);
             this.AddExistingOptions();      //add and register any existing options
@@ -68,7 +66,7 @@ namespace TsGui.Queries
         private void ProcessAndRefresh()
         {
             this.ProcessQuery();
-            this._linktargetoption?.RefreshValue();
+            this._owner?.RefreshValue();
         }
 
         public void OnLinkedSourceValueChanged()

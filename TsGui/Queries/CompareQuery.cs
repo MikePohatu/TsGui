@@ -25,17 +25,15 @@ namespace TsGui.Queries
     {
         private QueryPriorityList _querylist;
         private IDirector _controller;
-        private ILinkTarget _linktargetoption;
         private string _truevalue = "TRUE";
         private string _falsevalue = "FALSE";
 
-        public CompareQuery(XElement inputxml, IDirector controller, ILinkTarget targetoption)
+        public CompareQuery(XElement inputxml, IDirector controller, ILinkTarget owner) : base(owner)
         {
             this._querylist = new QueryPriorityList(this);
             this._processingwrangler.Separator = string.Empty;
             this._reprocess = true;
             this._controller = controller;
-            this._linktargetoption = targetoption;
             this.LoadXml(inputxml);
         }
 
@@ -92,11 +90,11 @@ namespace TsGui.Queries
 
         public void RefreshValue()
         {
-            this._linktargetoption.RefreshValue();
+            this._owner.RefreshValue();
         }
 
         public void RefreshAll()
-        { this._linktargetoption.RefreshAll(); }
+        { this._owner.RefreshAll(); }
 
         public void OnLinkedSourceValueChanged()
         { this.RefreshValue(); }

@@ -35,7 +35,6 @@ namespace TsGui.Queries.WebServices
         private List<KeyValuePair<string, string>> _parameters = new List<KeyValuePair<string, string>>();
         private string _method;
         private IDirector _director;
-        private ILinkTarget _linktargetoption;
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private IAuthenticator _authenticator;
 
@@ -51,9 +50,8 @@ namespace TsGui.Queries.WebServices
         public string AuthID { get; set; }
         public string Response { get; set; }
 
-        public WebServicesQuery(XElement InputXml, IDirector director, ILinkTarget owner)
+        public WebServicesQuery(XElement InputXml, IDirector director, ILinkTarget owner): base(owner)
         {
-            this._linktargetoption = owner;
             this._director = director;
             this.LoadXml(InputXml);
             this._director.AuthLibrary.AddAuthenticatorConsumer(this);
@@ -106,7 +104,7 @@ namespace TsGui.Queries.WebServices
         public void OnAuthenticatorStateChange()
         {
             this.ProcessQuery();
-            this._linktargetoption?.RefreshAll();
+            this._owner?.RefreshAll();
         }
 
         public byte[] GetParametersByteArray(List<KeyValuePair<string, string>> parameterlist)

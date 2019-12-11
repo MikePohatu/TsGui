@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using TsGui.Linking;
 
 namespace TsGui.Validation.StringMatching
 {
@@ -26,6 +27,7 @@ namespace TsGui.Validation.StringMatching
 
         private List<IStringMatchingRule> _rules = new List<IStringMatchingRule>();
         private string _message = null;
+        private ILinkTarget _owner;
 
         public List<IStringMatchingRule> Rules { get { return this._rules; } }
         public string Message
@@ -39,19 +41,23 @@ namespace TsGui.Validation.StringMatching
 
         public int Count { get { return this._rules.Count; } }
 
-        public MatchingRuleLibrary(XElement inputxml)
+        public MatchingRuleLibrary(XElement inputxml, ILinkTarget owner)
         {
+            this._owner = owner;
             this.LoadXml(inputxml); 
         }
 
-        public MatchingRuleLibrary() { }
+        public MatchingRuleLibrary(ILinkTarget owner) 
+        {
+            this._owner = owner;
+        }
 
         public void LoadXml(XElement InputXml)
         {
             if (InputXml == null) { return; }
             foreach (XElement subx in InputXml.Elements())
             {
-                IStringMatchingRule newrule = MatchingRuleFactory.GetRootRuleObject(subx);
+                IStringMatchingRule newrule = MatchingRuleFactory.GetRootRuleObject(subx, this._owner);
                 if (newrule != null) { this._rules.Add(newrule); }
             }
         }

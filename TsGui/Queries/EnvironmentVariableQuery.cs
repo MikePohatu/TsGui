@@ -17,6 +17,7 @@
 
 using System.Xml.Linq;
 using TsGui.Connectors;
+using TsGui.Linking;
 
 namespace TsGui.Queries
 {
@@ -25,7 +26,7 @@ namespace TsGui.Queries
         private SccmConnector _sccmconnector;
         private FormattedProperty _formatter;
 
-        public EnvironmentVariableQuery(XElement inputxml, SccmConnector sccmconnector)
+        public EnvironmentVariableQuery(XElement inputxml, SccmConnector sccmconnector, ILinkTarget owner): base(owner)
         {
             this._sccmconnector = sccmconnector;
             this.LoadXml(inputxml);

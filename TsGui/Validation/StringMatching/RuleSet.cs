@@ -17,6 +17,7 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
+using TsGui.Linking;
 
 namespace TsGui.Validation.StringMatching
 {
@@ -27,6 +28,7 @@ namespace TsGui.Validation.StringMatching
         private AndOr _ruletype = AndOr.OR;
         private string _message = null;
         private bool _ischild = true;
+        private ILinkTarget _owner;
 
         public List<IStringMatchingRule> Rules { get { return this._rules; } }
         public string Message
@@ -47,14 +49,17 @@ namespace TsGui.Validation.StringMatching
         public RuleSet(XElement inputxml)
         { this.LoadXml(inputxml); }
 
-        public RuleSet() { }
+        public RuleSet(ILinkTarget owner) 
+        {
+            this._owner = owner;
+        }
 
         public void LoadXml(XElement InputXml)
         {
             if (InputXml == null) { return; }
             foreach (XElement subx in InputXml.Elements())
             {
-                IStringMatchingRule newrule = MatchingRuleFactory.GetRuleObject(subx);
+                IStringMatchingRule newrule = MatchingRuleFactory.GetRuleObject(subx, this._owner);
                 if (newrule != null) { this._rules.Add(newrule); }
             }
 

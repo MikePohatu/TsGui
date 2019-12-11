@@ -24,11 +24,9 @@ namespace TsGui.Queries
     {
         private IDirector _controller;
         private FormattedProperty _formatter;
-        private ILinkTarget _linktargetoption;
 
-        public OptionValueQuery(XElement inputxml, IDirector controller, ILinkTarget owner)
+        public OptionValueQuery(XElement inputxml, IDirector controller, ILinkTarget owner): base(owner)
         {
-            this._linktargetoption = owner;
             this._controller = controller;
             this._ignoreempty = false;
             this.SetDefaults();
@@ -59,7 +57,7 @@ namespace TsGui.Queries
         public void OnLinkedSourceValueChanged()
         {
             this.ProcessQuery();
-            this._linktargetoption?.RefreshValue();
+            this._owner?.RefreshValue();
         }
 
         private void SetDefaults()

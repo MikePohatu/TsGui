@@ -16,12 +16,13 @@
 using System;
 using System.Xml.Linq;
 using TsGui.Diagnostics.Logging;
+using TsGui.Linking;
 
 namespace TsGui.Validation.StringMatching
 {
     public abstract class BaseNumberMatchingRule : BaseMatchingRule
     {
-        public BaseNumberMatchingRule(XElement inputxml) : base(inputxml) { }
+        public BaseNumberMatchingRule(XElement inputxml, ILinkTarget owner) : base(inputxml, owner) { }
 
         public bool DoesMatch(string input)
         {

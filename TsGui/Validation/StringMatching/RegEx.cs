@@ -17,6 +17,7 @@ using System;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using TsGui.Diagnostics;
+using TsGui.Linking;
 
 namespace TsGui.Validation.StringMatching
 {
@@ -24,7 +25,7 @@ namespace TsGui.Validation.StringMatching
     {
         public string Message { get { return "RegEx: " + this.Content ; } }
 
-        public RegEx(XElement inputxml) : base(inputxml) { }
+        public RegEx(XElement inputxml, ILinkTarget owner) : base(inputxml, owner) { }
 
         public bool DoesMatch(string input)
         {

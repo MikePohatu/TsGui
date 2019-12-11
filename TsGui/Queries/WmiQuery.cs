@@ -22,6 +22,7 @@ using System.Management;
 
 using TsGui.Diagnostics;
 using TsGui.Connectors;
+using TsGui.Linking;
 
 namespace TsGui.Queries
 {
@@ -31,9 +32,9 @@ namespace TsGui.Queries
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private string _wql;
 
-        public WmiQuery() { }
+        public WmiQuery(ILinkTarget owner) : base(owner) { }
 
-        public WmiQuery(XElement InputXml)
+        public WmiQuery(XElement InputXml, ILinkTarget owner) : base(owner)
         {
             this.LoadXml(InputXml);
         }

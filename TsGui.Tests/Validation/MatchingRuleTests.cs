@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Xml.Linq;
-
+using TsGui.Tests.Linking;
 using TsGui.Validation.StringMatching;
 
 
@@ -56,7 +56,7 @@ namespace TsGui.Tests.Validation
             XElement xrule = new XElement("Rule", RuleString);
 
             xrule.Add(new XAttribute("Type", SearchType));
-            IStringMatchingRule rule = MatchingRuleFactory.GetRuleObject(xrule);
+            IStringMatchingRule rule = MatchingRuleFactory.GetRuleObject(xrule, new DummyLinkTarget());
 
             return rule.DoesMatch(TestString);
         }

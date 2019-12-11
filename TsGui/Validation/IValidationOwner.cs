@@ -16,9 +16,11 @@
 // IValidationOwner.cs - Parent element of a ValidationHandler. Required to pickup events
 // on the handler e.g. group changes. 
 
+using TsGui.Linking;
+
 namespace TsGui.Validation
 {
-    public interface IValidationOwner
+    public interface IValidationOwner: ILinkTarget
     {
         void OnValidationChange();
     }

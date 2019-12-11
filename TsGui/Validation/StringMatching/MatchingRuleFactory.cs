@@ -14,20 +14,21 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using System.Xml.Linq;
+using TsGui.Linking;
 
 namespace TsGui.Validation.StringMatching
 {
     public static class MatchingRuleFactory
     {
-        public static IStringMatchingRule GetRootRuleObject(XElement InputXml)
+        public static IStringMatchingRule GetRootRuleObject(XElement InputXml, ILinkTarget owner)
         {
-            IStringMatchingRule newrule = GetRuleObject(InputXml);
+            IStringMatchingRule newrule = GetRuleObject(InputXml, owner);
             RuleSet testset = newrule as RuleSet;
             if (testset != null) { testset.IsChild = false; }
             return newrule;
         }
 
-        public static IStringMatchingRule GetRuleObject(XElement InputXml)
+        public static IStringMatchingRule GetRuleObject(XElement InputXml, ILinkTarget owner)
         {
             string xname = InputXml?.Name.ToString();
             string type = XmlHandler.GetStringFromXAttribute(InputXml, "Type", string.Empty);
@@ -38,29 +39,29 @@ namespace TsGui.Validation.StringMatching
             switch (type.ToLower())
             {
                 case "startswith":
-                    return new StartsWith(InputXml);
+                    return new StartsWith(InputXml, owner);
                 case "endswith":
-                    return new EndsWith(InputXml);
+                    return new EndsWith(InputXml, owner);
                 case "contains":
-                    return new Contains(InputXml);
+                    return new Contains(InputXml, owner);
                 case "characters":
-                    return new Characters(InputXml);
+                    return new Characters(InputXml, owner);
                 case "regex":
-                    return new RegEx(InputXml);
+                    return new RegEx(InputXml, owner);
                 case "equals":
-                    return new Equals(InputXml);
+                    return new Equals(InputXml, owner);
                 case "greaterthan":
-                    return new GreaterThan(InputXml);
+                    return new GreaterThan(InputXml, owner);
                 case "greaterthanorequalto":
-                    return new GreaterThanOrEqualTo(InputXml);
+                    return new GreaterThanOrEqualTo(InputXml, owner);
                 case "lessthan":
-                    return new LessThan(InputXml);
+                    return new LessThan(InputXml, owner);
                 case "lessthanorequalto":
-                    return new LessThanOrEqualTo(InputXml);
+                    return new LessThanOrEqualTo(InputXml, owner);
                 case "isnumeric":
-                    return new IsNumeric(InputXml);
+                    return new IsNumeric(InputXml, owner);
                 default:
-                    return new StartsWith(InputXml);
+                    return new StartsWith(InputXml, owner);
             }
         }
     }

@@ -48,7 +48,7 @@ namespace TsGui.Queries.ActiveDirectory
         }
         public string AuthID { get; set; }
 
-        public ADOrgUnitQuery(XElement InputXml, IDirector director, ILinkTarget owner)
+        public ADOrgUnitQuery(XElement InputXml, IDirector director, ILinkTarget owner): base(owner)
         {
             this._linktargetoption = owner;
             this._director = director;

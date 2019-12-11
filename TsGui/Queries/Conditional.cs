@@ -25,7 +25,7 @@ namespace TsGui.Queries
     {
         private QueryPriorityList _sourcequerylist;
         private QueryPriorityList _resultquerylist;
-        private RuleSet _ruleset = new RuleSet();
+        private RuleSet _ruleset ;
         private IDirector _controller;
         private ILinkTarget _linktargetoption;
 
@@ -33,6 +33,7 @@ namespace TsGui.Queries
         {
             this._controller = controller;
             this._linktargetoption = targetoption;
+            this._ruleset = new RuleSet(targetoption);
             this._sourcequerylist = new QueryPriorityList(this._linktargetoption);
             this._resultquerylist = new QueryPriorityList(this._linktargetoption);
             this.LoadXml(inputxml);

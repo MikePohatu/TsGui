@@ -43,7 +43,7 @@ namespace TsGui.Validation
         public void AddCompliance(XElement InputXml)
         {
             if (InputXml == null) { return; }
-            Compliance c = new Compliance(this._controller);
+            Compliance c = new Compliance(this._controller, this._owner);
             c.LoadXml(InputXml);
             this.AddCompliance(c);
         }
