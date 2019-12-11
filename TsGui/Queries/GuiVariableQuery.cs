@@ -66,7 +66,7 @@ namespace TsGui.Queries
         private void ProcessAndRefresh()
         {
             this.ProcessQuery();
-            this._owner?.RefreshValue();
+            this._linktarget?.RefreshValue();
         }
 
         public void OnLinkedSourceValueChanged()

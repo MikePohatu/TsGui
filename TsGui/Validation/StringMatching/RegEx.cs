@@ -25,7 +25,7 @@ namespace TsGui.Validation.StringMatching
     {
         public string Message { get { return "RegEx: " + this.Content ; } }
 
-        public RegEx(XElement inputxml, ILinkTarget owner) : base(inputxml, owner) { }
+        public RegEx(XElement inputxml, ILinkTarget linktarget) : base(inputxml, linktarget) { }
 
         public bool DoesMatch(string input)
         {

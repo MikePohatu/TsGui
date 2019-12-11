@@ -19,10 +19,12 @@
 using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using TsGui.Linking;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Validation
 {
-    public class ValidationHandler
+    public class ValidationHandler: ILinkTarget
     {
         private IDirector _controller;
         private List<StringValidation> _validations = new List<StringValidation>();
@@ -46,7 +48,7 @@ namespace TsGui.Validation
         public void AddValidation(XElement InputXml)
         {
             if (InputXml == null) { return; }
-            StringValidation sv = new StringValidation(this._owner);
+            StringValidation sv = new StringValidation(this);
             sv.LoadXml(InputXml);
             this.AddValidation(sv);
         }
@@ -75,7 +77,7 @@ namespace TsGui.Validation
             x = InputXml.Element("MinLength");
             if (x != null) { result.Add(x); }
 
-            StringValidation sv = new StringValidation(this._owner);
+            StringValidation sv = new StringValidation(this);
             sv.LoadLegacyXml(result);
             this.AddValidation(sv);
         }
@@ -135,6 +137,17 @@ namespace TsGui.Validation
             return s;
         }
 
+        public void RefreshValue() 
+        {
+            LoggerFacade.Info("Validation refresh requested");
+            this._owner.OnValidationChange(); 
+        }
+        public void RefreshAll()
+        {
+            LoggerFacade.Info("Validation refresh all requested");
+            this._owner.OnValidationChange(); 
+        }
+        
         private int GetMaxLength()
         {
             int max= -1;

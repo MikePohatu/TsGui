@@ -24,12 +24,10 @@ namespace TsGui.Validation.StringMatching
 {
     public class MatchingRuleLibrary
     {
-
-        private List<IStringMatchingRule> _rules = new List<IStringMatchingRule>();
         private string _message = null;
         private ILinkTarget _owner;
 
-        public List<IStringMatchingRule> Rules { get { return this._rules; } }
+        public List<IStringMatchingRule> Rules { get; } = new List<IStringMatchingRule>();
         public string Message
         {
             get
@@ -39,7 +37,7 @@ namespace TsGui.Validation.StringMatching
             }
         }
 
-        public int Count { get { return this._rules.Count; } }
+        public int Count { get { return this.Rules.Count; } }
 
         public MatchingRuleLibrary(XElement inputxml, ILinkTarget owner)
         {
@@ -58,18 +56,18 @@ namespace TsGui.Validation.StringMatching
             foreach (XElement subx in InputXml.Elements())
             {
                 IStringMatchingRule newrule = MatchingRuleFactory.GetRootRuleObject(subx, this._owner);
-                if (newrule != null) { this._rules.Add(newrule); }
+                if (newrule != null) { this.Rules.Add(newrule); }
             }
         }
 
         public void Add(IStringMatchingRule rule)
         {
-            if (rule != null) { this._rules.Add(rule); }
+            if (rule != null) { this.Rules.Add(rule); }
         }
 
         public bool DoesMatch(string input)
         {
-            foreach (IStringMatchingRule rule in this._rules)
+            foreach (IStringMatchingRule rule in this.Rules)
             {
                 if (rule.DoesMatch(input)) { return true; }
             }
@@ -80,7 +78,7 @@ namespace TsGui.Validation.StringMatching
         {
             string s = string.Empty;
 
-            foreach (IStringMatchingRule rule in this._rules)
+            foreach (IStringMatchingRule rule in this.Rules)
             {
                 if (string.IsNullOrEmpty(s) == true) { s = "• " + rule.Message; }
                 else { s = s + Environment.NewLine + "• " + rule.Message; }

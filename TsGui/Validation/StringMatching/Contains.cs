@@ -22,12 +22,16 @@ namespace TsGui.Validation.StringMatching
     {
         public string Message { get { return "Contains: " + this.Content; } }
 
-        public Contains(XElement inputxml, ILinkTarget owner) :base(inputxml, owner)
+        public Contains(XElement inputxml, ILinkTarget linktarget) :base(inputxml, linktarget)
         { }
 
         protected override bool Compare(string input)
         {
-            return this.ReplaceNullWithEmpty(input).Contains(this._rulestring);
+            if (this.IsCaseSensitive)
+            {
+                return this.ReplaceNullWithEmpty(input.ToUpper()).Contains(this.Content.ToUpper());
+            }
+            return this.ReplaceNullWithEmpty(input).Contains(this.Content);
         }
     }
 }

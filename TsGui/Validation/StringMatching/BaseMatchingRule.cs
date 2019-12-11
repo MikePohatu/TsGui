@@ -23,19 +23,24 @@ namespace TsGui.Validation.StringMatching
 {
     public abstract class BaseMatchingRule
     {
-        private QueryPriorityList _setvaluequerylist;
+        private QueryPriorityList _querylist;
 
-        public string Content { get { return this._setvaluequerylist.GetResultWrangler()?.GetString(); } }
+        public string Content { 
+            get {
+                string s = this._querylist.GetResultWrangler()?.GetString();
+                return s == null ? string.Empty : s; 
+            } 
+        }
         public bool IsCaseSensitive { get; set; }
 
-        public BaseMatchingRule(ILinkTarget owner) 
+        public BaseMatchingRule(ILinkTarget linktarget) 
         {
-            this._setvaluequerylist = new QueryPriorityList(owner);
+            this._querylist = new QueryPriorityList(linktarget);
         }
 
-        public BaseMatchingRule(XElement inputxml, ILinkTarget owner)
+        public BaseMatchingRule(XElement inputxml, ILinkTarget linktarget)
         {
-            this._setvaluequerylist = new QueryPriorityList(owner);
+            this._querylist = new QueryPriorityList(linktarget);
             this.LoadXml(inputxml); 
         }
 
@@ -46,15 +51,14 @@ namespace TsGui.Validation.StringMatching
             IEnumerable<XElement> xlist = inputxml.Elements();
             if (xlist.Count() > 0)
             {
-                this._setvaluequerylist.LoadXml(inputxml);
+                this._querylist.LoadXml(inputxml);
             }
             else
             {
                 ValueOnlyQuery v = new ValueOnlyQuery(inputxml.Value);
-                this._setvaluequerylist.AddQuery(v);
+                this._querylist.AddQuery(v);
             }
 
-            
             this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(inputxml, "CaseSensitive", this.IsCaseSensitive); 
         }
     }

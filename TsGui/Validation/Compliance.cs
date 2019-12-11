@@ -37,14 +37,14 @@ namespace TsGui.Validation
         public string Message { get; set; }
         public string FailedComplianceMessage { get; set; }
 
-        public Compliance(IDirector MainController, ILinkTarget owner)
+        public Compliance(IDirector MainController, ILinkTarget linktarget)
         {
             this._controller = MainController;
             this.IsActive = true;
-            this._okrules = new MatchingRuleLibrary(owner);
-            this._warningrules = new MatchingRuleLibrary(owner);
-            this._errorrules = new MatchingRuleLibrary(owner);
-            this._invalidrules = new MatchingRuleLibrary(owner);
+            this._okrules = new MatchingRuleLibrary(linktarget);
+            this._warningrules = new MatchingRuleLibrary(linktarget);
+            this._errorrules = new MatchingRuleLibrary(linktarget);
+            this._invalidrules = new MatchingRuleLibrary(linktarget);
     }
 
         public void LoadXml(XElement InputXml)

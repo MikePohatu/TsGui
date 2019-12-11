@@ -49,12 +49,12 @@ namespace TsGui.Queries
 
         public void RefreshValue()
         {
-            this._owner.RefreshValue();
+            this._linktarget.RefreshValue();
         }
 
         public void RefreshAll()
         {
-            this._owner.RefreshAll();
+            this._linktarget.RefreshAll();
         }
 
         public void OnLinkedSourceValueChanged()
@@ -70,12 +70,12 @@ namespace TsGui.Queries
 
                 if (xname.Equals("IF",StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    Conditional newcondition = new Conditional(element, this._director, this._owner);
+                    Conditional newcondition = new Conditional(element, this._director, this._linktarget);
                     this._conditions.Add(newcondition);
                 }
                 else if (xname.Equals("ELSE", StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    this._else = new QueryPriorityList(element,this._owner);
+                    this._else = new QueryPriorityList(element,this._linktarget);
                 }
             }
         }

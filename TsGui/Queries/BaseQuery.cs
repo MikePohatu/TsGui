@@ -28,7 +28,7 @@ namespace TsGui.Queries
         protected ResultWrangler _processingwrangler = new ResultWrangler();
         protected ResultWrangler _returnwrangler;
         protected bool _ignoreempty = true;
-        protected ILinkTarget _owner;
+        protected ILinkTarget _linktarget;
 
         public virtual ResultWrangler GetResultWrangler()
         {
@@ -38,9 +38,9 @@ namespace TsGui.Queries
 
         public abstract ResultWrangler ProcessQuery();
 
-        public BaseQuery(ILinkTarget owner)
+        public BaseQuery(ILinkTarget linktarget)
         {
-            this._owner = owner;
+            this._linktarget = linktarget;
         }
 
         protected void LoadXml(XElement InputXml)
@@ -49,7 +49,7 @@ namespace TsGui.Queries
             this._ignoreempty = XmlHandler.GetBoolFromXAttribute(InputXml, "IgnoreEmpty", this._ignoreempty);
             foreach (XElement xignorerule in InputXml.Elements("Ignore"))
             {
-                this._ignorerules.Add(MatchingRuleFactory.GetRuleObject(xignorerule, this._owner));
+                this._ignorerules.Add(MatchingRuleFactory.GetRuleObject(xignorerule, this._linktarget));
             }
         }
 

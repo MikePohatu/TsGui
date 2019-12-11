@@ -23,7 +23,7 @@ namespace TsGui.Validation.StringMatching
         private char[] _invalidchars;
         public string Message { get { return "Contains: " + this.Content; } }
 
-        public Characters(XElement inputxml, ILinkTarget owner) :base(inputxml, owner)
+        public Characters(XElement inputxml, ILinkTarget linktarget) :base(inputxml, linktarget)
         {
             this._invalidchars = this.Content.ToCharArray();
         }

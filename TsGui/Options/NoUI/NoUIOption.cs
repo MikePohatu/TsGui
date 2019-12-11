@@ -29,7 +29,6 @@ namespace TsGui.Options.NoUI
     {
         public event IOptionValueChanged ValueChanged;
 
-        private string _inactivevalue = "TSGUI_INACTIVE";
         private string _value = string.Empty;
         private bool _usecurrent = false;
         private QueryPriorityList _querylist;
@@ -50,11 +49,7 @@ namespace TsGui.Options.NoUI
             }
         }
         public string VariableName { get; set; }
-        public string InactiveValue
-        {
-            get { return this._inactivevalue; }
-            set { this._inactivevalue = value; }
-        }
+        public string InactiveValue { get; set; } = "TSGUI_INACTIVE";
         public string CurrentValue
         {
             get { return this._value; }
@@ -82,7 +77,7 @@ namespace TsGui.Options.NoUI
                 else
                 {
                     if (this._purgeinactive == true) { return "*PURGED*"; }
-                    else { return this._inactivevalue; }
+                    else { return this.InactiveValue; }
                 }
             }
         }

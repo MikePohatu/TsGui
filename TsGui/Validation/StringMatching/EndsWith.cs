@@ -22,9 +22,15 @@ namespace TsGui.Validation.StringMatching
     {
         public string Message { get { return "EndsWith: " + this.Content; } }
 
-        public EndsWith(XElement inputxml, ILinkTarget owner) :base(inputxml, owner) { }
+        public EndsWith(XElement inputxml, ILinkTarget linktarget) :base(inputxml, linktarget) { }
 
         protected override bool Compare(string input)
-        { return this.ReplaceNullWithEmpty(input).EndsWith(this._rulestring); }
+        {
+            if (this.IsCaseSensitive)
+            {
+                return this.ReplaceNullWithEmpty(input.ToUpper()).EndsWith(this.Content.ToUpper());
+            }
+            return this.ReplaceNullWithEmpty(input).EndsWith(this.Content);
+        }
     }
 }

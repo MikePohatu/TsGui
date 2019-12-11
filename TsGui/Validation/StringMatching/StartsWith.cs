@@ -22,10 +22,16 @@ namespace TsGui.Validation.StringMatching
     {
         public string Message { get { return "StartsWith: " + this.Content; } }
 
-        public StartsWith(XElement inputxml, ILinkTarget owner) : base(inputxml, owner)
+        public StartsWith(XElement inputxml, ILinkTarget linktarget) : base(inputxml, linktarget)
         { }
 
         protected override bool Compare(string input)
-        { return this.ReplaceNullWithEmpty(input).StartsWith(this._rulestring); }
+        {
+            if (this.IsCaseSensitive)
+            {
+                return this.ReplaceNullWithEmpty(input.ToUpper()).StartsWith(this.Content.ToUpper());
+            }
+            return this.ReplaceNullWithEmpty(input).StartsWith(this.Content);
+        }
     }
 }

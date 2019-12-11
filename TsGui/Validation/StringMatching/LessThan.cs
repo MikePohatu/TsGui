@@ -22,7 +22,7 @@ namespace TsGui.Validation.StringMatching
     {
         public string Message { get { return "LessThan: " + this.Content; } }
 
-        public LessThan(XElement inputxml, ILinkTarget owner) :base(inputxml, owner)
+        public LessThan(XElement inputxml, ILinkTarget linktarget) :base(inputxml, linktarget)
         { }
 
         protected override bool Compare(double input, double rulecontent)

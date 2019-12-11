@@ -20,12 +20,12 @@ namespace TsGui.Validation.StringMatching
 {
     public abstract class BaseStringMatchingRule : BaseMatchingRule
     {
-        protected string _rulestring;
+        //protected string _rulestring;
 
-        public BaseStringMatchingRule(XElement inputxml, ILinkTarget owner) : base(inputxml, owner)
+        public BaseStringMatchingRule(XElement inputxml, ILinkTarget linktarget) : base(inputxml, linktarget)
         {
-            if (this.IsCaseSensitive == false) { this._rulestring = this.Content.ToUpper(); }
-            else { this._rulestring = this.Content; }
+            //if (this.IsCaseSensitive == false) { this._rulestring = this.Content.ToUpper(); }
+            //else { this._rulestring = this.Content; }
         }
 
         public bool DoesMatch(string input)

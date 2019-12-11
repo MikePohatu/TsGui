@@ -22,7 +22,7 @@ namespace TsGui.Validation.StringMatching
 {
     public abstract class BaseNumberMatchingRule : BaseMatchingRule
     {
-        public BaseNumberMatchingRule(XElement inputxml, ILinkTarget owner) : base(inputxml, owner) { }
+        public BaseNumberMatchingRule(XElement inputxml, ILinkTarget linktarget) : base(inputxml, linktarget) { }
 
         public bool DoesMatch(string input)
         {

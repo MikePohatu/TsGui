@@ -22,19 +22,19 @@ namespace TsGui.Queries
 {
     public class QueryPriorityList
     {
-        private ILinkTarget _owneroption;
+        private ILinkTarget _linktarget;
         private List<IQuery> _queries = new List<IQuery>();
 
         public List<IQuery> Queries { get { return this._queries; } }
 
-        public QueryPriorityList(ILinkTarget owner)
+        public QueryPriorityList(ILinkTarget linktarget)
         {
-            this._owneroption = owner;
+            this._linktarget = linktarget;
         }
 
-        public QueryPriorityList(XElement inputxml, ILinkTarget owner)
+        public QueryPriorityList(XElement inputxml, ILinkTarget linktarget)
         {
-            this._owneroption = owner;
+            this._linktarget = linktarget;
             this.LoadXml(inputxml);
         }
 
@@ -56,7 +56,7 @@ namespace TsGui.Queries
             {
                 foreach (XElement x in InputXml.Elements())
                 {
-                    IQuery newquery = QueryFactory.GetQueryObject(x, Director.Instance, this._owneroption);
+                    IQuery newquery = QueryFactory.GetQueryObject(x, Director.Instance, this._linktarget);
                     if (newquery != null) { this._queries.Add(newquery); }
                 }
             }

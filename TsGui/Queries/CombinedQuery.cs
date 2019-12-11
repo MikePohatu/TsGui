@@ -65,11 +65,11 @@ namespace TsGui.Queries
 
         public void RefreshValue()
         {
-            this._owner.RefreshValue();
+            this._linktarget.RefreshValue();
         }
 
         public void RefreshAll()
-        { this._owner.RefreshAll(); }
+        { this._linktarget.RefreshAll(); }
 
         public void OnLinkedSourceValueChanged()
         { this.RefreshValue(); }

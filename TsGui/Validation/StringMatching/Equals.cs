@@ -22,16 +22,23 @@ namespace TsGui.Validation.StringMatching
     {
         public string Message { get { return "Equals: " + this.Content; } }
 
-        public Equals(XElement inputxml, ILinkTarget owner) :base(inputxml, owner)
+        public Equals(XElement inputxml, ILinkTarget linktarget) :base(inputxml, linktarget)
         { }
 
         protected override bool Compare(string input)
         {
             if (input == null)
             {
-                if (this._rulestring?.ToUpper() == "*NULL") { return true; }
+                if (this.Content?.ToUpper() == "*NULL") { return true; }
                 else { return false; }
             }
-            return input.Equals(this._rulestring); }
+
+            string s = this.Content;
+            if (this.IsCaseSensitive)
+            {
+                return input.ToUpper().Equals(this.Content.ToUpper());
+            }
+            return input.Equals(this.Content);
+        }
     }
 }

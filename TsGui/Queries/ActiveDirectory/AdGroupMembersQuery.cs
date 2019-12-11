@@ -105,7 +105,7 @@ namespace TsGui.Queries.ActiveDirectory
         public void OnAuthenticatorStateChange()
         {
             this.ProcessQuery();
-            this._owner?.RefreshAll();
+            this._linktarget?.RefreshAll();
         }
 
         private void AddPropertiesToWrangler(ResultWrangler wrangler, PrincipalCollection objectlist, List<KeyValuePair<string, XElement>> PropertyTemplates)

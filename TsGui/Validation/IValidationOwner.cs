@@ -20,7 +20,7 @@ using TsGui.Linking;
 
 namespace TsGui.Validation
 {
-    public interface IValidationOwner: ILinkTarget
+    public interface IValidationOwner
     {
         void OnValidationChange();
     }

@@ -104,7 +104,7 @@ namespace TsGui.Queries.WebServices
         public void OnAuthenticatorStateChange()
         {
             this.ProcessQuery();
-            this._owner?.RefreshAll();
+            this._linktarget?.RefreshAll();
         }
 
         public byte[] GetParametersByteArray(List<KeyValuePair<string, string>> parameterlist)
