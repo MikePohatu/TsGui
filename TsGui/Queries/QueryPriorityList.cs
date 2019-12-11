@@ -27,8 +27,6 @@ namespace TsGui.Queries
 
         public List<IQuery> Queries { get { return this._queries; } }
 
-        public QueryPriorityList() { }
-
         public QueryPriorityList(ILinkTarget owner)
         {
             this._owneroption = owner;

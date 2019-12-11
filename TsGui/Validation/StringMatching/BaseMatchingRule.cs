@@ -57,10 +57,5 @@ namespace TsGui.Validation.StringMatching
             
             this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(inputxml, "CaseSensitive", this.IsCaseSensitive); 
         }
-
-        protected void ReQueryRequired()
-        {
-
-        }
     }
 }

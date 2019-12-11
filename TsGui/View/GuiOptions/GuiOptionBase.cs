@@ -124,8 +124,14 @@ namespace TsGui.View.GuiOptions
                     inputxml.AddFirst(xcurrentquery);
                 }
             }
-            if (clearbeforeload == true) { this._setvaluequerylist.Clear(); }
-            this._setvaluequerylist.LoadXml(inputxml);
+
+            //_setvaluequerylist might be null e.g. on passwordboxes
+            if (this._setvaluequerylist != null)
+            {
+                if (clearbeforeload == true) { this._setvaluequerylist.Clear(); }
+                this._setvaluequerylist.LoadXml(inputxml);
+            }
+            
         }
 
         private void SetDefaults()
