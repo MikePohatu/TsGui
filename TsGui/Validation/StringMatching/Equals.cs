@@ -34,9 +34,9 @@ namespace TsGui.Validation.StringMatching
             }
 
             string s = this.Content;
-            if (this.IsCaseSensitive)
+            if (this.IsCaseSensitive == false)
             {
-                return input.ToUpper().Equals(this.Content.ToUpper());
+                return input.Equals(this.Content.ToUpper());
             }
             return input.Equals(this.Content);
         }

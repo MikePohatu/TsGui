@@ -109,8 +109,8 @@ namespace TsGui.View.GuiOptions
             this.InteractiveControl = this._freetextui.TextBox;
             this.Label = new TsLabelUI();
 
-            this._validationhandler = new ValidationHandler(this,MainController);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this,this._director);
+            this._validationhandler = new ValidationHandler(this, MainController);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this, MainController);
 
             this.UserControl.DataContext = this;
             this._director.WindowLoaded += this.OnWindowLoaded;

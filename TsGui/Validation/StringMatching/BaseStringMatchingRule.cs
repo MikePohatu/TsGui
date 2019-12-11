@@ -22,11 +22,7 @@ namespace TsGui.Validation.StringMatching
     {
         //protected string _rulestring;
 
-        public BaseStringMatchingRule(XElement inputxml, ILinkTarget linktarget) : base(inputxml, linktarget)
-        {
-            //if (this.IsCaseSensitive == false) { this._rulestring = this.Content.ToUpper(); }
-            //else { this._rulestring = this.Content; }
-        }
+        public BaseStringMatchingRule(XElement inputxml, ILinkTarget linktarget) : base(inputxml, linktarget) { }
 
         public bool DoesMatch(string input)
         {

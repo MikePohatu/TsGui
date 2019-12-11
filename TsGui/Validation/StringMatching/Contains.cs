@@ -27,7 +27,7 @@ namespace TsGui.Validation.StringMatching
 
         protected override bool Compare(string input)
         {
-            if (this.IsCaseSensitive)
+            if (this.IsCaseSensitive == false)
             {
                 return this.ReplaceNullWithEmpty(input.ToUpper()).Contains(this.Content.ToUpper());
             }
