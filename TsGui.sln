@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2015
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsGui", "TsGui\TsGui.csproj", "{5E3CFB02-4012-4298-8770-A101BC0AE200}"
 EndProject
@@ -21,7 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config_Examples", "Config_E
 		Config_Examples\Config_Linking.xml = Config_Examples\Config_Linking.xml
 		Config_Examples\Config_NoUI.xml = Config_Examples\Config_NoUI.xml
 		Config_Examples\Config_Queries.xml = Config_Examples\Config_Queries.xml
-		Config_Examples\Config_TreeView.xml = Config_Examples\Config_TreeView.xml
 		Config_Examples\Config_Validation.xml = Config_Examples\Config_Validation.xml
 	EndProjectSection
 EndProject
