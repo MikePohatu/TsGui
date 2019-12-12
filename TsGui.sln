@@ -24,9 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config_Examples", "Config_E
 		Config_Examples\Config_Validation.xml = Config_Examples\Config_Validation.xml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documenation", "Documenation", "{1CF3C8D2-1FF7-4B54-8743-2889362D479A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{1CF3C8D2-1FF7-4B54-8743-2889362D479A}"
 	ProjectSection(SolutionItems) = preProject
-		Index.md = Index.md
+		Documentation\Index.md = Documentation\Index.md
 		Documentation\Layout.md = Documentation\Layout.md
 	EndProjectSection
 EndProject
