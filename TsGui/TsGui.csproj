@@ -106,6 +106,7 @@
     <Compile Include="Queries\IfElseQuery.cs" />
     <Compile Include="Queries\PropertyInterogation.cs" />
     <Compile Include="Queries\QueryHelpers.cs" />
+    <Compile Include="Queries\ReplaceRule.cs" />
     <Compile Include="Queries\Result.cs" />
     <Compile Include="Queries\ToLowerRule.cs" />
     <Compile Include="Queries\ToUpperRule.cs" />

@@ -72,6 +72,9 @@ namespace TsGui.Queries
                     case "ToLower":
                         this._rules.Add(new ToLowerRule());
                         break;
+                    case "Replace":
+                        this._rules.Add(new ReplaceRule(xsetting));
+                        break;
                     default:
                         break;
                 }

@@ -171,6 +171,11 @@ Query types:
 									<Append>\r\n</Append>
 								</Property>
 								<Property Name="Model">
+									<!-- Replace spaces with empty i.e. remove them-->
+									<Replace xml:space="preserve">  <!-- Note that the xml:space="preserve" is required so that XML won't ignore your spaces as invalid whitepsace -->
+										<Search> </Search>
+										<Replace></Replace>
+									</Replace>
 									<Prefix>Model: </Prefix>
 									<Append>\r\n</Append>
 								</Property>
