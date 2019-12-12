@@ -1,3 +1,91 @@
+Version 1.1.0.4
+Release date: 12 Dec 2019
+
+*New features 
+	Added ability to use a query as well as fixed values in compliance and validation (see Config_Validation.xml)
+	Added authentication (BETA)
+	Added Active Directory connectivity (BETA - won't work in WinPE without re-registering .Net DLLs)
+	Added TreeView GuiOption (BETA)
+
+*Known issues
+	An issue has been seen in the 1809 Windows 10 ADK WPF has been broekn, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions
+
+
+Version 1.0.6.14
+Release date: 25 Jun 2019
+
+*Fixes
+	Fixed bug introduced by enabling 'hit enter to finish' functionality where header would disappear, and cause null reference exceptions
+	Fixed null reference exception if WMI can't find model or manufacturer in Win32_ComputerSystem
+
+*Known issues
+	An issue has been seen in the 1809 Windows 10 ADK WPF has been broekn, causing an error in WPF based apps like TsGui. For more details and workarounds, see the following articles:
+	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
+	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
+
+
+Version 1.0.6.12
+Release date: 21 Jun 2019
+
+*New features 
+	The first control on a page is now focused automatically. 
+	Enter key now works to go to next page or finish
+
+*Fixes
+	Fixed No Asset Information not being ignored by ComputerName GuiOption query
+	Fixed Config_Examples.xml to explain MaxLength and MinLength and correct error
+
+
+Version 1.0.6.10
+Release date: 16 Jun 2019
+
+*New features 
+	Added TsGui_IPSubetMask4 and TsGui_IPSubetMask6 to hardware evaluation
+
+*Fixes
+	Fixed TsGui_DHCPServer not getting all values when multiple NICs are installed
+
+
+Version 1.0.6.9
+Release date: 27 Dec 2018
+
+*New features 
+	Added <HideCancel> to the Buttons part of the config. This allows the Cancel button to be removed from the GUI. See Config_Examples.xml.
+
+
+Version 1.0.6.8
+Release date: 16 Nov 2018
+
+*Fixes
+	Fixed an issue where a group applied to a page in a multi page configuration wouldn't enable/disable the Next/Finish buttons correctly
+
+
+Version 1.0.6.7
+Release date: 24 Oct 2018
+
+*Fixes
+	Added TsGui_IsTablet, TsGui_IsConvertible and TsGui_IsDetachable variables to allow to identify hardware types. These correlate to chassis types 30, 31 and 32 respectively. Both types will still also set TsGui_IsLaptop to TRUE
+
+============================================
+
+Version 1.0.6.6
+Release date: 18 Sep 2018
+
+*Fixes
+	Updated chassis types for IsLaptop and IsDesktop (see https://blogs.technet.microsoft.com/brandonlinton/2017/09/15/updated-win32_systemenclosure-chassis-types/)
+
+============================================
+
+Version 1.0.6.5
+Release date: 15 Aug 2018
+
+*New features 
+	Added option to set the namespace in WMI queries. See Config_Queries.xml
+*Fixes
+	Added workaround for Drag-Drop exception in WinPE
+
+============================================
+
 Version 1.0.6.3
 Release date: 26 May 2018
 

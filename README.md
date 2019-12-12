@@ -7,3 +7,5 @@ TsGui aims to remove the overhead involved with using HTAs in your SCCM task seq
 For more information, see www.20road.com
 
 *TsGui is provided as is, and offers no warranty. Use at your own risk.
+
+[Documenation](/Documentation)

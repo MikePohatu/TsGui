@@ -24,6 +24,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config_Examples", "Config_E
 		Config_Examples\Config_Validation.xml = Config_Examples\Config_Validation.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documenation", "Documenation", "{1CF3C8D2-1FF7-4B54-8743-2889362D479A}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\Layout.md = Documentation\Layout.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9CAE835F-A035-45A7-9B99-CAC270DE9DB4}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		Release notes.txt = Release notes.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +52,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F346E360-E198-4DF5-9E1F-2AED9C04468D} = {9CAE835F-A035-45A7-9B99-CAC270DE9DB4}
+		{1CF3C8D2-1FF7-4B54-8743-2889362D479A} = {9CAE835F-A035-45A7-9B99-CAC270DE9DB4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9138F3A8-0E38-4684-B786-DF28210DBAA0}
