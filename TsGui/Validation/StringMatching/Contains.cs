@@ -29,7 +29,7 @@ namespace TsGui.Validation.StringMatching
         {
             if (this.IsCaseSensitive == false)
             {
-                return this.ReplaceNullWithEmpty(input.ToUpper()).Contains(this.Content.ToUpper());
+                return this.ReplaceNullWithEmpty(input).Contains(this.Content.ToUpper());
             }
             return this.ReplaceNullWithEmpty(input).Contains(this.Content);
         }

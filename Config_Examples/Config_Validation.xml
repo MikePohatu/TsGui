@@ -32,6 +32,13 @@
 							<Rule Type="Contains">AB</Rule>
 							<Rule Type="Characters">1234567890</Rule>
 							<Rule Type="RegEx" CaseSensitive="TRUE">^(WM|WD)[0-9]{6}$</Rule>
+              
+              <!-- The value to compare against can also come from a query. See Config_Queries.xml-->
+              <Rule Type="StartsWith" CaseSensitive="TRUE">
+                <Query Type="Wmi">
+                  <Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
+                </Query>
+              </Rule>
 							<!--<Rule Type="IsNumeric"/>-->
 							<!--<Rule Type="GreaterThan">10</Rule>-->
 							<!--<Rule Type="GreaterThanOrEqualTo">10</Rule>-->

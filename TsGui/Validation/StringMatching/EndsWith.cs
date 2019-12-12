@@ -28,7 +28,7 @@ namespace TsGui.Validation.StringMatching
         {
             if (this.IsCaseSensitive == false)
             {
-                return this.ReplaceNullWithEmpty(input.ToUpper()).EndsWith(this.Content.ToUpper());
+                return this.ReplaceNullWithEmpty(input).EndsWith(this.Content.ToUpper());
             }
             return this.ReplaceNullWithEmpty(input).EndsWith(this.Content);
         }
