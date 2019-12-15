@@ -247,9 +247,11 @@ Query types:
 						<Query Type="Compare">
 							<TrueValue>TRUE</TrueValue>
 							<FalseValue>FALSE</FalseValue>
-							<Value>localdomain</Value>
+
+							<!-- The two queries to compare (<Value> is actually a type of query) -->
+							<Value>domain.local</Value> 
 							<Query Type="Wmi">
-								<Wql>select DNSDomain from Win32_NetworkAdapterConfiguration WHERE IPEnabled='True'</Wql>
+								<Wql>select DNSDomain from Win32_NetworkAdapterConfiguration WHERE IPEnabled='True' AND DNSDomain != NULL</Wql>
 								<Property Name="DNSDomain"/>	
 							</Query>
 						</Query>
