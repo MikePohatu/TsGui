@@ -46,6 +46,10 @@ namespace TsGui.Tests
         public TsPage CurrentPage { get; set; }
         public bool ShowGridLines { get; set; }
 
+
+        public void Init(MainWindow ParentWindow, Arguments Arguments) { }
+
+
         public void CloseWithError(string Title, string Message) { }
         public void Startup() { }
         public void AddOptionToLibary(IOption Option) { }

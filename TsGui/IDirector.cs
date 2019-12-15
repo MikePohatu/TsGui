@@ -45,6 +45,7 @@ namespace TsGui
         TsPage CurrentPage { get; set; }
         bool ShowGridLines { get; set; }
 
+        void Init(MainWindow ParentWindow, Arguments Arguments);
         void CloseWithError(string Title, string Message);
         void AddOptionToLibary(IOption Option);
         void MoveNext();

@@ -37,9 +37,9 @@ namespace TsGui
 {
     public class Director: IDirector
     {
-        private static Director _instance;
+        private static IDirector _instance;
 
-        public static Director Instance { get
+        public static IDirector Instance { get
             {
                 if (Director._instance == null) { Director._instance = new Director(); }
                 return Director._instance;
@@ -110,6 +110,15 @@ namespace TsGui
                 this.CloseWithError("Application Startup Exception", msg);
                 return;
             }
+        }
+
+        /// <summary>
+        /// Replace the default director with a new IDirector instance. This to pass in a scafold IDirector for testing
+        /// </summary>
+        /// <param name="newdirector"></param>
+        public void OverrideInstance(IDirector newdirector)
+        {
+            Director._instance = newdirector;
         }
 
         public void CloseWithError(string Title, string Message)
