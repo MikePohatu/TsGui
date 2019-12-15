@@ -23,14 +23,12 @@ namespace TsGui.Queries
     public class IfElseQuery: BaseQuery, ILinkingEventHandler, ILinkTarget
     {
         private List<Conditional> _conditions = new List<Conditional>();
-        private QueryList _else;
+        private QueryPriorityList _else;
         private IDirector _director;
-        private ILinkTarget _targetoption;
 
-        public IfElseQuery (XElement inputxml, IDirector director, ILinkTarget targetoption)
+        public IfElseQuery (XElement inputxml, IDirector director, ILinkTarget owner): base(owner)
         {
             this._director = director;
-            this._targetoption = targetoption;
             this.LoadXml(inputxml);
         }
 
@@ -51,7 +49,12 @@ namespace TsGui.Queries
 
         public void RefreshValue()
         {
-            this._targetoption.RefreshValue();
+            this._linktarget.RefreshValue();
+        }
+
+        public void RefreshAll()
+        {
+            this._linktarget.RefreshAll();
         }
 
         public void OnLinkedSourceValueChanged()
@@ -67,12 +70,12 @@ namespace TsGui.Queries
 
                 if (xname.Equals("IF",StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    Conditional newcondition = new Conditional(element, this._director, this._targetoption);
+                    Conditional newcondition = new Conditional(element, this._director, this._linktarget);
                     this._conditions.Add(newcondition);
                 }
                 else if (xname.Equals("ELSE", StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    this._else = new QueryList(element,this._targetoption,this._director);
+                    this._else = new QueryPriorityList(element,this._linktarget);
                 }
             }
         }

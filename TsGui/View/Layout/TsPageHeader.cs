@@ -92,7 +92,7 @@ namespace TsGui.View.Layout
 
         public TsPageHeader(XElement SourceXml, IDirector MainController): base (MainController)
         {
-            this.ShowGridLines = _controller.ShowGridLines;
+            this.ShowGridLines = _director.ShowGridLines;
             this.SetDefaults();
 
             this.Init(SourceXml, MainController);
@@ -147,11 +147,11 @@ namespace TsGui.View.Layout
                 this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
 
                 x = InputXml.Element("Image");
-                if (x != null) { this.Image = new Image(x, this._controller); }
+                if (x != null) { this.Image = new Image(x, this._director); }
 
                 x = InputXml.Element("Row");
                 if (x != null)
-                { this.Table = new TsTable(InputXml, this, this._controller); }
+                { this.Table = new TsTable(InputXml, this, this._director); }
             }
         }
 

@@ -25,7 +25,7 @@ namespace TsGui.View.GuiOptions
     {
         private IRootLayoutElement _rootelement;
         private string _buttontext;
-        private TsComplianceRefreshButtonUI _ui;
+        private TsButtonUI _ui;
 
         public override string CurrentValue { get { return null; } }
         public override TsVariable Variable { get { return null; } }
@@ -45,9 +45,9 @@ namespace TsGui.View.GuiOptions
             this._rootelement = this.GetRootElement();
 
             this.UserControl.DataContext = this;           
-            this._ui = new TsComplianceRefreshButtonUI();
+            this._ui = new TsButtonUI();
             this.Control = this._ui;
-            this._ui.RetryButton.Click += this.OnButtonClick;
+            this._ui.button.Click += this.OnButtonClick;
 
             this.Label = new TsLabelUI();
             this.SetDefaults();           

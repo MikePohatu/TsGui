@@ -75,7 +75,7 @@ namespace TsGui.View.GuiOptions
             this.InteractiveControl = cbui.CheckBox;
             this.Label = new TsLabelUI();
             this.SetDefaults();
-            this._querylist = new QueryList(this, this._controller);          
+            this._setvaluequerylist = new QueryPriorityList(this);          
             this.LoadXml(InputXml);
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
@@ -100,11 +100,11 @@ namespace TsGui.View.GuiOptions
             xlist = InputXml.Elements("Toggle");
             if (xlist != null)
             {
-                this._controller.AddToggleControl(this);
+                this._director.AddToggleControl(this);
 
                 foreach (XElement subx in xlist)
                 {
-                    Toggle t = new Toggle(this, this._controller, subx); 
+                    Toggle t = new Toggle(this, this._director, subx); 
                 }  
             }
         }
@@ -118,12 +118,17 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            string newvalue = this._querylist.GetResultWrangler()?.GetString();
+            string newvalue = this._setvaluequerylist.GetResultWrangler()?.GetString();
             if (newvalue != this.CurrentValue)
             {
                 if (newvalue == this._valTrue) { this.IsChecked = true; }
                 else if (newvalue == this._valFalse) { this.IsChecked = false; }
             }
+        }
+
+        public void RefreshAll()
+        {
+            this.RefreshValue();
         }
 
         private void OnGroupStateChanged(object o, RoutedEventArgs e)

@@ -44,6 +44,7 @@
 //			<Query Type="Wmi">
 //				<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
 //				<Ignore>No Asset Tag</Ignore>
+//              <Ignore>NoAssetTag</Ignore>
 //              <Ignore>No Asset Information</Ignore>
 //              <Ignore>NoAssetInformat</Ignore>
 //			</Query>					
@@ -99,6 +100,8 @@ namespace TsGui.View.GuiOptions
             assettag.Add(new XAttribute("Type", "Wmi"));
             assettag.Add(new XElement("Wql", "SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure"));
             assettag.Add(new XElement("Ignore", "No Asset Tag"));
+            assettag.Add(new XElement("Ignore", "NoAssetTag"));
+            assettag.Add(new XElement("Ignore", "NoAssetInformation"));
             assettag.Add(new XElement("Ignore", "NoAssetInformat"));
             assettag.Add(new XElement("Ignore", "No Asset Information"));
 

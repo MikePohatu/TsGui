@@ -23,9 +23,9 @@ namespace TsGui.Queries
 {
     public class Conditional
     {
-        private QueryList _sourcequerylist;
-        private QueryList _resultquerylist;
-        private RuleSet _ruleset = new RuleSet();
+        private QueryPriorityList _sourcequerylist;
+        private QueryPriorityList _resultquerylist;
+        private RuleSet _ruleset ;
         private IDirector _controller;
         private ILinkTarget _linktargetoption;
 
@@ -33,8 +33,9 @@ namespace TsGui.Queries
         {
             this._controller = controller;
             this._linktargetoption = targetoption;
-            this._sourcequerylist = new QueryList(this._linktargetoption, this._controller);
-            this._resultquerylist = new QueryList(this._linktargetoption, this._controller);
+            this._ruleset = new RuleSet(targetoption);
+            this._sourcequerylist = new QueryPriorityList(this._linktargetoption);
+            this._resultquerylist = new QueryPriorityList(this._linktargetoption);
             this.LoadXml(inputxml);
         }
 

@@ -33,24 +33,14 @@ namespace TsGui.View.GuiOptions
 
         private string _labeltext = string.Empty;
         private string _helptext = null;
-        private string _inactivevalue = "TSGUI_INACTIVE";
-        private GuiOptionBaseUI _ui;
-        protected QueryList _querylist;
+        protected QueryPriorityList _setvaluequerylist;
 
         //standard stuff
         public string ID { get; set; }
         public UserControl Control { get; set; }
         public UserControl Label { get; set; }
-        public GuiOptionBaseUI UserControl
-        {
-            get { return this._ui; }
-            set { this._ui = value; }
-        }
-        public string InactiveValue
-        {
-            get { return this._inactivevalue; }
-            set { this._inactivevalue = value; }
-        }
+        public GuiOptionBaseUI UserControl { get; set; }
+        public string InactiveValue { get; set; } = "TSGUI_INACTIVE";
         public string VariableName { get; set; }
         public string LabelText
         {
@@ -73,7 +63,7 @@ namespace TsGui.View.GuiOptions
                 else
                 {
                     if (this._purgeinactive == true) { return "*PURGED*"; }
-                    else { return this._inactivevalue; }
+                    else { return this.InactiveValue; }
                 }
             }
         }
@@ -104,7 +94,7 @@ namespace TsGui.View.GuiOptions
             if (xa != null)
             {
                 this.ID = xa.Value;
-                this._controller.LinkingLibrary.AddSource(this);
+                this._director.LinkingLibrary.AddSource(this);
             }
 
             x = InputXml.Element("SetValue");
@@ -134,8 +124,14 @@ namespace TsGui.View.GuiOptions
                     inputxml.AddFirst(xcurrentquery);
                 }
             }
-            if (clearbeforeload == true) { this._querylist.Clear(); }
-            this._querylist.LoadXml(inputxml);
+
+            //_setvaluequerylist might be null e.g. on passwordboxes
+            if (this._setvaluequerylist != null)
+            {
+                if (clearbeforeload == true) { this._setvaluequerylist.Clear(); }
+                this._setvaluequerylist.LoadXml(inputxml);
+            }
+            
         }
 
         private void SetDefaults()

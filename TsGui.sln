@@ -1,66 +1,39 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{13E6ECDF-E7F4-4B16-878A-557717F95D2D}"
-	ProjectSection(SolutionItems) = preProject
-		License.txt = License.txt
-		README.md = README.md
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsGui", "TsGui\TsGui.csproj", "{5E3CFB02-4012-4298-8770-A101BC0AE200}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{692EA0AD-C41F-40AC-A968-2A3C7265C44E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsGui.Tests", "TsGui.Tests\TsGui.Tests.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestConfigs", "TestConfigs", "{D9C93D96-C808-4EF5-980A-E06BA28C6BDF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config_Examples", "Config_Examples", "{F346E360-E198-4DF5-9E1F-2AED9C04468D}"
 	ProjectSection(SolutionItems) = preProject
-		TestConfigs\Config.1.xml = TestConfigs\Config.1.xml
-		TestConfigs\Config.10.xml = TestConfigs\Config.10.xml
-		TestConfigs\Config.11.xml = TestConfigs\Config.11.xml
-		TestConfigs\Config.12.xml = TestConfigs\Config.12.xml
-		TestConfigs\Config.13.xml = TestConfigs\Config.13.xml
-		TestConfigs\Config.14.xml = TestConfigs\Config.14.xml
-		TestConfigs\Config.15.xml = TestConfigs\Config.15.xml
-		TestConfigs\Config.16.xml = TestConfigs\Config.16.xml
-		TestConfigs\Config.17.xml = TestConfigs\Config.17.xml
-		TestConfigs\Config.18.xml = TestConfigs\Config.18.xml
-		TestConfigs\Config.19.xml = TestConfigs\Config.19.xml
-		TestConfigs\Config.2.xml = TestConfigs\Config.2.xml
-		TestConfigs\Config.20.xml = TestConfigs\Config.20.xml
-		TestConfigs\Config.3.xml = TestConfigs\Config.3.xml
-		TestConfigs\Config.4.xml = TestConfigs\Config.4.xml
-		TestConfigs\Config.5.xml = TestConfigs\Config.5.xml
-		TestConfigs\Config.6.xml = TestConfigs\Config.6.xml
-		TestConfigs\Config.7.xml = TestConfigs\Config.7.xml
-		TestConfigs\Config.8.xml = TestConfigs\Config.8.xml
-		TestConfigs\Config.9.xml = TestConfigs\Config.9.xml
-		TestConfigs\TestConfigs.vbs = TestConfigs\TestConfigs.vbs
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{2A195006-2C40-40FF-8760-60312D1A22A1}"
-	ProjectSection(SolutionItems) = preProject
-		TestConfigs\images\image1.jpg = TestConfigs\images\image1.jpg
-		TestConfigs\images\image1_100.jpg = TestConfigs\images\image1_100.jpg
-		TestConfigs\images\image1_200.jpg = TestConfigs\images\image1_200.jpg
-		TestConfigs\images\image2.jpg = TestConfigs\images\image2.jpg
-		TestConfigs\images\TsGui-TextLogo1.png = TestConfigs\images\TsGui-TextLogo1.png
-		TestConfigs\images\water.jpg = TestConfigs\images\water.jpg
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config_Examples", "Config_Examples", "{F012FFCD-0CC6-4119-9660-42D17D16739F}"
-	ProjectSection(SolutionItems) = preProject
+		Config_Examples\Config_AD.xml = Config_Examples\Config_AD.xml
 		Config_Examples\Config_Compliance.xml = Config_Examples\Config_Compliance.xml
 		Config_Examples\Config_Examples.xml = Config_Examples\Config_Examples.xml
 		Config_Examples\Config_Formatting.xml = Config_Examples\Config_Formatting.xml
 		Config_Examples\Config_Groups_and_Toggles.xml = Config_Examples\Config_Groups_and_Toggles.xml
+		Config_Examples\Config_Heading.xml = Config_Examples\Config_Heading.xml
 		Config_Examples\Config_Images.xml = Config_Examples\Config_Images.xml
 		Config_Examples\Config_Linking.xml = Config_Examples\Config_Linking.xml
 		Config_Examples\Config_NoUI.xml = Config_Examples\Config_NoUI.xml
 		Config_Examples\Config_Queries.xml = Config_Examples\Config_Queries.xml
 		Config_Examples\Config_Validation.xml = Config_Examples\Config_Validation.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{1CF3C8D2-1FF7-4B54-8743-2889362D479A}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\Index.md = Documentation\Index.md
+		Documentation\Layout.md = Documentation\Layout.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9CAE835F-A035-45A7-9B99-CAC270DE9DB4}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		Release notes.txt = Release notes.txt
 	EndProjectSection
 EndProject
 Global
@@ -82,11 +55,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D9C93D96-C808-4EF5-980A-E06BA28C6BDF} = {13E6ECDF-E7F4-4B16-878A-557717F95D2D}
-		{2A195006-2C40-40FF-8760-60312D1A22A1} = {D9C93D96-C808-4EF5-980A-E06BA28C6BDF}
-		{F012FFCD-0CC6-4119-9660-42D17D16739F} = {13E6ECDF-E7F4-4B16-878A-557717F95D2D}
+		{F346E360-E198-4DF5-9E1F-2AED9C04468D} = {9CAE835F-A035-45A7-9B99-CAC270DE9DB4}
+		{1CF3C8D2-1FF7-4B54-8743-2889362D479A} = {9CAE835F-A035-45A7-9B99-CAC270DE9DB4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F449318D-0A35-4D27-854D-AD2BA82BA7AA}
+		SolutionGuid = {9138F3A8-0E38-4684-B786-DF28210DBAA0}
 	EndGlobalSection
 EndGlobal

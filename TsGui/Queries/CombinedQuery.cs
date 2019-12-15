@@ -23,18 +23,16 @@ namespace TsGui.Queries
 {
     public class CombinedQuery: BaseQuery, ILinkTarget, ILinkingEventHandler
     {
-        private QueryList _querylist;
+        private QueryPriorityList _querylist;
         private IDirector _controller;
-        private ILinkTarget _linktargetoption;
 
-        public CombinedQuery(XElement inputxml, IDirector controller, ILinkTarget targetoption)
+        public CombinedQuery(XElement inputxml, IDirector controller, ILinkTarget owner) : base(owner)
         {
-            this._querylist = new QueryList(this, controller);
+            this._querylist = new QueryPriorityList(this);
             this._processingwrangler = new ResultWrangler();
             this._processingwrangler.Separator = string.Empty;
             this._reprocess = true;
             this._controller = controller;
-            this._linktargetoption = targetoption;
             this.LoadXml(inputxml);
         }
 
@@ -57,8 +55,8 @@ namespace TsGui.Queries
         public override ResultWrangler ProcessQuery()
         {
             this._processingwrangler = this._processingwrangler.Clone();
-            this._processingwrangler.NewSubList();
-            this._processingwrangler.AddResultFormatters(this._querylist.GetAllResultFormatters());
+            this._processingwrangler.NewResult();
+            this._processingwrangler.AddFormattedProperties(this._querylist.GetAllPropertyFormatters());
 
             string s = this._processingwrangler.GetString();
             if (this.ShouldIgnore(s) == false) { return this._processingwrangler; }
@@ -67,8 +65,11 @@ namespace TsGui.Queries
 
         public void RefreshValue()
         {
-            this._linktargetoption.RefreshValue();
+            this._linktarget.RefreshValue();
         }
+
+        public void RefreshAll()
+        { this._linktarget.RefreshAll(); }
 
         public void OnLinkedSourceValueChanged()
         { this.RefreshValue(); }

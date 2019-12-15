@@ -19,16 +19,17 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Grouping;
 using TsGui.Validation.StringMatching;
+using TsGui.Linking;
 
 namespace TsGui.Validation
 {
     public class Compliance: GroupableValidationBase
     {
 
-        private MatchingRuleLibrary _okrules = new MatchingRuleLibrary();
-        private MatchingRuleLibrary _warningrules = new MatchingRuleLibrary();
-        private MatchingRuleLibrary _errorrules = new MatchingRuleLibrary();
-        private MatchingRuleLibrary _invalidrules = new MatchingRuleLibrary();
+        private MatchingRuleLibrary _okrules;
+        private MatchingRuleLibrary _warningrules;
+        private MatchingRuleLibrary _errorrules;
+        private MatchingRuleLibrary _invalidrules;
         private int _defaultstate = ComplianceStateValues.Invalid;
         private IDirector _controller;
 
@@ -36,11 +37,15 @@ namespace TsGui.Validation
         public string Message { get; set; }
         public string FailedComplianceMessage { get; set; }
 
-        public Compliance(IDirector MainController)
+        public Compliance(IDirector MainController, ILinkTarget linktarget)
         {
             this._controller = MainController;
             this.IsActive = true;
-        }
+            this._okrules = new MatchingRuleLibrary(linktarget);
+            this._warningrules = new MatchingRuleLibrary(linktarget);
+            this._errorrules = new MatchingRuleLibrary(linktarget);
+            this._invalidrules = new MatchingRuleLibrary(linktarget);
+    }
 
         public void LoadXml(XElement InputXml)
         {

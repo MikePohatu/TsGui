@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using TsGui.Queries;
+using TsGui.Tests.Linking;
 
 namespace TsGui.Tests
 {
@@ -31,7 +32,7 @@ namespace TsGui.Tests
         public void AddWmiPropertiesToWrangler_Test(WmiQueryTestArgs TestArgs)
         {
             //protected void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
-            WmiQuery query = new WmiQuery();
+            WmiQuery query = new WmiQuery(new DummyLinkTarget());
             PrivateObject obj = new PrivateObject(query);
 
             object[] args = new object[3] { TestArgs.Wrangler, TestArgs.ManagementObjectList, TestArgs.PropertyTemplates };

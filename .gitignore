@@ -197,5 +197,11 @@ ModelManifest.xml
 /TestConfigs/NLog.dll
 /TestConfigs/Config.xml
 /TestConfigs/NLog.config.old
-/TestConfigs/TsGui.1.0.0.0.exe
+/TsGui.Tests/testauth.xml
 /TestConfigs/TsGui-1.0.6.3.exe
+/TestConfigs/Reference/NLog.config
+/TestConfigs/Reference/NLog.dll
+/TestConfigs/Reference/TsGui.exe
+/TestConfigs/Test/NLog.config
+/TestConfigs/Test/NLog.dll
+/TestConfigs/Test/TsGui.exe

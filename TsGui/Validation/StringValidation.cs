@@ -19,7 +19,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Grouping;
 using TsGui.Validation.StringMatching;
-
+using TsGui.Linking;
 
 namespace TsGui.Validation
 {
@@ -28,9 +28,9 @@ namespace TsGui.Validation
         private bool _validateempty = true;
         private int _maxlength = int.MaxValue;
         private int _minlength = 0;
-        private MatchingRuleLibrary _validrules = new MatchingRuleLibrary();
-        private MatchingRuleLibrary _invalidrules = new MatchingRuleLibrary();
-        private IDirector _controller;
+        private ILinkTarget _owner;
+        private MatchingRuleLibrary _validrules;
+        private MatchingRuleLibrary _invalidrules;
 
         //Properties
 
@@ -54,9 +54,11 @@ namespace TsGui.Validation
         }
         #endregion
 
-        public StringValidation(IDirector MainController)
+        public StringValidation(ILinkTarget owner)
         {
-            this._controller = MainController;
+            this._owner = owner;
+            this._validrules = new MatchingRuleLibrary(owner);
+            this._invalidrules = new MatchingRuleLibrary(owner);
             this.SetDefaults();
 
         }
@@ -95,7 +97,7 @@ namespace TsGui.Validation
             {
                 foreach (XElement groupx in xlist)
                 {
-                    Group g = this._controller.GroupLibrary.GetGroupFromID(groupx.Value);
+                    Group g = Director.Instance.GroupLibrary.GetGroupFromID(groupx.Value);
                     this._groups.Add(g);
                     g.StateEvent += this.OnGroupStateChange;
                 }
@@ -113,7 +115,7 @@ namespace TsGui.Validation
                 x = x.Element("Characters");
                 if (x != null)
                 {
-                    Characters newrule = new Characters(new XElement("Rule", x.Value));
+                    Characters newrule = new Characters(new XElement("Rule", x.Value), this._owner);
                     this._invalidrules.Add(newrule);
                 }
             }

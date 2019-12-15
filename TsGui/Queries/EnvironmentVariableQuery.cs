@@ -17,15 +17,16 @@
 
 using System.Xml.Linq;
 using TsGui.Connectors;
+using TsGui.Linking;
 
 namespace TsGui.Queries
 {
     public class EnvironmentVariableQuery: BaseQuery, IQuery
     {
         private SccmConnector _sccmconnector;
-        private ResultFormatter _formatter;
+        private FormattedProperty _formatter;
 
-        public EnvironmentVariableQuery(XElement inputxml, SccmConnector sccmconnector)
+        public EnvironmentVariableQuery(XElement inputxml, SccmConnector sccmconnector, ILinkTarget owner): base(owner)
         {
             this._sccmconnector = sccmconnector;
             this.LoadXml(inputxml);
@@ -84,7 +85,7 @@ namespace TsGui.Queries
             XElement x;
             XAttribute xattrib;
 
-            this._processingwrangler.NewSubList();
+            this._processingwrangler.NewResult();
             
             x = InputXml.Element("Variable");
             if (x != null)
@@ -94,15 +95,15 @@ namespace TsGui.Queries
                 xattrib = x.Attribute("Name");
                 if (xattrib == null)
                 {
-                    this._formatter = new ResultFormatter();
+                    this._formatter = new FormattedProperty();
                     this._formatter.Name = x.Value;
                 }
                 else
                 {
-                    this._formatter = new ResultFormatter(x);
+                    this._formatter = new FormattedProperty(x);
                 }
 
-                this._processingwrangler.AddResultFormatter(this._formatter);
+                this._processingwrangler.AddFormattedProperty(this._formatter);
             }
         }
     }

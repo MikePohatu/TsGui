@@ -119,7 +119,8 @@ namespace TsGui.View.Layout
             if (x != null) { this._controlformatting.LoadXml(x); }
 
             x = InputXml.Element("HideCancel");
-            if (x != null) {
+            if (x != null)
+            {
                 if (x.Value.ToUpper() == "TRUE") { this.CancelVisibility = Visibility.Collapsed; }
                 else if (x.Value.ToUpper() == "DISABLED") { this.CancelEnabled = false; }
             }

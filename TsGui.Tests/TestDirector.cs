@@ -22,17 +22,20 @@ using TsGui.Options;
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Linking;
+using TsGui.Authentication;
 
 namespace TsGui.Tests
 {
-    public class TestDirector
+    public class TestDirector: IDirector
     {
-        //public event TsGuiWindowEventHandler WindowLoaded;
-        //public event TsGuiWindowMovingEventHandler WindowMoving;
-        //public event TsGuiWindowEventHandler WindowMouseUp;
-        //public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
+        private AuthLibrary _authlib = new AuthLibrary();
+        public event TsGuiWindowEventHandler WindowLoaded;
+        public event TsGuiWindowMovingEventHandler WindowMoving;
+        public event TsGuiWindowEventHandler WindowMouseUp;
+        public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
         //properties
+        public AuthLibrary AuthLibrary { get { return this._authlib; } }
         public LinkingLibrary LinkingLibrary { get; }
         public GroupLibrary GroupLibrary { get; }
         public TsMainWindow TsMainWindow { get; set; }
@@ -42,6 +45,10 @@ namespace TsGui.Tests
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
         public bool ShowGridLines { get; set; }
+
+
+        public void Init(MainWindow ParentWindow, Arguments Arguments) { }
+
 
         public void CloseWithError(string Title, string Message) { }
         public void Startup() { }
@@ -55,5 +62,6 @@ namespace TsGui.Tests
         public void OnWindowLoaded(object o, RoutedEventArgs e) { }
         public void OnWindowMoving(object o, EventArgs e) { }
         public void OnWindowMouseUp(object o, RoutedEventArgs e) { }
+
     }
 }

@@ -101,19 +101,19 @@ namespace TsGui.View.GuiOptions
 
         private void Init(IDirector MainController)
         {
-            this._controller = MainController;
-            this._querylist = new QueryList(this, this._controller);
+            this._director = MainController;
+            this._setvaluequerylist = new QueryPriorityList(this);
 
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
             this.InteractiveControl = this._freetextui.TextBox;
             this.Label = new TsLabelUI();
 
-            this._validationhandler = new ValidationHandler(this,MainController);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this,this._controller);
+            this._validationhandler = new ValidationHandler(this, MainController);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this, MainController);
 
             this.UserControl.DataContext = this;
-            this._controller.WindowLoaded += this.OnWindowLoaded;
+            this._director.WindowLoaded += this.OnWindowLoaded;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
             this._freetextui.TextBox.GotFocus += this.OnGotFocus;
             this.UserControl.IsEnabledChanged += this.OnValidationEvent;
@@ -202,7 +202,7 @@ namespace TsGui.View.GuiOptions
 
         public void RefreshValue()
         {
-            string s = this._querylist.GetResultWrangler()?.GetString();
+            string s = this._setvaluequerylist.GetResultWrangler()?.GetString();
             if (s != null) 
             {
                 //if required, remove invalid characters and truncate
@@ -213,5 +213,8 @@ namespace TsGui.View.GuiOptions
                 if (this.ControlText != s) { this.ControlText = s; }
             }
         }
+
+        public void RefreshAll()
+        { this.RefreshValue(); }
     }
 }

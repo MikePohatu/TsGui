@@ -1,0 +1,5 @@
+<TestAuth>
+    <User>testuser</User>
+    <Password>Password1</Password>
+    <Domain>domain.local</Domain>
+</TestAuth>

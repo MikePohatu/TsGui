@@ -14,18 +14,15 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using System.Xml.Linq;
+using TsGui.Linking;
 
 namespace TsGui.Validation.StringMatching
 {
     public abstract class BaseStringMatchingRule : BaseMatchingRule
     {
-        protected string _rulestring;
+        //protected string _rulestring;
 
-        public BaseStringMatchingRule(XElement inputxml) : base(inputxml)
-        {
-            if (this.IsCaseSensitive == false) { this._rulestring = this.Content.ToUpper(); }
-            else { this._rulestring = this.Content; }
-        }
+        public BaseStringMatchingRule(XElement inputxml, ILinkTarget linktarget) : base(inputxml, linktarget) { }
 
         public bool DoesMatch(string input)
         {

@@ -19,10 +19,11 @@
 using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using TsGui.Linking;
 
 namespace TsGui.Validation
 {
-    public class ComplianceHandler
+    public class ComplianceHandler: ILinkTarget
     {
         private IDirector _controller;
         private List<Compliance> _compliances = new List<Compliance>();
@@ -43,7 +44,7 @@ namespace TsGui.Validation
         public void AddCompliance(XElement InputXml)
         {
             if (InputXml == null) { return; }
-            Compliance c = new Compliance(this._controller);
+            Compliance c = new Compliance(this._controller, this);
             c.LoadXml(InputXml);
             this.AddCompliance(c);
         }
@@ -110,5 +111,10 @@ namespace TsGui.Validation
             if (active == true) { return s; }
             else { return string.Empty; }
         }
+
+        public void RefreshValue()
+        { this._owner.OnValidationChange(); }
+        public void RefreshAll()
+        { this._owner.OnValidationChange(); }
     }
 }

@@ -1,4 +1,4 @@
-<TsGui>
+<TsGui LiveData="TRUE">
 	<!-- The showgridlines option is used for assisting with layout design
 	<ShowGridLines /> 
 	-->

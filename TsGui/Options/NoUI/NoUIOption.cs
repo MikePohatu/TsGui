@@ -29,10 +29,9 @@ namespace TsGui.Options.NoUI
     {
         public event IOptionValueChanged ValueChanged;
 
-        private string _inactivevalue = "TSGUI_INACTIVE";
         private string _value = string.Empty;
         private bool _usecurrent = false;
-        private QueryList _querylist;
+        private QueryPriorityList _querylist;
         private string _id;
 
         //properties
@@ -45,16 +44,12 @@ namespace TsGui.Options.NoUI
                 if (this._id != value)
                 {
                     this._id = value;
-                    this._controller.LinkingLibrary.AddSource(this);
+                    this._director.LinkingLibrary.AddSource(this);
                 }
             }
         }
         public string VariableName { get; set; }
-        public string InactiveValue
-        {
-            get { return this._inactivevalue; }
-            set { this._inactivevalue = value; }
-        }
+        public string InactiveValue { get; set; } = "TSGUI_INACTIVE";
         public string CurrentValue
         {
             get { return this._value; }
@@ -82,14 +77,14 @@ namespace TsGui.Options.NoUI
                 else
                 {
                     if (this._purgeinactive == true) { return "*PURGED*"; }
-                    else { return this._inactivevalue; }
+                    else { return this.InactiveValue; }
                 }
             }
         }
         //constructors     
         public NoUIOption(NoUIContainer Parent, IDirector director, XElement InputXml) : base(Parent, director)
         {
-            this._querylist = new QueryList(this, director);
+            this._querylist = new QueryPriorityList(this);
             this.LoadXml(InputXml);
             this.RefreshValue();
             this.NotifyUpdate();
@@ -97,7 +92,7 @@ namespace TsGui.Options.NoUI
 
         public NoUIOption(IDirector director):base (director)
         {
-            this._querylist = new QueryList(this, director);
+            this._querylist = new QueryPriorityList(this);
         }
 
         //public methods
@@ -151,6 +146,11 @@ namespace TsGui.Options.NoUI
         {
             this._value = this._querylist.GetResultWrangler()?.GetString();
             this.NotifyUpdate();
+        }
+
+        public void RefreshAll()
+        {
+            this.RefreshValue();
         }
 
         public void ImportFromTsVariable(TsVariable var)

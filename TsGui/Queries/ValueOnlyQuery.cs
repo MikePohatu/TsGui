@@ -19,7 +19,7 @@ namespace TsGui.Queries
 {
     public class ValueOnlyQuery: IQuery
     {
-        private ResultFormatter _formatter = new ResultFormatter();
+        private FormattedProperty _formatter = new FormattedProperty();
         private ResultWrangler _wrangler = new ResultWrangler();
 
         public bool Ignore { get { return false; } }
@@ -31,15 +31,15 @@ namespace TsGui.Queries
         public ValueOnlyQuery(XElement InputXml)
         {
             this._formatter.Input = InputXml.Value;
-            this._wrangler.NewSubList(); 
-            this._wrangler.AddResultFormatter(this._formatter);
+            this._wrangler.NewResult(); 
+            this._wrangler.AddFormattedProperty(this._formatter);
         }
 
         public ValueOnlyQuery(string value)
         {
             this._formatter.Input = value;
-            this._wrangler.NewSubList();
-            this._wrangler.AddResultFormatter(this._formatter);
+            this._wrangler.NewResult();
+            this._wrangler.AddFormattedProperty(this._formatter);
         }
 
         public ResultWrangler GetResultWrangler()

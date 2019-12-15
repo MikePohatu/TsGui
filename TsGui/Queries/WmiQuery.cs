@@ -22,6 +22,7 @@ using System.Management;
 
 using TsGui.Diagnostics;
 using TsGui.Connectors;
+using TsGui.Linking;
 
 namespace TsGui.Queries
 {
@@ -31,9 +32,9 @@ namespace TsGui.Queries
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private string _wql;
 
-        public WmiQuery() { }
+        public WmiQuery(ILinkTarget owner) : base(owner) { }
 
-        public WmiQuery(XElement InputXml)
+        public WmiQuery(XElement InputXml, ILinkTarget owner) : base(owner)
         {
             this.LoadXml(InputXml);
         }
@@ -42,16 +43,15 @@ namespace TsGui.Queries
         {
             base.LoadXml(InputXml);
 
-            this._wql = XmlHandler.GetStringFromXElement(InputXml, "Wql", this._namespace);
-            this._namespace = XmlHandler.GetStringFromXElement(InputXml, "NameSpace", this._namespace);
-
-            this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
-            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
-
+            this._wql = InputXml.Element("Wql")?.Value;
             //make sure there is some WQL to query
             if (string.IsNullOrEmpty(this._wql)) { throw new InvalidOperationException("Empty WQL query in XML: " + Environment.NewLine + InputXml); }
 
-            this._propertyTemplates = this.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
+            this._namespace = XmlHandler.GetStringFromXElement(InputXml, "NameSpace", this._namespace);
+            this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
+            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
+ 
+            this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
 
         public override ResultWrangler ProcessQuery()
@@ -76,37 +76,21 @@ namespace TsGui.Queries
             return this._returnwrangler;
         }
 
-        private List<KeyValuePair<string, XElement>> GetTemplatesFromXmlElements(IEnumerable<XElement> Elements)
-        {
-            List<KeyValuePair<string, XElement>> templates = new List<KeyValuePair<string, XElement>>();
-
-            foreach (XElement propx in Elements)
-            {
-                string name = propx.Attribute("Name")?.Value;
-                //make sure there is a name set
-                if (string.IsNullOrEmpty(name)) { throw new InvalidOperationException("Missing Name attribute in XML: " + Environment.NewLine + propx); }
-
-                //add it to the templates list
-                templates.Add(new KeyValuePair<string, XElement>(name, propx));
-            }
-            return templates;
-        }
-
         private void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)
         {
             foreach (ManagementObject m in WmiObjectList)
             {
-                Wrangler.NewSubList();
-                ResultFormatter rf = null;
+                Wrangler.NewResult();
+                FormattedProperty prop = null;
 
                 //if properties have been specified in the xml, query them directly in order
                 if (PropertyTemplates.Count != 0)
                 {
                     foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
                     {
-                        rf = new ResultFormatter(template.Value);
-                        rf.Input = m.GetPropertyValue(template.Key)?.ToString();
-                        Wrangler.AddResultFormatter(rf);
+                        prop = new FormattedProperty(template.Value);
+                        prop.Input = m.GetPropertyValue(template.Key)?.ToString();
+                        Wrangler.AddFormattedProperty(prop);
                     }
                 }
                 //if properties not set, add them all 
@@ -114,9 +98,9 @@ namespace TsGui.Queries
                 {
                     foreach (PropertyData property in m.Properties)
                     {
-                        rf = new ResultFormatter();
-                        rf.Input = property.Value?.ToString();
-                        Wrangler.AddResultFormatter(rf);
+                        prop = new FormattedProperty();
+                        prop.Input = property.Value?.ToString();
+                        Wrangler.AddFormattedProperty(prop);
                     }
                 }
             }

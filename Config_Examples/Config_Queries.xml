@@ -3,6 +3,8 @@ Query types:
 
 *Standard queries
 <Query Type="Combined">
+<Query Type="Compare">
+<Query Type="GuiVariable">
 <Query Type="EnvironmentVariable">
 <Query Type="IfElse">
 <Query Type="Wmi">
@@ -14,6 +16,10 @@ Query types:
 <Query Type="LinkTo">
 <Query Type="OptionValue">
 
+*Active Directory queries (BETA) - see Config_AD.xml
+<Query Type="ADGroupMembers">
+<Query Type="ADOU"> (see Config_AD.xml)
+
 *Property formatting options
 <Calculate>
 <Prefix>
@@ -21,7 +27,9 @@ Query types:
 <ToUpper/>
 <ToLower/>
 <Truncate> - Truncate Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart
+<Replace>
 -->
+
 <TsGui LiveData="TRUE">
 	<Height>350</Height>
 	<Width>370</Width>
@@ -49,14 +57,26 @@ Query types:
 							<Property Name="LocalDateTime">
 								<Truncate Type="KeepFromStart">6</Truncate>	<!-- Truncate Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
 								<Truncate Type="KeepFromEnd">4</Truncate>
-								<Prefix>PC-</Prefix>								
+								<Prefix>PC-</Prefix>
 							</Property>
 							<Separator></Separator>
 							<IncludeNullValues>TRUE</IncludeNullValues>
 						</Query>
 					</SetValue>				
 				</GuiOption>
+				
+				<!-- InfoBox querying a variable from within the GUI. This is the equivalent of the variables that will be created when finish is clicked -->				
+				<GuiOption Type="InfoBox" MaxLength="20">
+					<Variable>INFO_GuiOpt</Variable>
+					<Label>Disk ID: </Label>
 					
+					<!-- Note the GuiVariable type -->
+					<SetValue>
+						<Query Type="GuiVariable">
+							<Variable Name="OSDDiskIndex"/>					
+						</Query>
+					</SetValue>
+				</GuiOption>	
 					
 				<!--This option presents a DropDownList of available fixed harddisks 
 				for the partition and format step in SCCM task sequences-->
@@ -80,9 +100,7 @@ Query types:
 							<Prefix></Prefix>
 							<Append>GB</Append>
 						</Property>
-						<Property Name="Caption">
-							<ToUpper/>  <!-- Convert the result to upper case. There is also <ToLower/> -->
-						</Property>
+						<Property Name="Caption"/>					
 						<Separator>, </Separator>
 					</Query>
 				</GuiOption>
@@ -155,6 +173,11 @@ Query types:
 									<Append>\r\n</Append>
 								</Property>
 								<Property Name="Model">
+									<!-- Replace spaces with empty i.e. remove them-->
+									<Replace xml:space="preserve">  <!-- Note that the xml:space="preserve" is required so that XML won't ignore your spaces as invalid whitepsace -->
+										<Search> </Search>
+										<Replace></Replace>
+									</Replace>
 									<Prefix>Model: </Prefix>
 									<Append>\r\n</Append>
 								</Property>
@@ -214,6 +237,34 @@ Query types:
 					</Formatting>
 				</GuiOption>
 				
+				<!-- Traffic light using a Compare query, used for string comparison. 
+				By default, the compare returns a value of TRUE if they match, FALSE if not -->
+				<GuiOption Type="TrafficLight">
+					<Variable>Compliance_Domain</Variable>
+					<Label>Domain DNS</Label>
+					<ShowComplianceValue>FALSE</ShowComplianceValue>
+					<SetValue>
+						<!-- The Compare query, comparing the values from two other queries -->
+						<Query Type="Compare">
+							<TrueValue>TRUE</TrueValue>
+							<FalseValue>FALSE</FalseValue>
+							<Value>localdomain</Value>
+							<Query Type="Wmi">
+								<Wql>select DNSDomain from Win32_NetworkAdapterConfiguration WHERE IPEnabled='True'</Wql>
+								<Property Name="DNSDomain"/>	
+							</Query>
+						</Query>
+					</SetValue>
+					<Compliance>
+						<Message>Current DNS Domain does not match requires configuration</Message>		
+						<DefaultState>Warning</DefaultState>
+						<OK>
+							<Rule Type="Equals">TRUE</Rule>
+						</OK>
+					</Compliance>
+				</GuiOption>
+				
+				<!-- FreeText using EnvironmentVariable quries-->
 				<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
 					<Disallowed>
 						<Characters>`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
@@ -221,7 +272,6 @@ Query types:
 					<Variable>OSDComputerName_FullQuery</Variable>
 					<Label>Computer Name:</Label>
 					<HelpText>Enter a computer name for the device</HelpText>
-					<CharacterCasing>Normal</CharacterCasing> <!-- Sets and enforces the case of text. Options are Normal, Upper, and Lower -->
 					
 					<!-- Query for the default value. Return the first valid value. Note
 					the Ignore values for evaluating the value returned by the query -->
@@ -237,9 +287,7 @@ Query types:
 							<Ignore>MINWIN</Ignore>					
 						</Query>					
 						<Query Type="EnvironmentVariable">
-							<Variable Name="ComputerName">
-								<Append>-Win10</Append>			<!-- Append, Prefix Truncate etc rules can be applied here -->
-							</Variable>
+							<Variable Name="ComputerName"/>
 							<Ignore>MINNT</Ignore>
 							<Ignore>MINWIN</Ignore>						
 						</Query>					
@@ -251,7 +299,7 @@ Query types:
 							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
 						</Query>
 					</SetValue>
-				</GuiOption>	
+				</GuiOption>
 			</Column>
 		</Row>
 	</Page>

@@ -107,7 +107,7 @@
                 </Setter>
             </Style>
 
-            <Style x:Key="ComboBoxItemLabelStyle" TargetType="Label">
+            <Style x:Key="CollectionItemLabelStyle" TargetType="Label">
                 <Setter Property="Control.Height" Value="Auto"/>
                 <Setter Property="Control.Margin" Value="0"/>
                 <Setter Property="Control.Padding" Value="0"/>

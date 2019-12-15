@@ -14,6 +14,7 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using System.Xml.Linq;
+using TsGui.Linking;
 
 namespace TsGui.Validation.StringMatching
 {
@@ -21,7 +22,7 @@ namespace TsGui.Validation.StringMatching
     {
         public string Message { get { return "GreaterThan: " + this.Content; } }
 
-        public GreaterThan(XElement inputxml):base(inputxml)
+        public GreaterThan(XElement inputxml, ILinkTarget linktarget) :base(inputxml, linktarget)
         { }
 
         protected override bool Compare(double input, double rulecontent)

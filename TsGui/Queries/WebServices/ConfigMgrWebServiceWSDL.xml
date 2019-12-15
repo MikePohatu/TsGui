@@ -1,0 +1,2347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.scconfigmgr.com" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://www.scconfigmgr.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Web service for ConfigMgr Current Branch developed by Nickolaj Andersen (v1.3.0)</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.scconfigmgr.com">
+      <s:element name="GetCMPrimaryUserByDevice">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="deviceName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMPrimaryUserByDeviceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMPrimaryUserByDeviceResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCMPrimaryDeviceByUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMPrimaryDeviceByUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMPrimaryDeviceByUserResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDeployedApplicationsByUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDeployedApplicationsByUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMDeployedApplicationsByUserResult" type="tns:ArrayOfCMApplication" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCMApplication">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CMApplication" nillable="true" type="tns:CMApplication" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CMApplication">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ApplicationName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CollectionName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCMDeployedApplicationsByDevice">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="deviceName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDeployedApplicationsByDeviceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMDeployedApplicationsByDeviceResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMHiddenTaskSequenceDeployments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMHiddenTaskSequenceDeploymentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMHiddenTaskSequenceDeploymentsResult" type="tns:ArrayOfCMTaskSequence" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCMTaskSequence">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CMTaskSequence" nillable="true" type="tns:CMTaskSequence" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CMTaskSequence">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PackageName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdvertisementId" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AdvertFlags" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCMDeviceResourceIDByUUID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDeviceResourceIDByUUIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMDeviceResourceIDByUUIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDeviceResourceIDByMACAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="macAddress" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDeviceResourceIDByMACAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMDeviceResourceIDByMACAddressResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMUnknownComputerResourceIDByUUID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMUnknownComputerResourceIDByUUIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMUnknownComputerResourceIDByUUIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDeviceNameByUUID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDeviceNameByUUIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMDeviceNameByUUIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMHiddenTaskSequenceDeploymentsByResourceId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="resourceId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMHiddenTaskSequenceDeploymentsByResourceIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMHiddenTaskSequenceDeploymentsByResourceIdResult" type="tns:ArrayOfCMTaskSequence" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMBootImageSourceVersion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="packageId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMBootImageSourceVersionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMBootImageSourceVersionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDiscoveredUsers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDiscoveredUsersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMDiscoveredUsersResult" type="tns:ArrayOfCMUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCMUser">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CMUser" nillable="true" type="tns:CMUser" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CMUser">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="uniqueUserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="resourceId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="windowsNTDomain" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fullDomainName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCMUniqueUserName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMUniqueUserNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMUniqueUserNameResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ImportCMComputerByMacAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="macAddress" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ImportCMComputerByMacAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ImportCMComputerByMacAddressResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ImportCMComputerByUUID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ImportCMComputerByUUIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ImportCMComputerByUUIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddCMComputerToCollection">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="resourceName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="collectionName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddCMComputerToCollectionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddCMComputerToCollectionResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDeviceCollections">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="filter" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDeviceCollectionsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMDeviceCollectionsResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCMCollectionMembership">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="collectionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCMCollectionMembershipResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateCMCollectionMembershipResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDriverPackageByModel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="model" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMDriverPackageByModelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMDriverPackageByModelResult" type="tns:ArrayOfCMDriverPackage" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCMDriverPackage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CMDriverPackage" nillable="true" type="tns:CMDriverPackage" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CMDriverPackage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PackageName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PackageID" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCMPackage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="filter" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMPackageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMPackageResult" type="tns:ArrayOfCMPackage" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCMPackage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CMPackage" nillable="true" type="tns:CMPackage" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CMPackage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PackageName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PackageID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PackageDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PackageManufacturer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PackageLanguage" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PackageVersion" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PackageCreated" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCMUnknownDeviceByUUID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMUnknownDeviceByUUIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMUnknownDeviceByUUIDResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMOSImageVersionForTaskSequence">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tsPackageId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMOSImageVersionForTaskSequenceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMOSImageVersionForTaskSequenceResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCMUnknownDeviceByUUID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCMUnknownDeviceByUUIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveCMUnknownDeviceByUUIDResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCMDeviceFromCollection">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="deviceName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="collectionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCMDeviceFromCollectionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveCMDeviceFromCollectionResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCMLastPXEAdvertisementForDevice">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="deviceName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCMLastPXEAdvertisementForDeviceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveCMLastPXEAdvertisementForDeviceResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCMLastPXEAdvertisementForCollection">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="collectionId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCMLastPXEAdvertisementForCollectionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveCMLastPXEAdvertisementForCollectionResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddCMComputerAssociationForUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sourceName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="destinationName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddCMComputerAssociationForUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddCMComputerAssociationForUserResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCMComputerAssociation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sourceName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="destinationName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCMComputerAssociationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveCMComputerAssociationResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMApplicationDeploymentsByCollectionID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="collId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMApplicationDeploymentsByCollectionIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMApplicationDeploymentsByCollectionIDResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMCollectionsForDeviceByUUID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCMCollectionsForDeviceByUUIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCMCollectionsForDeviceByUUIDResult" type="tns:ArrayOfCMCollection" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCMCollection">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CMCollection" nillable="true" type="tns:CMCollection" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CMCollection">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CollectionID" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SetADOrganizationalUnitForComputer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="organizationalUnitLocation" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetADOrganizationalUnitForComputerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetADOrganizationalUnitForComputerResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetADComputerManagedBy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetADComputerManagedByResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetADComputerManagedByResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddADComputerToGroup">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddADComputerToGroupResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddADComputerToGroupResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveADComputerFromGroup">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="groupName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveADComputerFromGroupResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveADComputerFromGroupResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetADComputerDescription">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetADComputerDescriptionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetADComputerDescriptionResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetADSiteNameByIPAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="forestName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ipAddress" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetADSiteNameByIPAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetADSiteNameByIPAddressResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTRoles">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTRolesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMDTRolesResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTComputerByAssetTag">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="assetTag" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTComputerByAssetTagResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMDTComputerByAssetTagResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTComputerByMacAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="macAddress" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTComputerByMacAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMDTComputerByMacAddressResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTComputerBySerialNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serialNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTComputerBySerialNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMDTComputerBySerialNumberResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTComputerByUUID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uuid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTComputerByUUIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMDTComputerByUUIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTDetailedComputerRoleMembership">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="identity" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTDetailedComputerRoleMembershipResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMDTDetailedComputerRoleMembershipResult" type="tns:ArrayOfMDTRole" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfMDTRole">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MDTRole" nillable="true" type="tns:MDTRole" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MDTRole">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RoleName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoleId" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetMDTComputerRoleMembership">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTComputerRoleMembershipResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMDTComputerRoleMembershipResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTComputerNameByIdentity">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="identity" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMDTComputerNameByIdentityResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMDTComputerNameByIdentityResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddMDTRoleMemberByAssetTag">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="roleName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="assetTag" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="createComputer" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="identity" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddMDTRoleMemberByAssetTagResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddMDTRoleMemberByAssetTagResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddMDTRoleMemberBySerialNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="roleName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serialNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="createComputer" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="identity" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddMDTRoleMemberBySerialNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddMDTRoleMemberBySerialNumberResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddMDTRoleMemberByMacAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="roleName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="macAddress" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="createComputer" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="identity" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddMDTRoleMemberByMacAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddMDTRoleMemberByMacAddressResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddMDTRoleMemberByUUID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="roleName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="createComputer" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="identity" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddMDTRoleMemberByUUIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddMDTRoleMemberByUUIDResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddMDTRoleMember">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="role" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="assetTag" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serialNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="macAddress" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uuid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddMDTRoleMemberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddMDTRoleMemberResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveMDTComputerFromRoles">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="secret" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="identity" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveMDTComputerFromRolesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveMDTComputerFromRolesResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetCMPrimaryUserByDeviceSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMPrimaryUserByDevice" />
+  </wsdl:message>
+  <wsdl:message name="GetCMPrimaryUserByDeviceSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMPrimaryUserByDeviceResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMPrimaryDeviceByUserSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMPrimaryDeviceByUser" />
+  </wsdl:message>
+  <wsdl:message name="GetCMPrimaryDeviceByUserSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMPrimaryDeviceByUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeployedApplicationsByUserSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMDeployedApplicationsByUser" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeployedApplicationsByUserSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMDeployedApplicationsByUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeployedApplicationsByDeviceSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMDeployedApplicationsByDevice" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeployedApplicationsByDeviceSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMDeployedApplicationsByDeviceResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMHiddenTaskSequenceDeploymentsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMHiddenTaskSequenceDeployments" />
+  </wsdl:message>
+  <wsdl:message name="GetCMHiddenTaskSequenceDeploymentsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMHiddenTaskSequenceDeploymentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeviceResourceIDByUUIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMDeviceResourceIDByUUID" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeviceResourceIDByUUIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMDeviceResourceIDByUUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeviceResourceIDByMACAddressSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMDeviceResourceIDByMACAddress" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeviceResourceIDByMACAddressSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMDeviceResourceIDByMACAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMUnknownComputerResourceIDByUUIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMUnknownComputerResourceIDByUUID" />
+  </wsdl:message>
+  <wsdl:message name="GetCMUnknownComputerResourceIDByUUIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMUnknownComputerResourceIDByUUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeviceNameByUUIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMDeviceNameByUUID" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeviceNameByUUIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMDeviceNameByUUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMHiddenTaskSequenceDeploymentsByResourceIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMHiddenTaskSequenceDeploymentsByResourceId" />
+  </wsdl:message>
+  <wsdl:message name="GetCMHiddenTaskSequenceDeploymentsByResourceIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMHiddenTaskSequenceDeploymentsByResourceIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMBootImageSourceVersionSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMBootImageSourceVersion" />
+  </wsdl:message>
+  <wsdl:message name="GetCMBootImageSourceVersionSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMBootImageSourceVersionResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDiscoveredUsersSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMDiscoveredUsers" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDiscoveredUsersSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMDiscoveredUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMUniqueUserNameSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMUniqueUserName" />
+  </wsdl:message>
+  <wsdl:message name="GetCMUniqueUserNameSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMUniqueUserNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="ImportCMComputerByMacAddressSoapIn">
+    <wsdl:part name="parameters" element="tns:ImportCMComputerByMacAddress" />
+  </wsdl:message>
+  <wsdl:message name="ImportCMComputerByMacAddressSoapOut">
+    <wsdl:part name="parameters" element="tns:ImportCMComputerByMacAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="ImportCMComputerByUUIDSoapIn">
+    <wsdl:part name="parameters" element="tns:ImportCMComputerByUUID" />
+  </wsdl:message>
+  <wsdl:message name="ImportCMComputerByUUIDSoapOut">
+    <wsdl:part name="parameters" element="tns:ImportCMComputerByUUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddCMComputerToCollectionSoapIn">
+    <wsdl:part name="parameters" element="tns:AddCMComputerToCollection" />
+  </wsdl:message>
+  <wsdl:message name="AddCMComputerToCollectionSoapOut">
+    <wsdl:part name="parameters" element="tns:AddCMComputerToCollectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeviceCollectionsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMDeviceCollections" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDeviceCollectionsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMDeviceCollectionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCMCollectionMembershipSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateCMCollectionMembership" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCMCollectionMembershipSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateCMCollectionMembershipResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDriverPackageByModelSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMDriverPackageByModel" />
+  </wsdl:message>
+  <wsdl:message name="GetCMDriverPackageByModelSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMDriverPackageByModelResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMPackageSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMPackage" />
+  </wsdl:message>
+  <wsdl:message name="GetCMPackageSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMPackageResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMUnknownDeviceByUUIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMUnknownDeviceByUUID" />
+  </wsdl:message>
+  <wsdl:message name="GetCMUnknownDeviceByUUIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMUnknownDeviceByUUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMOSImageVersionForTaskSequenceSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMOSImageVersionForTaskSequence" />
+  </wsdl:message>
+  <wsdl:message name="GetCMOSImageVersionForTaskSequenceSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMOSImageVersionForTaskSequenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCMUnknownDeviceByUUIDSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveCMUnknownDeviceByUUID" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCMUnknownDeviceByUUIDSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveCMUnknownDeviceByUUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCMDeviceFromCollectionSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveCMDeviceFromCollection" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCMDeviceFromCollectionSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveCMDeviceFromCollectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCMLastPXEAdvertisementForDeviceSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveCMLastPXEAdvertisementForDevice" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCMLastPXEAdvertisementForDeviceSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveCMLastPXEAdvertisementForDeviceResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCMLastPXEAdvertisementForCollectionSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveCMLastPXEAdvertisementForCollection" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCMLastPXEAdvertisementForCollectionSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveCMLastPXEAdvertisementForCollectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddCMComputerAssociationForUserSoapIn">
+    <wsdl:part name="parameters" element="tns:AddCMComputerAssociationForUser" />
+  </wsdl:message>
+  <wsdl:message name="AddCMComputerAssociationForUserSoapOut">
+    <wsdl:part name="parameters" element="tns:AddCMComputerAssociationForUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCMComputerAssociationSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveCMComputerAssociation" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCMComputerAssociationSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveCMComputerAssociationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMApplicationDeploymentsByCollectionIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMApplicationDeploymentsByCollectionID" />
+  </wsdl:message>
+  <wsdl:message name="GetCMApplicationDeploymentsByCollectionIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMApplicationDeploymentsByCollectionIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCMCollectionsForDeviceByUUIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCMCollectionsForDeviceByUUID" />
+  </wsdl:message>
+  <wsdl:message name="GetCMCollectionsForDeviceByUUIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCMCollectionsForDeviceByUUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetADOrganizationalUnitForComputerSoapIn">
+    <wsdl:part name="parameters" element="tns:SetADOrganizationalUnitForComputer" />
+  </wsdl:message>
+  <wsdl:message name="SetADOrganizationalUnitForComputerSoapOut">
+    <wsdl:part name="parameters" element="tns:SetADOrganizationalUnitForComputerResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetADComputerManagedBySoapIn">
+    <wsdl:part name="parameters" element="tns:SetADComputerManagedBy" />
+  </wsdl:message>
+  <wsdl:message name="SetADComputerManagedBySoapOut">
+    <wsdl:part name="parameters" element="tns:SetADComputerManagedByResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddADComputerToGroupSoapIn">
+    <wsdl:part name="parameters" element="tns:AddADComputerToGroup" />
+  </wsdl:message>
+  <wsdl:message name="AddADComputerToGroupSoapOut">
+    <wsdl:part name="parameters" element="tns:AddADComputerToGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveADComputerFromGroupSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveADComputerFromGroup" />
+  </wsdl:message>
+  <wsdl:message name="RemoveADComputerFromGroupSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveADComputerFromGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetADComputerDescriptionSoapIn">
+    <wsdl:part name="parameters" element="tns:SetADComputerDescription" />
+  </wsdl:message>
+  <wsdl:message name="SetADComputerDescriptionSoapOut">
+    <wsdl:part name="parameters" element="tns:SetADComputerDescriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetADSiteNameByIPAddressSoapIn">
+    <wsdl:part name="parameters" element="tns:GetADSiteNameByIPAddress" />
+  </wsdl:message>
+  <wsdl:message name="GetADSiteNameByIPAddressSoapOut">
+    <wsdl:part name="parameters" element="tns:GetADSiteNameByIPAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTRolesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMDTRoles" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTRolesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMDTRolesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerByAssetTagSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerByAssetTag" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerByAssetTagSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerByAssetTagResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerByMacAddressSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerByMacAddress" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerByMacAddressSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerByMacAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerBySerialNumberSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerBySerialNumber" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerBySerialNumberSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerBySerialNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerByUUIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerByUUID" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerByUUIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerByUUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTDetailedComputerRoleMembershipSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMDTDetailedComputerRoleMembership" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTDetailedComputerRoleMembershipSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMDTDetailedComputerRoleMembershipResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerRoleMembershipSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerRoleMembership" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerRoleMembershipSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerRoleMembershipResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerNameByIdentitySoapIn">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerNameByIdentity" />
+  </wsdl:message>
+  <wsdl:message name="GetMDTComputerNameByIdentitySoapOut">
+    <wsdl:part name="parameters" element="tns:GetMDTComputerNameByIdentityResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddMDTRoleMemberByAssetTagSoapIn">
+    <wsdl:part name="parameters" element="tns:AddMDTRoleMemberByAssetTag" />
+  </wsdl:message>
+  <wsdl:message name="AddMDTRoleMemberByAssetTagSoapOut">
+    <wsdl:part name="parameters" element="tns:AddMDTRoleMemberByAssetTagResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddMDTRoleMemberBySerialNumberSoapIn">
+    <wsdl:part name="parameters" element="tns:AddMDTRoleMemberBySerialNumber" />
+  </wsdl:message>
+  <wsdl:message name="AddMDTRoleMemberBySerialNumberSoapOut">
+    <wsdl:part name="parameters" element="tns:AddMDTRoleMemberBySerialNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddMDTRoleMemberByMacAddressSoapIn">
+    <wsdl:part name="parameters" element="tns:AddMDTRoleMemberByMacAddress" />
+  </wsdl:message>
+  <wsdl:message name="AddMDTRoleMemberByMacAddressSoapOut">
+    <wsdl:part name="parameters" element="tns:AddMDTRoleMemberByMacAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddMDTRoleMemberByUUIDSoapIn">
+    <wsdl:part name="parameters" element="tns:AddMDTRoleMemberByUUID" />
+  </wsdl:message>
+  <wsdl:message name="AddMDTRoleMemberByUUIDSoapOut">
+    <wsdl:part name="parameters" element="tns:AddMDTRoleMemberByUUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddMDTRoleMemberSoapIn">
+    <wsdl:part name="parameters" element="tns:AddMDTRoleMember" />
+  </wsdl:message>
+  <wsdl:message name="AddMDTRoleMemberSoapOut">
+    <wsdl:part name="parameters" element="tns:AddMDTRoleMemberResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveMDTComputerFromRolesSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveMDTComputerFromRoles" />
+  </wsdl:message>
+  <wsdl:message name="RemoveMDTComputerFromRolesSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveMDTComputerFromRolesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ConfigMgr_x0020_WebServiceSoap">
+    <wsdl:operation name="GetCMPrimaryUserByDevice">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get primary user(s) for a specific device</wsdl:documentation>
+      <wsdl:input message="tns:GetCMPrimaryUserByDeviceSoapIn" />
+      <wsdl:output message="tns:GetCMPrimaryUserByDeviceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMPrimaryDeviceByUser">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get primary device(s) for a specific user</wsdl:documentation>
+      <wsdl:input message="tns:GetCMPrimaryDeviceByUserSoapIn" />
+      <wsdl:output message="tns:GetCMPrimaryDeviceByUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeployedApplicationsByUser">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get deployed applications for a specific user</wsdl:documentation>
+      <wsdl:input message="tns:GetCMDeployedApplicationsByUserSoapIn" />
+      <wsdl:output message="tns:GetCMDeployedApplicationsByUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeployedApplicationsByDevice">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get deployed applications for a specific device</wsdl:documentation>
+      <wsdl:input message="tns:GetCMDeployedApplicationsByDeviceSoapIn" />
+      <wsdl:output message="tns:GetCMDeployedApplicationsByDeviceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMHiddenTaskSequenceDeployments">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get all hidden task sequence deployments</wsdl:documentation>
+      <wsdl:input message="tns:GetCMHiddenTaskSequenceDeploymentsSoapIn" />
+      <wsdl:output message="tns:GetCMHiddenTaskSequenceDeploymentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceResourceIDByUUID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get resource id for device by UUID (SMSBIOSGUID)</wsdl:documentation>
+      <wsdl:input message="tns:GetCMDeviceResourceIDByUUIDSoapIn" />
+      <wsdl:output message="tns:GetCMDeviceResourceIDByUUIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceResourceIDByMACAddress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get resource id for device by MAC Address</wsdl:documentation>
+      <wsdl:input message="tns:GetCMDeviceResourceIDByMACAddressSoapIn" />
+      <wsdl:output message="tns:GetCMDeviceResourceIDByMACAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMUnknownComputerResourceIDByUUID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get resource id for a built-in unknown computer object by UUID (SMSBIOSGUID)</wsdl:documentation>
+      <wsdl:input message="tns:GetCMUnknownComputerResourceIDByUUIDSoapIn" />
+      <wsdl:output message="tns:GetCMUnknownComputerResourceIDByUUIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceNameByUUID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get the name of a specific device by UUID (SMBIOS GUID)</wsdl:documentation>
+      <wsdl:input message="tns:GetCMDeviceNameByUUIDSoapIn" />
+      <wsdl:output message="tns:GetCMDeviceNameByUUIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMHiddenTaskSequenceDeploymentsByResourceId">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get hidden task sequence deployments for a specific resource id</wsdl:documentation>
+      <wsdl:input message="tns:GetCMHiddenTaskSequenceDeploymentsByResourceIdSoapIn" />
+      <wsdl:output message="tns:GetCMHiddenTaskSequenceDeploymentsByResourceIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMBootImageSourceVersion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Boot Image source version</wsdl:documentation>
+      <wsdl:input message="tns:GetCMBootImageSourceVersionSoapIn" />
+      <wsdl:output message="tns:GetCMBootImageSourceVersionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDiscoveredUsers">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get all discovered users</wsdl:documentation>
+      <wsdl:input message="tns:GetCMDiscoveredUsersSoapIn" />
+      <wsdl:output message="tns:GetCMDiscoveredUsersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMUniqueUserName">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get the unique username for a specific user (useful for setting a value for SMSTSUdaUsers)</wsdl:documentation>
+      <wsdl:input message="tns:GetCMUniqueUserNameSoapIn" />
+      <wsdl:output message="tns:GetCMUniqueUserNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ImportCMComputerByMacAddress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Import a computer by MAC Address</wsdl:documentation>
+      <wsdl:input message="tns:ImportCMComputerByMacAddressSoapIn" />
+      <wsdl:output message="tns:ImportCMComputerByMacAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ImportCMComputerByUUID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Import a computer by UUID (SMBIOS GUID)</wsdl:documentation>
+      <wsdl:input message="tns:ImportCMComputerByUUIDSoapIn" />
+      <wsdl:output message="tns:ImportCMComputerByUUIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddCMComputerToCollection">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add a computer to a specific device collection (creates a direct membership rule)</wsdl:documentation>
+      <wsdl:input message="tns:AddCMComputerToCollectionSoapIn" />
+      <wsdl:output message="tns:AddCMComputerToCollectionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceCollections">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get all or a filtered list of device collections</wsdl:documentation>
+      <wsdl:input message="tns:GetCMDeviceCollectionsSoapIn" />
+      <wsdl:output message="tns:GetCMDeviceCollectionsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCMCollectionMembership">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update membership of a specific collection</wsdl:documentation>
+      <wsdl:input message="tns:UpdateCMCollectionMembershipSoapIn" />
+      <wsdl:output message="tns:UpdateCMCollectionMembershipSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDriverPackageByModel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Driver Package information by computer model</wsdl:documentation>
+      <wsdl:input message="tns:GetCMDriverPackageByModelSoapIn" />
+      <wsdl:output message="tns:GetCMDriverPackageByModelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMPackage">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get a filtered list of packages</wsdl:documentation>
+      <wsdl:input message="tns:GetCMPackageSoapIn" />
+      <wsdl:output message="tns:GetCMPackageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMUnknownDeviceByUUID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check for 'Unknown' device record by UUID (SMBIOS GUID)</wsdl:documentation>
+      <wsdl:input message="tns:GetCMUnknownDeviceByUUIDSoapIn" />
+      <wsdl:output message="tns:GetCMUnknownDeviceByUUIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMOSImageVersionForTaskSequence">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieve the associated OS Image version for a specific task sequence (supports multiple images)</wsdl:documentation>
+      <wsdl:input message="tns:GetCMOSImageVersionForTaskSequenceSoapIn" />
+      <wsdl:output message="tns:GetCMOSImageVersionForTaskSequenceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMUnknownDeviceByUUID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete 'Unknown' device record by UUID (SMBIOS GUID)</wsdl:documentation>
+      <wsdl:input message="tns:RemoveCMUnknownDeviceByUUIDSoapIn" />
+      <wsdl:output message="tns:RemoveCMUnknownDeviceByUUIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMDeviceFromCollection">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Remove a device from a specific collection (only for Direct Membership rules</wsdl:documentation>
+      <wsdl:input message="tns:RemoveCMDeviceFromCollectionSoapIn" />
+      <wsdl:output message="tns:RemoveCMDeviceFromCollectionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMLastPXEAdvertisementForDevice">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Remove last PXE advertisement for a specific device</wsdl:documentation>
+      <wsdl:input message="tns:RemoveCMLastPXEAdvertisementForDeviceSoapIn" />
+      <wsdl:output message="tns:RemoveCMLastPXEAdvertisementForDeviceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMLastPXEAdvertisementForCollection">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Remove last PXE advertisement for a specific collection</wsdl:documentation>
+      <wsdl:input message="tns:RemoveCMLastPXEAdvertisementForCollectionSoapIn" />
+      <wsdl:output message="tns:RemoveCMLastPXEAdvertisementForCollectionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddCMComputerAssociationForUser">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add a computer association between a source and destination device for a single user</wsdl:documentation>
+      <wsdl:input message="tns:AddCMComputerAssociationForUserSoapIn" />
+      <wsdl:output message="tns:AddCMComputerAssociationForUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMComputerAssociation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Remove a computer association between a source and destination device</wsdl:documentation>
+      <wsdl:input message="tns:RemoveCMComputerAssociationSoapIn" />
+      <wsdl:output message="tns:RemoveCMComputerAssociationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMApplicationDeploymentsByCollectionID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get deployed applications by collection ID</wsdl:documentation>
+      <wsdl:input message="tns:GetCMApplicationDeploymentsByCollectionIDSoapIn" />
+      <wsdl:output message="tns:GetCMApplicationDeploymentsByCollectionIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCMCollectionsForDeviceByUUID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get all collections a specific device is a member of by UUID (SMBIOS GUID)</wsdl:documentation>
+      <wsdl:input message="tns:GetCMCollectionsForDeviceByUUIDSoapIn" />
+      <wsdl:output message="tns:GetCMCollectionsForDeviceByUUIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetADOrganizationalUnitForComputer">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Move a computer in Active Directory to a specific organizational unit</wsdl:documentation>
+      <wsdl:input message="tns:SetADOrganizationalUnitForComputerSoapIn" />
+      <wsdl:output message="tns:SetADOrganizationalUnitForComputerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetADComputerManagedBy">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Set ManagedBy attribute for a specific computer with specified user name</wsdl:documentation>
+      <wsdl:input message="tns:SetADComputerManagedBySoapIn" />
+      <wsdl:output message="tns:SetADComputerManagedBySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddADComputerToGroup">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add a computer in Active Directory to a specific group</wsdl:documentation>
+      <wsdl:input message="tns:AddADComputerToGroupSoapIn" />
+      <wsdl:output message="tns:AddADComputerToGroupSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveADComputerFromGroup">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Remove a computer in Active Directory from a specific group</wsdl:documentation>
+      <wsdl:input message="tns:RemoveADComputerFromGroupSoapIn" />
+      <wsdl:output message="tns:RemoveADComputerFromGroupSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetADComputerDescription">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Set the description field for a computer in Active Directory</wsdl:documentation>
+      <wsdl:input message="tns:SetADComputerDescriptionSoapIn" />
+      <wsdl:output message="tns:SetADComputerDescriptionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetADSiteNameByIPAddress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get the Active Directory site name by IP address</wsdl:documentation>
+      <wsdl:input message="tns:GetADSiteNameByIPAddressSoapIn" />
+      <wsdl:output message="tns:GetADSiteNameByIPAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTRoles">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get MDT roles from database (Application Pool identity needs access permissions to the specified MDT database)</wsdl:documentation>
+      <wsdl:input message="tns:GetMDTRolesSoapIn" />
+      <wsdl:output message="tns:GetMDTRolesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerByAssetTag">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get computer by asset tag from MDT database</wsdl:documentation>
+      <wsdl:input message="tns:GetMDTComputerByAssetTagSoapIn" />
+      <wsdl:output message="tns:GetMDTComputerByAssetTagSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerByMacAddress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check if a computer with a specific MAC address exists in MDT database</wsdl:documentation>
+      <wsdl:input message="tns:GetMDTComputerByMacAddressSoapIn" />
+      <wsdl:output message="tns:GetMDTComputerByMacAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerBySerialNumber">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get computer by serial number from MDT database</wsdl:documentation>
+      <wsdl:input message="tns:GetMDTComputerBySerialNumberSoapIn" />
+      <wsdl:output message="tns:GetMDTComputerBySerialNumberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerByUUID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check if a computer with a specific UUID exists in MDT database</wsdl:documentation>
+      <wsdl:input message="tns:GetMDTComputerByUUIDSoapIn" />
+      <wsdl:output message="tns:GetMDTComputerByUUIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTDetailedComputerRoleMembership">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get MDT roles with detailed information for a specific computer</wsdl:documentation>
+      <wsdl:input message="tns:GetMDTDetailedComputerRoleMembershipSoapIn" />
+      <wsdl:output message="tns:GetMDTDetailedComputerRoleMembershipSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerRoleMembership">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get a list of MDT roles for a specific computer</wsdl:documentation>
+      <wsdl:input message="tns:GetMDTComputerRoleMembershipSoapIn" />
+      <wsdl:output message="tns:GetMDTComputerRoleMembershipSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerNameByIdentity">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get MDT computer name by computer identity</wsdl:documentation>
+      <wsdl:input message="tns:GetMDTComputerNameByIdentitySoapIn" />
+      <wsdl:output message="tns:GetMDTComputerNameByIdentitySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberByAssetTag">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add computer identified by an asset tag to a specific MDT role</wsdl:documentation>
+      <wsdl:input message="tns:AddMDTRoleMemberByAssetTagSoapIn" />
+      <wsdl:output message="tns:AddMDTRoleMemberByAssetTagSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberBySerialNumber">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add computer identified by a serial number to a specific MDT role</wsdl:documentation>
+      <wsdl:input message="tns:AddMDTRoleMemberBySerialNumberSoapIn" />
+      <wsdl:output message="tns:AddMDTRoleMemberBySerialNumberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberByMacAddress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add computer identified by a MAC address to a specific MDT role</wsdl:documentation>
+      <wsdl:input message="tns:AddMDTRoleMemberByMacAddressSoapIn" />
+      <wsdl:output message="tns:AddMDTRoleMemberByMacAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberByUUID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add computer identified by an UUID to a specific MDT role</wsdl:documentation>
+      <wsdl:input message="tns:AddMDTRoleMemberByUUIDSoapIn" />
+      <wsdl:output message="tns:AddMDTRoleMemberByUUIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMember">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add computer to a given MDT role (supports multiple indentification types)</wsdl:documentation>
+      <wsdl:input message="tns:AddMDTRoleMemberSoapIn" />
+      <wsdl:output message="tns:AddMDTRoleMemberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveMDTComputerFromRoles">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Remove MDT computer from all associated roles</wsdl:documentation>
+      <wsdl:input message="tns:RemoveMDTComputerFromRolesSoapIn" />
+      <wsdl:output message="tns:RemoveMDTComputerFromRolesSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ConfigMgr_x0020_WebServiceSoap" type="tns:ConfigMgr_x0020_WebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetCMPrimaryUserByDevice">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMPrimaryUserByDevice" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMPrimaryDeviceByUser">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMPrimaryDeviceByUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeployedApplicationsByUser">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMDeployedApplicationsByUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeployedApplicationsByDevice">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMDeployedApplicationsByDevice" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMHiddenTaskSequenceDeployments">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMHiddenTaskSequenceDeployments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceResourceIDByUUID">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMDeviceResourceIDByUUID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceResourceIDByMACAddress">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMDeviceResourceIDByMACAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMUnknownComputerResourceIDByUUID">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMUnknownComputerResourceIDByUUID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceNameByUUID">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMDeviceNameByUUID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMHiddenTaskSequenceDeploymentsByResourceId">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMHiddenTaskSequenceDeploymentsByResourceId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMBootImageSourceVersion">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMBootImageSourceVersion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDiscoveredUsers">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMDiscoveredUsers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMUniqueUserName">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMUniqueUserName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ImportCMComputerByMacAddress">
+      <soap:operation soapAction="http://www.scconfigmgr.com/ImportCMComputerByMacAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ImportCMComputerByUUID">
+      <soap:operation soapAction="http://www.scconfigmgr.com/ImportCMComputerByUUID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCMComputerToCollection">
+      <soap:operation soapAction="http://www.scconfigmgr.com/AddCMComputerToCollection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceCollections">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMDeviceCollections" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCMCollectionMembership">
+      <soap:operation soapAction="http://www.scconfigmgr.com/UpdateCMCollectionMembership" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDriverPackageByModel">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMDriverPackageByModel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMPackage">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMPackage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMUnknownDeviceByUUID">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMUnknownDeviceByUUID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMOSImageVersionForTaskSequence">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMOSImageVersionForTaskSequence" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMUnknownDeviceByUUID">
+      <soap:operation soapAction="http://www.scconfigmgr.com/RemoveCMUnknownDeviceByUUID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMDeviceFromCollection">
+      <soap:operation soapAction="http://www.scconfigmgr.com/RemoveCMDeviceFromCollection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMLastPXEAdvertisementForDevice">
+      <soap:operation soapAction="http://www.scconfigmgr.com/RemoveCMLastPXEAdvertisementForDevice" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMLastPXEAdvertisementForCollection">
+      <soap:operation soapAction="http://www.scconfigmgr.com/RemoveCMLastPXEAdvertisementForCollection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCMComputerAssociationForUser">
+      <soap:operation soapAction="http://www.scconfigmgr.com/AddCMComputerAssociationForUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMComputerAssociation">
+      <soap:operation soapAction="http://www.scconfigmgr.com/RemoveCMComputerAssociation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMApplicationDeploymentsByCollectionID">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMApplicationDeploymentsByCollectionID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMCollectionsForDeviceByUUID">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetCMCollectionsForDeviceByUUID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetADOrganizationalUnitForComputer">
+      <soap:operation soapAction="http://www.scconfigmgr.com/SetADOrganizationalUnitForComputer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetADComputerManagedBy">
+      <soap:operation soapAction="http://www.scconfigmgr.com/SetADComputerManagedBy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddADComputerToGroup">
+      <soap:operation soapAction="http://www.scconfigmgr.com/AddADComputerToGroup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveADComputerFromGroup">
+      <soap:operation soapAction="http://www.scconfigmgr.com/RemoveADComputerFromGroup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetADComputerDescription">
+      <soap:operation soapAction="http://www.scconfigmgr.com/SetADComputerDescription" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetADSiteNameByIPAddress">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetADSiteNameByIPAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTRoles">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetMDTRoles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerByAssetTag">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerByAssetTag" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerByMacAddress">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerByMacAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerBySerialNumber">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerBySerialNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerByUUID">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerByUUID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTDetailedComputerRoleMembership">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetMDTDetailedComputerRoleMembership" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerRoleMembership">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerRoleMembership" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerNameByIdentity">
+      <soap:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerNameByIdentity" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberByAssetTag">
+      <soap:operation soapAction="http://www.scconfigmgr.com/AddMDTRoleMemberByAssetTag" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberBySerialNumber">
+      <soap:operation soapAction="http://www.scconfigmgr.com/AddMDTRoleMemberBySerialNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberByMacAddress">
+      <soap:operation soapAction="http://www.scconfigmgr.com/AddMDTRoleMemberByMacAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberByUUID">
+      <soap:operation soapAction="http://www.scconfigmgr.com/AddMDTRoleMemberByUUID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMember">
+      <soap:operation soapAction="http://www.scconfigmgr.com/AddMDTRoleMember" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveMDTComputerFromRoles">
+      <soap:operation soapAction="http://www.scconfigmgr.com/RemoveMDTComputerFromRoles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ConfigMgr_x0020_WebServiceSoap12" type="tns:ConfigMgr_x0020_WebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetCMPrimaryUserByDevice">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMPrimaryUserByDevice" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMPrimaryDeviceByUser">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMPrimaryDeviceByUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeployedApplicationsByUser">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMDeployedApplicationsByUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeployedApplicationsByDevice">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMDeployedApplicationsByDevice" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMHiddenTaskSequenceDeployments">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMHiddenTaskSequenceDeployments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceResourceIDByUUID">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMDeviceResourceIDByUUID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceResourceIDByMACAddress">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMDeviceResourceIDByMACAddress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMUnknownComputerResourceIDByUUID">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMUnknownComputerResourceIDByUUID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceNameByUUID">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMDeviceNameByUUID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMHiddenTaskSequenceDeploymentsByResourceId">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMHiddenTaskSequenceDeploymentsByResourceId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMBootImageSourceVersion">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMBootImageSourceVersion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDiscoveredUsers">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMDiscoveredUsers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMUniqueUserName">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMUniqueUserName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ImportCMComputerByMacAddress">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/ImportCMComputerByMacAddress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ImportCMComputerByUUID">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/ImportCMComputerByUUID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCMComputerToCollection">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/AddCMComputerToCollection" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDeviceCollections">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMDeviceCollections" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCMCollectionMembership">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/UpdateCMCollectionMembership" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMDriverPackageByModel">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMDriverPackageByModel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMPackage">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMPackage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMUnknownDeviceByUUID">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMUnknownDeviceByUUID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMOSImageVersionForTaskSequence">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMOSImageVersionForTaskSequence" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMUnknownDeviceByUUID">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/RemoveCMUnknownDeviceByUUID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMDeviceFromCollection">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/RemoveCMDeviceFromCollection" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMLastPXEAdvertisementForDevice">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/RemoveCMLastPXEAdvertisementForDevice" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMLastPXEAdvertisementForCollection">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/RemoveCMLastPXEAdvertisementForCollection" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCMComputerAssociationForUser">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/AddCMComputerAssociationForUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCMComputerAssociation">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/RemoveCMComputerAssociation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMApplicationDeploymentsByCollectionID">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMApplicationDeploymentsByCollectionID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCMCollectionsForDeviceByUUID">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetCMCollectionsForDeviceByUUID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetADOrganizationalUnitForComputer">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/SetADOrganizationalUnitForComputer" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetADComputerManagedBy">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/SetADComputerManagedBy" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddADComputerToGroup">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/AddADComputerToGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveADComputerFromGroup">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/RemoveADComputerFromGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetADComputerDescription">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/SetADComputerDescription" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetADSiteNameByIPAddress">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetADSiteNameByIPAddress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTRoles">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetMDTRoles" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerByAssetTag">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerByAssetTag" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerByMacAddress">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerByMacAddress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerBySerialNumber">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerBySerialNumber" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerByUUID">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerByUUID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTDetailedComputerRoleMembership">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetMDTDetailedComputerRoleMembership" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerRoleMembership">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerRoleMembership" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMDTComputerNameByIdentity">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/GetMDTComputerNameByIdentity" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberByAssetTag">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/AddMDTRoleMemberByAssetTag" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberBySerialNumber">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/AddMDTRoleMemberBySerialNumber" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberByMacAddress">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/AddMDTRoleMemberByMacAddress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMemberByUUID">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/AddMDTRoleMemberByUUID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMDTRoleMember">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/AddMDTRoleMember" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveMDTComputerFromRoles">
+      <soap12:operation soapAction="http://www.scconfigmgr.com/RemoveMDTComputerFromRoles" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ConfigMgr_x0020_WebService">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Web service for ConfigMgr Current Branch developed by Nickolaj Andersen (v1.3.0)</wsdl:documentation>
+    <wsdl:port name="ConfigMgr_x0020_WebServiceSoap" binding="tns:ConfigMgr_x0020_WebServiceSoap">
+      <soap:address location="http://syscenter03.home.local/ConfigMgrWebService/ConfigMgr.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ConfigMgr_x0020_WebServiceSoap12" binding="tns:ConfigMgr_x0020_WebServiceSoap12">
+      <soap12:address location="http://syscenter03.home.local/ConfigMgrWebService/ConfigMgr.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -31,11 +31,20 @@ using TsGui.Grouping;
 using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using TsGui.Linking;
+using TsGui.Authentication;
 
 namespace TsGui
 {
     public class Director: IDirector
     {
+        private static IDirector _instance;
+
+        public static IDirector Instance { get
+            {
+                if (Director._instance == null) { Director._instance = new Director(); }
+                return Director._instance;
+            } 
+        }
         public event TsGuiWindowEventHandler WindowLoaded;
         public event TsGuiWindowMovingEventHandler WindowMoving;
         public event TsGuiWindowEventHandler WindowMouseUp;
@@ -51,6 +60,7 @@ namespace TsGui
         private GroupLibrary _grouplibrary = new GroupLibrary();
         private List<IToggleControl> _toggles = new List<IToggleControl>();
         private OptionLibrary _optionlibrary = new OptionLibrary();
+        private AuthLibrary _authlibrary = new AuthLibrary();
         private HardwareEvaluator _hardwareevaluator;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
@@ -59,6 +69,7 @@ namespace TsGui
         private bool _showtestwindow = false;
 
         //properties
+        public AuthLibrary AuthLibrary { get { return this._authlibrary; } }
         public LinkingLibrary LinkingLibrary { get { return this._linkinglibrary; } }
         public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
@@ -70,21 +81,22 @@ namespace TsGui
         public bool ShowGridLines { get; set; }
 
         //constructors
-        public Director(MainWindow ParentWindow, Arguments Arguments)
+        private Director()
         {
-            LoggerFacade.Trace("MainController initialized");
+            Director._instance = this;        
+        }
+
+        //Wrap a generic exception handler to get some useful information in the event of a 
+        //crash. 
+        public void Init(MainWindow ParentWindow, Arguments Arguments)
+        {
+            LoggerFacade.Trace("MainController initializing");
             this._envController = new EnvironmentController(this);
             this._configpath = Arguments.ConfigFile;
             this.ParentWindow = ParentWindow;
             this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
             this.ParentWindow.LocationChanged += this.OnWindowMoving;
-            this.Init();          
-        }
 
-        //Wrap a generic exception handler to get some useful information in the event of a 
-        //crash. 
-        private void Init()
-        {
             try { this.Startup(); }
             catch (TsGuiKnownException exc)
             {
@@ -98,6 +110,15 @@ namespace TsGui
                 this.CloseWithError("Application Startup Exception", msg);
                 return;
             }
+        }
+
+        /// <summary>
+        /// Replace the default director with a new IDirector instance. This to pass in a scafold IDirector for testing
+        /// </summary>
+        /// <param name="newdirector"></param>
+        public void OverrideInstance(IDirector newdirector)
+        {
+            Director._instance = newdirector;
         }
 
         public void CloseWithError(string Title, string Message)
@@ -141,26 +162,35 @@ namespace TsGui
 
             //subscribe to closing event
             this.ParentWindow.Closing += this.OnWindowClosing;
-            this.CurrentPage = this._pages.First();
 
-            //update group settings to all controls
-            foreach (IToggleControl t in this._toggles)
-            { t.InitialiseToggle(); }
+            if (this._pages.Count > 0)
+            {
+                this.CurrentPage = this._pages.First();
+                //update group settings to all controls
+                foreach (IToggleControl t in this._toggles)
+                { t.InitialiseToggle(); }
 
-            this.ParentWindow.DataContext = this.TsMainWindow;
-            
-            // Now show and close the ghost window to make sure WinPE honours the 
-            // windowstartuplocation
-            GhostWindow ghost = new GhostWindow();
-            ghost.Show();
-            ghost.Close();
+                this.ParentWindow.DataContext = this.TsMainWindow;
 
-            this.UpdateWindow();
-            this.ParentWindow.Visibility = Visibility.Visible;
-            this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
-            this.StartupFinished = true;
-            if ((this._debug == true) || (this._showtestwindow == true)) { this._testingwindow = new TestingWindow(this); }
-            LoggerFacade.Info("*TsGui startup finished");
+                // Now show and close the ghost window to make sure WinPE honours the 
+                // windowstartuplocation
+                GhostWindow ghost = new GhostWindow();
+                ghost.Show();
+                ghost.Close();
+
+                this.UpdateWindow();
+                this.ParentWindow.Visibility = Visibility.Visible;
+                this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
+                this.StartupFinished = true;
+                if ((this._debug == true) || (this._showtestwindow == true)) { this._testingwindow = new TestingWindow(this); }
+                LoggerFacade.Info("*TsGui startup finished");
+            }
+            else 
+            {
+                //No pages, finish using only the NoUI options
+                LoggerFacade.Info("*No pages configured. Finishing TsGui");
+                this.Finish();
+            }
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
@@ -214,6 +244,11 @@ namespace TsGui
                 x = SourceXml.Element("HardwareEval");
                 if (x != null)
                 { this._hardwareevaluator = new HardwareEvaluator(); }
+
+                foreach (XElement xauth in SourceXml.Elements("Authentication"))
+                {
+                    this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth, this));
+                }
 
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
                 PageDefaults pagedef = new PageDefaults();

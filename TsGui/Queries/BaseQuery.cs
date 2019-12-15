@@ -16,6 +16,7 @@
 using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Validation.StringMatching;
+using TsGui.Linking;
 
 namespace TsGui.Queries
 {
@@ -27,6 +28,7 @@ namespace TsGui.Queries
         protected ResultWrangler _processingwrangler = new ResultWrangler();
         protected ResultWrangler _returnwrangler;
         protected bool _ignoreempty = true;
+        protected ILinkTarget _linktarget;
 
         public virtual ResultWrangler GetResultWrangler()
         {
@@ -36,13 +38,18 @@ namespace TsGui.Queries
 
         public abstract ResultWrangler ProcessQuery();
 
+        public BaseQuery(ILinkTarget linktarget)
+        {
+            this._linktarget = linktarget;
+        }
+
         protected void LoadXml(XElement InputXml)
         {
             this._reprocess = XmlHandler.GetBoolFromXAttribute(InputXml, "Reprocess", this._reprocess);
             this._ignoreempty = XmlHandler.GetBoolFromXAttribute(InputXml, "IgnoreEmpty", this._ignoreempty);
             foreach (XElement xignorerule in InputXml.Elements("Ignore"))
             {
-                this._ignorerules.Add(MatchingRuleFactory.GetRuleObject(xignorerule));
+                this._ignorerules.Add(MatchingRuleFactory.GetRuleObject(xignorerule, this._linktarget));
             }
         }
 

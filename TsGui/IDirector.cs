@@ -22,6 +22,7 @@ using TsGui.Options;
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Linking;
+using TsGui.Authentication;
 
 namespace TsGui
 {
@@ -33,6 +34,7 @@ namespace TsGui
         event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
         //properties
+        AuthLibrary AuthLibrary { get; }
         LinkingLibrary LinkingLibrary { get; }
         GroupLibrary GroupLibrary { get; }
         TsMainWindow TsMainWindow { get; set; }
@@ -43,6 +45,7 @@ namespace TsGui
         TsPage CurrentPage { get; set; }
         bool ShowGridLines { get; set; }
 
+        void Init(MainWindow ParentWindow, Arguments Arguments);
         void CloseWithError(string Title, string Message);
         void AddOptionToLibary(IOption Option);
         void MoveNext();

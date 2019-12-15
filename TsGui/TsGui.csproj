@@ -58,14 +58,19 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.5\lib\net40\NLog.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\NLog.4.5.4\lib\net40-client\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -73,15 +78,41 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\AuthenticationAction.cs" />
+    <Compile Include="Actions\ActionFactory.cs" />
+    <Compile Include="Actions\IAction.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Arguments.cs" />
+    <Compile Include="Authentication\ActiveDirectory\ActiveDirectoryAuthenticator.cs" />
+    <Compile Include="Authentication\ActiveDirectory\ActiveDirectoryMethods.cs" />
+    <Compile Include="Authentication\AuthenticationDelegates.cs" />
+    <Compile Include="Authentication\AuthenticationEnums.cs" />
+    <Compile Include="Authentication\AuthenticationFactory.cs" />
+    <Compile Include="Authentication\AuthLibrary.cs" />
+    <Compile Include="Authentication\IAuthenticationComponent.cs" />
+    <Compile Include="Authentication\IAuthenticator.cs" />
+    <Compile Include="Authentication\IAuthenticatorConsumer.cs" />
+    <Compile Include="Authentication\IUsername.cs" />
+    <Compile Include="Authentication\IPassword.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="IDirector.cs" />
+    <Compile Include="Options\OptionDelegates.cs" />
+    <Compile Include="Queries\ActiveDirectory\ADOrgUnitQuery.cs" />
+    <Compile Include="Queries\ActiveDirectory\ADGroupMembersQuery.cs" />
+    <Compile Include="Queries\CompareQuery.cs" />
+    <Compile Include="Queries\GuiVariableQuery.cs" />
     <Compile Include="Queries\IfElseQuery.cs" />
+    <Compile Include="Queries\PropertyInterogation.cs" />
+    <Compile Include="Queries\QueryHelpers.cs" />
+    <Compile Include="Queries\ReplaceRule.cs" />
+    <Compile Include="Queries\Result.cs" />
     <Compile Include="Queries\ToLowerRule.cs" />
     <Compile Include="Queries\ToUpperRule.cs" />
+    <Compile Include="Queries\Trees\KeyValueTreeNode.cs" />
+    <Compile Include="Queries\WebServices\WebServiceDiscovery.cs" />
+    <Compile Include="Queries\WebServices\WebServicesQuery.cs" />
     <Compile Include="Validation\StringMatching\BaseMatchingRule.cs" />
     <Compile Include="Validation\StringMatching\Characters.cs" />
     <Compile Include="Validation\StringMatching\MatchingRuleLibrary.cs" />
@@ -99,8 +130,20 @@
     <Compile Include="Validation\StringMatching\MatchingRuleFactory.cs" />
     <Compile Include="Validation\StringMatching\EndsWith.cs" />
     <Compile Include="Validation\StringMatching\StartsWith.cs" />
+    <Compile Include="View\GuiOptions\CollectionViews\CollectionViewGuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
       <DependentUpon>ContentChanger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GuiOptions\CollectionViews\TsTreeView.cs" />
+    <Compile Include="View\GuiOptions\TsActionButton.cs" />
+    <Compile Include="View\GuiOptions\CollectionViews\ListBuilder.cs" />
+    <Compile Include="View\GuiOptions\CollectionViews\TsTreeViewUI.xaml.cs">
+      <DependentUpon>TsTreeViewUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GuiOptions\TsUsernameBox.cs" />
+    <Compile Include="View\GuiOptions\TsPasswordBox.cs" />
+    <Compile Include="View\GuiOptions\TsPasswordBoxUI.xaml.cs">
+      <DependentUpon>TsPasswordBoxUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Layout\Converters\XmlStringLineConverter.cs" />
     <Compile Include="Diagnostics\Logging\ILoggingReceiver.cs" />
@@ -130,7 +173,7 @@
     <Compile Include="Linking\LinkingDelegates.cs" />
     <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />
-    <Compile Include="Queries\QueryList.cs" />
+    <Compile Include="Queries\QueryPriorityList.cs" />
     <Compile Include="Queries\ValueOnlyQuery.cs" />
     <Compile Include="Validation\StringMatching\RuleSet.cs" />
     <Compile Include="Options\NoUI\NoUIOption.cs" />
@@ -168,11 +211,15 @@
     <Compile Include="Validation\ValidationToolTipHandler.cs" />
     <Compile Include="View\GuiOptions\GuiOptionGridFormatting.cs" />
     <Compile Include="View\GuiOptions\TsComplianceRefreshButton.cs" />
-    <Compile Include="View\GuiOptions\TsComplianceRefreshButtonUI.xaml.cs">
-      <DependentUpon>TsComplianceRefreshButtonUI.xaml</DependentUpon>
+    <Compile Include="View\GuiOptions\TsButtonUI.xaml.cs">
+      <DependentUpon>TsButtonUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsTickCross.cs" />
-    <Compile Include="View\GuiOptions\TsWarnUI.xaml.cs">
+    <Compile Include="View\Symbols\SymbolFactory.cs" />
+    <Compile Include="View\Symbols\TsFolderUI.xaml.cs">
+      <DependentUpon>TsFolderUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Symbols\TsWarnUI.xaml.cs">
       <DependentUpon>TsWarnUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsImage.cs" />
@@ -184,18 +231,18 @@
       <DependentUpon>TsImageUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\ComplianceOptionBase.cs" />
-    <Compile Include="View\GuiOptions\TsCrossUI.xaml.cs">
+    <Compile Include="View\Symbols\TsCrossUI.xaml.cs">
       <DependentUpon>TsCrossUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsTrafficLight.cs" />
-    <Compile Include="View\GuiOptions\TsTickUI.xaml.cs">
+    <Compile Include="View\Symbols\TsTickUI.xaml.cs">
       <DependentUpon>TsTickUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\GuiOptions\TsTrafficLightUI.xaml.cs">
+    <Compile Include="View\Symbols\TsTrafficLightUI.xaml.cs">
       <DependentUpon>TsTrafficLightUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsComputerName.cs" />
-    <Compile Include="View\GuiOptions\TsDropDownListItem.cs" />
+    <Compile Include="View\GuiOptions\CollectionViews\ListItem.cs" />
     <Compile Include="View\GuiOptions\TsLabelUI.xaml.cs">
       <DependentUpon>TsLabelUI.xaml</DependentUpon>
     </Compile>
@@ -207,8 +254,8 @@
     <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\IGuiOption.cs" />
-    <Compile Include="View\GuiOptions\TsDropDownList.cs" />
-    <Compile Include="View\GuiOptions\TsDropDownListUI.xaml.cs">
+    <Compile Include="View\GuiOptions\CollectionViews\TsDropDownList.cs" />
+    <Compile Include="View\GuiOptions\CollectionViews\TsDropDownListUI.xaml.cs">
       <DependentUpon>TsDropDownListUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsFreeTextUI.xaml.cs">
@@ -241,19 +288,19 @@
     <Compile Include="View\Layout\WindowLocation.cs" />
     <Compile Include="View\Layout\TsRow.cs" />
     <Compile Include="Validation\ResultValidator.cs" />
-    <Compile Include="Control\EnvironmentController.cs" />
+    <Compile Include="EnvironmentController.cs" />
     <Compile Include="Calculator\Calculator.cs" />
     <Compile Include="Queries\ResultWrangler.cs" />
-    <Compile Include="Queries\ResultFormatter.cs" />
+    <Compile Include="Queries\FormattedProperty.cs" />
     <Compile Include="Grouping\GroupDelegates.cs" />
     <Compile Include="Grouping\Group.cs" />
     <Compile Include="View\GuiOptions\GuiFactory.cs" />
     <Compile Include="Grouping\IGroupableUIElement.cs" />
     <Compile Include="Grouping\IGroupChild.cs" />
     <Compile Include="Grouping\Toggle.cs" />
-    <Compile Include="Control\HardwareEvaluator.cs" />
+    <Compile Include="HardwareEvaluator.cs" />
     <Compile Include="View\GuiOptions\IValidationGuiOption.cs" />
-    <Compile Include="Control\ITsVariableOutput.cs" />
+    <Compile Include="ITsVariableOutput.cs" />
     <Compile Include="Grouping\IToggleControl.cs" />
     <Compile Include="View\Layout\TsPageUI.xaml.cs">
       <DependentUpon>TsPageUI.xaml</DependentUpon>
@@ -262,9 +309,9 @@
     <Compile Include="Connectors\SccmConnector.cs" />
     <Compile Include="Connectors\SystemConnector.cs" />
     <Compile Include="Connectors\TestingConnector.cs" />
-    <Compile Include="Control\TsVariable.cs" />
-    <Compile Include="Control\TsWindowAlerts.cs" />
-    <Compile Include="Control\XmlHandler.cs" />
+    <Compile Include="TsVariable.cs" />
+    <Compile Include="TsWindowAlerts.cs" />
+    <Compile Include="XmlHandler.cs" />
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -283,11 +330,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\GuiOptions\TsComplianceRefreshButtonUI.xaml">
+    <Page Include="View\GuiOptions\CollectionViews\TsTreeViewUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\GuiOptions\TsWarnUI.xaml">
+    <Page Include="View\GuiOptions\TsPasswordBoxUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GuiOptions\TsButtonUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Symbols\TsFolderUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Symbols\TsWarnUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -295,15 +354,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\GuiOptions\TsCrossUI.xaml">
+    <Page Include="View\Symbols\TsCrossUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\GuiOptions\TsTickUI.xaml">
+    <Page Include="View\Symbols\TsTickUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\GuiOptions\TsTrafficLightUI.xaml">
+    <Page Include="View\Symbols\TsTrafficLightUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -346,7 +405,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\GuiOptions\TsDropDownListUI.xaml">
+    <Page Include="View\GuiOptions\CollectionViews\TsDropDownListUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -385,7 +444,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
     <None Include="NLog.xsd">
@@ -405,7 +464,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -13,106 +13,119 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// ResultWrangler.cs - deals with multiple results e.g. concatenating, filtering etc
+// ResultWrangler.cs - takes a list of results, and outputs various formats 
+// e.g. concatenating, listing, key-value pairs etc
 
 using System.Collections.Generic;
+using TsGui.Queries.Trees;
 
 namespace TsGui.Queries
 {
     public class ResultWrangler
     {
-        //two dictionaries, one for the keys i.e. the first value, and another for the values as a list. 
-        //the two have matching keys to link the keys dictionary to the lists dictionary. 
-        private Dictionary<int,List<ResultFormatter>> _valuelists;
-        private Dictionary<int, ResultFormatter> _keyvalues;
+        private Dictionary<int, Result> _results = new Dictionary<int, Result>();
 
-        //the following two variables track the lists and position in the lists.
-        private int _currentIndex;    //current index in the current list
-        private int _currentValue;         //current result in the lists
+        private int _currentresultlist = -1;         //current working result in the dictionary
 
-        public string Separator { get; set; }
-        public bool IncludeNullValues { get; set; }
+        public string Separator { get; set; } = ", ";
+        public bool IncludeNullValues { get; set; } = true;
 
-
-        public ResultWrangler()
+        public List<Result> GetResults()
         {
-            this._valuelists = new Dictionary<int, List<ResultFormatter>>();
-            this._keyvalues = new Dictionary<int, ResultFormatter>();
-            this.IncludeNullValues = true;
-            this.Separator = ", ";
-            this._currentValue = -1;
-            this._currentIndex = 0;
+            List<Result> rlist = new List<Result>();
+            foreach (Result r in this._results.Values)
+            { rlist.Add(r); }
+            return rlist;
         }
 
-
         /// <summary>
-        /// Create a new List<ResultFormatter> and set it as current
+        /// Create a new List<FormattedProperty> and set it as current
         /// </summary>
-        public void NewSubList()
+        public void NewResult()
         {
-            this._currentValue++;
-            this._currentIndex = 0;     //reset the current index
+            this._currentresultlist++;
+            this._results.Add(this._currentresultlist, new Result());
+        }
 
-            List<ResultFormatter> newlist = new List<ResultFormatter>();
-            this._valuelists.Add(this._currentValue, newlist);
+        public void AddResult(Result r)
+        {
+            if (r != null)
+            {
+                this._currentresultlist++;
+                this._results.Add(this._currentresultlist, r);
+            }
         }
 
         /// <summary>
-        /// Add a ResultFormatter to the ResultWrangler's current list 
+        /// Add a PropertyFormatter to the ResultWrangler's current list 
         /// </summary>
         /// <param name="Formatter"></param>
-        public void AddResultFormatter(ResultFormatter Formatter)
+        public void AddFormattedProperty(FormattedProperty Formatter)
         {
-            if (this._currentIndex == 0) { this._keyvalues.Add(this._currentValue, Formatter); }
-            else
+            Result result;
+            this._results.TryGetValue(this._currentresultlist, out result);
+            result.Add(Formatter); 
+        }
+
+        public void AddFormattedProperties(List<FormattedProperty> Formatters)
+        {
+            foreach (FormattedProperty rf in Formatters)
+            { this.AddFormattedProperty(rf); }
+        }
+
+        public List<FormattedProperty> GetAllPropertyFormatters()
+        {
+            List<FormattedProperty> l = new List<FormattedProperty>();
+            foreach (Result r in this._results.Values)
             {
-                List<ResultFormatter> currentlist;
-                this._valuelists.TryGetValue(this._currentValue, out currentlist);
-                currentlist.Add(Formatter);
+                l.AddRange(r.GetAllFormattedProperties());
             }
 
-            this._currentIndex++;
+            return l;
         }
 
-        public void AddResultFormatters(List<ResultFormatter> Formatters)
+        public List<KeyValueTreeNode> GetKeyValueTree()
         {
-            foreach (ResultFormatter rf in Formatters)
-            { this.AddResultFormatter(rf); }
-        }
+            if (_currentresultlist == -1) { return null; }
+            List<KeyValueTreeNode> tree = new List<KeyValueTreeNode>();
 
-
-        public List<ResultFormatter> GetAllResultFormatters()
-        {
-            List<ResultFormatter> formatterlist = new List<ResultFormatter>();
-            foreach (int i in this._keyvalues.Keys)
+            foreach (Result r in this._results.Values)
             {
-                ResultFormatter rf;
-                if (this._keyvalues.TryGetValue(i, out rf) == true)
-                { formatterlist.Add(rf); }
-
-                List<ResultFormatter> rfs;
-                if (this._valuelists.TryGetValue(i, out rfs) == true)
-                { formatterlist.AddRange(rfs); }
+                tree.Add(CreateKeyValueTreeNode(r));
             }
 
-            return formatterlist;
+            return tree;
         }
+
+        private KeyValueTreeNode CreateKeyValueTreeNode(Result result)
+        {
+            KeyValueTreeNode newnode = new KeyValueTreeNode();
+            string value = result.KeyProperty.Value;
+            string concatlist = this.ConcatenatePropertyValues(result.Properties, Separator);
+
+            newnode.Value = new KeyValuePair<string, string>(value, concatlist);
+            foreach (Result subresult in result.SubResults)
+            {
+                newnode.Nodes.Add(CreateKeyValueTreeNode(subresult));
+            }
+            return newnode;
+        } 
 
         /// <summary>
-        /// Concatenate ResultFormatter values into a single string
+        /// Concatenate FormattedProperty values into a single string
         /// </summary>
-        /// <param name="Results"></param>
+        /// <param name="properties"></param>
         /// <param name="Separator"></param>
         /// <returns></returns>
-        public string ConcatenateResultValues(List<ResultFormatter> Results, string Separator)
+        public string ConcatenatePropertyValues(List<FormattedProperty> properties, string Separator)
         {
             string s = "";
             string tempval = null;
             int i = 0;
 
-            foreach (ResultFormatter result in Results)
+            foreach (FormattedProperty property in properties)
             {
-                tempval = result.Value;
+                tempval = property.Value;
 
                 if (this.IncludeNullValues || !string.IsNullOrEmpty(tempval))
                 {
@@ -135,7 +148,6 @@ namespace TsGui.Queries
         { return this.GetDictionary(this.Separator); }
 
 
-
         /// <summary>
         /// Get the _results list in a list of Key/Value pair format. First item in the list is the key, remainder is 
         /// concatenated with the separator set in the wrangler object 
@@ -148,6 +160,8 @@ namespace TsGui.Queries
         public string GetString()
         { return this.GetString(this.Separator); }
 
+        public new string ToString() { return this.GetString(); }
+
         /// <summary>
         /// Get the _results list in a list of Key/Value pair format. First item in the list is the key, remainder is 
         /// concatenated with the specified separator
@@ -157,22 +171,14 @@ namespace TsGui.Queries
         public List<KeyValuePair<string, string>> GetKeyValueList(string Separator)
         {
             //first check to make sure a new sublist has actually been created. if not reutrn null
-            if (_currentValue == -1) { return null; }
+            if (_currentresultlist == -1) { return null; }
 
             List<KeyValuePair<string, string>> returnkvlist = new List<KeyValuePair<string, string>>();
-            ResultFormatter _tempRF;
-            List<ResultFormatter> _tempRFList;
 
-            for (int i = 0; i <= this._currentValue; i++)
+            foreach (Result r in this._results.Values)
             {
-                string concatlist = "";
-                string value = "";
-
-                if (this._keyvalues.TryGetValue(i, out _tempRF))
-                { value = _tempRF.Value; }
-
-                if (this._valuelists.TryGetValue(i, out _tempRFList))
-                { concatlist = this.ConcatenateResultValues(_tempRFList, Separator); }
+                string value = r.KeyProperty.Value;
+                string concatlist = this.ConcatenatePropertyValues(r.Properties, Separator);
 
                 returnkvlist.Add(new KeyValuePair<string,string>( value, concatlist));
             }
@@ -189,22 +195,14 @@ namespace TsGui.Queries
         public Dictionary<string, string> GetDictionary(string Separator)
         {
             //first check to make sure a new sublist has actually been created. if not reutrn null
-            if (_currentValue == -1) { return null; }
+            if (_currentresultlist == -1) { return null; }
 
             Dictionary<string, string> returndic = new Dictionary<string, string>();
-            ResultFormatter _tempRF;
-            List<ResultFormatter> _tempRFList;
 
-            for (int i = 0; i <= this._currentValue; i++)
+            foreach (Result r in this._results.Values)
             {
-                string concatlist = "";
-                string value = "";
-
-                if (this._keyvalues.TryGetValue(i, out _tempRF))
-                { value = _tempRF.Value; }
-
-                if (this._valuelists.TryGetValue(i, out _tempRFList))
-                { concatlist = this.ConcatenateResultValues(_tempRFList, Separator); }
+                string value = r.KeyProperty.Value;
+                string concatlist = this.ConcatenatePropertyValues(r.Properties, Separator); 
 
                 returndic.Add(value, concatlist);
             }
@@ -219,29 +217,18 @@ namespace TsGui.Queries
         /// <returns></returns>
         public string GetString(string Separator)
         {
-            string s = null;
-
             //first check to make sure a new sublist has actually been created. if not reutrn null
-            if (_currentValue == -1) { return null; }
+            if (_currentresultlist == -1) { return null; }
 
-            ResultFormatter _tempRF;
-            List<ResultFormatter> _tempRFListMain = new List<ResultFormatter>();
-            List<ResultFormatter> _tempRFList;
+            List<FormattedProperty> tempRFListMain = new List<FormattedProperty>();
 
-            for (int i = 0; i <= this._currentValue; i++)
+            foreach (Result r in this._results.Values)
             {
-
-                if (this._keyvalues.TryGetValue(i, out _tempRF))
-                { _tempRFListMain.Add(_tempRF); }
-
-                if (this._valuelists.TryGetValue(i, out _tempRFList))
-                { _tempRFListMain.AddRange(_tempRFList); }
-
-                if (i == 0) { s = this.ConcatenateResultValues(_tempRFListMain, Separator); }
-                else { s = this.ConcatenateResultValues(_tempRFListMain, Separator); }
+                tempRFListMain.Add(r.KeyProperty);
+                tempRFListMain.AddRange(r.Properties);
             }
 
-            return s;
+            return this.ConcatenatePropertyValues(tempRFListMain, Separator);
         }
 
         /// <summary>

@@ -19,8 +19,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Threading;
-using System.Windows.Input
-;
+
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
@@ -121,7 +120,6 @@ namespace TsGui.View.Layout
             this.GroupingStateChange += this.OnPageHide;
             this._pageui.DataContext = this;
             this._pageui.ButtonGrid.DataContext = Defaults.Buttons;
-            this._pageui.KeyDown += this.OnKeyDown;
 
             this.LoadXml(SourceXml);
             this.Update();
@@ -138,16 +136,16 @@ namespace TsGui.View.Layout
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
 
             x = InputXml.Element("Heading");
-            if (x != null) { this.PageHeader = new TsPageHeader(this,this.PageHeader,x,this._controller); }
+            if (x != null) { this.PageHeader = new TsPageHeader(this,this.PageHeader,x,this._director); }
 
             x = InputXml.Element("LeftPane");
-            if (x != null) { this.LeftPane = new TsPane(x, this._controller); }
+            if (x != null) { this.LeftPane = new TsPane(x, this._director); }
 
             x = InputXml.Element("RightPane");
-            if (x != null) { this.RightPane = new TsPane(x, this._controller); }
+            if (x != null) { this.RightPane = new TsPane(x, this._director); }
 
             //create the table adn bind it to the content
-            this._table = new TsTable(InputXml, this, this._controller);
+            this._table = new TsTable(InputXml, this, this._director);
             this._pageui.MainTablePresenter.Content = this._table.Grid;
             this._pageui.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
             this._pageui.RightPanePresenter.Content = this.RightPane?.PaneUI;
@@ -161,27 +159,24 @@ namespace TsGui.View.Layout
 
         public void Cancel()
         {
-            this._controller.Cancel();
+            this._director.Cancel();
         }
 
         public void MovePrevious()
         {
-            if ( this._previouspage != null)
-            {
-                foreach (IValidationGuiOption option in this._table.ValidationOptions)
-                { option.ClearToolTips(); }
+            foreach (IValidationGuiOption option in this._table.ValidationOptions)
+            { option.ClearToolTips(); }
 
-                this.ReleaseThisPage();
-                this._controller.MovePrevious();
-            }
+            this.ReleaseThisPage();
+            this._director.MovePrevious();
         }
 
         public void MoveNext()
         {
-            if (this._nextpage != null && this.OptionsValid() == true)
+            if (this.OptionsValid() == true)
             {
                 this.ReleaseThisPage();
-                this._controller.MoveNext();
+                this._director.MoveNext();
             }
         }
 
@@ -189,7 +184,7 @@ namespace TsGui.View.Layout
         {
             if (this.OptionsValid() == true)
             {
-                this._controller.Finish();
+                this._director.Finish();
             }
         }
 
@@ -217,10 +212,7 @@ namespace TsGui.View.Layout
 
         public void OnPageHide(object o, GroupingEventArgs e)
         {
-            if (e.GroupStateChanged == GroupStateChanged.IsHidden)
-            {
-                this._controller.CurrentPage.Update();
-            }
+            if (e.GroupStateChanged == GroupStateChanged.IsHidden) { this._director.CurrentPage.Update(); }
         }
 
         public void RaiseComplianceRetryEvent()
@@ -234,24 +226,8 @@ namespace TsGui.View.Layout
         }
 
         private void ConnectPrevPage(TsPage NewPrevPage)
-        {           
-            this._previouspage = NewPrevPage;
-        }
-
-        public void OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-            {
-                if (e.SystemKey == Key.Right)
-                {
-                    this.MoveNext();
-                }
-                else if (e.SystemKey == Key.Left)
-                {
-                    this.MovePrevious();
-                }
-                e.Handled = true;
-            }
+            this._previouspage = NewPrevPage;
         }
     }
 }

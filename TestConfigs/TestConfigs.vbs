@@ -1,7 +1,7 @@
 option explicit
 
-Dim newExe: newExe = "TsGui.exe"
-Dim referenceExe: referenceExe = "TsGui-1.0.6.3.exe"
+' Dim newExe: newExe = "TsGui.exe"
+' Dim referenceExe: referenceExe = "TsGui.1.0.0.0.exe"
 
 Dim objShell: Set objShell = CreateObject("Wscript.Shell")
 Dim objFSO: Set objFSO = CreateObject("Scripting.FileSystemObject")
@@ -17,19 +17,32 @@ WScript.Echo "Which number config do you want to start with: "
 ' Read dummy input. This call will not return until [ENTER] is pressed.
 intFileNumber = WScript.StdIn.ReadLine()
 		
-For Each file In objScriptParentFolder.Files
-	currentfile = "Config." & intFileNumber & ".xml"
-	
-	if (file.Type = "XML Document") AND (file.Name = currentfile) then
-		wscript.echo file.name
-		objFSO.CopyFile file.path,file.ParentFolder & "\\Config.xml"
-		objShell.Run strScriptParentFolder & "\\" & newExe
-		'if (intFileNumber < 13) then
-			objShell.Run strScriptParentFolder & "\\" & referenceExe
-		'end if
-		WScript.Echo "Press [ENTER] to continue..."
-		' Read dummy input. This call will not return until [ENTER] is pressed.
-		WScript.StdIn.ReadLine
-		intFileNumber = intFileNumber + 1
+
+do while true
+	currentfile = strScriptParentFolder & "\Config." & intFileNumber & ".xml"
+	if objFSO.FileExists(currentfile) then 
+		SET file = objFSO.GetFile(currentfile)
+		wscript.echo currentfile
+
+		if (file.Type = "XML Document") then
+			
+			'objFSO.CopyFile file.path,file.ParentFolder & "\\Reference\\Config.xml"
+			'objFSO.CopyFile file.path,file.ParentFolder & "\\Test\\Config.xml"
+
+			wscript.echo "Launching reference: " & file.name
+			objShell.Run strScriptParentFolder & "\\Reference\\TsGui.exe -config " &  file.path
+			WScript.Echo "Press [ENTER] to continue..."
+			WScript.StdIn.ReadLine
+
+			wscript.echo "Launching test: " & file.name
+			objShell.Run strScriptParentFolder & "\\Test\\TsGui.exe -config " &  file.path
+			WScript.Echo "Press [ENTER] to continue..."
+			WScript.StdIn.ReadLine
+			
+		end if
+	else 
+		wscript.echo "File not found, exiting: " & currentfile
+		exit do
 	end if
-Next
+	intFileNumber = intFileNumber + 1
+loop
