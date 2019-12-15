@@ -1,3 +1,6 @@
+<!-- Configuration of options that have no user interface. This allows you to create task sequence variables for use later in the task sequence
+without having to display anything to the user. If your configuration doesn't have any pages, TsGui will automatically finish, creating the variables 
+from your NoUI section. -->
 <TsGui LiveData="TRUE">
 	<Height>300</Height>
 	<Width>300</Width>
@@ -34,6 +37,8 @@
 		</Row>
 	</Page>
 	
+
+	<!-- ***No User Interface section***  -->
 	<NoUI>
 		<!-- NoUIOptions function like GuiOptions but without the user interface -->
 		<NoUIOption Variable="NoUIOption_1" Value="NoUIOption_1_Val"/>

@@ -27,6 +27,7 @@ Query types:
 <ToUpper/>
 <ToLower/>
 <Truncate> - Truncate Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart
+<Replace>
 -->
 
 <TsGui LiveData="TRUE">

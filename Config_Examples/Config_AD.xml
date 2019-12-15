@@ -1,3 +1,8 @@
+<!-- Active Directory Auth config. This feature is currently in BETA 
+This feature makes use of the ADSI components of .Net which is not included in WinPE. To make this feature work in WinPE
+ADSI must be added to WinPE. This is not supported by Microsoft. See for an example of how to do this: https://deploymentresearch.com/adsi-plugin-for-winpe-5-0/
+-->
+
 <TsGui LiveData="TRUE">
 	<Height>350</Height>
 	<Width>370</Width>
@@ -9,6 +14,7 @@
 		<Text>Task Sequence GUI queries example</Text>
 	</Heading>
 
+	<!-- The authentication object. Note the AuthID which will be referenced by GuiOptions later in the config -->
 	<Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="home.local"/>
 	
 	<Page>
@@ -21,6 +27,7 @@
 				
 				<GuiOption Type="ComputerName" ID="link_name"/>
 				
+				<!-- Username and password GuiOptions -->
 				<GuiOption Type="UsernameBox" AuthID="ad_auth" ID="link_user">
 					<Variable>VAR_Username</Variable>
 					<SetValue>
@@ -32,6 +39,7 @@
 					<Variable>VAR_Password</Variable>
 				</GuiOption>
 				
+				<!-- The 'Login' button. Activates authentication of the authentication object using the login credentials -->
 				<GuiOption Type="ActionButton" ID="link_actionbtn" IsDefault="TRUE">
 					<Variable>VAR_ActionButton</Variable>
 					<Action Type="Authentication" AuthID="ad_auth"/>
@@ -49,6 +57,7 @@
 					</Query>
 				</GuiOption>
 				
+				<!-- TreeView of OU structure. Note the AuthID of the authentication object -->
 				<GuiOption Type="TreeView">
 					<Variable>AD_OU</Variable>
 					<Label>AD OU</Label>

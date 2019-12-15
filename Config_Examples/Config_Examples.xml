@@ -239,6 +239,7 @@ GuiOption types:
           </Option>
         </GuiOption>
 
+        <!-- TreeView GuiOption for hierarchical data. This feature is currently in BETA and has a few layout 'quirks' -->
         <GuiOption Type="TreeView">
           <!-- The NoSelectionMessage element overrides the default "Please select a value" text when nothing is selected by the user -->
           <NoSelectionMessage>Please select something</NoSelectionMessage>

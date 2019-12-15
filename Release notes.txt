@@ -1,10 +1,12 @@
-Version 1.1.0.4
-Release date: 12 Dec 2019
+Version 1.1.0.6
+Release date: 16 Dec 2019
 
 *New features 
-	Added ability to use a query as well as fixed values in compliance and validation (see Config_Validation.xml)
-	Added authentication (BETA)
-	Added Active Directory connectivity (BETA - won't work in WinPE without re-registering .Net DLLs)
+	If a config contains no pages, TsGui will now automatically finish. This allows you to use NoUI options or the builtin variables e.g. TsGui_IsLaptop without having to display the GUI
+	Added ability to use a query in compliance and validation (see Config_Validation.xml)
+	Added Replace option to query properties (see Config_Queries.xml)
+	Added authentication (BETA - won't work in WinPE without re-registering .Net DLLs. See Config_AD.xml)
+	Added Active Directory connectivity (BETA - won't work in WinPE without re-registering .Net DLLs. See Config_AD.xml)
 	Added TreeView GuiOption (BETA)
 
 *Known issues
