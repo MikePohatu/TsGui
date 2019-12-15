@@ -162,26 +162,35 @@ namespace TsGui
 
             //subscribe to closing event
             this.ParentWindow.Closing += this.OnWindowClosing;
-            this.CurrentPage = this._pages.First();
 
-            //update group settings to all controls
-            foreach (IToggleControl t in this._toggles)
-            { t.InitialiseToggle(); }
+            if (this._pages.Count > 0)
+            {
+                this.CurrentPage = this._pages.First();
+                //update group settings to all controls
+                foreach (IToggleControl t in this._toggles)
+                { t.InitialiseToggle(); }
 
-            this.ParentWindow.DataContext = this.TsMainWindow;
-            
-            // Now show and close the ghost window to make sure WinPE honours the 
-            // windowstartuplocation
-            GhostWindow ghost = new GhostWindow();
-            ghost.Show();
-            ghost.Close();
+                this.ParentWindow.DataContext = this.TsMainWindow;
 
-            this.UpdateWindow();
-            this.ParentWindow.Visibility = Visibility.Visible;
-            this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
-            this.StartupFinished = true;
-            if ((this._debug == true) || (this._showtestwindow == true)) { this._testingwindow = new TestingWindow(this); }
-            LoggerFacade.Info("*TsGui startup finished");
+                // Now show and close the ghost window to make sure WinPE honours the 
+                // windowstartuplocation
+                GhostWindow ghost = new GhostWindow();
+                ghost.Show();
+                ghost.Close();
+
+                this.UpdateWindow();
+                this.ParentWindow.Visibility = Visibility.Visible;
+                this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
+                this.StartupFinished = true;
+                if ((this._debug == true) || (this._showtestwindow == true)) { this._testingwindow = new TestingWindow(this); }
+                LoggerFacade.Info("*TsGui startup finished");
+            }
+            else 
+            {
+                //No pages, finish using only the NoUI options
+                LoggerFacade.Info("*No pages configured. Finishing TsGui");
+                this.Finish();
+            }
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
