@@ -33,10 +33,8 @@ namespace TsGui.View.Layout
     {
         public event ComplianceRetryEventHandler ComplianceRetry;
 
-        private TsPageUI _pageui;
         private TsPage _previouspage;
         private TsPage _nextpage;
-        private bool _isfirst = false;
         private TsTable _table;
 
         //Properties
@@ -73,12 +71,8 @@ namespace TsGui.View.Layout
             set { this.ConnectNextPage(value); }
         }        
         public List<IGuiOption> Options { get { return this._table.Options; } }
-        public TsPageUI Page { get { return this._pageui; } }
-        public bool IsFirst
-        {
-            get { return this._isfirst; }
-            set { this._isfirst = value; }
-        }
+        public TsPageUI Page { get; private set; }
+        public bool IsFirst { get; set; } = false;
         #endregion
 
         //Events
@@ -110,16 +104,16 @@ namespace TsGui.View.Layout
             //this._controller = Defaults.RootController;
             LoggerFacade.Info("New page created");
             this.ShowGridLines = MainController.ShowGridLines;
-            this._pageui = new TsPageUI(this);
+            this.Page = new TsPageUI(this);
             this.PageHeader = Defaults.PageHeader;
             this.LeftPane = Defaults.LeftPane;
             this.RightPane = Defaults.RightPane;
 
-            this._pageui.Loaded += this.OnPageLoaded;
+            this.Page.Loaded += this.OnPageLoaded;
 
             this.GroupingStateChange += this.OnPageHide;
-            this._pageui.DataContext = this;
-            this._pageui.ButtonGrid.DataContext = Defaults.Buttons;
+            this.Page.DataContext = this;
+            this.Page.ButtonGrid.DataContext = Defaults.Buttons;
 
             this.LoadXml(SourceXml);
             this.Update();
@@ -146,9 +140,9 @@ namespace TsGui.View.Layout
 
             //create the table adn bind it to the content
             this._table = new TsTable(InputXml, this, this._director);
-            this._pageui.MainTablePresenter.Content = this._table.Grid;
-            this._pageui.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
-            this._pageui.RightPanePresenter.Content = this.RightPane?.PaneUI;
+            this.Page.MainTablePresenter.Content = this._table.Grid;
+            this.Page.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
+            this.Page.RightPanePresenter.Content = this.RightPane?.PaneUI;
         }
 
         public bool OptionsValid()
@@ -195,19 +189,19 @@ namespace TsGui.View.Layout
 
         private void ReleaseThisPage()
         {
-            this._pageui.HeaderPresenter.Content = null;
-            this._pageui.LeftPanePresenter.Content = null;
-            this._pageui.RightPanePresenter.Content = null;
+            this.Page.HeaderPresenter.Content = null;
+            this.Page.LeftPanePresenter.Content = null;
+            this.Page.RightPanePresenter.Content = null;
         }
 
         //Update the prev, next, finish buttons according to the current pages 
         //place in the world
         public void Update()
         {
-            this._pageui.HeaderPresenter.Content = this.PageHeader.UI;
-            this._pageui.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
-            this._pageui.RightPanePresenter.Content = this.RightPane?.PaneUI;
-            TsButtons.Update(this, this._pageui);            
+            this.Page.HeaderPresenter.Content = this.PageHeader.UI;
+            this.Page.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
+            this.Page.RightPanePresenter.Content = this.RightPane?.PaneUI;
+            TsButtons.Update(this, this.Page);            
         }
 
         public void OnPageHide(object o, GroupingEventArgs e)

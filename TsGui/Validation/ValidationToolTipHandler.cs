@@ -111,6 +111,7 @@ namespace TsGui.Validation
         private void UpdateArrows()
         {
             if (this._windowloaded == false ) { return; }
+            if (this._guioption.IsRendered == false) { return; }
             this.UpdatePopupLocation();
             
             if (this.HasHitRightScreenEdge() == false)

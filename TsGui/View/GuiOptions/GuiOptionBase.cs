@@ -36,6 +36,7 @@ namespace TsGui.View.GuiOptions
         protected QueryPriorityList _setvaluequerylist;
 
         //standard stuff
+        public bool IsRendered { get; private set; } = false;
         public string ID { get; set; }
         public UserControl Control { get; set; }
         public UserControl Label { get; set; }
@@ -72,6 +73,12 @@ namespace TsGui.View.GuiOptions
         public GuiOptionBase(TsColumn Parent, IDirector director):base(Parent, director)
         {
             this.UserControl = new GuiOptionBaseUI();
+            this.UserControl.Loaded += this.OnRendered;
+        }
+
+        public void OnRendered (object sender, EventArgs e)
+        {
+            this.IsRendered = true;
         }
 
         protected new void LoadXml(XElement InputXml)
