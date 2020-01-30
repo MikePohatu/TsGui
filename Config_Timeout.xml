@@ -18,7 +18,8 @@
     <At>2020-01-30 15:30:00</At> <!-- This must be in the format YYYY-MM-dd HH:mm:ss -->
     
     <IgnoreValidation>TRUE</IgnoreValidation> <!-- If you set this to FALSE, TsGui will not close if there are invalid values in the gui -->
-    <ResetOnActivity>FALSE</ResetOnActivity> <!-- Setting this to TRUE will restart the countdown set in <After> when a mouse click or key press is detected --> 
+    <ResetOnActivity>FALSE</ResetOnActivity> <!-- Setting this to TRUE will restart the countdown set in <After> when a mouse click or key press is detected -->
+    <CancelOnTimeout>FALSE</CancelOnTimeout> <!-- Setting this to TRUE will cancel rather than finish TsGui -->
   </Timeout>
 
   <Page>

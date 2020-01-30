@@ -363,13 +363,16 @@ namespace TsGui
                     if (valop.ValidationHandler != null) { valop.ValidationHandler.Enabled = false; }
                     valop.ClearToolTips();
                 }
-                this.Finish();
+
+                if (GuiTimeout.Instance.CancelOnTimeout == false) { this.Finish(); }
+                else { this.Cancel(); }
             }
             else
             {
                 if (ResultValidator.OptionsValid(this._optionlibrary.ValidationOptions))
                 {
-                    this.Finish();
+                    if (GuiTimeout.Instance.CancelOnTimeout == false) { this.Finish(); }
+                    else { this.Cancel(); }
                 }
             }
         }

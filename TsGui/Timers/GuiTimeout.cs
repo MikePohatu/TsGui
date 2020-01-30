@@ -22,6 +22,7 @@ namespace TsGui
         private TimeoutFunction _timeoutfunction;
 
         public bool IgnoreValidation { get; private set; } = false;
+        public bool CancelOnTimeout { get; private set; } = false;
         public DispatcherTimer AfterTimer { get; private set; } = new DispatcherTimer();
         public DispatcherTimer AtTimer { get; private set; } = new DispatcherTimer();
         public TimeSpan TimeLeft { 
@@ -67,6 +68,7 @@ namespace TsGui
         public void LoadXml(XElement SourceXml)
         {
             this.IgnoreValidation = XmlHandler.GetBoolFromXElement(SourceXml, "IgnoreValidation", this.IgnoreValidation);
+            this.CancelOnTimeout = XmlHandler.GetBoolFromXElement(SourceXml, "CancelOnTimeout", this.IgnoreValidation);
             this._resetonactivity = XmlHandler.GetBoolFromXElement(SourceXml, "ResetOnActivity", this.IgnoreValidation);
 
             XElement after = SourceXml.Element("After");
