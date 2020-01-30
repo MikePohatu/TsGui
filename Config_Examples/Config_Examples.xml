@@ -8,7 +8,7 @@ GuiOption types:
 <GuiOption Type="Heading">
 <GuiOption Type="TreeView">
 <GuiOption Type="Image">
-<GuiOption Type="Timeout">
+<GuiOption Type="Timeout"> See Config_Timeout.xml
 
 <GuiOption Type="TrafficLight"> - See Config_Compliance.xml
 <GuiOption Type="TickCross"> - See Config_Compliance.xml
