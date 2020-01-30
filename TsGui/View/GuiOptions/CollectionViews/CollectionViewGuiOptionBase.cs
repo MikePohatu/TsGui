@@ -19,7 +19,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
         protected ListItem _currentitem;
         protected string _validationtext;
         protected ValidationToolTipHandler _validationtooltiphandler;
-        protected ValidationHandler _validationhandler;
+        public ValidationHandler ValidationHandler { get; protected set; }
+
         protected bool _nodefaultvalue;
         protected string _noselectionmessage;
         protected ListBuilder _builder;
@@ -75,7 +76,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             base.LoadXml(InputXml);
             this._builder.LoadXml(InputXml);
 
-            this._validationhandler.AddValidations(InputXml.Elements("Validation"));
+            this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
             this._nodefaultvalue = XmlHandler.GetBoolFromXAttribute(InputXml, "NoDefaultValue", this._nodefaultvalue);
             this._noselectionmessage = XmlHandler.GetStringFromXElement(InputXml, "NoSelectionMessage", this._noselectionmessage);
 
@@ -123,13 +124,13 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 return false;
             }
 
-            bool newvalid = this._validationhandler.IsValid(this.CurrentValue);
+            bool newvalid = this.ValidationHandler.IsValid(this.CurrentValue);
 
             if (newvalid == false)
             {
-                string validationmessage = this._validationhandler.ValidationMessage;
+                string validationmessage = this.ValidationHandler.ValidationMessage;
                 string s = "\"" + this.CurrentItem.Text + "\" is invalid" + Environment.NewLine;
-                if (string.IsNullOrEmpty(validationmessage)) { s = s + _validationhandler.FailedValidationMessage; }
+                if (string.IsNullOrEmpty(validationmessage)) { s = s + ValidationHandler.FailedValidationMessage; }
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;

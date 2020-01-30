@@ -17,6 +17,7 @@
 // the app
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace TsGui.Options
@@ -24,14 +25,16 @@ namespace TsGui.Options
     public class OptionLibrary
     {
         public event OptionLibraryOptionAdded OptionAdded;
-        private ObservableCollection<IOption> _options = new ObservableCollection<IOption>();
+        public ObservableCollection<IOption> Options { get; } = new ObservableCollection<IOption>();
+        public List<IValidationGuiOption> ValidationOptions { get; } = new List<IValidationGuiOption>();
 
-        public ObservableCollection<IOption> Options { get { return this._options; } }
-
-        public void Add(IOption Option)
+        public void Add(IOption option)
         {
-            this._options.Add(Option);
-            this.OptionAdded?.Invoke(Option, new EventArgs());
+            this.Options.Add(option);
+            IValidationGuiOption valop = option as IValidationGuiOption;
+            if (valop != null) { this.ValidationOptions.Add(valop); }
+
+            this.OptionAdded?.Invoke(option, new EventArgs());
         }
     }
 }

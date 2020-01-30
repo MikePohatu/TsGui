@@ -32,6 +32,9 @@ using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using TsGui.Linking;
 using TsGui.Authentication;
+using TsGui.Validation;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace TsGui
 {
@@ -183,6 +186,7 @@ namespace TsGui
                 this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
                 this.StartupFinished = true;
                 if ((this._debug == true) || (this._showtestwindow == true)) { this._testingwindow = new TestingWindow(this); }
+                GuiTimeout.Instance?.Start(this.OnTimeoutReached);
                 LoggerFacade.Info("*TsGui startup finished");
             }
             else 
@@ -231,6 +235,7 @@ namespace TsGui
             if (SourceXml != null)
             {
                 this.TsMainWindow.LoadXml(SourceXml);
+                GuiTimeout.Init(SourceXml.Element("Timeout"));
 
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
                 this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
@@ -346,6 +351,27 @@ namespace TsGui
             this.ParentWindow.ContentArea.Navigate(this.CurrentPage.Page);
             this.ParentWindow.ContentArea.DataContext = this.CurrentPage;
             this.CurrentPage.Update();
+        }
+
+        public void OnTimeoutReached()
+        {
+            if (GuiTimeout.Instance.IgnoreValidation == true)
+            {
+                foreach (IValidationGuiOption valop in this._optionlibrary.ValidationOptions)
+                {
+                    //validation needs disabling because LostFocus is a validation event
+                    if (valop.ValidationHandler != null) { valop.ValidationHandler.Enabled = false; }
+                    valop.ClearToolTips();
+                }
+                this.Finish();
+            }
+            else
+            {
+                if (ResultValidator.OptionsValid(this._optionlibrary.ValidationOptions))
+                {
+                    this.Finish();
+                }
+            }
         }
 
         //finish and create the TS Variables

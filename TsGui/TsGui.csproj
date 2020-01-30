@@ -97,6 +97,7 @@
     <Compile Include="Authentication\IUsername.cs" />
     <Compile Include="Authentication\IPassword.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
+    <Compile Include="Timers\GuiTimeout.cs" />
     <Compile Include="IDirector.cs" />
     <Compile Include="Options\OptionDelegates.cs" />
     <Compile Include="Queries\ActiveDirectory\ADOrgUnitQuery.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="View\GuiOptions\CollectionViews\TsTreeViewUI.xaml.cs">
       <DependentUpon>TsTreeViewUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\GuiOptions\TsTimeout.cs" />
     <Compile Include="View\GuiOptions\TsUsernameBox.cs" />
     <Compile Include="View\GuiOptions\TsPasswordBox.cs" />
     <Compile Include="View\GuiOptions\TsPasswordBoxUI.xaml.cs">

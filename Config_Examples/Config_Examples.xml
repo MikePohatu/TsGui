@@ -8,6 +8,7 @@ GuiOption types:
 <GuiOption Type="Heading">
 <GuiOption Type="TreeView">
 <GuiOption Type="Image">
+<GuiOption Type="Timeout">
 
 <GuiOption Type="TrafficLight"> - See Config_Compliance.xml
 <GuiOption Type="TickCross"> - See Config_Compliance.xml
@@ -23,7 +24,7 @@ GuiOption types:
   <Width>600</Width>
 
   <HardwareEval />
-
+  
   <Heading>
     <Title>Title Text</Title>
     <Text>Text</Text>

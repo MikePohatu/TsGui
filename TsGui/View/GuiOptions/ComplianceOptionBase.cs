@@ -35,6 +35,7 @@ namespace TsGui.View.GuiOptions
         protected SolidColorBrush _strokecolor;
         protected int _state;
         protected ValidationToolTipHandler _validationtooltiphandler;
+        public ValidationHandler ValidationHandler { get { return null; } }
         protected ComplianceHandler _compliancehandler;
         protected string _validationtext;
         protected IRootLayoutElement _rootelement;

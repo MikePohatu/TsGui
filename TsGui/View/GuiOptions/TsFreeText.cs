@@ -32,7 +32,7 @@ namespace TsGui.View.GuiOptions
         protected TsFreeTextUI _freetextui;
 
         private ValidationToolTipHandler _validationtooltiphandler;
-        private ValidationHandler _validationhandler;
+        public ValidationHandler ValidationHandler { get; private set; }
 
         //Properties
         #region
@@ -109,7 +109,7 @@ namespace TsGui.View.GuiOptions
             this.InteractiveControl = this._freetextui.TextBox;
             this.Label = new TsLabelUI();
 
-            this._validationhandler = new ValidationHandler(this, MainController);
+            this.ValidationHandler = new ValidationHandler(this, MainController);
             this._validationtooltiphandler = new ValidationToolTipHandler(this, MainController);
 
             this.UserControl.DataContext = this;
@@ -131,8 +131,8 @@ namespace TsGui.View.GuiOptions
             base.LoadXml(InputXml);
 
             this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", this.MaxLength);
-            this._validationhandler.LoadLegacyXml(InputXml);
-            this._validationhandler.AddValidations(InputXml.Elements("Validation"));
+            this.ValidationHandler.LoadLegacyXml(InputXml);
+            this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
 
             XElement x;         
 
@@ -177,13 +177,13 @@ namespace TsGui.View.GuiOptions
         {
             if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
 
-            bool newvalid = this._validationhandler.IsValid(this.ControlText);
+            bool newvalid = this.ValidationHandler.IsValid(this.ControlText);
 
             if (newvalid == false)
             {
-                string validationmessage = this._validationhandler.ValidationMessage;
+                string validationmessage = this.ValidationHandler.ValidationMessage;
                 string s = "\"" + this.ControlText + "\" is invalid" + Environment.NewLine;
-                if (string.IsNullOrEmpty(validationmessage)) { s = s + _validationhandler.FailedValidationMessage; }
+                if (string.IsNullOrEmpty(validationmessage)) { s = s + ValidationHandler.FailedValidationMessage; }
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
@@ -206,8 +206,8 @@ namespace TsGui.View.GuiOptions
             if (s != null) 
             {
                 //if required, remove invalid characters and truncate
-                string invalchars = this._validationhandler.GetAllInvalidCharacters();
-                if (!string.IsNullOrEmpty(invalchars)) { s = ResultValidator.RemoveInvalid(s, this._validationhandler.GetAllInvalidCharacters()); }
+                string invalchars = this.ValidationHandler.GetAllInvalidCharacters();
+                if (!string.IsNullOrEmpty(invalchars)) { s = ResultValidator.RemoveInvalid(s, this.ValidationHandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { s = ResultValidator.Truncate(s, this.MaxLength); }
 
                 if (this.ControlText != s) { this.ControlText = s; }
