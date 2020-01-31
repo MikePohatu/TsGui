@@ -135,6 +135,7 @@ namespace TsGui
 
         private void Startup()
         {
+            LoggerFacade.Debug("*TsGui startup started");
             this.StartupFinished = false;
             this._prodmode = this._envController.Init();
 
@@ -168,6 +169,7 @@ namespace TsGui
 
             if (this._pages.Count > 0)
             {
+                LoggerFacade.Debug("Loading pages");
                 this.CurrentPage = this._pages.First();
                 //update group settings to all controls
                 foreach (IToggleControl t in this._toggles)
@@ -177,6 +179,7 @@ namespace TsGui
 
                 // Now show and close the ghost window to make sure WinPE honours the 
                 // windowstartuplocation
+                LoggerFacade.Trace("Loading ghost window");
                 GhostWindow ghost = new GhostWindow();
                 ghost.Show();
                 ghost.Close();
@@ -348,6 +351,7 @@ namespace TsGui
         //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()
         {
+            LoggerFacade.Trace("UpdateWindow called");
             this.ParentWindow.ContentArea.Navigate(this.CurrentPage.Page);
             this.ParentWindow.ContentArea.DataContext = this.CurrentPage;
             this.CurrentPage.Update();
@@ -461,6 +465,7 @@ namespace TsGui
         {
             if (this._hardwareevaluator != null)
             {
+                LoggerFacade.Debug("Running hardware evaluator");
                 foreach (TsVariable var in this._hardwareevaluator.GetTsVariables())
                 {
                     NoUIOption newhwoption = new NoUIOption(this);

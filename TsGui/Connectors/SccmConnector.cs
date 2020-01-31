@@ -42,6 +42,7 @@ namespace TsGui.Connectors
 
         public void Hide()
         {
+            LoggerFacade.Trace("SccmConnector hiding progress dialog");
             objTSProgUI?.CloseProgressDialog();
         }
 
