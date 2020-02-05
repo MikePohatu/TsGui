@@ -1,14 +1,21 @@
-Version 1.1.0.8
-Release date: 30 Jan 2020
+Version 1.1.0.9
+Release date: 5 Feb 2020
 
 *New features 
 	New Timeout configuration (see Config_Timeout.xml for details)
 
 *Fixes
-	Fixed exception caused by an off screen GuiOption (i.e. on a page that hasn't loaded yet) fails validation
+	Fixed exception caused by an off screen GuiOption (i.e. on a page that hasn't loaded yet) that fails validation
 
 *Known issues
-	An issue has been seen in the 1809 Windows 10 ADK WPF has been broekn, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions
+	An issue has been seen in the 1809 Windows 10 ADK WPF has been broekn, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
+	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
+	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
+
+*Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
+
+
+
 
 
 Version 1.1.0.6
