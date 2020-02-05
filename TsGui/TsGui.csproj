@@ -446,7 +446,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <Content Include="NLog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
     <None Include="NLog.xsd">
@@ -470,6 +470,24 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>SET ReleasePath=C:\source\release\tsgui
+
+md "%25ReleasePath%25"
+del /s /q "%25ReleasePath%25\*"
+
+md "%25ReleasePath%25\Config_Examples"
+md "%25ReleasePath%25\images"
+
+Copy /Y "$(SolutionDir)Config_Examples\*" "%25ReleasePath%25\Config_Examples"
+Copy /Y "$(SolutionDir)images\*" "%25ReleasePath%25\images"
+Copy /Y "$(SolutionDir)Release notes.txt" "%25ReleasePath%25"
+Copy /Y "$(SolutionDir)Config.xml" "%25ReleasePath%25"
+Copy /Y "$(SolutionDir)Config_demo.xml" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)NLog.config" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)NLog.dll" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)TsGui.exe" "%25ReleasePath%25"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
