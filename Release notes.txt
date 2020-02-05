@@ -1,11 +1,12 @@
-Version 1.1.0.9
-Release date: 5 Feb 2020
+Version 1.1.0.10
+Release date: 6 Feb 2020
 
 *New features 
 	New Timeout configuration (see Config_Timeout.xml for details)
 
 *Fixes
 	Fixed exception caused by an off screen GuiOption (i.e. on a page that hasn't loaded yet) that fails validation
+	Fixed bug introduced by enabling 'hit enter to finish' functionality where header would disappear, and cause null reference exceptions (regression going to 1.1.x branch)
 
 *Known issues
 	An issue has been seen in the 1809 Windows 10 ADK WPF has been broekn, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
