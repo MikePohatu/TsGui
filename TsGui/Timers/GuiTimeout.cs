@@ -28,6 +28,7 @@ namespace TsGui
         public TimeSpan TimeLeft { 
             get 
             { 
+                if (this.AfterTimer.IsEnabled == false && this.AtTimer.IsEnabled == false) { return new TimeSpan(0, 0, 0, 0); }
                 if (this._afterendtime < this.TimeoutDateTime)
                 {
                     if (this.AfterTimer.IsEnabled) { return (_afterendtime - DateTime.Now); }
@@ -123,14 +124,28 @@ namespace TsGui
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.OnTimeoutReached()));
                     return;
                 }
-                TimeSpan timeout = this.TimeoutDateTime - DateTime.Now;
-                if (timeout.TotalMilliseconds > 0)
-                {
-                    this.AtTimer.Interval = timeout;
-                    this.AtTimer.Tick += this.OnTimeoutReached;
-                    this.AtTimer.Start();
-                    LoggerFacade.Info("Timeout will occur at " + this.TimeoutDateTime);
-                }
+                this.ResetAtTimerBlock(this, new EventArgs());
+            }
+        }
+
+        private void ResetAtTimerBlock(object sender, EventArgs e)
+        {
+            this.AtTimer?.Stop();
+            this.AtTimer = new DispatcherTimer();
+            TimeSpan timeout = this.TimeoutDateTime - DateTime.Now;
+            if (timeout.TotalMinutes > 10)
+            {
+                this.AtTimer.Interval = new TimeSpan(0, 5, 0);
+                this.AtTimer.Tick += this.ResetAtTimerBlock;
+                this.AtTimer.Start();
+                LoggerFacade.Info("Timeout will occur at " + this.TimeoutDateTime);
+            }
+            else if (timeout.TotalMilliseconds > 0)
+            {
+                this.AtTimer.Interval = timeout;
+                this.AtTimer.Tick += this.OnTimeoutReached;
+                this.AtTimer.Start();
+                LoggerFacade.Info("Timeout will occur at " + this.TimeoutDateTime);
             }
         }
 
@@ -147,6 +162,11 @@ namespace TsGui
             LoggerFacade.Info("Timeout reached");
             this.AfterTimer.Stop();
             this.AtTimer.Stop();
+            if (this._resetonactivity)
+            {
+                Director.Instance.ParentWindow.MouseDown -= this.ResetElapsed;
+                Director.Instance.ParentWindow.KeyDown -= this.ResetElapsed;
+            }
             this._timeoutfunction();
         }
 
