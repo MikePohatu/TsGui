@@ -32,6 +32,9 @@ using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using TsGui.Linking;
 using TsGui.Authentication;
+using TsGui.Validation;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace TsGui
 {
@@ -132,6 +135,7 @@ namespace TsGui
 
         private void Startup()
         {
+            LoggerFacade.Debug("*TsGui startup started");
             this.StartupFinished = false;
             this._prodmode = this._envController.Init();
 
@@ -165,6 +169,7 @@ namespace TsGui
 
             if (this._pages.Count > 0)
             {
+                LoggerFacade.Debug("Loading pages");
                 this.CurrentPage = this._pages.First();
                 //update group settings to all controls
                 foreach (IToggleControl t in this._toggles)
@@ -174,6 +179,7 @@ namespace TsGui
 
                 // Now show and close the ghost window to make sure WinPE honours the 
                 // windowstartuplocation
+                LoggerFacade.Trace("Loading ghost window");
                 GhostWindow ghost = new GhostWindow();
                 ghost.Show();
                 ghost.Close();
@@ -183,6 +189,7 @@ namespace TsGui
                 this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
                 this.StartupFinished = true;
                 if ((this._debug == true) || (this._showtestwindow == true)) { this._testingwindow = new TestingWindow(this); }
+                GuiTimeout.Instance?.Start(this.OnTimeoutReached);
                 LoggerFacade.Info("*TsGui startup finished");
             }
             else 
@@ -231,6 +238,7 @@ namespace TsGui
             if (SourceXml != null)
             {
                 this.TsMainWindow.LoadXml(SourceXml);
+                GuiTimeout.Init(SourceXml.Element("Timeout"));
 
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
                 this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
@@ -343,9 +351,34 @@ namespace TsGui
         //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()
         {
+            LoggerFacade.Trace("UpdateWindow called");
             this.ParentWindow.ContentArea.Navigate(this.CurrentPage.Page);
             this.ParentWindow.ContentArea.DataContext = this.CurrentPage;
             this.CurrentPage.Update();
+        }
+
+        public void OnTimeoutReached()
+        {
+            if (GuiTimeout.Instance.IgnoreValidation == true)
+            {
+                foreach (IValidationGuiOption valop in this._optionlibrary.ValidationOptions)
+                {
+                    //validation needs disabling because LostFocus is a validation event
+                    if (valop.ValidationHandler != null) { valop.ValidationHandler.Enabled = false; }
+                    valop.ClearToolTips();
+                }
+
+                if (GuiTimeout.Instance.CancelOnTimeout == false) { this.Finish(); }
+                else { this.Cancel(); }
+            }
+            else
+            {
+                if (ResultValidator.OptionsValid(this._optionlibrary.ValidationOptions))
+                {
+                    if (GuiTimeout.Instance.CancelOnTimeout == false) { this.Finish(); }
+                    else { this.Cancel(); }
+                }
+            }
         }
 
         //finish and create the TS Variables
@@ -432,6 +465,7 @@ namespace TsGui
         {
             if (this._hardwareevaluator != null)
             {
+                LoggerFacade.Debug("Running hardware evaluator");
                 foreach (TsVariable var in this._hardwareevaluator.GetTsVariables())
                 {
                     NoUIOption newhwoption = new NoUIOption(this);

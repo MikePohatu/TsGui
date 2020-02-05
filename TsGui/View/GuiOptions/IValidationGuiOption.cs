@@ -26,5 +26,6 @@ namespace TsGui
         bool IsActive { get; }
         void ClearToolTips();
         bool Validate();
+        ValidationHandler ValidationHandler { get; }
     }
 }

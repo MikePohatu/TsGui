@@ -30,9 +30,13 @@ namespace TsGui.Validation
         private List<StringValidation> _validations = new List<StringValidation>();
         private XElement _legacyxml = new XElement("Legacy");
         private IValidationOwner _owner;
-        
+
         //Properties
         #region
+        /// <summary>
+        /// Is the validation handler enabled i.e. will validation be carried out
+        /// </summary>
+        public bool Enabled { get; set; } = true;
         public string ValidationMessage { get { return this.GetActiveValidationMessages(); } }
         public string FailedValidationMessage { get; set; }
         public int MinLength { get { return this.GetMinLength(); } }
@@ -84,6 +88,8 @@ namespace TsGui.Validation
 
         public bool IsValid(string Input)
         {
+            if (this.Enabled == false) { return true; }
+
             bool result = true;
             string s = string.Empty;
 
@@ -101,6 +107,7 @@ namespace TsGui.Validation
 
         private bool IsShorterThanMinLength(string Input)
         {
+            if (this.Enabled == false) { return true; }
             StringValidation sv = this.GetFirstActiveValidation();
             if (sv != null) { return sv.IsShorterThanMinLength(Input); }
             else { return false; }
@@ -108,6 +115,7 @@ namespace TsGui.Validation
 
         private bool IsLongerThanMaxLength(string Input)
         {
+            if (this.Enabled == false) { return true; }
             StringValidation sv = this.GetFirstActiveValidation();
             if (sv != null) { return sv.IsLongerThanMaxLength(Input); }
             else { return false; }
@@ -115,6 +123,7 @@ namespace TsGui.Validation
 
         private bool IsInvalidMatched(string Input)
         {
+            if (this.Enabled == false) { return true; }
             StringValidation sv = this.GetFirstActiveValidation();
             if (sv != null) { return sv.IsInvalidMatched(Input); }
             else { return false; }
@@ -122,6 +131,7 @@ namespace TsGui.Validation
 
         private bool IsValidMatched(string Input)
         {
+            if (this.Enabled == false) { return true; }
             StringValidation sv = this.GetFirstActiveValidation();
             if (sv != null) { return sv.IsValidMatched(Input); }
             else { return true; }

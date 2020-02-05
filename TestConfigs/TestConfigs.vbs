@@ -24,22 +24,15 @@ do while true
 		SET file = objFSO.GetFile(currentfile)
 		wscript.echo currentfile
 
-		if (file.Type = "XML Document") then
-			
-			'objFSO.CopyFile file.path,file.ParentFolder & "\\Reference\\Config.xml"
-			'objFSO.CopyFile file.path,file.ParentFolder & "\\Test\\Config.xml"
+		wscript.echo "Launching reference: " & file.name
+		objShell.Run strScriptParentFolder & "\\Reference\\TsGui.exe -config " &  file.path
+		WScript.Echo "Press [ENTER] to continue..."
+		WScript.StdIn.ReadLine
 
-			wscript.echo "Launching reference: " & file.name
-			objShell.Run strScriptParentFolder & "\\Reference\\TsGui.exe -config " &  file.path
-			WScript.Echo "Press [ENTER] to continue..."
-			WScript.StdIn.ReadLine
-
-			wscript.echo "Launching test: " & file.name
-			objShell.Run strScriptParentFolder & "\\Test\\TsGui.exe -config " &  file.path
-			WScript.Echo "Press [ENTER] to continue..."
-			WScript.StdIn.ReadLine
-			
-		end if
+		wscript.echo "Launching test: " & file.name
+		objShell.Run strScriptParentFolder & "\\Test\\TsGui.exe -config " &  file.path
+		WScript.Echo "Press [ENTER] to continue..."
+		WScript.StdIn.ReadLine
 	else 
 		wscript.echo "File not found, exiting: " & currentfile
 		exit do

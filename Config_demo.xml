@@ -1,0 +1,531 @@
+<TsGui LiveData="TRUE" >
+	<Height>330</Height>
+	<Width>500</Width>
+
+	<!--<ShowGridLines/>-->
+	<HardwareEval />
+	
+	<Heading>
+		<!--<Title>TsGui</Title>
+		<Text>Task Sequence GUI base config</Text>
+		<Bg-Color>#ff0000</Bg-Color>
+		<Image>
+			<File>avatar.jpg</File>
+			<Width>70</Width>
+			<Height>50</Height>
+			<Stretch>None</Stretch>
+		</Image>
+		<TextColor>#ff0000</TextColor>-->
+		
+		<Formatting>
+			<Height>70</Height>
+			<Label>
+				<Width>100</Width>
+				<Font>
+					<Weight>Normal</Weight>		<!-- Options available: Normal, Bold, ExtraBold, Light -->
+					<Size>11</Size>	
+					<Style>Normal</Style>		<!-- Options available: Normal, Italic, Oblique -->
+					<Color>White</Color>
+				</Font>							
+			</Label>
+				
+			<Control>
+				<Width>120</Width>
+				<Font>
+					<Weight>Normal</Weight>		<!-- Options available: Normal, Bold, ExtraBold, Light -->
+					<Size>11</Size>	
+					<Style>Normal</Style>		<!-- Options available: Normal, Italic, Oblique -->
+					<Color>Black</Color>
+				</Font>								
+			</Control>
+		</Formatting>
+		
+		
+		<Row>			
+			<Column>
+				<Width>250</Width>
+				<GuiOption Type="ComputerName">
+					<Formatting>
+						<Margin>2,12,2,2</Margin>
+						<Control>
+														
+						</Control>
+					</Formatting>
+				</GuiOption>
+			</Column>
+			<Column>
+				<Width>250</Width>
+				<GuiOption Type="Image">
+					<Image>
+						<File>TsGui-TextLogo1.png</File>
+						<Height>50</Height>
+						<Stretch>Uniform</Stretch>					
+					</Image>
+					
+					<Formatting>
+						<Width>250</Width>
+						<LeftCellWidth>100</LeftCellWidth>
+						<RightCellWidth>125</RightCellWidth>
+						
+
+						<Control>
+							<HorizontalAlignment>Right</HorizontalAlignment> 	<!-- Options available: Left, Right, Center, Stretch -->							
+						</Control>
+					</Formatting>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Heading>
+
+	<!-- Buttons config --> 
+	<Buttons>
+		<Formatting>
+			<CornerRadius>3</CornerRadius>
+		</Formatting>
+	</Buttons>
+	
+	
+	<!-- Panes config -->
+	<LeftPane>
+		<Width>50</Width>
+		<Image>
+			<File>water.jpg</File>
+			<Width>50</Width>
+			<!--<Height>170</Height>-->
+			<Stretch>UniformToFill</Stretch>					
+		</Image>
+	</LeftPane>
+	
+	<!-- *** Pages *** -->
+	<Page>
+		<Formatting>
+			<Width>110</Width>
+		</Formatting>
+
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>120</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="Heading">
+					<Label>Core Applications</Label>
+					<Bold/>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_Photoshop</Variable>
+					<Label>Photoshop</Label>
+					<HAlign>left</HAlign>
+					
+					<Toggle Group="Group_Photoshop">
+						<Enabled>TRUE</Enabled>
+						<Disabled>FALSE</Disabled>
+					</Toggle>
+					
+					<Toggle Group="Group_No_Photoshop">
+						<Enabled>FALSE</Enabled>
+						<Disabled>TRUE</Disabled>
+					</Toggle>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_Office</Variable>
+					<Label>Office</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+
+				<GuiOption Type="DropDownList" ID="source_department">
+					<Variable>VAR_Department</Variable>
+					<Label>Department:</Label>
+					<DefaultValue>HR</DefaultValue>
+					<Option>
+						<Text>IT</Text>
+						<Value>IT</Value>
+					</Option>
+					<Option>
+						<Text>Human Resources</Text>
+						<Value>HR</Value>
+					</Option>
+					<Option>
+						<Text>Payroll</Text>
+						<Value>Pay</Value>
+					</Option>
+					<Option>
+						<Text>Project Office</Text>
+						<Value>PMO</Value>
+					</Option>
+				</GuiOption>
+				
+				<GuiOption Type="DropDownList" NoDefaultValue="TRUE">
+					<!-- The NoSelectionMessage element overrides the default "Please select a value" text when nothing is selected by the user -->
+					<NoSelectionMessage>Please select something</NoSelectionMessage>
+					<Variable>Country</Variable>
+					<Label>Country:</Label>
+					<Option>
+						<Text>Australia</Text>
+						<Value>AU</Value>
+						<Toggle Group="Group_AU"/>
+					</Option>
+					<Option>
+						<Text>New Zealand</Text>
+						<Value>NZ</Value>
+						<Toggle Group="Group_NZ"/>
+					</Option>
+					<Option>
+						<Text>USA</Text>
+						<Value>USA</Value>
+						<Toggle Group="Group_USA"/>
+					</Option>
+				</GuiOption>
+			</Column>
+			
+			<Column>
+				<Width>30</Width>
+			</Column>
+
+			<Column>
+				<Formatting>
+					<Width>150</Width>
+					<LeftCellWidth>130</LeftCellWidth>
+					<RightCellWidth>20</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="Heading">
+					<Label>System readiness </Label>
+					<Bold/>
+				</GuiOption>
+				
+				<GuiOption Type="TrafficLight">
+					<Variable>Compliance_InstalledMemory</Variable>
+					<Label>Installed Memory: </Label>
+					<PopupShowValue>FALSE</PopupShowValue>
+					<GetValue>
+						<Query Type="Wmi">
+							<Wql>SELECT TotalPhysicalMemory from Win32_ComputerSystem</Wql>
+							<Property Name="TotalPhysicalMemory">
+								<Calculate DecimalPlaces="0">VALUE/1073741824</Calculate>
+							</Property>	
+							<Separator></Separator>
+						</Query>
+					</GetValue>
+					<Compliance>
+						<Group>Group_No_Photoshop</Group>
+						<Message>8GB memory is recommended.\r\nMinimum memory is 4GB</Message>			
+						<OK>
+							<Rule Type="GreaterThanOrEqualTo">8</Rule>
+						</OK>
+						<Warning>
+							<Rule Type="LessThan">8</Rule>
+						</Warning>
+						<Error>
+							<Rule Type="LessThan">4</Rule>
+						</Error>
+						<Invalid>
+							<Rule Type="LessThan">2</Rule>
+						</Invalid>
+					</Compliance>
+					
+					<Compliance>
+						<Group>Group_Photoshop</Group>					
+						<Message>16GB is recommended for Photoshop.\r\nMinimum of 8GB is required</Message>			
+						<OK>
+							<Rule Type="GreaterThanOrEqualTo">16</Rule>
+						</OK>
+						<Warning>
+							<Rule Type="LessThan">16</Rule>
+						</Warning>
+						<Error>
+							<Rule Type="LessThan">8</Rule>
+						</Error>
+						<Invalid>
+							<Rule Type="LessThan">4</Rule>
+						</Invalid>
+					</Compliance>
+				</GuiOption>
+				
+				<!-- Option to check whether the device is connected to power -->
+				<GuiOption Type="TrafficLight">
+					<Variable>Compliance_PowerStatus</Variable>
+					<Label>Power connection</Label>
+					<ShowComplianceValue>FALSE</ShowComplianceValue>
+					<SetValue>
+						<Query Type="Wmi">
+							<Wql>SELECT BatteryStatus FROM Win32_Battery</Wql>
+							<Property Name="BatteryStatus"/>	
+							<Separator></Separator>
+						</Query>
+					</SetValue>
+					<Compliance>
+						<Message>Please connect the power</Message>		
+						<DefaultState>Warning</DefaultState>
+						<OK>
+							<Rule Type="Contains">2</Rule>
+							<Rule Type="Equals">*NULL</Rule>
+						</OK>
+					</Compliance>
+				</GuiOption>
+				
+				<GuiOption Type="TrafficLight">
+					<Variable>Compliance_WifiStatus</Variable>
+					<Label>Wifi disconnected: </Label>
+					<PopupShowValue>FALSE</PopupShowValue>
+					<GetValue>
+						<Query Type="Wmi">
+							<Wql>SELECT * FROM Win32_NetworkAdapter WHERE (AdapterType="Ethernet 802.3") AND (NetConnectionStatus=2)</Wql>
+							<Property Name="Name"/>	
+							<Separator></Separator>
+						</Query>
+					</GetValue>
+					<Compliance>
+						<Message>Please disconnect the wifi</Message>		
+						<DefaultState>Warning</DefaultState>
+						<Invalid>
+							<Rule Type="Contains">Wireless</Rule>
+							<Rule Type="Contains">Wifi</Rule>
+							<Rule Type="Contains">WLAN</Rule>
+						</Invalid>
+					</Compliance>
+				</GuiOption>
+				
+				<GuiOption Type="Heading"/>
+				<GuiOption Type="ComplianceRefreshButton">
+					<Formatting>
+						<LeftCellWidth>20</LeftCellWidth>
+						<RightCellWidth>130</RightCellWidth>
+						<Control>
+							<HorizontalAlignment>Right</HorizontalAlignment>
+						</Control>
+						
+					</Formatting>
+					<HAlign>left</HAlign>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+	
+	<!-- Page 2 -->
+	<Page>
+		
+		<Row>
+			<Column>
+				<Formatting>
+					<Width>360</Width>
+					<LeftCellWidth>190</LeftCellWidth>
+					<RightCellWidth>40</RightCellWidth>
+				</Formatting>
+				
+				<GuiOption Type="Heading">
+					<Label>IT Applications</Label>
+					<Bold/>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_ExchangeConsole</Variable>
+					<Label>Exchange Console</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_RSAT</Variable>
+					<Label>Remote Server Administration Tools</Label>
+					<HAlign>left</HAlign>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="source_department"/>
+									</Query>
+								</Source>
+								<Ruleset Type="OR">
+									<Rule Type="Equals">IT</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<Else>
+								<Value>FALSE</Value>
+							</Else>
+						</Query>
+					</SetValue>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_NotepadPP</Variable>
+					<Label>Notepad++</Label>
+					<HAlign>left</HAlign>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="source_department"/>
+									</Query>
+								</Source>
+								<Ruleset Type="OR">
+									<Rule Type="Equals">IT</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<Else>
+								<Value>FALSE</Value>
+							</Else>
+						</Query>
+					</SetValue>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_7zip</Variable>
+					<Label>7zip</Label>
+					<HAlign>left</HAlign>
+				</GuiOption>
+			
+			</Column>
+			
+			<Column>	
+				<Formatting>
+					<Width>360</Width>
+					<LeftCellWidth>170</LeftCellWidth>
+					<RightCellWidth>30</RightCellWidth>
+				</Formatting>
+				<GuiOption Type="Heading">
+					<Label>Business Applications</Label>
+					<Bold/>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_Payroll</Variable>
+					<Label>Payroll application</Label>
+					<HAlign>left</HAlign>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="source_department"/>
+									</Query>
+								</Source>
+								<Ruleset Type="OR">
+									<Rule Type="Equals">HR</Rule>
+									<Rule Type="Equals">Pay</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<Else>
+								<Value>FALSE</Value>
+							</Else>
+						</Query>
+					</SetValue>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_HR</Variable>
+					<Label>HR Application</Label>
+					<HAlign>left</HAlign>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="source_department"/>
+									</Query>
+								</Source>
+								<Ruleset Type="OR">
+									<Rule Type="Equals">HR</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<Else>
+								<Value>FALSE</Value>
+							</Else>
+						</Query>
+					</SetValue>
+				</GuiOption>
+
+				<GuiOption Type="CheckBox">
+					<Variable>App_MSProject</Variable>
+					<Label>Microsoft Project</Label>
+					<HAlign>left</HAlign>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="source_department"/>
+									</Query>
+								</Source>
+								<Ruleset Type="OR">
+									<Rule Type="Equals">PMO</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<Else>
+								<Value>FALSE</Value>
+							</Else>
+						</Query>
+					</SetValue>
+				</GuiOption>
+				
+				<GuiOption Type="CheckBox">
+					<Variable>App_MSVisio</Variable>
+					<Label>Microsoft Visio</Label>
+					<HAlign>left</HAlign>
+					<SetValue>
+						<Query Type="IfElse">
+							<IF>
+								<Source>
+									<Query Type="OptionValue">
+										<ID Name="source_department"/>
+									</Query>
+								</Source>
+								<Ruleset Type="OR">
+									<Rule Type="Equals">IT</Rule>
+								</Ruleset>
+								<Result>
+									<Value>TRUE</Value>
+								</Result>
+							</IF>
+							<Else>
+								<Value>FALSE</Value>
+							</Else>
+						</Query>
+					</SetValue>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+
+	<!-- *** NoUI section *** -->
+	<NoUI>
+		<!-- Containers are used for for inheritance purposes. They function like pages, rows, and columns, e.g. 
+		group membership effects all NoUIOptions and Containers below. -->
+		<Container PurgeInactive="TRUE">
+			<Group>Group_NZ</Group>
+			<NoUIOption Variable="OSDRegisteredOrgName" Value="Org New Zealand"/>
+			<NoUIOption Variable="OSDTimeZone" Value="New Zealand Standard Time"/>
+		</Container>
+		
+		<Container PurgeInactive="TRUE">
+			<Group>Group_AU</Group>
+			<NoUIOption Variable="OSDRegisteredOrgName" Value="Org Australia"/>
+			<NoUIOption Variable="OSDTimeZone" Value="AUS Eastern Standard Time"/>
+		</Container>
+		
+		<Container PurgeInactive="TRUE">
+			<Group>Group_USA</Group>
+			<NoUIOption Variable="OSDRegisteredOrgName" Value="Org US"/>
+			<NoUIOption Variable="OSDTimeZone" Value="Eastern Standard Time"/>
+		</Container>
+	</NoUI>
+</TsGui>

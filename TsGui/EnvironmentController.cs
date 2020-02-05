@@ -24,6 +24,7 @@ using TsGui.Queries;
 using TsGui.Validation;
 using TsGui.Connectors;
 using TsGui.Linking;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui
 {
@@ -54,6 +55,7 @@ namespace TsGui
             }
             catch
             {
+                LoggerFacade.Trace("Couldn't create SCCM connector. Creating testing connector");
                 this._outputconnector = new TestingConnector();           
                 return false;
             }
@@ -68,102 +70,6 @@ namespace TsGui
         {
             this._outputconnector.AddVariable(Variable);
         }
-
-
-        //public string GetStringValueFromList(XElement InputXml, ILinkingTarget targetoption)
-        //{
-        //    this._controller.LinkingLibrary.AddTarget(targetoption);
-
-        //}
-
-        /// <summary>
-        /// Input a list of options as xml. Return the value of the first one that exists. 
-        /// Return null if nothing is found. 
-        /// </summary>
-        /// <param name="InputXml"></param>
-        /// <returns></returns>
-        //public string GetStringValueFromList_old(XElement InputXml)
-        //{
-        //    string s = null;
-
-        //    foreach (XElement x in InputXml.Elements())
-        //    {
-        //        IQuery newquery = QueryFactory.GetQueryObject(x, this._controller);
-        //        if (newquery.Ignore == false)
-        //        {
-        //            s = newquery.GetResultWrangler().GetString();
-        //            break;
-        //        }
-        //    }
-
-        //    return s;
-        //}
-
-
-        /// <summary>
-        /// Input a list of options as xml. Return a dictionary of results 
-        /// </summary>
-        /// <param name="InputXml"></param>
-        /// <returns></returns>
-        //public Dictionary<string, string> GetDictionaryFromList_old(XElement InputXml)
-        //{
-        //    return this.GetResultWranglerFromQuery(InputXml).GetDictionary();
-        //}
-
-        /// <summary>
-        /// Input a list of options as xml. Return a List<KeyValuePair<string,<string>> of results 
-        /// </summary>
-        /// <param name="InputXml"></param>
-        /// <returns></returns>
-        //public List<KeyValuePair<string,string>> GetKeyValueListFromList_old(XElement InputXml)
-        //{
-        //    return this.GetResultWranglerFromQuery(InputXml).GetKeyValueList();
-        //}
-
-
-        //worker method for the public getdictionary and getkeyvaluelist methods above. builds and returns the wrangler that
-        //can return the data in the right format. 
-        //private ResultWrangler GetResultWranglerFromQuery_old(XElement InputXml)
-        //{
-        //    IQuery newquery = QueryFactory.GetQueryObject(InputXml, this._controller);
-        //    return newquery.ProcessQuery();
-        //}
-
-        /// <summary>
-        /// Process a <Query Type="GuiOption"> block and return the ResultWrangler
-        /// </summary>
-        /// <param name="InputXml"></param>
-        /// <returns></returns>
-        //private ResultWrangler GetResultWranglerFromGuiOption_old(XElement InputXml)
-        //{
-        //    ResultWrangler wrangler = new ResultWrangler();
-        //    PropertyFormatter rf;
-        //    XElement x;
-        //    XAttribute xattrib;
-
-        //    wrangler.NewResult();
-
-        //    x = InputXml.Element("ID");
-        //    if (x != null)
-        //    {
-        //        //check for new xml syntax. If the name attribute doesn't exist, setup for the 
-        //        //legacy layout.
-        //        xattrib = x.Attribute("Name");
-        //        if (xattrib == null)
-        //        {
-        //            rf = new PropertyFormatter();
-        //            rf.Name = x.Value;
-        //        }
-        //        else
-        //        {
-        //            rf = new PropertyFormatter(x);
-        //        }
-
-        //        wrangler.AddPropertyFormatter(rf);
-        //    }
-
-        //    return wrangler;
-        //}
 
         //release the output connectors.
         public void Release()

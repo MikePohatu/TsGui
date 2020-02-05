@@ -117,6 +117,12 @@ namespace TsGui.View.GuiOptions
                 RootController.AddOptionToLibary(option);
                 return option;
             }
+            else if (xtype.Value == "Timeout")
+            {
+                TsTimeout option = new TsTimeout(OptionXml, Parent, RootController);
+                RootController.AddOptionToLibary(option);
+                return option;
+            }
             else
             { return null; }
             #endregion

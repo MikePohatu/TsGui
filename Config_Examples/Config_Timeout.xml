@@ -1,0 +1,51 @@
+﻿<TsGui LiveData="TRUE" Debug="FALSE">
+  <Height>300</Height>
+  <Width>600</Width>
+
+  <Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI timeout example config</Text>
+	</Heading>
+  
+  <!-- Timeout section sets time after which TsGui will forcibly close.
+    This will happen either after the specified elapsed time in <After>, 
+    or at the the specified in <At>, whichever comes first. If <At> has already 
+    passed, TsGui will immediately exit-->
+  <Timeout>
+    <After>
+      <Days>0</Days>
+      <Hours>0</Hours>
+      <Minutes>5</Minutes>
+      <Seconds>0</Seconds>
+      <Milliseconds>0</Milliseconds>
+    </After>
+
+    <At>2040-01-30 15:30:00</At> <!-- This must be in the format YYYY-MM-dd HH:mm:ss -->
+    
+    <IgnoreValidation>TRUE</IgnoreValidation> <!-- If you set this to FALSE, TsGui will not close if there are invalid values in the gui -->
+    <ResetOnActivity>FALSE</ResetOnActivity> <!-- Setting this to TRUE will restart the countdown set in <After> when a mouse click or key press is detected -->
+    <CancelOnTimeout>FALSE</CancelOnTimeout> <!-- Setting this to TRUE will cancel rather than finish TsGui -->
+  </Timeout>
+
+  <Page>
+    <Row>
+      <Column>
+        <Formatting>
+          <Width>280</Width>
+          <LeftCellWidth>110</LeftCellWidth>
+          <RightCellWidth>160</RightCellWidth>
+        </Formatting>
+
+        <!-- GuiOptions -->
+        <GuiOption Type="ComputerName" />
+
+  
+        <!-- The Timeout GuiOption will display the timeout information from the <Timeout> section above. -->
+        <GuiOption Type="Timeout">
+          <Label>Timeout: </Label>
+          <ShowElapsed>TRUE</ShowElapsed> <!-- If you set ShowElapsed to FALSE the specific date set in <At> will be displayed -->
+        </GuiOption>
+      </Column>
+    </Row>
+  </Page>
+</TsGui>
