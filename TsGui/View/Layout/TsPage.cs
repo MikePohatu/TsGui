@@ -19,7 +19,8 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Threading;
-
+using System.Windows.Input
+;
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
@@ -29,7 +30,7 @@ using System;
 
 namespace TsGui.View.Layout
 {
-    public class TsPage: BaseLayoutElement, IRootLayoutElement
+    public class TsPage : BaseLayoutElement, IRootLayoutElement
     {
         public event ComplianceRetryEventHandler ComplianceRetry;
 
@@ -69,9 +70,9 @@ namespace TsGui.View.Layout
         {
             get { return this._nextpage; }
             set { this.ConnectNextPage(value); }
-        }        
+        }
         public List<IGuiOption> Options { get { return this._table.Options; } }
-        public TsPageUI Page { get; private set; }
+        public TsPageUI Page { get; }
         public bool IsFirst { get; set; } = false;
         #endregion
 
@@ -86,7 +87,7 @@ namespace TsGui.View.Layout
         /// <param name="e"></param>
         public void OnPageLoaded(object o, RoutedEventArgs e)
         {
-            this.PageWindowLoaded?.Invoke(o,e);
+            this.PageWindowLoaded?.Invoke(o, e);
             foreach (IGuiOption opt in this._table.Options)
             {
                 if (opt.IsEnabled && opt.InteractiveControl?.Focusable == true)
@@ -99,9 +100,9 @@ namespace TsGui.View.Layout
         #endregion
 
         //Constructors
-        public TsPage(XElement SourceXml, PageDefaults Defaults, IDirector MainController):base (MainController)
+        public TsPage(XElement SourceXml, PageDefaults Defaults, IDirector MainController) : base(MainController)
         {
-            //this._controller = Defaults.RootController;
+            //this._director = Defaults.RootController;
             LoggerFacade.Info("New page created");
             this.ShowGridLines = MainController.ShowGridLines;
             this.Page = new TsPageUI(this);
@@ -114,6 +115,7 @@ namespace TsGui.View.Layout
             this.GroupingStateChange += this.OnPageHide;
             this.Page.DataContext = this;
             this.Page.ButtonGrid.DataContext = Defaults.Buttons;
+            this.Page.KeyDown += this.OnKeyDown;
 
             this.LoadXml(SourceXml);
             this.Update();
@@ -130,7 +132,7 @@ namespace TsGui.View.Layout
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
 
             x = InputXml.Element("Heading");
-            if (x != null) { this.PageHeader = new TsPageHeader(this,this.PageHeader,x,this._director); }
+            if (x != null) { this.PageHeader = new TsPageHeader(this, this.PageHeader, x, this._director); }
 
             x = InputXml.Element("LeftPane");
             if (x != null) { this.LeftPane = new TsPane(x, this._director); }
@@ -158,16 +160,19 @@ namespace TsGui.View.Layout
 
         public void MovePrevious()
         {
-            foreach (IValidationGuiOption option in this._table.ValidationOptions)
-            { option.ClearToolTips(); }
+            if (this._previouspage != null)
+            {
+                foreach (IValidationGuiOption option in this._table.ValidationOptions)
+                { option.ClearToolTips(); }
 
-            this.ReleaseThisPage();
-            this._director.MovePrevious();
+                this.ReleaseThisPage();
+                this._director.MovePrevious();
+            }
         }
 
         public void MoveNext()
         {
-            if (this.OptionsValid() == true)
+            if (this._nextpage != null && this.OptionsValid() == true)
             {
                 this.ReleaseThisPage();
                 this._director.MoveNext();
@@ -201,12 +206,15 @@ namespace TsGui.View.Layout
             this.Page.HeaderPresenter.Content = this.PageHeader.UI;
             this.Page.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
             this.Page.RightPanePresenter.Content = this.RightPane?.PaneUI;
-            TsButtons.Update(this, this.Page);            
+            TsButtons.Update(this, this.Page);
         }
 
         public void OnPageHide(object o, GroupingEventArgs e)
         {
-            if (e.GroupStateChanged == GroupStateChanged.IsHidden) { this._director.CurrentPage.Update(); }
+            if (e.GroupStateChanged == GroupStateChanged.IsHidden)
+            {
+                this._director.CurrentPage.Update();
+            }
         }
 
         public void RaiseComplianceRetryEvent()
@@ -222,6 +230,22 @@ namespace TsGui.View.Layout
         private void ConnectPrevPage(TsPage NewPrevPage)
         {
             this._previouspage = NewPrevPage;
+        }
+
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+            {
+                if (e.SystemKey == Key.Right)
+                {
+                    this.MoveNext();
+                }
+                else if (e.SystemKey == Key.Left)
+                {
+                    this.MovePrevious();
+                }
+                e.Handled = true;
+            }
         }
     }
 }
