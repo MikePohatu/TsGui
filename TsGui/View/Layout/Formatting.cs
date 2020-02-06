@@ -37,6 +37,8 @@ namespace TsGui.View.Layout
         private Thickness _padding;        
         private VerticalAlignment _verticalalign;
         private HorizontalAlignment _horizontalalign;
+        private VerticalAlignment _verticalcontentalign;
+        private HorizontalAlignment _horizontcontentalalign;
         private TextAlignment _textalign;
         private SolidColorBrush _bordercolorbrush;
         private SolidColorBrush _focusedcolorbrush;
@@ -101,6 +103,19 @@ namespace TsGui.View.Layout
             get { return this._horizontalalign; }
             set { this._horizontalalign = value; this.OnPropertyChanged(this, "HorizontalAlignment"); }
         }
+
+        public VerticalAlignment VerticalContentAlignment
+        {
+            get { return this._verticalcontentalign; }
+            set { this._verticalcontentalign = value; this.OnPropertyChanged(this, "VerticalContentAlignment"); }
+        }
+
+        public HorizontalAlignment HorizontalContentAlignment
+        {
+            get { return this._horizontcontentalalign; }
+            set { this._horizontcontentalalign = value; this.OnPropertyChanged(this, "HorizontalContentAlignment"); }
+        }
+
         public TextAlignment TextAlignment
         {
             get { return this._textalign; }
@@ -152,6 +167,8 @@ namespace TsGui.View.Layout
             this.Padding = new Thickness(2, 2, 2, 2);
             this.VerticalAlignment = VerticalAlignment.Bottom;
             this.HorizontalAlignment = HorizontalAlignment.Left;
+            this.HorizontalContentAlignment = HorizontalAlignment.Left;
+            this.VerticalAlignment = VerticalAlignment.Bottom;
             this.TextAlignment = TextAlignment.Left;
             this.BorderBrush = new SolidColorBrush(Colors.Gray);
             this.MouseOverBorderBrush = new SolidColorBrush(Colors.DarkGray);
@@ -171,6 +188,8 @@ namespace TsGui.View.Layout
             this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", this.Margin);
             this.VerticalAlignment = XmlHandler.GetVerticalAlignmentFromXElement(InputXml, "VerticalAlignment", this.VerticalAlignment);
             this.HorizontalAlignment = XmlHandler.GetHorizontalAlignmentFromXElement(InputXml, "HorizontalAlignment", this.HorizontalAlignment);
+            this.VerticalContentAlignment = XmlHandler.GetVerticalAlignmentFromXElement(InputXml, "VerticalContentAlignment", this.VerticalContentAlignment);
+            this.HorizontalContentAlignment = XmlHandler.GetHorizontalAlignmentFromXElement(InputXml, "HorizontalContentAlignment", this.HorizontalContentAlignment);
             this.TextAlignment = XmlHandler.GetTextAlignmentFromXElement(InputXml, "TextAlignment", this.TextAlignment);
 
             x = InputXml.Element("Font");
@@ -197,6 +216,8 @@ namespace TsGui.View.Layout
             f.Margin = this.Margin;
             f.HorizontalAlignment = this.HorizontalAlignment;
             f.VerticalAlignment = this.VerticalAlignment;
+            f.HorizontalContentAlignment = this.HorizontalContentAlignment;
+            f.VerticalContentAlignment = this.VerticalContentAlignment;
             f.TextAlignment = this.TextAlignment;
             f.BorderBrush = this.BorderBrush.Clone();
             f.FocusedBorderBrush = this.FocusedBorderBrush.Clone();

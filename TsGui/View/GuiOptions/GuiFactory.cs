@@ -20,6 +20,7 @@ using System;
 using System.Xml.Linq;
 using System.Windows;
 using TsGui.Diagnostics.Logging;
+using TsGui.Diagnostics;
 using TsGui.View.GuiOptions.CollectionViews;
 
 namespace TsGui.View.GuiOptions
@@ -119,6 +120,7 @@ namespace TsGui.View.GuiOptions
             }
             else if (xtype.Value == "Timeout")
             {
+                if (GuiTimeout.Instance == null) { throw new TsGuiKnownException("No Timeout section defined in config. Timeout GuiOption type not available", string.Empty); }
                 TsTimeout option = new TsTimeout(OptionXml, Parent, RootController);
                 RootController.AddOptionToLibary(option);
                 return option;

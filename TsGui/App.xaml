@@ -16,6 +16,8 @@
                 <Setter Property="Control.Margin" Value="{Binding LabelFormatting.Margin}"/>
                 <Setter Property="Control.VerticalAlignment" Value="{Binding LabelFormatting.VerticalAlignment}"/>
                 <Setter Property="Control.HorizontalAlignment" Value="{Binding LabelFormatting.HorizontalAlignment}"/>
+                <Setter Property="Control.HorizontalContentAlignment" Value="{Binding LabelFormatting.HorizontalContentAlignment}"/>
+                <Setter Property="Control.VerticalContentAlignment" Value="{Binding LabelFormatting.VerticalContentAlignment}"/>
                 <Setter Property="Control.Padding" Value="{Binding LabelFormatting.Padding}"/>
                 <Setter Property="Control.FontWeight" Value="{Binding Path=LabelFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
                 <Setter Property="Control.FontStyle" Value="{Binding Path=LabelFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
@@ -46,6 +48,8 @@
                 <Setter Property="Control.Margin" Value="{Binding ControlFormatting.Margin}"/>
                 <Setter Property="Control.VerticalAlignment" Value="{Binding ControlFormatting.VerticalAlignment}"/>
                 <Setter Property="Control.HorizontalAlignment" Value="{Binding ControlFormatting.HorizontalAlignment}"/>
+                <Setter Property="Control.HorizontalContentAlignment" Value="{Binding ControlFormatting.HorizontalContentAlignment}"/>
+                <Setter Property="Control.VerticalContentAlignment" Value="{Binding ControlFormatting.VerticalContentAlignment}"/>
                 <Setter Property="Control.Padding" Value="{Binding ControlFormatting.Padding}"/>
                 <Setter Property="Control.FontWeight" Value="{Binding Path=ControlFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
                 <Setter Property="Control.FontStyle" Value="{Binding Path=ControlFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
@@ -113,6 +117,8 @@
                 <Setter Property="Control.Padding" Value="0"/>
                 <Setter Property="Control.VerticalAlignment" Value="Stretch"/>
                 <Setter Property="Control.HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="Control.HorizontalContentAlignment" Value="{Binding ItemFormatting.HorizontalContentAlignment}"/>
+                <Setter Property="Control.VerticalContentAlignment" Value="{Binding ItemFormatting.VerticalContentAlignment}"/>
                 <Setter Property="Foreground" Value="{Binding ItemFormatting.FontColorBrush}"/>
                 <Setter Property="Control.FontWeight" Value="{Binding Path=ItemFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
                 <Setter Property="Control.FontStyle" Value="{Binding Path=ItemFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>

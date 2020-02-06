@@ -24,6 +24,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="300">
-    <TextBlock x:Name="Control" Text="{Binding ControlText, Converter={StaticResource XmlStringLine}}" Style="{StaticResource ControlStyle}" TextWrapping="Wrap"
-               Foreground="{Binding ControlFormatting.FontColorBrush}"/>
+    <Grid>
+        <TextBlock x:Name="Control" Text="{Binding ControlText, Converter={StaticResource XmlStringLine}}" Style="{StaticResource ControlStyle}" TextWrapping="Wrap"
+                   Foreground="{Binding ControlFormatting.FontColorBrush}" VerticalAlignment="{Binding ControlFormatting.VerticalContentAlignment}" Height="Auto"/>
+    </Grid>
 </UserControl>

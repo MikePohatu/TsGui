@@ -34,7 +34,7 @@ PageLayout.xaml - main layout for each page.
         <Grid.RowDefinitions>
             <RowDefinition x:Name="HeadingRow" Height="{Binding PageHeader.Height}"/>
             <RowDefinition x:Name="MainRow" Height="100*"/>
-            <RowDefinition x:Name="ButtonRow" Height="50" />
+            <RowDefinition x:Name="ButtonRow" Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="HeaderAreaGrid">
             <ContentPresenter x:Name="HeaderPresenter"/>
@@ -53,7 +53,13 @@ PageLayout.xaml - main layout for each page.
 
         </Grid>
         <Grid x:Name="ButtonAreaGrid"  Grid.Row="2" Background="#FFF3F2F2" ShowGridLines="{Binding ShowGridLines}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid x:Name="ButtonGrid" Margin="10,10,10,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*"></ColumnDefinition>
                     <ColumnDefinition Width="80"></ColumnDefinition>

@@ -104,6 +104,14 @@ namespace TsGui.View.Layout
             this.SetDefaults();
         }
 
+        private void SetDefaults()
+        {
+            this._controlformatting.VerticalAlignment = VerticalAlignment.Center;
+            this._controlformatting.HorizontalAlignment = HorizontalAlignment.Center;
+            this._controlformatting.Width = 75;
+            this._controlformatting.Height = 30;
+        }
+
         public void LoadXml(XElement InputXml)
         {
             if (InputXml == null) { return; }
@@ -154,13 +162,6 @@ namespace TsGui.View.Layout
                 Layout.buttonPrev.Visibility = Visibility.Hidden;
                 Layout.buttonPrev.IsEnabled = false;
             }
-        }
-
-        private void SetDefaults()
-        {
-            this._controlformatting.VerticalAlignment = VerticalAlignment.Center;
-            this._controlformatting.Width = 75;
-            this._controlformatting.Height = 30;
         }
     }
 }
