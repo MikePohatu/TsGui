@@ -46,11 +46,11 @@
                 <Setter Property="Control.Height" Value="{Binding ControlFormatting.Height}"/>
                 <Setter Property="Control.Width" Value="{Binding ControlFormatting.Width}"/>
                 <Setter Property="Control.Margin" Value="{Binding ControlFormatting.Margin}"/>
+                <Setter Property="Control.Padding" Value="{Binding ControlFormatting.Padding}"/>
                 <Setter Property="Control.VerticalAlignment" Value="{Binding ControlFormatting.VerticalAlignment}"/>
                 <Setter Property="Control.HorizontalAlignment" Value="{Binding ControlFormatting.HorizontalAlignment}"/>
                 <Setter Property="Control.HorizontalContentAlignment" Value="{Binding ControlFormatting.HorizontalContentAlignment}"/>
                 <Setter Property="Control.VerticalContentAlignment" Value="{Binding ControlFormatting.VerticalContentAlignment}"/>
-                <Setter Property="Control.Padding" Value="{Binding ControlFormatting.Padding}"/>
                 <Setter Property="Control.FontWeight" Value="{Binding Path=ControlFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
                 <Setter Property="Control.FontStyle" Value="{Binding Path=ControlFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
                 <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
@@ -113,8 +113,8 @@
 
             <Style x:Key="CollectionItemLabelStyle" TargetType="Label">
                 <Setter Property="Control.Height" Value="Auto"/>
-                <Setter Property="Control.Margin" Value="{Binding ItemFormatting.Margin}"/>
-                <Setter Property="Control.Padding" Value="{Binding ItemFormatting.Padding}"/>
+                <Setter Property="Control.Margin" Value="0"/>
+                <Setter Property="Control.Padding" Value="0"/>
                 <Setter Property="Control.VerticalAlignment" Value="Stretch"/>
                 <Setter Property="Control.HorizontalAlignment" Value="Stretch"/>
                 <Setter Property="Control.HorizontalContentAlignment" Value="{Binding ItemFormatting.HorizontalContentAlignment}"/>

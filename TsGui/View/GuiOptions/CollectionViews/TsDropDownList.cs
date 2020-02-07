@@ -51,6 +51,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             this._director.WindowLoaded += this.OnLoadReload;
             this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
+            this._dropdownlistui.Control.LostFocus += this.OnLostFocus;
             this.UserControl.IsEnabledChanged += this.OnActiveChanged;
             this.UserControl.IsVisibleChanged += this.OnActiveChanged;
         }
@@ -123,6 +124,19 @@ namespace TsGui.View.GuiOptions.CollectionViews
             foreach (Group g in this._itemGroups.Values)
             {
                 g.StateEvent += this.OnDropDownListItemGroupEvent;
+            }
+        }
+
+        private void OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (this.CurrentItem == null)
+            {
+                SetComboBoxDefault();
+            }
+            else
+            {
+                //this makes sure the text is updated properly if the user has left it half complete
+                this._dropdownlistui.Control.Text = this.CurrentItem.Text;
             }
         }
     }

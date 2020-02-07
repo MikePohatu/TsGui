@@ -25,5 +25,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="300">
 
-    <Label x:Name="Label" Content="{Binding LabelText}" Style="{StaticResource LabelStyle}"  />
+    <Border BorderThickness="1" BorderBrush="Transparent">
+        <Label x:Name="Label" Content="{Binding LabelText}" Style="{StaticResource LabelStyle}"  />
+    </Border>
 </UserControl>

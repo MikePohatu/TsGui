@@ -21,6 +21,7 @@ using TsGui.View.Layout;
 using TsGui.Grouping;
 using TsGui.Diagnostics.Logging;
 using TsGui.View.Symbols;
+using System.Windows;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -126,6 +127,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
             Group g = base.AddGroup(GroupID);
             this._parent.AddItemGroup(g);
             return g;
+        }
+
+        public override string ToString()
+        {
+            return this.Text;
         }
     }
 }

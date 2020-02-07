@@ -24,7 +24,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="20">
-    <Border x:Name="CbBorder" Width="NaN" Height="NaN" HorizontalAlignment="{Binding ControlFormatting.HorizontalAlignment}" VerticalAlignment="{Binding ControlFormatting.VerticalAlignment}">
+    <Border x:Name="CbBorder" Width="NaN" Height="NaN"
+            HorizontalAlignment="{Binding ControlFormatting.HorizontalAlignment}" VerticalAlignment="{Binding ControlFormatting.VerticalAlignment}">
         <CheckBox x:Name="CheckBox" IsChecked="{Binding IsChecked}" Style="{StaticResource ControlStyle}"/>
     </Border>
 </UserControl>

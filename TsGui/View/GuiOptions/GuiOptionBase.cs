@@ -143,11 +143,6 @@ namespace TsGui.View.GuiOptions
             
         }
 
-        private void SetDefaults()
-        {
-            this.LabelFormatting.Padding = new Thickness(3, 0, 0, 0);
-        }
-
         private void SetLayoutRightLeft()
         {
             if (this.LabelOnRight == false)

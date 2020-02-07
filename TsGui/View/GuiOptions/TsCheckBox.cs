@@ -149,8 +149,6 @@ namespace TsGui.View.GuiOptions
         {
             if (Director.Instance.UseTouchDefaults == true)
             {
-                //ScaleTransform scale = new ScaleTransform(1.5,1.5);
-                //cbui.RenderTransform = scale;
                 this.ControlFormatting.Margin = new Thickness(5, 5, 5, 5);
                 this._checkboxui.CbBorder.TouchDown += this.OnBorderTouched;
                 this._checkboxui.CbBorder.MouseLeftButtonDown += this.OnBorderTouched;

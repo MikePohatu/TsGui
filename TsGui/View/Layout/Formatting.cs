@@ -161,7 +161,7 @@ namespace TsGui.View.Layout
             {
                 this.FontSize = 14;
                 this.Margin = new Thickness(4, 4, 4, 4);
-                this.Padding = new Thickness(2, 5, 2, 5);
+                this.Padding = new Thickness(6, 8, 6, 8);
             }
             else
             {
