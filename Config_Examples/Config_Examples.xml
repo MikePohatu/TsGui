@@ -20,6 +20,11 @@ GuiOption types:
   <!-- The showgridlines option is used for assisting with layout design
 	<ShowGridLines /> 
 	-->
+
+  <!-- The UseTouchDefaults option is used to adjust the default sizing of controls to be better suited to touch input
+	<UseTouchDefaults /> 
+	-->
+  
   <Height>300</Height>
   <Width>600</Width>
 
