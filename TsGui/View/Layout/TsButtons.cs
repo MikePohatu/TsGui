@@ -108,8 +108,17 @@ namespace TsGui.View.Layout
         {
             this._controlformatting.VerticalAlignment = VerticalAlignment.Center;
             this._controlformatting.HorizontalAlignment = HorizontalAlignment.Center;
-            this._controlformatting.Width = 75;
-            this._controlformatting.Height = 30;
+            if (Director.Instance.UseTouchDefaults == true)
+            {
+                this._controlformatting.Width = 75;
+                this._controlformatting.Height = 45;
+            }
+            else
+            {
+                this._controlformatting.Width = 75;
+                this._controlformatting.Height = 30;
+            }
+            
         }
 
         public void LoadXml(XElement InputXml)

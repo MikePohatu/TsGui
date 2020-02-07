@@ -123,7 +123,14 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
-            this.ControlFormatting.Padding = new Thickness(3, 2, 3, 2);
+            if (Director.Instance.UseTouchDefaults==true)
+            {
+                this.ControlFormatting.Padding = new Thickness(3, 5, 3, 5);
+            }
+            else
+            {
+                this.ControlFormatting.Padding = new Thickness(3, 2, 3, 2);
+            }
         }
 
         public new void LoadXml(XElement InputXml)

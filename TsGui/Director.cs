@@ -56,14 +56,14 @@ namespace TsGui
         private string _configpath;
         private bool _prodmode = false;
         private bool _finished = false;
-        private TsButtons _buttons = new TsButtons();
-        private List<TsPage> _pages = new List<TsPage>();
+        private TsButtons _buttons;
+        private List<TsPage> _pages;
         private EnvironmentController _envController;
-        private LinkingLibrary _linkinglibrary = new LinkingLibrary();
-        private GroupLibrary _grouplibrary = new GroupLibrary();
-        private List<IToggleControl> _toggles = new List<IToggleControl>();
-        private OptionLibrary _optionlibrary = new OptionLibrary();
-        private AuthLibrary _authlibrary = new AuthLibrary();
+        private LinkingLibrary _linkinglibrary;
+        private GroupLibrary _grouplibrary;
+        private List<IToggleControl> _toggles;
+        private OptionLibrary _optionlibrary;
+        private AuthLibrary _authlibrary;
         private HardwareEvaluator _hardwareevaluator;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
@@ -81,7 +81,8 @@ namespace TsGui
         public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
-        public bool ShowGridLines { get; set; }
+        public bool ShowGridLines { get; private set; }
+        public bool UseTouchDefaults { get; private set; }
 
         //constructors
         private Director()
@@ -95,6 +96,12 @@ namespace TsGui
         {
             LoggerFacade.Trace("MainController initializing");
             this._envController = new EnvironmentController(this);
+            this._pages = new List<TsPage>();
+            this._linkinglibrary = new LinkingLibrary();
+            this._grouplibrary = new GroupLibrary();
+            this._toggles = new List<IToggleControl>();
+            this._optionlibrary = new OptionLibrary();
+            this._authlibrary = new AuthLibrary();
             this._configpath = Arguments.ConfigFile;
             this.ParentWindow = ParentWindow;
             this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
@@ -248,6 +255,10 @@ namespace TsGui
                 if ((x != null) && (this._prodmode == false))
                 { this.ShowGridLines = true; }
 
+                x = SourceXml.Element("UseTouchDefaults");
+                if (x != null)
+                { this.UseTouchDefaults = true; }
+
                 //turn hardware eval on or off
                 x = SourceXml.Element("HardwareEval");
                 if (x != null)
@@ -258,6 +269,7 @@ namespace TsGui
                     this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth, this));
                 }
 
+                this._buttons = new TsButtons();
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
                 PageDefaults pagedef = new PageDefaults();
 
@@ -272,7 +284,7 @@ namespace TsGui
                 x = SourceXml.Element("RightPane");
                 if (x != null) { pagedef.RightPane = new TsPane(x, this); }
                 else { pagedef.RightPane = new TsPane(this); }
-
+                
                 pagedef.Buttons = this._buttons;
                 pagedef.Parent = this.TsMainWindow;
                 pagedef.RootController = this;

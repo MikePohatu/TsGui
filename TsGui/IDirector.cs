@@ -43,7 +43,9 @@ namespace TsGui
         bool StartupFinished { get; set; }
         MainWindow ParentWindow { get; set; }
         TsPage CurrentPage { get; set; }
-        bool ShowGridLines { get; set; }
+        bool ShowGridLines { get; }
+
+        bool UseTouchDefaults { get; }
 
         void Init(MainWindow ParentWindow, Arguments Arguments);
         void CloseWithError(string Title, string Message);

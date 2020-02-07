@@ -25,9 +25,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="300" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}">
-    <StackPanel x:Name="MainPanel" Width="{Binding Width}" Height="{Binding Height}" 
-                ToolTip="{Binding HelpText, Converter={StaticResource XmlStringLine}}" Margin="{Binding Margin}" Orientation="Horizontal" >
-        <ContentPresenter x:Name="LeftPresenter" Width="{Binding LeftCellWidth}"/>
-        <ContentPresenter x:Name="RightPresenter" Width="{Binding RightCellWidth}"/>
-    </StackPanel>
+    <Grid x:Name="MainPanel" Width="{Binding Width}" Height="{Binding Height}" ToolTip="{Binding HelpText, Converter={StaticResource XmlStringLine}}" Margin="{Binding Margin}" ShowGridLines="{Binding ShowGridLines}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ContentPresenter x:Name="LeftPresenter" Grid.Column="0" Width="{Binding LeftCellWidth}"/>
+        <ContentPresenter x:Name="RightPresenter" Grid.Column="1" Width="{Binding RightCellWidth}"/>
+    </Grid>
 </UserControl>

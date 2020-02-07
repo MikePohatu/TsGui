@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Queries;
+using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace TsGui.View.GuiOptions
 {
@@ -30,6 +32,7 @@ namespace TsGui.View.GuiOptions
     {
         public event ToggleEvent ToggleEvent;
 
+        private TsCheckBoxUI _checkboxui;
         private bool _ischecked;
         private string _valTrue = "TRUE";
         private string _valFalse = "FALSE";
@@ -72,6 +75,7 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;
             TsCheckBoxUI cbui = new TsCheckBoxUI();
             this.Control = cbui;
+            this._checkboxui = cbui;
             this.InteractiveControl = cbui.CheckBox;
             this.Label = new TsLabelUI();
             this.SetDefaults();
@@ -143,10 +147,22 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
+            if (Director.Instance.UseTouchDefaults == true)
+            {
+                //ScaleTransform scale = new ScaleTransform(1.5,1.5);
+                //cbui.RenderTransform = scale;
+                this.ControlFormatting.Margin = new Thickness(5, 5, 5, 5);
+                this._checkboxui.CbBorder.TouchDown += this.OnBorderTouched;
+                this._checkboxui.CbBorder.MouseLeftButtonDown += this.OnBorderTouched;
+                this._checkboxui.CbBorder.BorderThickness = new Thickness(1);
+                this._checkboxui.CbBorder.BorderBrush = Brushes.LightGray;
+                this._checkboxui.CbBorder.Background = Brushes.Transparent;
+            }
+            else
+            {
+                this.ControlFormatting.Margin = new Thickness(1, 1, 1, 1);
+            }
             this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
-            this.ControlFormatting.Margin = new Thickness(1, 1, 1, 1);
-            //this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
-            //this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
             this.ControlFormatting.HorizontalContentAlignment = HorizontalAlignment.Center;
             this.ControlFormatting.VerticalContentAlignment = VerticalAlignment.Center;
         }
@@ -177,6 +193,11 @@ namespace TsGui.View.GuiOptions
                         break;
                 }
             }
+        }
+
+        private void OnBorderTouched(object sender, RoutedEventArgs e)
+        {
+            this.IsChecked = !this._ischecked;
         }
     }
 }

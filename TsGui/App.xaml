@@ -29,8 +29,8 @@
                             <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" 
                                     Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
                                 <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" 
-                                                  ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                                  RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                  ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" 
+                                                  RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsEnabled" Value="False">
@@ -113,8 +113,8 @@
 
             <Style x:Key="CollectionItemLabelStyle" TargetType="Label">
                 <Setter Property="Control.Height" Value="Auto"/>
-                <Setter Property="Control.Margin" Value="0"/>
-                <Setter Property="Control.Padding" Value="0"/>
+                <Setter Property="Control.Margin" Value="{Binding ItemFormatting.Margin}"/>
+                <Setter Property="Control.Padding" Value="{Binding ItemFormatting.Padding}"/>
                 <Setter Property="Control.VerticalAlignment" Value="Stretch"/>
                 <Setter Property="Control.HorizontalAlignment" Value="Stretch"/>
                 <Setter Property="Control.HorizontalContentAlignment" Value="{Binding ItemFormatting.HorizontalContentAlignment}"/>
