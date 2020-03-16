@@ -4,6 +4,8 @@ using System.Windows.Threading;
 
 using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
+using TsGui.Authentication.LocalConfig;
+using System.Diagnostics;
 
 namespace TsGui
 {
@@ -31,7 +33,24 @@ namespace TsGui
                 return;
             }
 
-            this.StartTsGui();
+            if (string.IsNullOrWhiteSpace(this.Arguments.ToHash) == false)
+            {
+                string key = Arguments.Key;
+
+                ConsoleWindow.WriteLine();
+                if (string.IsNullOrEmpty(key))
+                {
+                    key = Password.CreateKey();
+                    ConsoleWindow.WriteLine("Key: " + key);
+                }
+
+                ConsoleWindow.WriteLine("Hash: " + Password.HashPassword(Arguments.ToHash, key));
+                ConsoleWindow.Pause();
+            }
+            else
+            {
+                this.StartTsGui();
+            }
         }
 
         private void StartTsGui()
@@ -98,5 +117,7 @@ namespace TsGui
             string msg = Message;
             Director.Instance.CloseWithError("Application Runtime Exception", msg);
         }
+
+        
     }
 }
