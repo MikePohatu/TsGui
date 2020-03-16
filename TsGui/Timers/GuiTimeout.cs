@@ -14,8 +14,8 @@ namespace TsGui
     {
         public delegate void TimeoutFunction();
         private static GuiTimeout _instance;
-        private DateTime _afterstarttime;
-        private DateTime _afterendtime;
+        private DateTime _afterstarttime = DateTime.MaxValue;
+        private DateTime _afterendtime = DateTime.MaxValue;
         private bool _resetonactivity = false;
         private GuiTimeout() { }
 
@@ -40,7 +40,7 @@ namespace TsGui
 
         public string AtString { get { return this.TimeoutDateTime.ToString("dd/MM/yyyy HH:mm:ss"); } }
 
-        public TimeSpan TimeoutElapsed { get; private set; }
+        public TimeSpan TimeoutElapsed { get; private set; } = TimeSpan.MinValue;
         public DateTime TimeoutDateTime { get; private set; } = DateTime.MaxValue;
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace TsGui
         {
             this._timeoutfunction = timeoutfunction;
 
-            if (this.TimeoutElapsed != null)
+            if (this.TimeoutElapsed != TimeSpan.MinValue)
             {
                 if (this._resetonactivity)
                 {

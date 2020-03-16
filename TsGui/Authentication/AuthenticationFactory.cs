@@ -16,6 +16,7 @@
 using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using TsGui.Authentication.ActiveDirectory;
+using TsGui.Authentication.LocalConfig;
 using System.Xml.Linq;
 
 namespace TsGui.Authentication
@@ -37,6 +38,8 @@ namespace TsGui.Authentication
                 {
                     case "ActiveDirectory":                     
                         return new ActiveDirectoryAuthenticator(inputxml);
+                    case "Password":
+                        return new LocalConfigPasswordAuthenticator(inputxml);
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", inputxml.ToString());
                 }
