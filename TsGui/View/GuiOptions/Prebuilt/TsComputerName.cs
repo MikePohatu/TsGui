@@ -65,7 +65,7 @@
 
 using System.Xml.Linq;
 
-namespace TsGui.View.GuiOptions
+namespace TsGui.View.GuiOptions.Prebuilt
 {
     public class TsComputerName : TsFreeText
     {

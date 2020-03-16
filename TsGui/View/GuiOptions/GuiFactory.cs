@@ -22,6 +22,7 @@ using System.Windows;
 using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
 using TsGui.View.GuiOptions.CollectionViews;
+using TsGui.View.GuiOptions.Prebuilt;
 
 namespace TsGui.View.GuiOptions
 {

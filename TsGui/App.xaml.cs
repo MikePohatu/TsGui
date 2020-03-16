@@ -44,7 +44,17 @@ namespace TsGui
                     ConsoleWindow.WriteLine("Key: " + key);
                 }
 
-                ConsoleWindow.WriteLine("Hash: " + Password.HashPassword(Arguments.ToHash, key));
+                string pw = Password.HashPassword(Arguments.ToHash, key);
+
+                ConsoleWindow.WriteLine("Hash: " + pw);
+                ConsoleWindow.WriteLine(Environment.NewLine + "Example config:");
+                ConsoleWindow.WriteLine(@"
+                    <Authentication Type=""Password"" AuthID=""conf_auth"">
+                        <Password>
+                            <PasswordHash>"+pw+@"</ PasswordHash >
+                            <Key>"+key+@"</Key>
+                        </Password>
+                    </Authentication>");
                 ConsoleWindow.Pause();
             }
             else

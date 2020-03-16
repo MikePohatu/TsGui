@@ -249,7 +249,7 @@
     <Compile Include="View\Symbols\TsTrafficLightUI.xaml.cs">
       <DependentUpon>TsTrafficLightUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\GuiOptions\TsComputerName.cs" />
+    <Compile Include="View\GuiOptions\Prebuilt\TsComputerName.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\ListItem.cs" />
     <Compile Include="View\GuiOptions\TsLabelUI.xaml.cs">
       <DependentUpon>TsLabelUI.xaml</DependentUpon>
