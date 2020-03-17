@@ -135,6 +135,7 @@
     <Compile Include="Validation\StringMatching\MatchingRuleFactory.cs" />
     <Compile Include="Validation\StringMatching\EndsWith.cs" />
     <Compile Include="Validation\StringMatching\StartsWith.cs" />
+    <Compile Include="View\Layout\ControlDefaults.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\CollectionViewGuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
       <DependentUpon>ContentChanger.xaml</DependentUpon>

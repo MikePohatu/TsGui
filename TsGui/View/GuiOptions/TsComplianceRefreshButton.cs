@@ -74,11 +74,8 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
+            ControlDefaults.SetButtonDefaults(this.ControlFormatting);
             this.ButtonText = "Refresh";
-            this.ControlFormatting.Height = 25;
-            this.ControlFormatting.Width = 60;
-            this.ControlFormatting.VerticalContentAlignment = VerticalAlignment.Center;
-            this.ControlFormatting.HorizontalContentAlignment = HorizontalAlignment.Center;
         }
     }
 }

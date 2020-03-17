@@ -21,6 +21,7 @@
 
 using System.Windows;
 using System.Xml.Linq;
+using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
@@ -106,21 +107,7 @@ namespace TsGui.View.Layout
 
         private void SetDefaults()
         {
-            this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
-            this.ControlFormatting.VerticalContentAlignment = VerticalAlignment.Center;
-            this.ControlFormatting.HorizontalContentAlignment = HorizontalAlignment.Center;
-
-            if (Director.Instance.UseTouchDefaults == true)
-            {
-                this.ControlFormatting.Width = 75;
-                this.ControlFormatting.Height = 45;
-            }
-            else
-            {
-                this.ControlFormatting.Width = 75;
-                this.ControlFormatting.Height = 30;
-            }
+            ControlDefaults.SetButtonDefaults(this.ControlFormatting);
         }
 
         public void LoadXml(XElement InputXml)

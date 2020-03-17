@@ -164,7 +164,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
         protected new void SetDefaults()
         {
             base.SetDefaults();
-            this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
         }
 
         private void SetAutoCompleteState(bool enabled)
