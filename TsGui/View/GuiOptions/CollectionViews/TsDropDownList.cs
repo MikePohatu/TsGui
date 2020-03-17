@@ -25,7 +25,7 @@ using TsGui.Validation;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
-    public class TsDropDownList : CollectionViewGuiOptionBase
+    public class TsDropDownList : CollectionViewGuiOptionBase, IGuiOption
     {
         private TsDropDownListUI _dropdownlistui;
 
