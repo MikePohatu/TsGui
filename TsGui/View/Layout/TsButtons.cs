@@ -26,7 +26,6 @@ namespace TsGui.View.Layout
         private string _buttonTextFinish;
         private string _buttonTextCancel;
         private string _buttonTextBack;
-        private Formatting _controlformatting;
         private Visibility _cancelvisibility = Visibility.Visible;
         private bool _cancelenabled = true;
 
@@ -51,10 +50,7 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "CancelEnabled");
             }
         }
-        public Formatting ControlFormatting
-        {
-            get { return this._controlformatting; }
-        }
+        public Formatting ControlFormatting { get; }
         public string ButtonTextCancel
         {
             get { return this._buttonTextCancel; }
@@ -100,25 +96,27 @@ namespace TsGui.View.Layout
             this.ButtonTextCancel = "Cancel";
             this.ButtonTextFinish = "Finish";
             this.ButtonTextNext = "Next";
-            this._controlformatting = new Formatting();
+            this.ControlFormatting = new Formatting();
             this.SetDefaults();
         }
 
         private void SetDefaults()
         {
-            this._controlformatting.VerticalAlignment = VerticalAlignment.Center;
-            this._controlformatting.HorizontalAlignment = HorizontalAlignment.Center;
+            this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
+            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
+            this.ControlFormatting.VerticalContentAlignment = VerticalAlignment.Center;
+            this.ControlFormatting.HorizontalContentAlignment = HorizontalAlignment.Center;
+
             if (Director.Instance.UseTouchDefaults == true)
             {
-                this._controlformatting.Width = 75;
-                this._controlformatting.Height = 45;
+                this.ControlFormatting.Width = 75;
+                this.ControlFormatting.Height = 45;
             }
             else
             {
-                this._controlformatting.Width = 75;
-                this._controlformatting.Height = 30;
+                this.ControlFormatting.Width = 75;
+                this.ControlFormatting.Height = 30;
             }
-            
         }
 
         public void LoadXml(XElement InputXml)
@@ -133,7 +131,7 @@ namespace TsGui.View.Layout
             this.ButtonTextCancel = XmlHandler.GetStringFromXElement(InputXml, "Cancel", this.ButtonTextCancel);
 
             x = InputXml.Element("Formatting");
-            if (x != null) { this._controlformatting.LoadXml(x); }
+            if (x != null) { this.ControlFormatting.LoadXml(x); }
 
             x = InputXml.Element("HideCancel");
             if (x != null)
