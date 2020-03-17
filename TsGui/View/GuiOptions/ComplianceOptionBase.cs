@@ -82,7 +82,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //constructor
-        public ComplianceOptionBase(XElement InputXml, TsColumn Parent, IDirector director): base (Parent, director)
+        public ComplianceOptionBase(TsColumn Parent): base (Parent)
         {
             this.Label = new TsLabelUI();
             this._rootelement = this.GetRootElement();
@@ -90,8 +90,8 @@ namespace TsGui.View.GuiOptions
 
             this.FillColor = new SolidColorBrush(Colors.Blue);
             this.StrokeColor = new SolidColorBrush(Colors.Blue);
-            this._compliancehandler = new ComplianceHandler(this, director);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
+            this._compliancehandler = new ComplianceHandler(this);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this);
             this._setvaluequerylist = new QueryPriorityList(this);
             this.UserControl.DataContext = this;
             this.SetDefaults();      
@@ -152,7 +152,7 @@ namespace TsGui.View.GuiOptions
             this.RefreshValue();
         }
 
-        protected new void LoadXml(XElement InputXml)
+        public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
 

@@ -25,15 +25,13 @@ namespace TsGui.View.GuiOptions.CollectionViews
     {
         private int _lastindex = 0;
         private CollectionViewGuiOptionBase _parent;
-        private IDirector _director;
         private Dictionary<int, QueryPriorityList> _querylists = new Dictionary<int, QueryPriorityList>();
         private Dictionary<int, ListItem> _staticitems = new Dictionary<int, ListItem>();
 
         public List<ListItem> Items { get; set; }
 
-        public ListBuilder(CollectionViewGuiOptionBase parent, IDirector director)
+        public ListBuilder(CollectionViewGuiOptionBase parent)
         {
-            this._director = director;
             this._parent = parent;
         }
 
@@ -96,7 +94,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 //read in an option and add to a dictionary for later use
                 if (x.Name == "Option")
                 {
-                    ListItem newoption = new ListItem(x, this._parent.ControlFormatting, this._parent, this._director);
+                    ListItem newoption = new ListItem(x, this._parent.ControlFormatting, this._parent);
                     this.Add(newoption);
                 }
 
@@ -114,7 +112,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         public ListItem CreateItem(KeyValueTreeNode node)
         {
-            ListItem newitem = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent, this._director);
+            ListItem newitem = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent);
             foreach (KeyValueTreeNode subnode in node.Nodes)
             {
                 newitem.ItemsList.Add(this.CreateItem(subnode));

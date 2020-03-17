@@ -26,7 +26,6 @@ namespace TsGui.Validation
 {
     public class ValidationHandler: ILinkTarget
     {
-        private IDirector _controller;
         private List<StringValidation> _validations = new List<StringValidation>();
         private XElement _legacyxml = new XElement("Legacy");
         private IValidationOwner _owner;
@@ -43,10 +42,9 @@ namespace TsGui.Validation
         public int MaxLength { get { return this.GetMaxLength(); } }
         #endregion
 
-        public ValidationHandler(IValidationOwner Owner, IDirector MainController)
+        public ValidationHandler(IValidationOwner Owner)
         {
             this._owner = Owner;
-            this._controller = MainController;
         }
 
         public void AddValidation(XElement InputXml)

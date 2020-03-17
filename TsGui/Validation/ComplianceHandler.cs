@@ -25,7 +25,6 @@ namespace TsGui.Validation
 {
     public class ComplianceHandler: ILinkTarget
     {
-        private IDirector _controller;
         private List<Compliance> _compliances = new List<Compliance>();
         private IValidationOwner _owner;
 
@@ -35,16 +34,15 @@ namespace TsGui.Validation
         public string FailedValidationMessage { get; set; }
         #endregion
 
-        public ComplianceHandler(IValidationOwner Owner, IDirector MainController)
+        public ComplianceHandler(IValidationOwner Owner)
         {
             this._owner = Owner;
-            this._controller = MainController;
         }
 
         public void AddCompliance(XElement InputXml)
         {
             if (InputXml == null) { return; }
-            Compliance c = new Compliance(this._controller, this);
+            Compliance c = new Compliance(this);
             c.LoadXml(InputXml);
             this.AddCompliance(c);
         }

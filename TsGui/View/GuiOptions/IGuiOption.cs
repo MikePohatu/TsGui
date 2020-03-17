@@ -16,6 +16,7 @@
 // IGuiOption.cs - controls to apply to the gui. 
 
 using System.Windows.Controls;
+using System.Xml.Linq;
 using TsGui.Grouping;
 using TsGui.Options;
 
@@ -25,5 +26,7 @@ namespace TsGui.View.GuiOptions
     {
         GuiOptionBaseUI UserControl { get; }
         Control InteractiveControl { get; }
+
+        void LoadXml(XElement inputxml);
     }
 }

@@ -23,7 +23,7 @@ namespace TsGui.Queries
     public static class QueryFactory
     {
 
-        public static IQuery GetQueryObject(XElement InputXml, IDirector director, ILinkTarget linktarget)
+        public static IQuery GetQueryObject(XElement InputXml, ILinkTarget linktarget)
         {
             if (InputXml == null) { return null; }
 
@@ -37,29 +37,29 @@ namespace TsGui.Queries
                     case "Wmi":
                         return new WmiQuery(InputXml, linktarget);
                     case "GuiVariable":
-                        return new GuiVariableQuery(InputXml, director, linktarget);
+                        return new GuiVariableQuery(InputXml, linktarget);
                     case "EnvironmentVariable":
-                        return new EnvironmentVariableQuery(InputXml, director.EnvironmentController.SccmConnector, linktarget);
+                        return new EnvironmentVariableQuery(InputXml, linktarget);
                     case "OptionValue":
-                        return new OptionValueQuery(InputXml, director, linktarget);
+                        return new OptionValueQuery(InputXml, linktarget);
                     case "IfElse":
-                        return new IfElseQuery(InputXml, director, linktarget);
+                        return new IfElseQuery(InputXml, linktarget);
                     case "Combined":
-                        return new CombinedQuery(InputXml, director, linktarget);
+                        return new CombinedQuery(InputXml, linktarget);
                     case "Compare":
-                        return new CompareQuery(InputXml, director, linktarget);
+                        return new CompareQuery(InputXml, linktarget);
                     case "Value":
                         return new ValueOnlyQuery(InputXml);
                     case "LinkFalse":
-                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, director, linktarget, false);
+                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, false);
                     case "LinkTo":
-                        return GetLinkToQuery(InputXml.Value, director, linktarget);
+                        return GetLinkToQuery(InputXml.Value, linktarget);
                     case "LinkTrue":
-                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, director, linktarget, true);
+                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, true);
                     case "ADGroupMembers":
-                        return new ADGroupMembersQuery(InputXml, director, linktarget);
+                        return new ADGroupMembersQuery(InputXml, linktarget);
                     case "ADOU":
-                        return new ADOrgUnitQuery(InputXml, director, linktarget);
+                        return new ADOrgUnitQuery(InputXml, linktarget);
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
                 }
@@ -77,7 +77,7 @@ namespace TsGui.Queries
         //          <ID Name = "TestLink1"/>
         //      </Query>
         #endregion
-        public static IQuery GetLinkToQuery(string SourceID, IDirector controller, ILinkTarget linktarget)
+        public static IQuery GetLinkToQuery(string SourceID, ILinkTarget linktarget)
         {
             XElement sourcequeryx = new XElement("Query");
             sourcequeryx.Add(new XAttribute("Type", "OptionValue"));
@@ -86,7 +86,7 @@ namespace TsGui.Queries
             idx.Add(new XAttribute("Name", SourceID));
             sourcequeryx.Add(idx);
 
-            return new OptionValueQuery(sourcequeryx, controller, linktarget);
+            return new OptionValueQuery(sourcequeryx, linktarget);
         }
 
         #region
@@ -106,7 +106,7 @@ namespace TsGui.Queries
         //      </Result>
         //  </Query>
         #endregion
-        public static IQuery GetLinkTrueFalseOnlyQuery(string SourceID, IDirector controller, ILinkTarget linktarget, bool truefalse)
+        public static IQuery GetLinkTrueFalseOnlyQuery(string SourceID, ILinkTarget linktarget, bool truefalse)
         {
             
             XElement sharedqueryx = new XElement("Query");
@@ -129,7 +129,7 @@ namespace TsGui.Queries
             XElement ifelsex = new XElement("Query", ifx);
             ifelsex.Add(new XAttribute("Type", "IfElse"));
 
-            return new IfElseQuery(ifelsex, controller, linktarget);
+            return new IfElseQuery(ifelsex, linktarget);
         }
     }
 }

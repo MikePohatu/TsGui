@@ -24,11 +24,9 @@ namespace TsGui.Queries
     {
         private List<Conditional> _conditions = new List<Conditional>();
         private QueryPriorityList _else;
-        private IDirector _director;
 
-        public IfElseQuery (XElement inputxml, IDirector director, ILinkTarget owner): base(owner)
+        public IfElseQuery (XElement inputxml, ILinkTarget owner): base(owner)
         {
-            this._director = director;
             this.LoadXml(inputxml);
         }
 
@@ -70,7 +68,7 @@ namespace TsGui.Queries
 
                 if (xname.Equals("IF",StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    Conditional newcondition = new Conditional(element, this._director, this._linktarget);
+                    Conditional newcondition = new Conditional(element, this._linktarget);
                     this._conditions.Add(newcondition);
                 }
                 else if (xname.Equals("ELSE", StringComparison.OrdinalIgnoreCase) == true)

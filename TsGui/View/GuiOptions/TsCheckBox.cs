@@ -70,7 +70,7 @@ namespace TsGui.View.GuiOptions
 
 
         //Constructor
-        public TsCheckBox(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
+        public TsCheckBox(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             this.UserControl.DataContext = this;
             TsCheckBoxUI cbui = new TsCheckBoxUI();
@@ -104,11 +104,11 @@ namespace TsGui.View.GuiOptions
             xlist = InputXml.Elements("Toggle");
             if (xlist != null)
             {
-                this._director.AddToggleControl(this);
+                Director.Instance.AddToggleControl(this);
 
                 foreach (XElement subx in xlist)
                 {
-                    Toggle t = new Toggle(this, this._director, subx); 
+                    Toggle t = new Toggle(this, subx); 
                 }  
             }
         }

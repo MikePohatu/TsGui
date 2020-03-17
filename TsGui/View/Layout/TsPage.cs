@@ -100,11 +100,11 @@ namespace TsGui.View.Layout
         #endregion
 
         //Constructors
-        public TsPage(XElement SourceXml, PageDefaults Defaults, IDirector MainController) : base(MainController)
+        public TsPage(XElement SourceXml, PageDefaults Defaults) : base()
         {
             //this._director = Defaults.RootController;
             LoggerFacade.Info("New page created");
-            this.ShowGridLines = MainController.ShowGridLines;
+            this.ShowGridLines = Director.Instance.ShowGridLines;
             this.Page = new TsPageUI(this);
             this.PageHeader = Defaults.PageHeader;
             this.LeftPane = Defaults.LeftPane;
@@ -132,16 +132,16 @@ namespace TsGui.View.Layout
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
 
             x = InputXml.Element("Heading");
-            if (x != null) { this.PageHeader = new TsPageHeader(this, this.PageHeader, x, this._director); }
+            if (x != null) { this.PageHeader = new TsPageHeader(this, this.PageHeader, x); }
 
             x = InputXml.Element("LeftPane");
-            if (x != null) { this.LeftPane = new TsPane(x, this._director); }
+            if (x != null) { this.LeftPane = new TsPane(x); }
 
             x = InputXml.Element("RightPane");
-            if (x != null) { this.RightPane = new TsPane(x, this._director); }
+            if (x != null) { this.RightPane = new TsPane(x); }
 
             //create the table adn bind it to the content
-            this._table = new TsTable(InputXml, this, this._director);
+            this._table = new TsTable(InputXml, this);
             this.Page.MainTablePresenter.Content = this._table.Grid;
             this.Page.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
             this.Page.RightPanePresenter.Content = this.RightPane?.PaneUI;
@@ -155,7 +155,7 @@ namespace TsGui.View.Layout
 
         public void Cancel()
         {
-            this._director.Cancel();
+            Director.Instance.Cancel();
         }
 
         public void MovePrevious()
@@ -166,7 +166,7 @@ namespace TsGui.View.Layout
                 { option.ClearToolTips(); }
 
                 this.ReleaseThisPage();
-                this._director.MovePrevious();
+                Director.Instance.MovePrevious();
             }
         }
 
@@ -175,7 +175,7 @@ namespace TsGui.View.Layout
             if (this._nextpage != null && this.OptionsValid() == true)
             {
                 this.ReleaseThisPage();
-                this._director.MoveNext();
+                Director.Instance.MoveNext();
             }
         }
 
@@ -183,7 +183,7 @@ namespace TsGui.View.Layout
         {
             if (this.OptionsValid() == true)
             {
-                this._director.Finish();
+                Director.Instance.Finish();
             }
         }
 
@@ -213,7 +213,7 @@ namespace TsGui.View.Layout
         {
             if (e.GroupStateChanged == GroupStateChanged.IsHidden)
             {
-                this._director.CurrentPage.Update();
+                Director.Instance.CurrentPage.Update();
             }
         }
 

@@ -34,15 +34,13 @@ namespace TsGui.Validation
         private Popup _popup;
         private ValidationErrorToolTip _validationerrortooltip;
         private GuiOptionBase _guioption;
-        private IDirector _controller;
         private bool _windowloaded = false;
 
         //Constructor
-        public ValidationToolTipHandler(GuiOptionBase GuiOption, IDirector MainController)
+        public ValidationToolTipHandler(GuiOptionBase GuiOption)
         {
             this._guioption = GuiOption;
-            this._controller = MainController;
-            this._controller.WindowLoaded += OnWindowLoaded;
+            Director.Instance.WindowLoaded += OnWindowLoaded;
 
             //record the default colors
             this._bordercolor = this._guioption.ControlFormatting.BorderBrush.Color;
@@ -66,7 +64,7 @@ namespace TsGui.Validation
         {
             if (this._popup.IsOpen == true)
             {
-                this._controller.WindowMouseUp -= this.OnWindowMouseUp;
+                Director.Instance.WindowMouseUp -= this.OnWindowMouseUp;
                 this._popup.IsOpen = false;
                 this._guioption.ControlFormatting.BorderBrush.Color = this._bordercolor;
                 this._guioption.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
@@ -79,7 +77,7 @@ namespace TsGui.Validation
             if (this._popup.IsOpen == false)
             {
                 this.SetPlacement();
-                this._controller.WindowMouseUp += this.OnWindowMouseUp;
+                Director.Instance.WindowMouseUp += this.OnWindowMouseUp;
                 this._popup.IsOpen = true;
                 this._guioption.ControlFormatting.BorderBrush.Color = Colors.Red;
                 this._guioption.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
@@ -93,7 +91,7 @@ namespace TsGui.Validation
             if (this._popup.IsOpen == false)
             {
                 this.SetPlacement();
-                this._controller.WindowMouseUp += this.OnWindowMouseUp;
+                Director.Instance.WindowMouseUp += this.OnWindowMouseUp;
                 this._popup.IsOpen = true;
             }
             this.UpdateArrows();

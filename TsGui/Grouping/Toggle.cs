@@ -25,15 +25,13 @@ namespace TsGui.Grouping
     public class Toggle
     {
         private Group _group;
-        private IDirector _controller;
         private Dictionary<string, bool> _toggleValMappings = new Dictionary<string, bool>();
         private bool _hiddenMode = false;
         private bool _inverse = false;
         private IToggleControl _option;
 
-        public Toggle(IToggleControl GuiOption, IDirector MainController, XElement InputXml)
+        public Toggle(IToggleControl GuiOption, XElement InputXml)
         {
-            this._controller = MainController;
             this._option = GuiOption;
             this.LoadXml(InputXml);
             this._option.ToggleEvent += this.OnToggleEvent;
@@ -55,7 +53,7 @@ namespace TsGui.Grouping
             {
                 if (!string.IsNullOrEmpty(xa.Value))
                 {
-                    this._group = this._controller.GroupLibrary.GetGroupFromID(xa.Value);
+                    this._group = Director.Instance.GroupLibrary.GetGroupFromID(xa.Value);
                 }
                 else { throw new InvalidOperationException("Invalid Toggle configured in XML: " + InputXml); }
             }

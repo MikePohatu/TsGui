@@ -28,13 +28,24 @@ namespace TsGui.View.GuiOptions
     {
 
         //constructor
-        public TsTrafficLight(XElement InputXml, TsColumn Parent, IDirector MainController): base (InputXml, Parent, MainController)
+        public TsTrafficLight(XElement InputXml, TsColumn Parent): base (Parent)
         {           
             this.Control = new TsTrafficLightUI();
             this._validationtooltiphandler.SetTarget(this.Control);
             this.LoadXml(InputXml);
-            this.ProcessQuery();
-            this.Validate();
+            this.RefreshValue();
+        }
+
+        public TsTrafficLight(TsColumn Parent) : base(Parent)
+        {
+            this.Control = new TsTrafficLightUI();
+            this._validationtooltiphandler.SetTarget(this.Control);
+        }
+
+        public TsTrafficLight(TsColumn Parent, IDirector MainController) : base(Parent)
+        {
+            this.Control = new TsTrafficLightUI();
+            this._validationtooltiphandler.SetTarget(this.Control);
         }
 
         private void SetDefaults()

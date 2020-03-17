@@ -30,8 +30,6 @@ namespace TsGui.View.Layout
         private double _height;        //default page height for the window
         private double _width;         //default page width for the window
         private string _windowTitle;
-        //private string _headingText;
-        //private int _headingHeight;
         private Thickness _pageMargin = new Thickness(0, 0, 0, 0);
         private string _footerText;
         private double _footerHeight;
@@ -43,8 +41,6 @@ namespace TsGui.View.Layout
 
         //Properties
         public WindowLocation WindowLocation { get { return this._windowlocation; } }
-        //public string HeadingText { get { return this._headingText; } }
-        //public int HeadingHeight { get { return this._headingHeight; } }
         public string WindowTitle
         {
             get { return this._windowTitle; }
@@ -90,8 +86,6 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "TopMost");
             }
         }
-        //public SolidColorBrush HeadingBgColor { get; set; }
-        //public SolidColorBrush HeadingFontColor { get; set; }
 
         public double FooterHeight
         {

@@ -27,7 +27,6 @@ namespace TsGui.Images
         private double _width;
         private double _height;
         private MultiImage _multiimage;
-        private IDirector _controller;
         private string _file;
 
         public string File
@@ -59,16 +58,14 @@ namespace TsGui.Images
         }
 
         //constructors
-        public Image(XElement InputXml, IDirector MainController)
+        public Image(XElement InputXml)
         {
-            this._controller = MainController;
             this.SetDefaults();
             this.LoadXml(InputXml);
         }
 
         public Image(IDirector MainController)
         {
-            this._controller = MainController;
             this.SetDefaults();
         }
 
@@ -78,7 +75,7 @@ namespace TsGui.Images
             if (InputXml != null)
             {
                 this._file = XmlHandler.GetStringFromXElement(InputXml, "File", string.Empty);
-                this.MultiImage = new MultiImage(_file, this._controller);
+                this.MultiImage = new MultiImage(_file);
                 this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
                 this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
                 this.StretchMode = XmlHandler.GetStretchFromXElement(InputXml, "Stretch", this.StretchMode);

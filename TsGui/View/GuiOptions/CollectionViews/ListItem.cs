@@ -52,7 +52,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public List<ListItem> ItemsList { get; set; }
         public UserControl Icon { get; set; }
 
-        public ListItem(string Value, string Text, Formatting Formatting, CollectionViewGuiOptionBase parentlist, IDirector MainController) : base(MainController)
+        public ListItem(string Value, string Text, Formatting Formatting, CollectionViewGuiOptionBase parentlist) : base()
         {
             this.Init(Formatting, parentlist);
             this.Value = Value;
@@ -62,7 +62,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             LoggerFacade.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
         }
 
-        public ListItem(XElement InputXml, Formatting Formatting, CollectionViewGuiOptionBase parentlist, IDirector MainController) : base(MainController)
+        public ListItem(XElement InputXml, Formatting Formatting, CollectionViewGuiOptionBase parentlist) : base()
         {
             this.Init(Formatting, parentlist);
             this.LoadXml(InputXml);
@@ -111,12 +111,12 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 if (x.Name == "Toggle")
                 {
                     x.Add(new XElement("Enabled", this.Value));
-                    Toggle t = new Toggle(this._parent, this._director, x);
+                    Toggle t = new Toggle(this._parent, x);
                     this._parent.IsToggle = true;
                 }
                 else if (x.Name == "Option")
                 {
-                    ListItem item = new ListItem(x, this.ItemFormatting, this._parent, this._director);
+                    ListItem item = new ListItem(x, this.ItemFormatting, this._parent);
                     this.ItemsList.Add(item);
                 }
             }

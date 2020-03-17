@@ -31,7 +31,6 @@ namespace TsGui.Queries.ActiveDirectory
 {
     public class ADOrgUnitQuery : BaseQuery, IAuthenticatorConsumer
     {
-        private IDirector _director;
         private ILinkTarget _linktargetoption;
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private string _baseou;
@@ -48,12 +47,11 @@ namespace TsGui.Queries.ActiveDirectory
         }
         public string AuthID { get; set; }
 
-        public ADOrgUnitQuery(XElement InputXml, IDirector director, ILinkTarget owner): base(owner)
+        public ADOrgUnitQuery(XElement InputXml, ILinkTarget owner): base(owner)
         {
             this._linktargetoption = owner;
-            this._director = director;
             this.LoadXml(InputXml);
-            this._director.AuthLibrary.AddAuthenticatorConsumer(this);
+            Director.Instance.AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public new void LoadXml(XElement InputXml)

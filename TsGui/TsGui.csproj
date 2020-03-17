@@ -100,6 +100,7 @@
     <Compile Include="Authentication\LocalConfig\Password.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="ConsoleWindow.cs" />
+    <Compile Include="Prebuilt\PrebuiltFactory.cs" />
     <Compile Include="Timers\GuiTimeout.cs" />
     <Compile Include="IDirector.cs" />
     <Compile Include="Options\OptionDelegates.cs" />
@@ -139,6 +140,8 @@
       <DependentUpon>ContentChanger.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\CollectionViews\TsTreeView.cs" />
+    <Compile Include="Prebuilt\Options\PrebuiltPower.cs" />
+    <Compile Include="Prebuilt\Options\PrebuiltDisk.cs" />
     <Compile Include="View\GuiOptions\TsActionButton.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\ListBuilder.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\TsTreeViewUI.xaml.cs">
@@ -249,7 +252,7 @@
     <Compile Include="View\Symbols\TsTrafficLightUI.xaml.cs">
       <DependentUpon>TsTrafficLightUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\GuiOptions\Prebuilt\TsComputerName.cs" />
+    <Compile Include="View\GuiOptions\TsComputerName.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\ListItem.cs" />
     <Compile Include="View\GuiOptions\TsLabelUI.xaml.cs">
       <DependentUpon>TsLabelUI.xaml</DependentUpon>

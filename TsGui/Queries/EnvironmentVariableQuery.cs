@@ -26,9 +26,9 @@ namespace TsGui.Queries
         private SccmConnector _sccmconnector;
         private FormattedProperty _formatter;
 
-        public EnvironmentVariableQuery(XElement inputxml, SccmConnector sccmconnector, ILinkTarget owner): base(owner)
+        public EnvironmentVariableQuery(XElement inputxml, ILinkTarget owner): base(owner)
         {
-            this._sccmconnector = sccmconnector;
+            this._sccmconnector = Director.Instance.EnvironmentController.SccmConnector;
             this.LoadXml(inputxml);
         }
 

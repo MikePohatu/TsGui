@@ -21,7 +21,7 @@ namespace TsGui.Actions
 {
     public static class ActionFactory
     {
-        public static IAction CreateAction(XElement inputxml, IDirector director)
+        public static IAction CreateAction(XElement inputxml)
         {
             XAttribute xtype = inputxml.Attribute("Type");
             if (xtype == null) { throw new ArgumentException("Missing Type attribute on Action" + Environment.NewLine); }
@@ -31,7 +31,7 @@ namespace TsGui.Actions
             #region
             if (xtype.Value == "Authentication")
             {
-                var action = new AuthenticationAction(inputxml, director);
+                var action = new AuthenticationAction(inputxml);
                 return action;
             }
 

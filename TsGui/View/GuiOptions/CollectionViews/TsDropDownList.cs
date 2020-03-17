@@ -33,14 +33,14 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public List<ListItem> VisibleOptions { get { return this._builder.Items.Where(x => x.IsEnabled == true).ToList(); } }
         
         //Constructor
-        public TsDropDownList(XElement InputXml, TsColumn Parent, IDirector director) : base(Parent, director)
+        public TsDropDownList(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
             this.InteractiveControl = this._dropdownlistui.Control;
             this.Label = new TsLabelUI();
-            this.ValidationHandler = new ValidationHandler(this, director);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
+            this.ValidationHandler = new ValidationHandler(this);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this);
             this.UserControl.DataContext = this;
 
             this.SetDefaults();
@@ -49,7 +49,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.RegisterForItemGroupEvents();
             this.SetComboBoxDefault();
 
-            this._director.WindowLoaded += this.OnLoadReload;
+            Director.Instance.WindowLoaded += this.OnLoadReload;
             this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
             this._dropdownlistui.Control.LostFocus += this.OnLostFocus;
             this.UserControl.IsEnabledChanged += this.OnActiveChanged;

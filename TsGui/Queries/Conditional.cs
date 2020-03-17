@@ -26,12 +26,10 @@ namespace TsGui.Queries
         private QueryPriorityList _sourcequerylist;
         private QueryPriorityList _resultquerylist;
         private RuleSet _ruleset ;
-        private IDirector _controller;
         private ILinkTarget _linktargetoption;
 
-        public Conditional(XElement inputxml, IDirector controller, ILinkTarget targetoption)
+        public Conditional(XElement inputxml, ILinkTarget targetoption)
         {
-            this._controller = controller;
             this._linktargetoption = targetoption;
             this._ruleset = new RuleSet(targetoption);
             this._sourcequerylist = new QueryPriorityList(this._linktargetoption);

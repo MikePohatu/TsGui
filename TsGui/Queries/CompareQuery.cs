@@ -24,16 +24,14 @@ namespace TsGui.Queries
     public class CompareQuery: BaseQuery, ILinkTarget, ILinkingEventHandler
     {
         private QueryPriorityList _querylist;
-        private IDirector _controller;
         private string _truevalue = "TRUE";
         private string _falsevalue = "FALSE";
 
-        public CompareQuery(XElement inputxml, IDirector controller, ILinkTarget owner) : base(owner)
+        public CompareQuery(XElement inputxml, ILinkTarget owner) : base(owner)
         {
             this._querylist = new QueryPriorityList(this);
             this._processingwrangler.Separator = string.Empty;
             this._reprocess = true;
-            this._controller = controller;
             this.LoadXml(inputxml);
         }
 
@@ -47,7 +45,7 @@ namespace TsGui.Queries
                 else if (x.Name == "FalseValue") { this._falsevalue = x.Value; }
                 else
                 {
-                    IQuery newquery = QueryFactory.GetQueryObject(x, this._controller, this);
+                    IQuery newquery = QueryFactory.GetQueryObject(x, this);
                     if (newquery != null) { this._querylist.AddQuery(newquery); }
                 }
             }

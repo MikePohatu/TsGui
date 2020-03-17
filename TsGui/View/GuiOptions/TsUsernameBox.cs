@@ -26,7 +26,7 @@ namespace TsGui.View.GuiOptions
         public string AuthID { get { return this._authid; } }
         public string Username { get { return this._controltext; } }
 
-        public TsUsernameBox(XElement InputXml, TsColumn parent, IDirector director) : base(parent, director)
+        public TsUsernameBox(XElement InputXml, TsColumn parent) : base(parent)
         {
             this.SetDefaults();
             this.LoadXml(InputXml);
@@ -45,7 +45,7 @@ namespace TsGui.View.GuiOptions
             if (x != null)
             {
                 this._authid = x.Value;
-                this._director.AuthLibrary.AddUsernameSource(this);
+                Director.Instance.AuthLibrary.AddUsernameSource(this);
             }
             else { throw new TsGuiKnownException("Missing AuthID in config", inputxml.ToString()); }
         }

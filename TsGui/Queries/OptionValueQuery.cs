@@ -22,16 +22,14 @@ namespace TsGui.Queries
 {
     public class OptionValueQuery: BaseQuery, ILinkingEventHandler
     {
-        private IDirector _controller;
         private FormattedProperty _formatter;
 
-        public OptionValueQuery(XElement inputxml, IDirector controller, ILinkTarget owner): base(owner)
+        public OptionValueQuery(XElement inputxml, ILinkTarget owner): base(owner)
         {
-            this._controller = controller;
             this._ignoreempty = false;
             this.SetDefaults();
             this.LoadXml(inputxml);
-            this._controller.LinkingLibrary.AddHandler(this._formatter.Name,this);
+            Director.Instance.LinkingLibrary.AddHandler(this._formatter.Name,this);
             this.ProcessQuery();
         }
 
@@ -49,7 +47,7 @@ namespace TsGui.Queries
         {
             if (!string.IsNullOrEmpty(id))
             {
-                return this._controller.LinkingLibrary.GetSourceOption(id)?.CurrentValue;
+                return Director.Instance.LinkingLibrary.GetSourceOption(id)?.CurrentValue;
             }
             else { return null; }
         }

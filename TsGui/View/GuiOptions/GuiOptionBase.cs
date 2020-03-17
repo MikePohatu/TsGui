@@ -71,7 +71,7 @@ namespace TsGui.View.GuiOptions
         }
         
         
-        public GuiOptionBase(TsColumn Parent, IDirector director):base(Parent, director)
+        public GuiOptionBase(TsColumn Parent):base(Parent)
         {
             this.UserControl = new GuiOptionBaseUI();
             this.UserControl.Loaded += this.OnRendered;
@@ -103,7 +103,7 @@ namespace TsGui.View.GuiOptions
             if (xa != null)
             {
                 this.ID = xa.Value;
-                this._director.LinkingLibrary.AddSource(this);
+                Director.Instance.LinkingLibrary.AddSource(this);
             }
 
             x = InputXml.Element("SetValue");

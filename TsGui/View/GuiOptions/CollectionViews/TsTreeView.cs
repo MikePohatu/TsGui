@@ -29,15 +29,15 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public List<ListItem> VisibleOptions { get { return this._builder.Items; } }
 
         //Constructor
-        public TsTreeView(XElement InputXml, TsColumn Parent, IDirector director) : base(Parent, director)
+        public TsTreeView(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             this._treeviewui = new TsTreeViewUI();
             this.Control = this._treeviewui;
             this.Label = new TsLabelUI();
             this.Icon = new TsFolderUI();
             this.UserControl.DataContext = this;
-            this.ValidationHandler = new ValidationHandler(this, director);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
+            this.ValidationHandler = new ValidationHandler(this);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.SetDefaults();      
             this.LoadXml(InputXml);

@@ -50,15 +50,14 @@ namespace TsGui.View.GuiOptions
         #endregion
 
         //Constructor
-        public TsPasswordBox(XElement InputXml, TsColumn Parent, IDirector director): base (Parent, director)
+        public TsPasswordBox(XElement InputXml, TsColumn Parent): base (Parent)
         {
-            this.Init(director);
+            this.Init();
             this.LoadXml(InputXml);
         }
 
-        private void Init(IDirector MainController)
+        private void Init()
         {
-            this._director = MainController;
             this._setvaluequerylist = null;
 
             this._passwordboxui = new TsPasswordBoxUI();
@@ -76,7 +75,7 @@ namespace TsGui.View.GuiOptions
             this.LabelText = "Password:";
         }
 
-        private new void LoadXml(XElement inputxml)
+        public new void LoadXml(XElement inputxml)
         {
             base.LoadXml(inputxml);
             this.MaxLength = XmlHandler.GetIntFromXAttribute(inputxml, "MaxLength", this.MaxLength);
@@ -84,7 +83,7 @@ namespace TsGui.View.GuiOptions
             if (x != null)
             {
                 this._authid = x.Value;
-                this._director.AuthLibrary.AddPasswordSource(this);
+                Director.Instance.AuthLibrary.AddPasswordSource(this);
             }  
             else { throw new TsGuiKnownException("Missing AuthID in config:", inputxml.ToString()); }      
         }

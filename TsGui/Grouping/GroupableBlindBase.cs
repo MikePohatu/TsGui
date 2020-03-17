@@ -33,8 +33,8 @@ namespace TsGui.Grouping
         }
 
         //Constructor
-        public GroupableBlindBase(IDirector MainController) : base(MainController) { }
-        public GroupableBlindBase(GroupableBlindBase Parent, IDirector MainController): base(Parent, MainController)
+        public GroupableBlindBase() : base() { }
+        public GroupableBlindBase(GroupableBlindBase Parent): base(Parent)
         {
             this._parent = Parent;
             this._parent.GroupingStateChange += this.OnParentGroupingStateChange;

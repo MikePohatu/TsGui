@@ -25,7 +25,6 @@ namespace TsGui.View.Layout
 {
     public class TsPane: ViewModelBase
     {
-        private IDirector _controller;
         private double _width;
         private double _height;
         private TsPaneUI _paneui;
@@ -55,20 +54,19 @@ namespace TsGui.View.Layout
         }
 
         //Constructor
-        public TsPane(IDirector MainController)
+        public TsPane()
         {
-            this.Init(MainController);         
+            this.Init();         
         }
 
-        public TsPane(XElement InputXml, IDirector MainController)
+        public TsPane(XElement InputXml)
         {
-            this.Init(MainController);
+            this.Init();
             this.LoadXml(InputXml);
         }
 
-        private void Init(IDirector MainController)
+        private void Init()
         {
-            this._controller = MainController;
             this.PaneUI = new TsPaneUI();
             this.PaneUI.DataContext = this;
             this.Formatting = new Formatting();
@@ -85,7 +83,7 @@ namespace TsGui.View.Layout
             if (x != null) { this.Formatting.LoadXml(x); }
 
             x = InputXml.Element("Image");
-            if (x != null) { this.Image = new Image(x, this._controller); }
+            if (x != null) { this.Image = new Image(x); }
         }
 
         private void SetDefaults()

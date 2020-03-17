@@ -51,7 +51,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsActionButton(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
+        public TsActionButton(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             this._rootelement = this.GetRootElement();
 
@@ -75,7 +75,7 @@ namespace TsGui.View.GuiOptions
 
             XElement x;
             x = inputxml.Element("Action");
-            if (x != null) { this._action = ActionFactory.CreateAction(x, this._director); }
+            if (x != null) { this._action = ActionFactory.CreateAction(x); }
 
             this.IsDefault = XmlHandler.GetBoolFromXAttribute(inputxml, "IsDefault", this.IsDefault);
         }

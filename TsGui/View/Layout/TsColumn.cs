@@ -41,10 +41,8 @@ namespace TsGui
 
         //constructor
         #region
-        public TsColumn (XElement SourceXml,int PageIndex, BaseLayoutElement Parent, IDirector MainController) :base (Parent, MainController)
+        public TsColumn (XElement SourceXml,int PageIndex, BaseLayoutElement Parent) :base (Parent)
         {
-
-            this._director = MainController;
             this.Index = PageIndex;
             this._columnpanel = new Grid();
             this._columnpanel.Name = "_columnpanel";
@@ -76,7 +74,7 @@ namespace TsGui
             {
                 foreach (XElement xOption in xlist)
                 {
-                    newOption = GuiFactory.CreateGuiOption(xOption,this,this._director);
+                    newOption = GuiFactory.CreateGuiOption(xOption,this);
                     if (newOption ==null) { continue; }
                     this._options.Add(newOption);
 

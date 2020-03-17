@@ -31,15 +31,13 @@ namespace TsGui.Validation
         private MatchingRuleLibrary _errorrules;
         private MatchingRuleLibrary _invalidrules;
         private int _defaultstate = ComplianceStateValues.Invalid;
-        private IDirector _controller;
 
         //properties
         public string Message { get; set; }
         public string FailedComplianceMessage { get; set; }
 
-        public Compliance(IDirector MainController, ILinkTarget linktarget)
+        public Compliance(ILinkTarget linktarget)
         {
-            this._controller = MainController;
             this.IsActive = true;
             this._okrules = new MatchingRuleLibrary(linktarget);
             this._warningrules = new MatchingRuleLibrary(linktarget);
@@ -64,7 +62,7 @@ namespace TsGui.Validation
             {
                 foreach (XElement groupx in xlist)
                 {
-                    Group g = this._controller.GroupLibrary.GetGroupFromID(groupx.Value);
+                    Group g = Director.Instance.GroupLibrary.GetGroupFromID(groupx.Value);
                     this._groups.Add(g);
                     g.StateEvent += this.OnGroupStateChange;
                     ;

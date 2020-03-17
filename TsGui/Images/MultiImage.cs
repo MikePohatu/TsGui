@@ -40,7 +40,6 @@ namespace TsGui.Images
         private int _currentscaling;
         private SortedDictionary<int, BitmapImage> _images;
         private BitmapImage _currentimage;
-        private IDirector _controller;
 
         public int CurrentScaling
         {
@@ -56,10 +55,9 @@ namespace TsGui.Images
         {
             get { return this._currentimage?.UriSource.LocalPath; }
         }
-        public MultiImage (string FileName, IDirector MainController)
+        public MultiImage (string FileName)
         {
-            this._controller = MainController;
-            this._controller.WindowLoaded += this.OnWindowLoaded;
+            Director.Instance.WindowLoaded += this.OnWindowLoaded;
 
             this._images = new SortedDictionary<int, BitmapImage>(new ReverseComparer<int>(Comparer<int>.Default));
             this._rootpath = AppDomain.CurrentDomain.BaseDirectory + @"\images\";
@@ -69,7 +67,7 @@ namespace TsGui.Images
             this._imageextn = Path.GetExtension(fullpath);
             this.LoadImages();
 
-            if (this._images.Count > 1) { this._controller.WindowMouseUp += this.OnWindowMouseUp; }
+            if (this._images.Count > 1) { Director.Instance.WindowMouseUp += this.OnWindowMouseUp; }
         }
 
         public void OnWindowMouseUp(object sender, RoutedEventArgs e)

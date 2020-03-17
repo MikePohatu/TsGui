@@ -266,7 +266,7 @@ namespace TsGui
 
                 foreach (XElement xauth in SourceXml.Elements("Authentication"))
                 {
-                    this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth, this));
+                    this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth));
                 }
 
                 this._buttons = new TsButtons();
@@ -274,16 +274,16 @@ namespace TsGui
                 PageDefaults pagedef = new PageDefaults();
 
                 x = SourceXml.Element("Heading");
-                if (x != null) { pagedef.PageHeader = new TsPageHeader(x, this); }
-                else { pagedef.PageHeader = new TsPageHeader(this); }
+                if (x != null) { pagedef.PageHeader = new TsPageHeader(x); }
+                else { pagedef.PageHeader = new TsPageHeader(); }
 
                 x = SourceXml.Element("LeftPane");
-                if (x != null) { pagedef.LeftPane = new TsPane(x,this); }
-                else { pagedef.LeftPane = new TsPane(this); }
+                if (x != null) { pagedef.LeftPane = new TsPane(x); }
+                else { pagedef.LeftPane = new TsPane(); }
 
                 x = SourceXml.Element("RightPane");
-                if (x != null) { pagedef.RightPane = new TsPane(x, this); }
-                else { pagedef.RightPane = new TsPane(this); }
+                if (x != null) { pagedef.RightPane = new TsPane(x); }
+                else { pagedef.RightPane = new TsPane(); }
                 
                 pagedef.Buttons = this._buttons;
                 pagedef.Parent = this.TsMainWindow;
@@ -302,11 +302,11 @@ namespace TsGui
                         {
                             //record the last page as the prevPage
                             prevPage = currPage;
-                            currPage = new TsPage(xPage,pagedef, this);                                                     
+                            currPage = new TsPage(xPage,pagedef);                                                     
                         }
                         else
                         {
-                            currPage = new TsPage( xPage,pagedef,this);
+                            currPage = new TsPage( xPage,pagedef);
                             currPage.IsFirst = true;
                         }
 
@@ -325,7 +325,7 @@ namespace TsGui
                 x = SourceXml.Element("NoUI");
                 if (x != null)
                 {
-                    this._nouicontainer = new NoUIContainer(this, x);
+                    this._nouicontainer = new NoUIContainer(x);
                 }
             }
             LoggerFacade.Info("Config load finished");
@@ -480,7 +480,7 @@ namespace TsGui
                 LoggerFacade.Debug("Running hardware evaluator");
                 foreach (TsVariable var in this._hardwareevaluator.GetTsVariables())
                 {
-                    NoUIOption newhwoption = new NoUIOption(this);
+                    NoUIOption newhwoption = new NoUIOption();
                     newhwoption.ImportFromTsVariable(var);
                     this._optionlibrary.Add(newhwoption);
                 }

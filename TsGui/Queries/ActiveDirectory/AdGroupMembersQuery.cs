@@ -29,8 +29,6 @@ namespace TsGui.Queries.ActiveDirectory
 {
     public class ADGroupMembersQuery : BaseQuery, IAuthenticatorConsumer
     {
-        private IDirector _director;
-        
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private string _groupname;
         private ActiveDirectoryAuthenticator _authenticator;
@@ -46,11 +44,10 @@ namespace TsGui.Queries.ActiveDirectory
         }
         public string AuthID { get; set; }
 
-        public ADGroupMembersQuery(XElement InputXml, IDirector director, ILinkTarget owner): base(owner)
+        public ADGroupMembersQuery(XElement InputXml, ILinkTarget owner): base(owner)
         {
-            this._director = director;
             this.LoadXml(InputXml);
-            this._director.AuthLibrary.AddAuthenticatorConsumer(this);
+            Director.Instance.AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public new void LoadXml(XElement InputXml)

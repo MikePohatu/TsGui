@@ -65,11 +65,11 @@
 
 using System.Xml.Linq;
 
-namespace TsGui.View.GuiOptions.Prebuilt
+namespace TsGui.View.GuiOptions
 {
     public class TsComputerName : TsFreeText
     {
-        public TsComputerName(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent, MainController)
+        public TsComputerName(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             base.LoadXml(this.BuildDefaultXml());
             base.LoadXml(InputXml);

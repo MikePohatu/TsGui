@@ -40,7 +40,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsComplianceRefreshButton(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
+        public TsComplianceRefreshButton(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             this._rootelement = this.GetRootElement();
 

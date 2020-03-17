@@ -22,17 +22,15 @@ namespace TsGui.Actions
     public class AuthenticationAction: IAction, IAuthenticatorConsumer
     {
         private string _authid;
-        private IDirector _director;
 
         public string AuthID { get { return this._authid; } }
         public IAuthenticator Authenticator { get; set; }
 
-        public AuthenticationAction(XElement inputxml, IDirector director)
+        public AuthenticationAction(XElement inputxml)
         {
-            this._director = director;
             this.LoadXml(inputxml);
             //this._director.AuthLibrary.AddAuthenticator(new ActiveDirectoryAuthenticator(this._authid, this._domain));
-            this._director.AuthLibrary.AddAuthenticatorConsumer(this);
+            Director.Instance.AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public void RunAction()

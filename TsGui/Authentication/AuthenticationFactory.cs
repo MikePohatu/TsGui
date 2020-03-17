@@ -23,7 +23,7 @@ namespace TsGui.Authentication
 {
     public static class AuthenticationFactory
     {
-        public static IAuthenticator GetAuthenticator(XElement inputxml, IDirector director)
+        public static IAuthenticator GetAuthenticator(XElement inputxml)
         {
             if (inputxml == null) { return null; }
 

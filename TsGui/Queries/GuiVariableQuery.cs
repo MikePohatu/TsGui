@@ -25,21 +25,19 @@ namespace TsGui.Queries
     public class GuiVariableQuery: BaseQuery, ILinkingEventHandler
     {
         private FormattedProperty _formatter;
-        private IDirector _director;
         private List<IOption> _options = new List<IOption>();
 
-        public GuiVariableQuery(XElement inputxml, IDirector director, ILinkTarget owner): base(owner)
-        {
-            this._director = director;            
+        public GuiVariableQuery(XElement inputxml, ILinkTarget owner): base(owner)
+        {         
             this.LoadXml(inputxml);
             this.AddExistingOptions();      //add and register any existing options
-            this._director.OptionLibrary.OptionAdded += this.OnOptionAddedToLibrary; //register to get any new options
+            Director.Instance.OptionLibrary.OptionAdded += this.OnOptionAddedToLibrary; //register to get any new options
             this.ProcessAndRefresh();
         }
 
         private void AddExistingOptions()
         {
-            foreach (IOption option in this._director.OptionLibrary.Options)
+            foreach (IOption option in Director.Instance.OptionLibrary.Options)
             {
                 if ((!string.IsNullOrEmpty(option.VariableName)) && (option.VariableName.Equals(this._formatter.Name, StringComparison.OrdinalIgnoreCase)))
                 {

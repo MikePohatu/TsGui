@@ -50,7 +50,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //constructor
-        public TsInfoBox(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent, MainController)
+        public TsInfoBox(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             this.Control = new TsInfoBoxUI();
             this.Label = new TsLabelUI();

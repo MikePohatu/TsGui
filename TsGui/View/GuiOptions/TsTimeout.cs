@@ -43,7 +43,7 @@ namespace TsGui.View.GuiOptions
         public override TsVariable Variable { get { return null; } }
 
         //constructor
-        public TsTimeout(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent, MainController)
+        public TsTimeout(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             this.ControlText = string.Empty;
             this.Control = new TsHeadingUI();

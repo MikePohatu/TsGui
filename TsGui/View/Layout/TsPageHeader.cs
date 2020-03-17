@@ -78,7 +78,7 @@ namespace TsGui.View.Layout
         
         
         //Constructors
-        public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml, IDirector MainController):base(Parent, MainController)
+        public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml):base(Parent)
         {
             this.Height = Template.Height;
             this.Title = Template.Title;
@@ -87,18 +87,18 @@ namespace TsGui.View.Layout
             this.BgColor = Template.BgColor;
             this.Image = Template.Image;
 
-            this.Init(SourceXml, MainController);
+            this.Init(SourceXml);
         }
 
-        public TsPageHeader(XElement SourceXml, IDirector MainController): base (MainController)
+        public TsPageHeader(XElement SourceXml): base ()
         {
-            this.ShowGridLines = _director.ShowGridLines;
+            this.ShowGridLines = Director.Instance.ShowGridLines;
             this.SetDefaults();
 
-            this.Init(SourceXml, MainController);
+            this.Init(SourceXml);
         }
 
-        public TsPageHeader(IDirector MainController) : base(MainController)
+        public TsPageHeader() : base()
         {
             this.SetDefaults();
         }
@@ -116,7 +116,7 @@ namespace TsGui.View.Layout
             this.BgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF006AD4"));
         }
 
-        private void Init (XElement SourceXml, IDirector MainController)
+        private void Init (XElement SourceXml)
         {
             this.UI = new TsPageHeaderUI();
             this.UI.DataContext = this;
@@ -147,11 +147,11 @@ namespace TsGui.View.Layout
                 this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
 
                 x = InputXml.Element("Image");
-                if (x != null) { this.Image = new Image(x, this._director); }
+                if (x != null) { this.Image = new Image(x); }
 
                 x = InputXml.Element("Row");
                 if (x != null)
-                { this.Table = new TsTable(InputXml, this, this._director); }
+                { this.Table = new TsTable(InputXml, this); }
             }
         }
 

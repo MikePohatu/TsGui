@@ -34,7 +34,7 @@ namespace TsGui.View.GuiOptions
         private TsWarnUI _warnui;
 
         //constructor
-        public TsTickCross(XElement InputXml, TsColumn Parent, IDirector MainController): base (InputXml, Parent, MainController)
+        public TsTickCross(XElement InputXml, TsColumn Parent): base (Parent)
         {
             this._contentchanger = new ContentChanger();
             this._crossui = new TsCrossUI();
@@ -45,8 +45,19 @@ namespace TsGui.View.GuiOptions
             this._validationtooltiphandler.SetTarget(this.UserControl);
             this.SetDefaults();
             this.LoadXml(InputXml);
-            this.ProcessQuery();
-            this.Validate();
+            this.RefreshValue();
+        }
+
+        public TsTickCross(TsColumn Parent, IDirector MainController) : base(Parent)
+        {
+            this._contentchanger = new ContentChanger();
+            this._crossui = new TsCrossUI();
+            this._tickui = new TsTickUI();
+            this._warnui = new TsWarnUI();
+
+            this.Control = this._contentchanger;
+            this._validationtooltiphandler.SetTarget(this.UserControl);
+            this.SetDefaults();
         }
 
         private void SetDefaults()

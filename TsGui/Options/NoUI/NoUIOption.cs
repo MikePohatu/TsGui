@@ -44,7 +44,7 @@ namespace TsGui.Options.NoUI
                 if (this._id != value)
                 {
                     this._id = value;
-                    this._director.LinkingLibrary.AddSource(this);
+                    Director.Instance.LinkingLibrary.AddSource(this);
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace TsGui.Options.NoUI
             }
         }
         //constructors     
-        public NoUIOption(NoUIContainer Parent, IDirector director, XElement InputXml) : base(Parent, director)
+        public NoUIOption(NoUIContainer Parent, XElement InputXml) : base(Parent)
         {
             this._querylist = new QueryPriorityList(this);
             this.LoadXml(InputXml);
@@ -90,7 +90,7 @@ namespace TsGui.Options.NoUI
             this.NotifyUpdate();
         }
 
-        public NoUIOption(IDirector director):base (director)
+        public NoUIOption():base ()
         {
             this._querylist = new QueryPriorityList(this);
         }

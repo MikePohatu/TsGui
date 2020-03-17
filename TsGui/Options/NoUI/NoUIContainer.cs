@@ -27,11 +27,11 @@ namespace TsGui.Options.NoUI
         private List<NoUIContainer> _containers = new List<NoUIContainer>();
         
         //constructors
-        public NoUIContainer(IDirector MainController,XElement InputXml) : base(MainController)
+        public NoUIContainer(XElement InputXml) : base()
         {
             this.LoadXml(InputXml);
         }
-        public NoUIContainer(NoUIContainer Parent, IDirector MainController, XElement InputXml) : base(Parent, MainController)
+        public NoUIContainer(NoUIContainer Parent, XElement InputXml) : base(Parent)
         {
             this.LoadXml(InputXml);
         }
@@ -44,12 +44,12 @@ namespace TsGui.Options.NoUI
             {
                 if (opx.Name == "NoUIOption")
                 {
-                    this.AddOption(new NoUIOption(this, this._director, opx));
+                    this.AddOption(new NoUIOption(this, opx));
                 }
 
                 else if (opx.Name == "Container")
                 {
-                    this._containers.Add(new NoUIContainer(this,this._director, opx));
+                    this._containers.Add(new NoUIContainer(this, opx));
                 }
             }
         }
@@ -57,7 +57,7 @@ namespace TsGui.Options.NoUI
         private void AddOption (IOption Option)
         {
             this._options.Add(Option);
-            this._director.AddOptionToLibary(Option);
+            Director.Instance.AddOptionToLibary(Option);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace TsGui.Queries
             {
                 foreach (XElement x in InputXml.Elements())
                 {
-                    IQuery newquery = QueryFactory.GetQueryObject(x, Director.Instance, this._linktarget);
+                    IQuery newquery = QueryFactory.GetQueryObject(x, this._linktarget);
                     if (newquery != null) { this._queries.Add(newquery); }
                 }
             }

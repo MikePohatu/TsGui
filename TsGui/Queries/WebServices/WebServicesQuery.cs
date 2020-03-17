@@ -34,7 +34,6 @@ namespace TsGui.Queries.WebServices
         private string _serviceurl;
         private List<KeyValuePair<string, string>> _parameters = new List<KeyValuePair<string, string>>();
         private string _method;
-        private IDirector _director;
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private IAuthenticator _authenticator;
 
@@ -50,11 +49,10 @@ namespace TsGui.Queries.WebServices
         public string AuthID { get; set; }
         public string Response { get; set; }
 
-        public WebServicesQuery(XElement InputXml, IDirector director, ILinkTarget owner): base(owner)
+        public WebServicesQuery(XElement InputXml, ILinkTarget owner): base(owner)
         {
-            this._director = director;
             this.LoadXml(InputXml);
-            this._director.AuthLibrary.AddAuthenticatorConsumer(this);
+            Director.Instance.AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public new void LoadXml(XElement InputXml)

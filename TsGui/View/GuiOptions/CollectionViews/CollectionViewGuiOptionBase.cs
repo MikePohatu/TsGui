@@ -56,10 +56,10 @@ namespace TsGui.View.GuiOptions.CollectionViews
         }
 
         //Constructor
-        public CollectionViewGuiOptionBase(TsColumn Parent, IDirector director) : base(Parent, director)
+        public CollectionViewGuiOptionBase(TsColumn Parent) : base(Parent)
         {
             this._setvaluequerylist = new QueryPriorityList(this);
-            this._builder = new ListBuilder(this, this._director);
+            this._builder = new ListBuilder(this);
         }
 
 
@@ -85,18 +85,18 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 //the base loadxml will create queries before this so it will win
                 if (x.Name == "DefaultValue")
                 {
-                    IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this._director, this);
+                    IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this);
                     this._setvaluequerylist.AddQuery(defquery);
                 }
 
                 else if (x.Name == "Toggle")
                 {
-                    Toggle t = new Toggle(this, this._director, x);
+                    Toggle t = new Toggle(this, x);
                     this.IsToggle = true;
                 }
             }
 
-            if (this.IsToggle == true) { this._director.AddToggleControl(this); }
+            if (this.IsToggle == true) { Director.Instance.AddToggleControl(this); }
         }
 
         //fire an intial event to make sure things are set correctly. This is
@@ -115,7 +115,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         
         public bool Validate(bool CheckSelectionMade)
         {
-            if (this._director.StartupFinished == false) { return true; }
+            if (Director.Instance.StartupFinished == false) { return true; }
             if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
             if ((CheckSelectionMade == true) && (this.CurrentItem == null))
             {

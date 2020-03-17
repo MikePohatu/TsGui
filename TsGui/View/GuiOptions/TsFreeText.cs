@@ -87,21 +87,20 @@ namespace TsGui.View.GuiOptions
         #endregion
 
         //Constructor
-        public TsFreeText(XElement InputXml, TsColumn Parent, IDirector MainController): base (Parent, MainController)
+        public TsFreeText(XElement InputXml, TsColumn Parent): base (Parent)
         {
-            this.Init(MainController);
+            this.Init();
             this.LoadXml(InputXml);
             this.RefreshValue();
         }
 
-        protected TsFreeText(TsColumn Parent, IDirector MainController) : base(Parent, MainController)
+        protected TsFreeText(TsColumn Parent) : base(Parent)
         {
-            this.Init(MainController);
+            this.Init();
         }
 
-        private void Init(IDirector MainController)
+        private void Init()
         {
-            this._director = MainController;
             this._setvaluequerylist = new QueryPriorityList(this);
 
             this._freetextui = new TsFreeTextUI();
@@ -109,11 +108,11 @@ namespace TsGui.View.GuiOptions
             this.InteractiveControl = this._freetextui.TextBox;
             this.Label = new TsLabelUI();
 
-            this.ValidationHandler = new ValidationHandler(this, MainController);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this, MainController);
+            this.ValidationHandler = new ValidationHandler(this);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.UserControl.DataContext = this;
-            this._director.WindowLoaded += this.OnWindowLoaded;
+            Director.Instance.WindowLoaded += this.OnWindowLoaded;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
             this._freetextui.TextBox.GotFocus += this.OnGotFocus;
             this.UserControl.IsEnabledChanged += this.OnValidationEvent;
