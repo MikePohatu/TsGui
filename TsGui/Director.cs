@@ -126,7 +126,7 @@ namespace TsGui
         /// Replace the default director with a new IDirector instance. This to pass in a scafold IDirector for testing
         /// </summary>
         /// <param name="newdirector"></param>
-        public void OverrideInstance(IDirector newdirector)
+        public static void OverrideInstance(IDirector newdirector)
         {
             Director._instance = newdirector;
         }

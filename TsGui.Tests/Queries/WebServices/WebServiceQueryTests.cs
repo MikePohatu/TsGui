@@ -28,7 +28,7 @@ namespace TsGui.Tests
         public string BasicWebServiceTest(string Method, string[] Parameters)
         {
             XElement conf = new XElement("Query");            
-            conf.Add(new XElement("ServiceURL", "http://sccm/ConfigMgrWebService/ConfigMgr.asmx"));
+            conf.Add(new XElement("ServiceURL", "http://sccm01/ConfigMgrWebService/ConfigMgr.asmx"));
             conf.Add(new XElement("Method", Method));
             conf.Add(new XAttribute("AuthID", "TestCase"));
             for (int i=0;i<Parameters.GetLength(0);i=i+2)
@@ -39,7 +39,8 @@ namespace TsGui.Tests
             }
 
             TestDirector director = new TestDirector();
-            WebServicesQuery newquery = new WebServicesQuery(conf, director, null);
+            Director.OverrideInstance(director);
+            WebServicesQuery newquery = new WebServicesQuery(conf, null);
             newquery.ProcessQuery();
             return newquery.Response;
         }
