@@ -27,7 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
     <ComboBox x:Name="Control" ItemsSource="{Binding VisibleOptions}" SelectedItem="{Binding CurrentItem, Mode=TwoWay}" 
               SelectedValuePath="Value" Style="{StaticResource ControlStyle}" Foreground="{Binding ControlFormatting.FontColorBrush}" 
-              IsEditable="True" IsReadOnly="False">
+              IsEditable="{Binding IsEditable}" IsReadOnly="{Binding IsReadOnly}">
         <ComboBox.ItemTemplate>
             <DataTemplate>
                 <Label x:Name="DropDownListLabel" Content="{Binding Text}" IsEnabled="{Binding IsEnabled}" Style="{StaticResource CollectionItemLabelStyle}"/>

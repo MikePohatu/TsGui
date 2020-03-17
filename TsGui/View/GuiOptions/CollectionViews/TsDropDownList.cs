@@ -31,7 +31,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         //properties
         public List<ListItem> VisibleOptions { get { return this._builder.Items.Where(x => x.IsEnabled == true).ToList(); } }
-        
+        public bool IsEditable { get; set; } = false;
+        public bool IsReadOnly { get; set; } = true;
         //Constructor
         public TsDropDownList(XElement InputXml, TsColumn Parent) : base(Parent)
         {
@@ -54,6 +55,22 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this._dropdownlistui.Control.LostFocus += this.OnLostFocus;
             this.UserControl.IsEnabledChanged += this.OnActiveChanged;
             this.UserControl.IsVisibleChanged += this.OnActiveChanged;
+        }
+
+        public new void LoadXml(XElement inputxml)
+        {
+            base.LoadXml(inputxml);
+            bool autocompelete = XmlHandler.GetBoolFromXElement(inputxml, "AutoComplete", this.IsEditable);
+            SetAutoCompleteState(autocompelete);
+            if (autocompelete)
+            {
+                //Changing the editable value on the combobox changes the inner control which has a different padding. 
+                //Tweak the left padding value to correct for this
+                Thickness pad = this.ControlFormatting.Padding;
+                double newleft = System.Math.Max(pad.Left - 2, 0);
+                Thickness newpad = new Thickness(newleft, pad.Top, pad.Right, pad.Bottom);
+                this.ControlFormatting.Padding = newpad;
+            }
         }
 
         private void SetComboBoxDefault()
@@ -138,6 +155,20 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 //this makes sure the text is updated properly if the user has left it half complete
                 this._dropdownlistui.Control.Text = this.CurrentItem.Text;
             }
+        }
+
+        protected new void SetDefaults()
+        {
+            base.SetDefaults();
+            this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
+        }
+
+        private void SetAutoCompleteState(bool enabled)
+        {
+            this.IsEditable = enabled;
+            this.IsReadOnly = !enabled;
+            this.OnPropertyChanged(this, "IsEditable");
+            this.OnPropertyChanged(this, "IsReadOnly");
         }
     }
 }
