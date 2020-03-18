@@ -49,12 +49,13 @@ namespace TsGui.Authentication.LocalConfig
             if (string.IsNullOrEmpty(this.PasswordSource.Password) == true)
             {
                 LoggerFacade.Warn("Cannot autheticate with empty password");
-                this.SetState(AuthState.AccessDenied);
+                this.SetState(AuthState.NoPassword);
+                this.AuthStateChanged?.Invoke();
                 return AuthState.AccessDenied;
             }
 
             LoggerFacade.Info("Authenticating against local config with ID " + this.AuthID);
-            AuthState newstate = AuthState.AuthError;
+            AuthState newstate = AuthState.AccessDenied;
 
             foreach (Password pw in this._validpasswords)
             {
@@ -73,6 +74,7 @@ namespace TsGui.Authentication.LocalConfig
 
 
             this.SetState(newstate);
+            this.AuthStateChanged?.Invoke();
             return newstate;
         }
 

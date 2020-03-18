@@ -18,5 +18,5 @@
 #endregion
 namespace TsGui.Authentication
 {
-    public enum AuthState { AccessDenied, Authorised, NotAuthorised, AuthError }
+    public enum AuthState { AccessDenied, Authorised, NotAuthorised, AuthError, NoPassword }
 }

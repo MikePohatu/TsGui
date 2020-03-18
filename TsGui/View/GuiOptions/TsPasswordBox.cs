@@ -27,14 +27,20 @@ using System.Xml.Linq;
 using TsGui.Queries;
 using TsGui.Authentication;
 using TsGui.Diagnostics;
+using TsGui.Validation;
+using System.Windows.Input;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsPasswordBox: GuiOptionBase, IGuiOption, IPassword
+    public class TsPasswordBox: GuiOptionBase, IGuiOption, IPassword, IValidationGuiOption
     {
         private string _authid;
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;
+        private ValidationToolTipHandler _validationtooltiphandler;
+        private IAuthenticator _authenticator;
+        private string _failuremessage = "Authorization failed";
+        private string _nopasswordmessage = "Password cannot be empty";
 
         //Properties
         #region
@@ -51,6 +57,15 @@ namespace TsGui.View.GuiOptions
         {
             get { return null; }
         }
+        public ValidationHandler ValidationHandler { get; private set; }
+
+        protected string _validationtext;
+        public string ValidationText
+        {
+            get { return this._validationtext; }
+            set { this._validationtext = value; this.OnPropertyChanged(this, "ValidationText"); }
+        }
+        public bool IsValid { get { return this.Validate(); } }
         #endregion
 
         //Constructor
@@ -67,9 +82,14 @@ namespace TsGui.View.GuiOptions
             this._passwordboxui = new TsPasswordBoxUI();
             this.Control = this._passwordboxui;
             this.Label = new TsLabelUI();
+            this._passwordboxui.PasswordBox.KeyDown += this.OnKeyDown;
 
             this.UserControl.DataContext = this;
             this.SetDefaults();
+
+            this.ValidationHandler = new ValidationHandler(this);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this);
+            Director.Instance.ConfigLoadFinished += this.OnConfigLoadFinished;
         }
 
         private void SetDefaults()
@@ -81,6 +101,9 @@ namespace TsGui.View.GuiOptions
         public new void LoadXml(XElement inputxml)
         {
             base.LoadXml(inputxml);
+            this._failuremessage = XmlHandler.GetStringFromXElement(inputxml, "FailureMessage", this._failuremessage);
+            this._nopasswordmessage = XmlHandler.GetStringFromXElement(inputxml, "NoPasswordMessage", this._nopasswordmessage);
+
             this.MaxLength = XmlHandler.GetIntFromXAttribute(inputxml, "MaxLength", this.MaxLength);
             XAttribute x = inputxml.Attribute("AuthID");
             if (x != null)
@@ -89,6 +112,60 @@ namespace TsGui.View.GuiOptions
                 Director.Instance.AuthLibrary.AddPasswordSource(this);
             }  
             else { throw new TsGuiKnownException("Missing AuthID in config:", inputxml.ToString()); }      
+        }
+
+
+        #region validation
+        public bool Validate()
+        {
+            if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
+
+            bool newvalid = this._authenticator.State == AuthState.Authorised;
+
+            if (this._authenticator.State == AuthState.Authorised)
+            {
+                this._validationtooltiphandler.Clear();
+            }
+            else if (this._authenticator.State == AuthState.NoPassword)
+            {
+                this.ValidationText = this._nopasswordmessage;
+                this._validationtooltiphandler.ShowError();
+            }
+            else
+            {
+                this.ValidationText = this._failuremessage;
+                this._validationtooltiphandler.ShowError();
+            }
+
+            return newvalid;
+        }
+
+        public void ClearToolTips()
+        { this._validationtooltiphandler.Clear(); }
+
+        public void OnValidationChange()
+        { this.Validate(); }
+        #endregion
+
+
+        private void OnConfigLoadFinished(object sender, EventArgs e)
+        {
+            this._authenticator = Director.Instance.AuthLibrary.GetAuthenticator(this._authid);
+            this._authenticator.AuthStateChanged += this.OnAuthStateChanged;
+        }
+
+        private void OnAuthStateChanged()
+        {
+            this.Validate();
+        }
+
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return || e.Key == Key.Enter)
+            {
+                this._authenticator.Authenticate();
+                e.Handled = true;
+            }
         }
     }
 }
