@@ -29,7 +29,7 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsMainWindow : INotifyPropertyChanged
+    public class TsMainWindow : BaseLayoutElement
     {
         private double _height;        //default page height for the window
         private double _width;         //default page width for the window
@@ -52,24 +52,6 @@ namespace TsGui.View.Layout
             {
                 this._windowTitle = value;
                 this.OnPropertyChanged(this, "WindowTitle");
-            }
-        }
-        public double Height
-        {
-            get { return this._height; }
-            set
-            {
-                this._height = value;
-                this.OnPropertyChanged(this, "Height");
-            }
-        }
-        public double Width
-        {
-            get { return this._width; }
-            set
-            {
-                this._width = value;
-                this.OnPropertyChanged(this, "Width");
             }
         }
         public Thickness PageMargin
@@ -118,15 +100,6 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "FooterHAlignment");
             }
         }
-        public bool ShowGridLines
-        {
-            get { return this._gridlines; }
-            set
-            {
-                this._gridlines = value;
-                this.OnPropertyChanged(this, "ShowGridLines");
-            }
-        }
 
         //Constructors
         public TsMainWindow(MainWindow ParentWindow)
@@ -144,18 +117,9 @@ namespace TsGui.View.Layout
             
         }
 
-        //Setup the INotifyPropertyChanged interface 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // OnPropertyChanged method to raise the event
-        protected void OnPropertyChanged(object sender, string name)
+        public new void LoadXml(XElement SourceXml)
         {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-        }
-
-        public void LoadXml(XElement SourceXml)
-        {
-
+            base.LoadXml(SourceXml);
             XElement subx;
             XElement x;
 
@@ -175,18 +139,11 @@ namespace TsGui.View.Layout
 
                 this.TopMost = XmlHandler.GetBoolFromXElement(SourceXml, "TopMost", this.TopMost);
                 this.WindowTitle = XmlHandler.GetStringFromXElement(SourceXml, "Title", this.WindowTitle);
-                this.Width = XmlHandler.GetDoubleFromXElement(SourceXml, "Width", this.Width);
-                this.Height = XmlHandler.GetDoubleFromXElement(SourceXml, "Height", this.Height);
 
                 x = SourceXml.Element("WindowLocation");
                 if (x != null) { this._windowlocation.LoadXml(x); }
 
                 GuiFactory.LoadMargins(SourceXml, this._pageMargin);
-
-                //Set show grid lines after pages and columns have been created.
-                x = SourceXml.Element("ShowGridLines");
-                if (x != null)
-                { this.ShowGridLines = true; }
             }
         }
     }

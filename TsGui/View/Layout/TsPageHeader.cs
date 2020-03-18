@@ -37,6 +37,8 @@ namespace TsGui.View.Layout
         private string _text;
         private SolidColorBrush _bgColor;
         private SolidColorBrush _fontColor;
+        private double _titlefontsize;
+        private double _textfontsize;
 
         //Properties
         public Image Image { get; set; }
@@ -79,8 +81,19 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "HeadingFontColor");
             }
         }
-        
-        
+
+        public double TitleFontSize
+        {
+            get { return this._titlefontsize; }
+            set  { this._titlefontsize = value; this.OnPropertyChanged(this, "TitleFontSize"); }
+        }
+
+        public double TextFontSize
+        {
+            get { return this._textfontsize; }
+            set { this._textfontsize = value; this.OnPropertyChanged(this, "TextFontSize"); }
+        }
+
         //Constructors
         public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml):base(Parent)
         {
@@ -90,11 +103,12 @@ namespace TsGui.View.Layout
             this.FontColor = Template.FontColor;
             this.BgColor = Template.BgColor;
             this.Image = Template.Image;
+            this.TitleFontSize = Template.TitleFontSize;
 
             this.Init(SourceXml);
         }
 
-        public TsPageHeader(XElement SourceXml): base ()
+        public TsPageHeader(BaseLayoutElement Parent, XElement SourceXml): base (Parent)
         {
             this.ShowGridLines = Director.Instance.ShowGridLines;
             this.SetDefaults();
@@ -115,7 +129,21 @@ namespace TsGui.View.Layout
 
         private void SetDefaults()
         {
-            this.Height = 50;
+            if (Director.Instance.UseTouchDefaults)
+            {
+                this.Margin = new Thickness(10, 10, 10, 10);
+                this.Height = 75;
+                this.TitleFontSize = 18;
+                this.TextFontSize = 14;
+            }
+            else
+            {
+                this.Margin = new Thickness(10, 5, 10, 5);
+                this.Height = 50;
+                this.TitleFontSize = 13;
+                this.TextFontSize = 11;
+            }
+            
             this.FontColor = new SolidColorBrush(Colors.White);
             this.BgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF006AD4"));
         }

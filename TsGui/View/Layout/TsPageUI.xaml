@@ -42,8 +42,8 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*"></ColumnDefinition>
-                    <ColumnDefinition Width="80"></ColumnDefinition>
-                    <ColumnDefinition Width="80"></ColumnDefinition>
+                    <ColumnDefinition Width="80*"></ColumnDefinition>
+                    <ColumnDefinition Width="80*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button x:Name="buttonNext" IsDefault="True" IsEnabled="False" Visibility="Hidden" Content="{Binding ButtonTextNext}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ControlStyle}" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" Click="buttonNext_Click"/>
                 <Button x:Name="buttonFinish" IsDefault="True" Content="{Binding ButtonTextFinish}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ControlStyle}" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" Click="buttonFinish_Click"/>

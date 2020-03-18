@@ -23,11 +23,10 @@ namespace TsGui.View.Layout
 {
     public class PageDefaults
     {
-        public double Height { get; set; }
         public TsPageHeader PageHeader { get; set; }
         public TsButtons Buttons { get; set; }
         public IDirector RootController { get; set; }
-        public TsMainWindow Parent { get; set; }
+        public TsMainWindow MainWindow { get; set; }
         public TsTable Table { get; set; }
         public TsPane LeftPane { get; set; }
         public TsPane RightPane { get; set; }

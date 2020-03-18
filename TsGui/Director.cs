@@ -248,12 +248,9 @@ namespace TsGui
 
             if (SourceXml != null)
             {
-                this.TsMainWindow.LoadXml(SourceXml);
-                GuiTimeout.Init(SourceXml.Element("Timeout"));
-
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
                 this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
-                
+
                 //Set show grid lines after pages and columns have been created.
                 x = SourceXml.Element("ShowGridLines");
                 if ((x != null) && (this._prodmode == false))
@@ -268,17 +265,13 @@ namespace TsGui
                 if (x != null)
                 { this._hardwareevaluator = new HardwareEvaluator(); }
 
-                foreach (XElement xauth in SourceXml.Elements("Authentication"))
-                {
-                    this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth));
-                }
-
                 this._buttons = new TsButtons();
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
+
                 PageDefaults pagedef = new PageDefaults();
 
                 x = SourceXml.Element("Heading");
-                if (x != null) { pagedef.PageHeader = new TsPageHeader(x); }
+                if (x != null) { pagedef.PageHeader = new TsPageHeader(this.TsMainWindow, x); }
                 else { pagedef.PageHeader = new TsPageHeader(); }
 
                 x = SourceXml.Element("LeftPane");
@@ -288,10 +281,18 @@ namespace TsGui
                 x = SourceXml.Element("RightPane");
                 if (x != null) { pagedef.RightPane = new TsPane(x); }
                 else { pagedef.RightPane = new TsPane(); }
-                
+
                 pagedef.Buttons = this._buttons;
-                pagedef.Parent = this.TsMainWindow;
-                pagedef.RootController = this;
+                pagedef.MainWindow = this.TsMainWindow;
+
+
+                this.TsMainWindow.LoadXml(SourceXml);
+                GuiTimeout.Init(SourceXml.Element("Timeout"));
+
+                foreach (XElement xauth in SourceXml.Elements("Authentication"))
+                {
+                    this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth));
+                }
 
                 //now read in the options and add to a dictionary for later use
                 pagesXml = SourceXml.Elements("Page");

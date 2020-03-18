@@ -8,7 +8,7 @@
              d:DesignHeight="50" d:DesignWidth="300">
     <Border CornerRadius="5,5,0,0" Background="{Binding BgColor}" >
         <StackPanel x:Name="HeaderStackPanel">
-            <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="10,5,10,5">
+            <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="{Binding Margin}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="HeadingTitleColumn" Width="100*"/>
                     <ColumnDefinition x:Name="HeadingImageColumn" Width="Auto"/>
@@ -19,8 +19,8 @@
                     <RowDefinition x:Name="HeadingTableRow"/>
                 </Grid.RowDefinitions>
                 <StackPanel x:Name="HeaderTitleStack" Grid.Row="0">
-                    <TextBlock x:Name="HeaderTitle" Grid.Column="0" Text="{Binding Title}" Foreground="{Binding FontColor}" FontFamily="Segoe UI Semibold" FontSize="13" />
-                    <TextBlock x:Name="HeaderText" Grid.Column="0" Text="{Binding Text}" Foreground="{Binding FontColor}" />
+                    <TextBlock x:Name="HeaderTitle" Grid.Column="0" Text="{Binding Title}" Foreground="{Binding FontColor}" FontFamily="Segoe UI Semibold" FontSize="{Binding TitleFontSize}" />
+                    <TextBlock x:Name="HeaderText" Grid.Column="0" Text="{Binding Text}" Foreground="{Binding FontColor}" FontSize="{Binding TextFontSize}" />
                 </StackPanel>
                 <Image x:Name="ImageElement" Grid.Column="1" Grid.Row="0" 
                                Width="{Binding Image.Width}" Height="{Binding Image.Height}"

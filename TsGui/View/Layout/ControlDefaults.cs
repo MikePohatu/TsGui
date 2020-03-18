@@ -32,7 +32,7 @@ namespace TsGui.View.Layout
 
             if (Director.Instance.UseTouchDefaults == true)
             {
-                formatting.Width = 75;
+                formatting.Width = 85;
                 formatting.Height = 45;
             }
             else
