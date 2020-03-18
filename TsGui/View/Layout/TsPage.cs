@@ -104,7 +104,7 @@ namespace TsGui.View.Layout
         #endregion
 
         //Constructors
-        public TsPage(BaseLayoutElement Parent, XElement SourceXml, PageDefaults Defaults) : base()
+        public TsPage(BaseLayoutElement Parent, XElement SourceXml, PageDefaults Defaults) : base(Parent)
         {
             //this._director = Defaults.RootController;
             LoggerFacade.Info("New page created");
