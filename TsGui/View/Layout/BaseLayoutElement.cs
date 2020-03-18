@@ -118,14 +118,28 @@ namespace TsGui.View.Layout
             }
         }
 
-        public IRootLayoutElement GetRootElement()
+        //public GetComplianceRootElement i.e. get the root without having any existing root
+        public IComplianceRoot GetComplianceRootElement()
         {
+            return this.GetComplianceRootElement(null);
+        }
+
+        //private GetComplianceRootElement. Keep the last root element as traversing up the tree. When 
+        //at the top, return the last comliance root element. 
+        private IComplianceRoot GetComplianceRootElement(IComplianceRoot currentroot)
+        {
+            IComplianceRoot thisAsRoot = this as IComplianceRoot;
+
             if (this.Parent == null)
             {
-                if (this is IRootLayoutElement) { return (IRootLayoutElement)this; }
-                else { return null; }
+                if (thisAsRoot != null) { return thisAsRoot; }
+                return currentroot;
             }
-            else { return this.Parent.GetRootElement(); }
+            else
+            {
+                if (thisAsRoot != null) { return this.Parent.GetComplianceRootElement(thisAsRoot); }
+                else { return this.Parent.GetComplianceRootElement(currentroot); }
+            }
         }
 
         private void SetDefaults()

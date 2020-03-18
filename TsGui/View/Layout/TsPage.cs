@@ -34,7 +34,7 @@ using System;
 
 namespace TsGui.View.Layout
 {
-    public class TsPage : BaseLayoutElement, IRootLayoutElement
+    public class TsPage : BaseLayoutElement, IComplianceRoot
     {
         public event ComplianceRetryEventHandler ComplianceRetry;
 
@@ -104,10 +104,11 @@ namespace TsGui.View.Layout
         #endregion
 
         //Constructors
-        public TsPage(XElement SourceXml, PageDefaults Defaults) : base()
+        public TsPage(BaseLayoutElement Parent, XElement SourceXml, PageDefaults Defaults) : base()
         {
             //this._director = Defaults.RootController;
             LoggerFacade.Info("New page created");
+            this.Parent = Parent;
             this.ShowGridLines = Director.Instance.ShowGridLines;
             this.Page = new TsPageUI(this);
             this.PageHeader = Defaults.PageHeader;

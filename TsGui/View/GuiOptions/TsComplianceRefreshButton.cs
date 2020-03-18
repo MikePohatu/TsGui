@@ -27,7 +27,7 @@ namespace TsGui.View.GuiOptions
 {
     public class TsComplianceRefreshButton : GuiOptionBase, IGuiOption
     {
-        private IRootLayoutElement _rootelement;
+        private IComplianceRoot _rootelement;
         private string _buttontext;
         private TsButtonUI _ui;
 
@@ -46,7 +46,7 @@ namespace TsGui.View.GuiOptions
         //Constructor
         public TsComplianceRefreshButton(XElement InputXml, TsColumn Parent) : base(Parent)
         {
-            this._rootelement = this.GetRootElement();
+            this._rootelement = this.GetComplianceRootElement();
 
             this.UserControl.DataContext = this;           
             this._ui = new TsButtonUI();

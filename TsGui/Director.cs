@@ -307,11 +307,11 @@ namespace TsGui
                         {
                             //record the last page as the prevPage
                             prevPage = currPage;
-                            currPage = new TsPage(xPage,pagedef);                                                     
+                            currPage = new TsPage(this.TsMainWindow, xPage, pagedef);                                                     
                         }
                         else
                         {
-                            currPage = new TsPage( xPage,pagedef);
+                            currPage = new TsPage(this.TsMainWindow, xPage,pagedef);
                             currPage.IsFirst = true;
                         }
 

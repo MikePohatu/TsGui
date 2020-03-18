@@ -28,5 +28,5 @@ namespace TsGui.Events
     public delegate void TsGuiWindowEventHandler(object sender, RoutedEventArgs e);
     public delegate void TsGuiWindowMovingEventHandler(object sender, EventArgs e);
     public delegate void ConfigLoadFinishedEventHandler(object sender, EventArgs e);
-    public delegate void ComplianceRetryEventHandler(IRootLayoutElement sender, EventArgs e);
+    public delegate void ComplianceRetryEventHandler(IComplianceRoot sender, EventArgs e);
 }

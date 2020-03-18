@@ -26,7 +26,7 @@ namespace TsGui.View.GuiOptions
 {
     public class TsActionButton : GuiOptionBase, IGuiOption
     {
-        private IRootLayoutElement _rootelement;
+        private IComplianceRoot _rootelement;
         private string _buttontext;
         private TsButtonUI _ui;
         private IAction _action;
@@ -56,7 +56,7 @@ namespace TsGui.View.GuiOptions
         //Constructor
         public TsActionButton(XElement InputXml, TsColumn Parent) : base(Parent)
         {
-            this._rootelement = this.GetRootElement();
+            this._rootelement = this.GetComplianceRootElement();
 
             this.UserControl.DataContext = this;
             this._ui = new TsButtonUI();

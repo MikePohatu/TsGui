@@ -29,7 +29,7 @@ using TsGui.Validation;
 
 namespace TsGui.View.Layout
 {
-    public class TsPageHeader : BaseLayoutElement, IRootLayoutElement
+    public class TsPageHeader : BaseLayoutElement, IComplianceRoot
     {
         public event ComplianceRetryEventHandler ComplianceRetry;
 

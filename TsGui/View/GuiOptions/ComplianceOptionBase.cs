@@ -27,6 +27,7 @@ using TsGui.Validation;
 using TsGui.View.Layout;
 using TsGui.Queries;
 using TsGui.Linking;
+using TsGui.Diagnostics;
 
 namespace TsGui.View.GuiOptions
 {
@@ -42,7 +43,7 @@ namespace TsGui.View.GuiOptions
         public ValidationHandler ValidationHandler { get { return null; } }
         protected ComplianceHandler _compliancehandler;
         protected string _validationtext;
-        protected IRootLayoutElement _rootelement;
+        protected IComplianceRoot _rootelement;
         protected bool _showvalueinpopup;
         protected string _okHelpText;
 
@@ -89,7 +90,11 @@ namespace TsGui.View.GuiOptions
         public ComplianceOptionBase(TsColumn Parent): base (Parent)
         {
             this.Label = new TsLabelUI();
-            this._rootelement = this.GetRootElement();
+            this._rootelement = this.GetComplianceRootElement();
+            if (this._rootelement == null)
+            {
+                throw new TsGuiKnownException("There is prooblem in the compliance tree. Root is null", string.Empty);
+            }
             this._rootelement.ComplianceRetry += this.OnComplianceRetry;
 
             this.FillColor = new SolidColorBrush(Colors.Blue);
@@ -139,7 +144,7 @@ namespace TsGui.View.GuiOptions
         public void OnValidationChange()
         { this.Validate(); }
 
-        public void OnComplianceRetry(IRootLayoutElement o, EventArgs e)
+        public void OnComplianceRetry(IComplianceRoot o, EventArgs e)
         {
             this.RefreshValue();
         }

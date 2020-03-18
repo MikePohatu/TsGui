@@ -262,7 +262,7 @@
     <Compile Include="View\Layout\GhostWindow.xaml.cs">
       <DependentUpon>GhostWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Layout\IRootLayoutElement.cs" />
+    <Compile Include="View\Layout\IComplianceRoot.cs" />
     <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\IGuiOption.cs" />
