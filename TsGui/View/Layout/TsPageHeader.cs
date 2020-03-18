@@ -132,7 +132,7 @@ namespace TsGui.View.Layout
             if (Director.Instance.UseTouchDefaults)
             {
                 this.Margin = new Thickness(10, 10, 10, 10);
-                this.Height = 75;
+                this.Height = 65;
                 this.TitleFontSize = 18;
                 this.TextFontSize = 14;
             }
