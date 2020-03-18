@@ -31,20 +31,16 @@ namespace TsGui.View.Layout
 {
     public class TsMainWindow : BaseLayoutElement
     {
-        private double _height;        //default page height for the window
-        private double _width;         //default page width for the window
         private string _windowTitle;
         private Thickness _pageMargin = new Thickness(0, 0, 0, 0);
         private string _footerText;
         private double _footerHeight;
         private bool _topmost = true;
         private HorizontalAlignment _footerHAlignment;
-        private bool _gridlines = false;
-        private WindowLocation _windowlocation;
         private MainWindow _parentwindow;
 
         //Properties
-        public WindowLocation WindowLocation { get { return this._windowlocation; } }
+        public WindowLocation WindowLocation { get; }
         public string WindowTitle
         {
             get { return this._windowTitle; }
@@ -105,12 +101,12 @@ namespace TsGui.View.Layout
         public TsMainWindow(MainWindow ParentWindow)
         {
             this._parentwindow = ParentWindow;
-            this._windowlocation = new WindowLocation(this._parentwindow);
+            this.WindowLocation = new WindowLocation(this._parentwindow);
 
             //set default values
             this.WindowTitle = "TsGui";
-            this._width = Double.NaN;
-            this._height = Double.NaN;
+            this.Width = Double.NaN;
+            this.Height = Double.NaN;
             this.FooterText = "Powered by TsGui - www.20road.com";
             this.FooterHeight = 15;
             this.FooterHAlignment = HorizontalAlignment.Right;
@@ -141,7 +137,7 @@ namespace TsGui.View.Layout
                 this.WindowTitle = XmlHandler.GetStringFromXElement(SourceXml, "Title", this.WindowTitle);
 
                 x = SourceXml.Element("WindowLocation");
-                if (x != null) { this._windowlocation.LoadXml(x); }
+                if (x != null) { this.WindowLocation.LoadXml(x); }
 
                 GuiFactory.LoadMargins(SourceXml, this._pageMargin);
             }
