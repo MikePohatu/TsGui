@@ -106,5 +106,47 @@ The PowerConnected prebuilt is a compliance option to indicate whether power is 
 ---
 <br><br>
 
+### WifiDisconnected
+The WifiDisconnected prebuilt is a compliance option to indicate whether WiFi is disconnected from the device. 
+
+* [Example](#WifiDisconnected-Example)
+* [Expanded Configuration](#WifiDisconnected-Expanded-Configuration)
+
+#### Supported locations
+
+* TrafficLight GuiOption
+* TickCross GuiOption
+
+#### WifiDisconnected Example
+```
+<GuiOption Type="TrafficLight" Prebuilt="WifiDisconnected" />
+```
+
+#### WifiDisconnected Expanded Configuration
+
+```
+<GuiOption Type="TrafficLight">
+    <Variable>Compliance_WifiStatus</Variable>
+    <Label>WiFi connection</Label>
+    <ShowComplianceValue>FALSE</ShowComplianceValue>
+    <SetValue>
+        <Query Type="Wmi">
+            <Wql>SELECT * FROM Win32_NetworkAdapter WHERE (AdapterType="Ethernet 802.3") AND (NetConnectionStatus = 2)</Wql>
+            <Property Name ="Name"/>
+            <Separator></Separator>
+        </Query>
+    </SetValue>
+    <Compliance>
+        <Message>Please disconnect the wifi</Message>	   
+        <DefaultState>Warning</DefaultState>
+        <Invalid>
+            <Rule Type="Contains">Wireless</Rule>
+            <Rule Type="Contains">Wifi</Rule>
+            <Rule Type="Contains">WLAN</Rule>
+        </Invalid>		 
+    </Compliance>
+</GuiOption>
+```
+
 
 

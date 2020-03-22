@@ -21,9 +21,9 @@ using System.Xml.Linq;
 
 namespace TsGui.Prebuilt.Options
 {
-    public static class PrebuiltDisk
-    {
-		public static List<string> SupportedTypes { get; private set; } = new List<string>() { "DROPDOWNLIST" };
+	public static class PrebuiltWifiDisconnected
+	{
+		public static List<string> SupportedTypes { get; private set; } = new List<string>() { "TICKCROSS", "TRAFFICLIGHT" };
 
 		public static bool IsSupported(string type)
 		{
@@ -34,33 +34,31 @@ namespace TsGui.Prebuilt.Options
 		{
 			string xml = @"
 				<Prebuilt>
-					<Variable>OSDDiskIndex</Variable>
-					<Label>Disk</Label>
+					<Variable>Compliance_WifiStatus</Variable>
+					<Label>WiFi connection</Label>
+					<ShowComplianceValue>FALSE</ShowComplianceValue>
 					<SetValue>
-						<Value>0</Value>
+						<Query Type=""Wmi"">
+							<Wql>SELECT * FROM Win32_NetworkAdapter WHERE (AdapterType=""Ethernet 802.3"") AND (NetConnectionStatus = 2)</Wql>
+							<Property Name=""Name""/>
+							<Separator></Separator>
+						</Query>
 					</SetValue>
-
-					<Query Type=""Wmi"">
-						<Wql>SELECT Index,Caption,Size FROM Win32_DiskDrive where MediaType='Fixed hard disk media'</Wql>
-						<NameSpace>root\CIMV2</NameSpace>
-						<Property Name=""Index""/>
-						<Property Name=""Index"">
-							<Prefix>ID: </Prefix>
-						</Property>
-						<Property Name=""Size"">
-							<Calculate DecimalPlaces=""2"">VALUE/1073741824</Calculate>
-							<Prefix></Prefix>
-							<Append>GB</Append>
-						</Property>
-						<Property Name=""Caption"" />
-						<Separator>, </Separator>
-					</Query>
+					<Compliance>
+						<Message>Please disconnect the wifi</Message>	   
+						<DefaultState>Warning</DefaultState>
+						<Invalid>
+							<Rule Type=""Contains"">Wireless</Rule>
+							<Rule Type=""Contains"">Wifi</Rule>
+							<Rule Type=""Contains"">WLAN</Rule>
+						</Invalid>		 
+					</Compliance>
 				</Prebuilt>";
 
 			XElement x = XElement.Parse(xml);
 			return x;
 		}
 
-		
+
 	}
 }

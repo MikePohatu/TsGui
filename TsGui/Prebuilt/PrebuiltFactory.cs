@@ -53,6 +53,10 @@ namespace TsGui.Prebuilt
                         if (PrebuiltPowerConnected.IsSupported(xtype.Value))
                         { return PrebuiltPowerConnected.GetXml(); }
                         else { throw new TsGuiKnownException(string.Format("Prebuilt type {0} not supported on {1}", xprebuilt.Value, xtype.Value), null); }
+                    case "WIFIDISCONNECTED":
+                        if (PrebuiltPowerConnected.IsSupported(xtype.Value))
+                        { return PrebuiltWifiDisconnected.GetXml(); }
+                        else { throw new TsGuiKnownException(string.Format("Prebuilt type {0} not supported on {1}", xprebuilt.Value, xtype.Value), null); }
                     default:
                         break;
                 }
