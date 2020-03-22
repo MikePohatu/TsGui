@@ -25,7 +25,7 @@ using TsGui;
 
 namespace TsGui.Prebuilt.Options
 {
-    public static class PrebuiltPower
+    public static class PrebuiltPowerConnected
     {
 		public static List<string> SupportedTypes { get; private set; } = new List<string>() { "TICKCROSS", "TRAFFICLIGHT" };
 

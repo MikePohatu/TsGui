@@ -141,7 +141,7 @@
       <DependentUpon>ContentChanger.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\CollectionViews\TsTreeView.cs" />
-    <Compile Include="Prebuilt\Options\PrebuiltPower.cs" />
+    <Compile Include="Prebuilt\Options\PrebuiltPowerConnected.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltDisk.cs" />
     <Compile Include="View\GuiOptions\TsActionButton.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\ListBuilder.cs" />

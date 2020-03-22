@@ -49,9 +49,9 @@ namespace TsGui.Prebuilt
                         { return PrebuiltDisk.GetXml(); }
                         else { throw new TsGuiKnownException(string.Format("Prebuilt type {0} not supported on {1}", xprebuilt.Value, xtype.Value), null); }
 
-                    case "POWER":
-                        if (PrebuiltPower.IsSupported(xtype.Value))
-                        { return PrebuiltPower.GetXml(); }
+                    case "POWERCONNECTED":
+                        if (PrebuiltPowerConnected.IsSupported(xtype.Value))
+                        { return PrebuiltPowerConnected.GetXml(); }
                         else { throw new TsGuiKnownException(string.Format("Prebuilt type {0} not supported on {1}", xprebuilt.Value, xtype.Value), null); }
                     default:
                         break;
