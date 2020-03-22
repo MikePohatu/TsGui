@@ -143,7 +143,7 @@
     </Compile>
     <Compile Include="View\GuiOptions\CollectionViews\TsTreeView.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltPowerConnected.cs" />
-    <Compile Include="Prebuilt\Options\PrebuiltDisk.cs" />
+    <Compile Include="Prebuilt\Options\PrebuiltDiskIndex.cs" />
     <Compile Include="View\GuiOptions\TsActionButton.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\ListBuilder.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\TsTreeViewUI.xaml.cs">

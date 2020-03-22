@@ -21,7 +21,7 @@ using System.Xml.Linq;
 
 namespace TsGui.Prebuilt.Options
 {
-    public static class PrebuiltDisk
+    public static class PrebuiltDiskIndex
     {
 		public static List<string> SupportedTypes { get; private set; } = new List<string>() { "DROPDOWNLIST" };
 

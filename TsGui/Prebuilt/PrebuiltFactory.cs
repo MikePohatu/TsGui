@@ -45,8 +45,8 @@ namespace TsGui.Prebuilt
                 switch (prebuilttype) 
                 {
                     case "DISKINDEX":
-                        if (PrebuiltDisk.IsSupported(xtype.Value))
-                        { return PrebuiltDisk.GetXml(); }
+                        if (PrebuiltDiskIndex.IsSupported(xtype.Value))
+                        { return PrebuiltDiskIndex.GetXml(); }
                         else { throw new TsGuiKnownException(string.Format("Prebuilt type {0} not supported on {1}", xprebuilt.Value, xtype.Value), null); }
 
                     case "POWERCONNECTED":
