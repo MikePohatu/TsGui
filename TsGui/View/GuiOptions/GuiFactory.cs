@@ -86,7 +86,7 @@ namespace TsGui.View.GuiOptions
             }
             else if (xtype.Value == "InfoBox")
             {
-                TsInfoBox ib = new TsInfoBox(OptionXml, Parent);
+                newoption = new TsInfoBox(OptionXml, Parent);
             }
             else if (xtype.Value == "TrafficLight")
             {
