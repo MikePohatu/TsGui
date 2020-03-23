@@ -32,24 +32,16 @@ namespace TsGui.View.Layout
     public class TsTable
     {
         private List<TsRow> _rows = new List<TsRow>();
-        private List<IGuiOption> _options = new List<IGuiOption>();
-        private List<IValidationGuiOption> _validationoptions = new List<IValidationGuiOption>();
-        private Grid _grid;
         private BaseLayoutElement _parent;
 
         //Properties
         #region
-        public List<IGuiOption> Options { get { return this._options; } }
-        public List<IValidationGuiOption> ValidationOptions { get { return this._validationoptions; } }
-        public Grid Grid { get { return this._grid; } }
+        public List<IGuiOption> Options { get; } = new List<IGuiOption>();
+        public List<IValidationGuiOption> ValidationOptions { get; } = new List<IValidationGuiOption>();
+        public Grid Grid { get; private set; }
         #endregion
 
         //Constructors
-        public TsTable(XElement SourceXml, BaseLayoutElement Parent, Grid ExistingGrid)
-        {
-            this.Init(SourceXml, Parent, ExistingGrid);
-        }
-
         public TsTable(XElement SourceXml, BaseLayoutElement Parent)
         {
             
@@ -62,7 +54,7 @@ namespace TsGui.View.Layout
         private void Init(XElement SourceXml, BaseLayoutElement Parent, Grid Grid)
         {
             this._parent = Parent;
-            this._grid = Grid;
+            this.Grid = Grid;
             this.LoadXml(SourceXml);
             this.PopulateOptions();
             this.Build();
@@ -119,20 +111,20 @@ namespace TsGui.View.Layout
         {
             int index = 0;
 
-            this._grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
-            this._grid.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
-            this._grid.VerticalAlignment = VerticalAlignment.Top;
-            this._grid.HorizontalAlignment = HorizontalAlignment.Left;
+            this.Grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
+            this.Grid.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
+            this.Grid.VerticalAlignment = VerticalAlignment.Top;
+            this.Grid.HorizontalAlignment = HorizontalAlignment.Left;
 
             foreach (TsRow row in this._rows)
             {
                 RowDefinition rowdef = new RowDefinition();
                 rowdef.Height = GridLength.Auto;
 
-                this._grid.RowDefinitions.Add(rowdef);
+                this.Grid.RowDefinitions.Add(rowdef);
 
                 Grid.SetRow(row.Panel, index);
-                this._grid.Children.Add(row.Panel);
+                this.Grid.Children.Add(row.Panel);
                 index++;
             }
         }
@@ -143,12 +135,12 @@ namespace TsGui.View.Layout
         {
             foreach (TsRow row in this._rows)
             {
-                this._options.AddRange(row.Options);
+                this.Options.AddRange(row.Options);
             }
 
-            foreach (IGuiOption option in this._options)
+            foreach (IGuiOption option in this.Options)
             {
-                if (option is IValidationGuiOption) { this._validationoptions.Add((IValidationGuiOption)option); }
+                if (option is IValidationGuiOption) { this.ValidationOptions.Add((IValidationGuiOption)option); }
             }
         }
     }

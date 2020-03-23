@@ -8,8 +8,8 @@
              d:DesignHeight="20" d:DesignWidth="300" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}">
     <Grid x:Name="MainPanel" Width="{Binding Width}" Height="{Binding Height}" ToolTip="{Binding HelpText, Converter={StaticResource XmlStringLine}}" Margin="{Binding Margin}" ShowGridLines="{Binding ShowGridLines}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <ContentPresenter x:Name="LeftPresenter" Grid.Column="0" Width="{Binding LeftCellWidth}"/>
         <ContentPresenter x:Name="RightPresenter" Grid.Column="1" Width="{Binding RightCellWidth}"/>
