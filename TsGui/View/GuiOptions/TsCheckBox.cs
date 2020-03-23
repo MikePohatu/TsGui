@@ -40,6 +40,7 @@ namespace TsGui.View.GuiOptions
         private bool _ischecked;
         private string _valTrue = "TRUE";
         private string _valFalse = "FALSE";
+        private Thickness _cbBorderMargin = new Thickness(0);
 
         public bool IsChecked
         {
@@ -72,6 +73,11 @@ namespace TsGui.View.GuiOptions
             }
         }
 
+        public Thickness CbBorderMargin
+        {
+            get { return this._cbBorderMargin; }
+            set { this._cbBorderMargin = value; this.OnPropertyChanged(this, "CbBorderMargin"); }
+        }
 
         //Constructor
         public TsCheckBox(XElement InputXml, TsColumn Parent) : base(Parent)
@@ -153,7 +159,8 @@ namespace TsGui.View.GuiOptions
         {
             if (Director.Instance.UseTouchDefaults == true)
             {
-                this.ControlFormatting.Margin = new Thickness(5, 5, 5, 5);
+                this.CbBorderMargin = new Thickness(2);
+                this.ControlFormatting.Margin = new Thickness(5);
                 this._checkboxui.CbBorder.TouchDown += this.OnBorderTouched;
                 this._checkboxui.CbBorder.MouseLeftButtonDown += this.OnBorderTouched;
                 this._checkboxui.CbBorder.BorderThickness = new Thickness(1);
@@ -162,9 +169,9 @@ namespace TsGui.View.GuiOptions
             }
             else
             {
-                this.ControlFormatting.Margin = new Thickness(1, 1, 1, 1);
+                this.ControlFormatting.Margin = new Thickness(1);
             }
-            this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
+            this.ControlFormatting.Padding = new Thickness(0);
             this.ControlFormatting.HorizontalContentAlignment = HorizontalAlignment.Center;
             this.ControlFormatting.VerticalContentAlignment = VerticalAlignment.Center;
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;

@@ -154,6 +154,7 @@ namespace TsGui.View.Layout
                 this.RightCellWidth = double.NaN;
                 this.ShowGridLines = false;
                 this.LabelOnRight = false;
+                this.LabelFormatting.Padding = new Thickness(1);
             }
             else
             {
