@@ -167,6 +167,7 @@ namespace TsGui.View.GuiOptions
             this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
             this.ControlFormatting.HorizontalContentAlignment = HorizontalAlignment.Center;
             this.ControlFormatting.VerticalContentAlignment = VerticalAlignment.Center;
+            this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
         }
 
         private void LoadLegacyXml(XElement InputXml)

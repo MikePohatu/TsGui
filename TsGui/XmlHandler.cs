@@ -129,6 +129,13 @@ namespace TsGui
             else { return DefaultValue; }
         }
 
+        /// <summary>
+        /// Convert XML value to bool. If value is null or empty returns true (assumes element of form <Element />
+        /// </summary>
+        /// <param name="InputXml"></param>
+        /// <param name="XName"></param>
+        /// <param name="DefaultValue"></param>
+        /// <returns></returns>
         public static bool GetBoolFromXElement(XElement InputXml, string XName, bool DefaultValue)
         {
             if (InputXml == null) { return DefaultValue; }
@@ -136,7 +143,10 @@ namespace TsGui
             XElement x;
 
             x = InputXml.Element(XName);
-            if (x != null) { return Convert.ToBoolean(x.Value); }
+            if (x != null) { 
+                if (string.IsNullOrWhiteSpace(x.Value)) { return true; }
+                return Convert.ToBoolean(x.Value); 
+            }
             else { return DefaultValue; }
         }
 
