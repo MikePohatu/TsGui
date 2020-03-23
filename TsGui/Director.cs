@@ -150,12 +150,12 @@ namespace TsGui
             this.StartupFinished = false;
             this._prodmode = this._envController.Init();
 
-            this.TsMainWindow = new TsMainWindow(this.ParentWindow);
-            XElement x = this.ReadConfigFile();
-            if (x == null) { return; }
+            
+            XElement xconfig = this.ReadConfigFile();
+            if (xconfig == null) { return; }
 
             //this.LoadXml(x);
-            try { this.LoadXml(x); }
+            try { this.LoadXml(xconfig); }
             catch (TsGuiKnownException e)
             {
                 string msg = "Error loading config file" + Environment.NewLine + e.CustomMessage + Environment.NewLine + e.Message;
@@ -248,6 +248,7 @@ namespace TsGui
 
             if (SourceXml != null)
             {
+                
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
                 this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
 
@@ -264,6 +265,9 @@ namespace TsGui
                 x = SourceXml.Element("HardwareEval");
                 if (x != null)
                 { this._hardwareevaluator = new HardwareEvaluator(); }
+
+                //start layout import
+                this.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);
 
                 this._buttons = new TsButtons();
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));

@@ -163,16 +163,15 @@ namespace TsGui.View.Layout
         {
             if (Director.Instance.UseTouchDefaults==true)
             {
-                this.FontSize = 14;
-                this.Margin = new Thickness(4, 4, 4, 4);
-                this.Padding = new Thickness(6, 8, 6, 8);
+                this.FontSize = 12;
             }
             else
             {
                 this.FontSize = 11;
-                this.Margin = new Thickness(2, 2, 2, 2);
-                this.Padding = new Thickness(2, 2, 2, 2);
+                
             }
+            this.Margin = new Thickness(2, 2, 2, 2);
+            this.Padding = new Thickness(2, 2, 2, 2);
             this.FontStyle = "Normal";
             this.FontWeight = "Normal";
             this.CornerRadius = 0;

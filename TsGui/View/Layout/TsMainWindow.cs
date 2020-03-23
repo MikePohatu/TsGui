@@ -40,7 +40,7 @@ namespace TsGui.View.Layout
         private MainWindow _parentwindow;
 
         //Properties
-        public WindowLocation WindowLocation { get; }
+        public WindowLocation WindowLocation { get; private set; }
         public string WindowTitle
         {
             get { return this._windowTitle; }
@@ -98,7 +98,18 @@ namespace TsGui.View.Layout
         }
 
         //Constructors
-        public TsMainWindow(MainWindow ParentWindow)
+        public TsMainWindow(MainWindow Parent)
+        {
+            this.Init(Parent);
+        }
+
+        public TsMainWindow(MainWindow Parent, XElement Config)
+        {
+            this.Init(Parent);
+            this.LoadXml(Config);
+        }
+
+        public void Init(MainWindow ParentWindow)
         {
             this._parentwindow = ParentWindow;
             this.WindowLocation = new WindowLocation(this._parentwindow);

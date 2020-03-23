@@ -146,8 +146,8 @@ namespace TsGui.View.Layout
             {
                 this.Margin = new Thickness(10, 10, 10, 10);
                 this.Height = 65;
-                this.TitleFontSize = 18;
-                this.TextFontSize = 14;
+                this.TitleFontSize = 14;
+                this.TextFontSize = 12;
             }
             else
             {
