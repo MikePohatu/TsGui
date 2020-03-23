@@ -22,7 +22,7 @@
 using System;
 using System.Runtime.InteropServices;
 using TsGui.Diagnostics.Logging;
-
+using TsGui.Diagnostics;
 
 namespace TsGui.Connectors
 {
@@ -40,8 +40,15 @@ namespace TsGui.Connectors
 
         public void AddVariable(TsVariable Variable)
         {
-            LoggerFacade.Info("TS variable applied: " + Variable.Name + ". Value: " + Variable.Value);
-            objTSEnv.Value[Variable.Name] = Variable.Value;
+            LoggerFacade.Info("Applying TS variable: " + Variable.Name + ". Value: " + Variable.Value);
+            try
+            {
+                objTSEnv.Value[Variable.Name] = Variable.Value;
+            }
+            catch (Exception e)
+            {
+                throw new TsGuiKnownException("There was a fatal error while applying TS variable: " + Variable.Name, e.Message);
+            }
         }
 
         public void Hide()
