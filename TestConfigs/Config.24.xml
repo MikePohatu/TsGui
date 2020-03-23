@@ -6,40 +6,18 @@
 	<HardwareEval />
 	
 	<Heading>
-		<Title>Option linking example config</Title>
-		<Text></Text>
-		<Height>60</Height>
+		<Title>Touch example</Title>
+		<Text>Changes to layout</Text>
 	</Heading>
 	
 	<Page>
 		<Column>
 			<Formatting>
-				<LeftCellWidth>260</LeftCellWidth>
+				<LeftCellWidth>280</LeftCellWidth>
 				<RightCellWidth>100</RightCellWidth>
 			</Formatting>
 			
-			<GuiOption Type="ComputerName" ID="link_name">
-				<Validation ValidateEmpty="FALSE">
-					
-					<!-- Validation sections with available rule types -->					
-					<Valid>
-						<Ruleset Type="OR">
-							<Ruleset Type="AND">
-								<Rule Type="StartsWith">test</Rule>
-								<Rule Type="Contains">12</Rule>
-							</Ruleset>
-							<Ruleset Type="AND">
-								<Rule Type="StartsWith">blah</Rule>
-								<Rule Type="Contains">34</Rule>
-							</Ruleset>
-						</Ruleset>
-						<Rule Type="EndsWith">Z</Rule>
-					</Valid>
-					<Invalid>
-						<Rule Type="EndsWith">Q</Rule>
-					</Invalid>
-				</Validation>
-			</GuiOption>	
+			<GuiOption Type="ComputerName" ID="link_name" />	
 				
 			<GuiOption Type="FreeText">
 			
@@ -69,20 +47,6 @@
 					</Query>
 					
 				</SetValue>
-				<!--<Validation ValidateEmpty="FALSE">				
-					<Valid>
-						<Ruleset Type="OR">
-							<Ruleset Type="AND">
-								<Rule Type="StartsWith">test</Rule>
-								<Rule Type="Contains">12</Rule>
-							</Ruleset>
-							<Ruleset Type="AND">
-								<Rule Type="StartsWith">blah</Rule>
-								<Rule Type="Contains">34</Rule>
-							</Ruleset>
-						</Ruleset>
-					</Valid>
-				</Validation>-->
 			</GuiOption>
 			
 			<GuiOption Type="CheckBox" ID="link_source">
