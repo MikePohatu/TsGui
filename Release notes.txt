@@ -1,9 +1,19 @@
-Version 1.1.0.10
-Release date: 6 Feb 2020
+Version 1.2.0.0
+Release date: 24/03/2020
+
+*Changes
+	TsGui is now licensed under GPLv3 (previously GPLv2)
+
+*New features 
+	Added <UseTouchDefaults /> configuration option. This adds additional space around controls and makes them a bit larger by default.
+	Added 'Prebuilt' configuration functionality. This allows for 'short hand' to replace common configuration with a single attribute, significantly shortening the config. 
+		See https://github.com/MikePohatu/TsGui/blob/master/Documentation/PrebuiltConfiguration.md for more details
+	You can now apply a <Formatting> block at the root of your configuration and it will be inherited all the way down the config
+	Added AutoComplete option to DropDownList. This allows the user to type in the DropDownList and a matching option to be selected. Add <AutoComplete>TRUE</AutoComplete> to DropDownList enable this. 
 
 *Fixes
-	Fixed bug introduced by enabling 'hit enter to finish' functionality where header would disappear, and cause null reference exceptions (regression going to 1.1.x branch)
-	Fixed bugs in timeout causing out of range exceptions and inconsistent behaviour
+	Fixed some layout and formatting inconsistencies
+	Added additional error checks when creating the Task Sequence variables. Errors have been seen if an invalid TS variable name is configured e.g. using invalid characters
 
 *Known issues
 	An issue has been seen in the 1809 Windows 10 ADK WPF has been broekn, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
@@ -11,6 +21,17 @@ Release date: 6 Feb 2020
 	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
+
+
+
+
+Version 1.1.0.10
+Release date: 6 Feb 2020
+
+*Fixes
+	Fixed bug introduced by enabling 'hit enter to finish' functionality where header would disappear, and cause null reference exceptions (regression going to 1.1.x branch)
+	Fixed bugs in timeout causing out of range exceptions and inconsistent behaviour
+
 
 
 Version 1.1.0.9
