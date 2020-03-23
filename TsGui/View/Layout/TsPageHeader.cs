@@ -104,6 +104,7 @@ namespace TsGui.View.Layout
             this.BgColor = Template.BgColor;
             this.Image = Template.Image;
             this.TitleFontSize = Template.TitleFontSize;
+            this.Margin = Template.Margin;
 
             this.Init(SourceXml);
         }
@@ -119,6 +120,18 @@ namespace TsGui.View.Layout
         public TsPageHeader() : base()
         {
             this.SetDefaults();
+        }
+
+        private void Init(XElement SourceXml)
+        {
+            this.UI = new TsPageHeaderUI();
+            this.UI.DataContext = this;
+
+            this.LoadXml(SourceXml);
+
+            if (string.IsNullOrEmpty(this.Title)) { this.UI.HeaderTitle.Visibility = Visibility.Collapsed; }
+            if (string.IsNullOrEmpty(this.Text)) { this.UI.HeaderText.Visibility = Visibility.Collapsed; }
+            if (this.Image == null) { this.UI.ImageElement.Visibility = Visibility.Collapsed; }
         }
 
         public bool OptionsValid()
@@ -146,18 +159,6 @@ namespace TsGui.View.Layout
             
             this.FontColor = new SolidColorBrush(Colors.White);
             this.BgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF006AD4"));
-        }
-
-        private void Init (XElement SourceXml)
-        {
-            this.UI = new TsPageHeaderUI();
-            this.UI.DataContext = this;
-            
-            this.LoadXml(SourceXml);
-
-            if (string.IsNullOrEmpty(this.Title)) { this.UI.HeaderTitle.Visibility = Visibility.Collapsed; }
-            if (string.IsNullOrEmpty(this.Text)) { this.UI.HeaderText.Visibility = Visibility.Collapsed; }
-            if (this.Image == null) { this.UI.ImageElement.Visibility = Visibility.Collapsed; }
         }
 
         //Methods
