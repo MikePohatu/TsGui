@@ -30,7 +30,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("20Road")]
 [assembly: AssemblyProduct("Task Sequence Gui")]
-[assembly: AssemblyCopyright("Copyright © Mike Pohatu 2019")]
+[assembly: AssemblyCopyright("Copyright © Mike Pohatu 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
