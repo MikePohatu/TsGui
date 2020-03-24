@@ -5,13 +5,14 @@ Release date: 24/03/2020
 	TsGui is now licensed under GPLv3 (previously GPLv2)
 
 *New features 
-	Added <UseTouchDefaults /> configuration option. This adds additional space around controls and makes them a bit larger by default.
+	Added <UseTouchDefaults /> configuration option. This adds additional space around controls and makes them a bit larger by default. Add this directly under your <TsGui> element
 	Added 'Prebuilt' configuration functionality. This allows for 'short hand' to replace common configuration with a single attribute, significantly shortening the config. 
 		See https://github.com/MikePohatu/TsGui/blob/master/Documentation/PrebuiltConfiguration.md for more details
 	You can now apply a <Formatting> block at the root of your configuration and it will be inherited all the way down the config
 	Added AutoComplete option to DropDownList. This allows the user to type in the DropDownList and a matching option to be selected. Add <AutoComplete>TRUE</AutoComplete> to DropDownList enable this. 
 	Added ability to create passwords in configuration. 
 		See https://github.com/MikePohatu/TsGui/blob/master/Documentation/Authentication/LocalConfigAuthentication.md for more details
+	Started adding proper documentation
 
 *Fixes
 	Fixed some layout and formatting inconsistencies
