@@ -38,7 +38,8 @@ namespace TsGui.View.Layout
         private double _width;
         private double _cornerradius;
         private Thickness _margin;
-        private Thickness _padding;        
+        private Thickness _padding;
+        private Thickness _borderthickness;
         private VerticalAlignment _verticalalign;
         private HorizontalAlignment _horizontalalign;
         private VerticalAlignment _verticalcontentalign;
@@ -94,6 +95,12 @@ namespace TsGui.View.Layout
         {
             get { return this._padding; }
             set { this._padding = value; this.OnPropertyChanged(this, "Padding"); }
+        }
+
+        public Thickness BorderThickness
+        {
+            get { return this._borderthickness; }
+            set { this._borderthickness = value; this.OnPropertyChanged(this, "BorderThickness"); }
         }
 
         public VerticalAlignment VerticalAlignment
@@ -170,8 +177,9 @@ namespace TsGui.View.Layout
                 this.FontSize = 11;
                 
             }
-            this.Margin = new Thickness(2, 2, 2, 2);
-            this.Padding = new Thickness(2, 2, 2, 2);
+            this.Margin = new Thickness(2);
+            this.Padding = new Thickness(2);
+            this.BorderThickness = new Thickness(1);
             this.FontStyle = "Normal";
             this.FontWeight = "Normal";
             this.CornerRadius = 0;

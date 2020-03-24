@@ -1,0 +1,51 @@
+<TsGui LiveData="TRUE">
+	<Height>500</Height>
+	<Width>400</Width>
+
+	<HardwareEval />
+
+	<Heading>
+		<Title>Local password example</Title>
+		<Text>password1</Text>
+	</Heading>
+
+	<Authentication Type="Password" AuthID="conf_auth">
+		<Password>
+			<PasswordHash>4EMa/tlplQTGBUKWHYUIcw2BvvbI+sTF4SHmaMX8tCY=</PasswordHash>
+			<Key>xqIfUNJlD456ATunONj9tplQwas6drR+m/1C9ro3CHUmCgqOa8BvpLQ8jya25zXB</Key>
+		</Password>
+	</Authentication>
+
+	<Formatting>
+		<LeftCellWidth>280</LeftCellWidth>
+		<RightCellWidth>100</RightCellWidth>
+	</Formatting>
+
+	<Page>
+		<Row>
+			<Column>
+				<GuiOption Type="PasswordBox" AuthID="conf_auth">
+					<Variable>VAR_Password</Variable>
+				</GuiOption>
+
+				<!-- The 'Login' button. Activates authentication of the authentication object using the login credentials -->
+				<GuiOption Type="ActionButton" ID="link_actionbtn" IsDefault="TRUE">
+					<Variable>VAR_ActionButton</Variable>
+					<Action Type="Authentication" AuthID="conf_auth"/>
+					<ButtonText>Login</ButtonText>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+
+	<Page>
+		<Row>
+			<Column>
+
+
+				<GuiOption Type="ComputerName" ID="link_name" />
+			</Column>
+		</Row>
+	</Page>
+
+</TsGui>

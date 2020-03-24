@@ -10,6 +10,8 @@ Release date: 24/03/2020
 		See https://github.com/MikePohatu/TsGui/blob/master/Documentation/PrebuiltConfiguration.md for more details
 	You can now apply a <Formatting> block at the root of your configuration and it will be inherited all the way down the config
 	Added AutoComplete option to DropDownList. This allows the user to type in the DropDownList and a matching option to be selected. Add <AutoComplete>TRUE</AutoComplete> to DropDownList enable this. 
+	Added ability to create passwords in configuration. 
+		See https://github.com/MikePohatu/TsGui/blob/master/Documentation/Authentication/LocalConfigAuthentication.md for more details
 
 *Fixes
 	Fixed some layout and formatting inconsistencies

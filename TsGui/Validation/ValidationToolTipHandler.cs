@@ -32,13 +32,16 @@ namespace TsGui.Validation
 {
     public class ValidationToolTipHandler
     {
-        private Color _bordercolor;
-        private Color _mouseoverbordercolor;
-        private Color _focusbordercolor;
+        //private Color _bordercolor;
+        private SolidColorBrush _borderbrush;
+        private SolidColorBrush _mouseoverborderbrush;
+        private SolidColorBrush _focusborderbrush;
         private Popup _popup;
         private ValidationErrorToolTip _validationerrortooltip;
         private GuiOptionBase _guioption;
         private bool _windowloaded = false;
+
+        private SolidColorBrush _redbrush = new SolidColorBrush(Colors.Red);
 
         //Constructor
         public ValidationToolTipHandler(GuiOptionBase GuiOption)
@@ -47,9 +50,9 @@ namespace TsGui.Validation
             Director.Instance.WindowLoaded += OnWindowLoaded;
 
             //record the default colors
-            this._bordercolor = this._guioption.ControlFormatting.BorderBrush.Color;
-            this._mouseoverbordercolor = this._guioption.ControlFormatting.MouseOverBorderBrush.Color;
-            this._focusbordercolor = this._guioption.ControlFormatting.FocusedBorderBrush.Color;
+            this._borderbrush = this._guioption.ControlFormatting.BorderBrush;
+            this._mouseoverborderbrush = this._guioption.ControlFormatting.MouseOverBorderBrush;
+            this._focusborderbrush = this._guioption.ControlFormatting.FocusedBorderBrush;
 
             this._validationerrortooltip = new ValidationErrorToolTip();
             this._popup = new Popup();
@@ -70,9 +73,9 @@ namespace TsGui.Validation
             {
                 Director.Instance.WindowMouseUp -= this.OnWindowMouseUp;
                 this._popup.IsOpen = false;
-                this._guioption.ControlFormatting.BorderBrush.Color = this._bordercolor;
-                this._guioption.ControlFormatting.MouseOverBorderBrush.Color = this._mouseoverbordercolor;
-                this._guioption.ControlFormatting.FocusedBorderBrush.Color = this._focusbordercolor;
+                this._guioption.ControlFormatting.BorderBrush = this._borderbrush;
+                this._guioption.ControlFormatting.MouseOverBorderBrush = this._mouseoverborderbrush;
+                this._guioption.ControlFormatting.FocusedBorderBrush = this._focusborderbrush;
             }
         }
 
@@ -83,9 +86,9 @@ namespace TsGui.Validation
                 this.SetPlacement();
                 Director.Instance.WindowMouseUp += this.OnWindowMouseUp;
                 this._popup.IsOpen = true;
-                this._guioption.ControlFormatting.BorderBrush.Color = Colors.Red;
-                this._guioption.ControlFormatting.MouseOverBorderBrush.Color = Colors.Red;
-                this._guioption.ControlFormatting.FocusedBorderBrush.Color = Colors.Red;                
+                this._guioption.ControlFormatting.BorderBrush = _redbrush;
+                this._guioption.ControlFormatting.MouseOverBorderBrush = _redbrush;
+                this._guioption.ControlFormatting.FocusedBorderBrush = _redbrush;                
             }
             this.UpdateArrows();
         }
