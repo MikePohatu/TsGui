@@ -55,7 +55,7 @@ Note that this variable is used by the **Format and Partition Hard Disk** step, 
             <Append>GB</Append>
         </Property>
         <Property Name="Caption"/>					
-        <Separator>, </Separator>
+        <Separator> - </Separator>
     </Query>
 </GuiOption>
 ```
