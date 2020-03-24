@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // GuiVariableQuery.cs - queries gui variables
 using System;
@@ -25,21 +29,19 @@ namespace TsGui.Queries
     public class GuiVariableQuery: BaseQuery, ILinkingEventHandler
     {
         private FormattedProperty _formatter;
-        private IDirector _director;
         private List<IOption> _options = new List<IOption>();
 
-        public GuiVariableQuery(XElement inputxml, IDirector director, ILinkTarget owner): base(owner)
-        {
-            this._director = director;            
+        public GuiVariableQuery(XElement inputxml, ILinkTarget owner): base(owner)
+        {         
             this.LoadXml(inputxml);
             this.AddExistingOptions();      //add and register any existing options
-            this._director.OptionLibrary.OptionAdded += this.OnOptionAddedToLibrary; //register to get any new options
+            Director.Instance.OptionLibrary.OptionAdded += this.OnOptionAddedToLibrary; //register to get any new options
             this.ProcessAndRefresh();
         }
 
         private void AddExistingOptions()
         {
-            foreach (IOption option in this._director.OptionLibrary.Options)
+            foreach (IOption option in Director.Instance.OptionLibrary.Options)
             {
                 if ((!string.IsNullOrEmpty(option.VariableName)) && (option.VariableName.Equals(this._formatter.Name, StringComparison.OrdinalIgnoreCase)))
                 {

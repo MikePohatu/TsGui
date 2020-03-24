@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 //    XmlHandler.cs: Handles reading and writing of XML documents
 
@@ -125,6 +129,13 @@ namespace TsGui
             else { return DefaultValue; }
         }
 
+        /// <summary>
+        /// Convert XML value to bool. If value is null or empty returns true (assumes element of form <Element />
+        /// </summary>
+        /// <param name="InputXml"></param>
+        /// <param name="XName"></param>
+        /// <param name="DefaultValue"></param>
+        /// <returns></returns>
         public static bool GetBoolFromXElement(XElement InputXml, string XName, bool DefaultValue)
         {
             if (InputXml == null) { return DefaultValue; }
@@ -132,7 +143,10 @@ namespace TsGui
             XElement x;
 
             x = InputXml.Element(XName);
-            if (x != null) { return Convert.ToBoolean(x.Value); }
+            if (x != null) { 
+                if (string.IsNullOrWhiteSpace(x.Value)) { return true; }
+                return Convert.ToBoolean(x.Value); 
+            }
             else { return DefaultValue; }
         }
 

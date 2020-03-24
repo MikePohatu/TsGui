@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsPane.cs - view model class for a pane (right/left) on a page
 
@@ -25,7 +29,6 @@ namespace TsGui.View.Layout
 {
     public class TsPane: ViewModelBase
     {
-        private IDirector _controller;
         private double _width;
         private double _height;
         private TsPaneUI _paneui;
@@ -55,20 +58,19 @@ namespace TsGui.View.Layout
         }
 
         //Constructor
-        public TsPane(IDirector MainController)
+        public TsPane()
         {
-            this.Init(MainController);         
+            this.Init();         
         }
 
-        public TsPane(XElement InputXml, IDirector MainController)
+        public TsPane(XElement InputXml)
         {
-            this.Init(MainController);
+            this.Init();
             this.LoadXml(InputXml);
         }
 
-        private void Init(IDirector MainController)
+        private void Init()
         {
-            this._controller = MainController;
             this.PaneUI = new TsPaneUI();
             this.PaneUI.DataContext = this;
             this.Formatting = new Formatting();
@@ -85,7 +87,7 @@ namespace TsGui.View.Layout
             if (x != null) { this.Formatting.LoadXml(x); }
 
             x = InputXml.Element("Image");
-            if (x != null) { this.Image = new Image(x, this._controller); }
+            if (x != null) { this.Image = new Image(x); }
         }
 
         private void SetDefaults()

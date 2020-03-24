@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // Toggle.cs - class to detect changes to IToggleControl objects and apply the changes
 // to the associated group.
@@ -25,15 +29,13 @@ namespace TsGui.Grouping
     public class Toggle
     {
         private Group _group;
-        private IDirector _controller;
         private Dictionary<string, bool> _toggleValMappings = new Dictionary<string, bool>();
         private bool _hiddenMode = false;
         private bool _inverse = false;
         private IToggleControl _option;
 
-        public Toggle(IToggleControl GuiOption, IDirector MainController, XElement InputXml)
+        public Toggle(IToggleControl GuiOption, XElement InputXml)
         {
-            this._controller = MainController;
             this._option = GuiOption;
             this.LoadXml(InputXml);
             this._option.ToggleEvent += this.OnToggleEvent;
@@ -55,7 +57,7 @@ namespace TsGui.Grouping
             {
                 if (!string.IsNullOrEmpty(xa.Value))
                 {
-                    this._group = this._controller.GroupLibrary.GetGroupFromID(xa.Value);
+                    this._group = Director.Instance.GroupLibrary.GetGroupFromID(xa.Value);
                 }
                 else { throw new InvalidOperationException("Invalid Toggle configured in XML: " + InputXml); }
             }

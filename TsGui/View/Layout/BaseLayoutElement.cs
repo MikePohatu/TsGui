@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // BaseLayoutElement.cs - base class for elements in the UI tree (page, row, column, guioptions
 
@@ -68,12 +72,12 @@ namespace TsGui.View.Layout
         public BaseLayoutElement Parent { get; set; }
 
         //constructors
-        public BaseLayoutElement(IDirector MainController):base (MainController)
+        public BaseLayoutElement():base ()
         {
             this.SetDefaults();
         }
 
-        public BaseLayoutElement(BaseLayoutElement Parent, IDirector MainController):base (Parent,MainController)
+        public BaseLayoutElement(BaseLayoutElement Parent):base (Parent)
         {
             this.Parent = Parent;
             this.SetDefaults();
@@ -114,14 +118,28 @@ namespace TsGui.View.Layout
             }
         }
 
-        public IRootLayoutElement GetRootElement()
+        //public GetComplianceRootElement i.e. get the root without having any existing root
+        public IComplianceRoot GetComplianceRootElement()
         {
+            return this.GetComplianceRootElement(null);
+        }
+
+        //private GetComplianceRootElement. Keep the last root element as traversing up the tree. When 
+        //at the top, return the last comliance root element. 
+        private IComplianceRoot GetComplianceRootElement(IComplianceRoot currentroot)
+        {
+            IComplianceRoot thisAsRoot = this as IComplianceRoot;
+
             if (this.Parent == null)
             {
-                if (this is IRootLayoutElement) { return (IRootLayoutElement)this; }
-                else { return null; }
+                if (thisAsRoot != null) { return thisAsRoot; }
+                return currentroot;
             }
-            else { return this.Parent.GetRootElement(); }
+            else
+            {
+                if (thisAsRoot != null) { return this.Parent.GetComplianceRootElement(thisAsRoot); }
+                else { return this.Parent.GetComplianceRootElement(currentroot); }
+            }
         }
 
         private void SetDefaults()
@@ -136,6 +154,7 @@ namespace TsGui.View.Layout
                 this.RightCellWidth = double.NaN;
                 this.ShowGridLines = false;
                 this.LabelOnRight = false;
+                this.LabelFormatting.Padding = new Thickness(1);
             }
             else
             {

@@ -1,18 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
@@ -21,6 +24,7 @@ using TsGui.View.Layout;
 using TsGui.Grouping;
 using TsGui.Diagnostics.Logging;
 using TsGui.View.Symbols;
+using System.Windows;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -51,7 +55,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public List<ListItem> ItemsList { get; set; }
         public UserControl Icon { get; set; }
 
-        public ListItem(string Value, string Text, Formatting Formatting, CollectionViewGuiOptionBase parentlist, IDirector MainController) : base(MainController)
+        public ListItem(string Value, string Text, Formatting Formatting, CollectionViewGuiOptionBase parentlist) : base()
         {
             this.Init(Formatting, parentlist);
             this.Value = Value;
@@ -61,7 +65,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             LoggerFacade.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
         }
 
-        public ListItem(XElement InputXml, Formatting Formatting, CollectionViewGuiOptionBase parentlist, IDirector MainController) : base(MainController)
+        public ListItem(XElement InputXml, Formatting Formatting, CollectionViewGuiOptionBase parentlist) : base()
         {
             this.Init(Formatting, parentlist);
             this.LoadXml(InputXml);
@@ -110,12 +114,12 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 if (x.Name == "Toggle")
                 {
                     x.Add(new XElement("Enabled", this.Value));
-                    Toggle t = new Toggle(this._parent, this._director, x);
+                    Toggle t = new Toggle(this._parent, x);
                     this._parent.IsToggle = true;
                 }
                 else if (x.Name == "Option")
                 {
-                    ListItem item = new ListItem(x, this.ItemFormatting, this._parent, this._director);
+                    ListItem item = new ListItem(x, this.ItemFormatting, this._parent);
                     this.ItemsList.Add(item);
                 }
             }
@@ -126,6 +130,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
             Group g = base.AddGroup(GroupID);
             this._parent.AddItemGroup(g);
             return g;
+        }
+
+        public override string ToString()
+        {
+            return this.Text;
         }
     }
 }

@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // Image.cs - view model class for the image on a page
 
@@ -27,7 +31,6 @@ namespace TsGui.Images
         private double _width;
         private double _height;
         private MultiImage _multiimage;
-        private IDirector _controller;
         private string _file;
 
         public string File
@@ -59,16 +62,14 @@ namespace TsGui.Images
         }
 
         //constructors
-        public Image(XElement InputXml, IDirector MainController)
+        public Image(XElement InputXml)
         {
-            this._controller = MainController;
             this.SetDefaults();
             this.LoadXml(InputXml);
         }
 
         public Image(IDirector MainController)
         {
-            this._controller = MainController;
             this.SetDefaults();
         }
 
@@ -78,7 +79,7 @@ namespace TsGui.Images
             if (InputXml != null)
             {
                 this._file = XmlHandler.GetStringFromXElement(InputXml, "File", string.Empty);
-                this.MultiImage = new MultiImage(_file, this._controller);
+                this.MultiImage = new MultiImage(_file);
                 this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
                 this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
                 this.StretchMode = XmlHandler.GetStretchFromXElement(InputXml, "Stretch", this.StretchMode);

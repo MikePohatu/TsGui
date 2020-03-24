@@ -1,4 +1,22 @@
-﻿using System.Windows;
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
+using System.Windows;
 using System.Collections.Generic;
 using System.Collections;
 using System.Windows.Controls;
@@ -56,10 +74,10 @@ namespace TsGui.View.GuiOptions.CollectionViews
         }
 
         //Constructor
-        public CollectionViewGuiOptionBase(TsColumn Parent, IDirector director) : base(Parent, director)
+        public CollectionViewGuiOptionBase(TsColumn Parent) : base(Parent)
         {
             this._setvaluequerylist = new QueryPriorityList(this);
-            this._builder = new ListBuilder(this, this._director);
+            this._builder = new ListBuilder(this);
         }
 
 
@@ -85,18 +103,18 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 //the base loadxml will create queries before this so it will win
                 if (x.Name == "DefaultValue")
                 {
-                    IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this._director, this);
+                    IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this);
                     this._setvaluequerylist.AddQuery(defquery);
                 }
 
                 else if (x.Name == "Toggle")
                 {
-                    Toggle t = new Toggle(this, this._director, x);
+                    Toggle t = new Toggle(this, x);
                     this.IsToggle = true;
                 }
             }
 
-            if (this.IsToggle == true) { this._director.AddToggleControl(this); }
+            if (this.IsToggle == true) { Director.Instance.AddToggleControl(this); }
         }
 
         //fire an intial event to make sure things are set correctly. This is
@@ -115,7 +133,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         
         public bool Validate(bool CheckSelectionMade)
         {
-            if (this._director.StartupFinished == false) { return true; }
+            if (Director.Instance.StartupFinished == false) { return true; }
             if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
             if ((CheckSelectionMade == true) && (this.CurrentItem == null))
             {
@@ -159,8 +177,16 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this._nodefaultvalue = false;
             this._noselectionmessage = "Please select a value";
-            this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            if (Director.Instance.UseTouchDefaults)
+            {
+                this.ControlFormatting.Padding = new Thickness(6, 5, 2, 5);
+            }
+            else
+            {
+                this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
+            }
         }
 
         protected void OnSelectionChanged(object o, RoutedEventArgs e)

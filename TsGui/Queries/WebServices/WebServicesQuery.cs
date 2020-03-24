@@ -1,19 +1,21 @@
-﻿//    Copyright (C) 2017 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
-
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 using System;
 using System.Diagnostics;
 using System.Net;
@@ -34,7 +36,6 @@ namespace TsGui.Queries.WebServices
         private string _serviceurl;
         private List<KeyValuePair<string, string>> _parameters = new List<KeyValuePair<string, string>>();
         private string _method;
-        private IDirector _director;
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
         private IAuthenticator _authenticator;
 
@@ -50,11 +51,10 @@ namespace TsGui.Queries.WebServices
         public string AuthID { get; set; }
         public string Response { get; set; }
 
-        public WebServicesQuery(XElement InputXml, IDirector director, ILinkTarget owner): base(owner)
+        public WebServicesQuery(XElement InputXml, ILinkTarget owner): base(owner)
         {
-            this._director = director;
             this.LoadXml(InputXml);
-            this._director.AuthLibrary.AddAuthenticatorConsumer(this);
+            Director.Instance.AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public new void LoadXml(XElement InputXml)

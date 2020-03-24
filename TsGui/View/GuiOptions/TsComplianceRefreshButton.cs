@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsComplianceRefreshButton.cs - button for retrying compliance rules on a page
 
@@ -23,7 +27,7 @@ namespace TsGui.View.GuiOptions
 {
     public class TsComplianceRefreshButton : GuiOptionBase, IGuiOption
     {
-        private IRootLayoutElement _rootelement;
+        private IComplianceRoot _rootelement;
         private string _buttontext;
         private TsButtonUI _ui;
 
@@ -40,9 +44,9 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsComplianceRefreshButton(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
+        public TsComplianceRefreshButton(XElement InputXml, TsColumn Parent) : base(Parent)
         {
-            this._rootelement = this.GetRootElement();
+            this._rootelement = this.GetComplianceRootElement();
 
             this.UserControl.DataContext = this;           
             this._ui = new TsButtonUI();
@@ -70,10 +74,8 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
+            ControlDefaults.SetButtonDefaults(this.ControlFormatting);
             this.ButtonText = "Refresh";
-            this.ControlFormatting.Height = 25;
-            this.ControlFormatting.Width = 60;
-            this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
         }
     }
 }

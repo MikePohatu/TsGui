@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsFreeText.cs - TextBox control for entering text. Can be configured to 
 // check for the validity of the entered text
@@ -87,21 +91,20 @@ namespace TsGui.View.GuiOptions
         #endregion
 
         //Constructor
-        public TsFreeText(XElement InputXml, TsColumn Parent, IDirector MainController): base (Parent, MainController)
+        public TsFreeText(XElement InputXml, TsColumn Parent): base (Parent)
         {
-            this.Init(MainController);
+            this.Init();
             this.LoadXml(InputXml);
             this.RefreshValue();
         }
 
-        protected TsFreeText(TsColumn Parent, IDirector MainController) : base(Parent, MainController)
+        protected TsFreeText(TsColumn Parent) : base(Parent)
         {
-            this.Init(MainController);
+            this.Init();
         }
 
-        private void Init(IDirector MainController)
+        private void Init()
         {
-            this._director = MainController;
             this._setvaluequerylist = new QueryPriorityList(this);
 
             this._freetextui = new TsFreeTextUI();
@@ -109,11 +112,11 @@ namespace TsGui.View.GuiOptions
             this.InteractiveControl = this._freetextui.TextBox;
             this.Label = new TsLabelUI();
 
-            this.ValidationHandler = new ValidationHandler(this, MainController);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this, MainController);
+            this.ValidationHandler = new ValidationHandler(this);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.UserControl.DataContext = this;
-            this._director.WindowLoaded += this.OnWindowLoaded;
+            Director.Instance.WindowLoaded += this.OnWindowLoaded;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
             this._freetextui.TextBox.GotFocus += this.OnGotFocus;
             this.UserControl.IsEnabledChanged += this.OnValidationEvent;
@@ -123,7 +126,6 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
-            this.ControlFormatting.Padding = new Thickness(3, 2, 3, 2);
         }
 
         public new void LoadXml(XElement InputXml)

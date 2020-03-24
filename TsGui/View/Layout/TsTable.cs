@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsTable.cs - builds the grid structure and populates with GuiOtions
 
@@ -28,39 +32,29 @@ namespace TsGui.View.Layout
     public class TsTable
     {
         private List<TsRow> _rows = new List<TsRow>();
-        private List<IGuiOption> _options = new List<IGuiOption>();
-        private List<IValidationGuiOption> _validationoptions = new List<IValidationGuiOption>();
-        private Grid _grid;
         private BaseLayoutElement _parent;
-        private IDirector _controller;
 
         //Properties
         #region
-        public List<IGuiOption> Options { get { return this._options; } }
-        public List<IValidationGuiOption> ValidationOptions { get { return this._validationoptions; } }
-        public Grid Grid { get { return this._grid; } }
+        public List<IGuiOption> Options { get; } = new List<IGuiOption>();
+        public List<IValidationGuiOption> ValidationOptions { get; } = new List<IValidationGuiOption>();
+        public Grid Grid { get; private set; }
         #endregion
 
         //Constructors
-        public TsTable(XElement SourceXml, BaseLayoutElement Parent, IDirector MainController, Grid ExistingGrid)
-        {
-            this.Init(SourceXml, Parent, MainController, ExistingGrid);
-        }
-
-        public TsTable(XElement SourceXml, BaseLayoutElement Parent, IDirector MainController)
+        public TsTable(XElement SourceXml, BaseLayoutElement Parent)
         {
             
             Grid g = new Grid();
             g.Name = "_tablegrid";
-            this.Init(SourceXml, Parent, MainController, g);
+            this.Init(SourceXml, Parent, g);
         }
 
         //methods
-        private void Init(XElement SourceXml, BaseLayoutElement Parent, IDirector MainController, Grid Grid)
+        private void Init(XElement SourceXml, BaseLayoutElement Parent, Grid Grid)
         {
-            this._controller = MainController;
             this._parent = Parent;
-            this._grid = Grid;
+            this.Grid = Grid;
             this.LoadXml(SourceXml);
             this.PopulateOptions();
             this.Build();
@@ -108,7 +102,7 @@ namespace TsGui.View.Layout
 
         private void CreateRow(XElement InputXml, int Index)
         {
-            TsRow r = new TsRow(InputXml, Index, this._parent, this._controller);
+            TsRow r = new TsRow(InputXml, Index, this._parent);
             this._rows.Add(r);
         }
 
@@ -117,20 +111,20 @@ namespace TsGui.View.Layout
         {
             int index = 0;
 
-            this._grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
-            this._grid.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
-            this._grid.VerticalAlignment = VerticalAlignment.Top;
-            this._grid.HorizontalAlignment = HorizontalAlignment.Left;
+            this.Grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
+            this.Grid.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
+            this.Grid.VerticalAlignment = VerticalAlignment.Top;
+            this.Grid.HorizontalAlignment = HorizontalAlignment.Left;
 
             foreach (TsRow row in this._rows)
             {
                 RowDefinition rowdef = new RowDefinition();
                 rowdef.Height = GridLength.Auto;
 
-                this._grid.RowDefinitions.Add(rowdef);
+                this.Grid.RowDefinitions.Add(rowdef);
 
                 Grid.SetRow(row.Panel, index);
-                this._grid.Children.Add(row.Panel);
+                this.Grid.Children.Add(row.Panel);
                 index++;
             }
         }
@@ -141,12 +135,12 @@ namespace TsGui.View.Layout
         {
             foreach (TsRow row in this._rows)
             {
-                this._options.AddRange(row.Options);
+                this.Options.AddRange(row.Options);
             }
 
-            foreach (IGuiOption option in this._options)
+            foreach (IGuiOption option in this.Options)
             {
-                if (option is IValidationGuiOption) { this._validationoptions.Add((IValidationGuiOption)option); }
+                if (option is IValidationGuiOption) { this.ValidationOptions.Add((IValidationGuiOption)option); }
             }
         }
     }

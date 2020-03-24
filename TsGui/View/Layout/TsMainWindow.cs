@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsMainWindow.cs - view model for the MainWindow
 
@@ -25,26 +29,18 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsMainWindow : INotifyPropertyChanged
+    public class TsMainWindow : BaseLayoutElement
     {
-        private double _height;        //default page height for the window
-        private double _width;         //default page width for the window
         private string _windowTitle;
-        //private string _headingText;
-        //private int _headingHeight;
         private Thickness _pageMargin = new Thickness(0, 0, 0, 0);
         private string _footerText;
         private double _footerHeight;
         private bool _topmost = true;
         private HorizontalAlignment _footerHAlignment;
-        private bool _gridlines = false;
-        private WindowLocation _windowlocation;
         private MainWindow _parentwindow;
 
         //Properties
-        public WindowLocation WindowLocation { get { return this._windowlocation; } }
-        //public string HeadingText { get { return this._headingText; } }
-        //public int HeadingHeight { get { return this._headingHeight; } }
+        public WindowLocation WindowLocation { get; private set; }
         public string WindowTitle
         {
             get { return this._windowTitle; }
@@ -52,24 +48,6 @@ namespace TsGui.View.Layout
             {
                 this._windowTitle = value;
                 this.OnPropertyChanged(this, "WindowTitle");
-            }
-        }
-        public double Height
-        {
-            get { return this._height; }
-            set
-            {
-                this._height = value;
-                this.OnPropertyChanged(this, "Height");
-            }
-        }
-        public double Width
-        {
-            get { return this._width; }
-            set
-            {
-                this._width = value;
-                this.OnPropertyChanged(this, "Width");
             }
         }
         public Thickness PageMargin
@@ -90,8 +68,6 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "TopMost");
             }
         }
-        //public SolidColorBrush HeadingBgColor { get; set; }
-        //public SolidColorBrush HeadingFontColor { get; set; }
 
         public double FooterHeight
         {
@@ -120,44 +96,37 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "FooterHAlignment");
             }
         }
-        public bool ShowGridLines
-        {
-            get { return this._gridlines; }
-            set
-            {
-                this._gridlines = value;
-                this.OnPropertyChanged(this, "ShowGridLines");
-            }
-        }
 
         //Constructors
-        public TsMainWindow(MainWindow ParentWindow)
+        public TsMainWindow(MainWindow Parent)
+        {
+            this.Init(Parent);
+        }
+
+        public TsMainWindow(MainWindow Parent, XElement Config)
+        {
+            this.Init(Parent);
+            this.LoadXml(Config);
+        }
+
+        public void Init(MainWindow ParentWindow)
         {
             this._parentwindow = ParentWindow;
-            this._windowlocation = new WindowLocation(this._parentwindow);
+            this.WindowLocation = new WindowLocation(this._parentwindow);
 
             //set default values
             this.WindowTitle = "TsGui";
-            this._width = Double.NaN;
-            this._height = Double.NaN;
+            this.Width = Double.NaN;
+            this.Height = Double.NaN;
             this.FooterText = "Powered by TsGui - www.20road.com";
             this.FooterHeight = 15;
             this.FooterHAlignment = HorizontalAlignment.Right;
             
         }
 
-        //Setup the INotifyPropertyChanged interface 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // OnPropertyChanged method to raise the event
-        protected void OnPropertyChanged(object sender, string name)
+        public new void LoadXml(XElement SourceXml)
         {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
-        }
-
-        public void LoadXml(XElement SourceXml)
-        {
-
+            base.LoadXml(SourceXml);
             XElement subx;
             XElement x;
 
@@ -177,18 +146,11 @@ namespace TsGui.View.Layout
 
                 this.TopMost = XmlHandler.GetBoolFromXElement(SourceXml, "TopMost", this.TopMost);
                 this.WindowTitle = XmlHandler.GetStringFromXElement(SourceXml, "Title", this.WindowTitle);
-                this.Width = XmlHandler.GetDoubleFromXElement(SourceXml, "Width", this.Width);
-                this.Height = XmlHandler.GetDoubleFromXElement(SourceXml, "Height", this.Height);
 
                 x = SourceXml.Element("WindowLocation");
-                if (x != null) { this._windowlocation.LoadXml(x); }
+                if (x != null) { this.WindowLocation.LoadXml(x); }
 
                 GuiFactory.LoadMargins(SourceXml, this._pageMargin);
-
-                //Set show grid lines after pages and columns have been created.
-                x = SourceXml.Element("ShowGridLines");
-                if (x != null)
-                { this.ShowGridLines = true; }
             }
         }
     }

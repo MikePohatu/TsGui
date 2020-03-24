@@ -20,6 +20,7 @@
 		<Back>=Back=</Back>
 		<Cancel>=Cancel=</Cancel>
 		<Finish>=Finish=</Finish>
+    
 		<Formatting>
 			<!--<Width>Auto</Width>
 			<Height>Auto</Height>-->
@@ -57,8 +58,16 @@
 							
 							<Padding>2,2,2,2</Padding>
 							<Margin>2,2,2,2</Margin>
+              
+							<!-- These two alignments are for the control itself, i.e. the dropdownlist or label, not the text inside the control -->
 							<VerticalAlignment>Bottom</VerticalAlignment>		<!-- Options available: Top, Bottom, Center, Stretch -->
 							<HorizontalAlignment>Stretch</HorizontalAlignment> 	<!-- Options available: Left, Right, Center, Stretch -->
+
+              <!-- These two alignments are for the content inside the control, e.g. the text -->
+              <VerticalContentAlignment>Bottom</VerticalContentAlignment> <!-- Options available: Top, Bottom, Center, Stretch -->
+              <HorizontalContentAlignment>Stretch</HorizontalContentAlignment> <!-- Options available: Left, Right, Center, Stretch -->
+              
+              <!-- -->
 							<TextAlignment>Left</TextAlignment>					<!-- Options available: Left, Right, Center -->
 							<Font>
 								<Weight>Normal</Weight>		<!-- Options available: Normal, Bold, ExtraBold, Light -->

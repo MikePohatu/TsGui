@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // GroupableBase.cs - base class for grouable objects
 
@@ -23,7 +27,6 @@ namespace TsGui.Grouping
 {
     public abstract class GroupableBase: ViewModelBase
     {
-        protected IDirector _director;
         protected bool _isactive = true;
         protected List<Group> _groups = new List<Group>();
         protected bool _purgeinactive = false;
@@ -36,14 +39,10 @@ namespace TsGui.Grouping
         }
 
         //Constructor
-        public GroupableBase(IDirector MainController)
-        {
-            this._director = MainController;
-        }
+        public GroupableBase() { }
 
-        public GroupableBase(GroupableBase Parent, IDirector MainController)
+        public GroupableBase(GroupableBase Parent)
         {
-            this._director = MainController;
             this._purgeinactive = Parent.PurgeInactive;
         }
 
@@ -78,7 +77,7 @@ namespace TsGui.Grouping
 
         protected virtual Group AddGroup(string GroupID)
         {
-            Group g = this._director.GroupLibrary.AddToGroup(GroupID, this);
+            Group g = Director.Instance.GroupLibrary.AddToGroup(GroupID, this);
             this._groups.Add(g);
             return g;
         }

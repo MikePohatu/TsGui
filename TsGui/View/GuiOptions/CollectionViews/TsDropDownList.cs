@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsDropDownList.cs - combobox control for user input
 
@@ -25,22 +29,23 @@ using TsGui.Validation;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
-    public class TsDropDownList : CollectionViewGuiOptionBase
+    public class TsDropDownList : CollectionViewGuiOptionBase, IGuiOption
     {
         private TsDropDownListUI _dropdownlistui;
 
         //properties
         public List<ListItem> VisibleOptions { get { return this._builder.Items.Where(x => x.IsEnabled == true).ToList(); } }
-        
+        public bool IsEditable { get; set; } = false;
+        public bool IsReadOnly { get; set; } = true;
         //Constructor
-        public TsDropDownList(XElement InputXml, TsColumn Parent, IDirector director) : base(Parent, director)
+        public TsDropDownList(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
             this.InteractiveControl = this._dropdownlistui.Control;
             this.Label = new TsLabelUI();
-            this.ValidationHandler = new ValidationHandler(this, director);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
+            this.ValidationHandler = new ValidationHandler(this);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this);
             this.UserControl.DataContext = this;
 
             this.SetDefaults();
@@ -49,10 +54,27 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.RegisterForItemGroupEvents();
             this.SetComboBoxDefault();
 
-            this._director.WindowLoaded += this.OnLoadReload;
+            Director.Instance.WindowLoaded += this.OnLoadReload;
             this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
+            this._dropdownlistui.Control.LostFocus += this.OnLostFocus;
             this.UserControl.IsEnabledChanged += this.OnActiveChanged;
             this.UserControl.IsVisibleChanged += this.OnActiveChanged;
+        }
+
+        public new void LoadXml(XElement inputxml)
+        {
+            base.LoadXml(inputxml);
+            bool autocompelete = XmlHandler.GetBoolFromXElement(inputxml, "AutoComplete", this.IsEditable);
+            SetAutoCompleteState(autocompelete);
+            if (autocompelete)
+            {
+                //Changing the editable value on the combobox changes the inner control which has a different padding. 
+                //Tweak the left padding value to correct for this
+                Thickness pad = this.ControlFormatting.Padding;
+                double newleft = System.Math.Max(pad.Left - 2, 0);
+                Thickness newpad = new Thickness(newleft, pad.Top, pad.Right, pad.Bottom);
+                this.ControlFormatting.Padding = newpad;
+            }
         }
 
         private void SetComboBoxDefault()
@@ -124,6 +146,32 @@ namespace TsGui.View.GuiOptions.CollectionViews
             {
                 g.StateEvent += this.OnDropDownListItemGroupEvent;
             }
+        }
+
+        private void OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (this.CurrentItem == null)
+            {
+                SetComboBoxDefault();
+            }
+            else
+            {
+                //this makes sure the text is updated properly if the user has left it half complete
+                this._dropdownlistui.Control.Text = this.CurrentItem.Text;
+            }
+        }
+
+        protected new void SetDefaults()
+        {
+            base.SetDefaults();
+        }
+
+        private void SetAutoCompleteState(bool enabled)
+        {
+            this.IsEditable = enabled;
+            this.IsReadOnly = !enabled;
+            this.OnPropertyChanged(this, "IsEditable");
+            this.OnPropertyChanged(this, "IsReadOnly");
         }
     }
 }

@@ -1,24 +1,4 @@
-﻿<!--
-Copyright (C) 2016 Mike Pohatu
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; version 2 of the License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
-TsPageHeaderUI.xaml - header UI view
-    
--->
-    
-<UserControl x:Class="TsGui.View.Layout.TsPageHeaderUI"
+﻿<UserControl x:Class="TsGui.View.Layout.TsPageHeaderUI"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -28,7 +8,7 @@ TsPageHeaderUI.xaml - header UI view
              d:DesignHeight="50" d:DesignWidth="300">
     <Border CornerRadius="5,5,0,0" Background="{Binding BgColor}" >
         <StackPanel x:Name="HeaderStackPanel">
-            <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="10,5,10,5">
+            <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="{Binding Margin}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="HeadingTitleColumn" Width="100*"/>
                     <ColumnDefinition x:Name="HeadingImageColumn" Width="Auto"/>
@@ -39,8 +19,8 @@ TsPageHeaderUI.xaml - header UI view
                     <RowDefinition x:Name="HeadingTableRow"/>
                 </Grid.RowDefinitions>
                 <StackPanel x:Name="HeaderTitleStack" Grid.Row="0">
-                    <TextBlock x:Name="HeaderTitle" Grid.Column="0" Text="{Binding Title}" Foreground="{Binding FontColor}" FontFamily="Segoe UI Semibold" FontSize="13" />
-                    <TextBlock x:Name="HeaderText" Grid.Column="0" Text="{Binding Text}" Foreground="{Binding FontColor}" />
+                    <TextBlock x:Name="HeaderTitle" Grid.Column="0" Text="{Binding Title}" Foreground="{Binding FontColor}" FontFamily="Segoe UI Semibold" FontSize="{Binding TitleFontSize}" />
+                    <TextBlock x:Name="HeaderText" Grid.Column="0" Text="{Binding Text}" Foreground="{Binding FontColor}" FontSize="{Binding TextFontSize}" />
                 </StackPanel>
                 <Image x:Name="ImageElement" Grid.Column="1" Grid.Row="0" 
                                Width="{Binding Image.Width}" Height="{Binding Image.Height}"

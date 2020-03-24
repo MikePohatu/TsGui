@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2017 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // CombinedQuery.cs - combine multiple queries
 
@@ -24,15 +28,13 @@ namespace TsGui.Queries
     public class CombinedQuery: BaseQuery, ILinkTarget, ILinkingEventHandler
     {
         private QueryPriorityList _querylist;
-        private IDirector _controller;
 
-        public CombinedQuery(XElement inputxml, IDirector controller, ILinkTarget owner) : base(owner)
+        public CombinedQuery(XElement inputxml, ILinkTarget owner) : base(owner)
         {
             this._querylist = new QueryPriorityList(this);
             this._processingwrangler = new ResultWrangler();
             this._processingwrangler.Separator = string.Empty;
             this._reprocess = true;
-            this._controller = controller;
             this.LoadXml(inputxml);
         }
 
@@ -42,7 +44,7 @@ namespace TsGui.Queries
             
             foreach (XElement x in InputXml.Elements())
             {
-                IQuery newquery = QueryFactory.GetQueryObject(x, this._controller, this);
+                IQuery newquery = QueryFactory.GetQueryObject(x, this);
                 if (newquery != null) { this._querylist.AddQuery(newquery); }
             }
         }

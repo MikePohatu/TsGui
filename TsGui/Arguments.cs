@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // Arguments.cs - objec to process and store command line arguments
 
@@ -23,9 +27,15 @@ namespace TsGui
 {
     public class Arguments
     {
-        public string ConfigFile { get; set; }
-        public string LogFile { get; set; }
-        public int LoggingLevel { get; set; }
+        public string ConfigFile { get; private set; }
+        public string LogFile { get; private set; }
+        public int LoggingLevel { get; private set; }
+
+        public bool CreateKey { get; private set; } = false;
+
+        public string Key { get; private set; }
+
+        public string ToHash { get; private set; }
 
         public Arguments(string[] Args)
         {
@@ -49,6 +59,17 @@ namespace TsGui
                         case "-LOG":
                             if (Args.Length < index + 2) { throw new InvalidOperationException("Missing config file after parameter -log"); }
                             this.LogFile = this.CompleteFilePath(Args[index + 1]);
+                            break;
+                        case "-CREATEKEY":
+                            this.CreateKey = true;
+                            break;
+                        case "-HASH":
+                            if (Args.Length < index + 2) { throw new InvalidOperationException("Missing value after -hash"); }
+                            this.ToHash = Args[index + 1];
+                            break;
+                        case "-KEY":
+                            if (Args.Length < index + 2) { throw new InvalidOperationException("Missing value after -key"); }
+                            this.Key = Args[index + 1];
                             break;
                         default:
                             throw new InvalidOperationException("Invalid parameter: " + Args[index]);

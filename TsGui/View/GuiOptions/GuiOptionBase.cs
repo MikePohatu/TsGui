@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // GuiOptionBase.cs - base parts for all GuiOptions
 
@@ -20,6 +24,7 @@ using System.Xml.Linq;
 using TsGui.View.Layout;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Media;
 using TsGui.Linking;
 using TsGui.Options;
 using TsGui.Diagnostics.Logging;
@@ -70,10 +75,11 @@ namespace TsGui.View.GuiOptions
         }
         
         
-        public GuiOptionBase(TsColumn Parent, IDirector director):base(Parent, director)
+        public GuiOptionBase(TsColumn Parent):base(Parent)
         {
             this.UserControl = new GuiOptionBaseUI();
             this.UserControl.Loaded += this.OnRendered;
+
         }
 
         public void OnRendered (object sender, EventArgs e)
@@ -101,7 +107,7 @@ namespace TsGui.View.GuiOptions
             if (xa != null)
             {
                 this.ID = xa.Value;
-                this._director.LinkingLibrary.AddSource(this);
+                Director.Instance.LinkingLibrary.AddSource(this);
             }
 
             x = InputXml.Element("SetValue");
@@ -139,11 +145,6 @@ namespace TsGui.View.GuiOptions
                 this._setvaluequerylist.LoadXml(inputxml);
             }
             
-        }
-
-        private void SetDefaults()
-        {
-            this.LabelFormatting.Padding = new Thickness(3, 0, 0, 0);
         }
 
         private void SetLayoutRightLeft()

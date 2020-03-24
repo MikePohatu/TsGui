@@ -1,0 +1,48 @@
+<TsGui LiveData="TRUE">
+	<Height>500</Height>
+	<Width>400</Width>
+
+	<HardwareEval />
+
+	<Heading>
+		<Title>AutoComplete example</Title>
+		<Text></Text>
+	</Heading>
+
+
+	<Formatting>
+		<LeftCellWidth>280</LeftCellWidth>
+		<RightCellWidth>100</RightCellWidth>
+	</Formatting>
+
+	<Page>
+		<Row>
+			<Column>
+				<GuiOption Type="DropDownList">
+					<AutoComplete>TRUE</AutoComplete>
+					<Variable>IT_Team</Variable>
+					<Label>Team:</Label>
+					<SetValue>
+						<Value>Desktop</Value>
+					</SetValue>
+					<Option>
+						<Text>Desktop</Text>
+						<Value>Desktop</Value>
+					</Option>
+					<Option>
+						<Text>Infrastructure</Text>
+						<Value>Inf</Value>
+					</Option>
+					<Option>
+						<Text>Service Desk</Text>
+						<Value>SD</Value>
+					</Option>
+				</GuiOption>
+
+
+				<GuiOption Type="ComputerName" ID="link_name" />
+			</Column>
+		</Row>
+	</Page>
+
+</TsGui>

@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // NoUIContainer.cs - container for BlindOptions
 
@@ -27,11 +31,11 @@ namespace TsGui.Options.NoUI
         private List<NoUIContainer> _containers = new List<NoUIContainer>();
         
         //constructors
-        public NoUIContainer(IDirector MainController,XElement InputXml) : base(MainController)
+        public NoUIContainer(XElement InputXml) : base()
         {
             this.LoadXml(InputXml);
         }
-        public NoUIContainer(NoUIContainer Parent, IDirector MainController, XElement InputXml) : base(Parent, MainController)
+        public NoUIContainer(NoUIContainer Parent, XElement InputXml) : base(Parent)
         {
             this.LoadXml(InputXml);
         }
@@ -44,12 +48,12 @@ namespace TsGui.Options.NoUI
             {
                 if (opx.Name == "NoUIOption")
                 {
-                    this.AddOption(new NoUIOption(this, this._director, opx));
+                    this.AddOption(new NoUIOption(this, opx));
                 }
 
                 else if (opx.Name == "Container")
                 {
-                    this._containers.Add(new NoUIContainer(this,this._director, opx));
+                    this._containers.Add(new NoUIContainer(this, opx));
                 }
             }
         }
@@ -57,7 +61,7 @@ namespace TsGui.Options.NoUI
         private void AddOption (IOption Option)
         {
             this._options.Add(Option);
-            this._director.AddOptionToLibary(Option);
+            Director.Instance.AddOptionToLibary(Option);
         }
     }
 }

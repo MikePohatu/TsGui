@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsRow.cs - class for rows in the gui window
 
@@ -40,10 +44,8 @@ namespace TsGui.View.Layout
 
         //constructor
         #region
-        public TsRow (XElement SourceXml,int PageIndex, BaseLayoutElement Parent, IDirector MainController): base (Parent,MainController)
+        public TsRow (XElement SourceXml,int PageIndex, BaseLayoutElement Parent): base (Parent)
         {
-
-            this._director = MainController;
             this.Index = PageIndex;
             this._rowpanel = new Grid();
             this._rowpanel.Name = "_rowpanel";
@@ -70,7 +72,7 @@ namespace TsGui.View.Layout
             {
                 foreach (XElement xColumn in xlist)
                 {
-                    TsColumn c = new TsColumn(xColumn, colIndex, this, this._director);
+                    TsColumn c = new TsColumn(xColumn, colIndex, this);
 
                     this._columns.Add(c);
 

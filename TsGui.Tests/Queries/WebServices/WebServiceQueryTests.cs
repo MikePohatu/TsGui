@@ -1,18 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 using NUnit.Framework;
 using System.Xml.Linq;
 using TsGui.Queries.WebServices;
@@ -28,7 +31,7 @@ namespace TsGui.Tests
         public string BasicWebServiceTest(string Method, string[] Parameters)
         {
             XElement conf = new XElement("Query");            
-            conf.Add(new XElement("ServiceURL", "http://sccm/ConfigMgrWebService/ConfigMgr.asmx"));
+            conf.Add(new XElement("ServiceURL", "http://sccm01/ConfigMgrWebService/ConfigMgr.asmx"));
             conf.Add(new XElement("Method", Method));
             conf.Add(new XAttribute("AuthID", "TestCase"));
             for (int i=0;i<Parameters.GetLength(0);i=i+2)
@@ -39,7 +42,8 @@ namespace TsGui.Tests
             }
 
             TestDirector director = new TestDirector();
-            WebServicesQuery newquery = new WebServicesQuery(conf, director, null);
+            Director.OverrideInstance(director);
+            WebServicesQuery newquery = new WebServicesQuery(conf, null);
             newquery.ProcessQuery();
             return newquery.Response;
         }

@@ -1,9 +1,29 @@
-﻿using System.Windows;
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
+using System.Windows;
 using System;
 using System.Windows.Threading;
 
 using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
+using TsGui.Authentication.LocalConfig;
+using System.Diagnostics;
 
 namespace TsGui
 {
@@ -31,7 +51,34 @@ namespace TsGui
                 return;
             }
 
-            this.StartTsGui();
+            if (string.IsNullOrWhiteSpace(this.Arguments.ToHash) == false)
+            {
+                string key = Arguments.Key;
+
+                ConsoleWindow.WriteLine();
+                if (string.IsNullOrEmpty(key))
+                {
+                    key = Password.CreateKey();
+                    ConsoleWindow.WriteLine("Key: " + key);
+                }
+
+                string pw = Password.HashPassword(Arguments.ToHash, key);
+
+                ConsoleWindow.WriteLine("Hash: " + pw);
+                ConsoleWindow.WriteLine(Environment.NewLine + "Example config:");
+                ConsoleWindow.WriteLine(@"
+                    <Authentication Type=""Password"" AuthID=""conf_auth"">
+                        <Password>
+                            <PasswordHash>"+pw+@"</ PasswordHash >
+                            <Key>"+key+@"</Key>
+                        </Password>
+                    </Authentication>");
+                ConsoleWindow.Pause();
+            }
+            else
+            {
+                this.StartTsGui();
+            }
         }
 
         private void StartTsGui()
@@ -98,5 +145,7 @@ namespace TsGui
             string msg = Message;
             Director.Instance.CloseWithError("Application Runtime Exception", msg);
         }
+
+        
     }
 }

@@ -45,7 +45,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Release\tsgui\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -96,7 +96,12 @@
     <Compile Include="Authentication\IAuthenticatorConsumer.cs" />
     <Compile Include="Authentication\IUsername.cs" />
     <Compile Include="Authentication\IPassword.cs" />
+    <Compile Include="Authentication\LocalConfig\LocalConfigPasswordAuthenticator.cs" />
+    <Compile Include="Authentication\LocalConfig\Password.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
+    <Compile Include="ConsoleWindow.cs" />
+    <Compile Include="Prebuilt\Options\PrebuiltWifiDisconnected.cs" />
+    <Compile Include="Prebuilt\PrebuiltFactory.cs" />
     <Compile Include="Timers\GuiTimeout.cs" />
     <Compile Include="IDirector.cs" />
     <Compile Include="Options\OptionDelegates.cs" />
@@ -131,11 +136,14 @@
     <Compile Include="Validation\StringMatching\MatchingRuleFactory.cs" />
     <Compile Include="Validation\StringMatching\EndsWith.cs" />
     <Compile Include="Validation\StringMatching\StartsWith.cs" />
+    <Compile Include="View\Layout\ControlDefaults.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\CollectionViewGuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
       <DependentUpon>ContentChanger.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\CollectionViews\TsTreeView.cs" />
+    <Compile Include="Prebuilt\Options\PrebuiltPowerConnected.cs" />
+    <Compile Include="Prebuilt\Options\PrebuiltDiskIndex.cs" />
     <Compile Include="View\GuiOptions\TsActionButton.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\ListBuilder.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\TsTreeViewUI.xaml.cs">
@@ -146,6 +154,9 @@
     <Compile Include="View\GuiOptions\TsPasswordBox.cs" />
     <Compile Include="View\GuiOptions\TsPasswordBoxUI.xaml.cs">
       <DependentUpon>TsPasswordBoxUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Layout\ConsoleOutput.xaml.cs">
+      <DependentUpon>ConsoleOutput.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Layout\Converters\XmlStringLineConverter.cs" />
     <Compile Include="Diagnostics\Logging\ILoggingReceiver.cs" />
@@ -252,7 +263,7 @@
     <Compile Include="View\Layout\GhostWindow.xaml.cs">
       <DependentUpon>GhostWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Layout\IRootLayoutElement.cs" />
+    <Compile Include="View\Layout\IComplianceRoot.cs" />
     <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\IGuiOption.cs" />
@@ -343,6 +354,10 @@
     <Page Include="View\GuiOptions\TsButtonUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Layout\ConsoleOutput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Symbols\TsFolderUI.xaml">
       <Generator>MSBuild:Compile</Generator>

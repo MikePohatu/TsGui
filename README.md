@@ -9,3 +9,5 @@ For more information, see www.20road.com
 *TsGui is provided as is, and offers no warranty. Use at your own risk.
 
 [Documentation](/Documentation/Index.md)
+
+[How to videos](https://www.youtube.com/playlist?list=PLbymiOxRQJvIS6BGPJ6ggKaU90QheXgV8)

@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // 'Root' class from which to spin everything off. TsGui creates this
 // class to do the actual work. 
@@ -56,14 +60,14 @@ namespace TsGui
         private string _configpath;
         private bool _prodmode = false;
         private bool _finished = false;
-        private TsButtons _buttons = new TsButtons();
-        private List<TsPage> _pages = new List<TsPage>();
+        private TsButtons _buttons;
+        private List<TsPage> _pages;
         private EnvironmentController _envController;
-        private LinkingLibrary _linkinglibrary = new LinkingLibrary();
-        private GroupLibrary _grouplibrary = new GroupLibrary();
-        private List<IToggleControl> _toggles = new List<IToggleControl>();
-        private OptionLibrary _optionlibrary = new OptionLibrary();
-        private AuthLibrary _authlibrary = new AuthLibrary();
+        private LinkingLibrary _linkinglibrary;
+        private GroupLibrary _grouplibrary;
+        private List<IToggleControl> _toggles;
+        private OptionLibrary _optionlibrary;
+        private AuthLibrary _authlibrary;
         private HardwareEvaluator _hardwareevaluator;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
@@ -81,7 +85,8 @@ namespace TsGui
         public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
-        public bool ShowGridLines { get; set; }
+        public bool ShowGridLines { get; private set; }
+        public bool UseTouchDefaults { get; private set; }
 
         //constructors
         private Director()
@@ -95,6 +100,12 @@ namespace TsGui
         {
             LoggerFacade.Trace("MainController initializing");
             this._envController = new EnvironmentController(this);
+            this._pages = new List<TsPage>();
+            this._linkinglibrary = new LinkingLibrary();
+            this._grouplibrary = new GroupLibrary();
+            this._toggles = new List<IToggleControl>();
+            this._optionlibrary = new OptionLibrary();
+            this._authlibrary = new AuthLibrary();
             this._configpath = Arguments.ConfigFile;
             this.ParentWindow = ParentWindow;
             this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
@@ -119,7 +130,7 @@ namespace TsGui
         /// Replace the default director with a new IDirector instance. This to pass in a scafold IDirector for testing
         /// </summary>
         /// <param name="newdirector"></param>
-        public void OverrideInstance(IDirector newdirector)
+        public static void OverrideInstance(IDirector newdirector)
         {
             Director._instance = newdirector;
         }
@@ -139,12 +150,12 @@ namespace TsGui
             this.StartupFinished = false;
             this._prodmode = this._envController.Init();
 
-            this.TsMainWindow = new TsMainWindow(this.ParentWindow);
-            XElement x = this.ReadConfigFile();
-            if (x == null) { return; }
+            
+            XElement xconfig = this.ReadConfigFile();
+            if (xconfig == null) { return; }
 
             //this.LoadXml(x);
-            try { this.LoadXml(x); }
+            try { this.LoadXml(xconfig); }
             catch (TsGuiKnownException e)
             {
                 string msg = "Error loading config file" + Environment.NewLine + e.CustomMessage + Environment.NewLine + e.Message;
@@ -237,45 +248,55 @@ namespace TsGui
 
             if (SourceXml != null)
             {
-                this.TsMainWindow.LoadXml(SourceXml);
-                GuiTimeout.Init(SourceXml.Element("Timeout"));
-
+                
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
                 this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
-                
+
                 //Set show grid lines after pages and columns have been created.
                 x = SourceXml.Element("ShowGridLines");
                 if ((x != null) && (this._prodmode == false))
                 { this.ShowGridLines = true; }
+
+                x = SourceXml.Element("UseTouchDefaults");
+                if (x != null)
+                { this.UseTouchDefaults = true; }
 
                 //turn hardware eval on or off
                 x = SourceXml.Element("HardwareEval");
                 if (x != null)
                 { this._hardwareevaluator = new HardwareEvaluator(); }
 
-                foreach (XElement xauth in SourceXml.Elements("Authentication"))
-                {
-                    this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth, this));
-                }
+                //start layout import
+                this.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);
 
+                this._buttons = new TsButtons();
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
+
                 PageDefaults pagedef = new PageDefaults();
 
                 x = SourceXml.Element("Heading");
-                if (x != null) { pagedef.PageHeader = new TsPageHeader(x, this); }
-                else { pagedef.PageHeader = new TsPageHeader(this); }
+                if (x != null) { pagedef.PageHeader = new TsPageHeader(this.TsMainWindow, x); }
+                else { pagedef.PageHeader = new TsPageHeader(); }
 
                 x = SourceXml.Element("LeftPane");
-                if (x != null) { pagedef.LeftPane = new TsPane(x,this); }
-                else { pagedef.LeftPane = new TsPane(this); }
+                if (x != null) { pagedef.LeftPane = new TsPane(x); }
+                else { pagedef.LeftPane = new TsPane(); }
 
                 x = SourceXml.Element("RightPane");
-                if (x != null) { pagedef.RightPane = new TsPane(x, this); }
-                else { pagedef.RightPane = new TsPane(this); }
+                if (x != null) { pagedef.RightPane = new TsPane(x); }
+                else { pagedef.RightPane = new TsPane(); }
 
                 pagedef.Buttons = this._buttons;
-                pagedef.Parent = this.TsMainWindow;
-                pagedef.RootController = this;
+                pagedef.MainWindow = this.TsMainWindow;
+
+
+                this.TsMainWindow.LoadXml(SourceXml);
+                GuiTimeout.Init(SourceXml.Element("Timeout"));
+
+                foreach (XElement xauth in SourceXml.Elements("Authentication"))
+                {
+                    this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth));
+                }
 
                 //now read in the options and add to a dictionary for later use
                 pagesXml = SourceXml.Elements("Page");
@@ -290,11 +311,11 @@ namespace TsGui
                         {
                             //record the last page as the prevPage
                             prevPage = currPage;
-                            currPage = new TsPage(xPage,pagedef, this);                                                     
+                            currPage = new TsPage(this.TsMainWindow, xPage, pagedef);                                                     
                         }
                         else
                         {
-                            currPage = new TsPage( xPage,pagedef,this);
+                            currPage = new TsPage(this.TsMainWindow, xPage,pagedef);
                             currPage.IsFirst = true;
                         }
 
@@ -313,7 +334,7 @@ namespace TsGui
                 x = SourceXml.Element("NoUI");
                 if (x != null)
                 {
-                    this._nouicontainer = new NoUIContainer(this, x);
+                    this._nouicontainer = new NoUIContainer(x);
                 }
             }
             LoggerFacade.Info("Config load finished");
@@ -468,7 +489,7 @@ namespace TsGui
                 LoggerFacade.Debug("Running hardware evaluator");
                 foreach (TsVariable var in this._hardwareevaluator.GetTsVariables())
                 {
-                    NoUIOption newhwoption = new NoUIOption(this);
+                    NoUIOption newhwoption = new NoUIOption();
                     newhwoption.ImportFromTsVariable(var);
                     this._optionlibrary.Add(newhwoption);
                 }

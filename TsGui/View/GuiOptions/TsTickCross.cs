@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsTrafficLight.cs - Displays an icon indicating whether a device is compliant with
 // a specific condition
@@ -34,7 +38,7 @@ namespace TsGui.View.GuiOptions
         private TsWarnUI _warnui;
 
         //constructor
-        public TsTickCross(XElement InputXml, TsColumn Parent, IDirector MainController): base (InputXml, Parent, MainController)
+        public TsTickCross(XElement InputXml, TsColumn Parent): base (Parent)
         {
             this._contentchanger = new ContentChanger();
             this._crossui = new TsCrossUI();
@@ -45,8 +49,19 @@ namespace TsGui.View.GuiOptions
             this._validationtooltiphandler.SetTarget(this.UserControl);
             this.SetDefaults();
             this.LoadXml(InputXml);
-            this.ProcessQuery();
-            this.Validate();
+            this.RefreshValue();
+        }
+
+        public TsTickCross(TsColumn Parent, IDirector MainController) : base(Parent)
+        {
+            this._contentchanger = new ContentChanger();
+            this._crossui = new TsCrossUI();
+            this._tickui = new TsTickUI();
+            this._warnui = new TsWarnUI();
+
+            this.Control = this._contentchanger;
+            this._validationtooltiphandler.SetTarget(this.UserControl);
+            this.SetDefaults();
         }
 
         private void SetDefaults()

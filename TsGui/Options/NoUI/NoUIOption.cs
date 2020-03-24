@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 //  NoUIOption.cs - used to create TsVariables but aren't shown in the gui. 
 
@@ -44,7 +48,7 @@ namespace TsGui.Options.NoUI
                 if (this._id != value)
                 {
                     this._id = value;
-                    this._director.LinkingLibrary.AddSource(this);
+                    Director.Instance.LinkingLibrary.AddSource(this);
                 }
             }
         }
@@ -82,7 +86,7 @@ namespace TsGui.Options.NoUI
             }
         }
         //constructors     
-        public NoUIOption(NoUIContainer Parent, IDirector director, XElement InputXml) : base(Parent, director)
+        public NoUIOption(NoUIContainer Parent, XElement InputXml) : base(Parent)
         {
             this._querylist = new QueryPriorityList(this);
             this.LoadXml(InputXml);
@@ -90,7 +94,7 @@ namespace TsGui.Options.NoUI
             this.NotifyUpdate();
         }
 
-        public NoUIOption(IDirector director):base (director)
+        public NoUIOption():base ()
         {
             this._querylist = new QueryPriorityList(this);
         }

@@ -1,4 +1,22 @@
-﻿using System;
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +32,8 @@ namespace TsGui
     {
         public delegate void TimeoutFunction();
         private static GuiTimeout _instance;
-        private DateTime _afterstarttime;
-        private DateTime _afterendtime;
+        private DateTime _afterstarttime = DateTime.MaxValue;
+        private DateTime _afterendtime = DateTime.MaxValue;
         private bool _resetonactivity = false;
         private GuiTimeout() { }
 
@@ -28,6 +46,7 @@ namespace TsGui
         public TimeSpan TimeLeft { 
             get 
             { 
+                if (this.AfterTimer.IsEnabled == false && this.AtTimer.IsEnabled == false) { return new TimeSpan(0, 0, 0, 0); }
                 if (this._afterendtime < this.TimeoutDateTime)
                 {
                     if (this.AfterTimer.IsEnabled) { return (_afterendtime - DateTime.Now); }
@@ -39,7 +58,7 @@ namespace TsGui
 
         public string AtString { get { return this.TimeoutDateTime.ToString("dd/MM/yyyy HH:mm:ss"); } }
 
-        public TimeSpan TimeoutElapsed { get; private set; }
+        public TimeSpan TimeoutElapsed { get; private set; } = TimeSpan.MinValue;
         public DateTime TimeoutDateTime { get; private set; } = DateTime.MaxValue;
 
         /// <summary>
@@ -100,7 +119,7 @@ namespace TsGui
         {
             this._timeoutfunction = timeoutfunction;
 
-            if (this.TimeoutElapsed != null)
+            if (this.TimeoutElapsed != TimeSpan.MinValue)
             {
                 if (this._resetonactivity)
                 {
@@ -123,14 +142,28 @@ namespace TsGui
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.OnTimeoutReached()));
                     return;
                 }
-                TimeSpan timeout = this.TimeoutDateTime - DateTime.Now;
-                if (timeout.TotalMilliseconds > 0)
-                {
-                    this.AtTimer.Interval = timeout;
-                    this.AtTimer.Tick += this.OnTimeoutReached;
-                    this.AtTimer.Start();
-                    LoggerFacade.Info("Timeout will occur at " + this.TimeoutDateTime);
-                }
+                this.ResetAtTimerBlock(this, new EventArgs());
+            }
+        }
+
+        private void ResetAtTimerBlock(object sender, EventArgs e)
+        {
+            this.AtTimer?.Stop();
+            this.AtTimer = new DispatcherTimer();
+            TimeSpan timeout = this.TimeoutDateTime - DateTime.Now;
+            if (timeout.TotalMinutes > 10)
+            {
+                this.AtTimer.Interval = new TimeSpan(0, 5, 0);
+                this.AtTimer.Tick += this.ResetAtTimerBlock;
+                this.AtTimer.Start();
+                LoggerFacade.Info("Timeout will occur at " + this.TimeoutDateTime);
+            }
+            else if (timeout.TotalMilliseconds > 0)
+            {
+                this.AtTimer.Interval = timeout;
+                this.AtTimer.Tick += this.OnTimeoutReached;
+                this.AtTimer.Start();
+                LoggerFacade.Info("Timeout will occur at " + this.TimeoutDateTime);
             }
         }
 
@@ -147,6 +180,11 @@ namespace TsGui
             LoggerFacade.Info("Timeout reached");
             this.AfterTimer.Stop();
             this.AtTimer.Stop();
+            if (this._resetonactivity)
+            {
+                Director.Instance.ParentWindow.MouseDown -= this.ResetElapsed;
+                Director.Instance.ParentWindow.KeyDown -= this.ResetElapsed;
+            }
             this._timeoutfunction();
         }
 

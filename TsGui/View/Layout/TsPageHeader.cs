@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsPageHeader.cs - view model class for the header on a page
 
@@ -25,7 +29,7 @@ using TsGui.Validation;
 
 namespace TsGui.View.Layout
 {
-    public class TsPageHeader : BaseLayoutElement, IRootLayoutElement
+    public class TsPageHeader : BaseLayoutElement, IComplianceRoot
     {
         public event ComplianceRetryEventHandler ComplianceRetry;
 
@@ -33,6 +37,8 @@ namespace TsGui.View.Layout
         private string _text;
         private SolidColorBrush _bgColor;
         private SolidColorBrush _fontColor;
+        private double _titlefontsize;
+        private double _textfontsize;
 
         //Properties
         public Image Image { get; set; }
@@ -75,10 +81,21 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "HeadingFontColor");
             }
         }
-        
-        
+
+        public double TitleFontSize
+        {
+            get { return this._titlefontsize; }
+            set  { this._titlefontsize = value; this.OnPropertyChanged(this, "TitleFontSize"); }
+        }
+
+        public double TextFontSize
+        {
+            get { return this._textfontsize; }
+            set { this._textfontsize = value; this.OnPropertyChanged(this, "TextFontSize"); }
+        }
+
         //Constructors
-        public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml, IDirector MainController):base(Parent, MainController)
+        public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml):base(Parent)
         {
             this.Height = Template.Height;
             this.Title = Template.Title;
@@ -86,21 +103,35 @@ namespace TsGui.View.Layout
             this.FontColor = Template.FontColor;
             this.BgColor = Template.BgColor;
             this.Image = Template.Image;
+            this.TitleFontSize = Template.TitleFontSize;
+            this.Margin = Template.Margin;
 
-            this.Init(SourceXml, MainController);
+            this.Init(SourceXml);
         }
 
-        public TsPageHeader(XElement SourceXml, IDirector MainController): base (MainController)
+        public TsPageHeader(BaseLayoutElement Parent, XElement SourceXml): base (Parent)
         {
-            this.ShowGridLines = _director.ShowGridLines;
+            this.ShowGridLines = Director.Instance.ShowGridLines;
             this.SetDefaults();
 
-            this.Init(SourceXml, MainController);
+            this.Init(SourceXml);
         }
 
-        public TsPageHeader(IDirector MainController) : base(MainController)
+        public TsPageHeader() : base()
         {
             this.SetDefaults();
+        }
+
+        private void Init(XElement SourceXml)
+        {
+            this.UI = new TsPageHeaderUI();
+            this.UI.DataContext = this;
+
+            this.LoadXml(SourceXml);
+
+            if (string.IsNullOrEmpty(this.Title)) { this.UI.HeaderTitle.Visibility = Visibility.Collapsed; }
+            if (string.IsNullOrEmpty(this.Text)) { this.UI.HeaderText.Visibility = Visibility.Collapsed; }
+            if (this.Image == null) { this.UI.ImageElement.Visibility = Visibility.Collapsed; }
         }
 
         public bool OptionsValid()
@@ -111,21 +142,23 @@ namespace TsGui.View.Layout
 
         private void SetDefaults()
         {
-            this.Height = 50;
+            if (Director.Instance.UseTouchDefaults)
+            {
+                this.Margin = new Thickness(10, 10, 10, 10);
+                this.Height = 65;
+                this.TitleFontSize = 14;
+                this.TextFontSize = 12;
+            }
+            else
+            {
+                this.Margin = new Thickness(10, 5, 10, 5);
+                this.Height = 50;
+                this.TitleFontSize = 13;
+                this.TextFontSize = 12;
+            }
+            
             this.FontColor = new SolidColorBrush(Colors.White);
             this.BgColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF006AD4"));
-        }
-
-        private void Init (XElement SourceXml, IDirector MainController)
-        {
-            this.UI = new TsPageHeaderUI();
-            this.UI.DataContext = this;
-            
-            this.LoadXml(SourceXml);
-
-            if (string.IsNullOrEmpty(this.Title)) { this.UI.HeaderTitle.Visibility = Visibility.Collapsed; }
-            if (string.IsNullOrEmpty(this.Text)) { this.UI.HeaderText.Visibility = Visibility.Collapsed; }
-            if (this.Image == null) { this.UI.ImageElement.Visibility = Visibility.Collapsed; }
         }
 
         //Methods
@@ -147,11 +180,11 @@ namespace TsGui.View.Layout
                 this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
 
                 x = InputXml.Element("Image");
-                if (x != null) { this.Image = new Image(x, this._director); }
+                if (x != null) { this.Image = new Image(x); }
 
                 x = InputXml.Element("Row");
                 if (x != null)
-                { this.Table = new TsTable(InputXml, this, this._director); }
+                { this.Table = new TsTable(InputXml, this); }
             }
         }
 

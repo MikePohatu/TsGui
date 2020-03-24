@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // Formatting.cs - view model for the layout of GuiOptions. Controls the layout and 
 // formatting options for the associated controls
@@ -34,9 +38,12 @@ namespace TsGui.View.Layout
         private double _width;
         private double _cornerradius;
         private Thickness _margin;
-        private Thickness _padding;        
+        private Thickness _padding;
+        private Thickness _borderthickness;
         private VerticalAlignment _verticalalign;
         private HorizontalAlignment _horizontalalign;
+        private VerticalAlignment _verticalcontentalign;
+        private HorizontalAlignment _horizontcontentalalign;
         private TextAlignment _textalign;
         private SolidColorBrush _bordercolorbrush;
         private SolidColorBrush _focusedcolorbrush;
@@ -90,6 +97,12 @@ namespace TsGui.View.Layout
             set { this._padding = value; this.OnPropertyChanged(this, "Padding"); }
         }
 
+        public Thickness BorderThickness
+        {
+            get { return this._borderthickness; }
+            set { this._borderthickness = value; this.OnPropertyChanged(this, "BorderThickness"); }
+        }
+
         public VerticalAlignment VerticalAlignment
         {
             get { return this._verticalalign; }
@@ -101,6 +114,19 @@ namespace TsGui.View.Layout
             get { return this._horizontalalign; }
             set { this._horizontalalign = value; this.OnPropertyChanged(this, "HorizontalAlignment"); }
         }
+
+        public VerticalAlignment VerticalContentAlignment
+        {
+            get { return this._verticalcontentalign; }
+            set { this._verticalcontentalign = value; this.OnPropertyChanged(this, "VerticalContentAlignment"); }
+        }
+
+        public HorizontalAlignment HorizontalContentAlignment
+        {
+            get { return this._horizontcontentalalign; }
+            set { this._horizontcontentalalign = value; this.OnPropertyChanged(this, "HorizontalContentAlignment"); }
+        }
+
         public TextAlignment TextAlignment
         {
             get { return this._textalign; }
@@ -142,16 +168,29 @@ namespace TsGui.View.Layout
 
         private void SetDefaults()
         {
+            if (Director.Instance.UseTouchDefaults==true)
+            {
+                this.FontSize = 12;
+            }
+            else
+            {
+                this.FontSize = 11;
+                
+            }
+            this.Margin = new Thickness(2);
+            this.Padding = new Thickness(2);
+            this.BorderThickness = new Thickness(1);
             this.FontStyle = "Normal";
             this.FontWeight = "Normal";
             this.CornerRadius = 0;
-            this.FontSize = 11;
+            
             this.Height = Double.NaN;
             this.Width = Double.NaN;
-            this.Margin = new Thickness(2, 2, 2, 2);
-            this.Padding = new Thickness(2, 2, 2, 2);
+            
             this.VerticalAlignment = VerticalAlignment.Bottom;
             this.HorizontalAlignment = HorizontalAlignment.Left;
+            this.HorizontalContentAlignment = HorizontalAlignment.Left;
+            this.VerticalAlignment = VerticalAlignment.Bottom;
             this.TextAlignment = TextAlignment.Left;
             this.BorderBrush = new SolidColorBrush(Colors.Gray);
             this.MouseOverBorderBrush = new SolidColorBrush(Colors.DarkGray);
@@ -171,6 +210,8 @@ namespace TsGui.View.Layout
             this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", this.Margin);
             this.VerticalAlignment = XmlHandler.GetVerticalAlignmentFromXElement(InputXml, "VerticalAlignment", this.VerticalAlignment);
             this.HorizontalAlignment = XmlHandler.GetHorizontalAlignmentFromXElement(InputXml, "HorizontalAlignment", this.HorizontalAlignment);
+            this.VerticalContentAlignment = XmlHandler.GetVerticalAlignmentFromXElement(InputXml, "VerticalContentAlignment", this.VerticalContentAlignment);
+            this.HorizontalContentAlignment = XmlHandler.GetHorizontalAlignmentFromXElement(InputXml, "HorizontalContentAlignment", this.HorizontalContentAlignment);
             this.TextAlignment = XmlHandler.GetTextAlignmentFromXElement(InputXml, "TextAlignment", this.TextAlignment);
 
             x = InputXml.Element("Font");
@@ -197,6 +238,8 @@ namespace TsGui.View.Layout
             f.Margin = this.Margin;
             f.HorizontalAlignment = this.HorizontalAlignment;
             f.VerticalAlignment = this.VerticalAlignment;
+            f.HorizontalContentAlignment = this.HorizontalContentAlignment;
+            f.VerticalContentAlignment = this.VerticalContentAlignment;
             f.TextAlignment = this.TextAlignment;
             f.BorderBrush = this.BorderBrush.Clone();
             f.FocusedBorderBrush = this.FocusedBorderBrush.Clone();

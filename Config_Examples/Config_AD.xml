@@ -4,78 +4,67 @@ ADSI must be added to WinPE. This is not supported by Microsoft. See for an exam
 -->
 
 <TsGui LiveData="TRUE">
-	<Height>350</Height>
-	<Width>370</Width>
+  <Height>500</Height>
+  <Width>400</Width>
 
-	<HardwareEval />
-	
-	<Heading>
-		<Title>TsGui</Title>
-		<Text>Task Sequence GUI queries example</Text>
-	</Heading>
+  <HardwareEval />
 
-	<!-- The authentication object. Note the AuthID which will be referenced by GuiOptions later in the config -->
-	<Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="home.local"/>
-	
-	<Page>
-		<Row>
-			<Column>
-				<Formatting>
-					<LeftCellWidth>100</LeftCellWidth>
-					<RightCellWidth>250</RightCellWidth>
-				</Formatting>
-				
-				<GuiOption Type="ComputerName" ID="link_name"/>
-				
-				<!-- Username and password GuiOptions -->
-				<GuiOption Type="UsernameBox" AuthID="ad_auth" ID="link_user">
-					<Variable>VAR_Username</Variable>
-					<SetValue>
-						<Value></Value>
-					</SetValue>
-				</GuiOption>
-				
-				<GuiOption Type="PasswordBox" AuthID="ad_auth">
-					<Variable>VAR_Password</Variable>
-				</GuiOption>
-				
-				<!-- The 'Login' button. Activates authentication of the authentication object using the login credentials -->
-				<GuiOption Type="ActionButton" ID="link_actionbtn" IsDefault="TRUE">
-					<Variable>VAR_ActionButton</Variable>
-					<Action Type="Authentication" AuthID="ad_auth"/>
-				</GuiOption>
-				
-				<GuiOption Type="DropDownList">
-					<Variable>AD_User</Variable>
-					<Label>AD User</Label>
+  <Heading>
+    <Title>Active Directory example</Title>
+    <Text></Text>
+  </Heading>
 
-					<Query Type="ADGroupMembers" AuthID="ad_auth">
-						<GroupName>Domain Users</GroupName>
-						<Property Name="DistinguishedName"/>
-						<Property Name="DisplayName"/>				
-						<!--<Separator>, </Separator>-->
-					</Query>
-				</GuiOption>
-				
-				<!-- TreeView of OU structure. Note the AuthID of the authentication object -->
-				<GuiOption Type="TreeView">
-					<Variable>AD_OU</Variable>
-					<Label>AD OU</Label>
+  <Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="domain.local"/>
 
-					<Query Type="ADOU" AuthID="ad_auth">
-						<BaseOU>OU=LAB,DC=home,DC=local</BaseOU>
-						<Property Name="distinguishedName"/>
-						<Property Name="Name"/>				
-						<!--<Separator>, </Separator>-->
-					</Query>
-					<Formatting>
-						<Control>
-							<!--<Width>190</Width>-->
-							<Height>100</Height>							
-						</Control>
-					</Formatting>
-				</GuiOption>
-			</Column>
-		</Row>
-	</Page>
+  <Formatting>
+    <LeftCellWidth>100</LeftCellWidth>
+    <RightCellWidth>250</RightCellWidth>
+  </Formatting>
+
+  <Page>
+    <Row>
+      <Column>
+        <GuiOption Type="UsernameBox" AuthID="ad_auth" >
+          <Variable>VAR_Username</Variable>
+        </GuiOption>
+
+        <GuiOption Type="PasswordBox" AuthID="ad_auth" />
+
+        <GuiOption Type="ActionButton" IsDefault="TRUE">
+          <Action Type="Authentication" AuthID="ad_auth"/>
+          <ButtonText>Login</ButtonText>
+        </GuiOption>
+
+        <GuiOption Type="ComputerName" ID="link_name" />
+
+        <GuiOption Type="DropDownList">
+          <Variable>AD_User</Variable>
+          <Label>AD User:</Label>
+
+          <Query Type="ADGroupMembers" AuthID="ad_auth">
+            <GroupName>Domain Users</GroupName>
+            <Property Name="DistinguishedName"/>
+            <Property Name="Name"/>
+          </Query>
+        </GuiOption>
+
+        <GuiOption Type="TreeView">
+          <Variable>AD_OU</Variable>
+          <Label>AD OU:</Label>
+
+          <Query Type="ADOU" AuthID="ad_auth">
+            <BaseOU>OU=LAB,DC=home,DC=local</BaseOU>
+            <Property Name="distinguishedName"/>
+            <Property Name="Name"/>
+          </Query>
+
+          <Formatting>
+            <Control>
+              <Height>100</Height>
+            </Control>
+          </Formatting>
+        </GuiOption>
+      </Column>
+    </Row>
+  </Page>
 </TsGui>

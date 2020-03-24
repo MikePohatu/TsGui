@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 //  GuiFactory.cs
 //  Factory class just to generate the right class from the xml based on type
@@ -20,112 +24,115 @@ using System;
 using System.Xml.Linq;
 using System.Windows;
 using TsGui.Diagnostics.Logging;
+using TsGui.Diagnostics;
 using TsGui.View.GuiOptions.CollectionViews;
+using TsGui.Prebuilt;
 
 namespace TsGui.View.GuiOptions
 {
     public static class GuiFactory
     {
-        public static IGuiOption CreateGuiOption(XElement OptionXml, TsColumn Parent, IDirector RootController)
+        public static IGuiOption CreateGuiOption(XElement OptionXml, TsColumn Parent)
+        {
+            
+            XElement prebuiltx = PrebuiltFactory.GetPrebuiltXElement(OptionXml);
+            if (prebuiltx == null)
+            {
+                return GetGuiOption(OptionXml, Parent);
+            }
+            else
+            {
+                XAttribute xtype = OptionXml.Attribute("Type");
+                prebuiltx.Add(xtype);
+                IGuiOption g = GetGuiOption(prebuiltx, Parent);
+                g.LoadXml(OptionXml);
+                return g;
+            }
+        }
+
+
+        private static IGuiOption GetGuiOption(XElement OptionXml, TsColumn Parent)
         {
             XAttribute xtype = OptionXml.Attribute("Type");
             if (xtype == null) { throw new ArgumentException("Missing Type attribute on GuiOption" + Environment.NewLine); }
 
             LoggerFacade.Info("Creating GuiOption, type: " + xtype.Value);
 
+            IGuiOption newoption = null;
+
             #region
             if (xtype.Value == "DropDownList")
             {
-                TsDropDownList ddl = new TsDropDownList(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(ddl);
-                return ddl;
+                newoption = new TsDropDownList(OptionXml, Parent);
             }
 
             else if (xtype.Value == "CheckBox")
             {
-                TsCheckBox cb = new TsCheckBox(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(cb);
-                return cb;
+                newoption = new TsCheckBox(OptionXml, Parent);
             }
             else if (xtype.Value == "FreeText")
             {
-                TsFreeText ft = new TsFreeText(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(ft);
-                return ft;
+                newoption = new TsFreeText(OptionXml, Parent);
             }
 
             else if (xtype.Value == "ComputerName")
             {
-                TsComputerName cn = new TsComputerName(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(cn);
-                return cn;
+                newoption = new TsComputerName(OptionXml, Parent);
             }
             else if (xtype.Value == "Heading")
             {
-                TsHeading h = new TsHeading(OptionXml, Parent, RootController);
-                return h;
+                newoption = new TsHeading(OptionXml, Parent);
+                return newoption;
             }
             else if (xtype.Value == "InfoBox")
             {
-                TsInfoBox ib = new TsInfoBox(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(ib);
-                return ib;
+                newoption = new TsInfoBox(OptionXml, Parent);
             }
             else if (xtype.Value == "TrafficLight")
             {
-                TsTrafficLight tl = new TsTrafficLight(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(tl);
-                return tl;
+                newoption = new TsTrafficLight(OptionXml, Parent);
             }
             else if (xtype.Value == "TickCross")
             {
-                TsTickCross option = new TsTickCross(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(option);
-                return option;
+                newoption = new TsTickCross(OptionXml, Parent);
             }
             else if (xtype.Value == "Image")
             {
-                TsImage option = new TsImage(OptionXml, Parent, RootController);
-                return option;
+                newoption = new TsImage(OptionXml, Parent);
+                return newoption;
             }
             else if (xtype.Value == "ComplianceRefreshButton")
             {
-                TsComplianceRefreshButton option = new TsComplianceRefreshButton(OptionXml, Parent, RootController);
-                return option;
+                newoption = new TsComplianceRefreshButton(OptionXml, Parent);
+                return newoption;
             }
             else if (xtype.Value == "PasswordBox")
             {
-                TsPasswordBox option = new TsPasswordBox(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(option);
-                return option;
+                newoption = new TsPasswordBox(OptionXml, Parent);
             }
             else if (xtype.Value == "UsernameBox")
             {
-                TsUsernameBox option = new TsUsernameBox(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(option);
-                return option;
+                newoption = new TsUsernameBox(OptionXml, Parent);
             }
             else if (xtype.Value == "ActionButton")
             {
-                TsActionButton option = new TsActionButton(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(option);
-                return option;
+                newoption = new TsActionButton(OptionXml, Parent);
             }
             else if (xtype.Value == "TreeView")
             {
-                TsTreeView option = new TsTreeView(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(option);
-                return option;
+                newoption = new TsTreeView(OptionXml, Parent);
             }
             else if (xtype.Value == "Timeout")
             {
-                TsTimeout option = new TsTimeout(OptionXml, Parent, RootController);
-                RootController.AddOptionToLibary(option);
-                return option;
+                if (GuiTimeout.Instance == null) { throw new TsGuiKnownException("No Timeout section defined in config. Timeout GuiOption type not available", string.Empty); }
+                newoption = new TsTimeout(OptionXml, Parent);
             }
             else
             { return null; }
             #endregion
+
+            Director.Instance.AddOptionToLibary(newoption);
+            return newoption;
         }
 
         //pass in the xml and set the thickness according to the xml values

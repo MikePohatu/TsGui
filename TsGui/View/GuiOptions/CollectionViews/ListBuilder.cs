@@ -1,18 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Queries;
@@ -25,15 +28,13 @@ namespace TsGui.View.GuiOptions.CollectionViews
     {
         private int _lastindex = 0;
         private CollectionViewGuiOptionBase _parent;
-        private IDirector _director;
         private Dictionary<int, QueryPriorityList> _querylists = new Dictionary<int, QueryPriorityList>();
         private Dictionary<int, ListItem> _staticitems = new Dictionary<int, ListItem>();
 
         public List<ListItem> Items { get; set; }
 
-        public ListBuilder(CollectionViewGuiOptionBase parent, IDirector director)
+        public ListBuilder(CollectionViewGuiOptionBase parent)
         {
-            this._director = director;
             this._parent = parent;
         }
 
@@ -96,7 +97,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 //read in an option and add to a dictionary for later use
                 if (x.Name == "Option")
                 {
-                    ListItem newoption = new ListItem(x, this._parent.ControlFormatting, this._parent, this._director);
+                    ListItem newoption = new ListItem(x, this._parent.ControlFormatting, this._parent);
                     this.Add(newoption);
                 }
 
@@ -114,7 +115,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         public ListItem CreateItem(KeyValueTreeNode node)
         {
-            ListItem newitem = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent, this._director);
+            ListItem newitem = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent);
             foreach (KeyValueTreeNode subnode in node.Nodes)
             {
                 newitem.ItemsList.Add(this.CreateItem(subnode));

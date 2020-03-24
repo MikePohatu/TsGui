@@ -1,22 +1,27 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsButtons.cs - class for controlling the Next, Back, Finish, and Cancel buttons
 
 using System.Windows;
 using System.Xml.Linq;
+using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
@@ -26,7 +31,6 @@ namespace TsGui.View.Layout
         private string _buttonTextFinish;
         private string _buttonTextCancel;
         private string _buttonTextBack;
-        private Formatting _controlformatting;
         private Visibility _cancelvisibility = Visibility.Visible;
         private bool _cancelenabled = true;
 
@@ -51,10 +55,7 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "CancelEnabled");
             }
         }
-        public Formatting ControlFormatting
-        {
-            get { return this._controlformatting; }
-        }
+        public Formatting ControlFormatting { get; }
         public string ButtonTextCancel
         {
             get { return this._buttonTextCancel; }
@@ -100,8 +101,13 @@ namespace TsGui.View.Layout
             this.ButtonTextCancel = "Cancel";
             this.ButtonTextFinish = "Finish";
             this.ButtonTextNext = "Next";
-            this._controlformatting = new Formatting();
+            this.ControlFormatting = new Formatting();
             this.SetDefaults();
+        }
+
+        private void SetDefaults()
+        {
+            ControlDefaults.SetButtonDefaults(this.ControlFormatting);
         }
 
         public void LoadXml(XElement InputXml)
@@ -116,7 +122,7 @@ namespace TsGui.View.Layout
             this.ButtonTextCancel = XmlHandler.GetStringFromXElement(InputXml, "Cancel", this.ButtonTextCancel);
 
             x = InputXml.Element("Formatting");
-            if (x != null) { this._controlformatting.LoadXml(x); }
+            if (x != null) { this.ControlFormatting.LoadXml(x); }
 
             x = InputXml.Element("HideCancel");
             if (x != null)
@@ -154,13 +160,6 @@ namespace TsGui.View.Layout
                 Layout.buttonPrev.Visibility = Visibility.Hidden;
                 Layout.buttonPrev.IsEnabled = false;
             }
-        }
-
-        private void SetDefaults()
-        {
-            this._controlformatting.VerticalAlignment = VerticalAlignment.Center;
-            this._controlformatting.Width = 75;
-            this._controlformatting.Height = 30;
         }
     }
 }

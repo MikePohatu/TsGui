@@ -1,24 +1,4 @@
-﻿<!--
-Copyright (C) 2016 Mike Pohatu
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; version 2 of the License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
-PageLayout.xaml - main layout for each page. 
-    
--->
-    
-<Page x:Class="TsGui.View.Layout.TsPageUI"
+﻿<Page x:Class="TsGui.View.Layout.TsPageUI"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -34,7 +14,7 @@ PageLayout.xaml - main layout for each page.
         <Grid.RowDefinitions>
             <RowDefinition x:Name="HeadingRow" Height="{Binding PageHeader.Height}"/>
             <RowDefinition x:Name="MainRow" Height="100*"/>
-            <RowDefinition x:Name="ButtonRow" Height="50" />
+            <RowDefinition x:Name="ButtonRow" Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="HeaderAreaGrid">
             <ContentPresenter x:Name="HeaderPresenter"/>
@@ -53,14 +33,20 @@ PageLayout.xaml - main layout for each page.
 
         </Grid>
         <Grid x:Name="ButtonAreaGrid"  Grid.Row="2" Background="#FFF3F2F2" ShowGridLines="{Binding ShowGridLines}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid x:Name="ButtonGrid" Margin="10,10,10,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*"></ColumnDefinition>
-                    <ColumnDefinition Width="80"></ColumnDefinition>
-                    <ColumnDefinition Width="80"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button x:Name="buttonNext" IsDefault="True" IsEnabled="False" Visibility="Hidden" Content="{Binding ButtonTextNext}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ControlStyle}" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" Click="buttonNext_Click"/>
-                <Button x:Name="buttonFinish" IsDefault="True" Content="{Binding ButtonTextFinish}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ControlStyle}" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" Height="30" Click="buttonFinish_Click"/>
+                <Button x:Name="buttonFinish" IsDefault="True" Content="{Binding ButtonTextFinish}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ControlStyle}" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" Click="buttonFinish_Click"/>
                 <Button x:Name="buttonPrev" IsEnabled="False" Visibility="Hidden" Content="{Binding ButtonTextBack}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ControlStyle}" HorizontalAlignment="Left" Margin="0,0,5,0" Grid.Row="1" Grid.Column="1" Click="buttonPrev_Click"/>
                 <Button x:Name="buttonCancel" Content="{Binding ButtonTextCancel}" Visibility="{Binding CancelVisibility}" IsEnabled="{Binding CancelEnabled}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ControlStyle}" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" Grid.Column="0" Click="buttonCancel_Click"/>
             </Grid>

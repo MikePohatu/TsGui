@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // ComplianceOptionBase.cs - base class for compliance guioptions
 
@@ -23,6 +27,7 @@ using TsGui.Validation;
 using TsGui.View.Layout;
 using TsGui.Queries;
 using TsGui.Linking;
+using TsGui.Diagnostics;
 
 namespace TsGui.View.GuiOptions
 {
@@ -38,7 +43,7 @@ namespace TsGui.View.GuiOptions
         public ValidationHandler ValidationHandler { get { return null; } }
         protected ComplianceHandler _compliancehandler;
         protected string _validationtext;
-        protected IRootLayoutElement _rootelement;
+        protected IComplianceRoot _rootelement;
         protected bool _showvalueinpopup;
         protected string _okHelpText;
 
@@ -82,16 +87,20 @@ namespace TsGui.View.GuiOptions
         }
 
         //constructor
-        public ComplianceOptionBase(XElement InputXml, TsColumn Parent, IDirector director): base (Parent, director)
+        public ComplianceOptionBase(TsColumn Parent): base (Parent)
         {
             this.Label = new TsLabelUI();
-            this._rootelement = this.GetRootElement();
+            this._rootelement = this.GetComplianceRootElement();
+            if (this._rootelement == null)
+            {
+                throw new TsGuiKnownException("There is prooblem in the compliance tree. Root is null", string.Empty);
+            }
             this._rootelement.ComplianceRetry += this.OnComplianceRetry;
 
             this.FillColor = new SolidColorBrush(Colors.Blue);
             this.StrokeColor = new SolidColorBrush(Colors.Blue);
-            this._compliancehandler = new ComplianceHandler(this, director);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this, this._director);
+            this._compliancehandler = new ComplianceHandler(this);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this);
             this._setvaluequerylist = new QueryPriorityList(this);
             this.UserControl.DataContext = this;
             this.SetDefaults();      
@@ -135,7 +144,7 @@ namespace TsGui.View.GuiOptions
         public void OnValidationChange()
         { this.Validate(); }
 
-        public void OnComplianceRetry(IRootLayoutElement o, EventArgs e)
+        public void OnComplianceRetry(IComplianceRoot o, EventArgs e)
         {
             this.RefreshValue();
         }
@@ -152,7 +161,7 @@ namespace TsGui.View.GuiOptions
             this.RefreshValue();
         }
 
-        protected new void LoadXml(XElement InputXml)
+        public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
 

@@ -1,24 +1,28 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // SccmConnector.cs - class to connect to the SCCM task sequence agent
 
 using System;
 using System.Runtime.InteropServices;
 using TsGui.Diagnostics.Logging;
-
+using TsGui.Diagnostics;
 
 namespace TsGui.Connectors
 {
@@ -36,8 +40,15 @@ namespace TsGui.Connectors
 
         public void AddVariable(TsVariable Variable)
         {
-            LoggerFacade.Info("TS variable applied: " + Variable.Name + ". Value: " + Variable.Value);
-            objTSEnv.Value[Variable.Name] = Variable.Value;
+            LoggerFacade.Info("Applying TS variable: " + Variable.Name + ". Value: " + Variable.Value);
+            try
+            {
+                objTSEnv.Value[Variable.Name] = Variable.Value;
+            }
+            catch (Exception e)
+            {
+                throw new TsGuiKnownException("There was a fatal error while applying TS variable: " + Variable.Name, e.Message);
+            }
         }
 
         public void Hide()

@@ -1,1 +1,1 @@
-TsGui is built around a grid structure with rows and columns similar to an HTML document.
+TsGui is built around a grid structure with rows and columns similar to an HTML table.

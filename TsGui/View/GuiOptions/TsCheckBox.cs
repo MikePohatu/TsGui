@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsCheckBox.cs - combobox control for user input
 
@@ -23,6 +27,8 @@ using System.Collections.Generic;
 using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Queries;
+using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace TsGui.View.GuiOptions
 {
@@ -30,9 +36,11 @@ namespace TsGui.View.GuiOptions
     {
         public event ToggleEvent ToggleEvent;
 
+        private TsCheckBoxUI _checkboxui;
         private bool _ischecked;
         private string _valTrue = "TRUE";
         private string _valFalse = "FALSE";
+        private Thickness _cbBorderMargin = new Thickness(0);
 
         public bool IsChecked
         {
@@ -65,13 +73,19 @@ namespace TsGui.View.GuiOptions
             }
         }
 
+        public Thickness CbBorderMargin
+        {
+            get { return this._cbBorderMargin; }
+            set { this._cbBorderMargin = value; this.OnPropertyChanged(this, "CbBorderMargin"); }
+        }
 
         //Constructor
-        public TsCheckBox(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
+        public TsCheckBox(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             this.UserControl.DataContext = this;
             TsCheckBoxUI cbui = new TsCheckBoxUI();
             this.Control = cbui;
+            this._checkboxui = cbui;
             this.InteractiveControl = cbui.CheckBox;
             this.Label = new TsLabelUI();
             this.SetDefaults();
@@ -100,11 +114,11 @@ namespace TsGui.View.GuiOptions
             xlist = InputXml.Elements("Toggle");
             if (xlist != null)
             {
-                this._director.AddToggleControl(this);
+                Director.Instance.AddToggleControl(this);
 
                 foreach (XElement subx in xlist)
                 {
-                    Toggle t = new Toggle(this, this._director, subx); 
+                    Toggle t = new Toggle(this, subx); 
                 }  
             }
         }
@@ -143,8 +157,23 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
-            this.ControlFormatting.Margin = new Thickness(1, 1, 1, 1);
+            if (Director.Instance.UseTouchDefaults == true)
+            {
+                this.CbBorderMargin = new Thickness(2);
+                this.ControlFormatting.Margin = new Thickness(5);
+                this._checkboxui.CbBorder.TouchDown += this.OnBorderTouched;
+                this._checkboxui.CbBorder.MouseLeftButtonDown += this.OnBorderTouched;
+                this._checkboxui.CbBorder.BorderThickness = new Thickness(1);
+                this._checkboxui.CbBorder.BorderBrush = Brushes.LightGray;
+                this._checkboxui.CbBorder.Background = Brushes.Transparent;
+            }
+            else
+            {
+                this.ControlFormatting.Margin = new Thickness(1);
+            }
+            this.ControlFormatting.Padding = new Thickness(0);
+            this.ControlFormatting.HorizontalContentAlignment = HorizontalAlignment.Center;
+            this.ControlFormatting.VerticalContentAlignment = VerticalAlignment.Center;
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
         }
 
@@ -174,6 +203,11 @@ namespace TsGui.View.GuiOptions
                         break;
                 }
             }
+        }
+
+        private void OnBorderTouched(object sender, RoutedEventArgs e)
+        {
+            this.IsChecked = !this._ischecked;
         }
     }
 }

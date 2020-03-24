@@ -1,17 +1,21 @@
-﻿//    Copyright (C) 2016 Mike Pohatu
-
-//    This program is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; version 2 of the License.
-
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License along
-//    with this program; if not, write to the Free Software Foundation, Inc.,
-//    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+﻿#region license
+// Copyright (c) 2020 Mike Pohatu
+//
+// This file is part of TsGui.
+//
+// TsGui is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+#endregion
 
 // TsImage.cs - Used for displaying images
 
@@ -29,7 +33,7 @@ namespace TsGui.View.GuiOptions
         public override string CurrentValue { get { return this.Image.MultiImage.CurrentFilePath; } }
 
         //Constructor
-        public TsImage(XElement InputXml, TsColumn Parent, IDirector MainController) : base(Parent,MainController)
+        public TsImage(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             this.Control = new TsImageUI();
             this.Label = new TsLabelUI();
@@ -42,7 +46,7 @@ namespace TsGui.View.GuiOptions
 
 
         //Methods
-        private new void LoadXml(XElement InputXml)
+        public new void LoadXml(XElement InputXml)
         {
             //load the xml for the base class stuff
             base.LoadXml(InputXml);
@@ -60,7 +64,7 @@ namespace TsGui.View.GuiOptions
 
         private void CreateImage(XElement InputXml)
         {
-            this.Image = new Image(InputXml, this._director);
+            this.Image = new Image(InputXml);
             //this.VariableName = this.Image.File;
         }
 
