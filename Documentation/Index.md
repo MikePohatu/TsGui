@@ -4,9 +4,9 @@ Documentation is currently a work in progress. For usage information, also see t
 
 ## Concepts
 
-[Layout](/Documentation/Layout.md)
-
-[Prebuilt configuration](#Prebuilt-configuration)
+* [Layout](/Documentation/Layout.md)
+* [Prebuilt configuration](#Prebuilt-configuration)
+* [Authentication](/Documentation/Authentication/Authentication.md)
 
 ## Prebuilt configuration
 In order to reduce configuration complexity and learning curve, certain common pieces of configuratio can be replaced by some configuration 'short hand'. Some examples are compliance checks for 'is power connected' and 'is WiFi disconnected', or create a drop down list from the available hard disks. These are covered in more detail [here](/Documentation/PrebuiltConfiguration.md)

@@ -4,14 +4,14 @@ Local config authentication provides a basic 'enter password to continue' type f
 
 **Important** - Local Config Authentication should **NOT** be considered a strong security measure. A programmer with the config file and the source code can easily reverse the password hash and view the password. The password is obscured, not encrypted. 
 
-Note also that the configuration below does not create a Task Sequence variable. It is only to restrict further access to areas of TsGui
+Note also that the configuration below does not create a Task Sequence variable. It is only to restrict progress through TsGui i.e. stop user clicking Finish or Next. 
 
 * [Overview](#Overview)
 * [The Authentication Block](#The-Authentication-Block)
 * [The PasswordBox GuiOption](#The-PasswordBox-GuiOption)
 * [The ActionButton GuiOption](#The-ActionButton-GuiOption)
 * [Config Example](#Config-Example)
-<br>
+---
 <br>
 
 ## Overview
@@ -21,8 +21,8 @@ Local Config Authentication requires two things in your TsGui configuration:
 2. A **\<GuiOption Type="PasswordBox"\>** to enter the password, which must be configured to reference the AuthID of the Authentication block. Hitting Enter will initiate the authentication process.
 
 3. (Optional) You may also optionally configure a **\<GuiOption Type="ActionButton"\>** to add a 'Login' button to TsGui. This will also initiate the authentication process.  
+---
 <br>
-
 
 ### The Authentication Block
 The Authentication element of your configuration must have a **Type** attribute with a value of **Password**, and an **AuthID** attribute with a value that is unique within the config. This AuthID will be used by GuiOptions to reference and trigger the Authentication process
@@ -45,25 +45,34 @@ A window will pop up with the Authentication block filled in that you can copy a
 		</Password>
 	</Authentication>
 ```
-<br>
+---
 <br>
 
 
 ### The PasswordBox GuiOption
 The PasswordBox provides an input for the user. An **AuthID** attribute is required to reference the Authentication block configured above.
 
+The following additional option elements are available:
+* Label - the normal GuiOption label
+* FailureMessage - the message displayed to the user if the authentication fails
+* NoPasswordMessage - the message displayed to the user if authentication is attempted without a password specified.
+
 ```
 <GuiOption Type="PasswordBox" AuthID="conf_auth">
     <Label>Password:</Label>
+    <FailureMessage>Authorization failed</FailureMessage>
+    <NoPasswordMessage>Password cannot be empty</NoPasswordMessage>
 </GuiOption>
 ```
 
-Note that the Label element is optional. If not configured, the label will be set to "Password:"
+If not configured, they will be set the values in the example above. 
 
-If authentication fails, validation will fail on the PasswordBox GuiOption, halting further progress in TsGui i.e. you won't be able to use the Next or Finish buttons. Normal validation warning messages will appear to notify the user. 
-<br>
-<br>
+If authentication fails, validation will fail on the PasswordBox GuiOption, halting further progress in TsGui i.e. you won't be able to use the Next or Finish buttons. Validation error messages will appear to notify the user (see **FailureMessage** and **NoPasswordMessage** above). 
 
+On successful authentication, the border of the password box will go green.
+
+---
+<br>
 
 
 
@@ -80,7 +89,7 @@ The **IsDefault** attribute on the GuiOption element will make the button attemp
     <ButtonText>Login</ButtonText>
 </GuiOption>
 ```
-<br>
+---
 <br>
 
 
