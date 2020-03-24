@@ -53,7 +53,7 @@ namespace TsGui.Prebuilt.Options
 							<Append>GB</Append>
 						</Property>
 						<Property Name=""Caption"" />
-						<Separator>, </Separator>
+						<Separator> - </Separator>
 					</Query>
 				</Prebuilt>";
 

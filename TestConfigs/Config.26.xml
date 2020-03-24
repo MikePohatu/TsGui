@@ -1,0 +1,33 @@
+<TsGui LiveData="TRUE">
+	<Height>500</Height>
+	<Width>400</Width>
+
+	<HardwareEval />
+
+	<Heading>
+		<Title>Prebuilt example</Title>
+		<Text></Text>
+	</Heading>
+
+
+	<Formatting>
+		<LeftCellWidth>280</LeftCellWidth>
+		<RightCellWidth>100</RightCellWidth>
+	</Formatting>
+
+	<Page>
+		<Row>
+			<Column>
+				<GuiOption Type="DropDownList" Prebuilt="DiskIndex" />
+				<GuiOption Type="TrafficLight" Prebuilt="PowerConnected" />
+				<GuiOption Type="TrafficLight" Prebuilt="WifiDisconnected" />
+				<GuiOption Type="ComplianceRefreshButton">
+					<ButtonText>Refresh</ButtonText>
+				</GuiOption>
+
+				<GuiOption Type="ComputerName" ID="link_name" />
+			</Column>
+		</Row>
+	</Page>
+
+</TsGui>

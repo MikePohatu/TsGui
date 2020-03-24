@@ -154,7 +154,7 @@ namespace TsGui.View.Layout
                 this.Margin = new Thickness(10, 5, 10, 5);
                 this.Height = 50;
                 this.TitleFontSize = 13;
-                this.TextFontSize = 11;
+                this.TextFontSize = 12;
             }
             
             this.FontColor = new SolidColorBrush(Colors.White);
