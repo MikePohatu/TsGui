@@ -28,6 +28,8 @@ namespace TsGui
     public class Arguments
     {
         public string ConfigFile { get; private set; }
+
+        public string WebConfigUrl { get; private set; }
         public string LogFile { get; private set; }
         public int LoggingLevel { get; private set; }
 
@@ -55,6 +57,10 @@ namespace TsGui
                         case "-CONFIG":
                             if (Args.Length < index + 2) { throw new InvalidOperationException("Missing config file after parameter -config"); }
                             this.ConfigFile = this.CompleteFilePath(Args[index + 1]);                           
+                            break;
+                        case "-WEBCONFIG":
+                            if (Args.Length < index + 2) { throw new InvalidOperationException("Missing URL after parameter -webconfig"); }
+                            this.WebConfigUrl = Args[index + 1];
                             break;
                         case "-LOG":
                             if (Args.Length < index + 2) { throw new InvalidOperationException("Missing config file after parameter -log"); }

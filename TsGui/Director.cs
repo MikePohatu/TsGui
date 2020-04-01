@@ -57,7 +57,7 @@ namespace TsGui
         public event TsGuiWindowEventHandler WindowMouseUp;
         public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
-        private string _configpath;
+        private Arguments _args;
         private bool _prodmode = false;
         private bool _finished = false;
         private TsButtons _buttons;
@@ -106,7 +106,7 @@ namespace TsGui
             this._toggles = new List<IToggleControl>();
             this._optionlibrary = new OptionLibrary();
             this._authlibrary = new AuthLibrary();
-            this._configpath = Arguments.ConfigFile;
+            this._args = Arguments;
             this.ParentWindow = ParentWindow;
             this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
             this.ParentWindow.LocationChanged += this.OnWindowMoving;
@@ -218,7 +218,14 @@ namespace TsGui
             //code to be added to make sure config file exists
             try
             {
-                x = XmlHandler.Read(this._configpath);
+                if (string.IsNullOrWhiteSpace(this._args.WebConfigUrl))
+                {
+                    x = XmlHandler.Read(this._args.ConfigFile);
+                }
+                else
+                {
+                    x = XmlHandler.ReadWeb(this._args.WebConfigUrl);
+                }
                 return x;
             }
             catch (System.IO.FileNotFoundException e)
@@ -227,7 +234,10 @@ namespace TsGui
                 this.ParentWindow.Close();
                 return null;
             }
-
+            catch (TsGuiKnownException e)
+            {
+                throw e;
+            }
             catch (Exception e)
             {
                 //MessageBox.Show("Invalid config file: " + this._configpath + Environment.NewLine + Environment.NewLine + e.Message, "Error reading config file", MessageBoxButton.OK, MessageBoxImage.Error);

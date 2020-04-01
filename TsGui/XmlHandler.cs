@@ -26,6 +26,7 @@ using System.Windows;
 using System.Windows.Media;
 
 using TsGui.Validation;
+using TsGui.Diagnostics;
 
 namespace TsGui
 {
@@ -48,11 +49,26 @@ namespace TsGui
             { throw new FileNotFoundException("File not found: " + pPath); }
             try { temp = XElement.Load(pPath); }
             catch (Exception e)
-            { throw new InvalidOperationException("Unable to read xml file: " + pPath + Environment.NewLine + e.Message); }
+            { throw new TsGuiKnownException("Unable to read xml file: " + pPath, e.Message); }
 
             return temp;
         }
 
+        public static XElement ReadWeb(string url)
+        {
+            XElement xconfig = null;
+
+            try
+            {
+                xconfig = XElement.Load(url);
+            }
+            catch (Exception e)
+            {
+                throw new TsGuiKnownException("Error downloading web config: " + url, e.Message);
+            }
+
+            return xconfig;
+        }
 
         //XElement functions
         public static string GetStringFromXElement(XElement InputXml, string XName, string DefaultValue)
