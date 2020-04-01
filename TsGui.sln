@@ -39,6 +39,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Release notes.txt = Release notes.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{EB39ACA4-0599-409F-97D7-581C7C9FDD88}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\Authentication\ActiveDirectoryAuthentication.md = Documentation\Authentication\ActiveDirectoryAuthentication.md
+		Documentation\Authentication\Authentication.md = Documentation\Authentication\Authentication.md
+		Documentation\Authentication\LocalConfigAuthentication.md = Documentation\Authentication\LocalConfigAuthentication.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +67,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F346E360-E198-4DF5-9E1F-2AED9C04468D} = {9CAE835F-A035-45A7-9B99-CAC270DE9DB4}
 		{1CF3C8D2-1FF7-4B54-8743-2889362D479A} = {9CAE835F-A035-45A7-9B99-CAC270DE9DB4}
+		{EB39ACA4-0599-409F-97D7-581C7C9FDD88} = {1CF3C8D2-1FF7-4B54-8743-2889362D479A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9138F3A8-0E38-4684-B786-DF28210DBAA0}

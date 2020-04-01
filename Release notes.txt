@@ -1,5 +1,25 @@
+
+Version 1.2.1.0
+Release date: 2 April 2020
+
+*New features
+	Added -webconfig command line option e.g. tsgui.exe -webconfig http://tsgui-configs/config.xml
+
+*Known issues
+	An issue has been seen in the 1809 Windows 10 ADK WPF has been broekn, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
+	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
+	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
+
+*Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
+
+
+
+
+
+
+
 Version 1.2.0.0
-Release date: 24/03/2020
+Release date: 24 March 2020
 
 *Changes
 	TsGui is now licensed under GPLv3 (previously GPLv2)
@@ -17,13 +37,6 @@ Release date: 24/03/2020
 *Fixes
 	Fixed some layout and formatting inconsistencies
 	Added additional error checks when creating the Task Sequence variables. Errors have been seen if an invalid TS variable name is configured e.g. using invalid characters
-
-*Known issues
-	An issue has been seen in the 1809 Windows 10 ADK WPF has been broekn, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
-	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
-	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
-
-*Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
 
 
 
