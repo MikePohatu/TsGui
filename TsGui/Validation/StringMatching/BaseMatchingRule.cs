@@ -35,6 +35,7 @@ namespace TsGui.Validation.StringMatching
             } 
         }
         public bool IsCaseSensitive { get; set; }
+        public bool Not { get; set; }
 
         public BaseMatchingRule(ILinkTarget linktarget) 
         {
@@ -62,7 +63,8 @@ namespace TsGui.Validation.StringMatching
                 this._querylist.AddQuery(v);
             }
 
-            this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(inputxml, "CaseSensitive", this.IsCaseSensitive); 
+            this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(inputxml, "CaseSensitive", this.IsCaseSensitive);
+            this.Not = XmlHandler.GetBoolFromXAttribute(inputxml, "Not", this.Not);
         }
     }
 }

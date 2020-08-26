@@ -43,7 +43,9 @@ namespace TsGui.Validation.StringMatching
                 return false;
             }
 
-            return this.Compare(inputnum, rulenum);
+            bool result = this.Compare(inputnum, rulenum);
+            if (this.Not) { return !result; }
+            else { return result; }
         }
 
         protected abstract bool Compare(double input, double rulenumber);
