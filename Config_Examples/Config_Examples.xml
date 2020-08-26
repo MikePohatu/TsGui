@@ -74,7 +74,7 @@ GuiOption types:
           <HelpText>Enter the user to be using this device</HelpText>
         </GuiOption>
 
-        <GuiOption Type="DropDownList">
+        <GuiOption Type="DropDownList" Sort="FALSE">
           <Variable>IT_Team</Variable>
           <Label>Team:</Label>
           <SetValue>

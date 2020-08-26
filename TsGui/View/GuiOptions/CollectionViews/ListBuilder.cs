@@ -72,6 +72,13 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 }
                 i++;
             }
+
+            if (this._parent.Sort) {
+                foreach (ListItem item in newlist)
+                {
+                    item.Sort();
+                }
+            }
             this.Items = newlist;
 
             LoggerFacade.Debug("ListBuilder rebuild finished");
