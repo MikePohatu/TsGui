@@ -63,6 +63,8 @@ namespace TsGui.Queries
                         return new ADGroupMembersQuery(InputXml, linktarget);
                     case "ADOU":
                         return new ADOrgUnitQuery(InputXml, linktarget);
+                    case "ADOUGroups":
+                        return new ADOrgUnitGroupsQuery(InputXml, linktarget);
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
                 }

@@ -28,6 +28,7 @@
 						<!-- Validation sections with available rule types -->					
 						<Valid>
 							<Rule Type="StartsWith" CaseSensitive="TRUE">AB</Rule>
+              <Rule Type="StartsWith" Not="TRUE" CaseSensitive="TRUE">AB</Rule>
 							<Rule Type="EndsWith">AB</Rule>
 							<Rule Type="Contains">AB</Rule>
 							<Rule Type="Characters">1234567890</Rule>

@@ -46,6 +46,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         
         //properties
         public bool IsToggle { get; set; }
+        public bool Sort { get; set; } = false;
         public UserControl Icon { get; set; }
         public override TsVariable Variable
         {
@@ -96,6 +97,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
             this._nodefaultvalue = XmlHandler.GetBoolFromXAttribute(InputXml, "NoDefaultValue", this._nodefaultvalue);
+
+            this.Sort = XmlHandler.GetBoolFromXAttribute(InputXml, "Sort", this.Sort);
             this._noselectionmessage = XmlHandler.GetStringFromXElement(InputXml, "NoSelectionMessage", this._noselectionmessage);
 
             foreach (XElement x in InputXml.Elements())

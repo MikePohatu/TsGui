@@ -107,7 +107,7 @@ namespace TsGui.Validation
 
         public void OnWindowMouseUp(object o, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.UpdateArrows()));
+            this.UpdateArrows();
         }
 
         public void OnWindowLoaded(object o, RoutedEventArgs e)
@@ -115,24 +115,30 @@ namespace TsGui.Validation
 
         private void UpdateArrows()
         {
-            if (this._windowloaded == false ) { return; }
+            if (this._windowloaded == false) { return; }
             if (this._guioption.IsRendered == false) { return; }
             this.UpdatePopupLocation();
-            
-            if (this.HasHitRightScreenEdge() == false)
-            {
-                this._validationerrortooltip.LeftArrow.Visibility = Visibility.Visible;
-                this._validationerrortooltip.RightArrow.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                this._validationerrortooltip.LeftArrow.Visibility = Visibility.Hidden;
-                this._validationerrortooltip.RightArrow.Visibility = Visibility.Visible;
-            }
+
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() => {
+                if (this.HasHitRightScreenEdge() == false)
+                {
+                    this._validationerrortooltip.LeftArrow.Visibility = Visibility.Visible;
+                    this._validationerrortooltip.RightArrow.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    this._validationerrortooltip.LeftArrow.Visibility = Visibility.Hidden;
+                    this._validationerrortooltip.RightArrow.Visibility = Visibility.Visible;
+                }
+            }));
         }
 
         private bool HasHitRightScreenEdge()
         {
+            //make sure guioption control is visible to avoid 'This Visual is not connected to a PresentationSource' exceptions
+            if (this._guioption.Control.IsVisible == false) { return false; }
+            if (this._validationerrortooltip.IsVisible == false) { return false; }
+
             Point locationOfControl = this._guioption.Control.PointToScreen(new Point(0, 0));
             Point locationOfPopup = this._validationerrortooltip.PointToScreen(new Point(0, 0));
 

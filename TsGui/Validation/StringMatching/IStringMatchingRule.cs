@@ -21,6 +21,7 @@ namespace TsGui.Validation.StringMatching
     public interface IStringMatchingRule
     {
         bool DoesMatch(string input);
+        bool Not { get; }
         string Message { get; }
     }
 }

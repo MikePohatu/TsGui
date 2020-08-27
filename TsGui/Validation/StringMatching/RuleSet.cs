@@ -35,6 +35,7 @@ namespace TsGui.Validation.StringMatching
         private ILinkTarget _owner;
 
         public List<IStringMatchingRule> Rules { get { return this._rules; } }
+        public bool Not { get; set; }
         public string Message
         {
             get
@@ -72,6 +73,8 @@ namespace TsGui.Validation.StringMatching
             {
                 if (xa.Value == "AND") { this._ruletype = AndOr.AND; }
             }
+
+            this.Not = XmlHandler.GetBoolFromXAttribute(InputXml, "Not", this.Not);
         }
 
         public void Add(IStringMatchingRule rule)
@@ -81,8 +84,12 @@ namespace TsGui.Validation.StringMatching
 
         public bool DoesMatch(string input)
         {
-            if (this._ruletype == AndOr.AND) { return this.AndComparison(input); }
-            else { return this.OrComparison(input); }
+            bool result = false;
+            if (this._ruletype == AndOr.AND) { result = this.AndComparison(input); }
+            else { result = this.OrComparison(input); }
+
+            if (this.Not) { return !result; }
+            else { return result; }
         }
 
         private bool AndComparison(string input)

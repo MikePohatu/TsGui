@@ -36,7 +36,9 @@ namespace TsGui.Validation.StringMatching
             {
                 inputstring = inputstring?.ToUpper();
             }
-            return Compare(inputstring);
+            bool result = Compare(inputstring);
+            if (this.Not) { return !result; }
+            else { return result; }
         }
 
         protected abstract bool Compare(string input);

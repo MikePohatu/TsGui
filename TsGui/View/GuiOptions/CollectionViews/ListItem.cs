@@ -28,7 +28,7 @@ using System.Windows;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
-    public class ListItem : GroupableUIElementBase
+    public class ListItem : GroupableUIElementBase, IComparable<ListItem>
     {
         private CollectionViewGuiOptionBase _parent;
         private bool _isselected;
@@ -135,6 +135,20 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public override string ToString()
         {
             return this.Text;
+        }
+
+        public int CompareTo(ListItem item)
+        {
+            return this.Text.CompareTo(item.Text);
+        }
+
+        public void Sort()
+        {
+            this.ItemsList.Sort();
+            foreach (ListItem item in this.ItemsList)
+            {
+                item.Sort();
+            }
         }
     }
 }

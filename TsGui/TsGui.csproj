@@ -102,6 +102,7 @@
     <Compile Include="ConsoleWindow.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltWifiDisconnected.cs" />
     <Compile Include="Prebuilt\PrebuiltFactory.cs" />
+    <Compile Include="Queries\ActiveDirectory\ADOrgUnitGroupsQuery.cs" />
     <Compile Include="Timers\GuiTimeout.cs" />
     <Compile Include="IDirector.cs" />
     <Compile Include="Options\OptionDelegates.cs" />

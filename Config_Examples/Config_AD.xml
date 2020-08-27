@@ -37,6 +37,7 @@ ADSI must be added to WinPE. This is not supported by Microsoft. See for an exam
 
         <GuiOption Type="ComputerName" ID="link_name" />
 
+        <!-- List AD group members -->
         <GuiOption Type="DropDownList">
           <Variable>AD_User</Variable>
           <Label>AD User:</Label>
@@ -48,13 +49,26 @@ ADSI must be added to WinPE. This is not supported by Microsoft. See for an exam
           </Query>
         </GuiOption>
 
+        <!-- List AD Groups in an OU -->
+        <GuiOption Type="DropDownList" Sort="TRUE">
+          <Variable>AD_Group</Variable>
+          <Label>AD Group:</Label>
+
+          <Query Type="ADOUGroups" AuthID="ad_auth">
+            <BaseOU>OU=Groups,OU=LAB,DC=domain,DC=local</BaseOU>
+            <Property Name="DistinguishedName"/>
+            <Property Name="SamAccountName"/>
+          </Query>
+        </GuiOption>
+
+        <!-- List OU tree in root OU -->
         <GuiOption Type="TreeView">
           <Variable>AD_OU</Variable>
           <Label>AD OU:</Label>
 
           <Query Type="ADOU" AuthID="ad_auth">
-            <BaseOU>OU=LAB,DC=home,DC=local</BaseOU>
-            <Property Name="distinguishedName"/>
+            <BaseOU>OU=LAB,DC=domain,DC=local</BaseOU>
+            <Property Name="DistinguishedName"/>
             <Property Name="Name"/>
           </Query>
 
