@@ -1,8 +1,9 @@
-Version 1.2.2.0
+Version 1.2.3.0
 Release date: 27 Aug 2020
 
 *New features
 	Added Sort attribute for collection GuiOptions i.e. DropDownList and TreeView
+	Added ADOUGroups query type to list the groups in an OU
 
 *Fixes
 	Added checks to prevent intermittent exceptions relating to validation error messages
