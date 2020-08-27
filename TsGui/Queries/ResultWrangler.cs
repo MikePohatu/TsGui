@@ -68,7 +68,7 @@ namespace TsGui.Queries
         {
             Result result;
             this._results.TryGetValue(this._currentresultlist, out result);
-            result.Add(Formatter); 
+            if (result != null) { result.Add(Formatter); }
         }
 
         public void AddFormattedProperties(List<FormattedProperty> Formatters)

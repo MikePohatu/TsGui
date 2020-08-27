@@ -74,6 +74,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             }
 
             if (this._parent.Sort) {
+                newlist.Sort();
                 foreach (ListItem item in newlist)
                 {
                     item.Sort();
