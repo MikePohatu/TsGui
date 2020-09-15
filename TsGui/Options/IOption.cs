@@ -31,5 +31,7 @@ namespace TsGui.Options
         string InactiveValue { get; }
         bool PurgeInactive { get; set; }
         bool IsActive { get; }
+
+        void Initialise();
     }
 }

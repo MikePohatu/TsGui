@@ -165,6 +165,9 @@ namespace TsGui
 
             this.PopulateHwOptions();
 
+            //now init everything
+            this._optionlibrary.InitialiseOptions();
+
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
             if (this._prodmode == true)
@@ -347,6 +350,7 @@ namespace TsGui
                     this._nouicontainer = new NoUIContainer(x);
                 }
             }
+
             LoggerFacade.Info("Config load finished");
             this.ConfigLoadFinished?.Invoke(this, null);
         }

@@ -26,10 +26,12 @@ using TsGui.Linking;
 using TsGui.Queries;
 using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace TsGui.Options.NoUI
 {
-    public class NoUIOption: GroupableBlindBase,IOption, ILinkTarget
+    public class NoUIOption: GroupableBlindBase,IOption, ILinkTarget, IToggleControl
     {
         public event IOptionValueChanged ValueChanged;
 
@@ -39,6 +41,7 @@ namespace TsGui.Options.NoUI
         private string _id;
 
         //properties
+        public bool IsToggle { get; set; }
         public string ID
         {
             get { return this._id; }
@@ -144,6 +147,20 @@ namespace TsGui.Options.NoUI
             {
                 this.ID = xa.Value;
             }
+
+            IEnumerable<XElement> xlist = InputXml.Elements("Toggle");
+            if (xlist != null)
+            {
+                Director.Instance.AddToggleControl(this);
+
+                foreach (XElement subx in xlist)
+                {
+                    new Toggle(this, subx);
+                    this.IsToggle = true;
+                }
+            }
+
+            if (this.IsToggle == true) { Director.Instance.AddToggleControl(this); }
         }
 
         public void RefreshValue()
@@ -184,12 +201,6 @@ namespace TsGui.Options.NoUI
             this._querylist.LoadXml(inputxml);
         }
 
-        protected override void EvaluateGroups()
-        {
-            base.EvaluateGroups();
-            this.NotifyUpdate();
-        }
-
         protected void NotifyUpdate()
         {
             LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
@@ -197,5 +208,44 @@ namespace TsGui.Options.NoUI
             this.OnPropertyChanged(this, "LiveValue");
             this.ValueChanged?.Invoke();
         }
+
+        //Grouping stuff
+        #region
+        public event ToggleEvent ToggleEvent;
+
+        //fire an intial event to make sure things are set correctly. This is
+        //called by the controller once everything is loaded
+        public void InitialiseToggle()
+        {
+            this.InvokeToggleEvent();
+        }
+
+        //This is called by the controller once everything is loaded
+        public void Initialise()
+        {
+            
+        }
+
+        public void InvokeToggleEvent()
+        {
+            this.ToggleEvent?.Invoke();
+        }
+
+        protected override void EvaluateGroups()
+        {
+            base.EvaluateGroups();
+            this.NotifyUpdate();
+        }
+
+        protected void OnGroupStateChanged(object o, RoutedEventArgs e)
+        {
+            this.InvokeToggleEvent();
+        }
+
+        protected void OnGroupStateChanged(object o, DependencyPropertyChangedEventArgs e)
+        {
+            this.InvokeToggleEvent();
+        }
+        #endregion
     }
 }

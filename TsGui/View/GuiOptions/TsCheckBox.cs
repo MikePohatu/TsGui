@@ -29,12 +29,14 @@ using TsGui.Linking;
 using TsGui.Queries;
 using System.Windows.Media;
 using System.Windows.Controls;
+using TsGui.Validation;
 
 namespace TsGui.View.GuiOptions
 {
-    public class TsCheckBox : GuiOptionBase, IGuiOption, IToggleControl, ILinkTarget
+    public class TsCheckBox : GuiOptionBase, IGuiOption, IValidationGuiOption, ILinkTarget
     {
-        public event ToggleEvent ToggleEvent;
+        private ValidationToolTipHandler _validationtooltiphandler;
+        public ValidationHandler ValidationHandler { get; private set; }
 
         private TsCheckBoxUI _checkboxui;
         private bool _ischecked;
@@ -50,7 +52,8 @@ namespace TsGui.View.GuiOptions
                 this._ischecked = value;
                 this.OnPropertyChanged(this, "IsChecked");
                 this.NotifyUpdate();
-                this.ToggleEvent?.Invoke();
+                this.InvokeToggleEvent();
+                this.Validate();
             }
         }
         //public override string CurrentValue { get { return this.ControlText; } }
@@ -62,6 +65,7 @@ namespace TsGui.View.GuiOptions
                 else { return this._valFalse; }
             }
         }
+        public bool IsValid { get { return this.Validate(); } }
         public override TsVariable Variable
         {
             get
@@ -79,6 +83,13 @@ namespace TsGui.View.GuiOptions
             set { this._cbBorderMargin = value; this.OnPropertyChanged(this, "CbBorderMargin"); }
         }
 
+        protected string _validationtext;
+        public string ValidationText
+        {
+            get { return this._validationtext; }
+            set { this._validationtext = value; this.OnPropertyChanged(this, "ValidationText"); }
+        }
+
         //Constructor
         public TsCheckBox(XElement InputXml, TsColumn Parent) : base(Parent)
         {
@@ -88,17 +99,18 @@ namespace TsGui.View.GuiOptions
             this._checkboxui = cbui;
             this.InteractiveControl = cbui.CheckBox;
             this.Label = new TsLabelUI();
+            this.ValidationHandler = new ValidationHandler(this);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this);
+
             this.SetDefaults();
             this._setvaluequerylist = new QueryPriorityList(this);          
             this.LoadXml(InputXml);
-            this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
-            this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
         }
 
         public new void LoadXml(XElement InputXml)
         {
             XElement x;
-            IEnumerable<XElement> xlist;
+
             this.LoadLegacyXml(InputXml);
 
             //load the xml for the base class stuff
@@ -107,27 +119,12 @@ namespace TsGui.View.GuiOptions
             this._valTrue = XmlHandler.GetStringFromXElement(InputXml, "TrueValue", this._valTrue);
             this._valFalse = XmlHandler.GetStringFromXElement(InputXml, "FalseValue", this._valFalse);
 
+            this.ValidationHandler.LoadLegacyXml(InputXml);
+            this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
+
             x = InputXml.Element("Checked");
             if (x != null)
             { this.IsChecked = true; }
-
-            xlist = InputXml.Elements("Toggle");
-            if (xlist != null)
-            {
-                Director.Instance.AddToggleControl(this);
-
-                foreach (XElement subx in xlist)
-                {
-                    Toggle t = new Toggle(this, subx); 
-                }  
-            }
-        }
-
-        //fire an intial event to make sure things are set correctly. This is
-        //called by the controller once everything is loaded
-        public void InitialiseToggle()
-        {
-            this.ToggleEvent?.Invoke();
         }
 
         public void RefreshValue()
@@ -144,17 +141,6 @@ namespace TsGui.View.GuiOptions
         {
             this.RefreshValue();
         }
-
-        private void OnGroupStateChanged(object o, RoutedEventArgs e)
-        {
-            this.ToggleEvent?.Invoke();
-        }
-
-        private void OnGroupStateChanged(object o, DependencyPropertyChangedEventArgs e)
-        {
-            this.ToggleEvent?.Invoke();
-        }
-
         private void SetDefaults()
         {
             if (Director.Instance.UseTouchDefaults == true)
@@ -209,5 +195,32 @@ namespace TsGui.View.GuiOptions
         {
             this.IsChecked = !this._ischecked;
         }
+
+        public bool Validate()
+        {
+            if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
+
+            bool newvalid = this.ValidationHandler.IsValid(this.CurrentValue);
+
+            if (newvalid == false)
+            {
+                string validationmessage = this.ValidationHandler.ValidationMessage;
+                string s;
+                if (string.IsNullOrEmpty(validationmessage)) { s = ValidationHandler.FailedValidationMessage; }
+                else { s = validationmessage; }
+
+                this.ValidationText = s;
+                this._validationtooltiphandler.ShowError();
+            }
+            else { this._validationtooltiphandler.Clear(); }
+
+            return newvalid;
+        }
+
+        public void ClearToolTips()
+        { this._validationtooltiphandler.Clear(); }
+
+        public void OnValidationChange()
+        { this.Validate(); }
     }
 }

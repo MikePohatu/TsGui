@@ -30,10 +30,8 @@ using TsGui.Validation;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
-    public abstract class CollectionViewGuiOptionBase : GuiOptionBase, IGuiOption, IToggleControl, ILinkTarget, IValidationGuiOption
-    {
-        public event ToggleEvent ToggleEvent;
-        
+    public abstract class CollectionViewGuiOptionBase : GuiOptionBase, ILinkTarget, IValidationGuiOption
+    {        
         protected ListItem _currentitem;
         protected string _validationtext;
         protected ValidationToolTipHandler _validationtooltiphandler;
@@ -45,7 +43,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
         protected Dictionary<string, Group> _itemGroups = new Dictionary<string, Group>();
         
         //properties
-        public bool IsToggle { get; set; }
         public bool Sort { get; set; } = false;
         public UserControl Icon { get; set; }
         public override TsVariable Variable
@@ -109,21 +106,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
                     IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this);
                     this._setvaluequerylist.AddQuery(defquery);
                 }
-
-                else if (x.Name == "Toggle")
-                {
-                    Toggle t = new Toggle(this, x);
-                    this.IsToggle = true;
-                }
             }
-
-            if (this.IsToggle == true) { Director.Instance.AddToggleControl(this); }
         }
-
-        //fire an intial event to make sure things are set correctly. This is
-        //called by the controller once everything is loaded
-        public void InitialiseToggle()
-        { this.ToggleEvent?.Invoke(); }
 
         public void ClearToolTips()
         { this._validationtooltiphandler.Clear(); }
@@ -196,12 +180,12 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this.Validate(false);
             this.NotifyUpdate();
-            this.ToggleEvent?.Invoke();
+            this.InvokeToggleEvent();
         }
 
         protected void OnActiveChanged(object o, DependencyPropertyChangedEventArgs e)
         {
-            this.ToggleEvent?.Invoke();
+            this.InvokeToggleEvent();
         }
     }
 }

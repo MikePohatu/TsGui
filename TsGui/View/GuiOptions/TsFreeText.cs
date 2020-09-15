@@ -119,6 +119,7 @@ namespace TsGui.View.GuiOptions
             Director.Instance.WindowLoaded += this.OnWindowLoaded;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
             this._freetextui.TextBox.GotFocus += this.OnGotFocus;
+            this._freetextui.TextBox.TextChanged += this.OnTextChanged;
             this.UserControl.IsEnabledChanged += this.OnValidationEvent;
             this.SetDefaults();
         }
@@ -173,6 +174,9 @@ namespace TsGui.View.GuiOptions
 
         public void OnWindowLoaded(object o, RoutedEventArgs e)
         { this.Validate(); }
+
+        public void OnTextChanged(object sender, RoutedEventArgs e)
+        { this.InvokeToggleEvent(); }
         #endregion
 
         public bool Validate()

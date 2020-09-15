@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace TsGui.Options
 {
@@ -39,6 +40,14 @@ namespace TsGui.Options
             if (valop != null) { this.ValidationOptions.Add(valop); }
 
             this.OptionAdded?.Invoke(option, new EventArgs());
+        }
+
+        public void InitialiseOptions()
+        {
+            foreach (IOption option in this.Options)
+            {
+                option.Initialise();
+            }
         }
     }
 }
