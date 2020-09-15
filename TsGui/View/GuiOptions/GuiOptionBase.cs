@@ -29,10 +29,12 @@ using TsGui.Linking;
 using TsGui.Options;
 using TsGui.Diagnostics.Logging;
 using TsGui.Queries;
+using TsGui.Grouping;
+using System.Collections.Generic;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class GuiOptionBase : BaseLayoutElement, IOption, ILinkSource
+    public abstract class GuiOptionBase : BaseLayoutElement, IOption, ILinkSource, IToggleControl
     {
         public event IOptionValueChanged ValueChanged;
 
@@ -40,7 +42,9 @@ namespace TsGui.View.GuiOptions
         private string _helptext = null;
         protected QueryPriorityList _setvaluequerylist;
 
-        //standard stuff
+
+
+        public bool IsToggle { get; set; }
         public bool IsRendered { get; private set; } = false;
         public string ID { get; set; }
         public UserControl Control { get; set; }
@@ -115,6 +119,43 @@ namespace TsGui.View.GuiOptions
             {
                 this.LoadSetValueXml(x,true);
             }
+
+            IEnumerable<XElement> xlist = InputXml.Elements("Toggle");
+            if (xlist != null)
+            {
+                Director.Instance.AddToggleControl(this);
+
+                foreach (XElement subx in xlist)
+                {
+                    new Toggle(this, subx);
+                    this.IsToggle = true;
+                }
+            }
+
+            if (this.IsToggle == true) { Director.Instance.AddToggleControl(this); }
+        }
+
+        //Grouping stuff
+        #region
+        public event ToggleEvent ToggleEvent;
+
+        //fire an intial event to make sure things are set correctly. This is
+        //called by the controller once everything is loaded
+        public void InitialiseToggle()
+        {
+            this.InvokeToggleEvent();
+        }
+
+        //This is called by the controller once everything is loaded
+        public void Initialise()
+        {
+            this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
+            this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
+        }
+
+        public void InvokeToggleEvent()
+        {
+            this.ToggleEvent?.Invoke();
         }
 
         protected override void EvaluateGroups()
@@ -122,6 +163,17 @@ namespace TsGui.View.GuiOptions
             base.EvaluateGroups();
             this.NotifyUpdate();
         }
+
+        protected void OnGroupStateChanged(object o, RoutedEventArgs e)
+        {
+            this.InvokeToggleEvent();
+        }
+
+        protected void OnGroupStateChanged(object o, DependencyPropertyChangedEventArgs e)
+        {
+            this.InvokeToggleEvent();
+        }
+        #endregion
 
         protected void LoadSetValueXml(XElement inputxml, bool clearbeforeload)
         {

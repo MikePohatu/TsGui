@@ -223,7 +223,6 @@
     </Compile>
     <Compile Include="Validation\ValidationHandler.cs" />
     <Compile Include="Validation\ValidationToolTipHandler.cs" />
-    <Compile Include="View\GuiOptions\GuiOptionGridFormatting.cs" />
     <Compile Include="View\GuiOptions\TsComplianceRefreshButton.cs" />
     <Compile Include="View\GuiOptions\TsButtonUI.xaml.cs">
       <DependentUpon>TsButtonUI.xaml</DependentUpon>
