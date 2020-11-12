@@ -97,14 +97,14 @@ namespace TsGui.View.Layout
         //Constructors
         public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml):base(Parent)
         {
-            this.Height = Template.Height;
+            this.Formatting.Height = Template.Formatting.Height;
             this.Title = Template.Title;
             this.Text = Template.Text;
             this.FontColor = Template.FontColor;
             this.BgColor = Template.BgColor;
             this.Image = Template.Image;
             this.TitleFontSize = Template.TitleFontSize;
-            this.Margin = Template.Margin;
+            this.Formatting.Margin = Template.Formatting.Margin;
 
             this.Init(SourceXml);
         }
@@ -144,15 +144,15 @@ namespace TsGui.View.Layout
         {
             if (Director.Instance.UseTouchDefaults)
             {
-                this.Margin = new Thickness(10, 10, 10, 10);
-                this.Height = 65;
+                this.Formatting.Margin = new Thickness(10, 10, 10, 10);
+                this.Formatting.Height = 65;
                 this.TitleFontSize = 14;
                 this.TextFontSize = 12;
             }
             else
             {
-                this.Margin = new Thickness(10, 5, 10, 5);
-                this.Height = 50;
+                this.Formatting.Margin = new Thickness(10, 5, 10, 5);
+                this.Formatting.Height = 50;
                 this.TitleFontSize = 13;
                 this.TextFontSize = 12;
             }
@@ -177,7 +177,7 @@ namespace TsGui.View.Layout
                 this.Title = XmlHandler.GetStringFromXElement(InputXml, "Title", this.Title);
                 this.Text = XmlHandler.GetStringFromXElement(InputXml, "Text", this.Text);
                 this.FontColor = XmlHandler.GetSolidColorBrushFromXElement(InputXml, "TextColor", this.FontColor);
-                this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
+                this.Formatting.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Formatting.Height);
 
                 x = InputXml.Element("Image");
                 if (x != null) { this.Image = new Image(x); }

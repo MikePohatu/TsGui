@@ -90,7 +90,7 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this.ControlText = string.Empty;
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+            //this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
     }
 }

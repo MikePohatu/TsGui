@@ -116,8 +116,8 @@ namespace TsGui.View.Layout
 
             //set default values
             this.WindowTitle = "TsGui";
-            this.Width = Double.NaN;
-            this.Height = Double.NaN;
+            this.Formatting.Width = Double.NaN;
+            this.Formatting.Height = Double.NaN;
             this.FooterText = "Powered by TsGui - www.20road.com";
             this.FooterHeight = 15;
             this.FooterHAlignment = HorizontalAlignment.Right;
