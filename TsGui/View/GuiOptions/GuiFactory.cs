@@ -110,6 +110,10 @@ namespace TsGui.View.GuiOptions
             {
                 newoption = new TsPasswordBox(OptionXml, Parent);
             }
+            else if (xtype.Value == "ExposedPasswordBox")
+            {
+                newoption = new TsExposedPasswordBox(OptionXml, Parent);
+            }
             else if (xtype.Value == "UsernameBox")
             {
                 newoption = new TsUsernameBox(OptionXml, Parent);
