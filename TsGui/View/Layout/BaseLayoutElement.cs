@@ -32,9 +32,6 @@ namespace TsGui.View.Layout
         private bool _showgridlines;
         private double _leftcellwidth;
         private double _rightcellwidth;
-        private double _width;
-        private double _height;
-        private Thickness _margin;
 
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
@@ -76,6 +73,8 @@ namespace TsGui.View.Layout
             //Load legacy options
             this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LeftCellWidth);
             this.RightCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.RightCellWidth);
+            this.Formatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Formatting.Width);
+            this.Formatting.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Formatting.Height);
 
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
             

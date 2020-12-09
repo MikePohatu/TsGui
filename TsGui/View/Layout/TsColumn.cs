@@ -54,7 +54,7 @@ namespace TsGui
             this._columnpanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
             this._columnpanel.SetBinding(Grid.VisibilityProperty, new Binding("Visibility"));
             this._columnpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
-            this._columnpanel.SetBinding(Grid.WidthProperty, new Binding("Width"));
+            this._columnpanel.SetBinding(Grid.WidthProperty, new Binding("Formatting.Width"));
 
             this.LoadXml(SourceXml);
         }

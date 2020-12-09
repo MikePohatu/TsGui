@@ -124,15 +124,15 @@ namespace TsGui.View.Layout
             
         }
 
-        public new void LoadXml(XElement SourceXml)
+        public new void LoadXml(XElement InputXml)
         {
-            base.LoadXml(SourceXml);
+            base.LoadXml(InputXml);
             XElement subx;
             XElement x;
 
-            if (SourceXml != null)
+            if (InputXml != null)
             {
-                x = SourceXml.Element("Footer");
+                x = InputXml.Element("Footer");
                 if (x != null)
                 {
                     subx = x.Element("Text");
@@ -144,13 +144,13 @@ namespace TsGui.View.Layout
                     GuiFactory.LoadHAlignment(x, ref this._footerHAlignment);
                 }
 
-                this.TopMost = XmlHandler.GetBoolFromXElement(SourceXml, "TopMost", this.TopMost);
-                this.WindowTitle = XmlHandler.GetStringFromXElement(SourceXml, "Title", this.WindowTitle);
+                this.TopMost = XmlHandler.GetBoolFromXElement(InputXml, "TopMost", this.TopMost);
+                this.WindowTitle = XmlHandler.GetStringFromXElement(InputXml, "Title", this.WindowTitle);
 
-                x = SourceXml.Element("WindowLocation");
+                x = InputXml.Element("WindowLocation");
                 if (x != null) { this.WindowLocation.LoadXml(x); }
 
-                GuiFactory.LoadMargins(SourceXml, this._pageMargin);
+                GuiFactory.LoadMargins(InputXml, this._pageMargin);
             }
         }
     }

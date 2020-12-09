@@ -43,6 +43,17 @@ namespace TsGui.View.GuiOptions
             }
         }
 
+        private bool _isdefault = false;
+        public bool IsDefault
+        {
+            get { return this._isdefault; }
+            set
+            {
+                this._isdefault = value;
+                this.OnPropertyChanged(this, "IsDefault");
+            }
+        }
+
         //Constructor
         public TsComplianceRefreshButton(XElement InputXml, TsColumn Parent) : base(Parent)
         {

@@ -6,7 +6,6 @@
             xmlns:local="clr-namespace:TsGui.View.GuiOptions"
             mc:Ignorable="d" 
             d:DesignHeight="20" d:DesignWidth="300" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}"
-            HorizontalAlignment="{Binding Formatting.HorizontalAlignment}" VerticalAlignment="{Binding Formatting.VerticalAlignment}"
              >
     <Grid x:Name="MainPanel" Width="{Binding Formatting.Width}" Height="{Binding Formatting.Height}" ToolTip="{Binding HelpText, Converter={StaticResource XmlStringLine}}" 
           Margin="{Binding Formatting.Margin}" ShowGridLines="{Binding ShowGridLines}">

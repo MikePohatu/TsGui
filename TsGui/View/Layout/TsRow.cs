@@ -53,7 +53,7 @@ namespace TsGui.View.Layout
             this._rowpanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
             this._rowpanel.SetBinding(Grid.VisibilityProperty, new Binding("Visibility"));
             this._rowpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
-            this._rowpanel.SetBinding(Grid.HeightProperty, new Binding("Height"));
+            this._rowpanel.SetBinding(Grid.HeightProperty, new Binding("Formatting.Height"));
             this._rowpanel.VerticalAlignment = VerticalAlignment.Top;
 
             this.LoadXml(SourceXml);
