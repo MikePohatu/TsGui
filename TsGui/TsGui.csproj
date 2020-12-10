@@ -92,9 +92,11 @@
     <Compile Include="Authentication\AuthenticationEnums.cs" />
     <Compile Include="Authentication\AuthenticationFactory.cs" />
     <Compile Include="Authentication\AuthLibrary.cs" />
+    <Compile Include="Authentication\ExposedPassword\ExposedPasswordAuthenticator.cs" />
     <Compile Include="Authentication\IAuthenticationComponent.cs" />
     <Compile Include="Authentication\IAuthenticator.cs" />
     <Compile Include="Authentication\IAuthenticatorConsumer.cs" />
+    <Compile Include="Authentication\IPasswordConfirmingAuthenticator.cs" />
     <Compile Include="Authentication\IUsername.cs" />
     <Compile Include="Authentication\IPassword.cs" />
     <Compile Include="Authentication\LocalConfig\LocalConfigPasswordAuthenticator.cs" />
@@ -138,7 +140,6 @@
     <Compile Include="Validation\StringMatching\MatchingRuleFactory.cs" />
     <Compile Include="Validation\StringMatching\EndsWith.cs" />
     <Compile Include="Validation\StringMatching\StartsWith.cs" />
-    <Compile Include="View\GuiOptions\TsExposedPasswordBox.cs" />
     <Compile Include="View\Layout\ControlDefaults.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\CollectionViewGuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
@@ -486,6 +487,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>SET ReleasePath=C:\source\release\tsgui

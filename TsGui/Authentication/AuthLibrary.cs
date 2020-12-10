@@ -17,6 +17,7 @@
 //
 #endregion
 using System.Collections.Generic;
+using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Authentication
 {
@@ -24,6 +25,7 @@ namespace TsGui.Authentication
     {
         private Dictionary<string, IUsername> _usernames = new Dictionary<string, IUsername>();
         private Dictionary<string, IPassword> _passwords = new Dictionary<string, IPassword>();
+        private Dictionary<string, IPassword> _passwordconfirmers = new Dictionary<string, IPassword>();
         private Dictionary<string, IAuthenticator> _authenticators = new Dictionary<string, IAuthenticator>();
         private Dictionary<string, List<IAuthenticatorConsumer>> _pendingconsumers = new Dictionary<string, List<IAuthenticatorConsumer>>();
 
@@ -82,10 +84,46 @@ namespace TsGui.Authentication
             IAuthenticator auth;
             if (this._authenticators.TryGetValue(newpwsource.AuthID, out auth) == true)
             {
-                auth.PasswordSource = newpwsource;
+                if (auth.PasswordSource == null) { auth.PasswordSource = newpwsource; }
+                else { this.AddPasswordConfirmationSource(newpwsource); }
+                
             }
             else
-            { this._passwords.Add(newpwsource.AuthID, newpwsource); }
+            {
+                IPassword outpw;
+                if (this._passwords.TryGetValue(newpwsource.AuthID, out outpw))
+                {
+                    this.AddPasswordConfirmationSource(newpwsource);
+                } 
+                else
+                {
+                    this._passwords.Add(newpwsource.AuthID, newpwsource);
+                }
+            }
+                
+        }
+
+        private void AddPasswordConfirmationSource(IPassword newpwsource)
+        {
+            IAuthenticator auth;
+            if (this._authenticators.TryGetValue(newpwsource.AuthID, out auth) == true)
+            {
+                IPasswordConfirmingAuthenticator confirmerauth = auth as IPasswordConfirmingAuthenticator;
+                if (confirmerauth != null) { confirmerauth.PasswordConfirmationSource = newpwsource; }
+                else { LoggerFacade.Error($"AuthID {newpwsource.AuthID} is not a password confirmer"); }
+            }
+            else
+            {
+                IPassword outpw;
+                if (this._passwordconfirmers.TryGetValue(newpwsource.AuthID, out outpw))
+                {
+                    LoggerFacade.Error($"AuthID {newpwsource.AuthID} already has a confirmation password defined");
+                }
+                else
+                {
+                    this._passwordconfirmers.Add(newpwsource.AuthID, newpwsource);
+                }
+            }
         }
 
         public void AddAuthenticator(IAuthenticator newauth)
@@ -102,6 +140,15 @@ namespace TsGui.Authentication
             {
                 newauth.PasswordSource = pass;
                 this._passwords.Remove(newauth.AuthID);
+            }
+            if (this._passwordconfirmers.TryGetValue(newauth.AuthID, out pass) == true)
+            {
+                IPasswordConfirmingAuthenticator confirmerauth = newauth as IPasswordConfirmingAuthenticator;
+                if (confirmerauth != null)
+                {
+                    confirmerauth.PasswordConfirmationSource = pass;
+                    this._passwordconfirmers.Remove(newauth.AuthID);
+                }
             }
 
             List<IAuthenticatorConsumer> consumerlist;
