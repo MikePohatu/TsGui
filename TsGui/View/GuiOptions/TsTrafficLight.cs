@@ -25,6 +25,7 @@ using TsGui.Validation;
 using System.Windows.Media;
 using System;
 using TsGui.View.Symbols;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
@@ -32,7 +33,7 @@ namespace TsGui.View.GuiOptions
     {
 
         //constructor
-        public TsTrafficLight(XElement InputXml, TsColumn Parent): base (Parent)
+        public TsTrafficLight(XElement InputXml, ParentLayoutElement Parent): base (Parent)
         {           
             this.Control = new TsTrafficLightUI();
             this._validationtooltiphandler.SetTarget(this.Control);
@@ -40,13 +41,13 @@ namespace TsGui.View.GuiOptions
             this.RefreshValue();
         }
 
-        public TsTrafficLight(TsColumn Parent) : base(Parent)
+        public TsTrafficLight(ParentLayoutElement Parent) : base(Parent)
         {
             this.Control = new TsTrafficLightUI();
             this._validationtooltiphandler.SetTarget(this.Control);
         }
 
-        public TsTrafficLight(TsColumn Parent, IDirector MainController) : base(Parent)
+        public TsTrafficLight(ParentLayoutElement Parent, IDirector MainController) : base(Parent)
         {
             this.Control = new TsTrafficLightUI();
             this._validationtooltiphandler.SetTarget(this.Control);

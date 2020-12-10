@@ -54,7 +54,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsActionButton(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsActionButton(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this._rootelement = this.GetComplianceRootElement();
 

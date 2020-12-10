@@ -30,6 +30,7 @@ using TsGui.Queries;
 using System.Windows.Media;
 using System.Windows.Controls;
 using TsGui.Validation;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
@@ -91,7 +92,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsCheckBox(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsCheckBox(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this.UserControl.DataContext = this;
             TsCheckBoxUI cbui = new TsCheckBoxUI();

@@ -29,7 +29,7 @@ using TsGui.Validation;
 
 namespace TsGui.View.Layout
 {
-    public class TsPageHeader : BaseLayoutElement, IComplianceRoot
+    public class TsPageHeader : ParentLayoutElement, IComplianceRoot
     {
         public event ComplianceRetryEventHandler ComplianceRetry;
 
@@ -95,7 +95,7 @@ namespace TsGui.View.Layout
         }
 
         //Constructors
-        public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml):base(Parent)
+        public TsPageHeader(ParentLayoutElement Parent, TsPageHeader Template, XElement SourceXml):base(Parent)
         {
             this.Formatting.Height = Template.Formatting.Height;
             this.Title = Template.Title;
@@ -109,7 +109,7 @@ namespace TsGui.View.Layout
             this.Init(SourceXml);
         }
 
-        public TsPageHeader(BaseLayoutElement Parent, XElement SourceXml): base (Parent)
+        public TsPageHeader(ParentLayoutElement Parent, XElement SourceXml): base (Parent)
         {
             this.ShowGridLines = Director.Instance.ShowGridLines;
             this.SetDefaults();
@@ -165,7 +165,11 @@ namespace TsGui.View.Layout
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
+            this.LoadXml(InputXml, this);
+        }
 
+        public override void LoadXml(XElement InputXml, ParentLayoutElement parent)
+        {
             XElement x;
 
             if (InputXml != null)
@@ -184,7 +188,7 @@ namespace TsGui.View.Layout
 
                 x = InputXml.Element("Row");
                 if (x != null)
-                { this.Table = new TsTable(InputXml, this); }
+                { this.Table = new TsTable(InputXml, parent); }
             }
         }
 

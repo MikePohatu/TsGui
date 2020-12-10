@@ -53,7 +53,7 @@ namespace TsGui.View.Layout
             set { this._rightcellwidth = value; this.OnPropertyChanged(this, "RightCellWidth"); }
         }
 
-        public BaseLayoutElement Parent { get; set; }
+        public ParentLayoutElement Parent { get; set; }
 
         //constructors
         public BaseLayoutElement():base ()
@@ -61,7 +61,7 @@ namespace TsGui.View.Layout
             this.SetDefaults();
         }
 
-        public BaseLayoutElement(BaseLayoutElement Parent):base (Parent)
+        public BaseLayoutElement(ParentLayoutElement Parent):base (Parent)
         {
             this.Parent = Parent;
             this.SetDefaults();

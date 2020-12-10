@@ -79,7 +79,7 @@ namespace TsGui.View.GuiOptions
         }
         
         
-        public GuiOptionBase(TsColumn Parent):base(Parent)
+        public GuiOptionBase(ParentLayoutElement Parent):base(Parent)
         {
             this.UserControl = new GuiOptionBaseUI();
             this.UserControl.Loaded += this.OnRendered;

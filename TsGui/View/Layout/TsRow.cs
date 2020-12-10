@@ -29,7 +29,7 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsRow : BaseLayoutElement
+    public class TsRow : ParentLayoutElement
     {
         private Grid _rowpanel;
         private List<TsColumn> _columns = new List<TsColumn>();
@@ -44,7 +44,7 @@ namespace TsGui.View.Layout
 
         //constructor
         #region
-        public TsRow (XElement SourceXml,int PageIndex, BaseLayoutElement Parent): base (Parent)
+        public TsRow (XElement SourceXml,int PageIndex, ParentLayoutElement Parent): base (Parent)
         {
             this.Index = PageIndex;
             this._rowpanel = new Grid();
@@ -63,16 +63,18 @@ namespace TsGui.View.Layout
         private new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
+            this.LoadXml(InputXml, this);
+        }
 
-            IEnumerable<XElement> xlist;
+        public override void LoadXml(XElement InputXml, ParentLayoutElement parent)
+        {
             int colIndex = 0;
 
-            xlist = InputXml.Elements("Column");
-            if (xlist != null)
+            foreach (XElement x in InputXml.Elements())
             {
-                foreach (XElement xColumn in xlist)
+                if (x.Name == "Column")
                 {
-                    TsColumn c = new TsColumn(xColumn, colIndex, this);
+                    TsColumn c = new TsColumn(x, colIndex, parent);
 
                     this._columns.Add(c);
 
@@ -85,6 +87,10 @@ namespace TsGui.View.Layout
                     this._options.AddRange(c.Options);
 
                     colIndex++;
+                }
+                else if (x.Name == "Container")
+                {
+                    new UIContainer(this, x);
                 }
             }
         }

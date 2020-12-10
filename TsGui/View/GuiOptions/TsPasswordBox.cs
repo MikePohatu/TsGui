@@ -31,6 +31,7 @@ using TsGui.Diagnostics;
 using TsGui.Validation;
 using System.Windows.Input;
 using TsGui.Diagnostics.Logging;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
@@ -74,7 +75,7 @@ namespace TsGui.View.GuiOptions
         #endregion
 
         //Constructor
-        public TsPasswordBox(XElement InputXml, TsColumn Parent): base (Parent)
+        public TsPasswordBox(XElement InputXml, ParentLayoutElement Parent): base (Parent)
         {
             this._setvaluequerylist = null;
 

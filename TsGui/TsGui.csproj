@@ -231,6 +231,8 @@
       <DependentUpon>TsButtonUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsTickCross.cs" />
+    <Compile Include="View\Layout\ParentLayoutElement.cs" />
+    <Compile Include="View\UIContainer.cs" />
     <Compile Include="View\Symbols\SymbolFactory.cs" />
     <Compile Include="View\Symbols\TsFolderUI.xaml.cs">
       <DependentUpon>TsFolderUI.xaml</DependentUpon>

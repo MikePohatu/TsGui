@@ -29,7 +29,7 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
-    public class TsMainWindow : BaseLayoutElement
+    public class TsMainWindow : ParentLayoutElement
     {
         private string _windowTitle;
         private Thickness _pageMargin = new Thickness(0, 0, 0, 0);
@@ -122,6 +122,11 @@ namespace TsGui.View.Layout
             this.FooterHeight = 15;
             this.FooterHAlignment = HorizontalAlignment.Right;
             
+        }
+
+        public override void LoadXml(XElement InputXml, ParentLayoutElement parent)
+        {
+            this.LoadXml(InputXml);
         }
 
         public new void LoadXml(XElement InputXml)

@@ -30,10 +30,11 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui
 {
-    public class TsColumn : BaseLayoutElement
+    public class TsColumn : ParentLayoutElement
     {
         private List<IGuiOption> _options = new List<IGuiOption>();
         private Grid _columnpanel;
+        private int _rowindex = 0;
 
         //properties
         #region
@@ -45,7 +46,7 @@ namespace TsGui
 
         //constructor
         #region
-        public TsColumn (XElement SourceXml,int PageIndex, BaseLayoutElement Parent) :base (Parent)
+        public TsColumn (XElement SourceXml,int PageIndex, ParentLayoutElement Parent) :base (Parent)
         {
             this.Index = PageIndex;
             this._columnpanel = new Grid();
@@ -60,39 +61,42 @@ namespace TsGui
         }
         #endregion
 
-
         private new void LoadXml(XElement InputXml)
         {
-            base.LoadXml(InputXml);
-
-            IEnumerable<XElement> xlist;
-            IGuiOption newOption;
-            int index = 0;
-
             this.Formatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", double.NaN);
+            base.LoadXml(InputXml);
+            this.LoadXml(InputXml, this);
+        }
+
+        public override void LoadXml(XElement InputXml, ParentLayoutElement parent)
+        {
+            IGuiOption newOption;
+
             //now read in the options and add to a dictionary for later use
             //do this last so the event subscriptions don't get setup too early (no toggles fired 
             //until everything is loaded.
-            xlist = InputXml.Elements("GuiOption");
-            if (xlist != null)
+            foreach (XElement x in InputXml.Elements())
             {
-                foreach (XElement xOption in xlist)
+                if (x.Name == "GuiOption")
                 {
-                    newOption = GuiFactory.CreateGuiOption(xOption,this);
-                    if (newOption ==null) { continue; }
+                    newOption = GuiFactory.CreateGuiOption(x, parent);
+                    if (newOption == null) { continue; }
                     this._options.Add(newOption);
 
                     RowDefinition rowdef = new RowDefinition();
                     rowdef.Height = GridLength.Auto;
                     this._columnpanel.RowDefinitions.Add(rowdef);
-                    Grid.SetRow(newOption.UserControl, index);
+                    Grid.SetRow(newOption.UserControl, this._rowindex);
 
                     this._columnpanel.Children.Add(newOption.UserControl);
-                    
-                    index++;
+
+                    this._rowindex++;
+                }
+                else if (x.Name == "Container")
+                {
+                    new UIContainer(this, x);
                 }
             }
-
         }
     }
 }

@@ -28,6 +28,7 @@ using System.Xml.Linq;
 using TsGui.Linking;
 using TsGui.Queries;
 using System.Windows.Controls;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
@@ -91,14 +92,14 @@ namespace TsGui.View.GuiOptions
         #endregion
 
         //Constructor
-        public TsFreeText(XElement InputXml, TsColumn Parent): base (Parent)
+        public TsFreeText(XElement InputXml, ParentLayoutElement Parent): base (Parent)
         {
             this.Init();
             this.LoadXml(InputXml);
             this.RefreshValue();
         }
 
-        protected TsFreeText(TsColumn Parent) : base(Parent)
+        protected TsFreeText(ParentLayoutElement Parent) : base(Parent)
         {
             this.Init();
         }

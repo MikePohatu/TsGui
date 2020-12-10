@@ -55,7 +55,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsComplianceRefreshButton(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsComplianceRefreshButton(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this._rootelement = this.GetComplianceRootElement();
 
