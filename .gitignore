@@ -205,3 +205,5 @@ ModelManifest.xml
 /TestConfigs/Test/NLog.config
 /TestConfigs/Test/NLog.dll
 /TestConfigs/Test/TsGui.exe
+
+TestConfigs/Test/
