@@ -43,18 +43,29 @@ namespace TsGui.View.GuiOptions
             }
         }
 
+        private bool _isdefault = false;
+        public bool IsDefault
+        {
+            get { return this._isdefault; }
+            set
+            {
+                this._isdefault = value;
+                this.OnPropertyChanged(this, "IsDefault");
+            }
+        }
+
         //Constructor
         public TsComplianceRefreshButton(XElement InputXml, TsColumn Parent) : base(Parent)
         {
             this._rootelement = this.GetComplianceRootElement();
 
-            this.UserControl.DataContext = this;           
+            this.UserControl.DataContext = this;
             this._ui = new TsButtonUI();
             this.Control = this._ui;
             this._ui.button.Click += this.OnButtonClick;
 
             this.Label = new TsLabelUI();
-            this.SetDefaults();           
+            this.SetDefaults();
             this.LoadXml(InputXml);
         }
 

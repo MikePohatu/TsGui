@@ -55,11 +55,14 @@ namespace TsGui.Validation
             this._focusborderbrush = this._guioption.ControlFormatting.FocusedBorderBrush;
 
             this._validationerrortooltip = new ValidationErrorToolTip();
-            this._popup = new Popup();
-            this._popup.AllowsTransparency = true;
-            this._popup.Child = this._validationerrortooltip;
-            this.SetTarget(this._guioption.Control);
-            this._popup.IsOpen = false;
+            this._popup = new Popup
+            {
+                PlacementTarget = this._guioption.Control,
+                IsOpen = false,
+                StaysOpen = false,
+                AllowsTransparency = false,
+                Child = this._validationerrortooltip
+            };
         }
 
         public void SetTarget(UserControl Control)
@@ -88,7 +91,7 @@ namespace TsGui.Validation
                 this._popup.IsOpen = true;
                 this._guioption.ControlFormatting.BorderBrush = _redbrush;
                 this._guioption.ControlFormatting.MouseOverBorderBrush = _redbrush;
-                this._guioption.ControlFormatting.FocusedBorderBrush = _redbrush;                
+                this._guioption.ControlFormatting.FocusedBorderBrush = _redbrush;
             }
             this.UpdateArrows();
         }
