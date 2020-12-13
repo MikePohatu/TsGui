@@ -35,7 +35,6 @@ namespace TsGui.View.GuiOptions
         public TsTrafficLight(XElement InputXml, TsColumn Parent): base (Parent)
         {           
             this.Control = new TsTrafficLightUI();
-            this._validationtooltiphandler.SetTarget(this.Control);
             this.LoadXml(InputXml);
             this.RefreshValue();
         }
