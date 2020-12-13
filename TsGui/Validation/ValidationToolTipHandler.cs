@@ -32,7 +32,7 @@ namespace TsGui.Validation
 {
     public class ValidationToolTipHandler
     {
-        //private Color _bordercolor;
+        private bool _active = false;
         private SolidColorBrush _borderbrush;
         private SolidColorBrush _mouseoverborderbrush;
         private SolidColorBrush _focusborderbrush;
@@ -64,39 +64,42 @@ namespace TsGui.Validation
 
         public void Clear()
         {
-            if (this._validationerrortooltip.IsOpen == true)
+            if (this._active)
             {
                 Director.Instance.WindowMouseUp -= this.OnWindowMouseUp;
-                this._validationerrortooltip.IsOpen = false;
-                this._guioption.ControlFormatting.BorderBrush = this._borderbrush;
-                this._guioption.ControlFormatting.MouseOverBorderBrush = this._mouseoverborderbrush;
-                this._guioption.ControlFormatting.FocusedBorderBrush = this._focusborderbrush;
             }
+            this._validationerrortooltip.IsOpen = false;
+            this._guioption.ControlFormatting.BorderBrush = this._borderbrush;
+            this._guioption.ControlFormatting.MouseOverBorderBrush = this._mouseoverborderbrush;
+            this._guioption.ControlFormatting.FocusedBorderBrush = this._focusborderbrush;
+            this._active = false;
         }
 
         public void ShowError()
         {
-            if (this._validationerrortooltip.IsOpen == false)
+            if (this._active == false)
             {
-                this.SetPlacement();
                 Director.Instance.WindowMouseUp += this.OnWindowMouseUp;
-                this._validationerrortooltip.IsOpen = true;
-                this._guioption.ControlFormatting.BorderBrush = _redbrush;
-                this._guioption.ControlFormatting.MouseOverBorderBrush = _redbrush;
-                this._guioption.ControlFormatting.FocusedBorderBrush = _redbrush;
             }
+            this._validationerrortooltip.IsOpen = true;
+            this.SetPlacement();
+            this._guioption.ControlFormatting.BorderBrush = _redbrush;
+            this._guioption.ControlFormatting.MouseOverBorderBrush = _redbrush;
+            this._guioption.ControlFormatting.FocusedBorderBrush = _redbrush;
             this.UpdateArrows();
+            this._active = true;
         }
 
         public void ShowInformation()
         {
-            if (this._validationerrortooltip.IsOpen == false)
+            if (this._active == false)
             {
-                this.SetPlacement();
                 Director.Instance.WindowMouseUp += this.OnWindowMouseUp;
-                this._validationerrortooltip.IsOpen = true;
             }
+            this.SetPlacement();
+            this._validationerrortooltip.IsOpen = true;
             this.UpdateArrows();
+            this._active = true;
         }
 
 
