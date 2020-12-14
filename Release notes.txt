@@ -1,10 +1,8 @@
-Version 1.2.4.0
-Release date: 15 Sep 2020
+Version 1.2.5.0
+Release date: 14 Dec 2020
 
-*New features
-	All GuiOption and NoUIOption elements can now be used as toggles
-	Validation can now be used on CheckBox
-
+*Fixes
+	Changed styling to work around issue in DaRT where anything with 'AllowsTransparency'=TRUE won't be displayed in the remote viewer
 
 *Known issues
 	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
@@ -12,6 +10,15 @@ Release date: 15 Sep 2020
 	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
+
+
+
+Version 1.2.4.0
+Release date: 15 Sep 2020
+
+*New features
+	All GuiOption and NoUIOption elements can now be used as toggles
+	Validation can now be used on CheckBox
 
 
 Version 1.2.3.0
