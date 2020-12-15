@@ -32,11 +32,10 @@ namespace TsGui.Validation
 {
     public class ValidationToolTipHandler
     {
-        //private Color _bordercolor;
+        private bool _active = false;
         private SolidColorBrush _borderbrush;
         private SolidColorBrush _mouseoverborderbrush;
         private SolidColorBrush _focusborderbrush;
-        private Popup _popup;
         private ValidationErrorToolTip _validationerrortooltip;
         private GuiOptionBase _guioption;
         private bool _windowloaded = false;
@@ -55,53 +54,52 @@ namespace TsGui.Validation
             this._focusborderbrush = this._guioption.ControlFormatting.FocusedBorderBrush;
 
             this._validationerrortooltip = new ValidationErrorToolTip();
-            this._popup = new Popup();
-            this._popup.AllowsTransparency = true;
-            this._popup.Child = this._validationerrortooltip;
-            this.SetTarget(this._guioption.Control);
-            this._popup.IsOpen = false;
+            this._validationerrortooltip.PlacementTarget = this._guioption.UserControl;
         }
 
         public void SetTarget(UserControl Control)
         {
-            this._popup.PlacementTarget = Control;
+            this._validationerrortooltip.PlacementTarget = Control;
         }
 
         public void Clear()
         {
-            if (this._popup.IsOpen == true)
+            if (this._active)
             {
                 Director.Instance.WindowMouseUp -= this.OnWindowMouseUp;
-                this._popup.IsOpen = false;
-                this._guioption.ControlFormatting.BorderBrush = this._borderbrush;
-                this._guioption.ControlFormatting.MouseOverBorderBrush = this._mouseoverborderbrush;
-                this._guioption.ControlFormatting.FocusedBorderBrush = this._focusborderbrush;
             }
+            this._validationerrortooltip.IsOpen = false;
+            this._guioption.ControlFormatting.BorderBrush = this._borderbrush;
+            this._guioption.ControlFormatting.MouseOverBorderBrush = this._mouseoverborderbrush;
+            this._guioption.ControlFormatting.FocusedBorderBrush = this._focusborderbrush;
+            this._active = false;
         }
 
         public void ShowError()
         {
-            if (this._popup.IsOpen == false)
+            if (this._active == false)
             {
-                this.SetPlacement();
                 Director.Instance.WindowMouseUp += this.OnWindowMouseUp;
-                this._popup.IsOpen = true;
-                this._guioption.ControlFormatting.BorderBrush = _redbrush;
-                this._guioption.ControlFormatting.MouseOverBorderBrush = _redbrush;
-                this._guioption.ControlFormatting.FocusedBorderBrush = _redbrush;                
             }
+            this._validationerrortooltip.IsOpen = true;
+            this.SetPlacement();
+            this._guioption.ControlFormatting.BorderBrush = _redbrush;
+            this._guioption.ControlFormatting.MouseOverBorderBrush = _redbrush;
+            this._guioption.ControlFormatting.FocusedBorderBrush = _redbrush;
             this.UpdateArrows();
+            this._active = true;
         }
 
         public void ShowInformation()
         {
-            if (this._popup.IsOpen == false)
+            if (this._active == false)
             {
-                this.SetPlacement();
                 Director.Instance.WindowMouseUp += this.OnWindowMouseUp;
-                this._popup.IsOpen = true;
             }
+            this.SetPlacement();
+            this._validationerrortooltip.IsOpen = true;
             this.UpdateArrows();
+            this._active = true;
         }
 
 
@@ -137,10 +135,10 @@ namespace TsGui.Validation
         {
             //make sure guioption control is visible to avoid 'This Visual is not connected to a PresentationSource' exceptions
             if (this._guioption.Control.IsVisible == false) { return false; }
-            if (this._validationerrortooltip.IsVisible == false) { return false; }
+            if (this._validationerrortooltip.IsOpen == false) { return false; }
 
             Point locationOfControl = this._guioption.Control.PointToScreen(new Point(0, 0));
-            Point locationOfPopup = this._validationerrortooltip.PointToScreen(new Point(0, 0));
+            Point locationOfPopup = this._validationerrortooltip.grid.PointToScreen(new Point(0, 0));
 
             double controlRightEdge = locationOfControl.X + this._guioption.Control.ActualWidth;
 
@@ -151,8 +149,8 @@ namespace TsGui.Validation
 
         private void UpdatePopupLocation()
         {
-            this._popup.IsOpen = false;
-            this._popup.IsOpen = true;
+            this._validationerrortooltip.IsOpen = false;
+            this._validationerrortooltip.IsOpen = true;
         }
 
         private void SetPlacement()
@@ -160,13 +158,13 @@ namespace TsGui.Validation
             //this is to handle WPF quirks with touch devices
             if (this._guioption.LabelOnRight == false)
             {
-                if (SystemParameters.MenuDropAlignment == false) { this._popup.Placement = PlacementMode.Right; }
-                else { this._popup.Placement = PlacementMode.Left; }
+                if (SystemParameters.MenuDropAlignment == false) { this._validationerrortooltip.Placement = PlacementMode.Right; }
+                else { this._validationerrortooltip.Placement = PlacementMode.Left; }
             }
             else
             {
-                if (SystemParameters.MenuDropAlignment == false) { this._popup.Placement = PlacementMode.Left; }
-                else { this._popup.Placement = PlacementMode.Right; }
+                if (SystemParameters.MenuDropAlignment == false) { this._validationerrortooltip.Placement = PlacementMode.Left; }
+                else { this._validationerrortooltip.Placement = PlacementMode.Right; }
             }
         }
     }
