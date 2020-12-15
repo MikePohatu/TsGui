@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -35,7 +36,7 @@ namespace TsGui.Validation
     /// <summary>
     /// Interaction logic for ValidationErrorToolTip.xaml
     /// </summary>
-    public partial class ValidationErrorToolTip : UserControl
+    public partial class ValidationErrorToolTip : Popup
     {
         public ValidationErrorToolTip()
         {
