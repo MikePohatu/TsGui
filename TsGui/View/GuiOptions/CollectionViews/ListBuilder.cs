@@ -109,7 +109,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                     this.Add(newoption);
                 }
 
-                else if (x.Name == "Query")
+                else if (x.Name == "Query" || x.Name == "Value")
                 {
                     XElement wrapx = new XElement("wrapx");
                     wrapx.Add(x);

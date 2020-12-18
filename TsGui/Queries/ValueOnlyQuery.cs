@@ -24,6 +24,7 @@ namespace TsGui.Queries
     {
         private FormattedProperty _formatter = new FormattedProperty();
         private ResultWrangler _wrangler = new ResultWrangler();
+        private string _key = string.Empty;
 
         public bool Ignore { get { return false; } }
         public string Value
@@ -34,7 +35,14 @@ namespace TsGui.Queries
         public ValueOnlyQuery(XElement InputXml)
         {
             this._formatter.Input = InputXml.Value;
+            this._key = XmlHandler.GetStringFromXAttribute(InputXml, "ListValue", this._key);
             this._wrangler.NewResult(); 
+            if (string.IsNullOrWhiteSpace(this._key)==false)
+            {
+                FormattedProperty keyprop = new FormattedProperty();
+                keyprop.Input = this._key;
+                this._wrangler.AddFormattedProperty(keyprop);
+            }
             this._wrangler.AddFormattedProperty(this._formatter);
         }
 
