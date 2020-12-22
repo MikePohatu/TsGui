@@ -16,33 +16,42 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 
 namespace TsGui.Queries
 {
-    public class ValueOnlyQuery : IQuery
+    public class ListValueQuery: IQuery
     {
-        private FormattedProperty _formatter = new FormattedProperty();
-        private ResultWrangler _wrangler = new ResultWrangler();
+        private string _value = string.Empty;
+        private string _text = string.Empty;
+
+        public ListValueQuery(XElement InputXml)
+        {
+            this._value = XmlHandler.GetStringFromXElement(InputXml, "Value", this._value);
+            this._text = XmlHandler.GetStringFromXElement(InputXml, "Text", this._value);
+
+            this._formatter.Input = this._text;
+            this._wrangler.NewResult();
+
+            FormattedProperty valprop = new FormattedProperty();
+            valprop.Input = this._value;
+
+            this._wrangler.AddFormattedProperty(valprop);
+            this._wrangler.AddFormattedProperty(this._formatter);
+        }
+
+        protected FormattedProperty _formatter = new FormattedProperty();
+        protected ResultWrangler _wrangler = new ResultWrangler();
 
         public bool Ignore { get { return false; } }
         public string Value
         {
             get { return this._formatter.Input; }
             set { this._formatter.Input = value; }
-        }
-        public ValueOnlyQuery(XElement InputXml)
-        {
-            this._formatter.Input = InputXml.Value;
-            this._wrangler.NewResult();
-            this._wrangler.AddFormattedProperty(this._formatter);
-        }
-
-        public ValueOnlyQuery(string value)
-        {
-            this._formatter.Input = value;
-            this._wrangler.NewResult();
-            this._wrangler.AddFormattedProperty(this._formatter);
         }
 
         public ResultWrangler GetResultWrangler()

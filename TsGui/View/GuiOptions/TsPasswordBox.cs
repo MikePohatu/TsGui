@@ -35,6 +35,7 @@ namespace TsGui.View.GuiOptions
 {
     public class TsPasswordBox: GuiOptionBase, IGuiOption, IPassword, IValidationGuiOption
     {
+        private bool _expose = false;
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;
         private ValidationToolTipHandler _validationtooltiphandler;
@@ -57,7 +58,10 @@ namespace TsGui.View.GuiOptions
         }
         public override TsVariable Variable
         {
-            get { return null; }
+            get {
+                if (this._expose) { return new TsVariable(this.VariableName, this.Password); }
+                else { return null; }
+            }
         }
         public ValidationHandler ValidationHandler { get; private set; }
 
@@ -74,7 +78,7 @@ namespace TsGui.View.GuiOptions
         public TsPasswordBox(XElement InputXml, TsColumn Parent): base (Parent)
         {
             this._setvaluequerylist = null;
-
+            this._expose = XmlHandler.GetBoolFromXAttribute(InputXml, "ExposePassword", this._expose);
             this._passwordboxui = new TsPasswordBoxUI();
             this.Control = this._passwordboxui;
             this.Label = new TsLabelUI();

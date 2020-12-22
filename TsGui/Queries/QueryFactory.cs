@@ -53,6 +53,8 @@ namespace TsGui.Queries
                         return new CompareQuery(InputXml, linktarget);
                     case "Value":
                         return new ValueOnlyQuery(InputXml);
+                    case "ListValue":
+                        return new ListValueQuery(InputXml);
                     case "LinkFalse":
                         return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, false);
                     case "LinkTo":
@@ -72,6 +74,9 @@ namespace TsGui.Queries
 
             else if (InputXml.Name.ToString() == "Value")
             { return new ValueOnlyQuery(InputXml); }
+
+            else if (InputXml.Name.ToString() == "ListValue")
+            { return new ListValueQuery(InputXml); }
 
             else
             { return null; }
