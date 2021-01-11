@@ -1,8 +1,8 @@
-Version 1.2.5.0
-Release date: 14 Dec 2020
+Version 1.2.5.1
+Release date: 11 Jan 2021
 
 *Fixes
-	Changed styling to work around issue in DaRT where anything with 'AllowsTransparency'=TRUE won't be displayed in the remote viewer
+	Added workaround for slower startup time due to signed binaries
 
 *Known issues
 	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
@@ -11,6 +11,14 @@ Release date: 14 Dec 2020
 
 *Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
 
+
+
+
+Version 1.2.5.0
+Release date: 14 Dec 2020
+
+*Fixes
+	Changed styling to work around issue in DaRT where anything with 'AllowsTransparency'=TRUE won't be displayed in the remote viewer
 
 
 Version 1.2.4.0
