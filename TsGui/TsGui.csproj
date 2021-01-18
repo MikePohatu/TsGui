@@ -101,6 +101,7 @@
     <Compile Include="Authentication\LocalConfig\Password.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="ConsoleWindow.cs" />
+    <Compile Include="Debounce.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltWifiDisconnected.cs" />
     <Compile Include="Prebuilt\PrebuiltFactory.cs" />
     <Compile Include="Queries\ActiveDirectory\ADOrgUnitGroupsQuery.cs" />
