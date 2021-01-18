@@ -185,6 +185,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         protected void OnActiveChanged(object o, DependencyPropertyChangedEventArgs e)
         {
+            this.Validate(false);
             this.InvokeToggleEvent();
         }
     }

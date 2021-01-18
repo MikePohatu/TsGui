@@ -55,6 +55,7 @@ namespace TsGui.Validation
 
             this._validationerrortooltip = new ValidationErrorToolTip();
             this._validationerrortooltip.PlacementTarget = this._guioption.UserControl;
+            Director.Instance.WindowMoving += this.OnWindowMoving;
         }
 
         public void SetTarget(UserControl Control)
@@ -64,10 +65,6 @@ namespace TsGui.Validation
 
         public void Clear()
         {
-            if (this._active)
-            {
-                Director.Instance.WindowMouseUp -= this.OnWindowMouseUp;
-            }
             this._validationerrortooltip.IsOpen = false;
             this._guioption.ControlFormatting.BorderBrush = this._borderbrush;
             this._guioption.ControlFormatting.MouseOverBorderBrush = this._mouseoverborderbrush;
@@ -77,47 +74,42 @@ namespace TsGui.Validation
 
         public void ShowError()
         {
-            if (this._active == false)
-            {
-                Director.Instance.WindowMouseUp += this.OnWindowMouseUp;
-            }
             this._validationerrortooltip.IsOpen = true;
             this.SetPlacement();
             this._guioption.ControlFormatting.BorderBrush = _redbrush;
             this._guioption.ControlFormatting.MouseOverBorderBrush = _redbrush;
             this._guioption.ControlFormatting.FocusedBorderBrush = _redbrush;
-            this.UpdateArrows();
             this._active = true;
+            this.UpdateArrows();
         }
 
         public void ShowInformation()
         {
-            if (this._active == false)
-            {
-                Director.Instance.WindowMouseUp += this.OnWindowMouseUp;
-            }
             this.SetPlacement();
             this._validationerrortooltip.IsOpen = true;
-            this.UpdateArrows();
             this._active = true;
+            this.UpdateArrows();
         }
 
-
-        public void OnWindowMouseUp(object o, RoutedEventArgs e)
+        public void OnWindowMoving(object o, EventArgs e)
         {
             this.UpdateArrows();
         }
 
         public void OnWindowLoaded(object o, RoutedEventArgs e)
-        { this._windowloaded = true; }
+        {
+            this._windowloaded = true;
+        }
 
         private void UpdateArrows()
         {
+            if (this._active == false) { return; }
             if (this._windowloaded == false) { return; }
             if (this._guioption.IsRendered == false) { return; }
             this.UpdatePopupLocation();
 
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() => {
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
+            {
                 if (this.HasHitRightScreenEdge() == false)
                 {
                     this._validationerrortooltip.LeftArrow.Visibility = Visibility.Visible;
