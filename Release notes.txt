@@ -1,8 +1,9 @@
-Version 1.2.5.1
-Release date: 11 Jan 2021
+Version 1.2.5.2
+Release date: 18 Jan 2021
 
 *Fixes
 	Added workaround for slower startup time due to signed binaries
+	Fixed disabled GuiOptions with validation rules set not always clearing their error messages
 
 *Known issues
 	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:

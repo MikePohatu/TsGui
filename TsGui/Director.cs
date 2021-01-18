@@ -57,6 +57,8 @@ namespace TsGui
         public event TsGuiWindowEventHandler WindowMouseUp;
         public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
+        private Debounce _movetimer;
+
         private Arguments _args;
         private bool _prodmode = false;
         private bool _finished = false;
@@ -91,7 +93,16 @@ namespace TsGui
         //constructors
         private Director()
         {
-            Director._instance = this;        
+            Director._instance = this;
+
+            //init the debounced move timer
+            this._movetimer = new Debounce(new TimeSpan(0,0,0,0,500), () =>
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
+                {
+                    this.WindowMoving?.Invoke(this, new EventArgs());
+                }));
+            });
         }
 
         //Wrap a generic exception handler to get some useful information in the event of a 
@@ -465,7 +476,7 @@ namespace TsGui
         /// <param name="e"></param>
         public void OnWindowMoving(object o, EventArgs e)
         {
-            this.WindowMoving?.Invoke(o, e);
+            this._movetimer.Start();
         }
 
         /// <summary>
