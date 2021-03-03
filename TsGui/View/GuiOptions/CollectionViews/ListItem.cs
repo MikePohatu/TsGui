@@ -59,7 +59,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this.Init(Formatting, parentlist);
             this.Value = Value;
-            if (string.IsNullOrEmpty(Text)) { this.Text = ""; }
+            if (string.IsNullOrEmpty(Text)) { this.Text = Value; } //if no text is set, just use the value
             else { this.Text = Text; }
 
             LoggerFacade.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
@@ -123,6 +123,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
                     this.ItemsList.Add(item);
                 }
             }
+
+            if (string.IsNullOrEmpty(this.Text)) { this.Text = Value; } //if no text is set, just use the value
         }
 
         protected override Group AddGroup(string GroupID)

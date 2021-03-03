@@ -63,7 +63,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
                         List<KeyValueTreeNode> kvlist = wrangler.GetKeyValueTree();
                         foreach (KeyValueTreeNode node in kvlist)
                         {
-                            //ListItem newoption = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent, this._director);
                             newlist.Add(this.CreateItem(node));
                         }
                     }
@@ -124,6 +123,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public ListItem CreateItem(KeyValueTreeNode node)
         {
             ListItem newitem = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent);
+
             foreach (KeyValueTreeNode subnode in node.Nodes)
             {
                 newitem.ItemsList.Add(this.CreateItem(subnode));
