@@ -488,6 +488,15 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Messaging\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MessageCrap\MessageCrap.csproj">
+      <Project>{eeedef0c-4542-49de-b415-64ce44ede3b5}</Project>
+      <Name>MessageCrap</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>SET ReleasePath=C:\source\release\tsgui

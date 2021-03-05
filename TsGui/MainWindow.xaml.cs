@@ -35,6 +35,11 @@ namespace TsGui
         {            
             InitializeComponent();
             LoggerFacade.Trace("MainWindow initialized");
+            MessageCrap.MessageHub.Error += LoggerFacade.Error;
+            MessageCrap.MessageHub.Warn += LoggerFacade.Warn;
+            MessageCrap.MessageHub.Info += LoggerFacade.Info;
+            MessageCrap.MessageHub.Debug += LoggerFacade.Debug;
+            MessageCrap.MessageHub.Trace += LoggerFacade.Trace;
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
