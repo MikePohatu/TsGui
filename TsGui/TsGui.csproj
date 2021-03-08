@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -58,7 +58,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.4\lib\net40-client\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.8\lib\net40-client\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
@@ -103,6 +103,8 @@
     <Compile Include="Connectors\System\RegistryHelpers.cs" />
     <Compile Include="ConsoleWindow.cs" />
     <Compile Include="Debounce.cs" />
+    <Compile Include="Linking\ILinkSource.cs" />
+    <Compile Include="Linking\Topics.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltWifiDisconnected.cs" />
     <Compile Include="Prebuilt\PrebuiltFactory.cs" />
     <Compile Include="Queries\ActiveDirectory\ADOrgUnitGroupsQuery.cs" />
@@ -117,13 +119,14 @@
     <Compile Include="Queries\IfElseQuery.cs" />
     <Compile Include="Queries\PropertyInterogation.cs" />
     <Compile Include="Queries\QueryHelpers.cs" />
-    <Compile Include="Queries\ReplaceRule.cs" />
+    <Compile Include="Queries\Rules\ReplaceRule.cs" />
     <Compile Include="Queries\Result.cs" />
-    <Compile Include="Queries\ToLowerRule.cs" />
-    <Compile Include="Queries\ToUpperRule.cs" />
+    <Compile Include="Queries\Rules\ToLowerRule.cs" />
+    <Compile Include="Queries\Rules\ToUpperRule.cs" />
     <Compile Include="Queries\Trees\KeyValueTreeNode.cs" />
     <Compile Include="Queries\WebServices\WebServiceDiscovery.cs" />
     <Compile Include="Queries\WebServices\WebServicesQuery.cs" />
+    <Compile Include="Validation\Delegates.cs" />
     <Compile Include="Validation\StringMatching\BaseMatchingRule.cs" />
     <Compile Include="Validation\StringMatching\Characters.cs" />
     <Compile Include="Validation\StringMatching\MatchingRuleLibrary.cs" />
@@ -141,6 +144,7 @@
     <Compile Include="Validation\StringMatching\MatchingRuleFactory.cs" />
     <Compile Include="Validation\StringMatching\EndsWith.cs" />
     <Compile Include="Validation\StringMatching\StartsWith.cs" />
+    <Compile Include="Validation\Topics.cs" />
     <Compile Include="View\Layout\ControlDefaults.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\CollectionViewGuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
@@ -182,13 +186,10 @@
     <Compile Include="Helpers\ReverseComparer.cs" />
     <Compile Include="Images\Image.cs" />
     <Compile Include="Images\MultiImage.cs" />
-    <Compile Include="Linking\ILinkingEventHandler.cs" />
     <Compile Include="Queries\BaseQuery.cs" />
     <Compile Include="Queries\CombinedQuery.cs" />
     <Compile Include="Queries\Conditional.cs" />
     <Compile Include="Linking\ILinkTarget.cs" />
-    <Compile Include="Linking\ILinkSource.cs" />
-    <Compile Include="Linking\LinkingDelegates.cs" />
     <Compile Include="Linking\LinkingEventArgs.cs" />
     <Compile Include="Linking\LinkingLibrary.cs" />
     <Compile Include="Queries\QueryPriorityList.cs" />
@@ -207,12 +208,12 @@
     <Compile Include="Queries\OptionValueQuery.cs" />
     <Compile Include="Queries\EnvironmentVariableQuery.cs" />
     <Compile Include="Queries\IQuery.cs" />
-    <Compile Include="Queries\PrefixRule.cs" />
-    <Compile Include="Queries\CalculateRule.cs" />
-    <Compile Include="Queries\IQueryRule.cs" />
-    <Compile Include="Queries\AppendRule.cs" />
+    <Compile Include="Queries\Rules\PrefixRule.cs" />
+    <Compile Include="Queries\Rules\CalculateRule.cs" />
+    <Compile Include="Queries\Rules\IQueryRule.cs" />
+    <Compile Include="Queries\Rules\AppendRule.cs" />
     <Compile Include="Queries\QueryFactory.cs" />
-    <Compile Include="Queries\TruncateRule.cs" />
+    <Compile Include="Queries\Rules\TruncateRule.cs" />
     <Compile Include="Queries\WmiQuery.cs" />
     <Compile Include="Validation\Compliance.cs" />
     <Compile Include="Validation\ComplianceStateValues.cs" />
@@ -267,7 +268,7 @@
     <Compile Include="View\Layout\GhostWindow.xaml.cs">
       <DependentUpon>GhostWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Layout\IComplianceRoot.cs" />
+    <Compile Include="Validation\IComplianceRoot.cs" />
     <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\IGuiOption.cs" />
@@ -465,7 +466,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
     <None Include="NLog.xsd">
@@ -488,9 +489,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Messaging\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\MessageCrap\MessageCrap.csproj">
       <Project>{eeedef0c-4542-49de-b415-64ce44ede3b5}</Project>
