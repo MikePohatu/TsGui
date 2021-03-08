@@ -18,3 +18,8 @@ tsgui.exe -config [filepath] -webconfig [url] -hash [password]
  **-key [keystring]** where [keystring] is the key to be used during the hash operation. Must be used with **-hash**
 
  \* If both -config and -webconfig are ommitted, TsGui will look for Config.xml in the same folder as tsgui.exe
+
+
+ ## Code
+
+ Source documentation can be found in the [code](/documentation/code/Index.md) documentation.
