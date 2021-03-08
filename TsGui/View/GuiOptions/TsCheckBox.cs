@@ -138,7 +138,7 @@ namespace TsGui.View.GuiOptions
                 else if (newvalue == this._valFalse) { this.IsChecked = false; }
                 else { newvalue = null; }
             }
-            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
+            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
         }
 
         public void OnSourceValueUpdated(Message message)

@@ -79,7 +79,7 @@ namespace TsGui.View.GuiOptions
         public override void UpdateValue(Message message)
         {
             this.ControlText = this._querylist.GetResultWrangler(message)?.GetString();
-            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
+            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
         }
 
         public void OnSourceValueUpdated(Message message)

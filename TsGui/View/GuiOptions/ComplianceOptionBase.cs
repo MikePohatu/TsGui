@@ -155,7 +155,7 @@ namespace TsGui.View.GuiOptions
             this.ProcessQuery(message);
             this.Validate();
 
-            MessageHub.CreateMessage(this, message).SetTopic(Linking.Topics.SourceValueChanged).SetPayload(this.CurrentValue).Send();
+            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
         }
 
         public void OnSourceValueUpdated(Message message)

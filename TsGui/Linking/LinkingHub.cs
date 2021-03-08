@@ -26,11 +26,11 @@ using TsGui.Options;
 
 namespace TsGui.Linking
 {
-    public class LinkingLibrary: ITopicSubscriber
+    public class LinkingHub: ITopicSubscriber
     {
         private Dictionary<string, IOption> _sources = new Dictionary<string, IOption>();
 
-        public LinkingLibrary()
+        public LinkingHub()
         {
             MessageHub.Subscribe(Topics.ReprocessRequest, this);
         }
@@ -59,7 +59,7 @@ namespace TsGui.Linking
                 case Topics.ReprocessRequest:
                     if (message.IsResponse == false)
                     {
-                        IOption option = GetSourceOption(message.Payload as string);
+                        IOption option = this.GetSourceOption(message.Payload as string);
                         if (option != null)
                         {
                             option.UpdateValue(message);
@@ -74,6 +74,11 @@ namespace TsGui.Linking
         public Message SendUpdateMessage(ILinkSource source, Message message)
         {
             return MessageHub.CreateMessage(source, message).SetTopic(Topics.SourceValueChanged).SetPayload(source.CurrentValue).Send(); ;
+        }
+
+        public Message SendReprocessRequestMessage(object sender, string id, Message message)
+        {
+            return MessageHub.CreateMessage(sender, message).SetTopic(Topics.ReprocessRequest).SetPayload(id).SetResponseExpected(true).Send();
         }
 
         public void RegisterLinkTarget(ILinkTarget target, ILinkSource source)

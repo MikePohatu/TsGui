@@ -38,7 +38,7 @@ namespace TsGui
 
         //properties
         AuthLibrary AuthLibrary { get; }
-        LinkingLibrary LinkingLibrary { get; }
+        LinkingHub LinkingHub { get; }
         GroupLibrary GroupLibrary { get; }
         TsMainWindow TsMainWindow { get; set; }
         OptionLibrary OptionLibrary { get; }

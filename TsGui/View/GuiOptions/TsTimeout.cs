@@ -90,7 +90,7 @@ namespace TsGui.View.GuiOptions
 
         public override void UpdateValue(Message message)
         {
-            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
+            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
         }
     }
 }

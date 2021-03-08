@@ -39,7 +39,7 @@ namespace TsGui.Tests
 
         //properties
         public AuthLibrary AuthLibrary { get { return this._authlib; } }
-        public LinkingLibrary LinkingLibrary { get; }
+        public LinkingHub LinkingHub { get; }
         public GroupLibrary GroupLibrary { get; }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get; }

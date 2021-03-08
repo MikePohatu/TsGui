@@ -141,7 +141,7 @@ namespace TsGui.Options.NoUI
             if (xa != null)
             {
                 this.ID = xa.Value;
-                Director.Instance.LinkingLibrary.AddSource(this);
+                Director.Instance.LinkingHub.AddSource(this);
             }
 
             IEnumerable<XElement> xlist = InputXml.Elements("Toggle");
@@ -163,7 +163,7 @@ namespace TsGui.Options.NoUI
         {
             this._value = this._querylist.GetResultWrangler(message)?.GetString();
 
-            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
+            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
 
             this.NotifyViewUpdate();
         }

@@ -219,7 +219,7 @@ namespace TsGui.View.GuiOptions
                 if (this.ControlText != s) { this.ControlText = s; }
             }
 
-            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
+            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
         }
 
         public void OnSourceValueUpdated(Message message)

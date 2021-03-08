@@ -45,14 +45,15 @@ namespace TsGui.Queries
         public void Init(object sender, EventArgs e)
         {
             this._source = this.GetSourceOption(this._formatter.Name);
-            Director.Instance.LinkingLibrary.RegisterLinkTarget(this._linktarget, this._source);
+            Director.Instance.LinkingHub.RegisterLinkTarget(this._linktarget, this._source);
         }
 
         public override ResultWrangler ProcessQuery(Message message)
         {
             if (this._source != null)
             {
-                MessageHub.CreateMessage(this, message).SetTopic(Topics.ReprocessRequest).SetPayload(this._source.ID).SetResponseExpected(true).Send();
+                Director.Instance.LinkingHub.SendReprocessRequestMessage(this, this._source.ID, message);
+                //MessageHub.CreateMessage(this, message).SetTopic(Topics.ReprocessRequest).SetPayload(this._source.ID).SetResponseExpected(true).Send();
             }
 
             this._formatter.Input = this._source?.CurrentValue;
@@ -65,7 +66,7 @@ namespace TsGui.Queries
         {
             if (!string.IsNullOrEmpty(id))
             {
-                return Director.Instance.LinkingLibrary.GetSourceOption(id);
+                return Director.Instance.LinkingHub.GetSourceOption(id);
             }
             else {
                 throw new TsGuiKnownException($"Unable to locate linked source ID: {id}", null);

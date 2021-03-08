@@ -154,7 +154,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.SetSelected(this._querylist.GetResultWrangler(message)?.GetString());
             this.NotifyViewUpdate();
 
-            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
+            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
         }
 
         public void OnSourceValueUpdated(Message message)

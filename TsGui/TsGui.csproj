@@ -190,8 +190,7 @@
     <Compile Include="Queries\CombinedQuery.cs" />
     <Compile Include="Queries\Conditional.cs" />
     <Compile Include="Linking\ILinkTarget.cs" />
-    <Compile Include="Linking\LinkingEventArgs.cs" />
-    <Compile Include="Linking\LinkingLibrary.cs" />
+    <Compile Include="Linking\LinkingHub.cs" />
     <Compile Include="Queries\QueryPriorityList.cs" />
     <Compile Include="Queries\ValueOnlyQuery.cs" />
     <Compile Include="Validation\StringMatching\RuleSet.cs" />
