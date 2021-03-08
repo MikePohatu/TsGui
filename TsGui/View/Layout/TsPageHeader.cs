@@ -105,7 +105,7 @@ namespace TsGui.View.Layout
             this.Image = Template.Image;
             this.TitleFontSize = Template.TitleFontSize;
             this.TextFontSize = Template.TextFontSize;
-            this.Margin = Template.Margin;
+            this.Formatting.Margin = Template.Formatting.Margin;
 
             this.Init(SourceXml);
         }

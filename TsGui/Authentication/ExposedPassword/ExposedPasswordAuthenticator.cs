@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using MessageCrap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,9 +87,6 @@ namespace TsGui.Authentication.ExposedPassword
             this._blankallowed = XmlHandler.GetBoolFromXAttribute(inputxml, "AllowBlank", this._blankallowed);
         }
 
-        //IOption requirements
-        public event IOptionValueChanged ValueChanged;
-
         public string ID { get; private set; }
         public TsVariable Variable { get { return new TsVariable(this.VariableName, this.LiveValue); } }
         public string LiveValue { get { return this.PasswordSource?.Password; } }
@@ -122,7 +120,11 @@ namespace TsGui.Authentication.ExposedPassword
             //LoggerFacade.Info(this.VariableName + " variable value changed.");
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
-            this.ValueChanged?.Invoke();
+        }
+
+        public void UpdateValue(Message message)
+        {
+            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
         }
     }
 }

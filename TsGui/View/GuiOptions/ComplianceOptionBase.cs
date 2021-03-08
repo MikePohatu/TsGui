@@ -28,6 +28,7 @@ using TsGui.Queries;
 using TsGui.Linking;
 using TsGui.Diagnostics;
 using MessageCrap;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
