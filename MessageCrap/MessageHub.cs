@@ -25,12 +25,14 @@ namespace MessageCrap
 {
     public static class MessageHub
     {
+        #pragma warning disable CS0067
         public static event MessagingErrorLogHandler Fatal;
         public static event MessagingErrorLogHandler Error;
         public static event MessagingErrorLogHandler Warn;
         public static event MessagingLogHandler Info;
         public static event MessagingLogHandler Debug;
         public static event MessagingLogHandler Trace;
+        #pragma warning restore CS0067
 
         /// <summary>
         /// MessageSent fires when any new message is sent, including responses

@@ -27,11 +27,15 @@ using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Authentication;
 
+#pragma warning disable CS0067
 namespace TsGui.Tests
 {
     public class TestDirector: IDirector
     {
+
+
         private AuthLibrary _authlib = new AuthLibrary();
+
         public event TsGuiWindowEventHandler WindowLoaded;
         public event TsGuiWindowMovingEventHandler WindowMoving;
         public event TsGuiWindowEventHandler WindowMouseUp;

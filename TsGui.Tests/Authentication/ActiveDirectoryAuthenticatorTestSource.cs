@@ -20,6 +20,8 @@ using System.Security;
 using System.Net;
 using TsGui.Authentication;
 
+
+#pragma warning disable CS0067
 namespace TsGui.Tests.Authentication
 {
     public class ActiveDirectoryAuthenticatorTestSource: IUsername, IPassword
