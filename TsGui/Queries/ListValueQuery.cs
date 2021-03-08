@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using MessageCrap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,10 +55,10 @@ namespace TsGui.Queries
             set { this._formatter.Input = value; }
         }
 
-        public ResultWrangler GetResultWrangler()
+        public ResultWrangler GetResultWrangler(Message message)
         { return this._wrangler; }
 
-        public ResultWrangler ProcessQuery()
+        public ResultWrangler ProcessQuery(Message message)
         { return this._wrangler; }
     }
 }
