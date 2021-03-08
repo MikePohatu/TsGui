@@ -2,6 +2,10 @@
 
 Linking enables the value of one option to influence the value of another. This differs from groups in that groups only set whether an option is enabled or not, Linking will update options as the options they are linked to change.
 
+**Contents**
+* [Messaging](#messaging)
+* [Concepts](#concepts)
+
 ## Messaging
 
 Linking has potential to create circular calls, for example:
@@ -14,7 +18,7 @@ Linking has potential to create circular calls, for example:
 6. The query asks OptionA to update it's value to make sure it is up to date
 7. Return to #2
 
-Due to this, Option Linking makes use of message passing. The message passing library includes checks to catch circular events. If a sender sends a message responding to it's own message, the message is stopped.
+Due to this, Option Linking makes use of message passing. The message passing [library](Messaging.md) includes checks to catch circular events. If a sender sends a message responding to it's own message, the message is stopped.
 
 ## Concepts
 
