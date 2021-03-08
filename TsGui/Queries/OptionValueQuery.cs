@@ -53,7 +53,6 @@ namespace TsGui.Queries
             if (this._source != null)
             {
                 Director.Instance.LinkingHub.SendReprocessRequestMessage(this, this._source.ID, message);
-                //MessageHub.CreateMessage(this, message).SetTopic(Topics.ReprocessRequest).SetPayload(this._source.ID).SetResponseExpected(true).Send();
             }
 
             this._formatter.Input = this._source?.CurrentValue;
