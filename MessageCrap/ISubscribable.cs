@@ -16,13 +16,19 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-// ILinkingEventHandler.cs - can handle events from a linksource i.e. optionquery
-
-namespace TsGui.Linking
+namespace MessageCrap
 {
-    public interface ILinkingEventHandler
+    /// <summary>
+    /// ISubscribable interface allows an object to be subscribed to on the MessageHub. It has an ID property the MessageHub can use
+    /// to compare and invoke callbacks and events
+    /// </summary>
+    public interface ISubscribable
     {
-        void OnLinkedSourceValueChanged();
+        string ID { get; }
     }
 }

@@ -40,11 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ISubscribable.cs" />
     <Compile Include="MessageSentHandler.cs" />
-    <Compile Include="IMessageSubscriber.cs" />
+    <Compile Include="ITopicSubscriber.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageHub.cs" />
     <Compile Include="MessageTimeoutException.cs" />
+    <Compile Include="MessagingErrorLogHandler.cs" />
     <Compile Include="MessagingException.cs" />
     <Compile Include="MessagingLogHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

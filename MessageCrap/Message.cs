@@ -26,6 +26,11 @@ namespace MessageCrap
         internal Timer TimeoutTimer;
 
         /// <summary>
+        /// Is this message a response to another message i.e. is RespondingTo == null
+        /// </summary>
+        public bool IsResponse { get { return this.RespondingTo != null; } }
+
+        /// <summary>
         /// The message ID/GUID. This is unique for every message
         /// </summary>
         public string ID { get; } = Guid.NewGuid().ToString();
@@ -71,6 +76,12 @@ namespace MessageCrap
         public Message RespondingTo { get; internal set; }
 
         /// <summary>
+        /// Callback function a receiver can run when they get this message. If you're not sending a response message
+        /// you should cancel the original message with the hub
+        /// </summary>
+        public Action Callback { get; set; }
+
+        /// <summary>
         /// Internal constructor so message objects have to be created by the MessgaeHub
         /// </summary>
         internal Message() { }
@@ -92,6 +103,66 @@ namespace MessageCrap
         {
             this.StopTimer();
             MessageHub.ReportTimeout(this);
+        }
+
+        /// <summary>
+        /// Set the Payload parameter and return this Message object
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        public Message SetPayload(object o)
+        {
+            this.Payload = o;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the ResponseTimeoutMilliseconds parameter and return this Message object
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        public Message SetResponseTimeoutMilliseconds(long ms)
+        {
+            this.ResponseTimeoutMilliseconds = ms;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the Topic parameter and return this Message object
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        public Message SetTopic(string topic)
+        {
+            this.Topic = topic;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the ResponseExpected parameter and return this Message object
+        /// </summary>
+        /// <param name="expected"></param>
+        /// <returns></returns>
+        public Message SetResponseExpected(bool expected)
+        {
+            this.ResponseExpected = expected;
+            return this;
+        }
+
+        /// <summary>
+        /// Send the message via the MessageHub
+        /// </summary>
+        public Message Send()
+        {
+            if (this.RespondingTo == null)
+            {
+                MessageHub.Send(this);
+            }
+            else
+            {
+                MessageHub.Respond(this);
+            }
+            return this;
         }
     }
 }

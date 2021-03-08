@@ -51,6 +51,11 @@ namespace MessageCrap
         private static Dictionary<string, List<ITopicSubscriber>> _topicSubscribers = new Dictionary<string, List<ITopicSubscriber>>();
 
         /// <summary>
+        /// List of callbacks by object.ID
+        /// </summary>
+        private static Dictionary<string, List<Action<Message>>> _objectCallbacks = new Dictionary<string, List<Action<Message>>>();
+
+        /// <summary>
         /// Messages waiting for a reponse by Message.ID
         /// </summary>
         private static Dictionary<string, Message> _pendingResponses = new Dictionary<string, Message>();
@@ -59,6 +64,7 @@ namespace MessageCrap
         {
             if (message == null) { throw new MessagingException(message, "Message can't be null"); }
             if (message.RespondingTo != null) { throw new MessagingException(message, "Message sent in response. Use Respond() method"); }
+            
             if (message.ResponseExpected)
             {
                 Message m;
@@ -71,15 +77,12 @@ namespace MessageCrap
                     throw new MessagingException(message, "Duplicate message ID detected");
                 }
             }
+
+            Trace?.Invoke($"Sending new message: {message.ID} from {message.Sender}");
             message.Sent = DateTime.Now;
             if (message.ResponseExpected) { message.StartTimer(); }
 
-            //invoke topic subscribers
-            List<ITopicSubscriber> subs;
-            if (string.IsNullOrWhiteSpace(message.Topic) == false && _topicSubscribers.TryGetValue(message.Topic, out subs))
-            {
-                foreach(ITopicSubscriber sub in subs) { sub.OnTopicMessageReceived(message.Topic, message); }
-            }
+            InvokeMessageSubscriptions(message);
 
             //fire events
             MessageSent?.Invoke(message, new EventArgs());
@@ -89,19 +92,19 @@ namespace MessageCrap
         /// Respond to a message. Always use this when respond to a received message as it will detect loops
         /// </summary>
         /// <param name="response"></param>
-        /// <param name="originalMessage"></param>
-        public static void Respond(Message response, Message originalMessage)
+        public static void Respond(Message response)
         {
             if (response == null) { throw new MessagingException(response, "Response can't be null"); }
-            if (originalMessage == null) { throw new MessagingException(response, "Can't respond to a null message"); }
+            if (response.RespondingTo == null) { throw new MessagingException(response, "Can't respond to a null message"); }
 
             //remove message from the pending list
             Message m;
-            if (_pendingResponses.TryGetValue(originalMessage.ID, out m) == true)
+            if (_pendingResponses.TryGetValue(response.RespondingTo.ID, out m) == true)
             {
-                _pendingResponses.Remove(originalMessage.ID);
+                _pendingResponses.Remove(response.RespondingTo.ID);
             }
 
+            Trace?.Invoke($"Sending response message: {response.ID}, in reply to: {response.RespondingTo.ID}");
             response.Sent = DateTime.Now;
             if (response.ResponseExpected) { response.StartTimer(); }
 
@@ -111,21 +114,36 @@ namespace MessageCrap
                 if (response.RootMessage.Sender == response.Sender)
                 {
                     // message has come in a loop. kill it
+                    Trace?.Invoke($"Closing looping message: {response.ID}");
                     LoopClosed?.Invoke(response, new EventArgs());
                     return;
                 }
             }
 
-            //invoke topic subscribers
-            List<ITopicSubscriber> subs;
-            if (string.IsNullOrWhiteSpace(response.Topic) == false && _topicSubscribers.TryGetValue(response.Topic, out subs))
-            {
-                foreach (ITopicSubscriber sub in subs) { sub.OnTopicMessageReceived(response.Topic, response); }
-            }
+            InvokeMessageSubscriptions(response);
 
             //fire events
             MessageSent?.Invoke(response, new EventArgs());
             ResponseSent?.Invoke(response, new EventArgs());
+        }
+
+        private static void InvokeMessageSubscriptions(Message message)
+        {
+            //invoke topic subscribers
+            List<ITopicSubscriber> subs;
+            if (string.IsNullOrWhiteSpace(message.Topic) == false && _topicSubscribers.TryGetValue(message.Topic, out subs))
+            {
+                foreach (ITopicSubscriber sub in subs) { sub.OnTopicMessageReceived(message.Topic, message); }
+            }
+
+            //invoke object subscribers
+            List<Action<Message>> callbacks;
+            var temp = _objectCallbacks;
+            ISubscribable sender = message.Sender as ISubscribable;
+            if (string.IsNullOrWhiteSpace(sender?.ID) == false && _objectCallbacks.TryGetValue(sender.ID, out callbacks))
+            {
+                foreach (Action<Message> cb in callbacks) { cb(message); }
+            }
         }
 
         /// <summary>
@@ -135,7 +153,7 @@ namespace MessageCrap
         public static void CancelPending(Message message)
         {
             if (message == null) { throw new MessagingException(message, "Message can't be null"); }
-
+            Trace?.Invoke($"Cancelling message: {message.ID}");
             //remove message from the pending list
             Message m;
             if (_pendingResponses.TryGetValue(message.ID, out m) == true)
@@ -156,31 +174,61 @@ namespace MessageCrap
         }
 
         /// <summary>
-        /// Create a message object. Only use this for new messages, not for responding to a previous message
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <returns></returns>
-        public static Message CreateMessage(object sender)
-        {
-            Message m = new Message();
-            m.RootMessage = null;
-            m.Sender = sender;
-            return m;
-        }
-
-        /// <summary>
-        /// Create a message object in reponse to another message
+        /// Create a message object. If not responding to an existing message use CreateMessage(sender, null)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="originalMessage"></param>
         /// <returns></returns>
-        public static Message CreateResponse(object sender, Message originalMessage)
+        public static Message CreateMessage(object sender, Message originalMessage)
         {
             Message m = new Message();
             m.RespondingTo = originalMessage;
-            m.RootMessage = originalMessage.RootMessage == null ? originalMessage : originalMessage.RootMessage;
+            m.RootMessage = (originalMessage == null) || (originalMessage.RootMessage == null) ? m.RootMessage = originalMessage : originalMessage.RootMessage; ;
             m.Sender = sender;
+            Trace?.Invoke($"Created message: {m.ID}");
             return m;
+        }
+
+        /// <summary>
+        /// Register a new subsciber
+        /// </summary>
+        /// <param name="topic"></param>
+        /// <param name="sub"></param>
+        public static void Subscribe(string topic, ITopicSubscriber sub)
+        {
+            Debug?.Invoke($"Creating subscribtion to topic: {topic}");
+            List<ITopicSubscriber> subs;
+            if (_topicSubscribers.TryGetValue(topic, out subs))
+            {
+                subs.Add(sub);
+            } 
+            else
+            {
+                subs = new List<ITopicSubscriber>();
+                subs.Add(sub);
+                _topicSubscribers.Add(topic, subs);
+            }
+        }
+
+        /// <summary>
+        /// Register a new callback when a message is received from a sender
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="callback"></param>
+        public static void Subscribe(ISubscribable sender, Action<Message> callback)
+        {
+            List<Action<Message>> subs;
+            Debug?.Invoke($"Creating subscribtion to hashcode: {sender.ToString()}");
+            if (_objectCallbacks.TryGetValue(sender.ID, out subs))
+            {
+                subs.Add(callback);
+            }
+            else
+            {
+                subs = new List<Action<Message>>();
+                subs.Add(callback);
+                _objectCallbacks.Add(sender.ID, subs);
+            }
         }
     }
 }
