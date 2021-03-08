@@ -6,7 +6,7 @@ Documentation is currently a work in progress. For usage information, also see t
 
 * [Layout](/documentation/Layout.md)
 * [Prebuilt configuration](/documentation/PrebuiltConfiguration.md)
-* [Authentication](/documentation/Authentication/Authentication.md)
+* [Authentication](/documentation/Authentication/README.md)
 
 
 ## Command line options
@@ -22,4 +22,4 @@ tsgui.exe -config [filepath] -webconfig [url] -hash [password]
 
  ## Code
 
- Source documentation can be found in the [code](/documentation/code/Index.md) documentation.
+ Source documentation can be found in the [code](/documentation/code/README.md) documentation.
