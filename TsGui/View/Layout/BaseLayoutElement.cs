@@ -24,6 +24,7 @@ using System.Windows;
 using TsGui.Grouping;
 
 using System.Xml.Linq;
+using TsGui.Validation;
 
 namespace TsGui.View.Layout
 {

@@ -16,12 +16,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using System;
 
-// LinkingDelegates.cs - delegates for the Linking namespace. 
-
-using TsGui.Options;
-
-namespace TsGui.Linking
+namespace TsGui.Validation
 {
-    public delegate void IOptionValueChanged();
+    public delegate void ComplianceRetryEventHandler(IComplianceRoot sender, EventArgs e);
 }

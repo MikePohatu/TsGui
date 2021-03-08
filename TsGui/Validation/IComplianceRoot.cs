@@ -22,7 +22,7 @@
 
 using TsGui.Events;
 
-namespace TsGui.View.Layout
+namespace TsGui.Validation
 {
     public interface IComplianceRoot
     {
