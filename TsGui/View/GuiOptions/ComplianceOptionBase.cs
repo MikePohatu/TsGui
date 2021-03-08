@@ -87,13 +87,13 @@ namespace TsGui.View.GuiOptions
         }
 
         //constructor
-        public ComplianceOptionBase(TsColumn Parent): base (Parent)
+        public ComplianceOptionBase(ParentLayoutElement Parent): base (Parent)
         {
             this.Label = new TsLabelUI();
             this._rootelement = this.GetComplianceRootElement();
             if (this._rootelement == null)
             {
-                throw new TsGuiKnownException("There is prooblem in the compliance tree. Root is null", string.Empty);
+                throw new TsGuiKnownException("There is problem in the compliance tree. Root is null", string.Empty);
             }
             this._rootelement.ComplianceRetry += this.OnComplianceRetry;
 

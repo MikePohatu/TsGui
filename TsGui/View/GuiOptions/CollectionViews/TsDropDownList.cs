@@ -26,6 +26,7 @@ using System.Windows;
 
 using TsGui.Grouping;
 using TsGui.Validation;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -38,7 +39,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public bool IsEditable { get; set; } = false;
         public bool IsReadOnly { get; set; } = true;
         //Constructor
-        public TsDropDownList(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsDropDownList(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;

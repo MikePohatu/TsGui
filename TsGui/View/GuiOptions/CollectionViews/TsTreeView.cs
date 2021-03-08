@@ -23,6 +23,7 @@ using TsGui.View.Symbols;
 using TsGui.Validation;
 using TsGui.Linking;
 using System.Windows;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -32,7 +33,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public List<ListItem> VisibleOptions { get { return this._builder.Items; } }
 
         //Constructor
-        public TsTreeView(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsTreeView(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this._treeviewui = new TsTreeViewUI();
             this.Control = this._treeviewui;

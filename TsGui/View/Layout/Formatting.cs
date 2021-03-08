@@ -231,8 +231,8 @@ namespace TsGui.View.Layout
             f.FontWeight = this.FontWeight;
             f.FontStyle = this.FontStyle;
             f.FontSize = this.FontSize;
-            f.Width = this.Width;
-            f.Height = this.Height;
+            //f.Width = this.Width;
+            //f.Height = this.Height;
             f.CornerRadius = this.CornerRadius;
             f.Padding = this.Padding;
             f.Margin = this.Margin;

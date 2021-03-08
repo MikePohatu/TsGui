@@ -22,6 +22,7 @@
 
 using MessageCrap;
 using System.Xml.Linq;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
@@ -41,7 +42,7 @@ namespace TsGui.View.GuiOptions
         public override TsVariable Variable { get { return null; } }
 
         //constructor
-        public TsHeading(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsHeading(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this.ControlText = string.Empty;
             this.Control = new TsHeadingUI();

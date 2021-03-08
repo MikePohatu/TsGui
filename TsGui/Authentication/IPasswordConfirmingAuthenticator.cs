@@ -16,15 +16,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using System.Security;
 
 namespace TsGui.Authentication
 {
-    public interface IPassword
+    public interface IPasswordConfirmingAuthenticator
     {
-        string AuthID { get; }
-        SecureString SecurePassword { get; }
-        string Password { get; }
-        event AuthValueChanged PasswordChanged;
+        IPassword PasswordConfirmationSource { get; set; }
     }
 }

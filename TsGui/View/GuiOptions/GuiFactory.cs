@@ -27,12 +27,13 @@ using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
 using TsGui.View.GuiOptions.CollectionViews;
 using TsGui.Prebuilt;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
     public static class GuiFactory
     {
-        public static IGuiOption CreateGuiOption(XElement OptionXml, TsColumn Parent)
+        public static IGuiOption CreateGuiOption(XElement OptionXml, ParentLayoutElement Parent)
         {
             
             XElement prebuiltx = PrebuiltFactory.GetPrebuiltXElement(OptionXml);
@@ -51,7 +52,7 @@ namespace TsGui.View.GuiOptions
         }
 
 
-        private static IGuiOption GetGuiOption(XElement OptionXml, TsColumn Parent)
+        private static IGuiOption GetGuiOption(XElement OptionXml, ParentLayoutElement Parent)
         {
             XAttribute xtype = OptionXml.Attribute("Type");
             if (xtype == null) { throw new ArgumentException("Missing Type attribute on GuiOption" + Environment.NewLine); }

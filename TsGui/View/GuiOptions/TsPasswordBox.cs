@@ -30,12 +30,16 @@ using TsGui.Authentication;
 using TsGui.Diagnostics;
 using TsGui.Validation;
 using System.Windows.Input;
+using TsGui.Diagnostics.Logging;
+using TsGui.View.Layout;
 using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
     public class TsPasswordBox: GuiOptionBase, IGuiOption, IPassword, IValidationGuiOption
     {
+        public event AuthValueChanged PasswordChanged;
+
         private bool _expose = false;
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;
@@ -76,7 +80,7 @@ namespace TsGui.View.GuiOptions
         #endregion
 
         //Constructor
-        public TsPasswordBox(XElement InputXml, TsColumn Parent): base (Parent)
+        public TsPasswordBox(XElement InputXml, ParentLayoutElement Parent): base (Parent)
         {
             this._querylist = null;
 
@@ -85,6 +89,7 @@ namespace TsGui.View.GuiOptions
             this.Control = this._passwordboxui;
             this.Label = new TsLabelUI();
             this._passwordboxui.PasswordBox.KeyDown += this.OnKeyDown;
+            this._passwordboxui.PasswordBox.PasswordChanged += this.OnPasswordChanged;
 
             this.UserControl.DataContext = this;
             this.SetDefaults();
@@ -160,7 +165,6 @@ namespace TsGui.View.GuiOptions
             this._authenticator = Director.Instance.AuthLibrary.GetAuthenticator(this.AuthID);
             if (this._authenticator != null)
             {
-                this._authenticator = Director.Instance.AuthLibrary.GetAuthenticator(this.AuthID);
                 this._authenticator.AuthStateChanged += this.OnAuthStateChanged;
                 this._authenticator.AuthStateChanged += this.FirstStateChange;
             }
@@ -182,6 +186,12 @@ namespace TsGui.View.GuiOptions
                 this._authenticator.Authenticate();
                 e.Handled = true;
             }
+        }
+
+        public void OnPasswordChanged(object sender, EventArgs e)
+        {
+            //LoggerFacade.Info("Password changed event");
+            this.PasswordChanged?.Invoke();
         }
 
         //First state change needs the borderbrush thickness to be changed. Takes some thickness from padding and put it onto borderthickness

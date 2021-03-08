@@ -75,7 +75,6 @@ namespace TsGui
         private TestingWindow _testingwindow;
         private bool _livedata = false;
         private bool _debug = false;
-        private bool _showtestwindow = false;
 
         //properties
         public AuthLibrary AuthLibrary { get { return this._authlibrary; } }
@@ -176,24 +175,28 @@ namespace TsGui
 
             this.PopulateHwOptions();
 
-            //now init everything
-            this._optionlibrary.InitialiseOptions();
-
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
             if (this._prodmode == true)
-            { this._envController.HideProgressUI(); }
+            {
+                if (this._debug == true) { this._testingwindow = new TestingWindow(this); }
+                this._envController.HideProgressUI();   
+            }
             else
             {
                 if (this.PromptTestMode() != true) { this.Cancel(); return; }
-                if (this._livedata == true) { this._showtestwindow = true; }
+                if ((this._debug == true) || (this._livedata == true)) { this._testingwindow = new TestingWindow(this); }
             }
+
+            //now init everything
+            this._optionlibrary.InitialiseOptions();
 
             //subscribe to closing event
             this.ParentWindow.Closing += this.OnWindowClosing;
 
             if (this._pages.Count > 0)
             {
+                
                 LoggerFacade.Debug("Loading pages");
                 this.CurrentPage = this._pages.First();
                 //update group settings to all controls
@@ -213,7 +216,7 @@ namespace TsGui
                 this.ParentWindow.Visibility = Visibility.Visible;
                 this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
                 this.StartupFinished = true;
-                if ((this._debug == true) || (this._showtestwindow == true)) { this._testingwindow = new TestingWindow(this); }
+                
                 GuiTimeout.Instance?.Start(this.OnTimeoutReached);
                 LoggerFacade.Info("*TsGui startup finished");
             }

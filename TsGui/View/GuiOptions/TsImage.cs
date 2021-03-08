@@ -23,6 +23,7 @@ using System.Xml.Linq;
 using System.Windows;
 
 using TsGui.Images;
+using TsGui.View.Layout;
 using MessageCrap;
 
 namespace TsGui.View.GuiOptions
@@ -34,7 +35,7 @@ namespace TsGui.View.GuiOptions
         public override string CurrentValue { get { return this.Image.MultiImage.CurrentFilePath; } }
 
         //Constructor
-        public TsImage(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsImage(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this.Control = new TsImageUI();
             this.Label = new TsLabelUI();

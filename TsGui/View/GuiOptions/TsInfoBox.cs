@@ -24,6 +24,7 @@ using System.Xml.Linq;
 using System.Windows;
 using TsGui.Queries;
 using TsGui.Linking;
+using TsGui.View.Layout;
 using MessageCrap;
 
 namespace TsGui.View.GuiOptions
@@ -55,7 +56,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //constructor
-        public TsInfoBox(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsInfoBox(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this.Control = new TsInfoBoxUI();
             this.Label = new TsLabelUI();
@@ -88,7 +89,7 @@ namespace TsGui.View.GuiOptions
         private void SetDefaults()
         {
             this.ControlText = string.Empty;
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+            //this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
     }
 }

@@ -23,6 +23,7 @@ using MessageCrap;
 using System;
 using System.Windows.Threading;
 using System.Xml.Linq;
+using TsGui.View.Layout;
 using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
@@ -49,7 +50,7 @@ namespace TsGui.View.GuiOptions
         public override TsVariable Variable { get { return null; } }
 
         //constructor
-        public TsTimeout(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsTimeout(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this.ControlText = string.Empty;
             this.Control = new TsHeadingUI();

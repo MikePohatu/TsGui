@@ -28,6 +28,7 @@ using TsGui.Queries;
 using TsGui.Grouping;
 using TsGui.Validation;
 using MessageCrap;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -73,7 +74,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         }
 
         //Constructor
-        public CollectionViewGuiOptionBase(TsColumn Parent) : base(Parent)
+        public CollectionViewGuiOptionBase(ParentLayoutElement Parent) : base(Parent)
         {
             this._querylist = new QueryPriorityList(this);
             this._builder = new ListBuilder(this);

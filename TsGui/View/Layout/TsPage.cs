@@ -34,7 +34,7 @@ using System;
 
 namespace TsGui.View.Layout
 {
-    public class TsPage : BaseLayoutElement, IComplianceRoot
+    public class TsPage : ParentLayoutElement, IComplianceRoot
     {
         public event ComplianceRetryEventHandler ComplianceRetry;
 
@@ -104,7 +104,7 @@ namespace TsGui.View.Layout
         #endregion
 
         //Constructors
-        public TsPage(BaseLayoutElement Parent, XElement SourceXml, PageDefaults Defaults) : base(Parent)
+        public TsPage(ParentLayoutElement Parent, XElement SourceXml, PageDefaults Defaults) : base(Parent)
         {
             //this._director = Defaults.RootController;
             LoggerFacade.Info("New page created");
@@ -124,12 +124,23 @@ namespace TsGui.View.Layout
 
             this.LoadXml(SourceXml);
             this.Update();
+            Director.Instance.ConfigLoadFinished += this.OnConfigLoadFinished;
         }
 
         //Methods
+        private void OnConfigLoadFinished(object sender, EventArgs e)
+        {
+            this._table.Build();
+        }
+
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
+            this.LoadXml(InputXml, this);
+        }
+
+        public override void LoadXml(XElement InputXml, ParentLayoutElement parent)
+        {
             XElement x;
 
             this.PageId = XmlHandler.GetStringFromXAttribute(InputXml, "PageId", this.PageId);
@@ -137,7 +148,7 @@ namespace TsGui.View.Layout
             this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
 
             x = InputXml.Element("Heading");
-            if (x != null) { this.PageHeader = new TsPageHeader(this, this.PageHeader, x); }
+            if (x != null) { this.PageHeader = new TsPageHeader(parent, this.PageHeader, x); }
 
             x = InputXml.Element("LeftPane");
             if (x != null) { this.LeftPane = new TsPane(x); }
@@ -146,7 +157,7 @@ namespace TsGui.View.Layout
             if (x != null) { this.RightPane = new TsPane(x); }
 
             //create the table adn bind it to the content
-            this._table = new TsTable(InputXml, this);
+            this._table = new TsTable(InputXml, parent);
             this.Page.MainTablePresenter.Content = this._table.Grid;
             this.Page.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
             this.Page.RightPanePresenter.Content = this.RightPane?.PaneUI;

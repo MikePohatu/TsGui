@@ -92,9 +92,11 @@
     <Compile Include="Authentication\AuthenticationEnums.cs" />
     <Compile Include="Authentication\AuthenticationFactory.cs" />
     <Compile Include="Authentication\AuthLibrary.cs" />
+    <Compile Include="Authentication\ExposedPassword\ExposedPasswordAuthenticator.cs" />
     <Compile Include="Authentication\IAuthenticationComponent.cs" />
     <Compile Include="Authentication\IAuthenticator.cs" />
     <Compile Include="Authentication\IAuthenticatorConsumer.cs" />
+    <Compile Include="Authentication\IPasswordConfirmingAuthenticator.cs" />
     <Compile Include="Authentication\IUsername.cs" />
     <Compile Include="Authentication\IPassword.cs" />
     <Compile Include="Authentication\LocalConfig\LocalConfigPasswordAuthenticator.cs" />
@@ -233,6 +235,8 @@
       <DependentUpon>TsButtonUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsTickCross.cs" />
+    <Compile Include="View\Layout\ParentLayoutElement.cs" />
+    <Compile Include="View\UIContainer.cs" />
     <Compile Include="View\Symbols\SymbolFactory.cs" />
     <Compile Include="View\Symbols\TsFolderUI.xaml.cs">
       <DependentUpon>TsFolderUI.xaml</DependentUpon>

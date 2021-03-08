@@ -8,7 +8,7 @@
              d:DesignHeight="50" d:DesignWidth="300">
     <Border Background="{Binding BgColor}" >
         <StackPanel x:Name="HeaderStackPanel">
-            <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="{Binding Margin}">
+            <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="{Binding Formatting.Margin}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="HeadingTitleColumn" Width="100*"/>
                     <ColumnDefinition x:Name="HeadingImageColumn" Width="Auto"/>
