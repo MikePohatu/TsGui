@@ -45,6 +45,7 @@ namespace TsGui.Authentication.ExposedPassword
         public IUsername UsernameSource { get; set; }
         public IPassword PasswordSource { get; set; }
         public IPassword PasswordConfirmationSource { get; set; }
+        public string Path { get; set; }
         public string AuthID { get; set; }
         public List<string> RequiredGroups { get; private set; } = new List<string>();
 
@@ -78,6 +79,10 @@ namespace TsGui.Authentication.ExposedPassword
         private void LoadXml(XElement inputxml)
         {
             this.VariableName = XmlHandler.GetStringFromXElement(inputxml, "Variable", this.VariableName);
+            this.VariableName = XmlHandler.GetStringFromXAttribute(inputxml, "Variable", this.VariableName);
+            this.Path = XmlHandler.GetStringFromXElement(inputxml, "Path", this.Path);
+            this.Path = XmlHandler.GetStringFromXAttribute(inputxml, "Path", this.Path);
+
             this.AuthID = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
             this.ID = XmlHandler.GetStringFromXAttribute(inputxml, "ID", null);
             if (string.IsNullOrWhiteSpace(this.AuthID) == true)

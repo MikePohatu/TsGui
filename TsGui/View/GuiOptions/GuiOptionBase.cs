@@ -45,6 +45,7 @@ namespace TsGui.View.GuiOptions
         public bool IsToggle { get; set; }
         public bool IsRendered { get; private set; } = false;
         public string ID { get; set; }
+        public string Path { get; set; }
         public UserControl Control { get; set; }
         public UserControl Label { get; set; }
         public GuiOptionBaseUI UserControl { get; set; }
@@ -97,7 +98,12 @@ namespace TsGui.View.GuiOptions
             x = InputXml.Element("Bold");
             if (x != null) { this.LabelFormatting.FontWeight = "Bold"; }
 
+            //path and variable can be set either as an element, or an attribute
+            this.Path = XmlHandler.GetStringFromXElement(InputXml, "Path", this.Path);
+            this.Path = XmlHandler.GetStringFromXAttribute(InputXml, "Path", this.Path);
             this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
+            this.VariableName = XmlHandler.GetStringFromXAttribute(InputXml, "Variable", this.VariableName);
+
             this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
             this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", this.HelpText);
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);

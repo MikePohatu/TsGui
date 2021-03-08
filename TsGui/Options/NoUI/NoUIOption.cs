@@ -41,6 +41,7 @@ namespace TsGui.Options.NoUI
 
         //properties
         public bool IsToggle { get; set; }
+        public string Path { get; set; }
         public string ID
         {
             get { return this._id; }
@@ -101,10 +102,12 @@ namespace TsGui.Options.NoUI
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
 
+            //path and variable can be set either as an element, or an attribute
+            this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
             this.VariableName = XmlHandler.GetStringFromXAttribute(InputXml, "Variable", this.VariableName);
-            
+            this.Path = XmlHandler.GetStringFromXElement(InputXml, "Path", this.Path);
+            this.Path = XmlHandler.GetStringFromXAttribute(InputXml, "Path", this.Path);
 
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
             this._usecurrent = XmlHandler.GetBoolFromXAttribute(InputXml, "UseCurrent", this._usecurrent);

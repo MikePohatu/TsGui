@@ -33,6 +33,11 @@ namespace TsGui.Options
         bool IsActive { get; }
 
         /// <summary>
+        /// The path property can be set by other output methods e.g. registry key. It is not used for Task Sequence output
+        /// </summary>
+        string Path { get; }
+
+        /// <summary>
         /// Initialise the option. This is run after the Director has finished loading config, so all options 
         /// will be in place. This is where the first updates of values should be run
         /// </summary>
