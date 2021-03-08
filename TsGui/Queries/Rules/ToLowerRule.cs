@@ -17,12 +17,15 @@
 //
 #endregion
 
-// IQueryRule.cs - interface for rules used by the result formatter
+// ToLowerRule.cs - convert to lowercase
 
-namespace TsGui.Queries
+namespace TsGui.Queries.Rules
 {
-    public interface IQueryRule
+    public class ToLowerRule : IQueryRule
     {
-        string Process(string Input);
+        public string Process(string Input)
+        {
+            return Input?.ToLower();
+        }
     }
 }

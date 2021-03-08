@@ -22,7 +22,7 @@
 
 using System.Xml.Linq;
 
-namespace TsGui.Queries
+namespace TsGui.Queries.Rules
 {
     public class ReplaceRule: IQueryRule
     {

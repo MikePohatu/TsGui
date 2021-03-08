@@ -22,7 +22,7 @@
 using System;
 using System.Xml.Linq;
 
-namespace TsGui.Queries
+namespace TsGui.Queries.Rules
 {
     public enum TruncateRuleType { RemoveFromStart, RemoveFromEnd, KeepFromStart, KeepFromEnd};
 

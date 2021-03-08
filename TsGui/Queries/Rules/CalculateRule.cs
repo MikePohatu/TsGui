@@ -24,7 +24,7 @@ using System;
 
 using TsGui.Math;
 
-namespace TsGui.Queries
+namespace TsGui.Queries.Rules
 {
     class CalculateRule: IQueryRule
     {

@@ -17,15 +17,12 @@
 //
 #endregion
 
-// ToUpperRule.cs - convert to uppercase
+// IQueryRule.cs - interface for rules used by the result formatter
 
-namespace TsGui.Queries
+namespace TsGui.Queries.Rules
 {
-    public class ToUpperRule : IQueryRule
+    public interface IQueryRule
     {
-        public string Process(string Input)
-        {
-            return Input?.ToUpper();
-        }
+        string Process(string Input);
     }
 }

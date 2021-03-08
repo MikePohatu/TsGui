@@ -17,15 +17,29 @@
 //
 #endregion
 
-// ToLowerRule.cs - convert to lowercase
+// AppendRule.cs - used to add a string to the end of a string result
 
-namespace TsGui.Queries
+using System.Xml.Linq;
+
+namespace TsGui.Queries.Rules
 {
-    public class ToLowerRule : IQueryRule
+    public class AppendRule: IQueryRule
     {
+        private string _appendstring;
+
+        public AppendRule(XElement InputXml)
+        {
+            this.LoadXml(InputXml);
+        }
+
+        private void LoadXml(XElement InputXml)
+        {
+            this._appendstring = InputXml.Value;
+        }
+
         public string Process(string Input)
         {
-            return Input?.ToLower();
+            return Input + _appendstring;
         }
     }
 }

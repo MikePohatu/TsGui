@@ -17,29 +17,15 @@
 //
 #endregion
 
-// AppendRule.cs - used to add a string to the end of a string result
+// ToUpperRule.cs - convert to uppercase
 
-using System.Xml.Linq;
-
-namespace TsGui.Queries
+namespace TsGui.Queries.Rules
 {
-    public class AppendRule: IQueryRule
+    public class ToUpperRule : IQueryRule
     {
-        private string _appendstring;
-
-        public AppendRule(XElement InputXml)
-        {
-            this.LoadXml(InputXml);
-        }
-
-        private void LoadXml(XElement InputXml)
-        {
-            this._appendstring = InputXml.Value;
-        }
-
         public string Process(string Input)
         {
-            return Input + _appendstring;
+            return Input?.ToUpper();
         }
     }
 }
