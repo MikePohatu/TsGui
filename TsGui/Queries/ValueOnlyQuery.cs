@@ -21,7 +21,7 @@ using System.Xml.Linq;
 
 namespace TsGui.Queries
 {
-    public class ValueOnlyQuery: IQuery
+    public class ValueOnlyQuery : IQuery
     {
         private FormattedProperty _formatter = new FormattedProperty();
         private ResultWrangler _wrangler = new ResultWrangler();
@@ -35,7 +35,7 @@ namespace TsGui.Queries
         public ValueOnlyQuery(XElement InputXml)
         {
             this._formatter.Input = InputXml.Value;
-            this._wrangler.NewResult(); 
+            this._wrangler.NewResult();
             this._wrangler.AddFormattedProperty(this._formatter);
         }
 
