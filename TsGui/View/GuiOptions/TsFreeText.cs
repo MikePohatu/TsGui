@@ -28,6 +28,7 @@ using System.Xml.Linq;
 using TsGui.Linking;
 using TsGui.Queries;
 using System.Windows.Controls;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
@@ -51,7 +52,7 @@ namespace TsGui.View.GuiOptions
                 else if (this._charactercasing == CharacterCasing.Upper) { this._controltext = value?.ToUpper(); }
                 else if (this._charactercasing == CharacterCasing.Lower) { this._controltext = value?.ToLower(); }
                 this.OnPropertyChanged(this, "ControlText");
-                this.NotifyUpdate();
+                this.NotifyViewUpdate();
                 this.Validate();
             }
         }
@@ -95,7 +96,6 @@ namespace TsGui.View.GuiOptions
         {
             this.Init();
             this.LoadXml(InputXml);
-            this.RefreshValue();
         }
 
         protected TsFreeText(TsColumn Parent) : base(Parent)
@@ -105,7 +105,7 @@ namespace TsGui.View.GuiOptions
 
         private void Init()
         {
-            this._setvaluequerylist = new QueryPriorityList(this);
+            this._querylist = new QueryPriorityList(this);
 
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
@@ -206,9 +206,9 @@ namespace TsGui.View.GuiOptions
         public void OnValidationChange()
         { this.Validate(); }
 
-        public void RefreshValue()
+        public override void UpdateValue(Message message)
         {
-            string s = this._setvaluequerylist.GetResultWrangler()?.GetString();
+            string s = this._querylist.GetResultWrangler(message)?.GetString();
             if (s != null) 
             {
                 //if required, remove invalid characters and truncate
@@ -218,9 +218,13 @@ namespace TsGui.View.GuiOptions
 
                 if (this.ControlText != s) { this.ControlText = s; }
             }
+
+            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
         }
 
-        public void RefreshAll()
-        { this.RefreshValue(); }
+        public void OnSourceValueUpdated(Message message)
+        {
+            this.UpdateValue(message);
+        }
     }
 }

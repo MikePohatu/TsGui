@@ -30,6 +30,7 @@ using TsGui.Queries;
 using System.Windows.Media;
 using System.Windows.Controls;
 using TsGui.Validation;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
@@ -51,7 +52,7 @@ namespace TsGui.View.GuiOptions
             {
                 this._ischecked = value;
                 this.OnPropertyChanged(this, "IsChecked");
-                this.NotifyUpdate();
+                this.NotifyViewUpdate();
                 this.InvokeToggleEvent();
                 this.Validate();
             }
@@ -103,7 +104,7 @@ namespace TsGui.View.GuiOptions
             this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.SetDefaults();
-            this._setvaluequerylist = new QueryPriorityList(this);          
+            this._querylist = new QueryPriorityList(this);          
             this.LoadXml(InputXml);
         }
 
@@ -127,20 +128,24 @@ namespace TsGui.View.GuiOptions
             { this.IsChecked = true; }
         }
 
-        public void RefreshValue()
+        public override void UpdateValue(Message message)
         {
-            string newvalue = this._setvaluequerylist.GetResultWrangler()?.GetString();
+            string newvalue = this._querylist.GetResultWrangler(message)?.GetString();
+
             if (newvalue != this.CurrentValue)
             {
                 if (newvalue == this._valTrue) { this.IsChecked = true; }
                 else if (newvalue == this._valFalse) { this.IsChecked = false; }
+                else { newvalue = null; }
             }
+            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
         }
 
-        public void RefreshAll()
+        public void OnSourceValueUpdated(Message message)
         {
-            this.RefreshValue();
+            this.UpdateValue(message);
         }
+
         private void SetDefaults()
         {
             if (Director.Instance.UseTouchDefaults == true)

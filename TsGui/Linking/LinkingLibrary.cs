@@ -17,68 +17,71 @@
 //
 #endregion
 
-// LinkableLibrary.cs - stores GuiOptions against their ID
+// LinkableLibrary.cs - stores IOptions against their ID
 
+using MessageCrap;
 using System.Collections.Generic;
 using TsGui.Diagnostics;
+using TsGui.Options;
 
 namespace TsGui.Linking
 {
-    public class LinkingLibrary
+    public class LinkingLibrary: ITopicSubscriber
     {
-        private Dictionary<string, ILinkSource> _sources = new Dictionary<string, ILinkSource>();
-        private Dictionary<string, List<ILinkingEventHandler>> _pendingqueries = new Dictionary<string, List<ILinkingEventHandler>>();
+        private Dictionary<string, IOption> _sources = new Dictionary<string, IOption>();
 
-        public ILinkSource GetSourceOption(string ID)
+        public LinkingLibrary()
         {
-            ILinkSource option;
+            MessageHub.Subscribe(Topics.ReprocessRequest, this);
+        }
+
+        public IOption GetSourceOption(string ID)
+        {
+            if (string.IsNullOrWhiteSpace(ID)) { return null; }
+
+            IOption option;
             this._sources.TryGetValue(ID, out option);
             return option;
         }
 
-        public void AddHandler(string ID, ILinkingEventHandler newhandler)
+        public void AddSource(IOption NewSource)
         {
-            ILinkSource source;
-            if (this._sources.TryGetValue(ID, out source) == true)
-            {
-                this.RegisterHandlerToSource(source, newhandler);
-            }
-            else
-            {
-                List<ILinkingEventHandler> pendinglist;
-                if (this._pendingqueries.TryGetValue(ID, out pendinglist) == true)
-                { pendinglist.Add(newhandler); }
-                else
-                {
-                    pendinglist = new List<ILinkingEventHandler>();
-                    pendinglist.Add(newhandler);
-                    this._pendingqueries.Add(ID, pendinglist);
-                }
-            }
-        }
-
-        public void AddSource(ILinkSource NewSource)
-        {
-            List<ILinkingEventHandler> pendinglist;
-            ILinkSource testoption;
+            IOption testoption;
 
             if (this._sources.TryGetValue(NewSource.ID, out testoption) == true ) { throw new TsGuiKnownException("Duplicate ID found in LinkableLibrary: " + NewSource.ID,""); }
             else { this._sources.Add(NewSource.ID,NewSource); }
+        }
 
-            //now register any pending targets and cleanup
-            if (this._pendingqueries.TryGetValue(NewSource.ID, out pendinglist) == true)
+        public void OnTopicMessageReceived(string topic, Message message)
+        {
+            switch (topic)
             {
-                foreach (ILinkingEventHandler handler in pendinglist)
-                {
-                    this.RegisterHandlerToSource(NewSource, handler);
-                }
-                this._pendingqueries.Remove(NewSource.ID);
+                case Topics.ReprocessRequest:
+                    if (message.IsResponse == false)
+                    {
+                        IOption option = GetSourceOption(message.Payload as string);
+                        if (option != null)
+                        {
+                            option.UpdateValue(message);
+                        }
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
-        private void RegisterHandlerToSource(ILinkSource Source, ILinkingEventHandler Handler)
+        public Message SendUpdateMessage(ILinkSource source, Message message)
         {
-            Source.ValueChanged += Handler.OnLinkedSourceValueChanged;
+            return MessageHub.CreateMessage(source, message).SetTopic(Topics.SourceValueChanged).SetPayload(source.CurrentValue).Send(); ;
+        }
+
+        public void RegisterLinkTarget(ILinkTarget target, ILinkSource source)
+        {
+            MessageHub.Subscribe(source, (Message message) =>
+            {
+                target.OnSourceValueUpdated(message);
+            });
         }
     }
 }

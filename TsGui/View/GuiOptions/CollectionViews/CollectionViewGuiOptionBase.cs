@@ -27,6 +27,7 @@ using TsGui.Linking;
 using TsGui.Queries;
 using TsGui.Grouping;
 using TsGui.Validation;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -74,7 +75,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         //Constructor
         public CollectionViewGuiOptionBase(TsColumn Parent) : base(Parent)
         {
-            this._setvaluequerylist = new QueryPriorityList(this);
+            this._querylist = new QueryPriorityList(this);
             this._builder = new ListBuilder(this);
         }
 
@@ -104,7 +105,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 if (x.Name == "DefaultValue")
                 {
                     IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this);
-                    this._setvaluequerylist.AddQuery(defquery);
+                    this._querylist.AddQuery(defquery);
                 }
             }
         }
@@ -146,16 +147,19 @@ namespace TsGui.View.GuiOptions.CollectionViews
             return newvalid;
         }
 
-        public void RefreshValue()
+        public override void UpdateValue(Message message)
         {
-            this.SetSelected(this._setvaluequerylist.GetResultWrangler()?.GetString());
+            this._builder.Rebuild(message);
+            this.OnPropertyChanged(this, "VisibleOptions");
+            this.SetSelected(this._querylist.GetResultWrangler(message)?.GetString());
+            this.NotifyViewUpdate();
+
+            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
         }
 
-        public void RefreshAll()
+        public void OnSourceValueUpdated(Message message)
         {
-            this._builder.Rebuild();
-            this.OnPropertyChanged(this, "VisibleOptions");
-            this.SetSelected(this._setvaluequerylist.GetResultWrangler()?.GetString());
+            this.UpdateValue(message);
         }
 
         protected abstract void SetSelected(string input);
@@ -179,7 +183,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         protected void OnSelectionChanged(object o, RoutedEventArgs e)
         {
             this.Validate(false);
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
             this.InvokeToggleEvent();
         }
 

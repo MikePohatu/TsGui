@@ -23,10 +23,11 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using TsGui.Options;
 using TsGui.Linking;
+using MessageCrap;
 
 namespace TsGui.Queries
 {
-    public class GuiVariableQuery: BaseQuery, ILinkingEventHandler
+    public class GuiVariableQuery: BaseQuery, ILinkTarget
     {
         private FormattedProperty _formatter;
         private List<IOption> _options = new List<IOption>();
@@ -36,16 +37,17 @@ namespace TsGui.Queries
             this.LoadXml(inputxml);
             this.AddExistingOptions();      //add and register any existing options
             Director.Instance.OptionLibrary.OptionAdded += this.OnOptionAddedToLibrary; //register to get any new options
-            this.ProcessAndRefresh();
+            this.ProcessQuery(null);
         }
 
         private void AddExistingOptions()
         {
             foreach (IOption option in Director.Instance.OptionLibrary.Options)
             {
-                if ((!string.IsNullOrEmpty(option.VariableName)) && (option.VariableName.Equals(this._formatter.Name, StringComparison.OrdinalIgnoreCase)))
+                if ((string.IsNullOrEmpty(option.VariableName) == false) && (option.VariableName.Equals(this._formatter.Name, StringComparison.OrdinalIgnoreCase)))
                 {
                     this.AddOption(option);
+                     
                 }
             }
         }
@@ -65,15 +67,14 @@ namespace TsGui.Queries
             else { return null; }
         }
 
-        private void ProcessAndRefresh()
+        public void OnSourceValueUpdated(Message message)
         {
-            this.ProcessQuery();
-            this._linktarget?.RefreshValue();
+            this.ValueUpdated(message);
         }
 
-        public void OnLinkedSourceValueChanged()
+        public void ValueUpdated(Message message)
         {
-            this.ProcessAndRefresh();
+            this._linktarget?.OnSourceValueUpdated(message);
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace TsGui.Queries
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        public override ResultWrangler ProcessQuery()
+        public override ResultWrangler ProcessQuery(Message message)
         {
             this._formatter.Input = this.GetVariableValue();
             this._processed = true;
@@ -101,14 +102,13 @@ namespace TsGui.Queries
             if ((!string.IsNullOrEmpty(option.VariableName)) && ( option.VariableName.Equals(this._formatter.Name,StringComparison.OrdinalIgnoreCase)))
             {
                 this.AddOption(option);
-                this.ProcessAndRefresh();
+                this.ProcessQuery(null);
             }
         }
 
         private void AddOption(IOption option)
         {
             this._options.Add(option);
-            option.ValueChanged += this.OnLinkedSourceValueChanged;
         }
 
         private new void LoadXml(XElement InputXml)

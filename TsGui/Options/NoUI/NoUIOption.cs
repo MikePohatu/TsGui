@@ -28,13 +28,12 @@ using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
 using System.Collections.Generic;
 using System.Windows;
+using MessageCrap;
 
 namespace TsGui.Options.NoUI
 {
-    public class NoUIOption: GroupableBlindBase,IOption, ILinkTarget, IToggleControl
+    public class NoUIOption: GroupableBlindBase, IOption, ILinkTarget, IToggleControl
     {
-        public event IOptionValueChanged ValueChanged;
-
         private string _value = string.Empty;
         private bool _usecurrent = false;
         private QueryPriorityList _querylist;
@@ -48,11 +47,7 @@ namespace TsGui.Options.NoUI
             set
             {
                 if (string.IsNullOrWhiteSpace(value) == true) { throw new TsGuiKnownException("Empty ID set on NoUI option", ""); }
-                if (this._id != value)
-                {
-                    this._id = value;
-                    Director.Instance.LinkingLibrary.AddSource(this);
-                }
+                if (this._id != value) { this._id = value; }
             }
         }
         public string VariableName { get; set; }
@@ -63,7 +58,7 @@ namespace TsGui.Options.NoUI
             set
             {
                 this._value = value;
-                this.NotifyUpdate();
+                this.NotifyViewUpdate();
             }
         }
         public TsVariable Variable
@@ -93,8 +88,8 @@ namespace TsGui.Options.NoUI
         {
             this._querylist = new QueryPriorityList(this);
             this.LoadXml(InputXml);
-            this.RefreshValue();
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
+
         }
 
         public NoUIOption():base ()
@@ -146,6 +141,7 @@ namespace TsGui.Options.NoUI
             if (xa != null)
             {
                 this.ID = xa.Value;
+                Director.Instance.LinkingLibrary.AddSource(this);
             }
 
             IEnumerable<XElement> xlist = InputXml.Elements("Toggle");
@@ -163,15 +159,18 @@ namespace TsGui.Options.NoUI
             if (this.IsToggle == true) { Director.Instance.AddToggleControl(this); }
         }
 
-        public void RefreshValue()
+        public void UpdateValue(Message message)
         {
-            this._value = this._querylist.GetResultWrangler()?.GetString();
-            this.NotifyUpdate();
+            this._value = this._querylist.GetResultWrangler(message)?.GetString();
+
+            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
+
+            this.NotifyViewUpdate();
         }
 
-        public void RefreshAll()
+        public void OnSourceValueUpdated(Message message)
         {
-            this.RefreshValue();
+            this.UpdateValue(message);
         }
 
         public void ImportFromTsVariable(TsVariable var)
@@ -180,7 +179,7 @@ namespace TsGui.Options.NoUI
             ValueOnlyQuery newvoquery = new ValueOnlyQuery(var.Value);
             this._querylist.AddQuery(newvoquery);
             this.ID = var.Name;
-            this.RefreshValue();
+            this.UpdateValue(null);
         }
 
         protected void LoadSetValueXml(XElement inputxml)
@@ -201,12 +200,11 @@ namespace TsGui.Options.NoUI
             this._querylist.LoadXml(inputxml);
         }
 
-        protected void NotifyUpdate()
+        protected void NotifyViewUpdate()
         {
             LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
-            this.ValueChanged?.Invoke();
         }
 
         //Grouping stuff
@@ -223,7 +221,7 @@ namespace TsGui.Options.NoUI
         //This is called by the controller once everything is loaded
         public void Initialise()
         {
-            
+            this.UpdateValue(null);
         }
 
         public void InvokeToggleEvent()
@@ -234,7 +232,7 @@ namespace TsGui.Options.NoUI
         protected override void EvaluateGroups()
         {
             base.EvaluateGroups();
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
         }
 
         protected void OnGroupStateChanged(object o, RoutedEventArgs e)

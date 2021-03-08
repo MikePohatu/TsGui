@@ -132,6 +132,8 @@ namespace TsGui.View.GuiOptions
             #endregion
 
             Director.Instance.AddOptionToLibary(newoption);
+            if (string.IsNullOrWhiteSpace(newoption.ID) == false) { Director.Instance.LinkingLibrary.AddSource(newoption); }
+            
             return newoption;
         }
 

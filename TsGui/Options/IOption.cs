@@ -32,6 +32,10 @@ namespace TsGui.Options
         bool PurgeInactive { get; set; }
         bool IsActive { get; }
 
+        /// <summary>
+        /// Initialise the option. This is run after the Director has finished loading config, so all options 
+        /// will be in place. This is where the first updates of values should be run
+        /// </summary>
         void Initialise();
     }
 }

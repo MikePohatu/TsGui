@@ -27,6 +27,7 @@ using System.Management;
 using TsGui.Diagnostics;
 using TsGui.Connectors;
 using TsGui.Linking;
+using MessageCrap;
 
 namespace TsGui.Queries
 {
@@ -58,7 +59,7 @@ namespace TsGui.Queries
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
 
-        public override ResultWrangler ProcessQuery()
+        public override ResultWrangler ProcessQuery(Message message)
         {
             //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
             //New sublists are created for each management object in the wrangler. 

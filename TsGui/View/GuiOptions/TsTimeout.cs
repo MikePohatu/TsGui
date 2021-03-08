@@ -19,9 +19,11 @@
 
 // TsTimeout.cs - Displays the value of the GUI timeout object
 
+using MessageCrap;
 using System;
 using System.Windows.Threading;
 using System.Xml.Linq;
+using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
@@ -84,6 +86,11 @@ namespace TsGui.View.GuiOptions
             {
                 this.ControlText = remaining.ToString(@"hh\:mm\:ss");
             }
+        }
+
+        public override void UpdateValue(Message message)
+        {
+            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
         }
     }
 }

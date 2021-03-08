@@ -36,7 +36,6 @@ namespace TsGui.View.GuiOptions
         {           
             this.Control = new TsTrafficLightUI();
             this.LoadXml(InputXml);
-            this.RefreshValue();
         }
 
         public TsTrafficLight(TsColumn Parent) : base(Parent)

@@ -31,17 +31,15 @@ using TsGui.Diagnostics.Logging;
 using TsGui.Queries;
 using TsGui.Grouping;
 using System.Collections.Generic;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class GuiOptionBase : BaseLayoutElement, IOption, ILinkSource, IToggleControl
+    public abstract class GuiOptionBase : BaseLayoutElement, IOption, IToggleControl
     {
-        public event IOptionValueChanged ValueChanged;
-
         private string _labeltext = string.Empty;
         private string _helptext = null;
-        protected QueryPriorityList _setvaluequerylist;
-
+        protected QueryPriorityList _querylist;
 
 
         public bool IsToggle { get; set; }
@@ -83,7 +81,6 @@ namespace TsGui.View.GuiOptions
         {
             this.UserControl = new GuiOptionBaseUI();
             this.UserControl.Loaded += this.OnRendered;
-
         }
 
         public void OnRendered (object sender, EventArgs e)
@@ -108,11 +105,7 @@ namespace TsGui.View.GuiOptions
             this.SetLayoutRightLeft();
 
             XAttribute xa = InputXml.Attribute("ID");
-            if (xa != null)
-            {
-                this.ID = xa.Value;
-                Director.Instance.LinkingLibrary.AddSource(this);
-            }
+            if (xa != null) { this.ID = xa.Value; }
 
             x = InputXml.Element("SetValue");
             if (x != null)
@@ -151,6 +144,7 @@ namespace TsGui.View.GuiOptions
         {
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
+            this.UpdateValue(null);
         }
 
         public void InvokeToggleEvent()
@@ -161,7 +155,7 @@ namespace TsGui.View.GuiOptions
         protected override void EvaluateGroups()
         {
             base.EvaluateGroups();
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
         }
 
         protected void OnGroupStateChanged(object o, RoutedEventArgs e)
@@ -191,10 +185,10 @@ namespace TsGui.View.GuiOptions
             }
 
             //_setvaluequerylist might be null e.g. on passwordboxes
-            if (this._setvaluequerylist != null)
+            if (this._querylist != null)
             {
-                if (clearbeforeload == true) { this._setvaluequerylist.Clear(); }
-                this._setvaluequerylist.LoadXml(inputxml);
+                if (clearbeforeload == true) { this._querylist.Clear(); }
+                this._querylist.LoadXml(inputxml);
             }
             
         }
@@ -213,12 +207,13 @@ namespace TsGui.View.GuiOptions
             }
         }
 
-        protected void NotifyUpdate()
+        protected void NotifyViewUpdate()
         {
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
             LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
-            this.ValueChanged?.Invoke();
         }
+
+        public abstract void UpdateValue(Message message);
     }
 }

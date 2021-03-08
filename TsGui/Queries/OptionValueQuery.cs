@@ -19,47 +19,57 @@
 
 // OptionValueQuery.cs - queries an existing TsGui option
 
+using MessageCrap;
+using System;
 using System.Xml.Linq;
+using TsGui.Diagnostics;
+using TsGui.Diagnostics.Logging;
 using TsGui.Linking;
+using TsGui.Options;
 
 namespace TsGui.Queries
 {
-    public class OptionValueQuery: BaseQuery, ILinkingEventHandler
+    public class OptionValueQuery: BaseQuery, ITopicSubscriber
     {
         private FormattedProperty _formatter;
-
+        IOption _source;
         public OptionValueQuery(XElement inputxml, ILinkTarget owner): base(owner)
         {
             this._ignoreempty = false;
             this.SetDefaults();
             this.LoadXml(inputxml);
-            Director.Instance.LinkingLibrary.AddHandler(this._formatter.Name,this);
-            this.ProcessQuery();
+            this.ProcessQuery(null);
+            Director.Instance.ConfigLoadFinished += this.Init;
         }
 
-        
-
-        public override ResultWrangler ProcessQuery()
+        public void Init(object sender, EventArgs e)
         {
-            this._formatter.Input = this.GetSourceOptionValue(this._formatter.Name);
+            this._source = this.GetSourceOption(this._formatter.Name);
+            Director.Instance.LinkingLibrary.RegisterLinkTarget(this._linktarget, this._source);
+        }
+
+        public override ResultWrangler ProcessQuery(Message message)
+        {
+            if (this._source != null)
+            {
+                MessageHub.CreateMessage(this, message).SetTopic(Topics.ReprocessRequest).SetPayload(this._source.ID).SetResponseExpected(true).Send();
+            }
+
+            this._formatter.Input = this._source?.CurrentValue;
             this._processed = true;
 
             return this.SetReturnWrangler();
         }
 
-        public string GetSourceOptionValue(string id)
+        public IOption GetSourceOption(string id)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                return Director.Instance.LinkingLibrary.GetSourceOption(id)?.CurrentValue;
+                return Director.Instance.LinkingLibrary.GetSourceOption(id);
             }
-            else { return null; }
-        }
-
-        public void OnLinkedSourceValueChanged()
-        {
-            this.ProcessQuery();
-            this._linktarget?.RefreshValue();
+            else {
+                throw new TsGuiKnownException($"Unable to locate linked source ID: {id}", null);
+            }
         }
 
         private void SetDefaults()
@@ -87,6 +97,22 @@ namespace TsGui.Queries
             {
                 this._formatter = new FormattedProperty(x);
                 this._processingwrangler.AddFormattedProperty(this._formatter);
+            }
+        }
+
+        public void OnTopicMessageReceived(string topic, Message message)
+        {
+            if (message.RootMessage?.Sender == this)
+            {
+                //string id = this._formatter.Name;
+                switch (topic)
+                {
+                    case Topics.SourceValueChanged:
+                        this._linktarget?.OnSourceValueUpdated(message);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

@@ -16,18 +16,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-
-// ILinkingTarget - Linking target options
-
 using MessageCrap;
 
-namespace TsGui.Linking
+namespace TsGui.Validation
 {
-    public interface ILinkTarget
+    public static class Topics
     {
-        /// <summary>
-        /// Respond to a source updating it's value
-        /// </summary>
-        void OnSourceValueUpdated(Message updateMessage);
+        public static string RefreshRequest { get; } = "TsGui.Validation.RefreshRequest";
+        public static string ValueChanged { get; } = "TsGui.Validation.ValueChanged";
     }
 }

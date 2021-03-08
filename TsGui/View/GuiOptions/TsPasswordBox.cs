@@ -30,6 +30,7 @@ using TsGui.Authentication;
 using TsGui.Diagnostics;
 using TsGui.Validation;
 using System.Windows.Input;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
@@ -73,7 +74,7 @@ namespace TsGui.View.GuiOptions
         //Constructor
         public TsPasswordBox(XElement InputXml, TsColumn Parent): base (Parent)
         {
-            this._setvaluequerylist = null;
+            this._querylist = null;
 
             this._passwordboxui = new TsPasswordBoxUI();
             this.Control = this._passwordboxui;
@@ -185,5 +186,7 @@ namespace TsGui.View.GuiOptions
             this.ControlFormatting.BorderThickness = new Thickness(this.ControlFormatting.BorderThickness.Left + 1);
             this._authenticator.AuthStateChanged -= this.FirstStateChange;
         }
+
+        public override void UpdateValue(Message message) { }
     }
 }

@@ -44,7 +44,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             this.SetDefaults();      
             this.LoadXml(InputXml);
-            this._builder.Rebuild();
+            this._builder.Rebuild(null);
             this.SetListViewDefault();
 
             this._treeviewui.TreeView.SelectedItemChanged += this.OnTreeViewSelectedItemChanged;
@@ -91,10 +91,10 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             if (this._nodefaultvalue == false)
             {
-                string defaultval = this._setvaluequerylist.GetResultWrangler()?.GetString();
+                string defaultval = this._querylist.GetResultWrangler(null)?.GetString();
                 this.SetSelected(defaultval);
             }
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
         }
     }
 }

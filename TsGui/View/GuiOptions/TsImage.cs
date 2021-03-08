@@ -23,6 +23,7 @@ using System.Xml.Linq;
 using System.Windows;
 
 using TsGui.Images;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
@@ -59,7 +60,7 @@ namespace TsGui.View.GuiOptions
         
         public void OnImageScalingUpdate(object o, RoutedEventArgs e)
         {
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
         }
 
         private void CreateImage(XElement InputXml)
@@ -77,5 +78,7 @@ namespace TsGui.View.GuiOptions
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
         }
+
+        public override void UpdateValue(Message message) { }
     }
 }

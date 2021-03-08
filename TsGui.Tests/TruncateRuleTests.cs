@@ -17,7 +17,7 @@
 //
 #endregion
 using NUnit.Framework;
-using TsGui.Queries;
+using TsGui.Queries.Rules;
 using System.Xml.Linq;
 
 namespace TsGui.Tests

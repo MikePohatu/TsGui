@@ -49,7 +49,6 @@ namespace TsGui.View.GuiOptions
             this._validationtooltiphandler.SetTarget(this.UserControl);
             this.SetDefaults();
             this.LoadXml(InputXml);
-            this.RefreshValue();
         }
 
         public TsTickCross(TsColumn Parent, IDirector MainController) : base(Parent)

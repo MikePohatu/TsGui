@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using MessageCrap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,7 +74,7 @@ namespace TsGui.Queries
             }
         }
 
-        public override ResultWrangler ProcessQuery()
+        public override ResultWrangler ProcessQuery(Message message)
         {
             //Query the reg value
             try

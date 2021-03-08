@@ -24,6 +24,7 @@ using System.Xml.Linq;
 using System.Windows;
 using TsGui.Queries;
 using TsGui.Linking;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
@@ -39,7 +40,7 @@ namespace TsGui.View.GuiOptions
             set {
                 this._controltext = value;
                 this.OnPropertyChanged(this, "ControlText");
-                this.NotifyUpdate();
+                this.NotifyViewUpdate();
             }
         }
         public override TsVariable Variable
@@ -60,9 +61,8 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
             this.UserControl.DataContext = this;
             this.SetDefaults();
-            this._setvaluequerylist = new QueryPriorityList(this);
+            this._querylist = new QueryPriorityList(this);
             this.LoadXml(InputXml);
-            this.RefreshControlText();
         }
 
         public new void LoadXml(XElement InputXml)
@@ -76,16 +76,14 @@ namespace TsGui.View.GuiOptions
             { this.LoadSetValueXml(x,false); }
         }
 
-        public void RefreshValue()
-        { this.RefreshControlText(); }
-
-        public void RefreshAll()
-        { this.RefreshControlText(); }
-
-        private void RefreshControlText()
+        public override void UpdateValue(Message message)
         {
-            this.ControlText = this._setvaluequerylist.GetResultWrangler()?.GetString();
+            this.ControlText = this._querylist.GetResultWrangler(message)?.GetString();
+            Director.Instance.LinkingLibrary.SendUpdateMessage(this, message);
         }
+
+        public void OnSourceValueUpdated(Message message)
+        { this.UpdateValue(message); }
 
         private void SetDefaults()
         {

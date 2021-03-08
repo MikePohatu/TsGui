@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -22,6 +22,7 @@ using TsGui.View.Layout;
 using TsGui.Actions;
 using TsGui.Diagnostics.Logging;
 using TsGui.Validation;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
@@ -96,5 +97,7 @@ namespace TsGui.View.GuiOptions
             this._isdefault = false;
             this.ButtonText = "Apply";
         }
+
+        public override void UpdateValue(Message message) { }
     }
 }

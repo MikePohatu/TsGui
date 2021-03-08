@@ -50,7 +50,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             this.SetDefaults();
             this.LoadXml(InputXml);
-            this._builder.Rebuild();
+            this._builder.Rebuild(null);
             this.RegisterForItemGroupEvents();
             this.SetComboBoxDefault();
 
@@ -84,7 +84,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             if (this._nodefaultvalue == false)
             {
                 int index = 0;
-                string defaultval = this._setvaluequerylist.GetResultWrangler()?.GetString();
+                string defaultval = this._querylist.GetResultWrangler(null)?.GetString();
                 foreach (ListItem item in this.VisibleOptions)
                 {
                     if ((item.Value == defaultval) || (index == 0))
@@ -96,7 +96,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 }
             }
             this.CurrentItem = newdefault;
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
         }
 
         protected override void SetSelected(string value)

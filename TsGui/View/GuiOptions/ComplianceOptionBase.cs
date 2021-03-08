@@ -24,10 +24,10 @@ using System.Windows;
 using System.Xml.Linq;
 using System.Windows.Media;
 using TsGui.Validation;
-using TsGui.View.Layout;
 using TsGui.Queries;
 using TsGui.Linking;
 using TsGui.Diagnostics;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
@@ -101,7 +101,7 @@ namespace TsGui.View.GuiOptions
             this.StrokeColor = new SolidColorBrush(Colors.Blue);
             this._compliancehandler = new ComplianceHandler(this);
             this._validationtooltiphandler = new ValidationToolTipHandler(this);
-            this._setvaluequerylist = new QueryPriorityList(this);
+            this._querylist = new QueryPriorityList(this);
             this.UserControl.DataContext = this;
             this.SetDefaults();      
         }
@@ -146,19 +146,21 @@ namespace TsGui.View.GuiOptions
 
         public void OnComplianceRetry(IComplianceRoot o, EventArgs e)
         {
-            this.RefreshValue();
+            this.UpdateValue(null);
         }
 
-        public void RefreshValue()
+        public override void UpdateValue(Message message)
         {
-            this._setvaluequerylist.ProcessAllQueries();
-            this.ProcessQuery();
+            this._querylist.ProcessAllQueries(message);
+            this.ProcessQuery(message);
             this.Validate();
+
+            MessageHub.CreateMessage(this, message).SetTopic(Linking.Topics.SourceValueChanged).SetPayload(this.CurrentValue).Send();
         }
 
-        public void RefreshAll()
+        public void OnSourceValueUpdated(Message message)
         {
-            this.RefreshValue();
+            this.UpdateValue(message);
         }
 
         public new void LoadXml(XElement InputXml)
@@ -174,12 +176,12 @@ namespace TsGui.View.GuiOptions
 
             //wrap the query in another to make it suitable for the querylist. 
             x = InputXml.Element("GetValue");
-            if (x != null) { this._setvaluequerylist.LoadXml(x); }  
+            if (x != null) { this._querylist.LoadXml(x); }  
         } 
 
-        protected void ProcessQuery()
+        protected void ProcessQuery(Message message)
         {
-            this._value = this._setvaluequerylist.GetResultWrangler()?.GetString();
+            this._value = this._querylist.GetResultWrangler(message)?.GetString();
         }
 
         protected void UpdateState()
@@ -192,7 +194,7 @@ namespace TsGui.View.GuiOptions
             else { this.HelpText = this._okHelpText; }
 
             
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
             this.UpdateView();
         }
 

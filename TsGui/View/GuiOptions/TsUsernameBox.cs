@@ -33,7 +33,6 @@ namespace TsGui.View.GuiOptions
         {
             this.SetDefaults();
             this.LoadXml(InputXml);
-            this.RefreshValue();
         }
 
         private void SetDefaults()
