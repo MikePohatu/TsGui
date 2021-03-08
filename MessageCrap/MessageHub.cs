@@ -169,7 +169,7 @@ namespace MessageCrap
         public static void ReportTimeout(Message message)
         {
             CancelPending(message);
-            string s = $"Message timed out waiting for response, topic: {message.Topic}";
+            string s = $"Message timed out waiting for response, ID: {message.ID}, topic: {message.Topic}";
             Warn?.Invoke(new Exception(s),s);
         }
 
@@ -218,7 +218,7 @@ namespace MessageCrap
         public static void Subscribe(ISubscribable sender, Action<Message> callback)
         {
             List<Action<Message>> subs;
-            Debug?.Invoke($"Creating subscribtion to hashcode: {sender.ToString()}");
+            Debug?.Invoke($"Creating subscribtion to ID: {sender.ID}");
             if (_objectCallbacks.TryGetValue(sender.ID, out subs))
             {
                 subs.Add(callback);
