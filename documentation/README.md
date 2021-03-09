@@ -5,9 +5,13 @@ Documentation is currently a work in progress. For usage information, also see t
 ## Concepts
 
 * [Layout](/documentation/Layout.md)
+* [TsGui Options](/documentation/options/README.md) (UI controls)
 * [Prebuilt configuration](/documentation/PrebuiltConfiguration.md)
 * [Authentication](/documentation/Authentication/README.md)
 
+## Features
+* [Option Linking](/documentation/features/OptionLinking.md)
+* [TsGui Output](/documentation/features/TsGuiOutput.md)
 
 ## Command line options
 tsgui.exe -config [filepath] -webconfig [url] -hash [password]
