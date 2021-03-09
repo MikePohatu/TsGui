@@ -100,7 +100,7 @@ In the example below, the compliance evaluation will return OK if the value cont
 ```
 
 ### Grouping
-Compliance supports the use of [Groups](/documentation/features/GroupsAndToggles.md) to enable & disable different compliance options. For example if you have a CheckBox setup as a [toggle](/documentation/features/GroupsAndToggles.md#toggles) that sets whether Photoshop is going to be installed. Photoshop needs more memory so you want a different so you want the compliance to change.
+Compliance supports the use of [Groups](/documentation/features/GroupsAndToggles.md) to enable & disable different compliance options. For example you may have a CheckBox setup as a [toggle](/documentation/features/GroupsAndToggles.md#toggles) that sets whether Photoshop is going to be installed. You want the compliance evaluation to change to require more memory for Photoshop usage.
 
 You configure the toggle to set two groups, one for Photoshop enabled, and one disabled:
 
