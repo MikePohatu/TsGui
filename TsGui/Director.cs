@@ -142,7 +142,7 @@ namespace TsGui
         }
 
         /// <summary>
-        /// Replace the default director with a new IDirector instance. This to pass in a scafold IDirector for testing
+        /// Replace the default director with a new IDirector instance. This to pass in a scaffold IDirector for testing
         /// </summary>
         /// <param name="newdirector"></param>
         public static void OverrideInstance(IDirector newdirector)
@@ -183,7 +183,7 @@ namespace TsGui
 
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
-            if (this._prodmode == true)
+            if (this._args.TestMode == false && this._prodmode == true)
             {
                 if (this._debug == true) { this._testingwindow = new TestingWindow(this); } 
             }
@@ -285,7 +285,9 @@ namespace TsGui
                 this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
                 this.DefaultPath = XmlHandler.GetStringFromXElement(SourceXml, "DefaultPath", this.DefaultPath);
                 string outputtype = XmlHandler.GetStringFromXAttribute(SourceXml, "Output", "Sccm");
-                this._envController.SetOutputType(outputtype);
+                if (this._args.TestMode == false) { this._envController.SetOutputType(outputtype); }
+                else { this._envController.SetOutputType("Test"); }
+                
 
                 //Set show grid lines after pages and columns have been created.
                 x = SourceXml.Element("ShowGridLines");
@@ -299,7 +301,7 @@ namespace TsGui
                 //turn hardware eval on or off
                 x = SourceXml.Element("HardwareEval");
                 if (x != null)
-                { this._hardwareevaluator = new HardwareEvaluator(); }
+                { this._hardwareevaluator = new HardwareEvaluator(x); }
 
                 //start layout import
                 this.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);

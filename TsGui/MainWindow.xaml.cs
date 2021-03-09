@@ -31,7 +31,7 @@ namespace TsGui
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(Arguments arguments)
+        public MainWindow()
         {            
             InitializeComponent();
             LoggerFacade.Trace("MainWindow initialized");

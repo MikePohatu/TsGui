@@ -24,7 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Management;
-
+using System.Xml.Linq;
 using TsGui.Connectors;
 
 namespace TsGui
@@ -32,8 +32,8 @@ namespace TsGui
     public class HardwareEvaluator
     {
         private string _namespace = @"root\CIMV2";
+        private string _path = null;
 
-        public string Path { get; set; }
         public bool IsLaptop { get; private set; } = false;
         public bool IsDesktop { get; private set; } = false;
         public bool IsServer { get; private set; } = false;
@@ -49,8 +49,10 @@ namespace TsGui
         public string DefaultGateways6 { get; private set; } = string.Empty;
         public string DHCPServer { get; private set; } = string.Empty;
 
-        public HardwareEvaluator()
+        public HardwareEvaluator(XElement inputxml)
         {
+            this._path = XmlHandler.GetStringFromXAttribute(inputxml, "Path", this._path);
+            if (string.IsNullOrWhiteSpace(this._path)) { this._path = Director.Instance.DefaultPath; }
             this.Evaluate();
         }
 
@@ -58,34 +60,34 @@ namespace TsGui
         {
             List<Variable> vars = new List<Variable>();
 
-            if (IsLaptop) { vars.Add(new Variable("TsGui_IsLaptop", "TRUE", this.Path)); }
-            else { vars.Add(new Variable("TsGui_IsLaptop", "FALSE", this.Path)); }
+            if (IsLaptop) { vars.Add(new Variable("TsGui_IsLaptop", "TRUE", this._path)); }
+            else { vars.Add(new Variable("TsGui_IsLaptop", "FALSE", this._path)); }
 
-            if (IsDesktop) { vars.Add(new Variable("TsGui_IsDesktop", "TRUE", this.Path)); }
-            else { vars.Add(new Variable("TsGui_IsDesktop", "FALSE", this.Path)); }
+            if (IsDesktop) { vars.Add(new Variable("TsGui_IsDesktop", "TRUE", this._path)); }
+            else { vars.Add(new Variable("TsGui_IsDesktop", "FALSE", this._path)); }
 
-            if (IsServer) { vars.Add(new Variable("TsGui_IsServer", "TRUE", this.Path)); }
-            else { vars.Add(new Variable("TsGui_IsServer", "FALSE", this.Path)); }
+            if (IsServer) { vars.Add(new Variable("TsGui_IsServer", "TRUE", this._path)); }
+            else { vars.Add(new Variable("TsGui_IsServer", "FALSE", this._path)); }
 
-            if (IsVirtualMachine) { vars.Add(new Variable("TsGui_IsVirtualMachine", "TRUE", this.Path)); }
-            else { vars.Add(new Variable("TsGui_IsVirtualMachine", "FALSE", this.Path)); }
+            if (IsVirtualMachine) { vars.Add(new Variable("TsGui_IsVirtualMachine", "TRUE", this._path)); }
+            else { vars.Add(new Variable("TsGui_IsVirtualMachine", "FALSE", this._path)); }
 
-            if (IsConvertible) { vars.Add(new Variable("TsGui_IsConvertible", "TRUE", this.Path)); }
-            else { vars.Add(new Variable("TsGui_IsConvertible", "FALSE", this.Path)); }
+            if (IsConvertible) { vars.Add(new Variable("TsGui_IsConvertible", "TRUE", this._path)); }
+            else { vars.Add(new Variable("TsGui_IsConvertible", "FALSE", this._path)); }
 
-            if (IsDetachable) { vars.Add(new Variable("TsGui_IsDetachable", "TRUE", this.Path)); }
-            else { vars.Add(new Variable("TsGui_IsDetachable", "FALSE", this.Path)); }
+            if (IsDetachable) { vars.Add(new Variable("TsGui_IsDetachable", "TRUE", this._path)); }
+            else { vars.Add(new Variable("TsGui_IsDetachable", "FALSE", this._path)); }
 
-            if (IsTablet) { vars.Add(new Variable("TsGui_IsTablet", "TRUE", this.Path)); }
-            else { vars.Add(new Variable("TsGui_IsTablet", "FALSE", this.Path)); }
+            if (IsTablet) { vars.Add(new Variable("TsGui_IsTablet", "TRUE", this._path)); }
+            else { vars.Add(new Variable("TsGui_IsTablet", "FALSE", this._path)); }
 
-            vars.Add(new Variable("TsGui_IPv4", this.IPAddresses4, this.Path));
-            vars.Add(new Variable("TsGui_IPv6", this.IPAddresses6, this.Path));
-            vars.Add(new Variable("TsGui_DefaultGateway4", this.DefaultGateways4, this.Path));
-            vars.Add(new Variable("TsGui_DefaultGateway6", this.DefaultGateways6, this.Path));
-            vars.Add(new Variable("TsGui_IPSubetMask4", this.IPNetMask4, this.Path));
-            vars.Add(new Variable("TsGui_IPSubnetMask6", this.IPNetMask6, this.Path));
-            vars.Add(new Variable("TsGui_DHCPServer", this.DHCPServer, this.Path));
+            vars.Add(new Variable("TsGui_IPv4", this.IPAddresses4, this._path));
+            vars.Add(new Variable("TsGui_IPv6", this.IPAddresses6, this._path));
+            vars.Add(new Variable("TsGui_DefaultGateway4", this.DefaultGateways4, this._path));
+            vars.Add(new Variable("TsGui_DefaultGateway6", this.DefaultGateways6, this._path));
+            vars.Add(new Variable("TsGui_IPSubetMask4", this.IPNetMask4, this._path));
+            vars.Add(new Variable("TsGui_IPSubnetMask6", this.IPNetMask6, this._path));
+            vars.Add(new Variable("TsGui_DHCPServer", this.DHCPServer, this._path));
 
             return vars;
         }

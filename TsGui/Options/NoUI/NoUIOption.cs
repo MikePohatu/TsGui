@@ -87,14 +87,15 @@ namespace TsGui.Options.NoUI
         //constructors     
         public NoUIOption(NoUIContainer Parent, XElement InputXml) : base(Parent)
         {
+            this.Path = Director.Instance.DefaultPath;
             this._querylist = new QueryPriorityList(this);
             this.LoadXml(InputXml);
             this.NotifyViewUpdate();
-
         }
 
         public NoUIOption():base ()
         {
+            this.Path = Director.Instance.DefaultPath;
             this._querylist = new QueryPriorityList(this);
         }
 
@@ -182,6 +183,7 @@ namespace TsGui.Options.NoUI
             ValueOnlyQuery newvoquery = new ValueOnlyQuery(var.Value);
             this._querylist.AddQuery(newvoquery);
             this.ID = var.Name;
+            this.Path = var.Path;
             this.UpdateValue(null);
         }
 
