@@ -68,14 +68,14 @@ namespace TsGui.View.GuiOptions
             }
         }
         public bool IsValid { get { return this.Validate(); } }
-        public override TsVariable Variable
+        public override Variable Variable
         {
             get
             {
                 if ((this.IsActive == false) && (PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.CurrentValue); }
+                { return new Variable(this.VariableName, this.CurrentValue, this.Path); }
             }
         }
 

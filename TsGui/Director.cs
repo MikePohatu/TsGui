@@ -89,6 +89,11 @@ namespace TsGui
         public bool ShowGridLines { get; private set; }
         public bool UseTouchDefaults { get; private set; }
 
+        /// <summary>
+        /// The path that will be set on new IOptions by default. Can be overridden by each option
+        /// </summary>
+        public string DefaultPath { get; private set; }
+
         //constructors
         private Director()
         {
@@ -109,7 +114,7 @@ namespace TsGui
         public void Init(MainWindow ParentWindow, Arguments Arguments)
         {
             LoggerFacade.Trace("MainController initializing");
-            this._envController = new EnvironmentController(this);
+            this._envController = new EnvironmentController();
             this._pages = new List<TsPage>();
             this._linkinghub = new LinkingHub();
             this._grouplibrary = new GroupLibrary();
@@ -158,7 +163,7 @@ namespace TsGui
         {
             LoggerFacade.Debug("*TsGui startup started");
             this.StartupFinished = false;
-            this._prodmode = this._envController.Init();
+            
 
             
             XElement xconfig = this.ReadConfigFile();
@@ -173,14 +178,14 @@ namespace TsGui
                 return;
             }
 
+            this._prodmode = this._envController.Init();
             this.PopulateHwOptions();
 
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
             if (this._prodmode == true)
             {
-                if (this._debug == true) { this._testingwindow = new TestingWindow(this); }
-                this._envController.HideProgressUI();   
+                if (this._debug == true) { this._testingwindow = new TestingWindow(this); } 
             }
             else
             {
@@ -278,6 +283,9 @@ namespace TsGui
                 
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
                 this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
+                this.DefaultPath = XmlHandler.GetStringFromXElement(SourceXml, "DefaultPath", this.DefaultPath);
+                string outputtype = XmlHandler.GetStringFromXAttribute(SourceXml, "Output", "Sccm");
+                this._envController.SetOutputType(outputtype);
 
                 //Set show grid lines after pages and columns have been created.
                 x = SourceXml.Element("ShowGridLines");
@@ -442,7 +450,7 @@ namespace TsGui
                     if (option.IsActive == true)
                     { this._envController.AddVariable(option.Variable); }
                     else
-                    { this._envController.AddVariable(new TsVariable(option.VariableName,option.InactiveValue)); }
+                    { this._envController.AddVariable(new Variable(option.VariableName, option.InactiveValue, option.Path)); }
                 }
             }
 
@@ -457,8 +465,8 @@ namespace TsGui
 
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            if (_finished) { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE")); }
-            else { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "TRUE")); }
+            if (_finished) { this._envController.AddVariable(new Variable("TsGui_Cancel", "FALSE", null)); }
+            else { this._envController.AddVariable(new Variable("TsGui_Cancel", "TRUE", null)); }
             this._envController.Release();
         }
 
@@ -515,7 +523,7 @@ namespace TsGui
             if (this._hardwareevaluator != null)
             {
                 LoggerFacade.Debug("Running hardware evaluator");
-                foreach (TsVariable var in this._hardwareevaluator.GetTsVariables())
+                foreach (Variable var in this._hardwareevaluator.GetTsVariables())
                 {
                     NoUIOption newhwoption = new NoUIOption();
                     newhwoption.ImportFromTsVariable(var);

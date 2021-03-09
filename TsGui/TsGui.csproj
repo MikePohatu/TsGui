@@ -101,6 +101,7 @@
     <Compile Include="Authentication\IPassword.cs" />
     <Compile Include="Authentication\LocalConfig\LocalConfigPasswordAuthenticator.cs" />
     <Compile Include="Authentication\LocalConfig\Password.cs" />
+    <Compile Include="Connectors\RegistryConnector.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="Connectors\System\RegistryHelpers.cs" />
     <Compile Include="ConsoleWindow.cs" />
@@ -322,7 +323,7 @@
     <Compile Include="Grouping\Toggle.cs" />
     <Compile Include="HardwareEvaluator.cs" />
     <Compile Include="View\GuiOptions\IValidationGuiOption.cs" />
-    <Compile Include="ITsVariableOutput.cs" />
+    <Compile Include="IVariableOutput.cs" />
     <Compile Include="Grouping\IToggleControl.cs" />
     <Compile Include="View\Layout\TsPageUI.xaml.cs">
       <DependentUpon>TsPageUI.xaml</DependentUpon>
@@ -331,7 +332,7 @@
     <Compile Include="Connectors\SccmConnector.cs" />
     <Compile Include="Connectors\SystemConnector.cs" />
     <Compile Include="Connectors\TestingConnector.cs" />
-    <Compile Include="TsVariable.cs" />
+    <Compile Include="Variable.cs" />
     <Compile Include="TsWindowAlerts.cs" />
     <Compile Include="XmlHandler.cs" />
     <ApplicationDefinition Include="App.xaml">

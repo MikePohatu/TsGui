@@ -46,6 +46,7 @@ namespace TsGui.View.GuiOptions
                 XAttribute xtype = OptionXml.Attribute("Type");
                 prebuiltx.Add(xtype);
                 IGuiOption g = GetGuiOption(prebuiltx, Parent);
+                g.Path = Director.Instance.DefaultPath;
                 g.LoadXml(OptionXml);
                 return g;
             }
@@ -131,6 +132,9 @@ namespace TsGui.View.GuiOptions
             else
             { return null; }
             #endregion
+
+            //pull the default path from the director if not already set
+            if (string.IsNullOrWhiteSpace(newoption.Path)) { newoption.Path = Director.Instance.DefaultPath; }
 
             Director.Instance.AddOptionToLibary(newoption);
             if (string.IsNullOrWhiteSpace(newoption.ID) == false) { Director.Instance.LinkingHub.AddSource(newoption); }

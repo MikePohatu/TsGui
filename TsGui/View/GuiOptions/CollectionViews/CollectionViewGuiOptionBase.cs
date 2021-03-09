@@ -47,14 +47,14 @@ namespace TsGui.View.GuiOptions.CollectionViews
         //properties
         public bool Sort { get; set; } = false;
         public UserControl Icon { get; set; }
-        public override TsVariable Variable
+        public override Variable Variable
         {
             get
             {
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.CurrentValue); }
+                { return new Variable(this.VariableName, this.CurrentValue, this.Path); }
             }
         }
         public override string CurrentValue

@@ -93,7 +93,7 @@ namespace TsGui.Authentication.ExposedPassword
         }
 
         public string ID { get; private set; }
-        public TsVariable Variable { get { return new TsVariable(this.VariableName, this.LiveValue); } }
+        public Variable Variable { get { return new Variable(this.VariableName, this.LiveValue, this.Path); } }
         public string LiveValue { get { return this.PasswordSource?.Password; } }
         public string CurrentValue { get { return this.LiveValue; } }
         public string VariableName { get; private set; }

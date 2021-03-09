@@ -47,7 +47,7 @@ namespace TsGui.View.GuiOptions
                 this.OnPropertyChanged(this, "CurrentValue");
             }
         }
-        public override TsVariable Variable { get { return null; } }
+        public override Variable Variable { get { return null; } }
 
         //constructor
         public TsTimeout(XElement InputXml, ParentLayoutElement Parent) : base(Parent)

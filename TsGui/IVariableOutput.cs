@@ -21,10 +21,18 @@
 
 namespace TsGui
 {
-    public interface ITsVariableOutput
+    public interface IVariableOutput
     {
-        void AddVariable(TsVariable Variable);
+        void AddVariable(Variable Variable);
+
+        /// <summary>
+        /// 'Release' the options to their output, i.e. write the values to the destination
+        /// </summary>
         void Release();
-        void Hide();
+
+        /// <summary>
+        /// Initialise things before starting up, e.g. hide the TS progress dialog
+        /// </summary>
+        void Init();
     }
 }

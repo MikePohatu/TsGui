@@ -61,10 +61,10 @@ namespace TsGui.View.GuiOptions
             get { return this._maxlength; }
             set { this._maxlength = value; this.OnPropertyChanged(this, "MaxLength"); }
         }
-        public override TsVariable Variable
+        public override Variable Variable
         {
             get {
-                if (this._expose) { return new TsVariable(this.VariableName, this.Password); }
+                if (this._expose) { return new Variable(this.VariableName, this.Password, this.Path); }
                 else { return null; }
             }
         }

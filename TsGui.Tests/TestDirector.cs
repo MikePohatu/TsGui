@@ -53,6 +53,7 @@ namespace TsGui.Tests
         public TsPage CurrentPage { get; set; }
         public bool ShowGridLines { get; set; }
         public bool UseTouchDefaults { get; set; }
+        public string DefaultPath { get; set; }
 
         public void Init(MainWindow ParentWindow, Arguments Arguments) { }
 

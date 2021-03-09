@@ -62,14 +62,14 @@ namespace TsGui.Options.NoUI
                 this.NotifyViewUpdate();
             }
         }
-        public TsVariable Variable
+        public Variable Variable
         {
             get
             {
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this._value); }
+                { return new Variable(this.VariableName, this._value, this.Path); }
             }
         }
         public string LiveValue
@@ -176,7 +176,7 @@ namespace TsGui.Options.NoUI
             this.UpdateValue(message);
         }
 
-        public void ImportFromTsVariable(TsVariable var)
+        public void ImportFromTsVariable(Variable var)
         {
             this.VariableName = var.Name;
             ValueOnlyQuery newvoquery = new ValueOnlyQuery(var.Value);

@@ -39,7 +39,7 @@ namespace TsGui.View.GuiOptions
             get { return this._controltext; }
             set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
         }
-        public override TsVariable Variable { get { return null; } }
+        public override Variable Variable { get { return null; } }
 
         //constructor
         public TsHeading(XElement InputXml, ParentLayoutElement Parent) : base(Parent)

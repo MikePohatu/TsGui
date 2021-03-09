@@ -47,7 +47,7 @@ namespace TsGui
         MainWindow ParentWindow { get; set; }
         TsPage CurrentPage { get; set; }
         bool ShowGridLines { get; }
-
+        string DefaultPath { get; }
         bool UseTouchDefaults { get; }
 
         void Init(MainWindow ParentWindow, Arguments Arguments);

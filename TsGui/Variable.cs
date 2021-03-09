@@ -23,11 +23,11 @@ using System;
 
 namespace TsGui
 {
-    public class TsVariable
+    public class Variable
     {
-        private string _name;
-        private string _value;
+        public string Path { get; set; }
 
+        private string _value;
         public string Value
         {
             get { return this._value; }
@@ -37,20 +37,23 @@ namespace TsGui
                 else { this._value = value; }
             }
         }
+
+        private string _name;
         public string Name 
         {
             get { return this._name; } 
             set
             {
-                if (value == null) { throw new InvalidOperationException("TsVariable name cannot be null"); }
+                if (value == null) { throw new InvalidOperationException("Variable name cannot be null"); }
                 else { this._name = value; }
             }
         }
 
-        public TsVariable (string Name, string Value)
+        public Variable (string Name, string Value, string Path)
         {
             this.Name = Name;
             this.Value = Value;
+            this.Path = Path;
         }
     }
 }

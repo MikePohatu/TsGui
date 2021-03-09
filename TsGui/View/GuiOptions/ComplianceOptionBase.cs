@@ -76,14 +76,14 @@ namespace TsGui.View.GuiOptions
             get { return this._validationtext; }
             set { this._validationtext = value; this.OnPropertyChanged(this, "ValidationText"); }
         }
-        public override TsVariable Variable
+        public override Variable Variable
         {
             get
             {
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.CurrentValue); }
+                { return new Variable(this.VariableName, this.CurrentValue, this.Path); }
             }
         }
 

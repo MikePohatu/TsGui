@@ -33,6 +33,7 @@ namespace TsGui
     {
         private string _namespace = @"root\CIMV2";
 
+        public string Path { get; set; }
         public bool IsLaptop { get; private set; } = false;
         public bool IsDesktop { get; private set; } = false;
         public bool IsServer { get; private set; } = false;
@@ -53,38 +54,38 @@ namespace TsGui
             this.Evaluate();
         }
 
-        public List<TsVariable> GetTsVariables()
+        public List<Variable> GetTsVariables()
         {
-            List<TsVariable> vars = new List<TsVariable>();
+            List<Variable> vars = new List<Variable>();
 
-            if (IsLaptop) { vars.Add(new TsVariable("TsGui_IsLaptop", "TRUE")); }
-            else { vars.Add(new TsVariable("TsGui_IsLaptop", "FALSE")); }
+            if (IsLaptop) { vars.Add(new Variable("TsGui_IsLaptop", "TRUE", this.Path)); }
+            else { vars.Add(new Variable("TsGui_IsLaptop", "FALSE", this.Path)); }
 
-            if (IsDesktop) { vars.Add(new TsVariable("TsGui_IsDesktop", "TRUE")); }
-            else { vars.Add(new TsVariable("TsGui_IsDesktop", "FALSE")); }
+            if (IsDesktop) { vars.Add(new Variable("TsGui_IsDesktop", "TRUE", this.Path)); }
+            else { vars.Add(new Variable("TsGui_IsDesktop", "FALSE", this.Path)); }
 
-            if (IsServer) { vars.Add(new TsVariable("TsGui_IsServer", "TRUE")); }
-            else { vars.Add(new TsVariable("TsGui_IsServer", "FALSE")); }
+            if (IsServer) { vars.Add(new Variable("TsGui_IsServer", "TRUE", this.Path)); }
+            else { vars.Add(new Variable("TsGui_IsServer", "FALSE", this.Path)); }
 
-            if (IsVirtualMachine) { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "TRUE")); }
-            else { vars.Add(new TsVariable("TsGui_IsVirtualMachine", "FALSE")); }
+            if (IsVirtualMachine) { vars.Add(new Variable("TsGui_IsVirtualMachine", "TRUE", this.Path)); }
+            else { vars.Add(new Variable("TsGui_IsVirtualMachine", "FALSE", this.Path)); }
 
-            if (IsConvertible) { vars.Add(new TsVariable("TsGui_IsConvertible", "TRUE")); }
-            else { vars.Add(new TsVariable("TsGui_IsConvertible", "FALSE")); }
+            if (IsConvertible) { vars.Add(new Variable("TsGui_IsConvertible", "TRUE", this.Path)); }
+            else { vars.Add(new Variable("TsGui_IsConvertible", "FALSE", this.Path)); }
 
-            if (IsDetachable) { vars.Add(new TsVariable("TsGui_IsDetachable", "TRUE")); }
-            else { vars.Add(new TsVariable("TsGui_IsDetachable", "FALSE")); }
+            if (IsDetachable) { vars.Add(new Variable("TsGui_IsDetachable", "TRUE", this.Path)); }
+            else { vars.Add(new Variable("TsGui_IsDetachable", "FALSE", this.Path)); }
 
-            if (IsTablet) { vars.Add(new TsVariable("TsGui_IsTablet", "TRUE")); }
-            else { vars.Add(new TsVariable("TsGui_IsTablet", "FALSE")); }
+            if (IsTablet) { vars.Add(new Variable("TsGui_IsTablet", "TRUE", this.Path)); }
+            else { vars.Add(new Variable("TsGui_IsTablet", "FALSE", this.Path)); }
 
-            vars.Add(new TsVariable("TsGui_IPv4", this.IPAddresses4));
-            vars.Add(new TsVariable("TsGui_IPv6", this.IPAddresses6));
-            vars.Add(new TsVariable("TsGui_DefaultGateway4", this.DefaultGateways4));
-            vars.Add(new TsVariable("TsGui_DefaultGateway6", this.DefaultGateways6));
-            vars.Add(new TsVariable("TsGui_IPSubetMask4", this.IPNetMask4));
-            vars.Add(new TsVariable("TsGui_IPSubnetMask6", this.IPNetMask6));
-            vars.Add(new TsVariable("TsGui_DHCPServer", this.DHCPServer));
+            vars.Add(new Variable("TsGui_IPv4", this.IPAddresses4, this.Path));
+            vars.Add(new Variable("TsGui_IPv6", this.IPAddresses6, this.Path));
+            vars.Add(new Variable("TsGui_DefaultGateway4", this.DefaultGateways4, this.Path));
+            vars.Add(new Variable("TsGui_DefaultGateway6", this.DefaultGateways6, this.Path));
+            vars.Add(new Variable("TsGui_IPSubetMask4", this.IPNetMask4, this.Path));
+            vars.Add(new Variable("TsGui_IPSubnetMask6", this.IPNetMask6, this.Path));
+            vars.Add(new Variable("TsGui_DHCPServer", this.DHCPServer, this.Path));
 
             return vars;
         }

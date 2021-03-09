@@ -44,12 +44,12 @@ namespace TsGui.View.GuiOptions
                 this.NotifyViewUpdate();
             }
         }
-        public override TsVariable Variable
+        public override Variable Variable
         {
             get
             {
                 if (string.IsNullOrWhiteSpace(this.VariableName) == false)
-                { return new TsVariable(this.VariableName, this.ControlText); }
+                { return new Variable(this.VariableName, this.ControlText, this.Path); }
                 else
                 { return null; }
             }

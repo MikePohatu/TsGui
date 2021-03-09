@@ -66,14 +66,14 @@ namespace TsGui.View.GuiOptions
             get { return this._maxlength; }
             set { this._maxlength = value; this.OnPropertyChanged(this, "MaxLength"); }
         }
-        public override TsVariable Variable
+        public override Variable Variable
         {
             get
             {
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.ControlText); }
+                { return new Variable(this.VariableName, this.ControlText, this.Path); }
             }
         }
 

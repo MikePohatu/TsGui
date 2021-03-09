@@ -35,7 +35,7 @@ namespace TsGui.View.GuiOptions
         private bool _isdefault;
 
         public override string CurrentValue { get { return null; } }
-        public override TsVariable Variable { get { return null; } }
+        public override Variable Variable { get { return null; } }
         public string ButtonText
         {
             get { return this._buttontext; }
