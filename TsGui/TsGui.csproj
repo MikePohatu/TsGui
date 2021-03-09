@@ -518,6 +518,7 @@ Copy /Y "$(SolutionDir)Config.xml" "%25ReleasePath%25"
 Copy /Y "$(SolutionDir)Config_demo.xml" "%25ReleasePath%25"
 Copy /Y "$(TargetDir)NLog.config" "%25ReleasePath%25"
 Copy /Y "$(TargetDir)NLog.dll" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)Messaging.dll" "%25ReleasePath%25"
 Copy /Y "$(TargetDir)TsGui.exe" "%25ReleasePath%25"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
