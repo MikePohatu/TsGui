@@ -35,12 +35,13 @@ namespace TsGui
 {
     public class EnvironmentController
     {
-        public enum ConnectorType { Sccm, Test, Registry };
+        public enum ConnectorType { ConfigMgr, Test, Registry };
 
         private IVariableOutput _outputconnector;
         private SccmConnector _sccmconnector;
-        private ConnectorType _type = ConnectorType.Sccm;
+        private ConnectorType _type = ConnectorType.ConfigMgr;
 
+        public ConnectorType OutputType { get { return this._type; } }
         public SccmConnector SccmConnector { get { return this._sccmconnector; } }
         public IVariableOutput OutputConnector { get { return this._outputconnector; } }
 
@@ -53,7 +54,7 @@ namespace TsGui
         {
             switch(this._type)
             {
-                case ConnectorType.Sccm:
+                case ConnectorType.ConfigMgr:
                     try
                     {
                         this._sccmconnector = new SccmConnector();
@@ -94,7 +95,7 @@ namespace TsGui
             {
                 case "sccm":
                 case "configmgr":
-                    this._type = ConnectorType.Sccm;
+                    this._type = ConnectorType.ConfigMgr;
                     break;
                 case "test":
                     this._type = ConnectorType.Test;
@@ -105,7 +106,7 @@ namespace TsGui
                     break;
                 default:
                     LoggerFacade.Warn("Invalid OutputType set, defaulting to ConfigMgr");
-                    this._type = ConnectorType.Sccm;
+                    this._type = ConnectorType.ConfigMgr;
                     break;
             }
 
