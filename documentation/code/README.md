@@ -7,3 +7,4 @@ The following documents the source code of TsGui. Note that this is a work in pr
 
 ## Contents
 * [Option Linking](/documentation/code/Linking.md)
+* [Messaging](/documentation/code/Messaging.md)
