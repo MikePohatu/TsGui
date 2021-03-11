@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -155,7 +155,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.SetSelected(this._querylist.GetResultWrangler(message)?.GetString());
             this.NotifyViewUpdate();
 
-            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
+            LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
         public void OnSourceValueUpdated(Message message)

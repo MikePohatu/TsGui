@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -65,7 +65,6 @@ namespace TsGui
         private TsButtons _buttons;
         private List<TsPage> _pages;
         private EnvironmentController _envController;
-        private LinkingHub _linkinghub;
         private GroupLibrary _grouplibrary;
         private List<IToggleControl> _toggles;
         private OptionLibrary _optionlibrary;
@@ -78,7 +77,6 @@ namespace TsGui
 
         //properties
         public AuthLibrary AuthLibrary { get { return this._authlibrary; } }
-        public LinkingHub LinkingHub { get { return this._linkinghub; } }
         public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get { return this._optionlibrary; } }
@@ -116,7 +114,6 @@ namespace TsGui
             LoggerFacade.Trace("MainController initializing");
             this._envController = new EnvironmentController();
             this._pages = new List<TsPage>();
-            this._linkinghub = new LinkingHub();
             this._grouplibrary = new GroupLibrary();
             this._toggles = new List<IToggleControl>();
             this._optionlibrary = new OptionLibrary();

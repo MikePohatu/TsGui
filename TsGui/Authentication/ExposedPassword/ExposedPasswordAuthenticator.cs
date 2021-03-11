@@ -129,7 +129,7 @@ namespace TsGui.Authentication.ExposedPassword
 
         public void UpdateValue(Message message)
         {
-            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
+            LinkingHub.Instance.SendUpdateMessage(this, message);
         }
     }
 }

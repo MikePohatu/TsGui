@@ -31,7 +31,7 @@ namespace TsGui.View.GuiOptions
 {
     public class TsInfoBox : GuiOptionBase, IGuiOption, ILinkTarget
     {
-        private string _controltext;
+        private string _controltext = string.Empty;
         
         //Properties
         public override string CurrentValue { get { return this._controltext; } }
@@ -39,9 +39,7 @@ namespace TsGui.View.GuiOptions
         {
             get { return this._controltext; }
             set {
-                this._controltext = value;
-                this.OnPropertyChanged(this, "ControlText");
-                this.NotifyViewUpdate();
+                this.SetValue(value, null);
             }
         }
         public override Variable Variable
@@ -61,7 +59,6 @@ namespace TsGui.View.GuiOptions
             this.Control = new TsInfoBoxUI();
             this.Label = new TsLabelUI();
             this.UserControl.DataContext = this;
-            this.SetDefaults();
             this._querylist = new QueryPriorityList(this);
             this.LoadXml(InputXml);
         }
@@ -79,17 +76,19 @@ namespace TsGui.View.GuiOptions
 
         public override void UpdateValue(Message message)
         {
-            this.ControlText = this._querylist.GetResultWrangler(message)?.GetString();
-            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
+            string val = this._querylist.GetResultWrangler(message)?.GetString();
+            this.SetValue(val, message);
         }
 
         public void OnSourceValueUpdated(Message message)
         { this.UpdateValue(message); }
 
-        private void SetDefaults()
+        private void SetValue(string value, Message message)
         {
-            this.ControlText = string.Empty;
-            //this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this._controltext = value;
+            this.OnPropertyChanged(this, "ControlText");
+            this.NotifyViewUpdate();
+            LinkingHub.Instance.SendUpdateMessage(this, message);
         }
     }
 }

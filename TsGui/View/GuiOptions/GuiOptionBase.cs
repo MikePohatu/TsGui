@@ -145,7 +145,7 @@ namespace TsGui.View.GuiOptions
             this.InvokeToggleEvent();
         }
 
-        //This is called by the controller once everything is loaded
+        //This is called by the Director once everything is loaded
         public void Initialise()
         {
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;

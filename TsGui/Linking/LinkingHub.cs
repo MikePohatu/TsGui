@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -29,8 +29,9 @@ namespace TsGui.Linking
     public class LinkingHub: ITopicSubscriber
     {
         private Dictionary<string, IOption> _sources = new Dictionary<string, IOption>();
-
-        public LinkingHub()
+        private static LinkingHub _instance = new LinkingHub();
+        public static LinkingHub Instance { get { return _instance; } }
+        private LinkingHub()
         {
             MessageHub.Subscribe(Topics.ReprocessRequest, this);
         }

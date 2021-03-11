@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -65,7 +65,7 @@ namespace TsGui.Queries
         {
             if (!string.IsNullOrEmpty(id))
             {
-                return Director.Instance.LinkingHub.GetSourceOption(id);
+                IOption o = LinkingHub.Instance.GetSourceOption(id);
             }
             else {
                 throw new TsGuiKnownException($"Unable to locate linked source ID: {id}", null);
