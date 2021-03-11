@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -184,6 +184,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         protected void OnSelectionChanged(object o, RoutedEventArgs e)
         {
             this.Validate(false);
+            LinkingHub.Instance.SendUpdateMessage(this, null);
             this.NotifyViewUpdate();
             this.InvokeToggleEvent();
         }

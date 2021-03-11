@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -29,7 +29,7 @@ using TsGui.Options;
 
 namespace TsGui.Queries
 {
-    public class OptionValueQuery: BaseQuery, ITopicSubscriber
+    public class OptionValueQuery: BaseQuery
     {
         private FormattedProperty _formatter;
         IOption _source;
@@ -38,21 +38,20 @@ namespace TsGui.Queries
             this._ignoreempty = false;
             this.SetDefaults();
             this.LoadXml(inputxml);
-            this.ProcessQuery(null);
             Director.Instance.ConfigLoadFinished += this.Init;
         }
 
         public void Init(object sender, EventArgs e)
         {
             this._source = this.GetSourceOption(this._formatter.Name);
-            Director.Instance.LinkingHub.RegisterLinkTarget(this._linktarget, this._source);
+            LinkingHub.Instance.RegisterLinkTarget(this._linktarget, this._source);
         }
 
         public override ResultWrangler ProcessQuery(Message message)
         {
             if (this._source != null)
             {
-                Director.Instance.LinkingHub.SendReprocessRequestMessage(this, this._source.ID, message);
+                LinkingHub.Instance.SendReprocessRequestMessage(this, this._source.ID, message);
             }
 
             this._formatter.Input = this._source?.CurrentValue;
@@ -66,9 +65,12 @@ namespace TsGui.Queries
             if (!string.IsNullOrEmpty(id))
             {
                 IOption o = LinkingHub.Instance.GetSourceOption(id);
+                if (o == null) { throw new TsGuiKnownException($"Unable to locate linked source ID: {id}\nAre you missing or mistyping an ID?", null); }
+                
+                return o;
             }
             else {
-                throw new TsGuiKnownException($"Unable to locate linked source ID: {id}", null);
+                throw new TsGuiKnownException($"Unable to locate linked source. ID cannot be empty", null);
             }
         }
 
@@ -97,22 +99,6 @@ namespace TsGui.Queries
             {
                 this._formatter = new FormattedProperty(x);
                 this._processingwrangler.AddFormattedProperty(this._formatter);
-            }
-        }
-
-        public void OnTopicMessageReceived(string topic, Message message)
-        {
-            if (message.RootMessage?.Sender == this)
-            {
-                //string id = this._formatter.Name;
-                switch (topic)
-                {
-                    case Topics.SourceValueChanged:
-                        this._linktarget?.OnSourceValueUpdated(message);
-                        break;
-                    default:
-                        break;
-                }
             }
         }
     }

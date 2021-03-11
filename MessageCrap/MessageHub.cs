@@ -101,19 +101,20 @@ namespace MessageCrap
 
             //remove message from the pending list
             Message m;
+            var pending= _pendingResponses;
             if (_pendingResponses.TryGetValue(response.RespondingTo.ID, out m) == true)
             {
                 _pendingResponses.Remove(response.RespondingTo.ID);
+                response.RespondingTo.StopTimer();
             }
 
             Trace?.Invoke($"Sending response message: {response.ID}, in reply to: {response.RespondingTo.ID}");
             response.Sent = DateTime.Now;
-            if (response.ResponseExpected) { response.StartTimer(); }
 
             if (response.RootMessage == null) { throw new MessagingException(response, "Response has no root message"); }
             else
             {
-                if (response.RootMessage.Sender == response.Sender)
+                if (response.RootMessage.Sender == response.Sender || response.ChainIncludesSender(response.Sender))
                 {
                     // message has come in a loop. kill it
                     Trace?.Invoke($"Closing looping message: {response.ID}");
@@ -122,6 +123,8 @@ namespace MessageCrap
                 }
             }
 
+
+            if (response.ResponseExpected) { response.StartTimer(); }
             InvokeMessageSubscriptions(response);
 
             //fire events
@@ -185,7 +188,15 @@ namespace MessageCrap
         {
             Message m = new Message();
             m.RespondingTo = originalMessage;
-            m.RootMessage = (originalMessage == null) || (originalMessage.RootMessage == null) ? m.RootMessage = originalMessage : originalMessage.RootMessage; ;
+            if ((originalMessage != null) && (originalMessage.RootMessage == null))
+            {
+                m.RootMessage = originalMessage;
+            } 
+            else if (originalMessage != null)
+            {
+                m.RootMessage = originalMessage.RootMessage;
+            }
+
             m.Sender = sender;
             Trace?.Invoke($"Created message: {m.ID}");
             return m;

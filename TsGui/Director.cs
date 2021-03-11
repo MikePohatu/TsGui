@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -160,14 +160,15 @@ namespace TsGui
         {
             LoggerFacade.Debug("*TsGui startup started");
             this.StartupFinished = false;
-            
 
-            
+            //read the config file in. Don't process it yet
             XElement xconfig = this.ReadConfigFile();
             if (xconfig == null) { return; }
 
-            //this.LoadXml(x);
-            try { this.LoadXml(xconfig); }
+            //Now load the XML, catching errors
+            try { 
+                this.LoadXml(xconfig);
+            }
             catch (TsGuiKnownException e)
             {
                 string msg = "Error loading config file" + Environment.NewLine + e.CustomMessage + Environment.NewLine + e.Message;
@@ -175,8 +176,20 @@ namespace TsGui
                 return;
             }
 
+            //populate hardware options if HardwareEval enabled (LoadXML will create the object if set)
+            if (this._hardwareevaluator != null)
+            {
+                LoggerFacade.Debug("Running hardware evaluator");
+                foreach (Variable var in this._hardwareevaluator.GetTsVariables())
+                {
+                    NoUIOption newhwoption = new NoUIOption();
+                    newhwoption.ImportFromTsVariable(var);
+                    this._optionlibrary.Add(newhwoption);
+                }
+            }
+
+            //Init the envController so we know what we're writing to and attach the SCCM COM object if required
             this._prodmode = this._envController.Init();
-            this.PopulateHwOptions();
 
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
@@ -190,7 +203,10 @@ namespace TsGui
                 if ((this._debug == true) || (this._livedata == true)) { this._testingwindow = new TestingWindow(this); }
             }
 
-            //now init everything
+            //now send a ConfigLoadFinished event so things know they can finish setting themselves up e.g. OptionValueQuery
+            this.ConfigLoadFinished?.Invoke(this, null);
+
+            //now init all the options
             this._optionlibrary.InitialiseOptions();
 
             //subscribe to closing event
@@ -373,7 +389,6 @@ namespace TsGui
             }
 
             LoggerFacade.Info("Config load finished");
-            this.ConfigLoadFinished?.Invoke(this, null);
         }
 
         //add options from sub classes to the main library. used to generate the final list of 
@@ -515,20 +530,6 @@ namespace TsGui
 
             if (result == MessageBoxResult.Yes) return true;
             else return false;
-        }
-
-        private void PopulateHwOptions()
-        {
-            if (this._hardwareevaluator != null)
-            {
-                LoggerFacade.Debug("Running hardware evaluator");
-                foreach (Variable var in this._hardwareevaluator.GetTsVariables())
-                {
-                    NoUIOption newhwoption = new NoUIOption();
-                    newhwoption.ImportFromTsVariable(var);
-                    this._optionlibrary.Add(newhwoption);
-                }
-            }
         }
     }
 }

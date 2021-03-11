@@ -137,7 +137,6 @@ namespace TsGui.View.GuiOptions
             if (string.IsNullOrWhiteSpace(newoption.Path)) { newoption.Path = Director.Instance.DefaultPath; }
 
             Director.Instance.AddOptionToLibary(newoption);
-            if (string.IsNullOrWhiteSpace(newoption.ID) == false) { Director.Instance.LinkingHub.AddSource(newoption); }
             
             return newoption;
         }

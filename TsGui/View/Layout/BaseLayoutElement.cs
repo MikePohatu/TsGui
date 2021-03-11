@@ -138,6 +138,9 @@ namespace TsGui.View.Layout
                 this.ShowGridLines = false;
                 this.LabelOnRight = false;
                 this.LabelFormatting.Padding = new Thickness(1);
+                this.LabelFormatting.Margin = new Thickness(2);
+                this.ControlFormatting.Margin = new Thickness(2);
+                this.ControlFormatting.Padding = new Thickness(1);
             }
             else
             {

@@ -44,17 +44,17 @@ namespace TsGui.View.GuiOptions
         #region
         //Custom stuff for control
         protected string _controltext;
+
+        /// <summary>
+        /// Update to/from the ControlText. Don't call this from code. This is only for update via the UI control.
+        /// Use SetControlText(xxx) to do code updates or you might screw up messaging
+        /// </summary>
         public string ControlText
         {
             get { return this._controltext; }
             set
             {
-                if (this._charactercasing == CharacterCasing.Normal) { this._controltext = value; }
-                else if (this._charactercasing == CharacterCasing.Upper) { this._controltext = value?.ToUpper(); }
-                else if (this._charactercasing == CharacterCasing.Lower) { this._controltext = value?.ToLower(); }
-                this.OnPropertyChanged(this, "ControlText");
-                this.NotifyViewUpdate();
-                this.Validate();
+                this.SetControlText(value, null);
             }
         }
         public override string CurrentValue { get { return this._controltext; } }
@@ -123,6 +123,17 @@ namespace TsGui.View.GuiOptions
             this._freetextui.TextBox.TextChanged += this.OnTextChanged;
             this.UserControl.IsEnabledChanged += this.OnValidationEvent;
             this.SetDefaults();
+        }
+
+        private void SetControlText(string value, Message message)
+        {
+            if (this._charactercasing == CharacterCasing.Normal) { this._controltext = value; }
+            else if (this._charactercasing == CharacterCasing.Upper) { this._controltext = value?.ToUpper(); }
+            else if (this._charactercasing == CharacterCasing.Lower) { this._controltext = value?.ToLower(); }
+            this.OnPropertyChanged(this, "ControlText");
+            this.NotifyViewUpdate();
+            LinkingHub.Instance.SendUpdateMessage(this, message);
+            this.Validate();
         }
 
         private void SetDefaults()
@@ -217,10 +228,10 @@ namespace TsGui.View.GuiOptions
                 if (!string.IsNullOrEmpty(invalchars)) { s = ResultValidator.RemoveInvalid(s, this.ValidationHandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { s = ResultValidator.Truncate(s, this.MaxLength); }
 
-                if (this.ControlText != s) { this.ControlText = s; }
+                if (this.ControlText != s) { this.SetControlText(s, message); }
             }
 
-            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
+            LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
         public void OnSourceValueUpdated(Message message)

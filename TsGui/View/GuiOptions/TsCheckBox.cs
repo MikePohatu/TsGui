@@ -51,11 +51,7 @@ namespace TsGui.View.GuiOptions
             get { return this._ischecked; }
             set
             {
-                this._ischecked = value;
-                this.OnPropertyChanged(this, "IsChecked");
-                this.NotifyViewUpdate();
-                this.InvokeToggleEvent();
-                this.Validate();
+                this.SetValue(value, null);
             }
         }
         //public override string CurrentValue { get { return this.ControlText; } }
@@ -126,7 +122,7 @@ namespace TsGui.View.GuiOptions
 
             x = InputXml.Element("Checked");
             if (x != null)
-            { this.IsChecked = true; }
+            { this.SetValue(true, null); }
         }
 
         public override void UpdateValue(Message message)
@@ -135,16 +131,25 @@ namespace TsGui.View.GuiOptions
 
             if (newvalue != this.CurrentValue)
             {
-                if (newvalue == this._valTrue) { this.IsChecked = true; }
-                else if (newvalue == this._valFalse) { this.IsChecked = false; }
+                if (newvalue == this._valTrue) { this.SetValue(true, message); }
+                else if (newvalue == this._valFalse) { this.SetValue(false, message); }
                 else { newvalue = null; }
             }
-            Director.Instance.LinkingHub.SendUpdateMessage(this, message);
         }
 
         public void OnSourceValueUpdated(Message message)
         {
             this.UpdateValue(message);
+        }
+
+        private void SetValue(bool value, Message message)
+        {
+            this._ischecked = value;
+            this.OnPropertyChanged(this, "IsChecked");
+            this.NotifyViewUpdate();
+            this.InvokeToggleEvent();
+            this.Validate();
+            LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
         private void SetDefaults()

@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -145,7 +145,6 @@ namespace TsGui.Options.NoUI
             if (xa != null)
             {
                 this.ID = xa.Value;
-                Director.Instance.LinkingHub.AddSource(this);
             }
 
             IEnumerable<XElement> xlist = InputXml.Elements("Toggle");

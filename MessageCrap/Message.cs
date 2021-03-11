@@ -43,7 +43,7 @@ namespace MessageCrap
         /// <summary>
         /// When this message will timeout waiting for a resonse (default 30 seconds)
         /// </summary>
-        public long ResponseTimeoutMilliseconds { get; set; } = 30000;
+        public int ResponseTimeoutMilliseconds { get; set; } = 30000;
 
         /// <summary>
         /// Message hub will track if a response is expected. Only the first response is acted on
@@ -88,14 +88,14 @@ namespace MessageCrap
 
         internal void StartTimer()
         {
-            this.TimeoutTimer = new Timer(this.OnTimedOut, null, this.ResponseTimeoutMilliseconds, int.MaxValue);
+            this.TimeoutTimer = new Timer(this.OnTimedOut, null, this.ResponseTimeoutMilliseconds, Timeout.Infinite);
         }
 
         internal void StopTimer()
         {
             if (this.TimeoutTimer != null)
             {
-                this.TimeoutTimer.Dispose();
+                this.TimeoutTimer.Change(Timeout.Infinite, Timeout.Infinite);
             }
         }
 
@@ -121,7 +121,7 @@ namespace MessageCrap
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
-        public Message SetResponseTimeoutMilliseconds(long ms)
+        public Message SetResponseTimeoutMilliseconds(int ms)
         {
             this.ResponseTimeoutMilliseconds = ms;
             return this;
@@ -147,6 +147,23 @@ namespace MessageCrap
         {
             this.ResponseExpected = expected;
             return this;
+        }
+
+        /// <summary>
+        /// Does the message RespondingTo chain include messages sent by sender
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
+        public bool ChainIncludesSender(object sender)
+        {
+            Message m = this;
+            do
+            {
+                if (sender == m.Sender) { return true; }
+                m = m.RespondingTo;
+            } while (m != null);
+
+            return false;
         }
 
         /// <summary>

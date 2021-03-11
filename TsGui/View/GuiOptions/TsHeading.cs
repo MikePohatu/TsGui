@@ -22,6 +22,7 @@
 
 using MessageCrap;
 using System.Xml.Linq;
+using TsGui.Linking;
 using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
@@ -37,7 +38,11 @@ namespace TsGui.View.GuiOptions
         public string ControlText
         {
             get { return this._controltext; }
-            set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
+            set { 
+                this._controltext = value; 
+                this.OnPropertyChanged(this, "ControlText");
+                LinkingHub.Instance.SendUpdateMessage(this, null);
+            }
         }
         public override Variable Variable { get { return null; } }
 

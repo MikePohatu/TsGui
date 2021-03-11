@@ -78,7 +78,6 @@ namespace TsGui.View.GuiOptions
         {
             base.LoadXml(this.BuildDefaultXml());
             base.LoadXml(InputXml);
-            this.UpdateValue(null);
         }
 
         public XElement BuildDefaultXml()

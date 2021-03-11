@@ -49,6 +49,9 @@ namespace TsGui
         public string DefaultGateways6 { get; private set; } = string.Empty;
         public string DHCPServer { get; private set; } = string.Empty;
 
+        /// <summary>
+        /// Query WMI and populate the data for the TsGui_xxx variables
+        /// </summary>
         public HardwareEvaluator(XElement inputxml)
         {
             this._path = XmlHandler.GetStringFromXAttribute(inputxml, "Path", this._path);
