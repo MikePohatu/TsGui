@@ -63,6 +63,11 @@ namespace TsGui.Validation
             this._validationerrortooltip.PlacementTarget = Control;
         }
 
+        public void Close()
+        {
+            this._validationerrortooltip.IsOpen = false;
+        }
+
         public void Clear()
         {
             this._validationerrortooltip.IsOpen = false;
@@ -93,7 +98,7 @@ namespace TsGui.Validation
 
         public void OnWindowMoving(object o, EventArgs e)
         {
-            this.UpdateArrows();
+            this.Close();
         }
 
         public void OnWindowLoaded(object o, RoutedEventArgs e)

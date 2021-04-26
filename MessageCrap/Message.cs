@@ -167,6 +167,15 @@ namespace MessageCrap
         }
 
         /// <summary>
+        /// Get the root message in the chain. If this message is the root, return this
+        /// </summary>
+        /// <returns></returns>
+        public Message GetChainRoot()
+        {
+            return this.RootMessage == null ? this : this.RootMessage.GetChainRoot();
+        }
+
+        /// <summary>
         /// Send the message via the MessageHub
         /// </summary>
         public Message Send()
