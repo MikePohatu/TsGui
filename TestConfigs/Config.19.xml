@@ -119,20 +119,20 @@
 			</GuiOption>
 
             <GuiOption Type="CheckBox">
-				<Variable>linknottrue</Variable>
-				<Label>Check when SOURCE is not checked</Label>
+				<Variable>linktruenot</Variable>
+				<Label>Uncheck when SOURCE is checked</Label>
 				<HAlign>right</HAlign>
 				<SetValue>
-					<Query Type="LinkNotTrue">link_source</Query>
+					<Query Type="LinkTrueNot">link_source</Query>
 				</SetValue>
 			</GuiOption>
 
             <GuiOption Type="CheckBox">
-				<Variable>linknotfalse</Variable>
-				<Label>Uncheck when SOURCE is checked</Label>
+				<Variable>linkfalsenot</Variable>
+				<Label>Check when SOURCE is unchecked</Label>
 				<HAlign>right</HAlign>
 				<SetValue>
-					<Query Type="LinkNotFalse">link_source</Query>
+					<Query Type="LinkFalseNot">link_source</Query>
 				</SetValue>
 			</GuiOption>
 
