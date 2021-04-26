@@ -37,7 +37,6 @@ namespace TsGui.Queries
             this.LoadXml(inputxml);
             this.AddExistingOptions();      //add and register any existing options
             Director.Instance.OptionLibrary.OptionAdded += this.OnOptionAddedToLibrary; //register to get any new options
-            this.ProcessQuery(null);
         }
 
         private void AddExistingOptions()
@@ -102,7 +101,6 @@ namespace TsGui.Queries
             if ((!string.IsNullOrEmpty(option.VariableName)) && ( option.VariableName.Equals(this._formatter.Name,StringComparison.OrdinalIgnoreCase)))
             {
                 this.AddOption(option);
-                this.ProcessQuery(null);
             }
         }
 

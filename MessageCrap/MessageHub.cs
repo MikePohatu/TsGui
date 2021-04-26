@@ -80,7 +80,7 @@ namespace MessageCrap
                 }
             }
 
-            Trace?.Invoke($"Sending new message: {message.ID} from {message.Sender}");
+            Trace?.Invoke($"Sending new message: {message.ID} from {message.Sender}, topic: {message.Topic}");
             message.Sent = DateTime.Now;
             if (message.ResponseExpected) { message.StartTimer(); }
 
@@ -108,7 +108,7 @@ namespace MessageCrap
                 response.RespondingTo.StopTimer();
             }
 
-            Trace?.Invoke($"Sending response message: {response.ID}, in reply to: {response.RespondingTo.ID}");
+            Trace?.Invoke($"Sending response message: {response.ID}, in reply to: {response.RespondingTo.ID}, topic: {response.Topic}");
             response.Sent = DateTime.Now;
 
             if (response.RootMessage == null) { throw new MessagingException(response, "Response has no root message"); }
@@ -174,7 +174,7 @@ namespace MessageCrap
         public static void ReportTimeout(Message message)
         {
             CancelPending(message);
-            string s = $"Message timed out waiting for response, ID: {message.ID}, topic: {message.Topic}";
+            string s = $"Message timed out waiting for response, ID: {message.ID}, topic: {message.Topic}, sender: {message.GetChainRoot().Sender.ToString()}";
             Warn?.Invoke(new Exception(s),s);
         }
 

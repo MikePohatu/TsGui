@@ -24,6 +24,7 @@ using TsGui.Validation;
 using TsGui.Linking;
 using System.Windows;
 using TsGui.View.Layout;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -53,7 +54,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.UserControl.IsVisibleChanged += this.OnActiveChanged;
         }
 
-        protected override void SetSelected(string value)
+        protected override void SetSelected(string value, Message message)
         {
             if (string.IsNullOrWhiteSpace(value) == true ) { return; }
             ListItem newdefault = null;
@@ -75,7 +76,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             if (newdefault != null)
             {
-                this.CurrentItem = newdefault;
+                this.SetValue(newdefault, message);
                 newdefault.IsSelected = true;
             }
         }
@@ -93,7 +94,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             if (this._nodefaultvalue == false)
             {
                 string defaultval = this._querylist.GetResultWrangler(null)?.GetString();
-                this.SetSelected(defaultval);
+                this.SetSelected(defaultval, null);
             }
             this.NotifyViewUpdate();
         }

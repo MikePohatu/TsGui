@@ -54,7 +54,7 @@ namespace TsGui.View.GuiOptions
             get { return this._controltext; }
             set
             {
-                this.SetControlText(value, null);
+                this.SetValue(value, null);
             }
         }
         public override string CurrentValue { get { return this._controltext; } }
@@ -125,7 +125,7 @@ namespace TsGui.View.GuiOptions
             this.SetDefaults();
         }
 
-        private void SetControlText(string value, Message message)
+        private void SetValue(string value, Message message)
         {
             if (this._charactercasing == CharacterCasing.Normal) { this._controltext = value; }
             else if (this._charactercasing == CharacterCasing.Upper) { this._controltext = value?.ToUpper(); }
@@ -228,7 +228,7 @@ namespace TsGui.View.GuiOptions
                 if (!string.IsNullOrEmpty(invalchars)) { s = ResultValidator.RemoveInvalid(s, this.ValidationHandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { s = ResultValidator.Truncate(s, this.MaxLength); }
 
-                if (this.ControlText != s) { this.SetControlText(s, message); }
+                if (this.ControlText != s) { this.SetValue(s, message); }
             }
 
             LinkingHub.Instance.SendUpdateMessage(this, message);

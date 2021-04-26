@@ -38,10 +38,10 @@ namespace TsGui.Queries
             this._ignoreempty = false;
             this.SetDefaults();
             this.LoadXml(inputxml);
-            Director.Instance.ConfigLoadFinished += this.Init;
+            Director.Instance.ConfigLoadFinished += this.InitLinking;
         }
 
-        public void Init(object sender, EventArgs e)
+        public void InitLinking(object sender, EventArgs e)
         {
             this._source = this.GetSourceOption(this._formatter.Name);
             LinkingHub.Instance.RegisterLinkTarget(this._linktarget, this._source);
@@ -49,11 +49,6 @@ namespace TsGui.Queries
 
         public override ResultWrangler ProcessQuery(Message message)
         {
-            if (this._source != null)
-            {
-                LinkingHub.Instance.SendReprocessRequestMessage(this, this._source.ID, message);
-            }
-
             this._formatter.Input = this._source?.CurrentValue;
             this._processed = true;
 

@@ -124,15 +124,15 @@ namespace TsGui
             this.ParentWindow.LocationChanged += this.OnWindowMoving;
 
             try { this.Startup(); }
-            catch (TsGuiKnownException exc)
+            catch (TsGuiKnownException e)
             {
-                string msg = "Error message: " + exc.CustomMessage;
+                string msg = "Error message: " + e.CustomMessage + Environment.NewLine + e.Message;
                 this.CloseWithError("Application Startup Exception", msg);
                 return;
             }
-            catch (Exception exc)
+            catch (Exception e)
             {
-                string msg = "Error message: " + exc.Message + Environment.NewLine + exc.ToString();
+                string msg = "Error message: " + e.Message + Environment.NewLine + e.ToString();
                 this.CloseWithError("Application Startup Exception", msg);
                 return;
             }

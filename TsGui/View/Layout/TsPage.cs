@@ -124,14 +124,9 @@ namespace TsGui.View.Layout
 
             this.LoadXml(SourceXml);
             this.Update();
-            Director.Instance.ConfigLoadFinished += this.OnConfigLoadFinished;
         }
 
         //Methods
-        private void OnConfigLoadFinished(object sender, EventArgs e)
-        {
-            this._table.Build();
-        }
 
         public new void LoadXml(XElement InputXml)
         {

@@ -33,16 +33,33 @@ namespace TsGui.View.Layout
     {
         public event ComplianceRetryEventHandler ComplianceRetry;
 
-        private string _title;
-        private string _text;
         private SolidColorBrush _bgColor;
         private SolidColorBrush _fontColor;
         private double _titlefontsize;
         private double _textfontsize;
 
         //Properties
-        public Image Image { get; set; }
-        public TsTable Table { get; set; }
+        private Image _image;
+        public Image Image
+        {
+            get { return this._image; }
+            set
+            {
+                this._image = value;
+                this.OnPropertyChanged(this, "Image");
+            }
+        }
+
+        private TsTable _table;
+        public TsTable Table
+        {
+            get { return this._table; }
+            set
+            {
+                this._table = value;
+                this.OnPropertyChanged(this, "Table");
+            }
+        }
         public TsPageHeaderUI UI { get; set; }
         public SolidColorBrush BgColor
         {
@@ -53,6 +70,8 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "BgColor");
             }
         }
+
+        private string _title;
         public string Title
         {
             get { return this._title; }
@@ -62,6 +81,8 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "HeadingTitle");
             }
         }
+
+        private string _text;
         public string Text
         {
             get { return this._text; }
@@ -97,6 +118,9 @@ namespace TsGui.View.Layout
         //Constructors
         public TsPageHeader(ParentLayoutElement Parent, TsPageHeader Template, XElement SourceXml):base(Parent)
         {
+            this.ShowGridLines = Director.Instance.ShowGridLines;
+            this.SetDefaults();
+
             this.Formatting.Height = Template.Formatting.Height;
             this.Title = Template.Title;
             this.Text = Template.Text;
@@ -165,7 +189,6 @@ namespace TsGui.View.Layout
         //Methods
         public new void LoadXml(XElement InputXml)
         {
-            base.LoadXml(InputXml);
             this.LoadXml(InputXml, this);
         }
 
@@ -189,7 +212,7 @@ namespace TsGui.View.Layout
 
                 x = InputXml.Element("Row");
                 if (x != null)
-                { this.Table = new TsTable(InputXml, parent); }
+                { this.Table = new TsTable(InputXml, this); }
             }
         }
 

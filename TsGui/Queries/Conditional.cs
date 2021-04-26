@@ -31,14 +31,12 @@ namespace TsGui.Queries
         private QueryPriorityList _sourcequerylist;
         private QueryPriorityList _resultquerylist;
         private RuleSet _ruleset ;
-        private ILinkTarget _linktargetoption;
 
         public Conditional(XElement inputxml, ILinkTarget targetoption)
         {
-            this._linktargetoption = targetoption;
             this._ruleset = new RuleSet(targetoption);
-            this._sourcequerylist = new QueryPriorityList(this._linktargetoption);
-            this._resultquerylist = new QueryPriorityList(this._linktargetoption);
+            this._sourcequerylist = new QueryPriorityList(targetoption);
+            this._resultquerylist = new QueryPriorityList(targetoption);
             this.LoadXml(inputxml);
         }
 

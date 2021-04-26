@@ -24,7 +24,7 @@ using TsGui.Linking;
 
 namespace TsGui.Queries
 {
-    public class IfElseQuery: BaseQuery, ILinkTarget
+    public class IfElseQuery: BaseQuery
     {
         private List<Conditional> _conditions = new List<Conditional>();
         private QueryPriorityList _else;
@@ -48,9 +48,6 @@ namespace TsGui.Queries
             }
             return this._else?.GetResultWrangler(message);
         }
-
-        public void OnSourceValueUpdated(Message message)
-        { this._linktarget.OnSourceValueUpdated(message); }
 
         protected new void LoadXml(XElement inputxml)
         {

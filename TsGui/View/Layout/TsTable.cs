@@ -26,6 +26,7 @@ using System.Windows.Data;
 using System.Windows;
 
 using TsGui.View.GuiOptions;
+using System;
 
 namespace TsGui.View.Layout
 {
@@ -45,24 +46,17 @@ namespace TsGui.View.Layout
         //Constructors
         public TsTable(XElement SourceXml, ParentLayoutElement Parent)
         {
-            
-            Grid g = new Grid();
-            g.Name = "_tablegrid";
-            this.Init(SourceXml, Parent, g);
-        }
-
-        //methods
-        private void Init(XElement SourceXml, ParentLayoutElement Parent, Grid Grid)
-        {
-            this._parent = Parent;
-            this.Grid = Grid;
-            this.LoadXml(SourceXml);
+            this._parent = Parent; 
+            this.Grid = new Grid();
+            this.Grid.Name = "_tablegrid";
             this.Grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
             this.Grid.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
             this.Grid.VerticalAlignment = VerticalAlignment.Top;
             this.Grid.HorizontalAlignment = HorizontalAlignment.Left;
-        }
 
+            this.LoadXml(SourceXml);
+            Director.Instance.ConfigLoadFinished += this.OnConfigLoadFinished;
+        }
 
         //Methods
         public void LoadXml(XElement InputXml)
@@ -101,6 +95,11 @@ namespace TsGui.View.Layout
         {
             TsRow r = new TsRow(InputXml, Index, this._parent);
             this._rows.Add(r);
+        }
+
+        private void OnConfigLoadFinished(object sender, EventArgs e)
+        {
+            this.Build();
         }
 
         //build the gui controls.

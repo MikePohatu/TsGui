@@ -61,10 +61,14 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             get { return this._currentitem?.Value; }
         }
+
+        /// <summary>
+        /// Don't set the CurrentItem in code. Use SetValue instead or Linking won't work properly
+        /// </summary>
         public ListItem CurrentItem
         {
             get { return this._currentitem; }
-            set { this._currentitem = value; this.OnPropertyChanged(this, "CurrentItem"); }
+            set { this.SetValue(value, null); }
         }
         public bool IsValid { get { return this.Validate(); } }
         public string ValidationText
@@ -152,10 +156,10 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this._builder.Rebuild(message);
             this.OnPropertyChanged(this, "VisibleOptions");
-            this.SetSelected(this._querylist.GetResultWrangler(message)?.GetString());
-            this.NotifyViewUpdate();
 
-            LinkingHub.Instance.SendUpdateMessage(this, message);
+            //SetSelected includes the messaging call
+            this.SetSelected(this._querylist.GetResultWrangler(message)?.GetString(), message);
+            this.NotifyViewUpdate();
         }
 
         public void OnSourceValueUpdated(Message message)
@@ -163,7 +167,15 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.UpdateValue(message);
         }
 
-        protected abstract void SetSelected(string input);
+        protected abstract void SetSelected(string input, Message message);
+
+
+        protected void SetValue(ListItem value, Message message)
+        {
+            this._currentitem = value; 
+            this.OnPropertyChanged(this, "CurrentItem");
+            LinkingHub.Instance.SendUpdateMessage(this, message);
+        }
 
         protected void SetDefaults()
         {
