@@ -55,6 +55,8 @@ namespace TsGui.Validation
 
             this._validationerrortooltip = new ValidationErrorToolTip();
             this._validationerrortooltip.PlacementTarget = this._guioption.UserControl;
+            this._validationerrortooltip.LeftArrow.Visibility = Visibility.Visible;
+            this._validationerrortooltip.RightArrow.Visibility = Visibility.Hidden;
             Director.Instance.WindowMoving += this.OnWindowMoving;
         }
 
