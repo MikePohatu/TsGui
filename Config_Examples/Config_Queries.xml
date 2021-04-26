@@ -8,6 +8,7 @@ Query types:
 <Query Type="EnvironmentVariable">
 <Query Type="IfElse">
 <Query Type="Wmi">
+<Query Type="Registry">
 <Query Type="Value"> - static value, equivalent of <Value>
 
 *Option linking queries - see Config_Linking.xml
@@ -32,10 +33,10 @@ Query types:
 
 <TsGui LiveData="TRUE">
 	<Height>350</Height>
-	<Width>370</Width>
+	<Width>420</Width>
 
 	<HardwareEval />
-	
+
 	<Heading>
 		<Title>TsGui</Title>
 		<Text>Task Sequence GUI queries example</Text>
@@ -45,39 +46,39 @@ Query types:
 		<Row>
 			<Column>
 				<Formatting>
-					<LeftCellWidth>100</LeftCellWidth>
+					<LeftCellWidth>150</LeftCellWidth>
 					<RightCellWidth>250</RightCellWidth>
 				</Formatting>
-				
+
 				<!-- ComputerName option with custom default value set -->
 				<GuiOption Type="ComputerName">
 					<SetValue>
 						<Query Type="Wmi">
 							<Wql>SELECT * FROM Win32_OperatingSystem</Wql>
 							<Property Name="LocalDateTime">
-								<Truncate Type="KeepFromStart">6</Truncate>	<!-- Truncate Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
+								<Truncate Type="KeepFromStart">6</Truncate>								<!-- Truncate Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
 								<Truncate Type="KeepFromEnd">4</Truncate>
 								<Prefix>PC-</Prefix>
 							</Property>
 							<Separator></Separator>
 							<IncludeNullValues>TRUE</IncludeNullValues>
 						</Query>
-					</SetValue>				
+					</SetValue>
 				</GuiOption>
-				
-				<!-- InfoBox querying a variable from within the GUI. This is the equivalent of the variables that will be created when finish is clicked -->				
+
+				<!-- InfoBox querying a variable from within the GUI. This is the equivalent of the variables that will be created when finish is clicked -->
 				<GuiOption Type="InfoBox" MaxLength="20">
 					<Variable>INFO_GuiOpt</Variable>
 					<Label>Disk ID: </Label>
-					
+
 					<!-- Note the GuiVariable type -->
 					<SetValue>
 						<Query Type="GuiVariable">
-							<Variable Name="OSDDiskIndex"/>					
+							<Variable Name="OSDDiskIndex"/>
 						</Query>
 					</SetValue>
-				</GuiOption>	
-					
+				</GuiOption>
+
 				<!--This option presents a DropDownList of available fixed harddisks 
 				for the partition and format step in SCCM task sequences-->
 				<GuiOption Type="DropDownList">
@@ -86,11 +87,11 @@ Query types:
 					<SetValue>
 						<Value>0</Value>
 					</SetValue>
-					
+
 					<!-- Option list built from Wmi query -->
 					<Query Type="Wmi">
 						<Wql>select Index,Caption,Size FROM Win32_DiskDrive where MediaType='Fixed hard disk media'</Wql>
-            <NameSpace>root\CIMV2</NameSpace> <!-- Option to set the namespace -->
+						<NameSpace>root\CIMV2</NameSpace>						<!-- Option to set the namespace -->
 						<Property Name="Index"/>
 						<Property Name="Index">
 							<Prefix>ID: </Prefix>
@@ -100,31 +101,31 @@ Query types:
 							<Prefix></Prefix>
 							<Append>GB</Append>
 						</Property>
-						<Property Name="Caption"/>					
+						<Property Name="Caption"/>
 						<Separator>, </Separator>
 					</Query>
 				</GuiOption>
-				
-				
+
+
 				<GuiOption Type="FreeText" ID="asset_details">
 					<Variable>AssetDetails</Variable>
 					<Label>Asset details:</Label>
-					
+
 					<!-- Query for the default value. Return the first valid value. Note
 					the Ignore values for evaluating the value returned by the query. Also note 
 					the IgnoreEmpty option. By default, a result that is empty or made up of 
 					whitespace is ignored -->
-					<SetValue>				
+					<SetValue>
 						<Query Type="Wmi" IgnoreEmpty="FALSE">
 							<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
 							<Ignore>No Asset Tag</Ignore>
-						</Query>					
+						</Query>
 						<Query Type="Wmi">
 							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
 						</Query>
 					</SetValue>
 				</GuiOption>
-				
+
 				<!-- FreeText with default value set by IfElse query -->
 				<GuiOption Type="InfoBox">
 					<Label>Notifications</Label>
@@ -137,18 +138,18 @@ Query types:
 										<ID Name="asset_details"/>
 									</Query>
 								</Source>
-								
+
 								<!-- Ruleset to compare the Source value against. Type is AND or OR. Default is OR.
 								Note that RuleSets can be nested to give a (A OR B OR (C AND D)) type structure -->
 								<Ruleset Type="OR">
 									<Rule Type="Equals"></Rule>
-									<Rule Type="Equals"> </Rule>
+									<Rule Type="Equals"></Rule>
 									<Ruleset Type="AND">
 										<Rule Type="StartsWith">*</Rule>
 										<Rule Type="Contains">Test</Rule>
 									</Ruleset>
 								</Ruleset>
-								
+
 								<!-- The result to return if the ruleset matches -->
 								<Result>
 									<Value>There is no asset tag set in BIOS</Value>
@@ -157,10 +158,10 @@ Query types:
 							<ELSE>
 								<Value>System appears OK</Value>
 							</ELSE>
-						</Query>				
+						</Query>
 					</SetValue>
 				</GuiOption>
-				
+
 				<!-- InfoBox populated by a Combined query. Queries are concatenated together -->
 				<GuiOption Type="InfoBox">
 					<Label>System info:</Label>
@@ -174,8 +175,8 @@ Query types:
 								</Property>
 								<Property Name="Model">
 									<!-- Replace spaces with empty i.e. remove them-->
-									<Replace xml:space="preserve">  <!-- Note that the xml:space="preserve" is required so that XML won't ignore your spaces as invalid whitepsace -->
-										<Search> </Search>
+									<Replace xml:space="preserve">										<!-- Note that the xml:space="preserve" is required so that XML won't ignore your spaces as invalid whitepsace -->
+										<Search></Search>
 										<Replace></Replace>
 									</Replace>
 									<Prefix>Model: </Prefix>
@@ -184,8 +185,8 @@ Query types:
 								<Separator></Separator>
 								<IncludeNullValues>TRUE</IncludeNullValues>
 							</Query>
-							<Value>Device Type: </Value> <!-- Within the system, <Value> elements are treated as queries, so can be used here-->
-							
+							<Value>Device Type: </Value>							<!-- Within the system, <Value> elements are treated as queries, so can be used here-->
+
 							<!-- IfElse with multiple IF statements. The first one to match and return a valid result wins -->
 							<Query Type="IfElse">
 								<IF>
@@ -195,12 +196,12 @@ Query types:
 											<ID Name="TsGui_IsVirtualMachine"/>
 										</Query>
 									</Source>
-									
+
 									<!-- Ruleset to compare the Source value against -->
 									<Ruleset>
 										<Rule Type="Equals">TRUE</Rule>
 									</Ruleset>
-									
+
 									<!-- The result to return if the ruleset matches -->
 									<Result>
 										<Value>Virtual Machine</Value>
@@ -213,12 +214,12 @@ Query types:
 											<ID Name="TsGui_IsLaptop"/>
 										</Query>
 									</Source>
-									
+
 									<!-- Ruleset to compare the Source value against -->
 									<Ruleset>
 										<Rule Type="Equals">TRUE</Rule>
 									</Ruleset>
-									
+
 									<!-- The result to return if the ruleset matches -->
 									<Result>
 										<Value>Laptop/Mobile device</Value>
@@ -228,7 +229,7 @@ Query types:
 									<Value>Desktop Device</Value>
 								</ELSE>
 							</Query>
-						</Query>				
+						</Query>
 					</SetValue>
 					<Formatting>
 						<Label>
@@ -236,7 +237,7 @@ Query types:
 						</Label>
 					</Formatting>
 				</GuiOption>
-				
+
 				<!-- Traffic light using a Compare query, used for string comparison. 
 				By default, the compare returns a value of TRUE if they match, FALSE if not -->
 				<GuiOption Type="TrafficLight">
@@ -250,23 +251,23 @@ Query types:
 							<FalseValue>FALSE</FalseValue>
 
 							<!-- The two queries to compare (<Value> is actually a type of query) -->
-							<Value>domain.local</Value> 
+							<Value>domain.local</Value>
 							<Query Type="Wmi">
 								<Wql>select DNSDomain from Win32_NetworkAdapterConfiguration WHERE IPEnabled='True' AND DNSDomain != NULL</Wql>
-								<Property Name="DNSDomain"/>	
+								<Property Name="DNSDomain"/>
 							</Query>
 						</Query>
 					</SetValue>
 					<Compliance>
-						<Message>Current DNS Domain does not match requires configuration</Message>		
+						<Message>Current DNS Domain does not match requires configuration</Message>
 						<DefaultState>Warning</DefaultState>
 						<OK>
 							<Rule Type="Equals">TRUE</Rule>
 						</OK>
 					</Compliance>
 				</GuiOption>
-				
-				<!-- FreeText using EnvironmentVariable quries-->
+
+				<!-- FreeText using EnvironmentVariable queries-->
 				<GuiOption Type="FreeText" MaxLength="15" MinLength="1">
 					<Disallowed>
 						<Characters>`~!@#$%^*()+={}[]\\/|,.? :;\"'>&amp;&lt;</Characters>
@@ -274,31 +275,45 @@ Query types:
 					<Variable>OSDComputerName_FullQuery</Variable>
 					<Label>Computer Name:</Label>
 					<HelpText>Enter a computer name for the device</HelpText>
-					
+
 					<!-- Query for the default value. Return the first valid value. Note
 					the Ignore values for evaluating the value returned by the query -->
 					<SetValue>
 						<Query Type="EnvironmentVariable">
 							<Variable Name="OSDComputerName"/>
 							<Ignore>MINNT</Ignore>
-							<Ignore>MINWIN</Ignore>						
-						</Query>				
+							<Ignore>MINWIN</Ignore>
+						</Query>
 						<Query Type="EnvironmentVariable">
 							<Variable Name="_SMSTSMachineName"/>
 							<Ignore>MINNT</Ignore>
-							<Ignore>MINWIN</Ignore>					
-						</Query>					
+							<Ignore>MINWIN</Ignore>
+						</Query>
 						<Query Type="EnvironmentVariable">
 							<Variable Name="ComputerName"/>
 							<Ignore>MINNT</Ignore>
-							<Ignore>MINWIN</Ignore>						
-						</Query>					
+							<Ignore>MINWIN</Ignore>
+						</Query>
 						<Query Type="Wmi">
 							<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
 							<Ignore>No Asset Tag</Ignore>
-						</Query>					
+						</Query>
 						<Query Type="Wmi">
 							<Wql>SELECT SerialNumber FROM Win32_BIOS</Wql>
+						</Query>
+					</SetValue>
+				</GuiOption>
+
+				<!-- InfoBox using Registry query-->
+				<GuiOption Type="InfoBox">
+					<Variable>VAR_BuildNumber</Variable>
+					<Label>Windows Build Number</Label>
+
+					<SetValue>
+						<Query Type="Registry">
+							<Root>HKEY_LOCAL_MACHINE</Root>
+							<Key>SOFTWARE\Microsoft\Windows NT\CurrentVersion\</Key>
+							<Value>CurrentBuild</Value>
 						</Query>
 					</SetValue>
 				</GuiOption>

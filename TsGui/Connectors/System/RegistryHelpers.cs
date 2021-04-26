@@ -92,7 +92,7 @@ namespace TsGui.Connectors.System
 
         public static List<string> GetStringList(string key, string value)
         {
-            List<string> results = null;
+            List<string> results = new List<string>();
 
             try
             {
@@ -105,7 +105,6 @@ namespace TsGui.Connectors.System
                 else
                 {
                     if (o != null) {
-                        results = new List<string>();
                         string reg = o.ToString();
                         results.Add(reg);
                     }

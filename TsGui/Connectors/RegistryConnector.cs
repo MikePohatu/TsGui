@@ -43,26 +43,34 @@ namespace TsGui.Connectors
         {
             foreach (Variable variable in this.variables)
             {
-                if (string.IsNullOrWhiteSpace(variable.Path)) { LoggerFacade.Error($"Path cannot be empty. Variable name {variable.Name}"); }
-                else if (string.IsNullOrWhiteSpace(variable.Name)) { LoggerFacade.Error($"Path cannot be empty. Variable path {variable.Path}"); }
-                else
-                {
-                    try
-                    {
-                        string path = variable.Path;
-                        if (path.StartsWith("HKCU")) { path = path.Replace("HKCU", "HKEY_CURRENT_USER"); }
-                        else if (path.StartsWith("HKLM")) { path = path.Replace("HKCU", "HKEY_LOCAL_MACHINE"); }
-                        else if (path.StartsWith("HKU")) { path = path.Replace("HKCU", "HKEY_USERS"); }
+                string path = variable.Path;
 
-                        RegistryHelpers.SetStringValue(path, variable.Name, variable.Value);
-                    }
-                    catch (Exception e)
-                    {
-                        LoggerFacade.Error(e, $"Error setting registry item: {variable.Path}\\{variable.Name}");
-                        throw new TsGuiKnownException($"Error setting registry item: {variable.Path}\\{variable.Name}", e.Message);
-                    }
+                if (string.IsNullOrWhiteSpace(path)) 
+                {
+                    if (string.IsNullOrWhiteSpace(path)) { LoggerFacade.Error($"Path cannot be empty. Variable name {variable.Name}"); }
+                    continue;
+                }                    
+                
+                if (string.IsNullOrWhiteSpace(variable.Name)) { 
+                    LoggerFacade.Error($"Name cannot be empty. Variable path {variable.Path}");
+                    continue;
                 }
-            }
+
+                try
+                {
+                        
+                    if (path.StartsWith("HKCU")) { path = path.Replace("HKCU", "HKEY_CURRENT_USER"); }
+                    else if (path.StartsWith("HKLM")) { path = path.Replace("HKCU", "HKEY_LOCAL_MACHINE"); }
+                    else if (path.StartsWith("HKU")) { path = path.Replace("HKCU", "HKEY_USERS"); }
+
+                    RegistryHelpers.SetStringValue(path, variable.Name, variable.Value);
+                }
+                catch (Exception e)
+                {
+                    LoggerFacade.Error(e, $"Error setting registry item: {variable.Path}\\{variable.Name}");
+                    throw new TsGuiKnownException($"Error setting registry item: {variable.Path}\\{variable.Name}", e.Message);
+                }
+            }            
         }
 
         public void Init()

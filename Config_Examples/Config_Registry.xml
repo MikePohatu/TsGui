@@ -1,0 +1,41 @@
+<TsGui Debug="TRUE" Output="Registry">
+	<Height>500</Height>
+	<Width>400</Width>
+
+    <!-- Set the default path for variables. You can also set the <Path> element on each item -->
+    <DefaultPath>HKEY_CURRENT_USER\Software\20Road\TESTING</DefaultPath>
+
+	<HardwareEval />
+
+	<Heading>
+		<Title>Registry</Title>
+		<Text>Check HKEY_CURRENT_USER\Software\20Road\TESTING for output</Text>
+	</Heading>
+
+
+	<Formatting>
+		<LeftCellWidth>280</LeftCellWidth>
+		<RightCellWidth>100</RightCellWidth>
+	</Formatting>
+
+	<Page>
+		<Row>
+			<Column>
+				<!-- InfoBox using Registry query-->
+				<GuiOption Type="InfoBox">
+					<Variable>VAR_BuildNumber</Variable>
+					<Label>Windows Build Number</Label>
+
+					<SetValue>
+						<Query Type="Registry">
+							<Root>HKEY_LOCAL_MACHINE</Root>
+							<Key>SOFTWARE\Microsoft\Windows NT\CurrentVersion</Key>
+							<Value>CurrentBuild</Value>
+						</Query>
+					</SetValue>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+
+</TsGui>

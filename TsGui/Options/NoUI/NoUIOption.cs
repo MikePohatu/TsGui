@@ -160,6 +160,9 @@ namespace TsGui.Options.NoUI
             }
 
             if (this.IsToggle == true) { Director.Instance.AddToggleControl(this); }
+
+            //pull the default path from the director if not already set
+            if (string.IsNullOrWhiteSpace(this.Path)) { this.Path = Director.Instance.DefaultPath; }
         }
 
         public void UpdateValue(Message message)
