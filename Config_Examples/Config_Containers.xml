@@ -1,0 +1,72 @@
+<TsGui Debug="TRUE">
+
+    <Height>500</Height>
+    <Width>400</Width>
+
+    <Heading>
+        <Title>Containers</Title>
+        <Text>Example of the container UI structure. </Text>
+    </Heading>
+
+
+    <Formatting>
+        <LeftCellWidth>280</LeftCellWidth>
+        <RightCellWidth>100</RightCellWidth>
+    </Formatting>
+
+    <Page>
+        <Row>
+            <Column>
+                <GuiOption Type="ComputerName"/>
+
+
+                <GuiOption Type="CheckBox" ID="link_all">
+                    <Variable>APP_ALL</Variable>
+                    <Label>Office apps</Label>
+                    <HAlign>right</HAlign>
+                </GuiOption>
+
+                <Container>
+                    <!-- Apply formatting to the container so it will apply to everything in it -->
+                    <Formatting>
+                        <Label>
+						    <Margin>10,0,0,0</Margin>
+                            <Font>
+                                <Color>Blue</Color>
+                            </Font>
+                        </Label>
+                    </Formatting>
+
+                    <GuiOption Type="CheckBox">
+                        <Variable>APP_Office</Variable>
+                        <Label>Office</Label>
+                        <HAlign>right</HAlign>
+                        <Checked/>
+                        <SetValue>
+                            <Query Type="LinkTo">link_all</Query>
+                        </SetValue>
+                    </GuiOption>
+
+                    <GuiOption Type="CheckBox">
+                        <Variable>APP_Visio</Variable>
+                        <Label>Visio</Label>
+                        <HAlign>right</HAlign>
+                        <SetValue>
+                            <Query Type="LinkTo">link_all</Query>
+                        </SetValue>
+                    </GuiOption>
+
+                    <GuiOption Type="CheckBox">
+                        <Variable>APP_Project</Variable>
+                        <Label>Project</Label>
+                        <HAlign>right</HAlign>
+                        <SetValue>
+                            <Query Type="LinkTo">link_all</Query>
+                        </SetValue>
+                    </GuiOption>
+                </Container>
+            </Column>
+        </Row>
+    </Page>
+
+</TsGui>

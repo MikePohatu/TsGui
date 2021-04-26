@@ -17,20 +17,14 @@
 //
 #endregion
 
-// NoUIContainer.cs - container for BlindOptions
+// UIContainer.cs - container for GuiOptions e.g. to wrap formatting
 
-using System.Collections.Generic;
 using System.Xml.Linq;
-using TsGui.Options;
-using TsGui.View.GuiOptions;
 
 namespace TsGui.View.Layout
 {
     public class UIContainer : ParentLayoutElement
     {
-        private List<IOption> _options = new List<IOption>();
-        private List<UIContainer> _containers = new List<UIContainer>();
-        
         //constructors
         public UIContainer(ParentLayoutElement Parent, XElement InputXml) : base(Parent)
         {

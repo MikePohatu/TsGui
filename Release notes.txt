@@ -6,6 +6,7 @@ Release date: 27 Apr 2021
 	Added ability to output to registry rather than to task sequence variables
 	Added support for nested linking queries e.g. inside if/else queries
 	Added more documentation (still a lot more to come though)
+	Added <Container> element to help apply Formatting or Groups to multiple items without having to do the whole row or column
 
 *Fixes
 	Added fix to catch and resolve circular linking events e.g. checkboxes that turn each other on/off
