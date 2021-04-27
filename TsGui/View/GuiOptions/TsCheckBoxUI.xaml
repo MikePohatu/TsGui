@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:TsGui.View.GuiOptions"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="20">
-    <Border x:Name="CbBorder" Width="NaN" Height="NaN" Margin="{Binding CbBorderMargin}"
+    <Border x:Name="CbBorder" Width="Auto" Height="Auto" Margin="{Binding CbBorderMargin}"
             HorizontalAlignment="{Binding ControlFormatting.HorizontalAlignment}" VerticalAlignment="{Binding ControlFormatting.VerticalAlignment}">
         <CheckBox x:Name="CheckBox" IsChecked="{Binding IsChecked}" Style="{StaticResource ControlStyle}"/>
     </Border>

@@ -65,7 +65,6 @@ namespace TsGui
         private TsButtons _buttons;
         private List<TsPage> _pages;
         private EnvironmentController _envController;
-        private LinkingLibrary _linkinglibrary;
         private GroupLibrary _grouplibrary;
         private List<IToggleControl> _toggles;
         private OptionLibrary _optionlibrary;
@@ -75,11 +74,9 @@ namespace TsGui
         private TestingWindow _testingwindow;
         private bool _livedata = false;
         private bool _debug = false;
-        private bool _showtestwindow = false;
 
         //properties
         public AuthLibrary AuthLibrary { get { return this._authlibrary; } }
-        public LinkingLibrary LinkingLibrary { get { return this._linkinglibrary; } }
         public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get { return this._optionlibrary; } }
@@ -89,6 +86,11 @@ namespace TsGui
         public TsPage CurrentPage { get; set; }
         public bool ShowGridLines { get; private set; }
         public bool UseTouchDefaults { get; private set; }
+
+        /// <summary>
+        /// The path that will be set on new IOptions by default. Can be overridden by each option
+        /// </summary>
+        public string DefaultPath { get; private set; }
 
         //constructors
         private Director()
@@ -110,9 +112,8 @@ namespace TsGui
         public void Init(MainWindow ParentWindow, Arguments Arguments)
         {
             LoggerFacade.Trace("MainController initializing");
-            this._envController = new EnvironmentController(this);
+            this._envController = new EnvironmentController();
             this._pages = new List<TsPage>();
-            this._linkinglibrary = new LinkingLibrary();
             this._grouplibrary = new GroupLibrary();
             this._toggles = new List<IToggleControl>();
             this._optionlibrary = new OptionLibrary();
@@ -123,22 +124,22 @@ namespace TsGui
             this.ParentWindow.LocationChanged += this.OnWindowMoving;
 
             try { this.Startup(); }
-            catch (TsGuiKnownException exc)
+            catch (TsGuiKnownException e)
             {
-                string msg = "Error message: " + exc.CustomMessage;
+                string msg = "Error message: " + e.CustomMessage + Environment.NewLine + e.Message;
                 this.CloseWithError("Application Startup Exception", msg);
                 return;
             }
-            catch (Exception exc)
+            catch (Exception e)
             {
-                string msg = "Error message: " + exc.Message + Environment.NewLine + exc.ToString();
+                string msg = "Error message: " + e.Message + Environment.NewLine + e.ToString();
                 this.CloseWithError("Application Startup Exception", msg);
                 return;
             }
         }
 
         /// <summary>
-        /// Replace the default director with a new IDirector instance. This to pass in a scafold IDirector for testing
+        /// Replace the default director with a new IDirector instance. This to pass in a scaffold IDirector for testing
         /// </summary>
         /// <param name="newdirector"></param>
         public static void OverrideInstance(IDirector newdirector)
@@ -159,14 +160,15 @@ namespace TsGui
         {
             LoggerFacade.Debug("*TsGui startup started");
             this.StartupFinished = false;
-            this._prodmode = this._envController.Init();
 
-            
+            //read the config file in. Don't process it yet
             XElement xconfig = this.ReadConfigFile();
             if (xconfig == null) { return; }
 
-            //this.LoadXml(x);
-            try { this.LoadXml(xconfig); }
+            //Now load the XML, catching errors
+            try { 
+                this.LoadXml(xconfig);
+            }
             catch (TsGuiKnownException e)
             {
                 string msg = "Error loading config file" + Environment.NewLine + e.CustomMessage + Environment.NewLine + e.Message;
@@ -174,26 +176,45 @@ namespace TsGui
                 return;
             }
 
-            this.PopulateHwOptions();
+            //populate hardware options if HardwareEval enabled (LoadXML will create the object if set)
+            if (this._hardwareevaluator != null)
+            {
+                LoggerFacade.Debug("Running hardware evaluator");
+                foreach (Variable var in this._hardwareevaluator.GetTsVariables())
+                {
+                    NoUIOption newhwoption = new NoUIOption();
+                    newhwoption.ImportFromTsVariable(var);
+                    this._optionlibrary.Add(newhwoption);
+                }
+            }
 
-            //now init everything
-            this._optionlibrary.InitialiseOptions();
+            //Init the envController so we know what we're writing to and attach the SCCM COM object if required
+            this._prodmode = this._envController.Init();
 
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
-            if (this._prodmode == true)
-            { this._envController.HideProgressUI(); }
+            if (this._args.TestMode == false && this._prodmode == true)
+            {
+                if (this._debug == true) { this._testingwindow = new TestingWindow(this); } 
+            }
             else
             {
                 if (this.PromptTestMode() != true) { this.Cancel(); return; }
-                if (this._livedata == true) { this._showtestwindow = true; }
+                if ((this._debug == true) || (this._livedata == true)) { this._testingwindow = new TestingWindow(this); }
             }
+
+            //now send a ConfigLoadFinished event so things know they can finish setting themselves up e.g. OptionValueQuery
+            this.ConfigLoadFinished?.Invoke(this, null);
+
+            //now init all the options
+            this._optionlibrary.InitialiseOptions();
 
             //subscribe to closing event
             this.ParentWindow.Closing += this.OnWindowClosing;
 
             if (this._pages.Count > 0)
             {
+                
                 LoggerFacade.Debug("Loading pages");
                 this.CurrentPage = this._pages.First();
                 //update group settings to all controls
@@ -213,7 +234,7 @@ namespace TsGui
                 this.ParentWindow.Visibility = Visibility.Visible;
                 this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
                 this.StartupFinished = true;
-                if ((this._debug == true) || (this._showtestwindow == true)) { this._testingwindow = new TestingWindow(this); }
+                
                 GuiTimeout.Instance?.Start(this.OnTimeoutReached);
                 LoggerFacade.Info("*TsGui startup finished");
             }
@@ -275,6 +296,11 @@ namespace TsGui
                 
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
                 this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
+                this.DefaultPath = XmlHandler.GetStringFromXElement(SourceXml, "DefaultPath", this.DefaultPath);
+                string outputtype = XmlHandler.GetStringFromXAttribute(SourceXml, "Output", "Sccm");
+                if (this._args.TestMode == false) { this._envController.SetOutputType(outputtype); }
+                else { this._envController.SetOutputType("Test"); }
+                
 
                 //Set show grid lines after pages and columns have been created.
                 x = SourceXml.Element("ShowGridLines");
@@ -288,7 +314,7 @@ namespace TsGui
                 //turn hardware eval on or off
                 x = SourceXml.Element("HardwareEval");
                 if (x != null)
-                { this._hardwareevaluator = new HardwareEvaluator(); }
+                { this._hardwareevaluator = new HardwareEvaluator(x); }
 
                 //start layout import
                 this.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);
@@ -363,7 +389,6 @@ namespace TsGui
             }
 
             LoggerFacade.Info("Config load finished");
-            this.ConfigLoadFinished?.Invoke(this, null);
         }
 
         //add options from sub classes to the main library. used to generate the final list of 
@@ -439,7 +464,7 @@ namespace TsGui
                     if (option.IsActive == true)
                     { this._envController.AddVariable(option.Variable); }
                     else
-                    { this._envController.AddVariable(new TsVariable(option.VariableName,option.InactiveValue)); }
+                    { this._envController.AddVariable(new Variable(option.VariableName, option.InactiveValue, option.Path)); }
                 }
             }
 
@@ -454,8 +479,8 @@ namespace TsGui
 
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            if (_finished) { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "FALSE")); }
-            else { this._envController.AddVariable(new TsVariable("TsGui_Cancel", "TRUE")); }
+            if (_finished) { this._envController.AddVariable(new Variable("TsGui_Cancel", "FALSE", null)); }
+            else { this._envController.AddVariable(new Variable("TsGui_Cancel", "TRUE", null)); }
             this._envController.Release();
         }
 
@@ -505,20 +530,6 @@ namespace TsGui
 
             if (result == MessageBoxResult.Yes) return true;
             else return false;
-        }
-
-        private void PopulateHwOptions()
-        {
-            if (this._hardwareevaluator != null)
-            {
-                LoggerFacade.Debug("Running hardware evaluator");
-                foreach (TsVariable var in this._hardwareevaluator.GetTsVariables())
-                {
-                    NoUIOption newhwoption = new NoUIOption();
-                    newhwoption.ImportFromTsVariable(var);
-                    this._optionlibrary.Add(newhwoption);
-                }
-            }
         }
     }
 }

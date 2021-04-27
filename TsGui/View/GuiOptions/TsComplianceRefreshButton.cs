@@ -22,6 +22,8 @@
 using System.Xml.Linq;
 using System.Windows;
 using TsGui.View.Layout;
+using MessageCrap;
+using TsGui.Validation;
 
 namespace TsGui.View.GuiOptions
 {
@@ -32,7 +34,7 @@ namespace TsGui.View.GuiOptions
         private TsButtonUI _ui;
 
         public override string CurrentValue { get { return null; } }
-        public override TsVariable Variable { get { return null; } }
+        public override Variable Variable { get { return null; } }
         public string ButtonText
         {
             get { return this._buttontext; }
@@ -55,7 +57,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsComplianceRefreshButton(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsComplianceRefreshButton(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this._rootelement = this.GetComplianceRootElement();
 
@@ -88,5 +90,7 @@ namespace TsGui.View.GuiOptions
             ControlDefaults.SetButtonDefaults(this.ControlFormatting);
             this.ButtonText = "Refresh";
         }
+
+        public override void UpdateValue(Message message) { }
     }
 }

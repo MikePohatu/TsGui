@@ -16,11 +16,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using MessageCrap;
 using System.Xml.Linq;
 
 namespace TsGui.Queries
 {
-    public class ValueOnlyQuery: IQuery
+    public class ValueOnlyQuery : IQuery
     {
         private FormattedProperty _formatter = new FormattedProperty();
         private ResultWrangler _wrangler = new ResultWrangler();
@@ -34,7 +35,7 @@ namespace TsGui.Queries
         public ValueOnlyQuery(XElement InputXml)
         {
             this._formatter.Input = InputXml.Value;
-            this._wrangler.NewResult(); 
+            this._wrangler.NewResult();
             this._wrangler.AddFormattedProperty(this._formatter);
         }
 
@@ -45,10 +46,10 @@ namespace TsGui.Queries
             this._wrangler.AddFormattedProperty(this._formatter);
         }
 
-        public ResultWrangler GetResultWrangler()
+        public ResultWrangler GetResultWrangler(Message message)
         { return this._wrangler; }
 
-        public ResultWrangler ProcessQuery()
+        public ResultWrangler ProcessQuery(Message message)
         { return this._wrangler; }
     }
 }

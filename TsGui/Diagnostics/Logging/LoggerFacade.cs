@@ -20,6 +20,7 @@
 // LoggerFacade.cs - Facade class for the main logging framework 
 
 using NLog;
+using System;
 
 namespace TsGui.Diagnostics.Logging
 {
@@ -37,9 +38,19 @@ namespace TsGui.Diagnostics.Logging
             _logger.Warn(message);
         }
 
+        public static void Warn(Exception e, string message)
+        {
+            _logger.Warn(e, message);
+        }
+
         public static void Error(string message)
         {
             _logger.Error(message);
+        }
+
+        public static void Error(Exception e, string message)
+        {
+            _logger.Error(e, message);
         }
 
         public static void Trace(string message)
@@ -47,14 +58,29 @@ namespace TsGui.Diagnostics.Logging
             _logger.Trace(message);
         }
 
+        public static void Trace(Exception e, string message)
+        {
+            _logger.Trace(e, message);
+        }
+
         public static void Fatal(string message)
         {
             _logger.Fatal(message);
         }
 
+        public static void Fatal(Exception e, string message)
+        {
+            _logger.Fatal(e, message);
+        }
+
         public static void Debug(string message)
         {
             _logger.Debug(message);
+        }
+
+        public static void Debug(Exception e, string message)
+        {
+            _logger.Debug(e, message);
         }
     }
 }

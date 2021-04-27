@@ -33,6 +33,8 @@ namespace TsGui
         public string LogFile { get; private set; }
         public int LoggingLevel { get; private set; }
 
+        public bool TestMode { get; private set; }
+
         public bool CreateKey { get; private set; } = false;
 
         public string Key { get; private set; }
@@ -76,6 +78,9 @@ namespace TsGui
                         case "-KEY":
                             if (Args.Length < index + 2) { throw new InvalidOperationException("Missing value after -key"); }
                             this.Key = Args[index + 1];
+                            break;
+                        case "-TEST":
+                            this.TestMode = true;
                             break;
                         default:
                             throw new InvalidOperationException("Invalid parameter: " + Args[index]);

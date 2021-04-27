@@ -25,5 +25,6 @@ namespace TsGui.Authentication
         string AuthID { get; }
         SecureString SecurePassword { get; }
         string Password { get; }
+        event AuthValueChanged PasswordChanged;
     }
 }

@@ -1,9 +1,16 @@
-Version 1.2.5.2
-Release date: 18 Jan 2021
+Version 1.5.0.0
+Release date: 27 Apr 2021
+
+*Features	
+	Added registry query type
+	Added ability to output to registry rather than to task sequence variables
+	Added support for nested linking queries e.g. inside if/else queries
+	Added more documentation (still a lot more to come though)
+	Added <Container> element to help apply Formatting or Groups to multiple items without having to do the whole row or column
 
 *Fixes
-	Added workaround for slower startup time due to signed binaries
-	Fixed disabled GuiOptions with validation rules set not always clearing their error messages
+	Added fix to catch and resolve circular linking events e.g. checkboxes that turn each other on/off
+	Added fixes for the layout inheritance tree
 
 *Known issues
 	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
@@ -13,6 +20,14 @@ Release date: 18 Jan 2021
 *Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
 
 
+Version 1.2.5.2
+Release date: 18 Jan 2021
+
+*Fixes
+	Added workaround for slower startup time due to signed binaries
+	Fixed disabled GuiOptions with validation rules set not always clearing their error messages
+
+*Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
 
 
 Version 1.2.5.0
@@ -57,11 +72,11 @@ Release date: 24 March 2020
 *New features 
 	Added <UseTouchDefaults /> configuration option. This adds additional space around controls and makes them a bit larger by default. Add this directly under your <TsGui> element
 	Added 'Prebuilt' configuration functionality. This allows for 'short hand' to replace common configuration with a single attribute, significantly shortening the config. 
-		See https://github.com/MikePohatu/TsGui/blob/master/Documentation/PrebuiltConfiguration.md for more details
+		See https://github.com/MikePohatu/TsGui/blob/master/documentation/PrebuiltConfiguration.md for more details
 	You can now apply a <Formatting> block at the root of your configuration and it will be inherited all the way down the config
 	Added AutoComplete option to DropDownList. This allows the user to type in the DropDownList and a matching option to be selected. Add <AutoComplete>TRUE</AutoComplete> to DropDownList enable this. 
 	Added ability to create passwords in configuration. 
-		See https://github.com/MikePohatu/TsGui/blob/master/Documentation/Authentication/LocalConfigAuthentication.md for more details
+		See https://github.com/MikePohatu/TsGui/blob/master/documentation/Authentication/LocalConfigAuthentication.md for more details
 	Started adding proper documentation
 
 *Fixes

@@ -20,7 +20,10 @@
 // TsHeading.cs - Label with no control. Used to add headings and text only 
 // amongst the other options. 
 
+using MessageCrap;
 using System.Xml.Linq;
+using TsGui.Linking;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
@@ -35,12 +38,16 @@ namespace TsGui.View.GuiOptions
         public string ControlText
         {
             get { return this._controltext; }
-            set { this._controltext = value; this.OnPropertyChanged(this, "ControlText"); }
+            set { 
+                this._controltext = value; 
+                this.OnPropertyChanged(this, "ControlText");
+                LinkingHub.Instance.SendUpdateMessage(this, null);
+            }
         }
-        public override TsVariable Variable { get { return null; } }
+        public override Variable Variable { get { return null; } }
 
         //constructor
-        public TsHeading(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsHeading(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this.ControlText = string.Empty;
             this.Control = new TsHeadingUI();
@@ -54,5 +61,7 @@ namespace TsGui.View.GuiOptions
             base.LoadXml(InputXml);
             this.ControlText = XmlHandler.GetStringFromXElement(InputXml, "AltLabel", this.ControlText);
         }
+
+        public override void UpdateValue(Message message) { }
     }
 }

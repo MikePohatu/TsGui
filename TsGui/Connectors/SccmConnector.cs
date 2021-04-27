@@ -26,7 +26,7 @@ using TsGui.Diagnostics;
 
 namespace TsGui.Connectors
 {
-    public class SccmConnector : ITsVariableOutput
+    public class SccmConnector : IVariableOutput
     {
         dynamic objTSProgUI;
         dynamic objTSEnv;
@@ -38,7 +38,7 @@ namespace TsGui.Connectors
             catch { LoggerFacade.Warn("Unable to attach to task sequence progress dialog"); }
         }
 
-        public void AddVariable(TsVariable Variable)
+        public void AddVariable(Variable Variable)
         {
             LoggerFacade.Info("Applying TS variable: " + Variable.Name + ". Value: " + Variable.Value);
             try
@@ -51,7 +51,7 @@ namespace TsGui.Connectors
             }
         }
 
-        public void Hide()
+        public void Init()
         {
             LoggerFacade.Trace("SccmConnector hiding progress dialog");
             objTSProgUI?.CloseProgressDialog();

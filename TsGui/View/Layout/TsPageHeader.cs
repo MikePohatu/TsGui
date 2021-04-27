@@ -29,20 +29,37 @@ using TsGui.Validation;
 
 namespace TsGui.View.Layout
 {
-    public class TsPageHeader : BaseLayoutElement, IComplianceRoot
+    public class TsPageHeader : ParentLayoutElement, IComplianceRoot
     {
         public event ComplianceRetryEventHandler ComplianceRetry;
 
-        private string _title;
-        private string _text;
         private SolidColorBrush _bgColor;
         private SolidColorBrush _fontColor;
         private double _titlefontsize;
         private double _textfontsize;
 
         //Properties
-        public Image Image { get; set; }
-        public TsTable Table { get; set; }
+        private Image _image;
+        public Image Image
+        {
+            get { return this._image; }
+            set
+            {
+                this._image = value;
+                this.OnPropertyChanged(this, "Image");
+            }
+        }
+
+        private TsTable _table;
+        public TsTable Table
+        {
+            get { return this._table; }
+            set
+            {
+                this._table = value;
+                this.OnPropertyChanged(this, "Table");
+            }
+        }
         public TsPageHeaderUI UI { get; set; }
         public SolidColorBrush BgColor
         {
@@ -53,6 +70,8 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "BgColor");
             }
         }
+
+        private string _title;
         public string Title
         {
             get { return this._title; }
@@ -62,6 +81,8 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "HeadingTitle");
             }
         }
+
+        private string _text;
         public string Text
         {
             get { return this._text; }
@@ -95,9 +116,12 @@ namespace TsGui.View.Layout
         }
 
         //Constructors
-        public TsPageHeader(BaseLayoutElement Parent, TsPageHeader Template, XElement SourceXml):base(Parent)
+        public TsPageHeader(ParentLayoutElement Parent, TsPageHeader Template, XElement SourceXml):base(Parent)
         {
-            this.Height = Template.Height;
+            this.ShowGridLines = Director.Instance.ShowGridLines;
+            this.SetDefaults();
+
+            this.Formatting.Height = Template.Formatting.Height;
             this.Title = Template.Title;
             this.Text = Template.Text;
             this.FontColor = Template.FontColor;
@@ -105,12 +129,12 @@ namespace TsGui.View.Layout
             this.Image = Template.Image;
             this.TitleFontSize = Template.TitleFontSize;
             this.TextFontSize = Template.TextFontSize;
-            this.Margin = Template.Margin;
+            this.Formatting.Margin = Template.Formatting.Margin;
 
             this.Init(SourceXml);
         }
 
-        public TsPageHeader(BaseLayoutElement Parent, XElement SourceXml): base (Parent)
+        public TsPageHeader(ParentLayoutElement Parent, XElement SourceXml): base (Parent)
         {
             this.ShowGridLines = Director.Instance.ShowGridLines;
             this.SetDefaults();
@@ -145,15 +169,15 @@ namespace TsGui.View.Layout
         {
             if (Director.Instance.UseTouchDefaults)
             {
-                this.Margin = new Thickness(10, 10, 10, 10);
-                this.Height = 65;
+                this.Formatting.Margin = new Thickness(10, 10, 10, 10);
+                this.Formatting.Height = 65;
                 this.TitleFontSize = 14;
                 this.TextFontSize = 12;
             }
             else
             {
-                this.Margin = new Thickness(10, 5, 10, 5);
-                this.Height = 50;
+                this.Formatting.Margin = new Thickness(10, 5, 10, 5);
+                this.Formatting.Height = 50;
                 this.TitleFontSize = 13;
                 this.TextFontSize = 12;
             }
@@ -165,8 +189,11 @@ namespace TsGui.View.Layout
         //Methods
         public new void LoadXml(XElement InputXml)
         {
-            base.LoadXml(InputXml);
+            this.LoadXml(InputXml, this);
+        }
 
+        public override void LoadXml(XElement InputXml, ParentLayoutElement parent)
+        {
             XElement x;
 
             if (InputXml != null)
@@ -178,7 +205,7 @@ namespace TsGui.View.Layout
                 this.Title = XmlHandler.GetStringFromXElement(InputXml, "Title", this.Title);
                 this.Text = XmlHandler.GetStringFromXElement(InputXml, "Text", this.Text);
                 this.FontColor = XmlHandler.GetSolidColorBrushFromXElement(InputXml, "TextColor", this.FontColor);
-                this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
+                this.Formatting.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Formatting.Height);
 
                 x = InputXml.Element("Image");
                 if (x != null) { this.Image = new Image(x); }

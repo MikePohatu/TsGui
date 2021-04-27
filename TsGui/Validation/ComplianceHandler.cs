@@ -24,6 +24,7 @@ using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Linking;
+using MessageCrap;
 
 namespace TsGui.Validation
 {
@@ -114,9 +115,7 @@ namespace TsGui.Validation
             else { return string.Empty; }
         }
 
-        public void RefreshValue()
-        { this._owner.OnValidationChange(); }
-        public void RefreshAll()
+        public void OnSourceValueUpdated(Message message)
         { this._owner.OnValidationChange(); }
     }
 }

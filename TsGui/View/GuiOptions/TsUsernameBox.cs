@@ -20,6 +20,7 @@ using System.Windows;
 using TsGui.Authentication;
 using TsGui.Diagnostics;
 using System.Xml.Linq;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
@@ -29,11 +30,10 @@ namespace TsGui.View.GuiOptions
         public string AuthID { get { return this._authid; } }
         public string Username { get { return this._controltext; } }
 
-        public TsUsernameBox(XElement InputXml, TsColumn parent) : base(parent)
+        public TsUsernameBox(XElement InputXml, ParentLayoutElement parent) : base(parent)
         {
             this.SetDefaults();
             this.LoadXml(InputXml);
-            this.RefreshValue();
         }
 
         private void SetDefaults()

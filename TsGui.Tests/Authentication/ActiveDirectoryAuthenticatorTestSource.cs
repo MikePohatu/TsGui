@@ -20,10 +20,14 @@ using System.Security;
 using System.Net;
 using TsGui.Authentication;
 
+
+#pragma warning disable CS0067
 namespace TsGui.Tests.Authentication
 {
     public class ActiveDirectoryAuthenticatorTestSource: IUsername, IPassword
     {
+        public event AuthValueChanged PasswordChanged;
+
         private NetworkCredential _netcredential = new NetworkCredential();
 
         public string AuthID { get; set; }

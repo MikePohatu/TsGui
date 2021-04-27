@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using MessageCrap;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -38,5 +39,7 @@ namespace TsGui.Tests.Linking
         {
             Debug.WriteLine("RefreshAll");
         }
+
+        public void OnSourceValueUpdated(Message message) { }
     }
 }

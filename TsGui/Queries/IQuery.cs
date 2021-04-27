@@ -16,11 +16,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using MessageCrap;
+
 namespace TsGui.Queries
 {
     public interface IQuery
     {
-        ResultWrangler GetResultWrangler();
-        ResultWrangler ProcessQuery();
+        ResultWrangler GetResultWrangler(Message message);
+        ResultWrangler ProcessQuery(Message message);
     }
 }

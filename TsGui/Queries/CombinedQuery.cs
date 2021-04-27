@@ -20,18 +20,19 @@
 // CombinedQuery.cs - combine multiple queries
 
 
+using MessageCrap;
 using System.Xml.Linq;
 using TsGui.Linking;
 
 namespace TsGui.Queries
 {
-    public class CombinedQuery: BaseQuery, ILinkTarget, ILinkingEventHandler
+    public class CombinedQuery: BaseQuery, ILinkTarget
     {
         private QueryPriorityList _querylist;
 
         public CombinedQuery(XElement inputxml, ILinkTarget owner) : base(owner)
         {
-            this._querylist = new QueryPriorityList(this);
+            this._querylist = new QueryPriorityList(owner);
             this._processingwrangler = new ResultWrangler();
             this._processingwrangler.Separator = string.Empty;
             this._reprocess = true;
@@ -44,36 +45,28 @@ namespace TsGui.Queries
             
             foreach (XElement x in InputXml.Elements())
             {
-                IQuery newquery = QueryFactory.GetQueryObject(x, this);
+                IQuery newquery = QueryFactory.GetQueryObject(x, this._linktarget);
                 if (newquery != null) { this._querylist.AddQuery(newquery); }
             }
         }
 
-        public override ResultWrangler GetResultWrangler()
+        public override ResultWrangler GetResultWrangler(Message message)
         {
-            return this.ProcessQuery();
+            return this.ProcessQuery(message);
         }
 
-        public override ResultWrangler ProcessQuery()
+        public override ResultWrangler ProcessQuery(Message message)
         {
             this._processingwrangler = this._processingwrangler.Clone();
             this._processingwrangler.NewResult();
-            this._processingwrangler.AddFormattedProperties(this._querylist.GetAllPropertyFormatters());
+            this._processingwrangler.AddFormattedProperties(this._querylist.GetAllPropertyFormatters(message));
 
             string s = this._processingwrangler.GetString();
             if (this.ShouldIgnore(s) == false) { return this._processingwrangler; }
             else { return null; }
         }
 
-        public void RefreshValue()
-        {
-            this._linktarget.RefreshValue();
-        }
-
-        public void RefreshAll()
-        { this._linktarget.RefreshAll(); }
-
-        public void OnLinkedSourceValueChanged()
-        { this.RefreshValue(); }
+        public void OnSourceValueUpdated(Message message)
+        { this._linktarget.OnSourceValueUpdated(message); }
     }
 }

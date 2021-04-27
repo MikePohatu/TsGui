@@ -26,13 +26,15 @@ using System.Windows.Data;
 using System.Windows;
 
 using TsGui.View.GuiOptions;
+using System;
 
 namespace TsGui.View.Layout
 {
     public class TsTable
     {
         private List<TsRow> _rows = new List<TsRow>();
-        private BaseLayoutElement _parent;
+        private ParentLayoutElement _parent;
+        private int _rowcount = 0;
 
         //Properties
         #region
@@ -42,24 +44,19 @@ namespace TsGui.View.Layout
         #endregion
 
         //Constructors
-        public TsTable(XElement SourceXml, BaseLayoutElement Parent)
+        public TsTable(XElement SourceXml, ParentLayoutElement Parent)
         {
-            
-            Grid g = new Grid();
-            g.Name = "_tablegrid";
-            this.Init(SourceXml, Parent, g);
-        }
+            this._parent = Parent; 
+            this.Grid = new Grid();
+            this.Grid.Name = "_tablegrid";
+            this.Grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
+            this.Grid.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
+            this.Grid.VerticalAlignment = VerticalAlignment.Top;
+            this.Grid.HorizontalAlignment = HorizontalAlignment.Left;
 
-        //methods
-        private void Init(XElement SourceXml, BaseLayoutElement Parent, Grid Grid)
-        {
-            this._parent = Parent;
-            this.Grid = Grid;
             this.LoadXml(SourceXml);
-            this.PopulateOptions();
-            this.Build();
+            Director.Instance.ConfigLoadFinished += this.OnConfigLoadFinished;
         }
-
 
         //Methods
         public void LoadXml(XElement InputXml)
@@ -67,27 +64,22 @@ namespace TsGui.View.Layout
             //base.LoadXml(InputXml);
             IEnumerable<XElement> xlist;
             XElement x;
-            int index;
 
             //now read in the options and add to a dictionary for later use
-            int i = 0;
             xlist = InputXml.Elements("Row");
             if (xlist != null)
             {
-                index = 0;
                 foreach (XElement xrow in xlist)
                 {
-                    this.CreateRow(xrow, index);
-                    index++;
-                    i++;
+                    this.CreateRow(xrow, _rowcount);
+                    this._rowcount++;
                 }
             }
 
             //legacy support i.e. no row in config.xml. create a new row and add the columns 
             //to it
-            if (i == 0)
+            if (this._rowcount == 0)
             {
-
                 xlist = InputXml.Elements("Column");
                 x = new XElement("Row");
 
@@ -97,7 +89,6 @@ namespace TsGui.View.Layout
                 }
                 if (x.Elements() != null) { this.CreateRow(x, 0); }
             }
-
         }
 
         private void CreateRow(XElement InputXml, int Index)
@@ -106,15 +97,17 @@ namespace TsGui.View.Layout
             this._rows.Add(r);
         }
 
+        private void OnConfigLoadFinished(object sender, EventArgs e)
+        {
+            this.Build();
+        }
+
         //build the gui controls.
         public void Build()
         {
-            int index = 0;
+            this.PopulateOptions();
 
-            this.Grid.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
-            this.Grid.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
-            this.Grid.VerticalAlignment = VerticalAlignment.Top;
-            this.Grid.HorizontalAlignment = HorizontalAlignment.Left;
+            int index = 0;
 
             foreach (TsRow row in this._rows)
             {

@@ -21,6 +21,8 @@ using System.Windows;
 using TsGui.View.Layout;
 using TsGui.Actions;
 using TsGui.Diagnostics.Logging;
+using TsGui.Validation;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
@@ -33,7 +35,7 @@ namespace TsGui.View.GuiOptions
         private bool _isdefault;
 
         public override string CurrentValue { get { return null; } }
-        public override TsVariable Variable { get { return null; } }
+        public override Variable Variable { get { return null; } }
         public string ButtonText
         {
             get { return this._buttontext; }
@@ -54,7 +56,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsActionButton(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsActionButton(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this._rootelement = this.GetComplianceRootElement();
 
@@ -95,5 +97,7 @@ namespace TsGui.View.GuiOptions
             this._isdefault = false;
             this.ButtonText = "Apply";
         }
+
+        public override void UpdateValue(Message message) { }
     }
 }

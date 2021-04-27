@@ -88,9 +88,8 @@ namespace TsGui
          
             LoggerFacade.Info("*TsGui started - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
-            this._mainwindow = new MainWindow(this.Arguments);
+            this._mainwindow = new MainWindow();
             Director.Instance.Init(this._mainwindow, this.Arguments);
-            //this._controller = new Director(this._mainwindow, this.Arguments);
         }
 
 

@@ -1,5 +1,5 @@
 <TsGui LiveData="TRUE">
-	<Height>400</Height>
+	<Height>450</Height>
 	<Width>400</Width>
 	
 	<HardwareEval />
@@ -115,6 +115,24 @@
 				<HAlign>right</HAlign>
 				<SetValue>
 					<Query Type="LinkFalse">link_source</Query>
+				</SetValue>
+			</GuiOption>
+
+            <GuiOption Type="CheckBox">
+				<Variable>linktruenot</Variable>
+				<Label>Uncheck when SOURCE is checked</Label>
+				<HAlign>right</HAlign>
+				<SetValue>
+					<Query Type="NotLinkTrue">link_source</Query>
+				</SetValue>
+			</GuiOption>
+
+            <GuiOption Type="CheckBox">
+				<Variable>linkfalsenot</Variable>
+				<Label>Check when SOURCE is unchecked</Label>
+				<HAlign>right</HAlign>
+				<SetValue>
+					<Query Type="NotLinkFalse">link_source</Query>
 				</SetValue>
 			</GuiOption>
 

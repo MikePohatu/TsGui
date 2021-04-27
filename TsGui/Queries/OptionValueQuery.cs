@@ -19,47 +19,54 @@
 
 // OptionValueQuery.cs - queries an existing TsGui option
 
+using MessageCrap;
+using System;
 using System.Xml.Linq;
+using TsGui.Diagnostics;
+using TsGui.Diagnostics.Logging;
 using TsGui.Linking;
+using TsGui.Options;
 
 namespace TsGui.Queries
 {
-    public class OptionValueQuery: BaseQuery, ILinkingEventHandler
+    public class OptionValueQuery: BaseQuery
     {
         private FormattedProperty _formatter;
-
+        IOption _source;
         public OptionValueQuery(XElement inputxml, ILinkTarget owner): base(owner)
         {
             this._ignoreempty = false;
             this.SetDefaults();
             this.LoadXml(inputxml);
-            Director.Instance.LinkingLibrary.AddHandler(this._formatter.Name,this);
-            this.ProcessQuery();
+            Director.Instance.ConfigLoadFinished += this.InitLinking;
         }
 
-        
-
-        public override ResultWrangler ProcessQuery()
+        public void InitLinking(object sender, EventArgs e)
         {
-            this._formatter.Input = this.GetSourceOptionValue(this._formatter.Name);
+            this._source = this.GetSourceOption(this._formatter.Name);
+            LinkingHub.Instance.RegisterLinkTarget(this._linktarget, this._source);
+        }
+
+        public override ResultWrangler ProcessQuery(Message message)
+        {
+            this._formatter.Input = this._source?.CurrentValue;
             this._processed = true;
 
             return this.SetReturnWrangler();
         }
 
-        public string GetSourceOptionValue(string id)
+        public IOption GetSourceOption(string id)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                return Director.Instance.LinkingLibrary.GetSourceOption(id)?.CurrentValue;
+                IOption o = LinkingHub.Instance.GetSourceOption(id);
+                if (o == null) { throw new TsGuiKnownException($"Unable to locate linked source ID: {id}\nAre you missing or mistyping an ID?", null); }
+                
+                return o;
             }
-            else { return null; }
-        }
-
-        public void OnLinkedSourceValueChanged()
-        {
-            this.ProcessQuery();
-            this._linktarget?.RefreshValue();
+            else {
+                throw new TsGuiKnownException($"Unable to locate linked source. ID cannot be empty", null);
+            }
         }
 
         private void SetDefaults()

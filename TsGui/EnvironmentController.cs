@@ -29,48 +29,56 @@ using TsGui.Validation;
 using TsGui.Connectors;
 using TsGui.Linking;
 using TsGui.Diagnostics.Logging;
+using TsGui.Diagnostics;
 
 namespace TsGui
 {
     public class EnvironmentController
     {
-        private ITsVariableOutput _outputconnector;
+        public enum ConnectorType { ConfigMgr, Test, Registry };
+
+        private IVariableOutput _outputconnector;
         private SccmConnector _sccmconnector;
-        private IDirector _controller;
+        private ConnectorType _type = ConnectorType.ConfigMgr;
 
+        public ConnectorType OutputType { get { return this._type; } }
         public SccmConnector SccmConnector { get { return this._sccmconnector; } }
-        public ITsVariableOutput OutputConnector { get { return this._outputconnector; } }
-
-        public EnvironmentController(IDirector maincontroller)
-        { this._controller = maincontroller; }
+        public IVariableOutput OutputConnector { get { return this._outputconnector; } }
 
         public bool Init()
         {
-            return this.CreateSccmObject();
+            return this.CreateConnector();
         }
 
-        private bool CreateSccmObject()
+        private bool CreateConnector()
         {
-            try
+            switch(this._type)
             {
-                this._sccmconnector = new SccmConnector();
-                this._outputconnector = this._sccmconnector;
-                return true;
-            }
-            catch
-            {
-                LoggerFacade.Trace("Couldn't create SCCM connector. Creating testing connector");
-                this._outputconnector = new TestingConnector();           
-                return false;
+                case ConnectorType.ConfigMgr:
+                    try
+                    {
+                        this._sccmconnector = new SccmConnector();
+                        this._outputconnector = this._sccmconnector;
+                        return true;
+                    }
+                    catch
+                    {
+                        LoggerFacade.Trace("Couldn't create SCCM connector. Creating testing connector");
+                        this._outputconnector = new TestingConnector();
+                        return false;
+                    }
+                case ConnectorType.Test:
+                    this._outputconnector = new TestingConnector();
+                    return false;
+                case ConnectorType.Registry:
+                    this._outputconnector = new RegistryConnector();
+                    return true;
+                default:
+                    throw new TsGuiKnownException("Invalid connector type specified", null);
             }
         }
 
-        public void HideProgressUI()
-        {
-            this._sccmconnector.Hide(); //hide the tsprogessui window
-        }
-
-        public void AddVariable(TsVariable Variable)
+        public void AddVariable(Variable Variable)
         {
             this._outputconnector.AddVariable(Variable);
         }
@@ -81,21 +89,27 @@ namespace TsGui
             this._outputconnector.Release();
         }
 
-
-        private List<KeyValuePair<string, XElement>> GetTemplatesFromXmlElements(IEnumerable<XElement> Elements)
+        public void SetOutputType(string type)
         {
-            List<KeyValuePair<string, XElement>> templates = new List<KeyValuePair<string, XElement>>();
-
-            foreach (XElement propx in Elements)
+            switch (type.ToLower())
             {
-                string name = propx.Attribute("Name")?.Value;
-                //make sure there is a name set
-                if (string.IsNullOrEmpty(name)) { throw new InvalidOperationException("Missing Name attribute in XML: " + Environment.NewLine + propx); }
-
-                //add it to the templates list
-                templates.Add(new KeyValuePair<string, XElement>(name, propx));
+                case "sccm":
+                case "configmgr":
+                    this._type = ConnectorType.ConfigMgr;
+                    break;
+                case "test":
+                    this._type = ConnectorType.Test;
+                    break;
+                case "registry":
+                case "reg":
+                    this._type = ConnectorType.Registry;
+                    break;
+                default:
+                    LoggerFacade.Warn("Invalid OutputType set, defaulting to ConfigMgr");
+                    this._type = ConnectorType.ConfigMgr;
+                    break;
             }
-            return templates;
+
         }
     }
 }
