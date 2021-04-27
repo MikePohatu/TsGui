@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using MessageCrap;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using TsGui.Linking;
@@ -64,11 +65,11 @@ namespace TsGui.Queries
             }
         }
 
-        public ResultWrangler GetResultWrangler()
+        public ResultWrangler GetResultWrangler(Message message)
         {
             foreach (IQuery query in this._queries)
             {
-                ResultWrangler wrangler = query.GetResultWrangler();
+                ResultWrangler wrangler = query.GetResultWrangler(message);
                 if (wrangler != null) { return wrangler; }
             }
 
@@ -80,19 +81,19 @@ namespace TsGui.Queries
             this._queries.Clear();
         }
 
-        public void ProcessAllQueries()
+        public void ProcessAllQueries(Message message)
         {
             foreach (IQuery query in this._queries)
-            { query.ProcessQuery(); }
+            { query.ProcessQuery(message); }
         }
 
-        public List<FormattedProperty> GetAllPropertyFormatters()
+        public List<FormattedProperty> GetAllPropertyFormatters(Message message)
         {
             List<FormattedProperty> formatterlist = new List<FormattedProperty>();
 
             foreach (IQuery query in this._queries)
             {
-                ResultWrangler wrangler = query.GetResultWrangler();
+                ResultWrangler wrangler = query.GetResultWrangler(message);
                 if (wrangler != null) { formatterlist.AddRange(wrangler.GetAllPropertyFormatters()); }
             }
             return formatterlist;

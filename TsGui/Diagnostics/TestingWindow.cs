@@ -51,14 +51,8 @@ namespace TsGui.Diagnostics
         public TsMainWindow TsMainWindow { get; set; }
         public double ScreenHeight { get; set; }
         public double ScreenWidth { get; set; }
+        public string Output { get { return Director.Instance.EnvironmentController.OutputType.ToString(); } }
         public double WindowMaxHeight { get { return SystemParameters.PrimaryScreenHeight - 20; } }
-        public double OptionsGridMaxHeight
-        {
-            get {
-                return this.WindowMaxHeight - this._testingwindowui._positiongrid.ActualHeight - 
-                    this._testingwindowui._screengrid.ActualHeight - this._testingwindowui._logtextbox.ActualHeight - 
-                    this._testingwindowui._logtitle.ActualHeight - 140; }
-        }
         public int CurrentScaling
         {
             get { return this._currentscaling; }
@@ -74,8 +68,11 @@ namespace TsGui.Diagnostics
         public TestingWindow(IDirector Controller)
         {
             this._controller = Controller;
-            this.SubscribeToLogs();             
-            this.CreateTestingWindowUI();
+            this.SubscribeToLogs();
+            this._testingwindowui = new TestingWindowUI();
+            this._testingwindowui.DataContext = this;
+            this._testingwindowui.Closed += this.OnWindowClosed;
+            this._testingwindowui.ContentRendered += this.OnTestingWindowRendered;
 
             this.ScreenWidth = SystemParameters.PrimaryScreenWidth;
             this.ScreenHeight = SystemParameters.PrimaryScreenHeight;
@@ -122,7 +119,6 @@ namespace TsGui.Diagnostics
                 this._pendinglogrefresh = false;
                 this._testingwindowui._logtextbox.ScrollToEnd();
             }
-            
         }
 
         public void OnLogClearClick(object sender, RoutedEventArgs e)
@@ -131,6 +127,9 @@ namespace TsGui.Diagnostics
         public void OnTestingWindowRendered(object sender, EventArgs e)
         {
             this.ResizeGrids();
+            //set the logGrid to the same size i.e. half window
+            this._testingwindowui._logColDef.Width = new GridLength(this._testingwindowui._dataGrid.ActualWidth);
+
             this._testingwindowui._optionsgrid.EnableRowVirtualization = false;
             this._testingwindowui._valuecolumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
             this._testingwindowui.SizeChanged += this.OnTestingWindowSizeChanged;
@@ -147,7 +146,7 @@ namespace TsGui.Diagnostics
 
         private void ResizeGrids()
         {
-            this._testingwindowui._optionswrappergrid.Width = this._testingwindowui._parentgrid.ActualWidth;
+            this._testingwindowui._optionswrappergrid.Width = this._testingwindowui._dataGrid.ActualWidth;
             this._testingwindowui._optionsgrid.Width = this._testingwindowui._optionswrappergrid.ActualWidth;
             this._pendingresize--;
         }
@@ -162,14 +161,6 @@ namespace TsGui.Diagnostics
         {
             foreach (ILoggingReceiver receiver in LoggingFrameworkHelpers.GetLoggingReceivers())
             { receiver.NewLogMessage -= this.OnNewLogMessage; }
-        }
-
-        private void CreateTestingWindowUI()
-        {
-            this._testingwindowui = new TestingWindowUI();
-            this._testingwindowui.DataContext = this;
-            this._testingwindowui.Closed += this.OnWindowClosed;
-            this._testingwindowui.ContentRendered += this.OnTestingWindowRendered;
         }
     }
 }

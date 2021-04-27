@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using TsGui.Queries;
 using TsGui.Diagnostics.Logging;
 using TsGui.Queries.Trees;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -38,7 +39,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this._parent = parent;
         }
 
-        public List<ListItem> Rebuild()
+        public List<ListItem> Rebuild(Message message)
         {
             LoggerFacade.Debug("ListBuilder rebuild initialised");
             int i = 0;
@@ -56,14 +57,13 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 QueryPriorityList qlist;
                 if (this._querylists.TryGetValue(i, out qlist) == true)
                 {
-                    qlist.ProcessAllQueries();
-                    ResultWrangler wrangler = qlist.GetResultWrangler();
+                    qlist.ProcessAllQueries(message);
+                    ResultWrangler wrangler = qlist.GetResultWrangler(message);
                     if (wrangler != null)
                     {
                         List<KeyValueTreeNode> kvlist = wrangler.GetKeyValueTree();
                         foreach (KeyValueTreeNode node in kvlist)
                         {
-                            //ListItem newoption = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent, this._director);
                             newlist.Add(this.CreateItem(node));
                         }
                     }
@@ -109,7 +109,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                     this.Add(newoption);
                 }
 
-                else if (x.Name == "Query")
+                else if (x.Name == "Query" || x.Name == "Value" || x.Name == "ListValue")
                 {
                     XElement wrapx = new XElement("wrapx");
                     wrapx.Add(x);
@@ -124,6 +124,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public ListItem CreateItem(KeyValueTreeNode node)
         {
             ListItem newitem = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent);
+
             foreach (KeyValueTreeNode subnode in node.Nodes)
             {
                 newitem.ItemsList.Add(this.CreateItem(subnode));

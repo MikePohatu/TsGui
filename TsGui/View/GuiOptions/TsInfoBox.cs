@@ -24,12 +24,14 @@ using System.Xml.Linq;
 using System.Windows;
 using TsGui.Queries;
 using TsGui.Linking;
+using TsGui.View.Layout;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
     public class TsInfoBox : GuiOptionBase, IGuiOption, ILinkTarget
     {
-        private string _controltext;
+        private string _controltext = string.Empty;
         
         //Properties
         public override string CurrentValue { get { return this._controltext; } }
@@ -37,32 +39,28 @@ namespace TsGui.View.GuiOptions
         {
             get { return this._controltext; }
             set {
-                this._controltext = value;
-                this.OnPropertyChanged(this, "ControlText");
-                this.NotifyUpdate();
+                this.SetValue(value, null);
             }
         }
-        public override TsVariable Variable
+        public override Variable Variable
         {
             get
             {
                 if (string.IsNullOrWhiteSpace(this.VariableName) == false)
-                { return new TsVariable(this.VariableName, this.ControlText); }
+                { return new Variable(this.VariableName, this.ControlText, this.Path); }
                 else
                 { return null; }
             }
         }
 
         //constructor
-        public TsInfoBox(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsInfoBox(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this.Control = new TsInfoBoxUI();
             this.Label = new TsLabelUI();
             this.UserControl.DataContext = this;
-            this.SetDefaults();
-            this._setvaluequerylist = new QueryPriorityList(this);
+            this._querylist = new QueryPriorityList(this);
             this.LoadXml(InputXml);
-            this.RefreshControlText();
         }
 
         public new void LoadXml(XElement InputXml)
@@ -76,21 +74,21 @@ namespace TsGui.View.GuiOptions
             { this.LoadSetValueXml(x,false); }
         }
 
-        public void RefreshValue()
-        { this.RefreshControlText(); }
-
-        public void RefreshAll()
-        { this.RefreshControlText(); }
-
-        private void RefreshControlText()
+        public override void UpdateValue(Message message)
         {
-            this.ControlText = this._setvaluequerylist.GetResultWrangler()?.GetString();
+            string val = this._querylist.GetResultWrangler(message)?.GetString();
+            this.SetValue(val, message);
         }
 
-        private void SetDefaults()
+        public void OnSourceValueUpdated(Message message)
+        { this.UpdateValue(message); }
+
+        private void SetValue(string value, Message message)
         {
-            this.ControlText = string.Empty;
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this._controltext = value;
+            this.OnPropertyChanged(this, "ControlText");
+            this.NotifyViewUpdate();
+            LinkingHub.Instance.SendUpdateMessage(this, message);
         }
     }
 }

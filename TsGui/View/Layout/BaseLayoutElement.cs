@@ -24,6 +24,7 @@ using System.Windows;
 using TsGui.Grouping;
 
 using System.Xml.Linq;
+using TsGui.Validation;
 
 namespace TsGui.View.Layout
 {
@@ -32,27 +33,15 @@ namespace TsGui.View.Layout
         private bool _showgridlines;
         private double _leftcellwidth;
         private double _rightcellwidth;
-        private double _width;
-        private double _height;
-        private Thickness _margin;
 
         public Formatting LabelFormatting { get; set; }
         public Formatting ControlFormatting { get; set; }
+        public Formatting Formatting { get; set; }
         public bool LabelOnRight { get; set; }
         public bool ShowGridLines
         {
             get { return this._showgridlines; }
             set { this._showgridlines = value; this.OnPropertyChanged(this, "ShowGridLines"); }
-        }
-        public double Width
-        {
-            get { return this._width; }
-            set { this._width = value; this.OnPropertyChanged(this, "Width"); }
-        }
-        public Thickness Margin
-        {
-            get { return this._margin; }
-            set { this._margin = value; this.OnPropertyChanged(this, "Margin"); }
         }
         public double LeftCellWidth
         {
@@ -64,12 +53,8 @@ namespace TsGui.View.Layout
             get { return this._rightcellwidth; }
             set { this._rightcellwidth = value; this.OnPropertyChanged(this, "RightCellWidth"); }
         }
-        public double Height
-        {
-            get { return this._height; }
-            set { this._height = value; this.OnPropertyChanged(this, "Height"); }
-        }
-        public BaseLayoutElement Parent { get; set; }
+
+        public ParentLayoutElement Parent { get; set; }
 
         //constructors
         public BaseLayoutElement():base ()
@@ -77,7 +62,7 @@ namespace TsGui.View.Layout
             this.SetDefaults();
         }
 
-        public BaseLayoutElement(BaseLayoutElement Parent):base (Parent)
+        public BaseLayoutElement(ParentLayoutElement Parent):base (Parent)
         {
             this.Parent = Parent;
             this.SetDefaults();
@@ -89,10 +74,10 @@ namespace TsGui.View.Layout
             //Load legacy options
             this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LeftCellWidth);
             this.RightCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.RightCellWidth);
+            this.Formatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Formatting.Width);
+            this.Formatting.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Formatting.Height);
 
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
-            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);           
-            this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
             
             XElement x;
             XElement subx;
@@ -101,12 +86,11 @@ namespace TsGui.View.Layout
             x = InputXml.Element("Formatting");
             if (x != null)
             {
-                this.Margin = XmlHandler.GetThicknessFromXElement(x, "Margin", this.Margin);
-                this.Width = XmlHandler.GetDoubleFromXElement(x, "Width", this.Width);
-                this.Height = XmlHandler.GetDoubleFromXElement(x, "Height", this.Height);
                 this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(x, "LeftCellWidth", this.LeftCellWidth);
                 this.RightCellWidth = XmlHandler.GetDoubleFromXElement(x, "RightCellWidth", this.RightCellWidth);
                 this.LabelOnRight = XmlHandler.GetBoolFromXElement(x, "LabelOnRight", this.LabelOnRight);
+
+                this.Formatting.LoadXml(x);
 
                 subx = x.Element("Label");
                 if (subx != null)
@@ -148,20 +132,21 @@ namespace TsGui.View.Layout
             {
                 this.LabelFormatting = new Formatting();
                 this.ControlFormatting = new Formatting();
-                this.Height = double.NaN;
-                this.Width = double.NaN;
+                this.Formatting = new Formatting();
                 this.LeftCellWidth = double.NaN;
                 this.RightCellWidth = double.NaN;
                 this.ShowGridLines = false;
                 this.LabelOnRight = false;
                 this.LabelFormatting.Padding = new Thickness(1);
+                this.LabelFormatting.Margin = new Thickness(2);
+                this.ControlFormatting.Margin = new Thickness(2);
+                this.ControlFormatting.Padding = new Thickness(1);
             }
             else
             {
                 this.LabelFormatting = this.Parent.LabelFormatting.Clone();
                 this.ControlFormatting = this.Parent.ControlFormatting.Clone();
-                this.Height = double.NaN;
-                this.Width = double.NaN;
+                this.Formatting = this.Parent.Formatting.Clone();
                 this.LeftCellWidth = this.Parent.LeftCellWidth;
                 this.RightCellWidth = this.Parent.RightCellWidth;
                 this.ShowGridLines = this.Parent.ShowGridLines;

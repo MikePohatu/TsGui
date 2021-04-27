@@ -177,8 +177,6 @@ namespace TsGui.View.Layout
                 this.FontSize = 11;
                 
             }
-            this.Margin = new Thickness(2);
-            this.Padding = new Thickness(2);
             this.BorderThickness = new Thickness(1);
             this.FontStyle = "Normal";
             this.FontWeight = "Normal";
@@ -232,7 +230,7 @@ namespace TsGui.View.Layout
             f.FontStyle = this.FontStyle;
             f.FontSize = this.FontSize;
             f.Width = this.Width;
-            f.Height = this.Height;
+            //f.Height = this.Height;
             f.CornerRadius = this.CornerRadius;
             f.Padding = this.Padding;
             f.Margin = this.Margin;

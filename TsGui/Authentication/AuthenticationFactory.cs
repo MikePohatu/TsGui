@@ -20,6 +20,7 @@ using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication.LocalConfig;
+using TsGui.Authentication.ExposedPassword;
 using System.Xml.Linq;
 
 namespace TsGui.Authentication
@@ -43,6 +44,10 @@ namespace TsGui.Authentication
                         return new ActiveDirectoryAuthenticator(inputxml);
                     case "Password":
                         return new LocalConfigPasswordAuthenticator(inputxml);
+                    case "ExposedPassword":
+                        ExposedPasswordAuthenticator auth = new ExposedPasswordAuthenticator(inputxml);
+                        Director.Instance.AddOptionToLibary(auth);
+                        return auth;
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", inputxml.ToString());
                 }

@@ -68,16 +68,16 @@
 //  </GuiOption>	
 
 using System.Xml.Linq;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
     public class TsComputerName : TsFreeText
     {
-        public TsComputerName(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsComputerName(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             base.LoadXml(this.BuildDefaultXml());
             base.LoadXml(InputXml);
-            this.RefreshValue();
         }
 
         public XElement BuildDefaultXml()

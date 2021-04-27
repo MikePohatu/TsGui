@@ -28,13 +28,12 @@ using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
 using System.Collections.Generic;
 using System.Windows;
+using MessageCrap;
 
 namespace TsGui.Options.NoUI
 {
-    public class NoUIOption: GroupableBlindBase,IOption, ILinkTarget, IToggleControl
+    public class NoUIOption: GroupableBlindBase, IOption, ILinkTarget, IToggleControl
     {
-        public event IOptionValueChanged ValueChanged;
-
         private string _value = string.Empty;
         private bool _usecurrent = false;
         private QueryPriorityList _querylist;
@@ -42,17 +41,14 @@ namespace TsGui.Options.NoUI
 
         //properties
         public bool IsToggle { get; set; }
+        public string Path { get; set; }
         public string ID
         {
             get { return this._id; }
             set
             {
                 if (string.IsNullOrWhiteSpace(value) == true) { throw new TsGuiKnownException("Empty ID set on NoUI option", ""); }
-                if (this._id != value)
-                {
-                    this._id = value;
-                    Director.Instance.LinkingLibrary.AddSource(this);
-                }
+                if (this._id != value) { this._id = value; }
             }
         }
         public string VariableName { get; set; }
@@ -63,17 +59,17 @@ namespace TsGui.Options.NoUI
             set
             {
                 this._value = value;
-                this.NotifyUpdate();
+                this.NotifyViewUpdate();
             }
         }
-        public TsVariable Variable
+        public Variable Variable
         {
             get
             {
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this._value); }
+                { return new Variable(this.VariableName, this._value, this.Path); }
             }
         }
         public string LiveValue
@@ -91,14 +87,15 @@ namespace TsGui.Options.NoUI
         //constructors     
         public NoUIOption(NoUIContainer Parent, XElement InputXml) : base(Parent)
         {
+            this.Path = Director.Instance.DefaultPath;
             this._querylist = new QueryPriorityList(this);
             this.LoadXml(InputXml);
-            this.RefreshValue();
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
         }
 
         public NoUIOption():base ()
         {
+            this.Path = Director.Instance.DefaultPath;
             this._querylist = new QueryPriorityList(this);
         }
 
@@ -106,10 +103,12 @@ namespace TsGui.Options.NoUI
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
 
+            //path and variable can be set either as an element, or an attribute
+            this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
             this.VariableName = XmlHandler.GetStringFromXAttribute(InputXml, "Variable", this.VariableName);
-            
+            this.Path = XmlHandler.GetStringFromXElement(InputXml, "Path", this.Path);
+            this.Path = XmlHandler.GetStringFromXAttribute(InputXml, "Path", this.Path);
 
             this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
             this._usecurrent = XmlHandler.GetBoolFromXAttribute(InputXml, "UseCurrent", this._usecurrent);
@@ -161,26 +160,33 @@ namespace TsGui.Options.NoUI
             }
 
             if (this.IsToggle == true) { Director.Instance.AddToggleControl(this); }
+
+            //pull the default path from the director if not already set
+            if (string.IsNullOrWhiteSpace(this.Path)) { this.Path = Director.Instance.DefaultPath; }
         }
 
-        public void RefreshValue()
+        public void UpdateValue(Message message)
         {
-            this._value = this._querylist.GetResultWrangler()?.GetString();
-            this.NotifyUpdate();
+            this._value = this._querylist.GetResultWrangler(message)?.GetString();
+
+            LinkingHub.Instance.SendUpdateMessage(this, message);
+
+            this.NotifyViewUpdate();
         }
 
-        public void RefreshAll()
+        public void OnSourceValueUpdated(Message message)
         {
-            this.RefreshValue();
+            this.UpdateValue(message);
         }
 
-        public void ImportFromTsVariable(TsVariable var)
+        public void ImportFromTsVariable(Variable var)
         {
             this.VariableName = var.Name;
             ValueOnlyQuery newvoquery = new ValueOnlyQuery(var.Value);
             this._querylist.AddQuery(newvoquery);
             this.ID = var.Name;
-            this.RefreshValue();
+            this.Path = var.Path;
+            this.UpdateValue(null);
         }
 
         protected void LoadSetValueXml(XElement inputxml)
@@ -201,12 +207,11 @@ namespace TsGui.Options.NoUI
             this._querylist.LoadXml(inputxml);
         }
 
-        protected void NotifyUpdate()
+        protected void NotifyViewUpdate()
         {
             LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
-            this.ValueChanged?.Invoke();
         }
 
         //Grouping stuff
@@ -223,7 +228,7 @@ namespace TsGui.Options.NoUI
         //This is called by the controller once everything is loaded
         public void Initialise()
         {
-            
+            this.UpdateValue(null);
         }
 
         public void InvokeToggleEvent()
@@ -234,7 +239,7 @@ namespace TsGui.Options.NoUI
         protected override void EvaluateGroups()
         {
             base.EvaluateGroups();
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
         }
 
         protected void OnGroupStateChanged(object o, RoutedEventArgs e)

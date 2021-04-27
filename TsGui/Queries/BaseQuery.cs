@@ -20,6 +20,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Validation.StringMatching;
 using TsGui.Linking;
+using MessageCrap;
 
 namespace TsGui.Queries
 {
@@ -33,13 +34,13 @@ namespace TsGui.Queries
         protected bool _ignoreempty = true;
         protected ILinkTarget _linktarget;
 
-        public virtual ResultWrangler GetResultWrangler()
+        public virtual ResultWrangler GetResultWrangler(Message message)
         {
-            if ((this._reprocess == true) || (this._processed == false)) { return this.ProcessQuery(); }
+            if ((this._reprocess == true) || (this._processed == false)) { return this.ProcessQuery(message); }
             else { return this._returnwrangler; }
         }
 
-        public abstract ResultWrangler ProcessQuery();
+        public abstract ResultWrangler ProcessQuery(Message message);
 
         public BaseQuery(ILinkTarget linktarget)
         {

@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using MessageCrap;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -23,7 +24,7 @@ using TsGui.Linking;
 
 namespace TsGui.Queries
 {
-    public class IfElseQuery: BaseQuery, ILinkingEventHandler, ILinkTarget
+    public class IfElseQuery: BaseQuery
     {
         private List<Conditional> _conditions = new List<Conditional>();
         private QueryPriorityList _else;
@@ -33,33 +34,20 @@ namespace TsGui.Queries
             this.LoadXml(inputxml);
         }
 
-        public override ResultWrangler GetResultWrangler()
+        public override ResultWrangler GetResultWrangler(Message message)
         {
-            return this.ProcessQuery();
+            return this.ProcessQuery(message);
         }
 
-        public override ResultWrangler ProcessQuery()
+        public override ResultWrangler ProcessQuery(Message message)
         {
             foreach (Conditional condition in this._conditions)
             {
-                ResultWrangler returnval = condition.GetResultWrangler();
+                ResultWrangler returnval = condition.GetResultWrangler(message);
                 if ((returnval != null) && (this.ShouldIgnore(returnval.GetString()) == false)) { return returnval; }
             }
-            return this._else?.GetResultWrangler();
+            return this._else?.GetResultWrangler(message);
         }
-
-        public void RefreshValue()
-        {
-            this._linktarget.RefreshValue();
-        }
-
-        public void RefreshAll()
-        {
-            this._linktarget.RefreshAll();
-        }
-
-        public void OnLinkedSourceValueChanged()
-        { this.RefreshValue(); }
 
         protected new void LoadXml(XElement inputxml)
         {

@@ -1,0 +1,88 @@
+<TsGui Debug="TRUE">
+
+    <Height>500</Height>
+    <Width>400</Width>
+
+    <Heading>
+        <Title>Containers</Title>
+        <Text>Testing the container UI structure. </Text>
+    </Heading>
+
+
+    <Formatting>
+        <LeftCellWidth>280</LeftCellWidth>
+        <RightCellWidth>100</RightCellWidth>
+    </Formatting>
+
+    <Page>
+        <Row>
+            <Column>
+                <GuiOption Type="ComputerName" ID="link_name"/>
+                <!-- The ID attribute is used to identify a linking source -->
+
+
+                <GuiOption Type="CheckBox" ID="link_source">
+                    <Variable>link_source</Variable>
+                    <Label>SOURCE</Label>
+                    <HAlign>left</HAlign>
+                </GuiOption>
+
+                <Container>
+                    <Formatting>
+                        <Label>                        <!-- Options available: Left, Right, Center -->
+                            <Font>
+                                <Weight>Normal</Weight>                                <!-- Options available: Normal, Bold, ExtraBold, Light -->
+                                <Size>13</Size>
+                                <Style>Normal</Style>                                <!-- Options available: Normal, Italic, Oblique -->
+                                <Color>Blue</Color>
+                            </Font>
+                        </Label>
+                    </Formatting>
+
+                    <GuiOption Type="CheckBox">
+                        <Variable>linkto</Variable>
+                        <Label>Match SOURCE</Label>
+                        <HAlign>right</HAlign>
+                        <Checked/>
+                        <SetValue>
+                            <Query Type="LinkTo">link_source</Query>                            <!-- A LinkTo query is shorthand for "Set the value to whatever the source is whenever the source changes" -->
+                        </SetValue>
+                    </GuiOption>
+
+                    <GuiOption Type="CheckBox">
+                        <Variable>linktrue</Variable>
+                        <Label>Check when SOURCE is checked</Label>
+                        <HAlign>right</HAlign>
+                        <SetValue>
+                            <Query Type="LinkTrue">link_source</Query>                            <!-- A LinkTo query is shorthand for "Set the value to TRUE when the source value is set to TRUE" -->
+                        </SetValue>
+                    </GuiOption>
+
+                    <GuiOption Type="CheckBox">
+                        <Variable>linkfalse</Variable>
+                        <Label>Uncheck when SOURCE is unchecked</Label>
+                        <HAlign>right</HAlign>
+                        <SetValue>
+                            <Query Type="LinkFalse">link_source</Query>                            <!-- A LinkTo query is shorthand for "Set the value to FALSE when the source value is set to FALSE" -->
+                        </SetValue>
+                    </GuiOption>
+                </Container>
+
+                <!-- InfoBox using Registry query-->
+                <GuiOption Type="InfoBox">
+                    <Variable>VAR_BuildNumber</Variable>
+                    <Label>Windows Build Number</Label>
+
+                    <SetValue>
+                        <Query Type="Registry">
+                            <Root>HKEY_LOCAL_MACHINE</Root>
+                            <Key>SOFTWARE\Microsoft\Windows NT\CurrentVersion</Key>
+                            <Value>CurrentBuild</Value>
+                        </Query>
+                    </SetValue>
+                </GuiOption>
+            </Column>
+        </Row>
+    </Page>
+
+</TsGui>

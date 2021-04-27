@@ -34,18 +34,6 @@ namespace TsGui.Diagnostics
         public TestingWindowUI()
         {
             InitializeComponent();
-            this._optionsgrid.Loaded += this.OnWindowLoaded;
-        }
-
-        private void OnWindowLoaded(object o, RoutedEventArgs e)
-        {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.SetWidths()));
-        }
-
-        private void SetWidths()
-        {
-            this._optionsgrid.Width = this._optionsgrid.ActualWidth;
-            this._optionsgrid.MinWidth = this._optionsgrid.ActualWidth;
         }
     }
 }

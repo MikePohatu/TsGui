@@ -22,6 +22,7 @@
 
 using System.Xml.Linq;
 using System.Collections.Generic;
+using TsGui.Queries.Rules;
 
 namespace TsGui.Queries
 {

@@ -12,7 +12,7 @@
 
     <Grid x:Name="WrapperGrid" ShowGridLines="{Binding ShowGridLines}">
         <Grid.RowDefinitions>
-            <RowDefinition x:Name="HeadingRow" Height="{Binding PageHeader.Height}"/>
+            <RowDefinition x:Name="HeadingRow" Height="{Binding PageHeader.Formatting.Height}"/>
             <RowDefinition x:Name="MainRow" Height="100*"/>
             <RowDefinition x:Name="ButtonRow" Height="Auto" />
         </Grid.RowDefinitions>

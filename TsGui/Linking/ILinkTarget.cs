@@ -19,11 +19,15 @@
 
 // ILinkingTarget - Linking target options
 
+using MessageCrap;
+
 namespace TsGui.Linking
 {
     public interface ILinkTarget
     {
-        void RefreshValue();
-        void RefreshAll();
+        /// <summary>
+        /// Respond to a source updating it's value
+        /// </summary>
+        void OnSourceValueUpdated(Message updateMessage);
     }
 }

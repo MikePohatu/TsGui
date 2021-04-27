@@ -23,17 +23,19 @@ using System.Xml.Linq;
 using System.Windows;
 
 using TsGui.Images;
+using TsGui.View.Layout;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
     public class TsImage : GuiOptionBase, IGuiOption
     {
         public Image Image { get; set; }
-        public override TsVariable Variable { get { return null; } }
+        public override Variable Variable { get { return null; } }
         public override string CurrentValue { get { return this.Image.MultiImage.CurrentFilePath; } }
 
         //Constructor
-        public TsImage(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsImage(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this.Control = new TsImageUI();
             this.Label = new TsLabelUI();
@@ -59,7 +61,7 @@ namespace TsGui.View.GuiOptions
         
         public void OnImageScalingUpdate(object o, RoutedEventArgs e)
         {
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
         }
 
         private void CreateImage(XElement InputXml)
@@ -77,5 +79,7 @@ namespace TsGui.View.GuiOptions
             this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
         }
+
+        public override void UpdateValue(Message message) { }
     }
 }

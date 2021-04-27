@@ -17,14 +17,20 @@
 //
 #endregion
 
-// ILinkingSource - Linking source option
+using MessageCrap;
 
 namespace TsGui.Linking
 {
-    public interface ILinkSource
+    public interface ILinkSource: ISubscribable
     {
-        string ID { get; }
+        /// <summary>
+        /// The current value of the source
+        /// </summary>
         string CurrentValue { get; }
-        event IOptionValueChanged ValueChanged;
+
+        /// <summary>
+        /// Request a link source to update the value set on the option.
+        /// </summary>
+        void UpdateValue(Message message);
     }
 }

@@ -26,6 +26,9 @@ using System.Windows;
 
 using TsGui.Grouping;
 using TsGui.Validation;
+using TsGui.View.Layout;
+using TsGui.Linking;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -38,7 +41,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public bool IsEditable { get; set; } = false;
         public bool IsReadOnly { get; set; } = true;
         //Constructor
-        public TsDropDownList(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsDropDownList(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
@@ -50,7 +53,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             this.SetDefaults();
             this.LoadXml(InputXml);
-            this._builder.Rebuild();
+            this._builder.Rebuild(null);
             this.RegisterForItemGroupEvents();
             this.SetComboBoxDefault();
 
@@ -84,7 +87,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             if (this._nodefaultvalue == false)
             {
                 int index = 0;
-                string defaultval = this._setvaluequerylist.GetResultWrangler()?.GetString();
+                string defaultval = this._querylist.GetResultWrangler(null)?.GetString();
                 foreach (ListItem item in this.VisibleOptions)
                 {
                     if ((item.Value == defaultval) || (index == 0))
@@ -95,11 +98,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
                     index++;
                 }
             }
-            this.CurrentItem = newdefault;
-            this.NotifyUpdate();
+            this.SetValue(newdefault, null);
+            this.NotifyViewUpdate();
         }
 
-        protected override void SetSelected(string value)
+        protected override void SetSelected(string value, Message message)
         {
             ListItem newdefault = null;
             bool changed = false;
@@ -116,7 +119,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             if (changed == true)
             {
-                this.CurrentItem = newdefault;
+                this.SetValue(newdefault, message);
             }
         }
 

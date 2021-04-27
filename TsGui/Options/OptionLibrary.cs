@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using TsGui.Linking;
 
 namespace TsGui.Options
 {
@@ -38,6 +39,9 @@ namespace TsGui.Options
             this.Options.Add(option);
             IValidationGuiOption valop = option as IValidationGuiOption;
             if (valop != null) { this.ValidationOptions.Add(valop); }
+
+            if (string.IsNullOrWhiteSpace(option.ID) == false) 
+            { LinkingHub.Instance.AddSource(option); }
 
             this.OptionAdded?.Invoke(option, new EventArgs());
         }

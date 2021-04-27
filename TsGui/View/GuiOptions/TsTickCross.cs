@@ -27,6 +27,7 @@ using System.Windows;
 
 using TsGui.Validation;
 using TsGui.View.Symbols;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
 {
@@ -38,7 +39,7 @@ namespace TsGui.View.GuiOptions
         private TsWarnUI _warnui;
 
         //constructor
-        public TsTickCross(XElement InputXml, TsColumn Parent): base (Parent)
+        public TsTickCross(XElement InputXml, ParentLayoutElement Parent): base (Parent)
         {
             this._contentchanger = new ContentChanger();
             this._crossui = new TsCrossUI();
@@ -49,7 +50,6 @@ namespace TsGui.View.GuiOptions
             this._validationtooltiphandler.SetTarget(this.UserControl);
             this.SetDefaults();
             this.LoadXml(InputXml);
-            this.RefreshValue();
         }
 
         public TsTickCross(TsColumn Parent, IDirector MainController) : base(Parent)

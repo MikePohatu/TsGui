@@ -28,6 +28,8 @@ using System.Xml.Linq;
 using TsGui.Linking;
 using TsGui.Queries;
 using System.Windows.Controls;
+using TsGui.View.Layout;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
@@ -42,17 +44,17 @@ namespace TsGui.View.GuiOptions
         #region
         //Custom stuff for control
         protected string _controltext;
+
+        /// <summary>
+        /// Update to/from the ControlText. Don't call this from code. This is only for update via the UI control.
+        /// Use SetControlText(xxx) to do code updates or you might screw up messaging
+        /// </summary>
         public string ControlText
         {
             get { return this._controltext; }
             set
             {
-                if (this._charactercasing == CharacterCasing.Normal) { this._controltext = value; }
-                else if (this._charactercasing == CharacterCasing.Upper) { this._controltext = value?.ToUpper(); }
-                else if (this._charactercasing == CharacterCasing.Lower) { this._controltext = value?.ToLower(); }
-                this.OnPropertyChanged(this, "ControlText");
-                this.NotifyUpdate();
-                this.Validate();
+                this.SetValue(value, null);
             }
         }
         public override string CurrentValue { get { return this._controltext; } }
@@ -64,14 +66,14 @@ namespace TsGui.View.GuiOptions
             get { return this._maxlength; }
             set { this._maxlength = value; this.OnPropertyChanged(this, "MaxLength"); }
         }
-        public override TsVariable Variable
+        public override Variable Variable
         {
             get
             {
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.ControlText); }
+                { return new Variable(this.VariableName, this.ControlText, this.Path); }
             }
         }
 
@@ -91,21 +93,20 @@ namespace TsGui.View.GuiOptions
         #endregion
 
         //Constructor
-        public TsFreeText(XElement InputXml, TsColumn Parent): base (Parent)
+        public TsFreeText(XElement InputXml, ParentLayoutElement Parent): base (Parent)
         {
             this.Init();
             this.LoadXml(InputXml);
-            this.RefreshValue();
         }
 
-        protected TsFreeText(TsColumn Parent) : base(Parent)
+        protected TsFreeText(ParentLayoutElement Parent) : base(Parent)
         {
             this.Init();
         }
 
         private void Init()
         {
-            this._setvaluequerylist = new QueryPriorityList(this);
+            this._querylist = new QueryPriorityList(this);
 
             this._freetextui = new TsFreeTextUI();
             this.Control = this._freetextui;
@@ -122,6 +123,17 @@ namespace TsGui.View.GuiOptions
             this._freetextui.TextBox.TextChanged += this.OnTextChanged;
             this.UserControl.IsEnabledChanged += this.OnValidationEvent;
             this.SetDefaults();
+        }
+
+        private void SetValue(string value, Message message)
+        {
+            if (this._charactercasing == CharacterCasing.Normal) { this._controltext = value; }
+            else if (this._charactercasing == CharacterCasing.Upper) { this._controltext = value?.ToUpper(); }
+            else if (this._charactercasing == CharacterCasing.Lower) { this._controltext = value?.ToLower(); }
+            this.OnPropertyChanged(this, "ControlText");
+            this.NotifyViewUpdate();
+            LinkingHub.Instance.SendUpdateMessage(this, message);
+            this.Validate();
         }
 
         private void SetDefaults()
@@ -206,9 +218,9 @@ namespace TsGui.View.GuiOptions
         public void OnValidationChange()
         { this.Validate(); }
 
-        public void RefreshValue()
+        public override void UpdateValue(Message message)
         {
-            string s = this._setvaluequerylist.GetResultWrangler()?.GetString();
+            string s = this._querylist.GetResultWrangler(message)?.GetString();
             if (s != null) 
             {
                 //if required, remove invalid characters and truncate
@@ -216,11 +228,15 @@ namespace TsGui.View.GuiOptions
                 if (!string.IsNullOrEmpty(invalchars)) { s = ResultValidator.RemoveInvalid(s, this.ValidationHandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { s = ResultValidator.Truncate(s, this.MaxLength); }
 
-                if (this.ControlText != s) { this.ControlText = s; }
+                if (this.ControlText != s) { this.SetValue(s, message); }
             }
+
+            LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
-        public void RefreshAll()
-        { this.RefreshValue(); }
+        public void OnSourceValueUpdated(Message message)
+        {
+            this.UpdateValue(message);
+        }
     }
 }

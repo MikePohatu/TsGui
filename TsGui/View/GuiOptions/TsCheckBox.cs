@@ -30,6 +30,8 @@ using TsGui.Queries;
 using System.Windows.Media;
 using System.Windows.Controls;
 using TsGui.Validation;
+using TsGui.View.Layout;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
@@ -49,11 +51,7 @@ namespace TsGui.View.GuiOptions
             get { return this._ischecked; }
             set
             {
-                this._ischecked = value;
-                this.OnPropertyChanged(this, "IsChecked");
-                this.NotifyUpdate();
-                this.InvokeToggleEvent();
-                this.Validate();
+                this.SetValue(value, null);
             }
         }
         //public override string CurrentValue { get { return this.ControlText; } }
@@ -66,14 +64,14 @@ namespace TsGui.View.GuiOptions
             }
         }
         public bool IsValid { get { return this.Validate(); } }
-        public override TsVariable Variable
+        public override Variable Variable
         {
             get
             {
                 if ((this.IsActive == false) && (PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.CurrentValue); }
+                { return new Variable(this.VariableName, this.CurrentValue, this.Path); }
             }
         }
 
@@ -91,7 +89,7 @@ namespace TsGui.View.GuiOptions
         }
 
         //Constructor
-        public TsCheckBox(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsCheckBox(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this.UserControl.DataContext = this;
             TsCheckBoxUI cbui = new TsCheckBoxUI();
@@ -103,7 +101,7 @@ namespace TsGui.View.GuiOptions
             this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.SetDefaults();
-            this._setvaluequerylist = new QueryPriorityList(this);          
+            this._querylist = new QueryPriorityList(this);          
             this.LoadXml(InputXml);
         }
 
@@ -124,28 +122,41 @@ namespace TsGui.View.GuiOptions
 
             x = InputXml.Element("Checked");
             if (x != null)
-            { this.IsChecked = true; }
+            { this.SetValue(true, null); }
         }
 
-        public void RefreshValue()
+        public override void UpdateValue(Message message)
         {
-            string newvalue = this._setvaluequerylist.GetResultWrangler()?.GetString();
+            string newvalue = this._querylist.GetResultWrangler(message)?.GetString();
+
             if (newvalue != this.CurrentValue)
             {
-                if (newvalue == this._valTrue) { this.IsChecked = true; }
-                else if (newvalue == this._valFalse) { this.IsChecked = false; }
+                if (newvalue == this._valTrue) { this.SetValue(true, message); }
+                else if (newvalue == this._valFalse) { this.SetValue(false, message); }
+                else { newvalue = null; }
             }
         }
 
-        public void RefreshAll()
+        public void OnSourceValueUpdated(Message message)
         {
-            this.RefreshValue();
+            this.UpdateValue(message);
         }
+
+        private void SetValue(bool value, Message message)
+        {
+            this._ischecked = value;
+            this.OnPropertyChanged(this, "IsChecked");
+            this.NotifyViewUpdate();
+            this.InvokeToggleEvent();
+            this.Validate();
+            LinkingHub.Instance.SendUpdateMessage(this, message);
+        }
+
         private void SetDefaults()
         {
             if (Director.Instance.UseTouchDefaults == true)
             {
-                this.CbBorderMargin = new Thickness(2);
+                this.CbBorderMargin = new Thickness(1,2,1,2);
                 this.ControlFormatting.Margin = new Thickness(5);
                 this._checkboxui.CbBorder.TouchDown += this.OnBorderTouched;
                 this._checkboxui.CbBorder.MouseLeftButtonDown += this.OnBorderTouched;

@@ -28,6 +28,7 @@ using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using System.Text;
 using System.IO;
+using MessageCrap;
 
 namespace TsGui.Queries.WebServices
 {
@@ -77,7 +78,7 @@ namespace TsGui.Queries.WebServices
             }
         }
 
-        public override ResultWrangler ProcessQuery()
+        public override ResultWrangler ProcessQuery(Message message)
         {
             //if (this._authenticator?.State != AuthState.Authorised)
             //{
@@ -103,8 +104,8 @@ namespace TsGui.Queries.WebServices
 
         public void OnAuthenticatorStateChange()
         {
-            this.ProcessQuery();
-            this._linktarget?.RefreshAll();
+            this.ProcessQuery(null);
+            this._linktarget?.OnSourceValueUpdated(null);
         }
 
         public byte[] GetParametersByteArray(List<KeyValuePair<string, string>> parameterlist)
@@ -147,7 +148,7 @@ namespace TsGui.Queries.WebServices
             {
                 //const string CONST_ERROR_FORMAT = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Exception><{0}Error>{1}<InnerException>{2}</InnerException></{0}Error></Exception>";
                 //response = string.Format(CONST_ERROR_FORMAT, this._method, e.ToString(), (e.InnerException != null ? e.InnerException.ToString() : string.Empty));
-                throw new TsGuiKnownException("Web error", "Web error");
+                throw new TsGuiKnownException("Web error", e.Message);
             }
             return response;
         }

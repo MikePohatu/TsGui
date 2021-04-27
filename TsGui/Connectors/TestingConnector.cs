@@ -28,11 +28,11 @@ using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Connectors
 {
-    public class TestingConnector: ITsVariableOutput
+    public class TestingConnector: IVariableOutput
     {
-        private List<TsVariable> variables = new List<TsVariable>();
+        private List<Variable> variables = new List<Variable>();
 
-        public void AddVariable(TsVariable Variable)
+        public void AddVariable(Variable Variable)
         {
             LoggerFacade.Info("Testing variable applied: " + Variable.Name + ". Value: " + Variable.Value);
             this.variables.Add(Variable);
@@ -42,7 +42,7 @@ namespace TsGui.Connectors
         {
             string msg = "Task sequence variables created:" + Environment.NewLine + Environment.NewLine;
 
-            foreach (TsVariable variable in this.variables)
+            foreach (Variable variable in this.variables)
             {
                 msg = msg + variable.Name + ": " + variable.Value + Environment.NewLine;
             }
@@ -50,7 +50,7 @@ namespace TsGui.Connectors
             MessageBox.Show(msg);
         }
 
-        public void Hide()
+        public void Init()
         { }
     }
 }

@@ -20,12 +20,13 @@
 // CompareQuery.cs - compare multiple queries and return a result
 
 
+using MessageCrap;
 using System.Xml.Linq;
 using TsGui.Linking;
 
 namespace TsGui.Queries
 {
-    public class CompareQuery: BaseQuery, ILinkTarget, ILinkingEventHandler
+    public class CompareQuery: BaseQuery, ILinkTarget
     {
         private QueryPriorityList _querylist;
         private string _truevalue = "TRUE";
@@ -33,7 +34,7 @@ namespace TsGui.Queries
 
         public CompareQuery(XElement inputxml, ILinkTarget owner) : base(owner)
         {
-            this._querylist = new QueryPriorityList(this);
+            this._querylist = new QueryPriorityList(owner);
             this._processingwrangler.Separator = string.Empty;
             this._reprocess = true;
             this.LoadXml(inputxml);
@@ -49,29 +50,29 @@ namespace TsGui.Queries
                 else if (x.Name == "FalseValue") { this._falsevalue = x.Value; }
                 else
                 {
-                    IQuery newquery = QueryFactory.GetQueryObject(x, this);
+                    IQuery newquery = QueryFactory.GetQueryObject(x, this._linktarget);
                     if (newquery != null) { this._querylist.AddQuery(newquery); }
                 }
             }
         }
 
-        public override ResultWrangler GetResultWrangler()
+        public override ResultWrangler GetResultWrangler(Message message)
         {
-            return this.ProcessQuery();
+            return this.ProcessQuery(message);
         }
 
-        public override ResultWrangler ProcessQuery()
+        public override ResultWrangler ProcessQuery(Message message)
         {
             //if someone hasn't supplied to queries to compare, just return null i.e. invalid result
             if (this._querylist.Queries.Count <2) { return null; } 
 
             ResultWrangler wrangler = new ResultWrangler();
 
-            string first = this._querylist.Queries[0]?.GetResultWrangler()?.GetString();
+            string first = this._querylist.Queries[0]?.GetResultWrangler(message)?.GetString();
 
             for (int i = 1; i < this._querylist.Queries.Count; i++)
             {
-                string second = this._querylist.Queries[i].GetResultWrangler()?.GetString();
+                string second = this._querylist.Queries[i].GetResultWrangler(message)?.GetString();
                 wrangler.NewResult();
                 FormattedProperty prop = new FormattedProperty();
                 prop.Name = "Result";
@@ -90,15 +91,7 @@ namespace TsGui.Queries
             return wrangler;
         }
 
-        public void RefreshValue()
-        {
-            this._linktarget.RefreshValue();
-        }
-
-        public void RefreshAll()
-        { this._linktarget.RefreshAll(); }
-
-        public void OnLinkedSourceValueChanged()
-        { this.RefreshValue(); }
+        public void OnSourceValueUpdated(Message message)
+        { this._linktarget.OnSourceValueUpdated(message); }
     }
 }

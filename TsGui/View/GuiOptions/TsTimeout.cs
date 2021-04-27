@@ -19,9 +19,12 @@
 
 // TsTimeout.cs - Displays the value of the GUI timeout object
 
+using MessageCrap;
 using System;
 using System.Windows.Threading;
 using System.Xml.Linq;
+using TsGui.View.Layout;
+using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
@@ -44,10 +47,10 @@ namespace TsGui.View.GuiOptions
                 this.OnPropertyChanged(this, "CurrentValue");
             }
         }
-        public override TsVariable Variable { get { return null; } }
+        public override Variable Variable { get { return null; } }
 
         //constructor
-        public TsTimeout(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsTimeout(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this.ControlText = string.Empty;
             this.Control = new TsHeadingUI();
@@ -84,6 +87,11 @@ namespace TsGui.View.GuiOptions
             {
                 this.ControlText = remaining.ToString(@"hh\:mm\:ss");
             }
+        }
+
+        public override void UpdateValue(Message message)
+        {
+            LinkingHub.Instance.SendUpdateMessage(this, message);
         }
     }
 }

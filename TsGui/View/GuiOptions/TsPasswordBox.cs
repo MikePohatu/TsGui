@@ -30,11 +30,17 @@ using TsGui.Authentication;
 using TsGui.Diagnostics;
 using TsGui.Validation;
 using System.Windows.Input;
+using TsGui.Diagnostics.Logging;
+using TsGui.View.Layout;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions
 {
     public class TsPasswordBox: GuiOptionBase, IGuiOption, IPassword, IValidationGuiOption
     {
+        public event AuthValueChanged PasswordChanged;
+
+        private bool _expose = false;
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;
         private ValidationToolTipHandler _validationtooltiphandler;
@@ -55,9 +61,12 @@ namespace TsGui.View.GuiOptions
             get { return this._maxlength; }
             set { this._maxlength = value; this.OnPropertyChanged(this, "MaxLength"); }
         }
-        public override TsVariable Variable
+        public override Variable Variable
         {
-            get { return null; }
+            get {
+                if (this._expose) { return new Variable(this.VariableName, this.Password, this.Path); }
+                else { return null; }
+            }
         }
         public ValidationHandler ValidationHandler { get; private set; }
 
@@ -71,14 +80,16 @@ namespace TsGui.View.GuiOptions
         #endregion
 
         //Constructor
-        public TsPasswordBox(XElement InputXml, TsColumn Parent): base (Parent)
+        public TsPasswordBox(XElement InputXml, ParentLayoutElement Parent): base (Parent)
         {
-            this._setvaluequerylist = null;
+            this._querylist = null;
 
+            this._expose = XmlHandler.GetBoolFromXAttribute(InputXml, "ExposePassword", this._expose);
             this._passwordboxui = new TsPasswordBoxUI();
             this.Control = this._passwordboxui;
             this.Label = new TsLabelUI();
             this._passwordboxui.PasswordBox.KeyDown += this.OnKeyDown;
+            this._passwordboxui.PasswordBox.PasswordChanged += this.OnPasswordChanged;
 
             this.UserControl.DataContext = this;
             this.SetDefaults();
@@ -154,7 +165,6 @@ namespace TsGui.View.GuiOptions
             this._authenticator = Director.Instance.AuthLibrary.GetAuthenticator(this.AuthID);
             if (this._authenticator != null)
             {
-                this._authenticator = Director.Instance.AuthLibrary.GetAuthenticator(this.AuthID);
                 this._authenticator.AuthStateChanged += this.OnAuthStateChanged;
                 this._authenticator.AuthStateChanged += this.FirstStateChange;
             }
@@ -178,6 +188,12 @@ namespace TsGui.View.GuiOptions
             }
         }
 
+        public void OnPasswordChanged(object sender, EventArgs e)
+        {
+            //LoggerFacade.Info("Password changed event");
+            this.PasswordChanged?.Invoke();
+        }
+
         //First state change needs the borderbrush thickness to be changed. Takes some thickness from padding and put it onto borderthickness
         private void FirstStateChange()
         {
@@ -185,5 +201,7 @@ namespace TsGui.View.GuiOptions
             this.ControlFormatting.BorderThickness = new Thickness(this.ControlFormatting.BorderThickness.Left + 1);
             this._authenticator.AuthStateChanged -= this.FirstStateChange;
         }
+
+        public override void UpdateValue(Message message) { }
     }
 }

@@ -27,6 +27,8 @@ using TsGui.Linking;
 using TsGui.Queries;
 using TsGui.Grouping;
 using TsGui.Validation;
+using MessageCrap;
+using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -45,24 +47,28 @@ namespace TsGui.View.GuiOptions.CollectionViews
         //properties
         public bool Sort { get; set; } = false;
         public UserControl Icon { get; set; }
-        public override TsVariable Variable
+        public override Variable Variable
         {
             get
             {
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new TsVariable(this.VariableName, this.CurrentValue); }
+                { return new Variable(this.VariableName, this.CurrentValue, this.Path); }
             }
         }
         public override string CurrentValue
         {
             get { return this._currentitem?.Value; }
         }
+
+        /// <summary>
+        /// Don't set the CurrentItem in code. Use SetValue instead or Linking won't work properly
+        /// </summary>
         public ListItem CurrentItem
         {
             get { return this._currentitem; }
-            set { this._currentitem = value; this.OnPropertyChanged(this, "CurrentItem"); }
+            set { this.SetValue(value, null); }
         }
         public bool IsValid { get { return this.Validate(); } }
         public string ValidationText
@@ -72,9 +78,9 @@ namespace TsGui.View.GuiOptions.CollectionViews
         }
 
         //Constructor
-        public CollectionViewGuiOptionBase(TsColumn Parent) : base(Parent)
+        public CollectionViewGuiOptionBase(ParentLayoutElement Parent) : base(Parent)
         {
-            this._setvaluequerylist = new QueryPriorityList(this);
+            this._querylist = new QueryPriorityList(this);
             this._builder = new ListBuilder(this);
         }
 
@@ -104,7 +110,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 if (x.Name == "DefaultValue")
                 {
                     IQuery defquery = QueryFactory.GetQueryObject(new XElement("Value", x.Value), this);
-                    this._setvaluequerylist.AddQuery(defquery);
+                    this._querylist.AddQuery(defquery);
                 }
             }
         }
@@ -146,19 +152,30 @@ namespace TsGui.View.GuiOptions.CollectionViews
             return newvalid;
         }
 
-        public void RefreshValue()
+        public override void UpdateValue(Message message)
         {
-            this.SetSelected(this._setvaluequerylist.GetResultWrangler()?.GetString());
-        }
-
-        public void RefreshAll()
-        {
-            this._builder.Rebuild();
+            this._builder.Rebuild(message);
             this.OnPropertyChanged(this, "VisibleOptions");
-            this.SetSelected(this._setvaluequerylist.GetResultWrangler()?.GetString());
+
+            //SetSelected includes the messaging call
+            this.SetSelected(this._querylist.GetResultWrangler(message)?.GetString(), message);
+            this.NotifyViewUpdate();
         }
 
-        protected abstract void SetSelected(string input);
+        public void OnSourceValueUpdated(Message message)
+        {
+            this.UpdateValue(message);
+        }
+
+        protected abstract void SetSelected(string input, Message message);
+
+
+        protected void SetValue(ListItem value, Message message)
+        {
+            this._currentitem = value; 
+            this.OnPropertyChanged(this, "CurrentItem");
+            LinkingHub.Instance.SendUpdateMessage(this, message);
+        }
 
         protected void SetDefaults()
         {
@@ -179,7 +196,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
         protected void OnSelectionChanged(object o, RoutedEventArgs e)
         {
             this.Validate(false);
-            this.NotifyUpdate();
+            LinkingHub.Instance.SendUpdateMessage(this, null);
+            this.NotifyViewUpdate();
             this.InvokeToggleEvent();
         }
 

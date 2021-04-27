@@ -53,18 +53,30 @@ namespace TsGui.Queries
                         return new CompareQuery(InputXml, linktarget);
                     case "Value":
                         return new ValueOnlyQuery(InputXml);
-                    case "LinkFalse":
-                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, false);
+                    case "ListValue":
+                        return new ListValueQuery(InputXml);
                     case "LinkTo":
                         return GetLinkToQuery(InputXml.Value, linktarget);
+                    //Set to true when source is true
                     case "LinkTrue":
-                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, true);
+                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, true, false);
+                    //set to false when source is false
+                    case "LinkFalse":
+                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, false, false);
+                    //set to true when source is false
+                    case "NotLinkFalse":
+                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, false, true);
+                    //set to false when source is true
+                    case "NotLinkTrue":
+                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, true, true);
                     case "ADGroupMembers":
                         return new ADGroupMembersQuery(InputXml, linktarget);
                     case "ADOU":
                         return new ADOrgUnitQuery(InputXml, linktarget);
                     case "ADOUGroups":
                         return new ADOrgUnitGroupsQuery(InputXml, linktarget);
+                    case "Registry":
+                        return new RegistryQuery(InputXml, linktarget);
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
                 }
@@ -72,6 +84,9 @@ namespace TsGui.Queries
 
             else if (InputXml.Name.ToString() == "Value")
             { return new ValueOnlyQuery(InputXml); }
+
+            else if (InputXml.Name.ToString() == "ListValue")
+            { return new ListValueQuery(InputXml); }
 
             else
             { return null; }
@@ -105,28 +120,28 @@ namespace TsGui.Queries
         //          <Rule Type="Equals">TRUE/FALSE</Rule>
         //      </Ruleset>
         //      <Result>
-        //          <Query Type = "OptionValue">
-        //              <ID Name = "TestLink1"/>
-        //          </Query>
+        //          <Value>TRUE/FALSE</Value>
         //      </Result>
         //  </Query>
         #endregion
-        public static IQuery GetLinkTrueFalseOnlyQuery(string SourceID, ILinkTarget linktarget, bool truefalse)
+        public static IQuery GetLinkTrueFalseOnlyQuery(string SourceID, ILinkTarget linktarget, bool truefalse, bool invert)
         {
             
-            XElement sharedqueryx = new XElement("Query");
-            sharedqueryx.Add(new XAttribute("Type", "OptionValue"));
+            XElement sourceqx = new XElement("Query");
+            sourceqx.Add(new XAttribute("Type", "OptionValue"));
             XElement idx = new XElement("ID");
             idx.Add(new XAttribute("Name", SourceID));
-            sharedqueryx.Add(idx);
+            sourceqx.Add(idx);
 
-            XElement rulex = new XElement("Rule",truefalse.ToString());
+            XElement rulex = new XElement("Rule",truefalse.ToString().ToUpper());
             rulex.Add(new XAttribute("Type", "Equals"));
             XElement rulesetx = new XElement("Ruleset",rulex);
 
+            XElement resultqx = new XElement("Value", (truefalse ^ invert).ToString().ToUpper());
+
             XElement ifx = new XElement("IF");            
-            XElement sourcex = new XElement("Source", sharedqueryx);
-            XElement resultx = new XElement("Result", sharedqueryx);
+            XElement sourcex = new XElement("Source", sourceqx);
+            XElement resultx = new XElement("Result", resultqx);
             ifx.Add(sourcex);
             ifx.Add(rulesetx);
             ifx.Add(resultx);

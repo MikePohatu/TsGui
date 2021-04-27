@@ -27,11 +27,15 @@ using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Authentication;
 
+#pragma warning disable CS0067
 namespace TsGui.Tests
 {
     public class TestDirector: IDirector
     {
+
+
         private AuthLibrary _authlib = new AuthLibrary();
+
         public event TsGuiWindowEventHandler WindowLoaded;
         public event TsGuiWindowMovingEventHandler WindowMoving;
         public event TsGuiWindowEventHandler WindowMouseUp;
@@ -39,7 +43,6 @@ namespace TsGui.Tests
 
         //properties
         public AuthLibrary AuthLibrary { get { return this._authlib; } }
-        public LinkingLibrary LinkingLibrary { get; }
         public GroupLibrary GroupLibrary { get; }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get; }
@@ -49,6 +52,7 @@ namespace TsGui.Tests
         public TsPage CurrentPage { get; set; }
         public bool ShowGridLines { get; set; }
         public bool UseTouchDefaults { get; set; }
+        public string DefaultPath { get; set; }
 
         public void Init(MainWindow ParentWindow, Arguments Arguments) { }
 

@@ -23,6 +23,8 @@ using TsGui.View.Symbols;
 using TsGui.Validation;
 using TsGui.Linking;
 using System.Windows;
+using TsGui.View.Layout;
+using MessageCrap;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -32,7 +34,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public List<ListItem> VisibleOptions { get { return this._builder.Items; } }
 
         //Constructor
-        public TsTreeView(XElement InputXml, TsColumn Parent) : base(Parent)
+        public TsTreeView(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
             this._treeviewui = new TsTreeViewUI();
             this.Control = this._treeviewui;
@@ -44,7 +46,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             this.SetDefaults();      
             this.LoadXml(InputXml);
-            this._builder.Rebuild();
+            this._builder.Rebuild(null);
             this.SetListViewDefault();
 
             this._treeviewui.TreeView.SelectedItemChanged += this.OnTreeViewSelectedItemChanged;
@@ -52,7 +54,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.UserControl.IsVisibleChanged += this.OnActiveChanged;
         }
 
-        protected override void SetSelected(string value)
+        protected override void SetSelected(string value, Message message)
         {
             if (string.IsNullOrWhiteSpace(value) == true ) { return; }
             ListItem newdefault = null;
@@ -74,7 +76,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             if (newdefault != null)
             {
-                this.CurrentItem = newdefault;
+                this.SetValue(newdefault, message);
                 newdefault.IsSelected = true;
             }
         }
@@ -91,10 +93,10 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             if (this._nodefaultvalue == false)
             {
-                string defaultval = this._setvaluequerylist.GetResultWrangler()?.GetString();
-                this.SetSelected(defaultval);
+                string defaultval = this._querylist.GetResultWrangler(null)?.GetString();
+                this.SetSelected(defaultval, null);
             }
-            this.NotifyUpdate();
+            this.NotifyViewUpdate();
         }
     }
 }

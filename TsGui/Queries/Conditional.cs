@@ -19,6 +19,7 @@
 
 // Conditional.cs - IF -> then processing
 
+using MessageCrap;
 using System.Xml.Linq;
 using TsGui.Linking;
 using TsGui.Validation.StringMatching;
@@ -30,14 +31,12 @@ namespace TsGui.Queries
         private QueryPriorityList _sourcequerylist;
         private QueryPriorityList _resultquerylist;
         private RuleSet _ruleset ;
-        private ILinkTarget _linktargetoption;
 
         public Conditional(XElement inputxml, ILinkTarget targetoption)
         {
-            this._linktargetoption = targetoption;
             this._ruleset = new RuleSet(targetoption);
-            this._sourcequerylist = new QueryPriorityList(this._linktargetoption);
-            this._resultquerylist = new QueryPriorityList(this._linktargetoption);
+            this._sourcequerylist = new QueryPriorityList(targetoption);
+            this._resultquerylist = new QueryPriorityList(targetoption);
             this.LoadXml(inputxml);
         }
 
@@ -67,17 +66,17 @@ namespace TsGui.Queries
             if (x != null) { this._resultquerylist.LoadXml(x); }
         }
 
-        public ResultWrangler GetResultWrangler()
+        public ResultWrangler GetResultWrangler(Message message)
         {
-            return this.ProcessQuery();
+            return this.ProcessQuery(message);
         }
 
-        public ResultWrangler ProcessQuery()
+        public ResultWrangler ProcessQuery(Message message)
         {
-            string sourcevalue = this._sourcequerylist.GetResultWrangler()?.GetString();
+            string sourcevalue = this._sourcequerylist.GetResultWrangler(message)?.GetString();
 
             if (this._ruleset.DoesMatch(sourcevalue) == true)
-            { return this._resultquerylist.GetResultWrangler(); }
+            { return this._resultquerylist.GetResultWrangler(message); }
             else { return null; }
         }
     }

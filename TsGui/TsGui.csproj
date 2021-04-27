@@ -58,7 +58,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.4\lib\net40-client\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.8\lib\net40-client\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
@@ -92,19 +92,27 @@
     <Compile Include="Authentication\AuthenticationEnums.cs" />
     <Compile Include="Authentication\AuthenticationFactory.cs" />
     <Compile Include="Authentication\AuthLibrary.cs" />
+    <Compile Include="Authentication\ExposedPassword\ExposedPasswordAuthenticator.cs" />
     <Compile Include="Authentication\IAuthenticationComponent.cs" />
     <Compile Include="Authentication\IAuthenticator.cs" />
     <Compile Include="Authentication\IAuthenticatorConsumer.cs" />
+    <Compile Include="Authentication\IPasswordConfirmingAuthenticator.cs" />
     <Compile Include="Authentication\IUsername.cs" />
     <Compile Include="Authentication\IPassword.cs" />
     <Compile Include="Authentication\LocalConfig\LocalConfigPasswordAuthenticator.cs" />
     <Compile Include="Authentication\LocalConfig\Password.cs" />
+    <Compile Include="Connectors\RegistryConnector.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
+    <Compile Include="Connectors\System\RegistryHelpers.cs" />
     <Compile Include="ConsoleWindow.cs" />
     <Compile Include="Debounce.cs" />
+    <Compile Include="Linking\ILinkSource.cs" />
+    <Compile Include="Linking\Topics.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltWifiDisconnected.cs" />
     <Compile Include="Prebuilt\PrebuiltFactory.cs" />
     <Compile Include="Queries\ActiveDirectory\ADOrgUnitGroupsQuery.cs" />
+    <Compile Include="Queries\ListValueQuery.cs" />
+    <Compile Include="Queries\RegistryQuery.cs" />
     <Compile Include="Timers\GuiTimeout.cs" />
     <Compile Include="IDirector.cs" />
     <Compile Include="Options\OptionDelegates.cs" />
@@ -115,13 +123,14 @@
     <Compile Include="Queries\IfElseQuery.cs" />
     <Compile Include="Queries\PropertyInterogation.cs" />
     <Compile Include="Queries\QueryHelpers.cs" />
-    <Compile Include="Queries\ReplaceRule.cs" />
+    <Compile Include="Queries\Rules\ReplaceRule.cs" />
     <Compile Include="Queries\Result.cs" />
-    <Compile Include="Queries\ToLowerRule.cs" />
-    <Compile Include="Queries\ToUpperRule.cs" />
+    <Compile Include="Queries\Rules\ToLowerRule.cs" />
+    <Compile Include="Queries\Rules\ToUpperRule.cs" />
     <Compile Include="Queries\Trees\KeyValueTreeNode.cs" />
     <Compile Include="Queries\WebServices\WebServiceDiscovery.cs" />
     <Compile Include="Queries\WebServices\WebServicesQuery.cs" />
+    <Compile Include="Validation\Delegates.cs" />
     <Compile Include="Validation\StringMatching\BaseMatchingRule.cs" />
     <Compile Include="Validation\StringMatching\Characters.cs" />
     <Compile Include="Validation\StringMatching\MatchingRuleLibrary.cs" />
@@ -139,6 +148,7 @@
     <Compile Include="Validation\StringMatching\MatchingRuleFactory.cs" />
     <Compile Include="Validation\StringMatching\EndsWith.cs" />
     <Compile Include="Validation\StringMatching\StartsWith.cs" />
+    <Compile Include="Validation\Topics.cs" />
     <Compile Include="View\Layout\ControlDefaults.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\CollectionViewGuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
@@ -180,15 +190,11 @@
     <Compile Include="Helpers\ReverseComparer.cs" />
     <Compile Include="Images\Image.cs" />
     <Compile Include="Images\MultiImage.cs" />
-    <Compile Include="Linking\ILinkingEventHandler.cs" />
     <Compile Include="Queries\BaseQuery.cs" />
     <Compile Include="Queries\CombinedQuery.cs" />
     <Compile Include="Queries\Conditional.cs" />
     <Compile Include="Linking\ILinkTarget.cs" />
-    <Compile Include="Linking\ILinkSource.cs" />
-    <Compile Include="Linking\LinkingDelegates.cs" />
-    <Compile Include="Linking\LinkingEventArgs.cs" />
-    <Compile Include="Linking\LinkingLibrary.cs" />
+    <Compile Include="Linking\LinkingHub.cs" />
     <Compile Include="Queries\QueryPriorityList.cs" />
     <Compile Include="Queries\ValueOnlyQuery.cs" />
     <Compile Include="Validation\StringMatching\RuleSet.cs" />
@@ -205,12 +211,12 @@
     <Compile Include="Queries\OptionValueQuery.cs" />
     <Compile Include="Queries\EnvironmentVariableQuery.cs" />
     <Compile Include="Queries\IQuery.cs" />
-    <Compile Include="Queries\PrefixRule.cs" />
-    <Compile Include="Queries\CalculateRule.cs" />
-    <Compile Include="Queries\IQueryRule.cs" />
-    <Compile Include="Queries\AppendRule.cs" />
+    <Compile Include="Queries\Rules\PrefixRule.cs" />
+    <Compile Include="Queries\Rules\CalculateRule.cs" />
+    <Compile Include="Queries\Rules\IQueryRule.cs" />
+    <Compile Include="Queries\Rules\AppendRule.cs" />
     <Compile Include="Queries\QueryFactory.cs" />
-    <Compile Include="Queries\TruncateRule.cs" />
+    <Compile Include="Queries\Rules\TruncateRule.cs" />
     <Compile Include="Queries\WmiQuery.cs" />
     <Compile Include="Validation\Compliance.cs" />
     <Compile Include="Validation\ComplianceStateValues.cs" />
@@ -230,6 +236,8 @@
       <DependentUpon>TsButtonUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsTickCross.cs" />
+    <Compile Include="View\Layout\ParentLayoutElement.cs" />
+    <Compile Include="View\Layout\UIContainer.cs" />
     <Compile Include="View\Symbols\SymbolFactory.cs" />
     <Compile Include="View\Symbols\TsFolderUI.xaml.cs">
       <DependentUpon>TsFolderUI.xaml</DependentUpon>
@@ -265,7 +273,7 @@
     <Compile Include="View\Layout\GhostWindow.xaml.cs">
       <DependentUpon>GhostWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Layout\IComplianceRoot.cs" />
+    <Compile Include="Validation\IComplianceRoot.cs" />
     <Compile Include="View\Layout\PageDefaults.cs" />
     <Compile Include="View\GuiOptions\GuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\IGuiOption.cs" />
@@ -315,7 +323,7 @@
     <Compile Include="Grouping\Toggle.cs" />
     <Compile Include="HardwareEvaluator.cs" />
     <Compile Include="View\GuiOptions\IValidationGuiOption.cs" />
-    <Compile Include="ITsVariableOutput.cs" />
+    <Compile Include="IVariableOutput.cs" />
     <Compile Include="Grouping\IToggleControl.cs" />
     <Compile Include="View\Layout\TsPageUI.xaml.cs">
       <DependentUpon>TsPageUI.xaml</DependentUpon>
@@ -324,7 +332,7 @@
     <Compile Include="Connectors\SccmConnector.cs" />
     <Compile Include="Connectors\SystemConnector.cs" />
     <Compile Include="Connectors\TestingConnector.cs" />
-    <Compile Include="TsVariable.cs" />
+    <Compile Include="Variable.cs" />
     <Compile Include="TsWindowAlerts.cs" />
     <Compile Include="XmlHandler.cs" />
     <ApplicationDefinition Include="App.xaml">
@@ -463,7 +471,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
     <None Include="NLog.xsd">
@@ -486,6 +494,13 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MessageCrap\MessageCrap.csproj">
+      <Project>{eeedef0c-4542-49de-b415-64ce44ede3b5}</Project>
+      <Name>MessageCrap</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>SET ReleasePath=C:\source\release\tsgui
@@ -499,10 +514,12 @@ md "%25ReleasePath%25\images"
 Copy /Y "$(SolutionDir)Config_Examples\*" "%25ReleasePath%25\Config_Examples"
 Copy /Y "$(SolutionDir)images\*" "%25ReleasePath%25\images"
 Copy /Y "$(SolutionDir)Release notes.txt" "%25ReleasePath%25"
+Copy /Y "$(SolutionDir)Documentation and Source.url" "%25ReleasePath%25"
 Copy /Y "$(SolutionDir)Config.xml" "%25ReleasePath%25"
 Copy /Y "$(SolutionDir)Config_demo.xml" "%25ReleasePath%25"
 Copy /Y "$(TargetDir)NLog.config" "%25ReleasePath%25"
 Copy /Y "$(TargetDir)NLog.dll" "%25ReleasePath%25"
+Copy /Y "$(TargetDir)Messaging.dll" "%25ReleasePath%25"
 Copy /Y "$(TargetDir)TsGui.exe" "%25ReleasePath%25"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
