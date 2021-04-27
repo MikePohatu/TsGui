@@ -64,10 +64,10 @@ namespace TsGui.Queries
                     case "LinkFalse":
                         return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, false, false);
                     //set to true when source is false
-                    case "LinkFalseNot":
+                    case "NotLinkFalse":
                         return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, false, true);
                     //set to false when source is true
-                    case "LinkTrueNot":
+                    case "NotLinkTrue":
                         return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, true, true);
                     case "ADGroupMembers":
                         return new ADGroupMembersQuery(InputXml, linktarget);

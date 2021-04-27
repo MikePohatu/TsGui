@@ -123,7 +123,7 @@
 				<Label>Uncheck when SOURCE is checked</Label>
 				<HAlign>right</HAlign>
 				<SetValue>
-					<Query Type="LinkTrueNot">link_source</Query>
+					<Query Type="NotLinkTrue">link_source</Query>
 				</SetValue>
 			</GuiOption>
 
@@ -132,7 +132,7 @@
 				<Label>Check when SOURCE is unchecked</Label>
 				<HAlign>right</HAlign>
 				<SetValue>
-					<Query Type="LinkFalseNot">link_source</Query>
+					<Query Type="NotLinkFalse">link_source</Query>
 				</SetValue>
 			</GuiOption>
 

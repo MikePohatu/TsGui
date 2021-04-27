@@ -11,6 +11,8 @@ Option Linking enables the value of one option to influence the value of another
   * [LinkTo query](#linkto-query)
   * [LinkTrue query](#linktrue-query)
   * [LinkFalse query](#linkfalse-query)
+  * [NotLinkTrue query](#notlinktrue-query)
+  * [NotLinkFalse query](#notlinkfalse-query)
   * [OptionValue query inside an IfElse query](#optionvalue-query-inside-an-ifelse-query)
   * [Altering the OptionValue result](#altering-the-optionvalue-result)
 
@@ -62,13 +64,26 @@ A LinkTo query is shorthand for "Set the value to whatever the source is wheneve
 ```
 
 ### LinkTrue query
-A LinkTo query is shorthand for "Set the value to TRUE when the source value is set to TRUE"
+A LinkTrue query is shorthand for "Set the value to TRUE when the source value is set to TRUE"
 ```xml
 <Query Type="LinkTrue">link_name</Query>
 ```
 
 ### LinkFalse query
-A LinkTo query is shorthand for "Set the value to FALSE when the source value is set to FALSE"
+A LinkFalse query is shorthand for "Set the value to FALSE when the source value is set to FALSE"
+
+```xml
+<Query Type="LinkFalse">link_name</Query> 
+```
+
+### NotLinkTrue query
+A NotLinkTrue query is shorthand for "Set the value to FALSE when the source value is set to TRUE", in other words an inverted LinkTrue
+```xml
+<Query Type="LinkTrue">link_name</Query>
+```
+
+### NotLinkFalse query
+A NotLinkFalse query is shorthand for "Set the value to TRUE when the source value is set to FALSE", in other words an inverted LinkFalse
 
 ```xml
 <Query Type="LinkFalse">link_name</Query> 

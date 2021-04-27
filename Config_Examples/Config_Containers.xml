@@ -26,6 +26,7 @@
                     <HAlign>right</HAlign>
                 </GuiOption>
 
+                <!-- Container element containing multiple GuiOptions -->
                 <Container>
                     <!-- Apply formatting to the container so it will apply to everything in it -->
                     <Formatting>
