@@ -1,7 +1,8 @@
-Version 1.5.0.0
-Release date: 27 Apr 2021
+Version 1.5.0.1
+Release date: 30 Apr 2021
 
 *Features	
+	You can now set PurgeInactive in the root element to change the default for all GuiOptions. Can be overridden per GuiOption
 	Added registry query type
 	Added ability to output to registry rather than to task sequence variables
 	Added support for nested linking queries e.g. inside if/else queries

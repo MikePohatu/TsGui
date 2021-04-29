@@ -297,6 +297,8 @@ namespace TsGui
                 this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
                 this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
                 this.DefaultPath = XmlHandler.GetStringFromXElement(SourceXml, "DefaultPath", this.DefaultPath);
+                this._grouplibrary.PurgeInactive = XmlHandler.GetBoolFromXAttribute(SourceXml, "PurgeInactive", this._grouplibrary.PurgeInactive);
+
                 string outputtype = XmlHandler.GetStringFromXAttribute(SourceXml, "Output", "Sccm");
                 if (this._args.TestMode == false) { this._envController.SetOutputType(outputtype); }
                 else { this._envController.SetOutputType("Test"); }
