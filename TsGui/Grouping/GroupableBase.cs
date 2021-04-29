@@ -29,7 +29,7 @@ namespace TsGui.Grouping
     {
         protected bool _isactive = true;
         protected List<Group> _groups = new List<Group>();
-        protected bool _purgeinactive = false;
+        protected bool _purgeinactive = Director.Instance.GroupLibrary == null ? false : Director.Instance.GroupLibrary.PurgeInactive;
 
         public List<Group> Groups { get { return this._groups; } }
         public bool PurgeInactive

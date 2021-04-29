@@ -26,8 +26,12 @@ namespace TsGui.Grouping
 {
     public class GroupLibrary
     {
-
         private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
+
+        /// <summary>
+        /// Default value of PurgeInactive for new GroupableBase objects
+        /// </summary>
+        public bool PurgeInactive { get; set; } = false;
 
         private Group CreateGroup(string ID)
         {

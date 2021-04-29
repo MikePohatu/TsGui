@@ -1,4 +1,4 @@
-<TsGui LiveData="TRUE" Output="ConfigMgr">
+<TsGui LiveData="TRUE" Output="ConfigMgr" PurgeInactive="TRUE">
 	<Height>250</Height>
 	<Width>300</Width>
 
