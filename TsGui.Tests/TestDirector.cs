@@ -26,6 +26,7 @@ using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Authentication;
+using System.Threading.Tasks;
 
 #pragma warning disable CS0067
 namespace TsGui.Tests
@@ -54,7 +55,7 @@ namespace TsGui.Tests
         public bool UseTouchDefaults { get; set; }
         public string DefaultPath { get; set; }
 
-        public void Init(MainWindow ParentWindow, Arguments Arguments) { }
+        public async Task InitAsync(MainWindow ParentWindow, Arguments Arguments) { await Task.Delay(0); }
 
 
         public void CloseWithError(string Title, string Message) { }

@@ -26,36 +26,17 @@ using TsGui.Diagnostics;
 
 namespace TsGui.Config
 {
-    public class ConfigBuilder
+    public static class ConfigBuilder
     {
-        private string _rootConfigPath;
-
-        /// <summary>
-        /// The current config 
-        /// </summary>
-        public XElement Config { get; private set; }
-
-        /// <summary>
-        /// New ConfigBuilder with no config set. You will need to use the load methods to load the config in
-        /// </summary>
-        public ConfigBuilder() { }
-
-        /// <summary>
-        /// New ConfigBuilder with the path to the root config file. Config will be loaded and any imports will be inlined
-        /// </summary>
-        /// <param name="configPath"></param>
-        public ConfigBuilder(string configPath)
-        {
-            this._rootConfigPath = configPath;
-        }
 
         /// <summary>
         /// Load the configured config. This will reset any existing config
         /// </summary>
-        public async Task LoadConfig(string configpath)
+        public static async Task<XElement> LoadConfigAsync(string configpath)
         {
-            this.Config = await this.GetXml(configpath);
-            await this.Expand(this.Config);
+            XElement rootconfig =  await GetXml(configpath);
+            await Expand(rootconfig).ConfigureAwait(false);
+            return rootconfig;
         }
 
         /// <summary>
@@ -63,7 +44,7 @@ namespace TsGui.Config
         /// </summary>
         /// <param name="importxml"></param>
         /// <returns></returns>
-        private async Task Expand(XElement importxml)
+        private static async Task Expand(XElement importxml)
         {
             foreach (XElement element in importxml.Elements())
             {
@@ -71,29 +52,40 @@ namespace TsGui.Config
                 {
                     string path = XmlHandler.GetStringFromXElement(element, "Path", string.Empty);
                     path = XmlHandler.GetStringFromXAttribute(element, "Path", path);
-                    XElement inx = await GetXml(path);
+                    XElement partx = await GetXml(path);
 
-                    element.AddAfterSelf(inx);
+                    foreach (XElement partelement in partx.Elements())
+                    {
+                        element.AddAfterSelf(partelement);
+                    }
+                    
                     element.Remove();
                 } 
                 else
                 {
-                    await this.Expand(element);
+                    await Expand(element);
                 }
             }
         }
 
-        private async Task<XElement> GetXml(string configpath)
+        /// <summary>
+        /// Get XElement from uri, auto-detect web vs local based on path
+        /// </summary>
+        /// <param name="configpath"></param>
+        /// <returns></returns>
+        private static async Task<XElement> GetXml(string configpath)
         {
             string lowerpath = configpath.ToLower();
+            XElement results = null;
             if (lowerpath.StartsWith("http://") || lowerpath.StartsWith("https://") || lowerpath.StartsWith("ftp://"))
             {
-                return await XmlHandler.ReadWebAsync(configpath);
+                results = await XmlHandler.ReadWebAsync(configpath);
             }
             else
             {
-                return await XmlHandler.ReadAsync(configpath);
+                results = XmlHandler.Read(configpath);
             }
+            return results;
         }
     }
 }

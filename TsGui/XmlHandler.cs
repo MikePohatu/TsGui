@@ -34,6 +34,8 @@ namespace TsGui
 {
     public static class XmlHandler
     {
+        private static readonly HttpClient _client = new HttpClient();
+
         public static void Write(string pPath, XElement pElement)
         {
             XDocument xDoc = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), pElement);
@@ -55,30 +57,6 @@ namespace TsGui
             if (!File.Exists(filepath)) 
             { throw new FileNotFoundException("File not found: " + filepath); }
             try { temp = XElement.Load(filepath); }
-            catch (Exception e)
-            { throw new TsGuiKnownException("Unable to read xml file: " + filepath, e.Message); }
-
-            return temp;
-        }
-
-        /// <summary>
-        /// Async read XML from a local file
-        /// </summary>
-        /// <param name="pPath"></param>
-        /// <returns></returns>
-        public static async Task<XElement> ReadAsync(string filepath)
-        {
-            XElement temp = null;
-            if (!File.Exists(filepath))
-            { throw new FileNotFoundException("File not found: " + filepath); }
-            try { 
-                string text = string.Empty;
-                using (StreamReader reader = File.OpenText(filepath))
-                {
-                    text = await reader.ReadToEndAsync();
-                }
-                temp = XElement.Parse(text); 
-            }
             catch (Exception e)
             { throw new TsGuiKnownException("Unable to read xml file: " + filepath, e.Message); }
 
@@ -117,13 +95,10 @@ namespace TsGui
 
             try
             {
-                using (HttpClient client = new HttpClient())
-                {
-                    HttpResponseMessage response = await client.GetAsync(url);
+                    HttpResponseMessage response = await _client.GetAsync(url);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     xconfig = XElement.Parse(responseBody);
-                }
             }
             catch (Exception e)
             {

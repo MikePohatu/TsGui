@@ -24,6 +24,7 @@ using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
 using TsGui.Authentication.LocalConfig;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace TsGui
 {
@@ -89,7 +90,7 @@ namespace TsGui
             LoggerFacade.Info("*TsGui started - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             this._mainwindow = new MainWindow();
-            Director.Instance.Init(this._mainwindow, this.Arguments);
+            Director.Instance.InitAsync(this._mainwindow, this.Arguments).ConfigureAwait(false);
         }
 
 
