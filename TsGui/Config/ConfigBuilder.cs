@@ -54,11 +54,14 @@ namespace TsGui.Config
                     path = XmlHandler.GetStringFromXAttribute(element, "Path", path);
                     XElement partx = await GetXml(path);
 
+                    element.AddBeforeSelf(new XComment(element.ToString()));
+
                     foreach (XElement partelement in partx.Elements())
                     {
-                        element.AddAfterSelf(partelement);
+                        element.AddBeforeSelf(partelement);
                     }
-                    
+
+                    element.AddBeforeSelf(new XComment(element.ToString()));
                     element.Remove();
                 } 
                 else
