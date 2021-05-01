@@ -7,6 +7,7 @@ Documentation is currently a work in progress. For usage information, also see t
 * [Layout](/documentation/Layout.md)
 * [TsGui Options](/documentation/options/README.md) (UI controls)
 * [Prebuilt configuration](/documentation/PrebuiltConfiguration.md)
+* [Configuration imports](/documentation/ConfigImports.md) (import from external config files)
 * [Authentication](/documentation/Authentication/README.md)
 
 ## Features
