@@ -39,6 +39,8 @@ using TsGui.Authentication;
 using TsGui.Validation;
 using System.Windows.Input;
 using System.Windows.Threading;
+using TsGui.Config;
+using System.Threading.Tasks;
 
 namespace TsGui
 {
@@ -109,7 +111,7 @@ namespace TsGui
 
         //Wrap a generic exception handler to get some useful information in the event of a 
         //crash. 
-        public void Init(MainWindow ParentWindow, Arguments Arguments)
+        public async Task InitAsync(MainWindow ParentWindow, Arguments Arguments)
         {
             LoggerFacade.Trace("MainController initializing");
             this._envController = new EnvironmentController();
@@ -123,18 +125,16 @@ namespace TsGui
             this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
             this.ParentWindow.LocationChanged += this.OnWindowMoving;
 
-            try { this.Startup(); }
+            try { await this.StartupAsync(); }
             catch (TsGuiKnownException e)
             {
                 string msg = "Error message: " + e.CustomMessage + Environment.NewLine + e.Message;
                 this.CloseWithError("Application Startup Exception", msg);
-                return;
             }
             catch (Exception e)
             {
                 string msg = "Error message: " + e.Message + Environment.NewLine + e.ToString();
                 this.CloseWithError("Application Startup Exception", msg);
-                return;
             }
         }
 
@@ -156,13 +156,13 @@ namespace TsGui
             this.ParentWindow.Close();
         }
 
-        private void Startup()
+        private async Task StartupAsync()
         {
             LoggerFacade.Debug("*TsGui startup started");
             this.StartupFinished = false;
 
             //read the config file in. Don't process it yet
-            XElement xconfig = this.ReadConfigFile();
+            XElement xconfig = await this.ReadConfigFileAsync();
             if (xconfig == null) { return; }
 
             //Now load the XML, catching errors
@@ -247,21 +247,21 @@ namespace TsGui
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
-        private XElement ReadConfigFile()
+        private async Task<XElement> ReadConfigFileAsync()
         {
-            XElement x;
             //code to be added to make sure config file exists
             try
             {
+                string uri;
                 if (string.IsNullOrWhiteSpace(this._args.WebConfigUrl))
                 {
-                    x = XmlHandler.Read(this._args.ConfigFile);
+                    uri = this._args.ConfigFile; 
                 }
                 else
                 {
-                    x = XmlHandler.ReadWeb(this._args.WebConfigUrl);
+                    uri = this._args.WebConfigUrl;
                 }
-                return x;
+                return await ConfigBuilder.LoadConfigAsync(uri);
             }
             catch (System.IO.FileNotFoundException e)
             {

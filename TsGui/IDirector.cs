@@ -26,6 +26,7 @@ using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Authentication;
+using System.Threading.Tasks;
 
 namespace TsGui
 {
@@ -49,7 +50,7 @@ namespace TsGui
         string DefaultPath { get; }
         bool UseTouchDefaults { get; }
 
-        void Init(MainWindow ParentWindow, Arguments Arguments);
+        Task InitAsync(MainWindow ParentWindow, Arguments Arguments);
         void CloseWithError(string Title, string Message);
         void AddOptionToLibary(IOption Option);
         void MoveNext();

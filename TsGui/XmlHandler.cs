@@ -27,11 +27,15 @@ using System.Windows.Media;
 
 using TsGui.Validation;
 using TsGui.Diagnostics;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace TsGui
 {
     public static class XmlHandler
     {
+        private static readonly HttpClient _client = new HttpClient();
+
         public static void Write(string pPath, XElement pElement)
         {
             XDocument xDoc = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), pElement);
@@ -40,20 +44,30 @@ namespace TsGui
             xDoc.Save(pPath);
         }
 
-        public static XElement Read(string pPath)
+        /// <summary>
+        /// Sync read XML from a local file
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        public static XElement Read(string filepath)
         {
             //LoadOptions options = new LoadOptions;
             //LoadOptions.PreserveWhitespace = true;
             XElement temp = null;
-            if (!File.Exists(pPath)) 
-            { throw new FileNotFoundException("File not found: " + pPath); }
-            try { temp = XElement.Load(pPath); }
+            if (!File.Exists(filepath)) 
+            { throw new FileNotFoundException("File not found: " + filepath); }
+            try { temp = XElement.Load(filepath); }
             catch (Exception e)
-            { throw new TsGuiKnownException("Unable to read xml file: " + pPath, e.Message); }
+            { throw new TsGuiKnownException("Unable to read xml file: " + filepath, e.Message); }
 
             return temp;
         }
 
+        /// <summary>
+        /// Sync read XML from a web URL
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static XElement ReadWeb(string url)
         {
             XElement xconfig = null;
@@ -61,6 +75,30 @@ namespace TsGui
             try
             {
                 xconfig = XElement.Load(url);
+            }
+            catch (Exception e)
+            {
+                throw new TsGuiKnownException("Error downloading web config: " + url, e.Message);
+            }
+
+            return xconfig;
+        }
+
+        /// <summary>
+        /// Async read XML from a web URL
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static async Task<XElement> ReadWebAsync(string url)
+        {
+            XElement xconfig = null;
+
+            try
+            {
+                    HttpResponseMessage response = await _client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    xconfig = XElement.Parse(responseBody);
             }
             catch (Exception e)
             {
