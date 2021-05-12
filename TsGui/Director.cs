@@ -66,28 +66,23 @@ namespace TsGui
         private bool _finished = false;
         private TsButtons _buttons;
         private List<TsPage> _pages;
-        private EnvironmentController _envController;
         private GroupLibrary _grouplibrary;
         private List<IToggleControl> _toggles;
         private OptionLibrary _optionlibrary;
         private AuthLibrary _authlibrary;
-        private HardwareEvaluator _hardwareevaluator;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
-        private bool _livedata = false;
-        private bool _debug = false;
 
         //properties
         public AuthLibrary AuthLibrary { get { return this._authlibrary; } }
         public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get { return this._optionlibrary; } }
-        public EnvironmentController EnvironmentController { get { return this._envController; } }
         public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
-        public bool ShowGridLines { get; private set; }
-        public bool UseTouchDefaults { get; private set; }
+        public bool ShowGridLines { get { return this._prodmode ? false : TsGuiRootConfig.ShowGridLines; } }
+        public bool UseTouchDefaults { get { return TsGuiRootConfig.ShowGridLines; } }
 
         /// <summary>
         /// The path that will be set on new IOptions by default. Can be overridden by each option
@@ -114,7 +109,6 @@ namespace TsGui
         public async Task InitAsync(MainWindow ParentWindow, Arguments Arguments)
         {
             LoggerFacade.Trace("MainController initializing");
-            this._envController = new EnvironmentController();
             this._pages = new List<TsPage>();
             this._grouplibrary = new GroupLibrary();
             this._toggles = new List<IToggleControl>();
@@ -166,21 +160,30 @@ namespace TsGui
             if (xconfig == null) { return; }
 
             //Now load the XML, catching errors
-            try { 
+            try {
+                TsGuiRootConfig.LoadXml(xconfig);
+                LoggerFacade.Info("Finished applying root configuration");
+
+                //Init the envController so we know what we're writing to and attach the SCCM COM object if required
+                this._prodmode = EnvironmentController.Init();
+
                 this.LoadXml(xconfig);
+                LoggerFacade.Info("Finished applying main config");
             }
             catch (TsGuiKnownException e)
             {
-                string msg = "Error loading config file" + Environment.NewLine + e.CustomMessage + Environment.NewLine + e.Message;
-                this.CloseWithError("Error loading config file", msg);
+                string msg = "Error loading config " + Environment.NewLine + e.CustomMessage + Environment.NewLine + e.Message;
+                this.CloseWithError("Error loading config ", msg);
                 return;
             }
 
-            //populate hardware options if HardwareEval enabled (LoadXML will create the object if set)
-            if (this._hardwareevaluator != null)
+            //populate hardware options if HardwareEval enabled
+            if (TsGuiRootConfig.HardwareEval == true)
             {
+                HardwareEvaluator.Init(xconfig);
+
                 LoggerFacade.Debug("Running hardware evaluator");
-                foreach (Variable var in this._hardwareevaluator.GetTsVariables())
+                foreach (Variable var in HardwareEvaluator.GetTsVariables())
                 {
                     NoUIOption newhwoption = new NoUIOption();
                     newhwoption.ImportFromTsVariable(var);
@@ -188,19 +191,16 @@ namespace TsGui
                 }
             }
 
-            //Init the envController so we know what we're writing to and attach the SCCM COM object if required
-            this._prodmode = this._envController.Init();
-
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
             if (this._args.TestMode == false && this._prodmode == true)
             {
-                if (this._debug == true) { this._testingwindow = new TestingWindow(this); } 
+                if (TsGuiRootConfig.Debug == true) { this._testingwindow = new TestingWindow(this); }
             }
             else
             {
                 if (this.PromptTestMode() != true) { this.Cancel(); return; }
-                if ((this._debug == true) || (this._livedata == true)) { this._testingwindow = new TestingWindow(this); }
+                if ((TsGuiRootConfig.Debug == true) || (TsGuiRootConfig.LiveData == true)) { this._testingwindow = new TestingWindow(this); }
             }
 
             //now send a ConfigLoadFinished event so things know they can finish setting themselves up e.g. OptionValueQuery
@@ -214,7 +214,6 @@ namespace TsGui
 
             if (this._pages.Count > 0)
             {
-                
                 LoggerFacade.Debug("Loading pages");
                 this.CurrentPage = this._pages.First();
                 //update group settings to all controls
@@ -293,31 +292,6 @@ namespace TsGui
 
             if (SourceXml != null)
             {
-                
-                this._debug = XmlHandler.GetBoolFromXAttribute(SourceXml, "Debug", this._debug);
-                this._livedata = XmlHandler.GetBoolFromXAttribute(SourceXml, "LiveData", this._livedata);
-                this.DefaultPath = XmlHandler.GetStringFromXElement(SourceXml, "DefaultPath", this.DefaultPath);
-                this._grouplibrary.PurgeInactive = XmlHandler.GetBoolFromXAttribute(SourceXml, "PurgeInactive", this._grouplibrary.PurgeInactive);
-
-                string outputtype = XmlHandler.GetStringFromXAttribute(SourceXml, "Output", "Sccm");
-                if (this._args.TestMode == false) { this._envController.SetOutputType(outputtype); }
-                else { this._envController.SetOutputType("Test"); }
-                
-
-                //Set show grid lines after pages and columns have been created.
-                x = SourceXml.Element("ShowGridLines");
-                if ((x != null) && (this._prodmode == false))
-                { this.ShowGridLines = true; }
-
-                x = SourceXml.Element("UseTouchDefaults");
-                if (x != null)
-                { this.UseTouchDefaults = true; }
-
-                //turn hardware eval on or off
-                x = SourceXml.Element("HardwareEval");
-                if (x != null)
-                { this._hardwareevaluator = new HardwareEvaluator(x); }
-
                 //start layout import
                 this.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);
 
@@ -389,8 +363,6 @@ namespace TsGui
                     this._nouicontainer = new NoUIContainer(x);
                 }
             }
-
-            LoggerFacade.Info("Config load finished");
         }
 
         //add options from sub classes to the main library. used to generate the final list of 
@@ -464,9 +436,9 @@ namespace TsGui
                 {
                     //now check if the option is active or not and variables created as required
                     if (option.IsActive == true)
-                    { this._envController.AddVariable(option.Variable); }
+                    { EnvironmentController.AddVariable(option.Variable); }
                     else
-                    { this._envController.AddVariable(new Variable(option.VariableName, option.InactiveValue, option.Path)); }
+                    { EnvironmentController.AddVariable(new Variable(option.VariableName, option.InactiveValue, option.Path)); }
                 }
             }
 
@@ -481,9 +453,9 @@ namespace TsGui
 
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            if (_finished) { this._envController.AddVariable(new Variable("TsGui_Cancel", "FALSE", null)); }
-            else { this._envController.AddVariable(new Variable("TsGui_Cancel", "TRUE", null)); }
-            this._envController.Release();
+            if (_finished) { EnvironmentController.AddVariable(new Variable("TsGui_Cancel", "FALSE", null)); }
+            else { EnvironmentController.AddVariable(new Variable("TsGui_Cancel", "TRUE", null)); }
+            EnvironmentController.Release();
         }
 
         /// <summary>

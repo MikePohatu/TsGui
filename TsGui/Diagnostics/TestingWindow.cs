@@ -51,7 +51,7 @@ namespace TsGui.Diagnostics
         public TsMainWindow TsMainWindow { get; set; }
         public double ScreenHeight { get; set; }
         public double ScreenWidth { get; set; }
-        public string Output { get { return Director.Instance.EnvironmentController.OutputType.ToString(); } }
+        public string Output { get { return EnvironmentController.OutputType.ToString(); } }
         public double WindowMaxHeight { get { return SystemParameters.PrimaryScreenHeight - 20; } }
         public int CurrentScaling
         {

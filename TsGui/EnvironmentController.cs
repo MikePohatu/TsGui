@@ -30,86 +30,87 @@ using TsGui.Connectors;
 using TsGui.Linking;
 using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
+using TsGui.Config;
 
 namespace TsGui
 {
-    public class EnvironmentController
+    public static class EnvironmentController
     {
         public enum ConnectorType { ConfigMgr, Test, Registry };
 
-        private IVariableOutput _outputconnector;
-        private SccmConnector _sccmconnector;
-        private ConnectorType _type = ConnectorType.ConfigMgr;
+        private static IVariableOutput _outputconnector;
+        private static SccmConnector _sccmconnector;
+        private static ConnectorType _type = ConnectorType.ConfigMgr;
 
-        public ConnectorType OutputType { get { return this._type; } }
-        public SccmConnector SccmConnector { get { return this._sccmconnector; } }
-        public IVariableOutput OutputConnector { get { return this._outputconnector; } }
+        public static ConnectorType OutputType { get { return _type; } }
+        public static SccmConnector SccmConnector { get { return _sccmconnector; } }
+        public static IVariableOutput OutputConnector { get { return _outputconnector; } }
 
-        public bool Init()
+        public static bool Init()
         {
-            return this.CreateConnector();
+            SetOutputType(TsGuiRootConfig.OutputType);
+            return CreateConnector();
         }
 
-        private bool CreateConnector()
+        private static bool CreateConnector()
         {
-            switch(this._type)
+            switch(_type)
             {
                 case ConnectorType.ConfigMgr:
                     try
                     {
-                        this._sccmconnector = new SccmConnector();
-                        this._outputconnector = this._sccmconnector;
+                        _sccmconnector = new SccmConnector();
+                        _outputconnector = _sccmconnector;
                         return true;
                     }
                     catch
                     {
                         LoggerFacade.Trace("Couldn't create SCCM connector. Creating testing connector");
-                        this._outputconnector = new TestingConnector();
+                        _outputconnector = new TestingConnector();
                         return false;
                     }
                 case ConnectorType.Test:
-                    this._outputconnector = new TestingConnector();
+                    _outputconnector = new TestingConnector();
                     return false;
                 case ConnectorType.Registry:
-                    this._outputconnector = new RegistryConnector();
+                    _outputconnector = new RegistryConnector();
                     return true;
                 default:
                     throw new TsGuiKnownException("Invalid connector type specified", null);
             }
         }
 
-        public void AddVariable(Variable Variable)
+        public static void AddVariable(Variable Variable)
         {
-            this._outputconnector.AddVariable(Variable);
+            _outputconnector.AddVariable(Variable);
         }
 
         //release the output connectors.
-        public void Release()
+        public static void Release()
         {
-            this._outputconnector.Release();
+            _outputconnector.Release();
         }
 
-        public void SetOutputType(string type)
+        public static void SetOutputType(string type)
         {
             switch (type.ToLower())
             {
                 case "sccm":
                 case "configmgr":
-                    this._type = ConnectorType.ConfigMgr;
+                    _type = ConnectorType.ConfigMgr;
                     break;
                 case "test":
-                    this._type = ConnectorType.Test;
+                    _type = ConnectorType.Test;
                     break;
                 case "registry":
                 case "reg":
-                    this._type = ConnectorType.Registry;
+                    _type = ConnectorType.Registry;
                     break;
                 default:
                     LoggerFacade.Warn("Invalid OutputType set, defaulting to ConfigMgr");
-                    this._type = ConnectorType.ConfigMgr;
+                    _type = ConnectorType.ConfigMgr;
                     break;
             }
-
         }
     }
 }

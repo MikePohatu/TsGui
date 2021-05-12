@@ -47,7 +47,6 @@ namespace TsGui.Tests
         public GroupLibrary GroupLibrary { get; }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get; }
-        public EnvironmentController EnvironmentController { get; }
         public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }

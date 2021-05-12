@@ -42,7 +42,6 @@ namespace TsGui
         GroupLibrary GroupLibrary { get; }
         TsMainWindow TsMainWindow { get; set; }
         OptionLibrary OptionLibrary { get; }
-        EnvironmentController EnvironmentController { get; }
         bool StartupFinished { get; set; }
         MainWindow ParentWindow { get; set; }
         TsPage CurrentPage { get; set; }

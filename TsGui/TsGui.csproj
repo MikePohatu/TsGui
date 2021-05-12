@@ -104,6 +104,7 @@
     <Compile Include="Authentication\LocalConfig\LocalConfigPasswordAuthenticator.cs" />
     <Compile Include="Authentication\LocalConfig\Password.cs" />
     <Compile Include="Config\ConfigBuilder.cs" />
+    <Compile Include="Config\TsGuiRootConfig.cs" />
     <Compile Include="Connectors\RegistryConnector.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="Connectors\System\RegistryHelpers.cs" />
