@@ -191,12 +191,14 @@ namespace TsGui
                 }
             }
 
-            //if prodmode isn't true, the envcontroller couldn't connect to sccm
-            //prompt the user if they want to continue. exit if not. 
+            //If prodmode is true and testmode is false, only show the testing window if the debug option
+            //has been set
             if (this._args.TestMode == false && this._prodmode == true)
             {
                 if (TsGuiRootConfig.Debug == true) { this._testingwindow = new TestingWindow(this); }
             }
+            //if prodmode isn't true, the envcontroller couldn't connect to sccm
+            //prompt the user if they want to continue. exit if not. 
             else
             {
                 if (this.PromptTestMode() != true) { this.Cancel(); return; }

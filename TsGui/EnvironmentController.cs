@@ -61,6 +61,7 @@ namespace TsGui
                     {
                         _sccmconnector = new SccmConnector();
                         _outputconnector = _sccmconnector;
+                        _sccmconnector.Init();
                         return true;
                     }
                     catch
