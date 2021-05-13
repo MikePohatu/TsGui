@@ -82,7 +82,7 @@ namespace TsGui
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
         public bool ShowGridLines { get { return this._prodmode ? false : TsGuiRootConfig.ShowGridLines; } }
-        public bool UseTouchDefaults { get { return TsGuiRootConfig.ShowGridLines; } }
+        public bool UseTouchDefaults { get { return TsGuiRootConfig.UseTouchDefaults; } }
 
         /// <summary>
         /// The path that will be set on new IOptions by default. Can be overridden by each option

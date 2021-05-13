@@ -31,7 +31,7 @@ namespace TsGui.Config
         /// <summary>
         /// Show the Live Data window during testing (default = true)
         /// </summary>
-        public static bool LiveData { get; private set; } = true;
+        public static bool LiveData { get; private set; } = false;
 
         /// <summary>
         /// Show the Live Data window during testing and production (default = false)
