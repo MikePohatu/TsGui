@@ -29,76 +29,76 @@ using TsGui.Connectors;
 
 namespace TsGui
 {
-    public class HardwareEvaluator
+    public static class HardwareEvaluator
     {
-        private string _namespace = @"root\CIMV2";
-        private string _path = null;
+        private static string _namespace = @"root\CIMV2";
+        private static string _path = null;
 
-        public bool IsLaptop { get; private set; } = false;
-        public bool IsDesktop { get; private set; } = false;
-        public bool IsServer { get; private set; } = false;
-        public bool IsVirtualMachine { get; private set; } = false;
-        public bool IsConvertible { get; private set; } = false;
-        public bool IsDetachable { get; private set; } = false;
-        public bool IsTablet { get; private set; } = false;
-        public string IPAddresses4 { get; private set; } = string.Empty;
-        public string IPAddresses6 { get; private set; } = string.Empty;
-        public string IPNetMask4 { get; private set; } = string.Empty;
-        public string IPNetMask6 { get; private set; } = string.Empty;
-        public string DefaultGateways4 { get; private set; } = string.Empty;
-        public string DefaultGateways6 { get; private set; } = string.Empty;
-        public string DHCPServer { get; private set; } = string.Empty;
+        public static bool IsLaptop { get; private set; } = false;
+        public static bool IsDesktop { get; private set; } = false;
+        public static bool IsServer { get; private set; } = false;
+        public static bool IsVirtualMachine { get; private set; } = false;
+        public static bool IsConvertible { get; private set; } = false;
+        public static bool IsDetachable { get; private set; } = false;
+        public static bool IsTablet { get; private set; } = false;
+        public static string IPAddresses4 { get; private set; } = string.Empty;
+        public static string IPAddresses6 { get; private set; } = string.Empty;
+        public static string IPNetMask4 { get; private set; } = string.Empty;
+        public static string IPNetMask6 { get; private set; } = string.Empty;
+        public static string DefaultGateways4 { get; private set; } = string.Empty;
+        public static string DefaultGateways6 { get; private set; } = string.Empty;
+        public static string DHCPServer { get; private set; } = string.Empty;
 
         /// <summary>
         /// Query WMI and populate the data for the TsGui_xxx variables
         /// </summary>
-        public HardwareEvaluator(XElement inputxml)
+        public static void Init(XElement inputxml)
         {
-            this._path = XmlHandler.GetStringFromXAttribute(inputxml, "Path", this._path);
-            if (string.IsNullOrWhiteSpace(this._path)) { this._path = Director.Instance.DefaultPath; }
-            this.Evaluate();
+            _path = XmlHandler.GetStringFromXAttribute(inputxml, "Path", _path);
+            if (string.IsNullOrWhiteSpace(_path)) { _path = Director.Instance.DefaultPath; }
+            Evaluate();
         }
 
-        public List<Variable> GetTsVariables()
+        public static List<Variable> GetTsVariables()
         {
             List<Variable> vars = new List<Variable>();
 
-            if (IsLaptop) { vars.Add(new Variable("TsGui_IsLaptop", "TRUE", this._path)); }
-            else { vars.Add(new Variable("TsGui_IsLaptop", "FALSE", this._path)); }
+            if (IsLaptop) { vars.Add(new Variable("TsGui_IsLaptop", "TRUE", _path)); }
+            else { vars.Add(new Variable("TsGui_IsLaptop", "FALSE", _path)); }
 
-            if (IsDesktop) { vars.Add(new Variable("TsGui_IsDesktop", "TRUE", this._path)); }
-            else { vars.Add(new Variable("TsGui_IsDesktop", "FALSE", this._path)); }
+            if (IsDesktop) { vars.Add(new Variable("TsGui_IsDesktop", "TRUE", _path)); }
+            else { vars.Add(new Variable("TsGui_IsDesktop", "FALSE", _path)); }
 
-            if (IsServer) { vars.Add(new Variable("TsGui_IsServer", "TRUE", this._path)); }
-            else { vars.Add(new Variable("TsGui_IsServer", "FALSE", this._path)); }
+            if (IsServer) { vars.Add(new Variable("TsGui_IsServer", "TRUE", _path)); }
+            else { vars.Add(new Variable("TsGui_IsServer", "FALSE", _path)); }
 
-            if (IsVirtualMachine) { vars.Add(new Variable("TsGui_IsVirtualMachine", "TRUE", this._path)); }
-            else { vars.Add(new Variable("TsGui_IsVirtualMachine", "FALSE", this._path)); }
+            if (IsVirtualMachine) { vars.Add(new Variable("TsGui_IsVirtualMachine", "TRUE", _path)); }
+            else { vars.Add(new Variable("TsGui_IsVirtualMachine", "FALSE", _path)); }
 
-            if (IsConvertible) { vars.Add(new Variable("TsGui_IsConvertible", "TRUE", this._path)); }
-            else { vars.Add(new Variable("TsGui_IsConvertible", "FALSE", this._path)); }
+            if (IsConvertible) { vars.Add(new Variable("TsGui_IsConvertible", "TRUE", _path)); }
+            else { vars.Add(new Variable("TsGui_IsConvertible", "FALSE", _path)); }
 
-            if (IsDetachable) { vars.Add(new Variable("TsGui_IsDetachable", "TRUE", this._path)); }
-            else { vars.Add(new Variable("TsGui_IsDetachable", "FALSE", this._path)); }
+            if (IsDetachable) { vars.Add(new Variable("TsGui_IsDetachable", "TRUE", _path)); }
+            else { vars.Add(new Variable("TsGui_IsDetachable", "FALSE", _path)); }
 
-            if (IsTablet) { vars.Add(new Variable("TsGui_IsTablet", "TRUE", this._path)); }
-            else { vars.Add(new Variable("TsGui_IsTablet", "FALSE", this._path)); }
+            if (IsTablet) { vars.Add(new Variable("TsGui_IsTablet", "TRUE", _path)); }
+            else { vars.Add(new Variable("TsGui_IsTablet", "FALSE", _path)); }
 
-            vars.Add(new Variable("TsGui_IPv4", this.IPAddresses4, this._path));
-            vars.Add(new Variable("TsGui_IPv6", this.IPAddresses6, this._path));
-            vars.Add(new Variable("TsGui_DefaultGateway4", this.DefaultGateways4, this._path));
-            vars.Add(new Variable("TsGui_DefaultGateway6", this.DefaultGateways6, this._path));
-            vars.Add(new Variable("TsGui_IPSubetMask4", this.IPNetMask4, this._path));
-            vars.Add(new Variable("TsGui_IPSubnetMask6", this.IPNetMask6, this._path));
-            vars.Add(new Variable("TsGui_DHCPServer", this.DHCPServer, this._path));
+            vars.Add(new Variable("TsGui_IPv4", IPAddresses4, _path));
+            vars.Add(new Variable("TsGui_IPv6", IPAddresses6, _path));
+            vars.Add(new Variable("TsGui_DefaultGateway4", DefaultGateways4, _path));
+            vars.Add(new Variable("TsGui_DefaultGateway6", DefaultGateways6, _path));
+            vars.Add(new Variable("TsGui_IPSubetMask4", IPNetMask4, _path));
+            vars.Add(new Variable("TsGui_IPSubnetMask6", IPNetMask6, _path));
+            vars.Add(new Variable("TsGui_DHCPServer", DHCPServer, _path));
 
             return vars;
         }
 
-        private void Evaluate()
+        private static void Evaluate()
         {
             //virtual machine tests
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(this._namespace, "select Model,Manufacturer from Win32_ComputerSystem"))
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(_namespace, "select Model,Manufacturer from Win32_ComputerSystem"))
             {
                 string model = (string)m["Model"];
                 string maker = (string)m["Manufacturer"];
@@ -107,25 +107,25 @@ namespace TsGui
                     //vmware
                     if (model.Contains("VMware"))
                     {
-                        this.IsVirtualMachine = true;
+                        IsVirtualMachine = true;
                         break;
                     }
                     //hyper-v
                     if (model == "Virtual Machine")
                     {
-                        this.IsVirtualMachine = true;
+                        IsVirtualMachine = true;
                         break;
                     }
                     //virtualbox
                     if (model.Contains("VirtualBox"))
                     {
-                        this.IsVirtualMachine = true;
+                        IsVirtualMachine = true;
                         break;
                     }
                     //Parallels
                     if (model.Contains("Parallels"))
                     {
-                        this.IsVirtualMachine = true;
+                        IsVirtualMachine = true;
                         break;
                     }
                 }
@@ -135,14 +135,14 @@ namespace TsGui
                     //Xen
                     if (maker.Contains("Xen"))
                     {
-                        this.IsVirtualMachine = true;
+                        IsVirtualMachine = true;
                         break;
                     }
                 }
             }
 
             //chassis type tests
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(this._namespace, "select ChassisTypes from Win32_SystemEnclosure"))
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(_namespace, "select ChassisTypes from Win32_SystemEnclosure"))
             {
                 Int16[] chassistypes = (Int16[])m["ChassisTypes"];
 
@@ -159,25 +159,25 @@ namespace TsGui
                         case 18:
                         case 21:
                             {
-                                this.IsLaptop = true;
+                                IsLaptop = true;
                                 break;
                             }
                         case 30:
                             {
-                                this.IsLaptop = true;
-                                this.IsTablet = true;
+                                IsLaptop = true;
+                                IsTablet = true;
                                 break;
                             }
                         case 31:
                             {
-                                this.IsLaptop = true;
-                                this.IsConvertible = true;
+                                IsLaptop = true;
+                                IsConvertible = true;
                                 break;
                             }
                         case 32:
                             {
-                                this.IsLaptop = true;
-                                this.IsDetachable = true;
+                                IsLaptop = true;
+                                IsDetachable = true;
                                 break;
                             }
                         case 3:
@@ -192,7 +192,7 @@ namespace TsGui
                         case 35:
                         case 36:
                             {
-                                this.IsDesktop = true;
+                                IsDesktop = true;
                                 break;
                             }
                         case 23:
@@ -200,7 +200,7 @@ namespace TsGui
                         case 28:
                         case 29:
                             {
-                                this.IsServer = true;
+                                IsServer = true;
                                 break;
                             }
                         default:
@@ -210,7 +210,7 @@ namespace TsGui
             }
 
             //ip info gather
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(this._namespace, @"Select DefaultIPGateway,IPAddress,IPSubnet,DHCPServer from Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'True'"))
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(_namespace, @"Select DefaultIPGateway,IPAddress,IPSubnet,DHCPServer from Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'True'"))
             {
                 string[] ipaddresses = (string[])m["IPAddress"];
 
@@ -220,8 +220,8 @@ namespace TsGui
                     {
                         if (string.IsNullOrEmpty(s) == false)
                         {
-                            if (s.Contains(":")) { this.IPAddresses6 = AppendToStringList(this.IPAddresses6, s); }
-                            else { this.IPAddresses4 = AppendToStringList(this.IPAddresses4, s); }
+                            if (s.Contains(":")) { IPAddresses6 = AppendToStringList(IPAddresses6, s); }
+                            else { IPAddresses4 = AppendToStringList(IPAddresses4, s); }
                         }
                     }
                 }
@@ -232,8 +232,8 @@ namespace TsGui
                 {
                     foreach (string s in defaultgateways)
                     {
-                        if (s.Contains(":")) { this.DefaultGateways6 = AppendToStringList(this.DefaultGateways6, s); }
-                        else { this.DefaultGateways4 = AppendToStringList(this.DefaultGateways4, s); }
+                        if (s.Contains(":")) { DefaultGateways6 = AppendToStringList(DefaultGateways6, s); }
+                        else { DefaultGateways4 = AppendToStringList(DefaultGateways4, s); }
                     }
                 }
 
@@ -242,13 +242,13 @@ namespace TsGui
                 {
                     foreach (string s in netmasks)
                     {
-                        if (s.Contains(".")) { this.IPNetMask4 = AppendToStringList(this.IPNetMask4, s); }
-                        else { this.IPNetMask6 = AppendToStringList(this.IPNetMask6, s); }
+                        if (s.Contains(".")) { IPNetMask4 = AppendToStringList(IPNetMask4, s); }
+                        else { IPNetMask6 = AppendToStringList(IPNetMask6, s); }
                     }
                 }
 
                 string svr = (string)m["DHCPServer"];
-                if (string.IsNullOrWhiteSpace(svr) == false) { this.DHCPServer = AppendToStringList(this.DHCPServer, svr); }
+                if (string.IsNullOrWhiteSpace(svr) == false) { DHCPServer = AppendToStringList(DHCPServer, svr); }
             }
         }
 

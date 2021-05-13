@@ -1,3 +1,21 @@
+Version 1.5.1.0
+Release date: 12 May 2021
+
+*Features	
+	Added ability to do configuration 'imports' so you can break your config into multiple files. See Configuration imports section in the documentation
+
+*Fixes
+	Fixed logic error in startup that would cause errors when loading in production task sequence
+	
+
+*Known issues
+	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
+	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
+	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
+
+*Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
+
+
 Version 1.5.0.1
 Release date: 30 Apr 2021
 
@@ -12,11 +30,6 @@ Release date: 30 Apr 2021
 *Fixes
 	Added fix to catch and resolve circular linking events e.g. checkboxes that turn each other on/off
 	Added fixes for the layout inheritance tree
-
-*Known issues
-	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
-	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
-	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
 

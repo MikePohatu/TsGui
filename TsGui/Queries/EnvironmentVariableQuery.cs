@@ -33,7 +33,7 @@ namespace TsGui.Queries
 
         public EnvironmentVariableQuery(XElement inputxml, ILinkTarget owner): base(owner)
         {
-            this._sccmconnector = Director.Instance.EnvironmentController.SccmConnector;
+            this._sccmconnector = EnvironmentController.SccmConnector;
             this.LoadXml(inputxml);
         }
 
