@@ -20,6 +20,7 @@
 // Conditional.cs - IF -> then processing
 
 using MessageCrap;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Linking;
 using TsGui.Validation.StringMatching;
@@ -66,17 +67,17 @@ namespace TsGui.Queries
             if (x != null) { this._resultquerylist.LoadXml(x); }
         }
 
-        public ResultWrangler GetResultWrangler(Message message)
+        public async Task<ResultWrangler> GetResultWranglerAsync(Message message)
         {
-            return this.ProcessQuery(message);
+            return await this.ProcessQueryAsync(message);
         }
 
-        public ResultWrangler ProcessQuery(Message message)
+        public async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
-            string sourcevalue = this._sourcequerylist.GetResultWrangler(message)?.GetString();
+            string sourcevalue = (await this._sourcequerylist.GetResultWranglerAsync(message))?.GetString();
 
             if (this._ruleset.DoesMatch(sourcevalue) == true)
-            { return this._resultquerylist.GetResultWrangler(message); }
+            { return await this._resultquerylist.GetResultWranglerAsync(message); }
             else { return null; }
         }
     }

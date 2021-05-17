@@ -30,7 +30,7 @@ namespace TsGui.Validation.StringMatching
 
         public string Content { 
             get {
-                string s = this._querylist.GetResultWrangler(null)?.GetString();
+                string s = (this._querylist.GetResultWranglerAsync(null).Result)?.GetString();
                 return s == null ? string.Empty : s; 
             } 
         }

@@ -24,6 +24,7 @@ using System.Windows;
 using TsGui.View.Layout;
 using MessageCrap;
 using TsGui.Validation;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -91,6 +92,6 @@ namespace TsGui.View.GuiOptions
             this.ButtonText = "Refresh";
         }
 
-        public override void UpdateValue(Message message) { }
+        public override async Task UpdateValueAsync(Message message) { await Task.FromResult(false); }
     }
 }

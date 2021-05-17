@@ -21,6 +21,7 @@
 
 using MessageCrap;
 using System;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
@@ -47,12 +48,12 @@ namespace TsGui.Queries
             LinkingHub.Instance.RegisterLinkTarget(this._linktarget, this._source);
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             this._formatter.Input = this._source?.CurrentValue;
             this._processed = true;
 
-            return this.SetReturnWrangler();
+            return await Task.FromResult(this.SetReturnWrangler());
         }
 
         public IOption GetSourceOption(string id)

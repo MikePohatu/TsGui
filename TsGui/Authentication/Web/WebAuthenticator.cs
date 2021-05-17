@@ -19,42 +19,34 @@
 using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using System.DirectoryServices.AccountManagement;
 using TsGui.Diagnostics.Logging;
 using TsGui.Diagnostics;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace TsGui.Authentication.ActiveDirectory
 {
-    public class ActiveDirectoryAuthenticator : IAuthenticator
+    public class WebAuthenticator : IAuthenticator
     {
         public event AuthValueChanged AuthStateChanged;
 
-        private AuthState _state;
-        private string _domain;
+        private string _url = string.Empty;
+        private AuthState _state = AuthState.NotAuthorised;
 
-        public PrincipalContext Context { get; set; }
         public AuthState State { get { return this._state; } }
         public IPassword PasswordSource { get; set; }
         public IUsername UsernameSource { get; set; }
-        public string Domain { get { return this._domain; } }
         public string AuthID { get; set; }
-        public List<string> RequiredGroups { get; set; } 
 
-        public ActiveDirectoryAuthenticator(XElement inputxml)
+        public WebAuthenticator(XElement inputxml)
         {
             this.LoadXml(inputxml);
-            this._state = AuthState.AccessDenied;
-            this.RequiredGroups = new List<string>();
         }
 
-        public bool IsAsync { get; } = false;
-        public Task AuthenticateAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Authenticate()
+        public bool IsAsync { get; } = true;
+        public async Task AuthenticateAsync()
         {
             if (string.IsNullOrWhiteSpace(this.UsernameSource.Username) == true)
             {
@@ -69,31 +61,46 @@ namespace TsGui.Authentication.ActiveDirectory
                 return;
             }
 
-            LoggerFacade.Info("Authenticating user: " + this.UsernameSource.Username + " against domain " + this._domain);
+            LoggerFacade.Info("Authenticating user: " + this.UsernameSource.Username + " against web service " + this._url);
             AuthState newstate;
+            HttpClient client = null;
+
             try
             {
-                this.Context = new PrincipalContext(ContextType.Domain, this._domain, this.UsernameSource.Username, this.PasswordSource.Password);
+                HttpClientHandler authtHandler = new HttpClientHandler();
+                authtHandler.Credentials = new NetworkCredential(this.UsernameSource.Username, this.PasswordSource.SecurePassword);
 
-                if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context, this.UsernameSource.Username, this.RequiredGroups) == true)
+                client = new HttpClient(authtHandler);
+
+                var response = await client.GetAsync(this._url);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
                 {
-                    LoggerFacade.Info("Active Directory authorised");
-                    newstate = AuthState.Authorised;
+                    newstate = AuthState.NotAuthorised; 
+                }
+                else if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    newstate = AuthState.AccessDenied;
                 }
                 else
                 {
-                    LoggerFacade.Info("Active Directory not authorised");
-                    newstate = AuthState.NotAuthorised;
+                    newstate = AuthState.Authorised; //if all OK credentials must be fine
                 }
             }
             catch (Exception e)
             {
-                LoggerFacade.Warn("Active Directory access denied");
+                client?.Dispose();
+                LoggerFacade.Warn("Access denied");
                 LoggerFacade.Trace(e.Message + Environment.NewLine + e.StackTrace);
                 newstate = AuthState.AccessDenied;
             }
 
             this.SetState(newstate);
+        }
+
+        public void Authenticate()
+        {
+            throw new NotImplementedException();
         }
 
         private void LoadXml(XElement inputxml)
@@ -102,9 +109,10 @@ namespace TsGui.Authentication.ActiveDirectory
             if (string.IsNullOrWhiteSpace(this.AuthID) == true)
             { throw new TsGuiKnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
 
-            this._domain = XmlHandler.GetStringFromXAttribute(inputxml, "Domain", null);
-            if (string.IsNullOrWhiteSpace(this._domain) == true)
-            { throw new TsGuiKnownException("Missing Domain attribute in XML:", inputxml.ToString()); }
+            this._url = XmlHandler.GetStringFromXAttribute(inputxml, "URL", this._url);
+            this._url = XmlHandler.GetStringFromXElement(inputxml, "URL", this._url);
+            if (string.IsNullOrWhiteSpace(this._url) == true)
+            { throw new TsGuiKnownException("Missing URL attribute in XML:", inputxml.ToString()); }
         }
 
         private void SetState(AuthState newstate)

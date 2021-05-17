@@ -25,6 +25,7 @@ using System.Windows.Threading;
 using System.Xml.Linq;
 using TsGui.View.Layout;
 using TsGui.Linking;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -89,9 +90,10 @@ namespace TsGui.View.GuiOptions
             }
         }
 
-        public override void UpdateValue(Message message)
+        public override async Task UpdateValueAsync(Message message)
         {
             LinkingHub.Instance.SendUpdateMessage(this, message);
+            await Task.FromResult(false);
         }
     }
 }

@@ -29,6 +29,7 @@ using TsGui.Diagnostics.Logging;
 using System.Text;
 using System.IO;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries.WebServices
 {
@@ -46,7 +47,6 @@ namespace TsGui.Queries.WebServices
             set
             {
                 this._authenticator = value;
-                this._authenticator.AuthStateChanged += this.OnAuthenticatorStateChange;
             }
         }
         public string AuthID { get; set; }
@@ -78,17 +78,8 @@ namespace TsGui.Queries.WebServices
             }
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
-            //if (this._authenticator?.State != AuthState.Authorised)
-            //{
-            //    this._returnwrangler = null;
-            //    return null;
-            //}
-
-
-            //try
-            //{
             if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
             //to add code
             this.Response = this.CallWebMethod();
@@ -99,13 +90,13 @@ namespace TsGui.Queries.WebServices
             { this._returnwrangler = this._processingwrangler; }
             else { this._returnwrangler = null; }
 
-            return this._returnwrangler;
+            return await Task.FromResult(this._returnwrangler);
         }
 
-        public void OnAuthenticatorStateChange()
+        public async Task OnAuthenticatorStateChangeAsync()
         {
-            this.ProcessQuery(null);
-            this._linktarget?.OnSourceValueUpdated(null);
+            await this.ProcessQueryAsync(null);
+            await this._linktarget?.OnSourceValueUpdatedAsync(null);
         }
 
         public byte[] GetParametersByteArray(List<KeyValuePair<string, string>> parameterlist)

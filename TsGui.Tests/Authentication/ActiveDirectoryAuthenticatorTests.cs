@@ -45,8 +45,8 @@ namespace TsGui.Tests.Authentication
             source.Username = args.AuthUser;
             source.SecurePassword = GetSecureStringFromString(args.AuthPassword);
             adauth.RequiredGroups = args.Groups;
-            AuthState state = adauth.Authenticate();
-            NUnit.Framework.Assert.AreEqual(args.ExpectedResult, state);
+            adauth.Authenticate();
+            NUnit.Framework.Assert.AreEqual(args.ExpectedResult, adauth.State);
         }
 
         public static IEnumerable<TestCaseData> ActiveDirectoryAuthentication_Authenticate_TestCases

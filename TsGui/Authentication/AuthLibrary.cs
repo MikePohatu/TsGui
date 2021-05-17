@@ -17,6 +17,7 @@
 //
 #endregion
 using System.Collections.Generic;
+using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 
 namespace TsGui.Authentication
@@ -53,8 +54,15 @@ namespace TsGui.Authentication
         public void AddAuthenticatorConsumer(IAuthenticatorConsumer consumer)
         {
             IAuthenticator auth;
+            if (string.IsNullOrWhiteSpace(consumer.AuthID))
+            {
+                throw new TsGuiKnownException("Authentication consumer must specify an AuthID attribute",consumer.ToString());
+            }
+
             if (this._authenticators.TryGetValue(consumer.AuthID,out auth) == true)
-            { consumer.Authenticator = auth; }
+            {
+                this.AddAuthenticatorToConsumer(consumer, auth);
+            }
             else
             {
                 List<IAuthenticatorConsumer> consumerlist;
@@ -158,7 +166,7 @@ namespace TsGui.Authentication
                 {
                     if (consumer.AuthID.Equals(newauth.AuthID))
                     {
-                        consumer.Authenticator = newauth;
+                        this.AddAuthenticatorToConsumer(consumer, newauth);
                     }
                 }
 
@@ -166,6 +174,13 @@ namespace TsGui.Authentication
             }
 
             this._authenticators.Add(newauth.AuthID, newauth);
+        }
+
+
+        private void AddAuthenticatorToConsumer(IAuthenticatorConsumer consumer, IAuthenticator auth)
+        {
+            consumer.Authenticator = auth;
+            auth.AuthStateChanged += consumer.OnAuthenticatorStateChangeAsync;
         }
     }
 }

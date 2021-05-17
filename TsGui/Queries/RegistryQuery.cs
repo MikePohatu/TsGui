@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Connectors.System;
 using TsGui.Diagnostics;
@@ -74,7 +75,7 @@ namespace TsGui.Queries
             }
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             //Query the reg value
             try
@@ -101,7 +102,7 @@ namespace TsGui.Queries
             { this._returnwrangler = this._processingwrangler; }
             else { this._returnwrangler = null; }
 
-            return this._returnwrangler;
+            return await Task.FromResult(this._returnwrangler);
         }
     }
 }

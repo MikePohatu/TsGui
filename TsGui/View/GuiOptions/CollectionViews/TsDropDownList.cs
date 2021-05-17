@@ -29,6 +29,7 @@ using TsGui.Validation;
 using TsGui.View.Layout;
 using TsGui.Linking;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -53,9 +54,9 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             this.SetDefaults();
             this.LoadXml(InputXml);
-            this._builder.Rebuild(null);
+            this._builder.RebuildAsync(null).ConfigureAwait(false);
             this.RegisterForItemGroupEvents();
-            this.SetComboBoxDefault();
+            this.SetComboBoxDefaultAsync().RunSynchronously();
 
             Director.Instance.WindowLoaded += this.OnLoadReload;
             this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
@@ -80,14 +81,14 @@ namespace TsGui.View.GuiOptions.CollectionViews
             }
         }
 
-        private void SetComboBoxDefault()
+        private async Task SetComboBoxDefaultAsync()
         {
             ListItem newdefault = null;
 
             if (this._nodefaultvalue == false)
             {
                 int index = 0;
-                string defaultval = this._querylist.GetResultWrangler(null)?.GetString();
+                string defaultval = (await this._querylist.GetResultWranglerAsync(null))?.GetString();
                 foreach (ListItem item in this.VisibleOptions)
                 {
                     if ((item.Value == defaultval) || (index == 0))
@@ -125,7 +126,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         public void OnDropDownListItemGroupEvent()
         {
-            this.OnOptionsListUpdated();
+            this.OnOptionsListUpdatedAsync().RunSynchronously();
         }
 
         //Method to work around an issue where dropdown doesn't grey the text if disabled. This opens
@@ -136,10 +137,10 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this._dropdownlistui.Control.IsDropDownOpen = false;
         }
 
-        private void OnOptionsListUpdated()
+        private async Task OnOptionsListUpdatedAsync()
         {
             this.OnPropertyChanged(this, "VisibleOptions");
-            this.SetComboBoxDefault();
+            await this.SetComboBoxDefaultAsync();
         }
 
         
@@ -155,7 +156,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             if (this.CurrentItem == null)
             {
-                SetComboBoxDefault();
+                SetComboBoxDefaultAsync().RunSynchronously();
             }
             else
             {

@@ -21,6 +21,7 @@
 
 
 using MessageCrap;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Linking;
 
@@ -50,23 +51,23 @@ namespace TsGui.Queries
             }
         }
 
-        public override ResultWrangler GetResultWrangler(Message message)
+        public override async Task<ResultWrangler> GetResultWranglerAsync(Message message)
         {
-            return this.ProcessQuery(message);
+            return await this.ProcessQueryAsync(message);
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public async override Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             this._processingwrangler = this._processingwrangler.Clone();
             this._processingwrangler.NewResult();
-            this._processingwrangler.AddFormattedProperties(this._querylist.GetAllPropertyFormatters(message));
+            this._processingwrangler.AddFormattedProperties(await this._querylist.GetAllPropertyFormattersAsync(message));
 
             string s = this._processingwrangler.GetString();
             if (this.ShouldIgnore(s) == false) { return this._processingwrangler; }
             else { return null; }
         }
 
-        public void OnSourceValueUpdated(Message message)
-        { this._linktarget.OnSourceValueUpdated(message); }
+        public async Task OnSourceValueUpdatedAsync(Message message)
+        { await this._linktarget.OnSourceValueUpdatedAsync(message); }
     }
 }

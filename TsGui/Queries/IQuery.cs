@@ -17,12 +17,13 @@
 //
 #endregion
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries
 {
     public interface IQuery
     {
-        ResultWrangler GetResultWrangler(Message message);
-        ResultWrangler ProcessQuery(Message message);
+        Task<ResultWrangler> GetResultWranglerAsync(Message message);
+        Task<ResultWrangler> ProcessQueryAsync(Message message);
     }
 }

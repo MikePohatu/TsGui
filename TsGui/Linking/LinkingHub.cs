@@ -21,6 +21,7 @@
 
 using MessageCrap;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using TsGui.Options;
@@ -54,7 +55,7 @@ namespace TsGui.Linking
             else { this._sources.Add(NewSource.ID,NewSource); }
         }
 
-        public void OnTopicMessageReceived(string topic, Message message)
+        public async Task OnTopicMessageReceivedAsync(string topic, Message message)
         {
             switch (topic)
             {
@@ -62,7 +63,7 @@ namespace TsGui.Linking
                     IOption option = this.GetSourceOption(message.Payload as string);
                     if (option != null)
                     {
-                        option.UpdateValue(message);
+                        await option.UpdateValueAsync(message);
                     }
                     break;
                 default:
@@ -88,9 +89,9 @@ namespace TsGui.Linking
         {
             if (target == null) { throw new TsGuiKnownException($"Error registering target. Target is null",null); }
             if (source == null) { throw new TsGuiKnownException("Error registering target. Source is null. ", null); }
-            MessageHub.Subscribe(source, (Message message) =>
+            MessageHub.Subscribe(source, async (Message message) =>
             {
-                target.OnSourceValueUpdated(message);
+                await target.OnSourceValueUpdatedAsync(message);
             });
         }
     }

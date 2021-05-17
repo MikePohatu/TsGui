@@ -33,6 +33,7 @@ using System.Windows.Input;
 using TsGui.Diagnostics.Logging;
 using TsGui.View.Layout;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -165,8 +166,8 @@ namespace TsGui.View.GuiOptions
             this._authenticator = Director.Instance.AuthLibrary.GetAuthenticator(this.AuthID);
             if (this._authenticator != null)
             {
-                this._authenticator.AuthStateChanged += this.OnAuthStateChanged;
-                this._authenticator.AuthStateChanged += this.FirstStateChange;
+                this._authenticator.AuthStateChanged += this.OnAuthStateChangedAsync;
+                this._authenticator.AuthStateChanged += this.FirstStateChangeAsync;
             }
             else
             {
@@ -174,16 +175,18 @@ namespace TsGui.View.GuiOptions
             }
         }
 
-        private void OnAuthStateChanged()
+        private async Task OnAuthStateChangedAsync()
         {
             this.Validate();
+            await Task.FromResult(false);
         }
 
         public void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return || e.Key == Key.Enter)
             {
-                this._authenticator.Authenticate();
+                if (this._authenticator.IsAsync) { this._authenticator.AuthenticateAsync(); }
+                else { this._authenticator.Authenticate(); }
                 e.Handled = true;
             }
         }
@@ -195,13 +198,17 @@ namespace TsGui.View.GuiOptions
         }
 
         //First state change needs the borderbrush thickness to be changed. Takes some thickness from padding and put it onto borderthickness
-        private void FirstStateChange()
+        private async Task FirstStateChangeAsync()
         {
             this.ControlFormatting.Padding = new Thickness(this.ControlFormatting.Padding.Left - 1);
             this.ControlFormatting.BorderThickness = new Thickness(this.ControlFormatting.BorderThickness.Left + 1);
-            this._authenticator.AuthStateChanged -= this.FirstStateChange;
+            this._authenticator.AuthStateChanged -= this.FirstStateChangeAsync;
+            await Task.FromResult(false);
         }
 
-        public override void UpdateValue(Message message) { }
+        public override async Task UpdateValueAsync(Message message) 
+        {
+            await Task.FromResult(false);
+        }
     }
 }

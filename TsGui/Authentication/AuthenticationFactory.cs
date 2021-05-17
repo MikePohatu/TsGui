@@ -45,9 +45,11 @@ namespace TsGui.Authentication
                     case "Password":
                         return new LocalConfigPasswordAuthenticator(inputxml);
                     case "ExposedPassword":
-                        ExposedPasswordAuthenticator auth = new ExposedPasswordAuthenticator(inputxml);
-                        Director.Instance.AddOptionToLibary(auth);
-                        return auth;
+                        ExposedPasswordAuthenticator exposedauth = new ExposedPasswordAuthenticator(inputxml);
+                        Director.Instance.AddOptionToLibary(exposedauth);
+                        return exposedauth;
+                    case "Web":
+                        return new WebAuthenticator(inputxml); ;
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", inputxml.ToString());
                 }

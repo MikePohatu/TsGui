@@ -16,15 +16,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace MessageCrap
 {
     public interface ITopicSubscriber
     {
-        void OnTopicMessageReceived(string topic, Message message);
+        Task OnTopicMessageReceivedAsync(string topic, Message message);
     }
 }

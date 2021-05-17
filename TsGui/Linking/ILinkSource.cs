@@ -18,6 +18,7 @@
 #endregion
 
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Linking
 {
@@ -31,6 +32,6 @@ namespace TsGui.Linking
         /// <summary>
         /// Request a link source to update the value set on the option.
         /// </summary>
-        void UpdateValue(Message message);
+        Task UpdateValueAsync(Message message);
     }
 }

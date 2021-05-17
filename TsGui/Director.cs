@@ -186,7 +186,7 @@ namespace TsGui
                 foreach (Variable var in HardwareEvaluator.GetTsVariables())
                 {
                     NoUIOption newhwoption = new NoUIOption();
-                    newhwoption.ImportFromTsVariable(var);
+                    await newhwoption.ImportFromTsVariableAsync(var);
                     this._optionlibrary.Add(newhwoption);
                 }
             }

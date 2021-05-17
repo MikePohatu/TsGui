@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using TsGui.Linking;
 
 namespace TsGui.Options
@@ -50,7 +51,7 @@ namespace TsGui.Options
         {
             foreach (IOption option in this.Options)
             {
-                option.Initialise();
+                option.InitialiseAsync();
             }
         }
     }

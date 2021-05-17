@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
@@ -54,7 +55,13 @@ namespace TsGui.Authentication.ExposedPassword
             this.LoadXml(inputxml);
         }
 
-        public AuthState Authenticate()
+        public bool IsAsync { get; } = false;
+        public Task AuthenticateAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Authenticate()
         {
             AuthState prevstate = this._state;
 
@@ -72,8 +79,6 @@ namespace TsGui.Authentication.ExposedPassword
             else { this._state = AuthState.Authorised; }
 
             if (prevstate != this._state) { this.AuthStateChanged?.Invoke(); }
-
-            return this._state;
         }
 
         private void LoadXml(XElement inputxml)
@@ -101,23 +106,25 @@ namespace TsGui.Authentication.ExposedPassword
         public bool PurgeInactive { get; set; } = false;
         public bool IsActive { get; private set; } = true;
 
-        public void Initialise() {
+        public async Task InitialiseAsync() {
             if (this.PasswordSource == null) { LoggerFacade.Warn($"AuthID {this.AuthID} does not have a PasswordSource defined"); }
             else
             {
-                this.PasswordSource.PasswordChanged += this.OnPasswordChanged;
+                this.PasswordSource.PasswordChanged += this.OnPasswordChangedAsync;
             }
             if (this._confirm)
             {
                 if (this.PasswordConfirmationSource == null) { LoggerFacade.Warn($"AuthID {this.AuthID} does not have a PasswordConfirmationSource defined"); }
-                else { this.PasswordConfirmationSource.PasswordChanged += this.OnPasswordChanged; }
+                else { this.PasswordConfirmationSource.PasswordChanged += this.OnPasswordChangedAsync; }
             }
+            await Task.FromResult(false);
         }
 
-        public void OnPasswordChanged()
+        public async Task OnPasswordChangedAsync()
         {
             this.Authenticate();
             this.NotifyUpdate();
+            await Task.FromResult(false);
         }
 
         protected void NotifyUpdate()
@@ -127,9 +134,10 @@ namespace TsGui.Authentication.ExposedPassword
             this.OnPropertyChanged(this, "LiveValue");
         }
 
-        public void UpdateValue(Message message)
+        public async Task UpdateValueAsync(Message message)
         {
             LinkingHub.Instance.SendUpdateMessage(this, message);
+            await Task.FromResult(false);
         }
     }
 }

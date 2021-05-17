@@ -103,6 +103,7 @@
     <Compile Include="Authentication\IPassword.cs" />
     <Compile Include="Authentication\LocalConfig\LocalConfigPasswordAuthenticator.cs" />
     <Compile Include="Authentication\LocalConfig\Password.cs" />
+    <Compile Include="Authentication\Web\WebAuthenticator.cs" />
     <Compile Include="Config\ConfigBuilder.cs" />
     <Compile Include="Config\TsGuiRootConfig.cs" />
     <Compile Include="Connectors\RegistryConnector.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Prebuilt\PrebuiltFactory.cs" />
     <Compile Include="Queries\ActiveDirectory\ADOrgUnitGroupsQuery.cs" />
     <Compile Include="Queries\ListValueQuery.cs" />
+    <Compile Include="Queries\WebServices\CmAdminServiceQuery.cs" />
     <Compile Include="Queries\RegistryQuery.cs" />
     <Compile Include="Timers\GuiTimeout.cs" />
     <Compile Include="IDirector.cs" />

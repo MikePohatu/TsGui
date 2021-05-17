@@ -22,6 +22,7 @@ using TsGui.Queries;
 using TsGui.Diagnostics.Logging;
 using TsGui.Queries.Trees;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -39,7 +40,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this._parent = parent;
         }
 
-        public List<ListItem> Rebuild(Message message)
+        public async Task<List<ListItem>> RebuildAsync(Message message)
         {
             LoggerFacade.Debug("ListBuilder rebuild initialised");
             int i = 0;
@@ -57,8 +58,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 QueryPriorityList qlist;
                 if (this._querylists.TryGetValue(i, out qlist) == true)
                 {
-                    qlist.ProcessAllQueries(message);
-                    ResultWrangler wrangler = qlist.GetResultWrangler(message);
+                    await qlist.ProcessAllQueriesAsync(message);
+                    ResultWrangler wrangler = await qlist.GetResultWranglerAsync(message);
                     if (wrangler != null)
                     {
                         List<KeyValueTreeNode> kvlist = wrangler.GetKeyValueTree();

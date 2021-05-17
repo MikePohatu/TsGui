@@ -44,7 +44,7 @@ namespace TsGui.Tests
             TestDirector director = new TestDirector();
             Director.OverrideInstance(director);
             WebServicesQuery newquery = new WebServicesQuery(conf, null);
-            newquery.ProcessQuery(null);
+            newquery.ProcessQueryAsync(null).ConfigureAwait(false);
             return newquery.Response;
         }
     }

@@ -30,6 +30,7 @@ using TsGui.Queries;
 using System.Windows.Controls;
 using TsGui.View.Layout;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -218,9 +219,9 @@ namespace TsGui.View.GuiOptions
         public void OnValidationChange()
         { this.Validate(); }
 
-        public override void UpdateValue(Message message)
+        public override async Task UpdateValueAsync(Message message)
         {
-            string s = this._querylist.GetResultWrangler(message)?.GetString();
+            string s = (await this._querylist.GetResultWranglerAsync(message))?.GetString();
             if (s != null) 
             {
                 //if required, remove invalid characters and truncate
@@ -234,9 +235,9 @@ namespace TsGui.View.GuiOptions
             LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
-        public void OnSourceValueUpdated(Message message)
+        public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            this.UpdateValue(message);
+            await this.UpdateValueAsync(message);
         }
     }
 }

@@ -27,6 +27,7 @@ using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using System.DirectoryServices.AccountManagement;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries.ActiveDirectory
 {
@@ -42,7 +43,6 @@ namespace TsGui.Queries.ActiveDirectory
             set
             {
                 this._authenticator = value as ActiveDirectoryAuthenticator;
-                this._authenticator.AuthStateChanged += this.OnAuthenticatorStateChange;
             }
         }
         public string AuthID { get; set; }
@@ -69,7 +69,7 @@ namespace TsGui.Queries.ActiveDirectory
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public async override Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             if (this._authenticator?.State != AuthState.Authorised)
             {
@@ -97,13 +97,13 @@ namespace TsGui.Queries.ActiveDirectory
             { this._returnwrangler = this._processingwrangler; }
             else { this._returnwrangler = null; }
 
-            return this._returnwrangler;
+            return await Task.FromResult(this._returnwrangler);
         }
 
-        public void OnAuthenticatorStateChange()
+        public async Task OnAuthenticatorStateChangeAsync()
         {
-            this.ProcessQuery(null);
-            this._linktarget?.OnSourceValueUpdated(null);
+            await this.ProcessQueryAsync(null);
+            await this._linktarget?.OnSourceValueUpdatedAsync(null);
         }
 
         private void AddPropertiesToWrangler(ResultWrangler wrangler, PrincipalCollection objectlist, List<KeyValuePair<string, XElement>> PropertyTemplates)

@@ -26,6 +26,7 @@ using TsGui.Queries;
 using TsGui.Linking;
 using TsGui.View.Layout;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -74,14 +75,14 @@ namespace TsGui.View.GuiOptions
             { this.LoadSetValueXml(x,false); }
         }
 
-        public override void UpdateValue(Message message)
+        public override async Task UpdateValueAsync(Message message)
         {
-            string val = this._querylist.GetResultWrangler(message)?.GetString();
+            string val = (await this._querylist.GetResultWranglerAsync(message))?.GetString();
             this.SetValue(val, message);
         }
 
-        public void OnSourceValueUpdated(Message message)
-        { this.UpdateValue(message); }
+        public async Task OnSourceValueUpdatedAsync(Message message)
+        { await this.UpdateValueAsync(message); }
 
         private void SetValue(string value, Message message)
         {

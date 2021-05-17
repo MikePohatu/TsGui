@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
@@ -32,6 +33,7 @@ namespace TsGui.Authentication.LocalConfig
 
         private List<Password> _validpasswords = new List<Password>();
 
+        
         public AuthState State { get; private set; }
         public IUsername UsernameSource { get; set; }
         public IPassword PasswordSource { get; set; }
@@ -44,14 +46,19 @@ namespace TsGui.Authentication.LocalConfig
             this.State = AuthState.AccessDenied;
         }
 
-        public AuthState Authenticate()
+        public bool IsAsync { get; } = false;
+        public Task AuthenticateAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Authenticate()
         {
             if (string.IsNullOrEmpty(this.PasswordSource.Password) == true)
             {
                 LoggerFacade.Warn("Cannot autheticate with empty password");
                 this.SetState(AuthState.NoPassword);
                 this.AuthStateChanged?.Invoke();
-                return AuthState.AccessDenied;
             }
 
             LoggerFacade.Info("Authenticating against local config with ID " + this.AuthID);
@@ -75,7 +82,6 @@ namespace TsGui.Authentication.LocalConfig
 
             this.SetState(newstate);
             this.AuthStateChanged?.Invoke();
-            return newstate;
         }
 
         private void LoadXml(XElement inputxml)

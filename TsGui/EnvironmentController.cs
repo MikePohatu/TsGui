@@ -46,6 +46,8 @@ namespace TsGui
         public static SccmConnector SccmConnector { get { return _sccmconnector; } }
         public static IVariableOutput OutputConnector { get { return _outputconnector; } }
 
+        public static bool TestMode { get; private set; } = false;
+
         public static bool Init()
         {
             SetOutputType(TsGuiRootConfig.OutputType);
@@ -68,10 +70,12 @@ namespace TsGui
                     {
                         LoggerFacade.Trace("Couldn't create SCCM connector. Creating testing connector");
                         _outputconnector = new TestingConnector();
+                        TestMode = true;
                         return false;
                     }
                 case ConnectorType.Test:
                     _outputconnector = new TestingConnector();
+                    TestMode = true;
                     return false;
                 case ConnectorType.Registry:
                     _outputconnector = new RegistryConnector();

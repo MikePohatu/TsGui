@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TsGui.Linking;
 
 namespace TsGui.Tests.Linking
@@ -40,6 +41,6 @@ namespace TsGui.Tests.Linking
             Debug.WriteLine("RefreshAll");
         }
 
-        public void OnSourceValueUpdated(Message message) { }
+        public async Task OnSourceValueUpdatedAsync(Message message) { await Task.FromResult(false); }
     }
 }

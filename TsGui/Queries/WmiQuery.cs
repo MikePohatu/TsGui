@@ -28,6 +28,7 @@ using TsGui.Diagnostics;
 using TsGui.Connectors;
 using TsGui.Linking;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries
 {
@@ -59,7 +60,7 @@ namespace TsGui.Queries
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
             //New sublists are created for each management object in the wrangler. 
@@ -78,7 +79,7 @@ namespace TsGui.Queries
             { this._returnwrangler = this._processingwrangler; }
             else { this._returnwrangler = null; }
 
-            return this._returnwrangler;
+            return await Task.FromResult(this._returnwrangler);
         }
 
         private void AddWmiPropertiesToWrangler(ResultWrangler Wrangler, IEnumerable<ManagementObject> WmiObjectList, List<KeyValuePair<string, XElement>> PropertyTemplates)

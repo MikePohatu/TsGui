@@ -24,6 +24,7 @@ using System.Xml.Linq;
 using TsGui.Options;
 using TsGui.Linking;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries
 {
@@ -66,14 +67,14 @@ namespace TsGui.Queries
             else { return null; }
         }
 
-        public void OnSourceValueUpdated(Message message)
+        public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            this.ValueUpdated(message);
+            await this.ValueUpdated(message);
         }
 
-        public void ValueUpdated(Message message)
+        public async Task ValueUpdated(Message message)
         {
-            this._linktarget?.OnSourceValueUpdated(message);
+            await this._linktarget?.OnSourceValueUpdatedAsync(message);
         }
 
         /// <summary>
@@ -81,11 +82,11 @@ namespace TsGui.Queries
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             this._formatter.Input = this.GetVariableValue();
             this._processed = true;
-            return this.SetReturnWrangler();         
+            return await Task.FromResult(this.SetReturnWrangler());         
         }
 
         private ResultWrangler SetReturnWrangler()

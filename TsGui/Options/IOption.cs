@@ -19,6 +19,7 @@
 
 // IOption.cs - option interface. Base interface to apply to both GuiOptions and BlindOptions
 
+using System.Threading.Tasks;
 using TsGui.Linking;
 
 namespace TsGui.Options
@@ -41,6 +42,6 @@ namespace TsGui.Options
         /// Initialise the option. This is run after the Director has finished loading config, so all options 
         /// will be in place. This is where the first updates of values should be run
         /// </summary>
-        void Initialise();
+        Task InitialiseAsync();
     }
 }

@@ -19,6 +19,7 @@
 using TsGui.Authentication;
 using TsGui.Diagnostics;
 using System.Xml.Linq;
+using System.Threading.Tasks;
 
 namespace TsGui.Actions
 {
@@ -38,13 +39,22 @@ namespace TsGui.Actions
 
         public void RunAction()
         {
-            this.Authenticator?.Authenticate();
+            if (this.Authenticator != null)
+            {
+                if (this.Authenticator.IsAsync) { this.Authenticator.AuthenticateAsync(); }
+                else { this.Authenticator.Authenticate(); }
+            }
         }
 
         private void LoadXml(XElement inputxml)
         {
             this._authid = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
             if (this._authid == null) { throw new TsGuiKnownException("Missing AuthID attribute in config", inputxml.ToString()); }
+        }
+
+        public async Task OnAuthenticatorStateChangeAsync()
+        {
+            await Task.FromResult(false);
         }
     }
 }

@@ -138,7 +138,7 @@ namespace MessageCrap
             List<ITopicSubscriber> subs;
             if (string.IsNullOrWhiteSpace(message.Topic) == false && _topicSubscribers.TryGetValue(message.Topic, out subs))
             {
-                foreach (ITopicSubscriber sub in subs) { sub.OnTopicMessageReceived(message.Topic, message); }
+                foreach (ITopicSubscriber sub in subs) { sub.OnTopicMessageReceivedAsync(message.Topic, message); }
             }
 
             //invoke object subscribers

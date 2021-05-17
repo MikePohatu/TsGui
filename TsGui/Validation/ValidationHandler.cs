@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using TsGui.Linking;
 using TsGui.Diagnostics.Logging;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Validation
 {
@@ -150,10 +151,11 @@ namespace TsGui.Validation
             return s;
         }
 
-        public void OnSourceValueUpdated(Message message) 
+        public async Task OnSourceValueUpdatedAsync(Message message) 
         {
             LoggerFacade.Info("Validation refresh requested");
             this._owner.OnValidationChange();
+            await Task.FromResult(false);
         }
         
         private int GetMaxLength()

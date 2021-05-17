@@ -23,6 +23,7 @@ using TsGui.Actions;
 using TsGui.Diagnostics.Logging;
 using TsGui.Validation;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -98,6 +99,6 @@ namespace TsGui.View.GuiOptions
             this.ButtonText = "Apply";
         }
 
-        public override void UpdateValue(Message message) { }
+        public override async Task UpdateValueAsync(Message message) { await Task.FromResult(false); }
     }
 }

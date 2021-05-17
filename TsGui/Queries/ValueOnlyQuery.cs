@@ -17,6 +17,7 @@
 //
 #endregion
 using MessageCrap;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace TsGui.Queries
@@ -46,10 +47,10 @@ namespace TsGui.Queries
             this._wrangler.AddFormattedProperty(this._formatter);
         }
 
-        public ResultWrangler GetResultWrangler(Message message)
-        { return this._wrangler; }
+        public async Task<ResultWrangler> GetResultWranglerAsync(Message message)
+        { return await Task.FromResult(this._wrangler); }
 
-        public ResultWrangler ProcessQuery(Message message)
-        { return this._wrangler; }
+        public async Task<ResultWrangler> ProcessQueryAsync(Message message)
+        { return await Task.FromResult(this._wrangler); }
     }
 }
