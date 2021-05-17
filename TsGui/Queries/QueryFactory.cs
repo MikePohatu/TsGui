@@ -20,6 +20,7 @@ using System.Xml.Linq;
 using TsGui.Diagnostics;
 using TsGui.Linking;
 using TsGui.Queries.ActiveDirectory;
+using TsGui.Queries.WebServices;
 
 namespace TsGui.Queries
 {
@@ -77,6 +78,8 @@ namespace TsGui.Queries
                         return new ADOrgUnitGroupsQuery(InputXml, linktarget);
                     case "Registry":
                         return new RegistryQuery(InputXml, linktarget);
+                    case "AdminService":
+                        return new CmAdminServiceQuery(InputXml, linktarget);
                     default:
                         throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
                 }
