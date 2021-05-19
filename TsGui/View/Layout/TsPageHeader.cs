@@ -31,7 +31,7 @@ namespace TsGui.View.Layout
 {
     public class TsPageHeader : ParentLayoutElement, IComplianceRoot
     {
-        public event ComplianceRetryEventHandler ComplianceRetry;
+        public event ComplianceRetryEventHandlerAsync ComplianceRetry;
 
         private SolidColorBrush _bgColor;
         private SolidColorBrush _fontColor;

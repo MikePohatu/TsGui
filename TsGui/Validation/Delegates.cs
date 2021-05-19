@@ -17,8 +17,9 @@
 //
 #endregion
 using System;
+using System.Threading.Tasks;
 
 namespace TsGui.Validation
 {
-    public delegate void ComplianceRetryEventHandler(IComplianceRoot sender, EventArgs e);
+    public delegate Task ComplianceRetryEventHandlerAsync(IComplianceRoot sender, EventArgs e);
 }

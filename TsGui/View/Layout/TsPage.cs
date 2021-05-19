@@ -36,7 +36,7 @@ namespace TsGui.View.Layout
 {
     public class TsPage : ParentLayoutElement, IComplianceRoot
     {
-        public event ComplianceRetryEventHandler ComplianceRetry;
+        public event ComplianceRetryEventHandlerAsync ComplianceRetry;
 
         private TsPage _previouspage;
         private TsPage _nextpage;

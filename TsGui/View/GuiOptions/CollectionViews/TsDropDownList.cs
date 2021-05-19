@@ -44,6 +44,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
         //Constructor
         public TsDropDownList(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
+            this.InitAsync(InputXml).GetAwaiter().GetResult();
+        }
+
+        private async Task InitAsync(XElement InputXml)
+        {
             this._dropdownlistui = new TsDropDownListUI();
             this.Control = this._dropdownlistui;
             this.InteractiveControl = this._dropdownlistui.Control;
@@ -54,9 +59,9 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             this.SetDefaults();
             this.LoadXml(InputXml);
-            this._builder.RebuildAsync(null).ConfigureAwait(false);
+            await this._builder.RebuildAsync(null);
             this.RegisterForItemGroupEvents();
-            this.SetComboBoxDefaultAsync().RunSynchronously();
+            await this.SetComboBoxDefaultAsync();
 
             Director.Instance.WindowLoaded += this.OnLoadReload;
             this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
@@ -152,11 +157,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
             }
         }
 
-        private void OnLostFocus(object sender, RoutedEventArgs e)
+        private async void OnLostFocus(object sender, RoutedEventArgs e)
         {
             if (this.CurrentItem == null)
             {
-                SetComboBoxDefaultAsync().RunSynchronously();
+                await SetComboBoxDefaultAsync();
             }
             else
             {

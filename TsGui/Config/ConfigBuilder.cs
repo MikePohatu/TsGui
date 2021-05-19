@@ -35,7 +35,7 @@ namespace TsGui.Config
         public static async Task<XElement> LoadConfigAsync(string configpath)
         {
             XElement rootconfig =  await GetXml(configpath);
-            await Expand(rootconfig).ConfigureAwait(false);
+            await Expand(rootconfig);
             return rootconfig;
         }
 

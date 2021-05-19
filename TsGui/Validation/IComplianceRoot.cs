@@ -27,7 +27,7 @@ namespace TsGui.Validation
     public interface IComplianceRoot
     {
         IComplianceRoot GetComplianceRootElement();
-        event ComplianceRetryEventHandler ComplianceRetry;
+        event ComplianceRetryEventHandlerAsync ComplianceRetry;
         void RaiseComplianceRetryEvent();
     }
 }

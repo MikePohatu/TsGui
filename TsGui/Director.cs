@@ -209,7 +209,7 @@ namespace TsGui
             this.ConfigLoadFinished?.Invoke(this, null);
 
             //now init all the options
-            this._optionlibrary.InitialiseOptions();
+            await this._optionlibrary.InitialiseOptionsAsync();
 
             //subscribe to closing event
             this.ParentWindow.Closing += this.OnWindowClosing;

@@ -47,11 +47,11 @@ namespace TsGui.Options
             this.OptionAdded?.Invoke(option, new EventArgs());
         }
 
-        public void InitialiseOptions()
+        public async Task InitialiseOptionsAsync()
         {
             foreach (IOption option in this.Options)
             {
-                option.InitialiseAsync();
+                await option.InitialiseAsync();
             }
         }
     }

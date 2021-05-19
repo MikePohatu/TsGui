@@ -37,6 +37,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
         //Constructor
         public TsTreeView(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
+            this.InitAsync(InputXml).ConfigureAwait(false);
+        }
+
+        private async Task InitAsync(XElement InputXml)
+        {
             this._treeviewui = new TsTreeViewUI();
             this.Control = this._treeviewui;
             this.Label = new TsLabelUI();
@@ -45,10 +50,10 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.ValidationHandler = new ValidationHandler(this);
             this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
-            this.SetDefaults();      
+            this.SetDefaults();
             this.LoadXml(InputXml);
-            this._builder.RebuildAsync(null).ConfigureAwait(false);
-            this.SetListViewDefaultAsync().ConfigureAwait(false);
+            await this._builder.RebuildAsync(null);
+            await this.SetListViewDefaultAsync();
 
             this._treeviewui.TreeView.SelectedItemChanged += this.OnTreeViewSelectedItemChanged;
             this.UserControl.IsEnabledChanged += this.OnActiveChanged;

@@ -97,7 +97,7 @@ namespace TsGui.View.GuiOptions
             {
                 throw new TsGuiKnownException("There is problem in the compliance tree. Root is null", string.Empty);
             }
-            this._rootelement.ComplianceRetry += this.OnComplianceRetry;
+            this._rootelement.ComplianceRetry += this.OnComplianceRetryAsync;
 
             this.FillColor = new SolidColorBrush(Colors.Blue);
             this.StrokeColor = new SolidColorBrush(Colors.Blue);
@@ -146,9 +146,9 @@ namespace TsGui.View.GuiOptions
         public void OnValidationChange()
         { this.Validate(); }
 
-        public void OnComplianceRetry(IComplianceRoot o, EventArgs e)
+        public async Task OnComplianceRetryAsync(IComplianceRoot o, EventArgs e)
         {
-            this.UpdateValueAsync(null).ConfigureAwait(false);
+            await this.UpdateValueAsync(null);
         }
 
         public override async Task UpdateValueAsync(Message message)
