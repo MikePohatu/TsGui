@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TsGui.Validation"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="300" Margin="0" UseLayoutRounding="True" IsOpen="False" StaysOpen="False" AllowsTransparency="False">
+             d:DesignHeight="30" d:DesignWidth="300" Margin="0" UseLayoutRounding="True" IsOpen="False" StaysOpen="True" AllowsTransparency="False">
     <Popup.Resources>
         <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
             <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
@@ -26,12 +26,12 @@
                  Text="{Binding ValidationText, Converter={StaticResource XmlStringLine}}"/>
         <Grid x:Name="LeftArrow" Margin="0,7,0,0">
             <Polygon Margin="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="7" Height="7"
-            Points="0,0.5 1,0 1,1" Fill="White" Stretch="Fill" Stroke="Red" StrokeThickness="1"/>
+            Points="0,0.5 1,0 1,1" Fill="White" Stretch="Fill" Stroke="Red" StrokeThickness="1" MouseUp="OnArrowMouseUp"/>
         </Grid>
 
         <Grid x:Name="RightArrow" Margin="0,7,0,0">
             <Polygon Margin="2" HorizontalAlignment="Right" VerticalAlignment="Top" Width="7" Height="7"
-                Points="0,0 0,1 1,0.5" Fill="White" Stretch="Fill" Stroke="Red" StrokeThickness="1"/>
+                Points="0,0 0,1 1,0.5" Fill="White" Stretch="Fill" Stroke="Red" StrokeThickness="1" MouseUp="OnArrowMouseUp" />
         </Grid>
     </Grid>
 </Popup>
