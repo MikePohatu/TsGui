@@ -129,7 +129,7 @@ Copy-Item -Path "$($ProjectReleasePath)\Messaging.dll" -Destination "$($ProductR
 Copy-Item -Path "$($ProjectReleasePath)\TsGui.exe" -Destination "$($ProductReleasePath)" -Force
 
 #Create the unsigned package zip
-PackageFolder -PackageFolder $ProductReleasePath -DestinationPath "$($ReleaseRootPath)\$($productName)_$($version)_unsigned.zip"
+PackageFolder -PackageFolder $ProductReleasePath -DestinationPath "$($ReleaseRootPath)\$($productName)_$($version).zip"
 
 
 
