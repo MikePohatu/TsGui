@@ -1,3 +1,22 @@
+Version 1.5.1.1
+Release date: 6 Aug 2021
+
+*Features	
+	Validation popups can now be closed by clicking on the arrow
+
+*Fixes
+	Fixed issue with popup where they would not close properly when the GuiOption became disabled
+
+*Known issues
+	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
+	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
+	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
+
+*Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
+
+
+
+
 Version 1.5.1.0
 Release date: 12 May 2021
 
@@ -7,14 +26,6 @@ Release date: 12 May 2021
 *Fixes
 	Fixed logic error in startup that would cause errors when loading in production task sequence
 	
-
-*Known issues
-	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
-	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
-	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
-
-*Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
-
 
 Version 1.5.0.1
 Release date: 30 Apr 2021
