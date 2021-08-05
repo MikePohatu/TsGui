@@ -26,6 +26,7 @@ namespace TsGui.Grouping
     {
         protected GroupableBlindBase _parent;
 
+        private bool _isactive = true;
         public bool IsActive
         {
             get { return this._isactive; }

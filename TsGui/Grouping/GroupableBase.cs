@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -27,7 +27,6 @@ namespace TsGui.Grouping
 {
     public abstract class GroupableBase: ViewModelBase
     {
-        protected bool _isactive = true;
         protected List<Group> _groups = new List<Group>();
         protected bool _purgeinactive = Director.Instance.GroupLibrary == null ? false : Director.Instance.GroupLibrary.PurgeInactive;
 
