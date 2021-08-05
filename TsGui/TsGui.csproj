@@ -111,6 +111,8 @@
     <Compile Include="Connectors\System\RegistryHelpers.cs" />
     <Compile Include="ConsoleWindow.cs" />
     <Compile Include="Debounce.cs" />
+    <Compile Include="Lang\Dictionary.cs" />
+    <Compile Include="Lang\Options.cs" />
     <Compile Include="Linking\ILinkSource.cs" />
     <Compile Include="Linking\Topics.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltWifiDisconnected.cs" />
@@ -479,6 +481,9 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Lang\en-US.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>

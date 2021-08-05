@@ -20,8 +20,11 @@
 // LinkableLibrary.cs - stores IOptions against their ID
 
 using MessageCrap;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 using TsGui.Diagnostics;
 using TsGui.Diagnostics.Logging;
 using TsGui.Options;
@@ -71,13 +74,17 @@ namespace TsGui.Linking
             }
         }
 
-        public Message SendUpdateMessage(ILinkSource source, Message message)
+        public void SendUpdateMessage(ILinkSource source, Message message)
         {
             if (message == null)
             {
                 LoggerFacade.Trace($"New update message create, no response. Source ID: {source?.ID}");
             }
-            return MessageHub.CreateMessage(source, message).SetTopic(Topics.SourceValueChanged).SetPayload(source.CurrentValue).Send(); ;
+
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
+            {
+                MessageHub.CreateMessage(source, message).SetTopic(Topics.SourceValueChanged).SetPayload(source.CurrentValue).Send();
+            }));
         }
 
         public Message SendReprocessRequestMessage(object sender, string id, Message message)
