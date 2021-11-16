@@ -1,11 +1,8 @@
-Version 1.5.1.1
-Release date: 6 Aug 2021
-
-*Features	
-	Validation popups can now be closed by clicking on the arrow
+Version 1.5.1.2
+Release date: 17 Nov 2021
 
 *Fixes
-	Fixed issue with popup where they would not close properly when the GuiOption became disabled
+	Fixed Compliance/Validation options not functioning as group toggles
 
 *Known issues
 	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
@@ -14,6 +11,15 @@ Release date: 6 Aug 2021
 
 *Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
 
+
+Version 1.5.1.1
+Release date: 6 Aug 2021
+
+*Features	
+	Validation popups can now be closed by clicking on the arrow
+
+*Fixes
+	Fixed issue with popup where they would not close properly when the GuiOption became disabled
 
 
 

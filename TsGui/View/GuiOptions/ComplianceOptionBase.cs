@@ -155,7 +155,7 @@ namespace TsGui.View.GuiOptions
             this._querylist.ProcessAllQueries(message);
             this.ProcessQuery(message);
             this.Validate();
-
+            this.InvokeToggleEvent();
             LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
