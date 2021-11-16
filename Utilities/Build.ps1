@@ -63,7 +63,8 @@ function Set-ProjectVersion {
 
     $assemblyInfoText = (Get-Content -Path $assemblyInfoPath -Encoding UTF8 -ReadCount 0)
     $assemblyInfoText = $assemblyInfoText -replace '\[assembly: AssemblyVersion\("((\d)+|(\.))*"\)\]', "[assembly: AssemblyVersion(`"$Version`")]"
-    $assemblyInfoText -replace '\[assembly: AssemblyFileVersion\("((\d)+|(\.))*"\)\]', "[assembly: AssemblyFileVersion(`"$Version`")]" | Set-Content -Path $assemblyInfoPath -Encoding UTF8
+    $assemblyInfoText = $assemblyInfoText -replace '\[assembly: AssemblyFileVersion\("((\d)+|(\.))*"\)\]', "[assembly: AssemblyFileVersion(`"$Version`")]" 
+    $assemblyInfoText | Set-Content -Path $assemblyInfoPath -Encoding UTF8 | Out-Null
 }
 
 Function pause ()
@@ -85,7 +86,7 @@ Function pause ()
 }
 
 #run builds
-$version = '1.5.1.1'
+$version = '1.5.1.2'
 $repoRoot = 'C:\Source\repos\TsGui'
 $devenv = 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe'
 $dotnet = 'dotnet.exe'
@@ -94,7 +95,7 @@ $productName = "TsGui"
 $ReleaseRootPath='C:\Source\release'
 $ProductReleasePath="$($ReleaseRootPath)\tsgui"
 $ProjectReleasePath="$($repoRoot)\TsGui\bin\Release"
-$BuildFile = "$($repoRoot)\source\TsGui\TsGui.csproj"
+$BuildFile = "$($repoRoot)\TsGui\TsGui.csproj"
 
 Write-Host "Updating $productName versions to $version"
 Set-ProjectVersion -ProjectPath "$($repoRoot)\MessageCrap" -Version $version
@@ -103,8 +104,8 @@ Set-ProjectVersion -ProjectPath "$($repoRoot)\TsGui" -Version $version
 
 
 
-Write-Host "Building $BuildSln"
-Start-Process -FilePath $cmd -ArgumentList "/c `"`"$devenv`" `"$BuildFile`" /rebuild Release`""
+Write-Host "Building $BuildFile"
+Start-Process -WorkingDirectory $repoRoot -FilePath $cmd -ArgumentList "/c `"`"$devenv`" `"$BuildFile`" /rebuild Release`""
 
 pause -message "Click OK when build has complete"
 
