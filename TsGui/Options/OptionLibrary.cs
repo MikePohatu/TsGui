@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using TsGui.Linking;
 
 namespace TsGui.Options
@@ -46,11 +47,11 @@ namespace TsGui.Options
             this.OptionAdded?.Invoke(option, new EventArgs());
         }
 
-        public void InitialiseOptions()
+        public async Task InitialiseOptionsAsync()
         {
             foreach (IOption option in this.Options)
             {
-                option.Initialise();
+                await option.InitialiseAsync();
             }
         }
     }

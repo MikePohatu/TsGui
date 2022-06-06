@@ -54,7 +54,7 @@ namespace TsGui.Linking
             else { this._sources.Add(NewSource.ID,NewSource); }
         }
 
-        public void OnTopicMessageReceived(string topic, Message message)
+        public async void OnTopicMessageReceived(string topic, Message message)
         {
             switch (topic)
             {
@@ -62,7 +62,7 @@ namespace TsGui.Linking
                     IOption option = this.GetSourceOption(message.Payload as string);
                     if (option != null)
                     {
-                        option.UpdateValue(message);
+                        await option.UpdateValueAsync(message);
                     }
                     break;
                 default:
@@ -90,7 +90,7 @@ namespace TsGui.Linking
             if (source == null) { throw new KnownException("Error registering target. Source is null. ", null); }
             MessageHub.Subscribe(source, (Message message) =>
             {
-                target.OnSourceValueUpdated(message);
+                target.OnSourceValueUpdatedAsync(message);
             });
         }
     }

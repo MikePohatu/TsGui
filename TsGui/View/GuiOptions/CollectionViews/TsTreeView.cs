@@ -25,6 +25,7 @@ using TsGui.Linking;
 using System.Windows;
 using TsGui.View.Layout;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -46,8 +47,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             this.SetDefaults();      
             this.LoadXml(InputXml);
-            this._builder.Rebuild(null);
-            this.SetListViewDefault();
+            this._builder.RebuildAsync(null).ConfigureAwait(false);
+            this.SetListViewDefaultAsync().ConfigureAwait(false);
 
             this._treeviewui.TreeView.SelectedItemChanged += this.OnTreeViewSelectedItemChanged;
             this.UserControl.IsEnabledChanged += this.OnActiveChanged;
@@ -89,11 +90,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.OnSelectionChanged(sender, e);
         }
 
-        private void SetListViewDefault()
+        private async Task SetListViewDefaultAsync()
         {
             if (this._nodefaultvalue == false)
             {
-                string defaultval = this._querylist.GetResultWrangler(null)?.GetString();
+                string defaultval = (await this._querylist.GetResultWrangler(null))?.GetString();
                 this.SetSelected(defaultval, null);
             }
             this.NotifyViewUpdate();

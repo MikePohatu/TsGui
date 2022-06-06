@@ -27,6 +27,7 @@ using TsGui.Connectors.System;
 using Core.Diagnostics;
 using TsGui.Linking;
 using WindowsHelpers;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries
 {
@@ -75,7 +76,7 @@ namespace TsGui.Queries
             }
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQuery(Message message)
         {
             //Query the reg value
             try
@@ -102,6 +103,7 @@ namespace TsGui.Queries
             { this._returnwrangler = this._processingwrangler; }
             else { this._returnwrangler = null; }
 
+            await Task.CompletedTask;
             return this._returnwrangler;
         }
     }

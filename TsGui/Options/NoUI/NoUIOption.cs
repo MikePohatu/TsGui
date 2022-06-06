@@ -29,6 +29,7 @@ using Core.Diagnostics;
 using System.Collections.Generic;
 using System.Windows;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Options.NoUI
 {
@@ -165,28 +166,28 @@ namespace TsGui.Options.NoUI
             if (string.IsNullOrWhiteSpace(this.Path)) { this.Path = Director.Instance.DefaultPath; }
         }
 
-        public void UpdateValue(Message message)
+        public async Task UpdateValueAsync(Message message)
         {
-            this._value = this._querylist.GetResultWrangler(message)?.GetString();
+            this._value = (await this._querylist.GetResultWrangler(message))?.GetString();
 
             LinkingHub.Instance.SendUpdateMessage(this, message);
 
             this.NotifyViewUpdate();
         }
 
-        public void OnSourceValueUpdated(Message message)
+        public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            this.UpdateValue(message);
+            await this.UpdateValueAsync(message);
         }
 
-        public void ImportFromTsVariable(Variable var)
+        public async Task ImportFromTsVariableAsync(Variable var)
         {
             this.VariableName = var.Name;
             ValueOnlyQuery newvoquery = new ValueOnlyQuery(var.Value);
             this._querylist.AddQuery(newvoquery);
             this.ID = var.Name;
             this.Path = var.Path;
-            this.UpdateValue(null);
+            await this.UpdateValueAsync(null);
         }
 
         protected void LoadSetValueXml(XElement inputxml)
@@ -226,9 +227,9 @@ namespace TsGui.Options.NoUI
         }
 
         //This is called by the controller once everything is loaded
-        public void Initialise()
+        public async Task InitialiseAsync()
         {
-            this.UpdateValue(null);
+            await this.UpdateValueAsync(null);
         }
 
         public void InvokeToggleEvent()

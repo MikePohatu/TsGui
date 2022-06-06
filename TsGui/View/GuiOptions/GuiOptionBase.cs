@@ -32,6 +32,7 @@ using TsGui.Queries;
 using TsGui.Grouping;
 using System.Collections.Generic;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -146,11 +147,11 @@ namespace TsGui.View.GuiOptions
         }
 
         //This is called by the Director once everything is loaded
-        public void Initialise()
+        public async Task InitialiseAsync()
         {
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
-            this.UpdateValue(null);
+            await this.UpdateValueAsync(null);
         }
 
         public void InvokeToggleEvent()
@@ -220,6 +221,6 @@ namespace TsGui.View.GuiOptions
             Log.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
         }
 
-        public abstract void UpdateValue(Message message);
+        public abstract Task UpdateValueAsync(Message message);
     }
 }

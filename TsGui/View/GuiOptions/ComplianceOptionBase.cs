@@ -29,6 +29,7 @@ using TsGui.Linking;
 using Core.Diagnostics;
 using MessageCrap;
 using TsGui.View.Layout;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -145,23 +146,23 @@ namespace TsGui.View.GuiOptions
         public void OnValidationChange()
         { this.Validate(); }
 
-        public void OnComplianceRetry(IComplianceRoot o, EventArgs e)
+        public async void OnComplianceRetry(IComplianceRoot o, EventArgs e)
         {
-            this.UpdateValue(null);
+            await this.UpdateValueAsync(null);
         }
 
-        public override void UpdateValue(Message message)
+        public override async Task UpdateValueAsync(Message message)
         {
             this._querylist.ProcessAllQueries(message);
-            this.ProcessQuery(message);
+            await this.ProcessQueryAsync(message);
             this.Validate();
             this.InvokeToggleEvent();
             LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
-        public void OnSourceValueUpdated(Message message)
+        public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            this.UpdateValue(message);
+            await this.UpdateValueAsync(message);
         }
 
         public new void LoadXml(XElement InputXml)
@@ -180,9 +181,9 @@ namespace TsGui.View.GuiOptions
             if (x != null) { this._querylist.LoadXml(x); }  
         } 
 
-        protected void ProcessQuery(Message message)
+        protected async Task ProcessQueryAsync(Message message)
         {
-            this._value = this._querylist.GetResultWrangler(message)?.GetString();
+            this._value = (await this._querylist.GetResultWrangler(message))?.GetString();
         }
 
         protected void UpdateState()

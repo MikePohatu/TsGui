@@ -21,6 +21,7 @@
 // TsVariables because of security issues
 
 using System;
+using System.Threading.Tasks;
 using System.Security;
 using System.Windows;
 using System.Windows.Media;
@@ -202,6 +203,6 @@ namespace TsGui.View.GuiOptions
             this._authenticator.AuthStateChanged -= this.FirstStateChange;
         }
 
-        public override void UpdateValue(Message message) { }
+        public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
     }
 }

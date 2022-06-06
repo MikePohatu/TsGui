@@ -32,6 +32,7 @@ using System.Windows.Controls;
 using TsGui.Validation;
 using TsGui.View.Layout;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -125,9 +126,9 @@ namespace TsGui.View.GuiOptions
             { this.SetValue(true, null); }
         }
 
-        public override void UpdateValue(Message message)
+        public override async Task UpdateValueAsync(Message message)
         {
-            string newvalue = this._querylist.GetResultWrangler(message)?.GetString();
+            string newvalue = (await this._querylist.GetResultWrangler(message))?.GetString();
 
             if (newvalue != this.CurrentValue)
             {
@@ -137,9 +138,9 @@ namespace TsGui.View.GuiOptions
             }
         }
 
-        public void OnSourceValueUpdated(Message message)
+        public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            this.UpdateValue(message);
+            await this.UpdateValueAsync(message);
         }
 
         private void SetValue(bool value, Message message)

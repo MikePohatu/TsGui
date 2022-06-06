@@ -18,6 +18,7 @@
 #endregion
 using MessageCrap;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Linking;
 
@@ -65,11 +66,11 @@ namespace TsGui.Queries
             }
         }
 
-        public ResultWrangler GetResultWrangler(Message message)
+        public async Task<ResultWrangler> GetResultWrangler(Message message)
         {
             foreach (IQuery query in this._queries)
             {
-                ResultWrangler wrangler = query.GetResultWrangler(message);
+                ResultWrangler wrangler = await query.GetResultWrangler(message);
                 if (wrangler != null) { return wrangler; }
             }
 
@@ -87,13 +88,13 @@ namespace TsGui.Queries
             { query.ProcessQuery(message); }
         }
 
-        public List<FormattedProperty> GetAllPropertyFormatters(Message message)
+        public async Task<List<FormattedProperty>> GetAllPropertyFormatters(Message message)
         {
             List<FormattedProperty> formatterlist = new List<FormattedProperty>();
 
             foreach (IQuery query in this._queries)
             {
-                ResultWrangler wrangler = query.GetResultWrangler(message);
+                ResultWrangler wrangler = await query.GetResultWrangler(message);
                 if (wrangler != null) { formatterlist.AddRange(wrangler.GetAllPropertyFormatters()); }
             }
             return formatterlist;

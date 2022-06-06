@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using TsGui.Linking;
 using Core.Logging;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Validation
 {
@@ -150,9 +151,10 @@ namespace TsGui.Validation
             return s;
         }
 
-        public void OnSourceValueUpdated(Message message) 
+        public async Task OnSourceValueUpdatedAsync(Message message) 
         {
             Log.Info("Validation refresh requested");
+            await Task.CompletedTask;
             this._owner.OnValidationChange();
         }
         

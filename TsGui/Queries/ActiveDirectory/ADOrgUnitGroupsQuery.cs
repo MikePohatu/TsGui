@@ -29,6 +29,7 @@ using Core.Logging;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries.ActiveDirectory
 {
@@ -73,7 +74,7 @@ namespace TsGui.Queries.ActiveDirectory
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQuery(Message message)
         {
             if (this._authenticator?.State != AuthState.Authorised)
             {
@@ -111,13 +112,15 @@ namespace TsGui.Queries.ActiveDirectory
             { this._returnwrangler = this._processingwrangler; }
             else { this._returnwrangler = null; }
 
+            await Task.CompletedTask;
+
             return this._returnwrangler;
         }
 
-        public void OnAuthenticatorStateChange()
+        public async void OnAuthenticatorStateChange()
         {
-            this.ProcessQuery(null);
-            this._linktargetoption?.OnSourceValueUpdated(null);
+            await this.ProcessQuery(null);
+            await this._linktargetoption?.OnSourceValueUpdatedAsync(null);
         }
 
         private void AddPropertiesToWrangler(ResultWrangler wrangler, Principal group, List<KeyValuePair<string, XElement>> PropertyTemplates)

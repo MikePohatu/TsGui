@@ -29,6 +29,7 @@ using TsGui.Grouping;
 using TsGui.Validation;
 using MessageCrap;
 using TsGui.View.Layout;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -152,19 +153,19 @@ namespace TsGui.View.GuiOptions.CollectionViews
             return newvalid;
         }
 
-        public override void UpdateValue(Message message)
+        public override async Task UpdateValueAsync(Message message)
         {
-            this._builder.Rebuild(message);
+            await this._builder.RebuildAsync(message);
             this.OnPropertyChanged(this, "VisibleOptions");
 
             //SetSelected includes the messaging call
-            this.SetSelected(this._querylist.GetResultWrangler(message)?.GetString(), message);
+            this.SetSelected((await this._querylist.GetResultWrangler(message))?.GetString(), message);
             this.NotifyViewUpdate();
         }
 
-        public void OnSourceValueUpdated(Message message)
+        public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            this.UpdateValue(message);
+            await this.UpdateValueAsync(message);
         }
 
         protected abstract void SetSelected(string input, Message message);

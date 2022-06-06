@@ -19,6 +19,7 @@
 using MessageCrap;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Linking;
 
@@ -34,19 +35,19 @@ namespace TsGui.Queries
             this.LoadXml(inputxml);
         }
 
-        public override ResultWrangler GetResultWrangler(Message message)
+        public override async Task<ResultWrangler> GetResultWrangler(Message message)
         {
-            return this.ProcessQuery(message);
+            return await this.ProcessQuery(message);
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQuery(Message message)
         {
             foreach (Conditional condition in this._conditions)
             {
-                ResultWrangler returnval = condition.GetResultWrangler(message);
+                ResultWrangler returnval = await condition.GetResultWrangler(message);
                 if ((returnval != null) && (this.ShouldIgnore(returnval.GetString()) == false)) { return returnval; }
             }
-            return this._else?.GetResultWrangler(message);
+            return await this._else?.GetResultWrangler(message);
         }
 
         protected new void LoadXml(XElement inputxml)

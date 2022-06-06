@@ -21,6 +21,7 @@
 
 using System.Xml.Linq;
 using System.Windows;
+using System.Threading.Tasks;
 
 using TsGui.Images;
 using TsGui.View.Layout;
@@ -80,6 +81,6 @@ namespace TsGui.View.GuiOptions
             this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
-        public override void UpdateValue(Message message) { }
+        public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
     }
 }

@@ -29,6 +29,7 @@ using Core.Logging;
 using System.Text;
 using System.IO;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries.WebServices
 {
@@ -78,7 +79,7 @@ namespace TsGui.Queries.WebServices
             }
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQuery(Message message)
         {
             //if (this._authenticator?.State != AuthState.Authorised)
             //{
@@ -99,13 +100,15 @@ namespace TsGui.Queries.WebServices
             { this._returnwrangler = this._processingwrangler; }
             else { this._returnwrangler = null; }
 
+            await Task.CompletedTask;
+
             return this._returnwrangler;
         }
 
-        public void OnAuthenticatorStateChange()
+        public async void OnAuthenticatorStateChange()
         {
-            this.ProcessQuery(null);
-            this._linktarget?.OnSourceValueUpdated(null);
+            await this.ProcessQuery(null);
+            this._linktarget?.OnSourceValueUpdatedAsync(null);
         }
 
         public byte[] GetParametersByteArray(List<KeyValuePair<string, string>> parameterlist)

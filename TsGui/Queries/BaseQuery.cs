@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using TsGui.Validation.StringMatching;
 using TsGui.Linking;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries
 {
@@ -34,13 +35,13 @@ namespace TsGui.Queries
         protected bool _ignoreempty = true;
         protected ILinkTarget _linktarget;
 
-        public virtual ResultWrangler GetResultWrangler(Message message)
+        public virtual async Task<ResultWrangler> GetResultWrangler(Message message)
         {
-            if ((this._reprocess == true) || (this._processed == false)) { return this.ProcessQuery(message); }
+            if ((this._reprocess == true) || (this._processed == false)) { return await this.ProcessQuery(message); }
             else { return this._returnwrangler; }
         }
 
-        public abstract ResultWrangler ProcessQuery(Message message);
+        public abstract Task<ResultWrangler> ProcessQuery(Message message);
 
         public BaseQuery(ILinkTarget linktarget)
         {

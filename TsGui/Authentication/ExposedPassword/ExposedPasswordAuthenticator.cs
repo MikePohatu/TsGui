@@ -28,6 +28,7 @@ using TsGui.Linking;
 using TsGui.Options;
 using TsGui.View;
 using Core;
+using System.Threading.Tasks;
 
 namespace TsGui.Authentication.ExposedPassword
 {
@@ -102,7 +103,7 @@ namespace TsGui.Authentication.ExposedPassword
         public bool PurgeInactive { get; set; } = false;
         public bool IsActive { get; private set; } = true;
 
-        public void Initialise() {
+        public async Task InitialiseAsync() {
             if (this.PasswordSource == null) { Log.Warn($"AuthID {this.AuthID} does not have a PasswordSource defined"); }
             else
             {
@@ -113,6 +114,8 @@ namespace TsGui.Authentication.ExposedPassword
                 if (this.PasswordConfirmationSource == null) { Log.Warn($"AuthID {this.AuthID} does not have a PasswordConfirmationSource defined"); }
                 else { this.PasswordConfirmationSource.PasswordChanged += this.OnPasswordChanged; }
             }
+
+            await Task.CompletedTask;
         }
 
         public void OnPasswordChanged()
@@ -128,9 +131,10 @@ namespace TsGui.Authentication.ExposedPassword
             this.OnPropertyChanged(this, "LiveValue");
         }
 
-        public void UpdateValue(Message message)
+        public async Task UpdateValueAsync(Message message)
         {
             LinkingHub.Instance.SendUpdateMessage(this, message);
+            await Task.CompletedTask;
         }
     }
 }

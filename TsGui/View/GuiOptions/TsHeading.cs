@@ -21,6 +21,7 @@
 // amongst the other options. 
 
 using MessageCrap;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Linking;
 using TsGui.View.Layout;
@@ -62,6 +63,6 @@ namespace TsGui.View.GuiOptions
             this.ControlText = XmlHandler.GetStringFromXElement(InputXml, "AltLabel", this.ControlText);
         }
 
-        public override void UpdateValue(Message message) { }
+        public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
     }
 }

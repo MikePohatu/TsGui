@@ -26,6 +26,7 @@ using Core.Diagnostics;
 using Core.Logging;
 using TsGui.Linking;
 using TsGui.Options;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries
 {
@@ -47,10 +48,11 @@ namespace TsGui.Queries
             LinkingHub.Instance.RegisterLinkTarget(this._linktarget, this._source);
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQuery(Message message)
         {
             this._formatter.Input = this._source?.CurrentValue;
             this._processed = true;
+            await Task.CompletedTask;
 
             return this.SetReturnWrangler();
         }

@@ -20,6 +20,7 @@
 // TsTimeout.cs - Displays the value of the GUI timeout object
 
 using MessageCrap;
+using System.Threading.Tasks;
 using System;
 using System.Windows.Threading;
 using System.Xml.Linq;
@@ -89,9 +90,10 @@ namespace TsGui.View.GuiOptions
             }
         }
 
-        public override void UpdateValue(Message message)
+        public override async Task UpdateValueAsync(Message message)
         {
             LinkingHub.Instance.SendUpdateMessage(this, message);
+            await Task.CompletedTask;
         }
     }
 }
