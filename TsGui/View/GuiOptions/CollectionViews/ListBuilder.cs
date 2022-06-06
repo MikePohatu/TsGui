@@ -19,7 +19,7 @@
 using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Queries;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.Queries.Trees;
 using MessageCrap;
 
@@ -41,7 +41,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         public List<ListItem> Rebuild(Message message)
         {
-            LoggerFacade.Debug("ListBuilder rebuild initialised");
+            Log.Debug("ListBuilder rebuild initialised");
             int i = 0;
             List<ListItem> newlist = new List<ListItem>();
             while (i <= this._lastindex)
@@ -82,7 +82,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             }
             this.Items = newlist;
 
-            LoggerFacade.Debug("ListBuilder rebuild finished");
+            Log.Debug("ListBuilder rebuild finished");
             return newlist;
         }
 

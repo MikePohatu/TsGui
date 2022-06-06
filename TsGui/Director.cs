@@ -33,7 +33,8 @@ using TsGui.Options;
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using TsGui.Linking;
 using TsGui.Authentication;
 using TsGui.Validation;
@@ -108,7 +109,7 @@ namespace TsGui
         //crash. 
         public async Task InitAsync(MainWindow ParentWindow, Arguments Arguments)
         {
-            LoggerFacade.Trace("MainController initializing");
+            Log.Trace("MainController initializing");
             this._pages = new List<TsPage>();
             this._grouplibrary = new GroupLibrary();
             this._toggles = new List<IToggleControl>();
@@ -120,7 +121,7 @@ namespace TsGui
             this.ParentWindow.LocationChanged += this.OnWindowMoving;
 
             try { await this.StartupAsync(); }
-            catch (TsGuiKnownException e)
+            catch (KnownException e)
             {
                 string msg = "Error message: " + e.CustomMessage + Environment.NewLine + e.Message;
                 this.CloseWithError("Application Startup Exception", msg);
@@ -143,8 +144,8 @@ namespace TsGui
 
         public void CloseWithError(string Title, string Message)
         {
-            LoggerFacade.Fatal("TsGui closing due to error: " + Title);
-            LoggerFacade.Fatal("Error message: " + Message);
+            Log.Fatal("TsGui closing due to error: " + Title);
+            Log.Fatal("Error message: " + Message);
             MessageBox.Show(Message,Title, MessageBoxButton.OK, MessageBoxImage.Error);
             this.ParentWindow.Closing -= this.OnWindowClosing;
             this.ParentWindow.Close();
@@ -152,7 +153,7 @@ namespace TsGui
 
         private async Task StartupAsync()
         {
-            LoggerFacade.Debug("*TsGui startup started");
+            Log.Debug("*TsGui startup started");
             this.StartupFinished = false;
 
             //read the config file in. Don't process it yet
@@ -162,15 +163,15 @@ namespace TsGui
             //Now load the XML, catching errors
             try {
                 TsGuiRootConfig.LoadXml(xconfig);
-                LoggerFacade.Info("Finished applying root configuration");
+                Log.Info("Finished applying root configuration");
 
                 //Init the envController so we know what we're writing to and attach the SCCM COM object if required
                 this._prodmode = EnvironmentController.Init();
 
                 this.LoadXml(xconfig);
-                LoggerFacade.Info("Finished applying main config");
+                Log.Info("Finished applying main config");
             }
-            catch (TsGuiKnownException e)
+            catch (KnownException e)
             {
                 string msg = "Error loading config " + Environment.NewLine + e.CustomMessage + Environment.NewLine + e.Message;
                 this.CloseWithError("Error loading config ", msg);
@@ -182,7 +183,7 @@ namespace TsGui
             {
                 HardwareEvaluator.Init(xconfig);
 
-                LoggerFacade.Debug("Running hardware evaluator");
+                Log.Debug("Running hardware evaluator");
                 foreach (Variable var in HardwareEvaluator.GetTsVariables())
                 {
                     NoUIOption newhwoption = new NoUIOption();
@@ -216,7 +217,7 @@ namespace TsGui
 
             if (this._pages.Count > 0)
             {
-                LoggerFacade.Debug("Loading pages");
+                Log.Debug("Loading pages");
                 this.CurrentPage = this._pages.First();
                 //update group settings to all controls
                 foreach (IToggleControl t in this._toggles)
@@ -226,7 +227,7 @@ namespace TsGui
 
                 // Now show and close the ghost window to make sure WinPE honours the 
                 // windowstartuplocation
-                LoggerFacade.Trace("Loading ghost window");
+                Log.Trace("Loading ghost window");
                 GhostWindow ghost = new GhostWindow();
                 ghost.Show();
                 ghost.Close();
@@ -237,12 +238,12 @@ namespace TsGui
                 this.StartupFinished = true;
                 
                 GuiTimeout.Instance?.Start(this.OnTimeoutReached);
-                LoggerFacade.Info("*TsGui startup finished");
+                Log.Info("*TsGui startup finished");
             }
             else 
             {
                 //No pages, finish using only the NoUI options
-                LoggerFacade.Info("*No pages configured. Finishing TsGui");
+                Log.Info("*No pages configured. Finishing TsGui");
                 this.Finish();
             }
         }
@@ -270,7 +271,7 @@ namespace TsGui
                 this.ParentWindow.Close();
                 return null;
             }
-            catch (TsGuiKnownException e)
+            catch (KnownException e)
             {
                 throw e;
             }
@@ -398,7 +399,7 @@ namespace TsGui
         //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()
         {
-            LoggerFacade.Trace("UpdateWindow called");
+            Log.Trace("UpdateWindow called");
             this.ParentWindow.ContentArea.Navigate(this.CurrentPage.Page);
             this.ParentWindow.ContentArea.DataContext = this.CurrentPage;
             this.CurrentPage.Update();

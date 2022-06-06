@@ -23,8 +23,8 @@ using System.Xml.Linq;
 using TsGui.Linking;
 using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication;
-using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using System.DirectoryServices.AccountManagement;
 using MessageCrap;
 
@@ -60,7 +60,7 @@ namespace TsGui.Queries.ActiveDirectory
             this.AuthID = XmlHandler.GetStringFromXAttribute(InputXml, "AuthID", this.AuthID);
             this._groupname = InputXml.Element("GroupName")?.Value;
             //make sure there is a group to query
-            if (string.IsNullOrEmpty(this._groupname)) { throw new TsGuiKnownException("No group specified in XML: ", InputXml.ToString()); }
+            if (string.IsNullOrEmpty(this._groupname)) { throw new KnownException("No group specified in XML: ", InputXml.ToString()); }
 
 
             this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
@@ -82,14 +82,14 @@ namespace TsGui.Queries.ActiveDirectory
                 if (this._processed == true ) { this._processingwrangler = this._processingwrangler.Clone(); }
                 using (GroupPrincipal group = GroupPrincipal.FindByIdentity(this._authenticator.Context, this._groupname))
                 {
-                    if (group == null) { LoggerFacade.Warn("Group not found: " + this._groupname); }
+                    if (group == null) { Log.Warn("Group not found: " + this._groupname); }
                     else
                     { this.AddPropertiesToWrangler(this._processingwrangler, group.Members, this._propertyTemplates); }
                 }
             }
             catch (Exception e)
             {
-                throw new TsGuiKnownException("Active Directory group query caused an error:" + Environment.NewLine + this._groupname, e.Message);
+                throw new KnownException("Active Directory group query caused an error:" + Environment.NewLine + this._groupname, e.Message);
             }
 
             this._processed = true;

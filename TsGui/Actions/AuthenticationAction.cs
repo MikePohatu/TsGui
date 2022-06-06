@@ -17,7 +17,7 @@
 //
 #endregion
 using TsGui.Authentication;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 using System.Xml.Linq;
 
 namespace TsGui.Actions
@@ -44,7 +44,7 @@ namespace TsGui.Actions
         private void LoadXml(XElement inputxml)
         {
             this._authid = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
-            if (this._authid == null) { throw new TsGuiKnownException("Missing AuthID attribute in config", inputxml.ToString()); }
+            if (this._authid == null) { throw new KnownException("Missing AuthID attribute in config", inputxml.ToString()); }
         }
     }
 }

@@ -21,9 +21,8 @@
 
 using System.Xml.Linq;
 using System.Windows;
-
-
 using TsGui.Images;
+using Core;
 
 namespace TsGui.View.Layout
 {

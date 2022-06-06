@@ -27,10 +27,10 @@ using System.Windows.Media;
 using System.Xml.Linq;
 using TsGui.Queries;
 using TsGui.Authentication;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 using TsGui.Validation;
 using System.Windows.Input;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.View.Layout;
 using MessageCrap;
 
@@ -121,7 +121,7 @@ namespace TsGui.View.GuiOptions
                 this.AuthID = x.Value;
                 Director.Instance.AuthLibrary.AddPasswordSource(this);
             }  
-            else { throw new TsGuiKnownException("Missing AuthID in config:", inputxml.ToString()); }      
+            else { throw new KnownException("Missing AuthID in config:", inputxml.ToString()); }      
         }
 
 
@@ -170,7 +170,7 @@ namespace TsGui.View.GuiOptions
             }
             else
             {
-                throw new TsGuiKnownException("Password box is not connected to a configured AuthID.", string.Empty);
+                throw new KnownException("Password box is not connected to a configured AuthID.", string.Empty);
             }
         }
 
@@ -190,7 +190,7 @@ namespace TsGui.View.GuiOptions
 
         public void OnPasswordChanged(object sender, EventArgs e)
         {
-            //LoggerFacade.Info("Password changed event");
+            //Log.Info("Password changed event");
             this.PasswordChanged?.Invoke();
         }
 

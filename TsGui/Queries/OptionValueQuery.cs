@@ -22,8 +22,8 @@
 using MessageCrap;
 using System;
 using System.Xml.Linq;
-using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using TsGui.Linking;
 using TsGui.Options;
 
@@ -60,12 +60,12 @@ namespace TsGui.Queries
             if (!string.IsNullOrEmpty(id))
             {
                 IOption o = LinkingHub.Instance.GetSourceOption(id);
-                if (o == null) { throw new TsGuiKnownException($"Unable to locate linked source ID: {id}\nAre you missing or mistyping an ID?", null); }
+                if (o == null) { throw new KnownException($"Unable to locate linked source ID: {id}\nAre you missing or mistyping an ID?", null); }
                 
                 return o;
             }
             else {
-                throw new TsGuiKnownException($"Unable to locate linked source. ID cannot be empty", null);
+                throw new KnownException($"Unable to locate linked source. ID cannot be empty", null);
             }
         }
 

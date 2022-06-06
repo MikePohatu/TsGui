@@ -21,8 +21,8 @@
 
 using MessageCrap;
 using System.Collections.Generic;
-using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using TsGui.Options;
 
 namespace TsGui.Linking
@@ -50,7 +50,7 @@ namespace TsGui.Linking
         {
             IOption testoption;
 
-            if (this._sources.TryGetValue(NewSource.ID, out testoption) == true ) { throw new TsGuiKnownException("Duplicate ID found in LinkingLibrary: " + NewSource.ID,""); }
+            if (this._sources.TryGetValue(NewSource.ID, out testoption) == true ) { throw new KnownException("Duplicate ID found in LinkingLibrary: " + NewSource.ID,""); }
             else { this._sources.Add(NewSource.ID,NewSource); }
         }
 
@@ -74,7 +74,7 @@ namespace TsGui.Linking
         {
             if (message == null)
             {
-                LoggerFacade.Trace($"New update message create, no response. Source ID: {source?.ID}");
+                Log.Trace($"New update message create, no response. Source ID: {source?.ID}");
             }
             return MessageHub.CreateMessage(source, message).SetTopic(Topics.SourceValueChanged).SetPayload(source.CurrentValue).Send(); ;
         }
@@ -86,8 +86,8 @@ namespace TsGui.Linking
 
         public void RegisterLinkTarget(ILinkTarget target, ILinkSource source)
         {
-            if (target == null) { throw new TsGuiKnownException($"Error registering target. Target is null",null); }
-            if (source == null) { throw new TsGuiKnownException("Error registering target. Source is null. ", null); }
+            if (target == null) { throw new KnownException($"Error registering target. Target is null",null); }
+            if (source == null) { throw new KnownException("Error registering target. Source is null. ", null); }
             MessageHub.Subscribe(source, (Message message) =>
             {
                 target.OnSourceValueUpdated(message);

@@ -1,9 +1,9 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2021 20Road Limited
 //
-// This file is part of TsGui.
+// This file is part of DevChecker.
 //
-// TsGui is free software: you can redistribute it and/or modify
+// DevChecker is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, version 3 of the License.
 //
@@ -17,13 +17,20 @@
 //
 #endregion
 
-// ILoggingReceiver.cs - interface for abstracting the logging receivers for logging frameworks
+// KnownException - class for recording known exceptions to pass up the tree
 
-namespace TsGui.Diagnostics.Logging
+
+using System;
+
+namespace Core.Diagnostics
 {
-    public interface ILoggingReceiver
+    public class KnownException: Exception
     {
-        event NewLog NewLogMessage;
-        string LastMessage { get; set; }
+        public string CustomMessage { get; set; }
+
+        public KnownException(string CustomMessage, string SystemMessage):base(SystemMessage)
+        {
+            this.CustomMessage = CustomMessage;
+        }
     }
 }

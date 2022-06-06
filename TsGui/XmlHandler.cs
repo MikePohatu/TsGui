@@ -26,7 +26,7 @@ using System.Windows;
 using System.Windows.Media;
 
 using TsGui.Validation;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 using System.Threading.Tasks;
 using System.Net.Http;
 
@@ -58,7 +58,7 @@ namespace TsGui
             { throw new FileNotFoundException("File not found: " + filepath); }
             try { temp = XElement.Load(filepath); }
             catch (Exception e)
-            { throw new TsGuiKnownException("Unable to read xml file: " + filepath, e.Message); }
+            { throw new KnownException("Unable to read xml file: " + filepath, e.Message); }
 
             return temp;
         }
@@ -78,7 +78,7 @@ namespace TsGui
             }
             catch (Exception e)
             {
-                throw new TsGuiKnownException("Error downloading web config: " + url, e.Message);
+                throw new KnownException("Error downloading web config: " + url, e.Message);
             }
 
             return xconfig;
@@ -102,7 +102,7 @@ namespace TsGui
             }
             catch (Exception e)
             {
-                throw new TsGuiKnownException("Error downloading web config: " + url, e.Message);
+                throw new KnownException("Error downloading web config: " + url, e.Message);
             }
 
             return xconfig;

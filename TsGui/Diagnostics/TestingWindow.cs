@@ -31,9 +31,11 @@ using TsGui.View;
 using TsGui.View.Layout;
 using TsGui.View.Helpers;
 using TsGui.Helpers;
-using TsGui.Diagnostics.Logging;
+using TsGui.Diagnostics;
 using TsGui.Options;
-
+using Core;
+using Core.Logging;
+using NLog;
 
 namespace TsGui.Diagnostics
 {
@@ -100,7 +102,7 @@ namespace TsGui.Diagnostics
             this._testingwindowui.Close();
         }
 
-        public void OnNewLogMessage(LoggingReceiverNLog sender, EventArgs e)
+        public void OnNewLogMessage(UserUITarget sender, EventArgs e)
         {
             this._logs = this._logs + sender.LastMessage + Environment.NewLine;
 
@@ -153,13 +155,13 @@ namespace TsGui.Diagnostics
 
         private void SubscribeToLogs()
         {
-            foreach (ILoggingReceiver receiver in LoggingFrameworkHelpers.GetLoggingReceivers())
+            foreach (ILoggingReceiver receiver in LoggingHelpers.GetLoggingReceivers())
             { receiver.NewLogMessage += this.OnNewLogMessage; }
         }
 
         private void UnsubscribeFromLogs()
         {
-            foreach (ILoggingReceiver receiver in LoggingFrameworkHelpers.GetLoggingReceivers())
+            foreach (ILoggingReceiver receiver in LoggingHelpers.GetLoggingReceivers())
             { receiver.NewLogMessage -= this.OnNewLogMessage; }
         }
     }

@@ -22,11 +22,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using TsGui.Linking;
 using TsGui.Options;
 using TsGui.View;
+using Core;
 
 namespace TsGui.Authentication.ExposedPassword
 {
@@ -86,7 +87,7 @@ namespace TsGui.Authentication.ExposedPassword
             this.AuthID = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
             this.ID = XmlHandler.GetStringFromXAttribute(inputxml, "ID", null);
             if (string.IsNullOrWhiteSpace(this.AuthID) == true)
-            { throw new TsGuiKnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
+            { throw new KnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
 
             this._confirm = XmlHandler.GetBoolFromXAttribute(inputxml, "Confirm", this._confirm);
             this._blankallowed = XmlHandler.GetBoolFromXAttribute(inputxml, "AllowBlank", this._blankallowed);
@@ -102,14 +103,14 @@ namespace TsGui.Authentication.ExposedPassword
         public bool IsActive { get; private set; } = true;
 
         public void Initialise() {
-            if (this.PasswordSource == null) { LoggerFacade.Warn($"AuthID {this.AuthID} does not have a PasswordSource defined"); }
+            if (this.PasswordSource == null) { Log.Warn($"AuthID {this.AuthID} does not have a PasswordSource defined"); }
             else
             {
                 this.PasswordSource.PasswordChanged += this.OnPasswordChanged;
             }
             if (this._confirm)
             {
-                if (this.PasswordConfirmationSource == null) { LoggerFacade.Warn($"AuthID {this.AuthID} does not have a PasswordConfirmationSource defined"); }
+                if (this.PasswordConfirmationSource == null) { Log.Warn($"AuthID {this.AuthID} does not have a PasswordConfirmationSource defined"); }
                 else { this.PasswordConfirmationSource.PasswordChanged += this.OnPasswordChanged; }
             }
         }
@@ -122,7 +123,7 @@ namespace TsGui.Authentication.ExposedPassword
 
         protected void NotifyUpdate()
         {
-            //LoggerFacade.Info(this.VariableName + " variable value changed.");
+            //Log.Info(this.VariableName + " variable value changed.");
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
         }

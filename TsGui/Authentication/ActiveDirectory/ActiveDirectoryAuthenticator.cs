@@ -20,8 +20,8 @@ using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
-using TsGui.Diagnostics.Logging;
-using TsGui.Diagnostics;
+using Core.Logging;
+using Core.Diagnostics;
 
 namespace TsGui.Authentication.ActiveDirectory
 {
@@ -51,18 +51,18 @@ namespace TsGui.Authentication.ActiveDirectory
         {
             if (string.IsNullOrWhiteSpace(this.UsernameSource.Username) == true)
             {
-                LoggerFacade.Warn("Cannot autheticate with empty username");
+                Log.Warn("Cannot autheticate with empty username");
                 this.SetState(AuthState.AccessDenied);
                 return AuthState.AccessDenied;
             }
             if (string.IsNullOrEmpty(this.PasswordSource.Password) == true)
             {
-                LoggerFacade.Warn("Cannot autheticate with empty password");
+                Log.Warn("Cannot autheticate with empty password");
                 this.SetState(AuthState.AccessDenied);
                 return AuthState.AccessDenied;
             }
 
-            LoggerFacade.Info("Authenticating user: " + this.UsernameSource.Username + " against domain " + this._domain);
+            Log.Info("Authenticating user: " + this.UsernameSource.Username + " against domain " + this._domain);
             AuthState newstate;
             try
             {
@@ -70,19 +70,19 @@ namespace TsGui.Authentication.ActiveDirectory
 
                 if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context, this.UsernameSource.Username, this.RequiredGroups) == true)
                 {
-                    LoggerFacade.Info("Active Directory authorised");
+                    Log.Info("Active Directory authorised");
                     newstate = AuthState.Authorised;
                 }
                 else
                 {
-                    LoggerFacade.Info("Active Directory not authorised");
+                    Log.Info("Active Directory not authorised");
                     newstate = AuthState.NotAuthorised;
                 }
             }
             catch (Exception e)
             {
-                LoggerFacade.Warn("Active Directory access denied");
-                LoggerFacade.Trace(e.Message + Environment.NewLine + e.StackTrace);
+                Log.Warn("Active Directory access denied");
+                Log.Trace(e.Message + Environment.NewLine + e.StackTrace);
                 newstate = AuthState.AccessDenied;
             }
 
@@ -94,11 +94,11 @@ namespace TsGui.Authentication.ActiveDirectory
         {
             this.AuthID = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
             if (string.IsNullOrWhiteSpace(this.AuthID) == true)
-            { throw new TsGuiKnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
+            { throw new KnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
 
             this._domain = XmlHandler.GetStringFromXAttribute(inputxml, "Domain", null);
             if (string.IsNullOrWhiteSpace(this._domain) == true)
-            { throw new TsGuiKnownException("Missing Domain attribute in XML:", inputxml.ToString()); }
+            { throw new KnownException("Missing Domain attribute in XML:", inputxml.ToString()); }
         }
 
         private void SetState(AuthState newstate)

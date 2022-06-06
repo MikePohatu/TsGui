@@ -22,6 +22,7 @@
 using System.Windows;
 using System.Xml.Linq;
 using TsGui.View.GuiOptions;
+using Core;
 
 namespace TsGui.View.Layout
 {

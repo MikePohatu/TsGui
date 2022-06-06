@@ -22,6 +22,7 @@
 using System.Xml.Linq;
 using System.Windows.Media;
 using TsGui.View;
+using Core;
 
 namespace TsGui.Images
 {

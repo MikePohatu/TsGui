@@ -1,9 +1,9 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2021 20Road Limited
 //
-// This file is part of TsGui.
+// This file is part of DevChecker.
 //
-// TsGui is free software: you can redistribute it and/or modify
+// DevChecker is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, version 3 of the License.
 //
@@ -16,10 +16,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using NLog;
+using System;
 
-// DiagnosticsEnums.cs - Enums for the Diagnostics namespace
-
-namespace TsGui.Diagnostics
+namespace Core.Logging
 {
-    //public enum LoggingLevel { Information,Warning,Error,Debug }
+    public delegate void NewLog(UserUITarget sender, EventArgs e);
+
 }

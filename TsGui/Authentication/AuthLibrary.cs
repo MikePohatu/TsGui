@@ -17,7 +17,7 @@
 //
 #endregion
 using System.Collections.Generic;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 
 namespace TsGui.Authentication
 {
@@ -110,14 +110,14 @@ namespace TsGui.Authentication
             {
                 IPasswordConfirmingAuthenticator confirmerauth = auth as IPasswordConfirmingAuthenticator;
                 if (confirmerauth != null) { confirmerauth.PasswordConfirmationSource = newpwsource; }
-                else { LoggerFacade.Error($"AuthID {newpwsource.AuthID} is not a password confirmer"); }
+                else { Log.Error($"AuthID {newpwsource.AuthID} is not a password confirmer"); }
             }
             else
             {
                 IPassword outpw;
                 if (this._passwordconfirmers.TryGetValue(newpwsource.AuthID, out outpw))
                 {
-                    LoggerFacade.Error($"AuthID {newpwsource.AuthID} already has a confirmation password defined");
+                    Log.Error($"AuthID {newpwsource.AuthID} already has a confirmation password defined");
                 }
                 else
                 {

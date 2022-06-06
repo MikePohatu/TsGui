@@ -24,8 +24,8 @@ using System.Xml.Linq;
 using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Queries;
-using TsGui.Diagnostics.Logging;
-using TsGui.Diagnostics;
+using Core.Logging;
+using Core.Diagnostics;
 using System.Collections.Generic;
 using System.Windows;
 using MessageCrap;
@@ -47,7 +47,7 @@ namespace TsGui.Options.NoUI
             get { return this._id; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value) == true) { throw new TsGuiKnownException("Empty ID set on NoUI option", ""); }
+                if (string.IsNullOrWhiteSpace(value) == true) { throw new KnownException("Empty ID set on NoUI option", ""); }
                 if (this._id != value) { this._id = value; }
             }
         }
@@ -209,7 +209,7 @@ namespace TsGui.Options.NoUI
 
         protected void NotifyViewUpdate()
         {
-            LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
+            Log.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
         }

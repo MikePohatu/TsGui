@@ -22,6 +22,7 @@
 using TsGui.View;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Core;
 
 namespace TsGui.Grouping
 {

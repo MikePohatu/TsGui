@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Management;
 
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 using TsGui.Connectors;
 using TsGui.Linking;
 using MessageCrap;
@@ -70,7 +70,7 @@ namespace TsGui.Queries
             }
             catch (ManagementException e)
             {
-                throw new TsGuiKnownException("WMI query caused an error:" + Environment.NewLine + this._wql, e.Message);
+                throw new KnownException("WMI query caused an error:" + Environment.NewLine + this._wql, e.Message);
             }
 
             this._processed = true;

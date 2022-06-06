@@ -24,8 +24,8 @@ using System.Xml.Linq;
 
 using TsGui.Linking;
 using TsGui.Authentication;
-using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using System.Text;
 using System.IO;
 

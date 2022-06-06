@@ -26,7 +26,7 @@ using System.Windows.Media;
 using TsGui.Validation;
 using TsGui.Queries;
 using TsGui.Linking;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 using MessageCrap;
 using TsGui.View.Layout;
 
@@ -94,7 +94,7 @@ namespace TsGui.View.GuiOptions
             this._rootelement = this.GetComplianceRootElement();
             if (this._rootelement == null)
             {
-                throw new TsGuiKnownException("There is problem in the compliance tree. Root is null", string.Empty);
+                throw new KnownException("There is problem in the compliance tree. Root is null", string.Empty);
             }
             this._rootelement.ComplianceRetry += this.OnComplianceRetry;
 

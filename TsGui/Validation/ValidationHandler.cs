@@ -24,7 +24,7 @@ using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Linking;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using MessageCrap;
 
 namespace TsGui.Validation
@@ -152,7 +152,7 @@ namespace TsGui.Validation
 
         public void OnSourceValueUpdated(Message message) 
         {
-            LoggerFacade.Info("Validation refresh requested");
+            Log.Info("Validation refresh requested");
             this._owner.OnValidationChange();
         }
         

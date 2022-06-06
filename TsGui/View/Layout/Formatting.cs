@@ -24,6 +24,7 @@ using System;
 using System.Windows;
 using System.Xml.Linq;
 using System.Windows.Media;
+using Core;
 
 namespace TsGui.View.Layout
 {

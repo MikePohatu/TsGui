@@ -20,9 +20,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TsGui.Diagnostics.Logging;
-using TsGui.Diagnostics;
+using Core.Logging;
+using Core.Diagnostics;
 using TsGui.Connectors.System;
+using WindowsHelpers;
 
 namespace TsGui.Connectors
 {
@@ -35,7 +36,7 @@ namespace TsGui.Connectors
 
         public void AddVariable(Variable Variable)
         {
-            LoggerFacade.Info($"Variable added: {Variable.Name}, Value: {Variable.Value}, Path: {Variable.Path}");
+            Log.Info($"Variable added: {Variable.Name}, Value: {Variable.Value}, Path: {Variable.Path}");
             this.variables.Add(Variable);
         }
 
@@ -47,12 +48,12 @@ namespace TsGui.Connectors
 
                 if (string.IsNullOrWhiteSpace(path)) 
                 {
-                    if (string.IsNullOrWhiteSpace(path)) { LoggerFacade.Error($"Path cannot be empty. Variable name {variable.Name}"); }
+                    if (string.IsNullOrWhiteSpace(path)) { Log.Error($"Path cannot be empty. Variable name {variable.Name}"); }
                     continue;
                 }                    
                 
                 if (string.IsNullOrWhiteSpace(variable.Name)) { 
-                    LoggerFacade.Error($"Name cannot be empty. Variable path {variable.Path}");
+                    Log.Error($"Name cannot be empty. Variable path {variable.Path}");
                     continue;
                 }
 
@@ -67,8 +68,8 @@ namespace TsGui.Connectors
                 }
                 catch (Exception e)
                 {
-                    LoggerFacade.Error(e, $"Error setting registry item: {variable.Path}\\{variable.Name}");
-                    throw new TsGuiKnownException($"Error setting registry item: {variable.Path}\\{variable.Name}", e.Message);
+                    Log.Error(e, $"Error setting registry item: {variable.Path}\\{variable.Name}");
+                    throw new KnownException($"Error setting registry item: {variable.Path}\\{variable.Name}", e.Message);
                 }
             }            
         }

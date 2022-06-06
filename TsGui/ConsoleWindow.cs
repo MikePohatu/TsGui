@@ -24,6 +24,7 @@ using System.Windows;
 
 using TsGui.View.Layout;
 using TsGui.View;
+using Core;
 
 namespace TsGui
 {

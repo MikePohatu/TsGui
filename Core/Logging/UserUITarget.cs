@@ -1,9 +1,9 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2021 20Road Limited
 //
-// This file is part of TsGui.
+// This file is part of DevChecker.
 //
-// TsGui is free software: you can redistribute it and/or modify
+// DevChecker is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, version 3 of the License.
 //
@@ -25,10 +25,10 @@ using NLog;
 using NLog.Targets;
 using NLog.Config;
 
-namespace TsGui.Diagnostics.Logging
+namespace Core.Logging
 {
-    [Target("LiveDataWindow")]
-    public class LoggingReceiverNLog: TargetWithLayout, ILoggingReceiver
+    [Target("UserUITarget")]
+    public class UserUITarget : TargetWithLayout, ILoggingReceiver
     {
         public event NewLog NewLogMessage;
 
@@ -36,8 +36,14 @@ namespace TsGui.Diagnostics.Logging
 
         protected override void Write(LogEventInfo logEvent)
         {
-            this.LastMessage = this.Layout.Render(logEvent);
-            this.NewLogMessage?.Invoke(this,new EventArgs());
+            //skip notifications messages as they are written to the output window separately. They need other
+            //styling applied beyond the separation between alert levels
+            //if (logEvent.Message.StartsWith(Notifications.AlertPrefix)) { return; }
+
+            string trimmedmessage;
+            bool ishighlighted = Log.IsHighlighted(this.Layout.Render(logEvent), out trimmedmessage);
+            this.LastMessage = trimmedmessage;
+            this.NewLogMessage?.Invoke(this, new EventArgs());
         }
     }
 }

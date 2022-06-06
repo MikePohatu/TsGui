@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -57,8 +57,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.9\lib\net45\NLog.dll</HintPath>
+    <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.5.0.0\lib\net46\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
@@ -107,9 +107,12 @@
     <Compile Include="Config\TsGuiRootConfig.cs" />
     <Compile Include="Connectors\RegistryConnector.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
-    <Compile Include="Connectors\System\RegistryHelpers.cs" />
     <Compile Include="ConsoleWindow.cs" />
     <Compile Include="Debounce.cs" />
+    <Compile Include="Diagnostics\TestingWindow.cs" />
+    <Compile Include="Diagnostics\TestingWindowUI.xaml.cs">
+      <DependentUpon>TestingWindowUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Linking\ILinkSource.cs" />
     <Compile Include="Linking\Topics.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltWifiDisconnected.cs" />
@@ -176,18 +179,6 @@
       <DependentUpon>ConsoleOutput.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Layout\Converters\XmlStringLineConverter.cs" />
-    <Compile Include="Diagnostics\Logging\ILoggingReceiver.cs" />
-    <Compile Include="Diagnostics\Logging\LoggingDelegates.cs" />
-    <Compile Include="Diagnostics\DiagnosticsEnums.cs" />
-    <Compile Include="Diagnostics\DiagnosticsHelper.cs" />
-    <Compile Include="Diagnostics\Logging\LoggerFacade.cs" />
-    <Compile Include="Diagnostics\Logging\LoggingFrameworkHelpers.cs" />
-    <Compile Include="Diagnostics\Logging\LoggingReceiverNLog.cs" />
-    <Compile Include="Diagnostics\TestingWindow.cs" />
-    <Compile Include="Diagnostics\TestingWindowUI.xaml.cs">
-      <DependentUpon>TestingWindowUI.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Diagnostics\TsGuiKnownException.cs" />
     <Compile Include="Grouping\GroupEnums.cs" />
     <Compile Include="Grouping\GroupLibrary.cs" />
     <Compile Include="Helpers\DisplayInformation.cs" />
@@ -344,7 +335,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="View\Layout\Formatting.cs" />
-    <Compile Include="View\ViewModelBase.cs" />
     <Page Include="Diagnostics\TestingWindowUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -500,9 +490,17 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{b0ad195b-b60a-4083-9d62-6907381ddcb9}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MessageCrap\MessageCrap.csproj">
       <Project>{eeedef0c-4542-49de-b415-64ce44ede3b5}</Project>
       <Name>MessageCrap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsHelpers\WindowsHelpers.csproj">
+      <Project>{4ca8920a-b2c1-4726-9155-49f6fae3dd5c}</Project>
+      <Name>WindowsHelpers</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -21,9 +21,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.Prebuilt.Options;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 
 namespace TsGui.Prebuilt
 {
@@ -36,7 +36,7 @@ namespace TsGui.Prebuilt
             string name = OptionXml.Name.LocalName;
             if (xprebuilt == null)
             {
-                LoggerFacade.Trace("No Prebuilt attribute set");
+                Log.Trace("No Prebuilt attribute set");
             }
             else
             {
@@ -47,16 +47,16 @@ namespace TsGui.Prebuilt
                     case "DISKINDEX":
                         if (PrebuiltDiskIndex.IsSupported(xtype.Value))
                         { return PrebuiltDiskIndex.GetXml(); }
-                        else { throw new TsGuiKnownException(string.Format("Prebuilt type {0} not supported on {1}", xprebuilt.Value, xtype.Value), null); }
+                        else { throw new KnownException(string.Format("Prebuilt type {0} not supported on {1}", xprebuilt.Value, xtype.Value), null); }
 
                     case "POWERCONNECTED":
                         if (PrebuiltPowerConnected.IsSupported(xtype.Value))
                         { return PrebuiltPowerConnected.GetXml(); }
-                        else { throw new TsGuiKnownException(string.Format("Prebuilt type {0} not supported on {1}", xprebuilt.Value, xtype.Value), null); }
+                        else { throw new KnownException(string.Format("Prebuilt type {0} not supported on {1}", xprebuilt.Value, xtype.Value), null); }
                     case "WIFIDISCONNECTED":
                         if (PrebuiltPowerConnected.IsSupported(xtype.Value))
                         { return PrebuiltWifiDisconnected.GetXml(); }
-                        else { throw new TsGuiKnownException(string.Format("Prebuilt type {0} not supported on {1}", xprebuilt.Value, xtype.Value), null); }
+                        else { throw new KnownException(string.Format("Prebuilt type {0} not supported on {1}", xprebuilt.Value, xtype.Value), null); }
                     default:
                         break;
                 }

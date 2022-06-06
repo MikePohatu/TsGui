@@ -19,7 +19,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 
 namespace TsGui.Connectors.System
 {
@@ -34,9 +34,9 @@ namespace TsGui.Connectors.System
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error getting registry value");
+                Log.Error(e, "Error getting registry value");
             }
-            
+
             return o == null ? false : true;
         }
 
@@ -49,7 +49,7 @@ namespace TsGui.Connectors.System
             }
             catch (Exception e)
             {
-                LoggerFacade.Error(e, "Error getting registry key");
+                Log.Error(e, "Error getting registry key");
             }
 
             return o == null ? false : true;
@@ -66,7 +66,7 @@ namespace TsGui.Connectors.System
             }
             catch (Exception e)
             {
-                LoggerFacade.Debug(e, $"Error getting registry value {key}\\{value}");
+                Log.Debug(e, $"Error getting registry value {key}\\{value}");
             }
             return reg;
         }
@@ -85,7 +85,7 @@ namespace TsGui.Connectors.System
             }
             catch (Exception e)
             {
-                LoggerFacade.Debug(e, $"Error getting registry value {key}\\{value}");
+                Log.Debug(e, $"Error getting registry value {key}\\{value}");
             }
             return reg;
         }
@@ -100,20 +100,21 @@ namespace TsGui.Connectors.System
                 var arr = o as string[];
                 if (arr != null)
                 {
-                     { results = new List<string>(arr); }
+                    { results = new List<string>(arr); }
                 }
                 else
                 {
-                    if (o != null) {
+                    if (o != null)
+                    {
                         string reg = o.ToString();
                         results.Add(reg);
                     }
                 }
-                
+
             }
             catch (Exception e)
             {
-                LoggerFacade.Debug(e, $"Error getting registry value {key}\\{value}");
+                Log.Debug(e, $"Error getting registry value {key}\\{value}");
             }
             return results;
         }
@@ -129,7 +130,7 @@ namespace TsGui.Connectors.System
             }
             catch (Exception e)
             {
-                LoggerFacade.Debug(e, $"Error getting registry value {key}\\{value}");
+                Log.Debug(e, $"Error getting registry value {key}\\{value}");
             }
             return reg;
         }
@@ -142,7 +143,7 @@ namespace TsGui.Connectors.System
             }
             catch (Exception e)
             {
-                LoggerFacade.Debug(e, $"Error setting registry SZ value {key}\\{valueName} to {value}");
+                Log.Debug(e, $"Error setting registry SZ value {key}\\{valueName} to {value}");
             }
         }
 
@@ -154,7 +155,7 @@ namespace TsGui.Connectors.System
             }
             catch (Exception e)
             {
-                LoggerFacade.Debug(e, $"Error setting registry DWORD value {key}\\{valueName} to {value}");
+                Log.Debug(e, $"Error setting registry DWORD value {key}\\{valueName} to {value}");
             }
         }
     }

@@ -27,7 +27,7 @@ using System.Windows;
 using System.Windows.Media;
 using TsGui.Linking;
 using TsGui.Options;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.Queries;
 using TsGui.Grouping;
 using System.Collections.Generic;
@@ -217,7 +217,7 @@ namespace TsGui.View.GuiOptions
         {
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
-            LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
+            Log.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
         }
 
         public abstract void UpdateValue(Message message);

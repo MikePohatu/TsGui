@@ -31,6 +31,7 @@ using System.Windows.Threading;
 using TsGui.Helpers;
 using TsGui.View;
 using TsGui.Events;
+using Core;
 
 namespace TsGui.Images
 {

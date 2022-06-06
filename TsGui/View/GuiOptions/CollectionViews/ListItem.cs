@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using TsGui.View.Layout;
 using TsGui.Grouping;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.View.Symbols;
 using System.Windows;
 
@@ -62,14 +62,14 @@ namespace TsGui.View.GuiOptions.CollectionViews
             if (string.IsNullOrEmpty(Text)) { this.Text = Value; } //if no text is set, just use the value
             else { this.Text = Text; }
 
-            LoggerFacade.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
+            Log.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
         }
 
         public ListItem(XElement InputXml, Formatting Formatting, CollectionViewGuiOptionBase parentlist) : base()
         {
             this.Init(Formatting, parentlist);
             this.LoadXml(InputXml);
-            LoggerFacade.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
+            Log.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
         }
 
         public ListItem NavigateToValue(string Value)

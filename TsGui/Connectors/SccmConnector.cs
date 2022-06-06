@@ -21,8 +21,8 @@
 
 using System;
 using System.Runtime.InteropServices;
-using TsGui.Diagnostics.Logging;
-using TsGui.Diagnostics;
+using Core.Logging;
+using Core.Diagnostics;
 
 namespace TsGui.Connectors
 {
@@ -35,25 +35,25 @@ namespace TsGui.Connectors
         {
             objTSEnv = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TSEnvironment"));
             try { objTSProgUI = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.SMS.TsProgressUI")); }
-            catch { LoggerFacade.Warn("Unable to attach to task sequence progress dialog"); }
+            catch { Log.Warn("Unable to attach to task sequence progress dialog"); }
         }
 
         public void AddVariable(Variable Variable)
         {
-            LoggerFacade.Info("Applying TS variable: " + Variable.Name + ". Value: " + Variable.Value);
+            Log.Info("Applying TS variable: " + Variable.Name + ". Value: " + Variable.Value);
             try
             {
                 objTSEnv.Value[Variable.Name] = Variable.Value;
             }
             catch (Exception e)
             {
-                throw new TsGuiKnownException("There was a fatal error while applying TS variable: " + Variable.Name, e.Message);
+                throw new KnownException("There was a fatal error while applying TS variable: " + Variable.Name, e.Message);
             }
         }
 
         public void Init()
         {
-            LoggerFacade.Trace("SccmConnector hiding progress dialog");
+            Log.Trace("SccmConnector hiding progress dialog");
             objTSProgUI?.CloseProgressDialog();
         }
 

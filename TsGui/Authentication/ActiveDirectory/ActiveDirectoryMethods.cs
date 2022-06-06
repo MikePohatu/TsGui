@@ -23,7 +23,7 @@ using System.Security.Principal;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Collections.Generic;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 
 namespace TsGui.Authentication.ActiveDirectory
 {
@@ -44,7 +44,7 @@ namespace TsGui.Authentication.ActiveDirectory
                     {
                         using (GroupPrincipal group = GroupPrincipal.FindByIdentity(context, groupname))
                         {
-                            if (group == null) { LoggerFacade.Warn("Group not found: " + groupname); }
+                            if (group == null) { Log.Warn("Group not found: " + groupname); }
                             else
                             {
                                 //work around issue where IsMemherOf always returns false on users primary group

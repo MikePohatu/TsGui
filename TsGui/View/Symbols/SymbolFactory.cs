@@ -18,7 +18,7 @@
 #endregion
 using System.Windows.Controls;
 using System;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 
 namespace TsGui.View.Symbols
 {
@@ -28,7 +28,7 @@ namespace TsGui.View.Symbols
         {
             if (type == null) { throw new ArgumentException("Missing Type attribute on Symbol"); }
 
-            LoggerFacade.Info("Creating symbol, type: " + type);
+            Log.Info("Creating symbol, type: " + type);
 
             if (type == "OuUI")
             {
@@ -58,7 +58,7 @@ namespace TsGui.View.Symbols
             if (control == null) { return null; }
 
             string type = control.GetType().ToString();
-            LoggerFacade.Info("Creating symbol, type: " + type);
+            Log.Info("Creating symbol, type: " + type);
 
             if (type == "TsGui.View.Symbols.TsFolderUI")
             {

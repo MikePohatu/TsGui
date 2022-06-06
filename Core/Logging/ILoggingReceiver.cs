@@ -1,9 +1,9 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2021 20Road Limited
 //
-// This file is part of TsGui.
+// This file is part of DevChecker.
 //
-// TsGui is free software: you can redistribute it and/or modify
+// DevChecker is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, version 3 of the License.
 //
@@ -16,10 +16,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using System;
 
-namespace TsGui.Diagnostics.Logging
+// ILoggingReceiver.cs - interface for abstracting the logging receivers for logging frameworks
 
+namespace Core.Logging
 {
-    public delegate void NewLog(LoggingReceiverNLog sender, EventArgs e);
+    public interface ILoggingReceiver
+    {
+        event NewLog NewLogMessage;
+        string LastMessage { get; set; }
+    }
 }

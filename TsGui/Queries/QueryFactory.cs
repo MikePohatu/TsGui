@@ -17,7 +17,7 @@
 //
 #endregion
 using System.Xml.Linq;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 using TsGui.Linking;
 using TsGui.Queries.ActiveDirectory;
 
@@ -78,7 +78,7 @@ namespace TsGui.Queries
                     case "Registry":
                         return new RegistryQuery(InputXml, linktarget);
                     default:
-                        throw new TsGuiKnownException("Invalid type specified in query", InputXml.ToString());
+                        throw new KnownException("Invalid type specified in query", InputXml.ToString());
                 }
             }
 

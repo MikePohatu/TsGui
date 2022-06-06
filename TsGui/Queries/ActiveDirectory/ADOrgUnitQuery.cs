@@ -24,8 +24,8 @@ using TsGui.Queries;
 using TsGui.Linking;
 using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication;
-using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
 using MessageCrap;
@@ -64,7 +64,7 @@ namespace TsGui.Queries.ActiveDirectory
             this.AuthID = XmlHandler.GetStringFromXAttribute(InputXml, "AuthID", this.AuthID);
             this._baseou = InputXml.Element("BaseOU")?.Value;
             //make sure there is a group to query
-            if (string.IsNullOrEmpty(this._baseou)) { throw new TsGuiKnownException("No BaseOU specified in XML: ", InputXml.ToString()); }
+            if (string.IsNullOrEmpty(this._baseou)) { throw new KnownException("No BaseOU specified in XML: ", InputXml.ToString()); }
 
 
             this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
@@ -94,8 +94,8 @@ namespace TsGui.Queries.ActiveDirectory
             }
             catch (Exception e)
             {
-                //throw new TsGuiKnownException("Active Directory OU query caused an error", e.Message);
-                LoggerFacade.Warn("Active Directory OU query caused an error: " + e.Message);
+                //throw new KnownException("Active Directory OU query caused an error", e.Message);
+                Log.Warn("Active Directory OU query caused an error: " + e.Message);
             }
 
             this._processed = true;

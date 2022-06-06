@@ -20,7 +20,7 @@ using System.Xml.Linq;
 using System.Windows;
 using TsGui.View.Layout;
 using TsGui.Actions;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.Validation;
 using MessageCrap;
 
@@ -87,7 +87,7 @@ namespace TsGui.View.GuiOptions
 
         public void OnButtonClick(object o, RoutedEventArgs e)
         {
-            LoggerFacade.Info("Action button clicked");
+            Log.Info("Action button clicked");
             this._action?.RunAction();
         }
 

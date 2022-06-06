@@ -24,8 +24,9 @@ using System.Management;
 using System.Text;
 using System.Xml.Linq;
 using TsGui.Connectors.System;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 using TsGui.Linking;
+using WindowsHelpers;
 
 namespace TsGui.Queries
 {
@@ -70,7 +71,7 @@ namespace TsGui.Queries
                     this._root = "HKEY_USERS";
                     break;
                 default:
-                    throw new TsGuiKnownException("Invalid registry root name: " + this._root + Environment.NewLine + "See: https://docs.microsoft.com/en-us/dotnet/api/microsoft.win32.registry.getvalue?view=dotnet-plat-ext-5.0#remarks", null);
+                    throw new KnownException("Invalid registry root name: " + this._root + Environment.NewLine + "See: https://docs.microsoft.com/en-us/dotnet/api/microsoft.win32.registry.getvalue?view=dotnet-plat-ext-5.0#remarks", null);
             }
         }
 
@@ -93,7 +94,7 @@ namespace TsGui.Queries
             }
             catch (ManagementException e)
             {
-                throw new TsGuiKnownException("Registry query caused an error:" + Environment.NewLine + $"{this._root}\\{this._key}\\{this._value}", e.Message);
+                throw new KnownException("Registry query caused an error:" + Environment.NewLine + $"{this._root}\\{this._key}\\{this._value}", e.Message);
             }
 
             this._processed = true;

@@ -21,7 +21,7 @@
 
 using System;
 
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 
 namespace TsGui
 {

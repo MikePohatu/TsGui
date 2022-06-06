@@ -18,7 +18,7 @@
 #endregion
 using System;
 using System.Xml.Linq;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.Linking;
 
 namespace TsGui.Validation.StringMatching
@@ -34,12 +34,12 @@ namespace TsGui.Validation.StringMatching
 
             if (!double.TryParse(input, out inputnum))
             {
-                LoggerFacade.Warn("Failed to convert input to number: " + input);
+                Log.Warn("Failed to convert input to number: " + input);
                 return false;
             }
             if (!double.TryParse(this.Content, out rulenum))
             {
-                LoggerFacade.Warn("Failed to convert rule content to number: " + this.Content);
+                Log.Warn("Failed to convert rule content to number: " + this.Content);
                 return false;
             }
 
