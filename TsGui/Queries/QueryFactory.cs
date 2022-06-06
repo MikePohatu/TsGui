@@ -35,48 +35,52 @@ namespace TsGui.Queries
             xtype = InputXml.Attribute("Type");
             if (xtype != null)
             {
-                switch (xtype.Value)
+                switch (xtype.Value.ToLower())
                 {
-                    case "Wmi":
+                    case "wmi":
                         return new WmiQuery(InputXml, linktarget);
-                    case "GuiVariable":
+                    case "guivariable":
                         return new GuiVariableQuery(InputXml, linktarget);
-                    case "EnvironmentVariable":
+                    case "environmentvariable":
                         return new EnvironmentVariableQuery(InputXml, linktarget);
-                    case "OptionValue":
+                    case "optionvalue":
                         return new OptionValueQuery(InputXml, linktarget);
-                    case "IfElse":
+                    case "ifelse":
                         return new IfElseQuery(InputXml, linktarget);
-                    case "Combined":
+                    case "combined":
                         return new CombinedQuery(InputXml, linktarget);
-                    case "Compare":
+                    case "compare":
                         return new CompareQuery(InputXml, linktarget);
-                    case "Value":
+                    case "value":
                         return new ValueOnlyQuery(InputXml);
-                    case "ListValue":
+                    case "listvalue":
                         return new ListValueQuery(InputXml);
-                    case "LinkTo":
+                    case "linkto":
                         return GetLinkToQuery(InputXml.Value, linktarget);
                     //Set to true when source is true
-                    case "LinkTrue":
+                    case "linktrue":
                         return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, true, false);
                     //set to false when source is false
-                    case "LinkFalse":
+                    case "linkfalse":
                         return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, false, false);
                     //set to true when source is false
-                    case "NotLinkFalse":
+                    case "notlinkfalse":
                         return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, false, true);
                     //set to false when source is true
-                    case "NotLinkTrue":
+                    case "notlinktrue":
                         return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, true, true);
-                    case "ADGroupMembers":
+                    case "adgroupmembers":
                         return new ADGroupMembersQuery(InputXml, linktarget);
-                    case "ADOU":
+                    case "adou":
                         return new ADOrgUnitQuery(InputXml, linktarget);
-                    case "ADOUGroups":
+                    case "adougroups":
                         return new ADOrgUnitGroupsQuery(InputXml, linktarget);
-                    case "Registry":
+                    case "registry":
                         return new RegistryQuery(InputXml, linktarget);
+                    case "powershell":
+                        return new PoshQuery(InputXml, linktarget);
+                    case "posh":
+                        return new PoshQuery(InputXml, linktarget);
                     default:
                         throw new KnownException("Invalid type specified in query", InputXml.ToString());
                 }

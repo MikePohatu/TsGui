@@ -91,7 +91,7 @@ namespace WindowsHelpers
         private void Create(string script, string computerName, bool useSSL, int port, Credential cred)
         {
             bool credsSet = cred == null ? false : cred.CredentialsSet;
-            Log.Trace($"PoshHandler.GetRunner called. computerName:{computerName}, useSSL:{useSSL}, port:{port}, cred:{credsSet}");
+            Log.Trace($"PoshHandler.Create called. computerName:{computerName}, useSSL:{useSSL}, port:{port}, cred:{credsSet}");
             //create the creds
             PSCredential currentCred;
             if (credsSet)
