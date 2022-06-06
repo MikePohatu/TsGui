@@ -1,4 +1,4 @@
-<UserControl x:Class="TsGui.View.Layout.TsPageHeaderUI"
+﻿<UserControl x:Class="TsGui.View.Layout.TsPageHeaderUI"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -27,7 +27,7 @@
                                Source="{Binding Image.MultiImage.CurrentImage}" RenderOptions.BitmapScalingMode="Fant" 
                                Stretch="{Binding Image.StretchMode}" HorizontalAlignment="Right"/>
             </Grid>
-            <ContentPresenter x:Name="HeaderTablePresenter" Content="{Binding Table.Grid}" Margin="10,0,10,0"/>
+            <ContentPresenter x:Name="HeaderTablePresenter" Content="{Binding Table.Grid}" Margin="{Binding Formatting.Margin}" />
         </StackPanel>
     </Border>
 </UserControl>
