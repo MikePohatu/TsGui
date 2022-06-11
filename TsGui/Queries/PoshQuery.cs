@@ -9,12 +9,16 @@ using Core.Diagnostics;
 using TsGui.Linking;
 using System.Management.Automation;
 using WindowsHelpers;
+using Core.Logging;
 
 namespace TsGui.Queries
 {
     public class PoshQuery : BaseQuery
     {
         private string _scriptPath;
+        private bool _exceptionOnError = true;
+        private bool _exceptionOnMissingFile = true;
+
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
 
         public PoshQuery(ILinkTarget owner) : base(owner) { }
@@ -28,6 +32,9 @@ namespace TsGui.Queries
         {
             base.LoadXml(InputXml);
 
+            this._exceptionOnError = XmlHandler.GetBoolFromXElement(InputXml, "HaltOnError", this._exceptionOnError);
+            this._exceptionOnMissingFile = XmlHandler.GetBoolFromXElement(InputXml, "HaltOnMissing", this._exceptionOnError);
+
             this._scriptPath = InputXml.Element("Script")?.Value;
             //make sure there is a script to run
             if (string.IsNullOrEmpty(this._scriptPath)) { throw new InvalidOperationException("Script file is required: " + Environment.NewLine + InputXml); }
@@ -38,11 +45,12 @@ namespace TsGui.Queries
 
         public override async Task<ResultWrangler> ProcessQuery(Message message)
         {
-            //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
-            //New sublists are created for each management object in the wrangler. 
+            //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
             try
             {
-                if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
+                //Don't run each and every time unless specifically specified
+                if (this._processed == true && this._reprocess == false) { return this._returnwrangler; }
+                else if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
 
                 string script = string.Empty;
                 string scriptroot = AppDomain.CurrentDomain.BaseDirectory + @"\scripts\";
@@ -54,6 +62,18 @@ namespace TsGui.Queries
                 {
                     script = await IOHelpers.ReadFileAsync(scriptroot + this._scriptPath);
                 }
+                else
+                {
+                    if (this._exceptionOnMissingFile)
+                    {
+                        throw new KnownException($"PowerShell script not found: {this._scriptPath}", "File not found");
+                    }
+                    else
+                    {
+                        Log.Error($"PowerShell script not found: {this._scriptPath}");
+                        return null;
+                    }
+                }
 
                 using (var posh = new PoshHandler(script))
                 {
@@ -63,7 +83,14 @@ namespace TsGui.Queries
             }
             catch (Exception e)
             {
-                throw new KnownException("PowerShell query caused an error:" + Environment.NewLine + this._scriptPath, e.Message);
+                if (this._exceptionOnError)
+                {
+                    throw new KnownException($"PowerShell script {this._scriptPath} caused an error: {Environment.NewLine}", e.Message);
+                }
+                else
+                {
+                    Log.Error(e, $"PowerShell script {this._scriptPath} caused an error: {e.Message}");
+                }
             }
 
             this._processed = true;
