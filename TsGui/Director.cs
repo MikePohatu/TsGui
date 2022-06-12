@@ -42,6 +42,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using TsGui.Config;
 using System.Threading.Tasks;
+using TsGui.Scripts;
 
 namespace TsGui
 {
@@ -326,6 +327,8 @@ namespace TsGui
                 {
                     this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth));
                 }
+
+                ScriptLibrary.LoadXml(SourceXml);
 
                 //now read in the options and add to a dictionary for later use
                 pagesXml = SourceXml.Elements("Page");

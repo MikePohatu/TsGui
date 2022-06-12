@@ -6,23 +6,24 @@ using System.Management.Automation;
 using WindowsHelpers;
 using Core.Logging;
 using TsGui.Scripts;
+using System.Diagnostics;
 
 namespace TsGui.Scripts
 {
-    public class PoshScript: BaseScript, IScript
+    public class BatchScript: BaseScript, IScript
     {
-        public ScriptResult<PSDataCollection<PSObject>> Result { get; private set; }
+        public ScriptResult<string> Result { get; private set; }
 
-        public PoshScript(XElement InputXml) : base(InputXml) { }
+        public BatchScript(XElement InputXml): base(InputXml) { }
 
         /// <summary>
-        /// Run the posh script. Results can be consumed from the Result property when finished
+        /// Run the script. Results can be consumed from the Result property when finished
         /// </summary>
         /// <returns></returns>
         /// <exception cref="KnownException"></exception>
         public async Task RunScriptAsync()
         {
-            this.Result = new ScriptResult<PSDataCollection<PSObject>>();
+            this.Result = new ScriptResult<string>();
 
             //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
             try
@@ -41,30 +42,31 @@ namespace TsGui.Scripts
                 {
                     if (this._exceptionOnMissingFile)
                     {
-                        throw new KnownException($"PowerShell script not found: {this.Path}", "File not found");
+                        throw new KnownException($"Batch script not found: {this.Path}", "File not found");
                     }
                     else
                     {
-                        Log.Error($"PowerShell script not found: {this.Path}");
+                        Log.Error($"Batch script not found: {this.Path}");
                         return;
                     }
                 }
 
                 using (var posh = new PoshHandler(script))
                 {
-                    this.Result.ReturnedObject = await posh.InvokeRunnerAsync();
-                    this.Result.ReturnCode = 0;
+                    Process proc = AsyncHelpers.GetProcess(this.Path, this._params);
+                    this.Result.ReturnCode = await AsyncHelpers.StartProcessAsync(proc);
+                    this.Result.ReturnedObject = proc.StandardOutput.ReadToEnd();
                 }
             }
             catch (Exception e)
             {
                 if (this._exceptionOnError)
                 {
-                    throw new KnownException($"PowerShell script {this.Path} caused an error: {Environment.NewLine}", e.Message);
+                    throw new KnownException($"Batch script {this.Path} caused an error: {Environment.NewLine}", e.Message);
                 }
                 else
                 {
-                    Log.Error(e, $"PowerShell script {this.Path} caused an error: {e.Message}");
+                    Log.Error(e, $"Batch script {this.Path} caused an error: {e.Message}");
                 }
             }
         }

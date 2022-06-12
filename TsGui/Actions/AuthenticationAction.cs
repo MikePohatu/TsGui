@@ -19,6 +19,7 @@
 using TsGui.Authentication;
 using Core.Diagnostics;
 using System.Xml.Linq;
+using System.Threading.Tasks;
 
 namespace TsGui.Actions
 {
@@ -39,6 +40,12 @@ namespace TsGui.Actions
         public void RunAction()
         {
             this.Authenticator?.Authenticate();
+        }
+
+        public async Task RunActionAsync()
+        {
+            await Task.CompletedTask;
+            this.RunAction();
         }
 
         private void LoadXml(XElement inputxml)

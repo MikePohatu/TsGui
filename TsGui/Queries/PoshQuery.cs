@@ -10,7 +10,7 @@ using TsGui.Linking;
 using System.Management.Automation;
 using WindowsHelpers;
 using Core.Logging;
-using TsGui.Scipts;
+using TsGui.Scripts;
 
 namespace TsGui.Queries
 {
@@ -48,7 +48,8 @@ namespace TsGui.Queries
                 if (this._processed == true && this._reprocess == false) { return this._returnwrangler; }
                 else if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
 
-                var results = await this._script.RunScriptAsync();
+                await this._script.RunScriptAsync();
+                var results = this._script.Result.ReturnedObject;
                 this.AddPoshPropertiesToWrangler(this._processingwrangler, results, this._propertyTemplates);
                 this._processed = true;
             }

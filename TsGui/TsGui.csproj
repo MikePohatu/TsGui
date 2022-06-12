@@ -125,7 +125,12 @@
     <Compile Include="Queries\ListValueQuery.cs" />
     <Compile Include="Queries\PoshQuery.cs" />
     <Compile Include="Queries\RegistryQuery.cs" />
+    <Compile Include="Scripts\BaseScript.cs" />
+    <Compile Include="Scripts\BatchScript.cs" />
+    <Compile Include="Scripts\IScript.cs" />
     <Compile Include="Scripts\PoshScript.cs" />
+    <Compile Include="Scripts\ScriptFactory.cs" />
+    <Compile Include="Scripts\ScriptLibrary.cs" />
     <Compile Include="Scripts\ScriptResult.cs" />
     <Compile Include="Timers\GuiTimeout.cs" />
     <Compile Include="IDirector.cs" />
