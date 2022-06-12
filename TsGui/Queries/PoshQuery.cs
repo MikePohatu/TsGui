@@ -10,12 +10,13 @@ using TsGui.Linking;
 using System.Management.Automation;
 using WindowsHelpers;
 using Core.Logging;
+using TsGui.Scipts;
 
 namespace TsGui.Queries
 {
     public class PoshQuery : BaseQuery
     {
-        private string _scriptPath;
+        private PoshScript _script;
         private bool _exceptionOnError = true;
         private bool _exceptionOnMissingFile = true;
 
@@ -32,12 +33,7 @@ namespace TsGui.Queries
         {
             base.LoadXml(InputXml);
 
-            this._exceptionOnError = XmlHandler.GetBoolFromXElement(InputXml, "HaltOnError", this._exceptionOnError);
-            this._exceptionOnMissingFile = XmlHandler.GetBoolFromXElement(InputXml, "HaltOnMissing", this._exceptionOnError);
-
-            this._scriptPath = InputXml.Element("Script")?.Value;
-            //make sure there is a script to run
-            if (string.IsNullOrEmpty(this._scriptPath)) { throw new InvalidOperationException("Script file is required: " + Environment.NewLine + InputXml); }
+            this._script = new PoshScript(InputXml);
             this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
             this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
@@ -52,48 +48,23 @@ namespace TsGui.Queries
                 if (this._processed == true && this._reprocess == false) { return this._returnwrangler; }
                 else if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
 
-                string script = string.Empty;
-                string scriptroot = AppDomain.CurrentDomain.BaseDirectory + @"\scripts\";
-                if (System.IO.File.Exists(this._scriptPath))
-                {
-                    script = await IOHelpers.ReadFileAsync(this._scriptPath);
-                }
-                else if (System.IO.File.Exists(scriptroot + this._scriptPath))
-                {
-                    script = await IOHelpers.ReadFileAsync(scriptroot + this._scriptPath);
-                }
-                else
-                {
-                    if (this._exceptionOnMissingFile)
-                    {
-                        throw new KnownException($"PowerShell script not found: {this._scriptPath}", "File not found");
-                    }
-                    else
-                    {
-                        Log.Error($"PowerShell script not found: {this._scriptPath}");
-                        return null;
-                    }
-                }
-
-                using (var posh = new PoshHandler(script))
-                {
-                    var results = await posh.InvokeRunnerAsync();
-                    this.AddPoshPropertiesToWrangler(this._processingwrangler, results, this._propertyTemplates);
-                }
+                var results = await this._script.RunScriptAsync();
+                this.AddPoshPropertiesToWrangler(this._processingwrangler, results, this._propertyTemplates);
+                this._processed = true;
             }
             catch (Exception e)
             {
                 if (this._exceptionOnError)
                 {
-                    throw new KnownException($"PowerShell script {this._scriptPath} caused an error: {Environment.NewLine}", e.Message);
+                    throw new KnownException($"PowerShell query {this._script.Path} caused an error: {Environment.NewLine}", e.Message);
                 }
                 else
                 {
-                    Log.Error(e, $"PowerShell script {this._scriptPath} caused an error: {e.Message}");
+                    Log.Error(e, $"PowerShell query {this._script.Path} caused an error: {e.Message}");
                 }
             }
 
-            this._processed = true;
+            
             if (this.ShouldIgnore(this._processingwrangler.GetString()) == false)
             { this._returnwrangler = this._processingwrangler; }
             else { this._returnwrangler = null; }
@@ -103,6 +74,8 @@ namespace TsGui.Queries
 
         private void AddPoshPropertiesToWrangler(ResultWrangler Wrangler, PSDataCollection<PSObject> results, List<KeyValuePair<string, XElement>> PropertyTemplates)
         {
+            if (results == null) { return; }
+
             foreach (PSObject result in results)
             {
                 Wrangler.NewResult();

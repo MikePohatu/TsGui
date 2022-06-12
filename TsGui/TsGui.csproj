@@ -87,6 +87,7 @@
     <Compile Include="Actions\AuthenticationAction.cs" />
     <Compile Include="Actions\ActionFactory.cs" />
     <Compile Include="Actions\IAction.cs" />
+    <Compile Include="Actions\PoshAction.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -124,6 +125,8 @@
     <Compile Include="Queries\ListValueQuery.cs" />
     <Compile Include="Queries\PoshQuery.cs" />
     <Compile Include="Queries\RegistryQuery.cs" />
+    <Compile Include="Scripts\PoshScript.cs" />
+    <Compile Include="Scripts\ScriptResult.cs" />
     <Compile Include="Timers\GuiTimeout.cs" />
     <Compile Include="IDirector.cs" />
     <Compile Include="Options\OptionDelegates.cs" />

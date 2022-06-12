@@ -436,7 +436,6 @@ namespace WindowsHelpers
         public void Dispose()
         {
             this.Runner?.Dispose();
-            this.Results?.Dispose();
         }
     }
 }
