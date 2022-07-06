@@ -204,9 +204,9 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
-            this.ControlFormatting.Margin = new Thickness(2, 1, 2, 1);
-            this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
+            this.ControlStyle.Padding = new Thickness(0, 0, 0, 0);
+            this.ControlStyle.Margin = new Thickness(2, 1, 2, 1);
+            this.ControlStyle.VerticalAlignment = VerticalAlignment.Center;
             this.IconHeight = 15;
             this.IconWidth = 15;
             this._showvalueinpopup = false;
@@ -225,16 +225,16 @@ namespace TsGui.View.GuiOptions
                 switch (s)
                 {
                     case "RIGHT":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Right;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Right;
                         break;
                     case "LEFT":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Left;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Left;
                         break;
                     case "CENTER":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Center;
                         break;
                     case "STRETCH":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Stretch;
                         break;
                     default:
                         break;

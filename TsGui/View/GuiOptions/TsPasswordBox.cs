@@ -104,8 +104,8 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
-            this.ControlFormatting.Padding = new Thickness(this.ControlFormatting.Padding.Left + 1);
+            this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.ControlStyle.Padding = new Thickness(this.ControlStyle.Padding.Left + 1);
             this.LabelText = "Password:";
         }
 
@@ -136,8 +136,8 @@ namespace TsGui.View.GuiOptions
             if (this._authenticator.State == AuthState.Authorised)
             {
                 this._validationtooltiphandler.Clear();
-                this.ControlFormatting.BorderBrush = _greenbrush;
-                this.ControlFormatting.MouseOverBorderBrush = _hovergreenbrush;
+                this.ControlStyle.BorderBrush = _greenbrush;
+                this.ControlStyle.MouseOverBorderBrush = _hovergreenbrush;
             }
             else if (this._authenticator.State == AuthState.NoPassword)
             {
@@ -198,8 +198,8 @@ namespace TsGui.View.GuiOptions
         //First state change needs the borderbrush thickness to be changed. Takes some thickness from padding and put it onto borderthickness
         private void FirstStateChange()
         {
-            this.ControlFormatting.Padding = new Thickness(this.ControlFormatting.Padding.Left - 1);
-            this.ControlFormatting.BorderThickness = new Thickness(this.ControlFormatting.BorderThickness.Left + 1);
+            this.ControlStyle.Padding = new Thickness(this.ControlStyle.Padding.Left - 1);
+            this.ControlStyle.BorderThickness = new Thickness(this.ControlStyle.BorderThickness.Left + 1);
             this._authenticator.AuthStateChanged -= this.FirstStateChange;
         }
 

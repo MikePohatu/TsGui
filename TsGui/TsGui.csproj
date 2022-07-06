@@ -346,7 +346,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="View\Layout\Formatting.cs" />
+    <Compile Include="View\Layout\Style.cs" />
     <Page Include="Diagnostics\TestingWindowUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

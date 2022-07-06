@@ -88,7 +88,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            ControlDefaults.SetButtonDefaults(this.ControlFormatting);
+            ControlDefaults.SetButtonDefaults(this.ControlStyle);
             this.ButtonText = "Refresh";
         }
 

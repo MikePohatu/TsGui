@@ -12,10 +12,10 @@
 	<Page>
 		<Row>
 			<Column>
-				<Formatting>
+				<Style>
 					<LeftCellWidth>110</LeftCellWidth>
 					<RightCellWidth>160</RightCellWidth>
-				</Formatting>
+				</Style>
 				
 				<!-- This checkbox is used as a toggle for the compliance checks below. If photoshop is installed
 				the minimum memory requirement is higher -->
@@ -138,9 +138,9 @@
 				options on the page -->
 				<GuiOption Type="ComplianceRefreshButton">
 					<ButtonText>Refresh</ButtonText>
-					<Formatting>
+					<Style>
 						<LabelOnRight>TRUE</LabelOnRight>
-					</Formatting>
+					</Style>
 					<HAlign>left</HAlign>
 				</GuiOption>
 			</Column>

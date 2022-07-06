@@ -121,7 +121,7 @@ namespace TsGui.View.Layout
             this.ShowGridLines = Director.Instance.ShowGridLines;
             this.SetDefaults();
 
-            this.Formatting.Height = Template.Formatting.Height;
+            this.Style.Height = Template.Style.Height;
             this.Title = Template.Title;
             this.Text = Template.Text;
             this.FontColor = Template.FontColor;
@@ -129,7 +129,7 @@ namespace TsGui.View.Layout
             this.Image = Template.Image;
             this.TitleFontSize = Template.TitleFontSize;
             this.TextFontSize = Template.TextFontSize;
-            this.Formatting.Margin = Template.Formatting.Margin;
+            this.Style.Margin = Template.Style.Margin;
 
             this.Init(SourceXml);
         }
@@ -169,15 +169,15 @@ namespace TsGui.View.Layout
         {
             if (Director.Instance.UseTouchDefaults)
             {
-                this.Formatting.Margin = new Thickness(10, 10, 10, 10);
-                this.Formatting.Height = 65;
+                this.Style.Margin = new Thickness(10, 10, 10, 10);
+                this.Style.Height = 65;
                 this.TitleFontSize = 14;
                 this.TextFontSize = 12;
             }
             else
             {
-                this.Formatting.Margin = new Thickness(10, 5, 10, 5);
-                this.Formatting.Height = 50;
+                this.Style.Margin = new Thickness(10, 5, 10, 5);
+                this.Style.Height = 50;
                 this.TitleFontSize = 13;
                 this.TextFontSize = 12;
             }
@@ -205,7 +205,7 @@ namespace TsGui.View.Layout
                 this.Title = XmlHandler.GetStringFromXElement(InputXml, "Title", this.Title);
                 this.Text = XmlHandler.GetStringFromXElement(InputXml, "Text", this.Text);
                 this.FontColor = XmlHandler.GetSolidColorBrushFromXElement(InputXml, "TextColor", this.FontColor);
-                this.Formatting.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Formatting.Height);
+                this.Style.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Style.Height);
 
                 x = InputXml.Element("Image");
                 if (x != null) { this.Image = new Image(x); }

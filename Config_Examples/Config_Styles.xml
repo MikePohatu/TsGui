@@ -6,7 +6,7 @@
 
 	<Heading>
 		<Title>TsGui</Title>
-		<Text>Formatting</Text>
+		<Text>Style</Text>
 	</Heading>
 
 	<WindowLocation>
@@ -21,7 +21,7 @@
 		<Cancel>=Cancel=</Cancel>
 		<Finish>=Finish=</Finish>
 
-		<Formatting>
+		<Style>
 			<!--<Width>Auto</Width>
 			<Height>Auto</Height>-->
 			<CornerRadius>5</CornerRadius>
@@ -32,21 +32,21 @@
 				<Style>Normal</Style>				<!-- Options available: Normal, Italic, Oblique -->
 				<Color>Black</Color>
 			</Font>
-		</Formatting>
+		</Style>
 	</Buttons>
 
 	<Page>
 		<Row>
 			<Column>
-				<Formatting>
+				<Style>
 					<LeftCellWidth>110</LeftCellWidth>
 					<RightCellWidth>160</RightCellWidth>
-				</Formatting>
+				</Style>
 
 				<GuiOption Type="ComputerName">
 
-					<!-- The Formatting XML block. This can be used at any layer from the Page down to the GuiOption, with options inherited down the tree -->
-					<Formatting>
+					<!-- The Style XML block. This can be used at any layer from the Page down to the GuiOption, with options inherited down the tree -->
+					<Style>
 						<LabelOnRight>FALSE</LabelOnRight>
 						<LeftCellWidth>110</LeftCellWidth>
 						<RightCellWidth>160</RightCellWidth>
@@ -81,7 +81,7 @@
 						<Control>
 							<!-- All options listed above for the Label and also valid for the Control -->
 						</Control>
-					</Formatting>
+					</Style>
 				</GuiOption>
 			</Column>
 		</Row>

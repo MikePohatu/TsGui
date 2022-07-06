@@ -24,7 +24,7 @@ namespace TsGui.View.Layout
 {
     public static class ControlDefaults
     {
-        public static void SetButtonDefaults(Formatting formatting)
+        public static void SetButtonDefaults(Style formatting)
         {
             formatting.VerticalAlignment = VerticalAlignment.Center;
             formatting.VerticalContentAlignment = VerticalAlignment.Center;

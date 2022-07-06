@@ -11,10 +11,10 @@
 	<Page>
 		<Row>
 			<Column>
-				<Formatting>
+				<Style>
 					<LeftCellWidth>200</LeftCellWidth>
 					<RightCellWidth>100</RightCellWidth>
-				</Formatting>
+				</Style>
 				
 				<GuiOption Type="ComputerName" ID="link_name"/> <!-- The ID attribute is used to identify a linking source -->
 						
@@ -100,10 +100,10 @@
 							</ELSE>
 						</Query>
 					</SetValue>
-					<Formatting>
+					<Style>
 						<LeftCellWidth>250</LeftCellWidth>
 						<RightCellWidth>50</RightCellWidth>
-					</Formatting>
+					</Style>
 				</GuiOption>
 				
 				

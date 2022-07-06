@@ -74,10 +74,10 @@ namespace TsGui.View.GuiOptions.CollectionViews
             {
                 //Changing the editable value on the combobox changes the inner control which has a different padding. 
                 //Tweak the left padding value to correct for this
-                Thickness pad = this.ControlFormatting.Padding;
+                Thickness pad = this.ControlStyle.Padding;
                 double newleft = System.Math.Max(pad.Left - 2, 0);
                 Thickness newpad = new Thickness(newleft, pad.Top, pad.Right, pad.Bottom);
-                this.ControlFormatting.Padding = newpad;
+                this.ControlStyle.Padding = newpad;
             }
         }
 

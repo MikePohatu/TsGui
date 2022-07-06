@@ -106,7 +106,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 //read in an option and add to a dictionary for later use
                 if (x.Name == "Option")
                 {
-                    ListItem newoption = new ListItem(x, this._parent.ControlFormatting, this._parent);
+                    ListItem newoption = new ListItem(x, this._parent.ControlStyle, this._parent);
                     this.Add(newoption);
                 }
 
@@ -124,7 +124,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         public ListItem CreateItem(KeyValueTreeNode node)
         {
-            ListItem newitem = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent);
+            ListItem newitem = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlStyle, this._parent);
 
             foreach (KeyValueTreeNode subnode in node.Nodes)
             {

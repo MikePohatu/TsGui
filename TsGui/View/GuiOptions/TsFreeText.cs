@@ -139,7 +139,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
 
         public new void LoadXml(XElement InputXml)

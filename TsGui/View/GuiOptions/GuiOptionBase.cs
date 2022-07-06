@@ -97,7 +97,7 @@ namespace TsGui.View.GuiOptions
             //load legacy
             XElement x;
             x = InputXml.Element("Bold");
-            if (x != null) { this.LabelFormatting.FontWeight = "Bold"; }
+            if (x != null) { this.LabelStyle.FontWeight = "Bold"; }
 
             //path and variable can be set either as an element, or an attribute
             this.Path = XmlHandler.GetStringFromXElement(InputXml, "Path", this.Path);

@@ -49,9 +49,9 @@ namespace TsGui.Validation
             Director.Instance.WindowLoaded += OnWindowLoaded;
 
             //record the default colors
-            this._borderbrush = this._guioption.ControlFormatting.BorderBrush;
-            this._mouseoverborderbrush = this._guioption.ControlFormatting.MouseOverBorderBrush;
-            this._focusborderbrush = this._guioption.ControlFormatting.FocusedBorderBrush;
+            this._borderbrush = this._guioption.ControlStyle.BorderBrush;
+            this._mouseoverborderbrush = this._guioption.ControlStyle.MouseOverBorderBrush;
+            this._focusborderbrush = this._guioption.ControlStyle.FocusedBorderBrush;
 
             this._validationerrortooltip = new ValidationErrorToolTip();
             this._validationerrortooltip.PlacementTarget = this._guioption.UserControl;
@@ -73,9 +73,9 @@ namespace TsGui.Validation
         public void Clear()
         {
             this._validationerrortooltip.IsOpen = false;
-            this._guioption.ControlFormatting.BorderBrush = this._borderbrush;
-            this._guioption.ControlFormatting.MouseOverBorderBrush = this._mouseoverborderbrush;
-            this._guioption.ControlFormatting.FocusedBorderBrush = this._focusborderbrush;
+            this._guioption.ControlStyle.BorderBrush = this._borderbrush;
+            this._guioption.ControlStyle.MouseOverBorderBrush = this._mouseoverborderbrush;
+            this._guioption.ControlStyle.FocusedBorderBrush = this._focusborderbrush;
             this._active = false;
         }
 
@@ -83,9 +83,9 @@ namespace TsGui.Validation
         {
             this._validationerrortooltip.IsOpen = true;
             this.SetPlacement();
-            this._guioption.ControlFormatting.BorderBrush = _redbrush;
-            this._guioption.ControlFormatting.MouseOverBorderBrush = _redbrush;
-            this._guioption.ControlFormatting.FocusedBorderBrush = _redbrush;
+            this._guioption.ControlStyle.BorderBrush = _redbrush;
+            this._guioption.ControlStyle.MouseOverBorderBrush = _redbrush;
+            this._guioption.ControlStyle.FocusedBorderBrush = _redbrush;
             this._active = true;
             this.UpdateArrows();
         }

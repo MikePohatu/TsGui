@@ -16,10 +16,10 @@ ADSI must be added to WinPE. This is not supported by Microsoft. See for an exam
 
   <Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="domain.local"/>
 
-  <Formatting>
+  <Style>
     <LeftCellWidth>100</LeftCellWidth>
     <RightCellWidth>250</RightCellWidth>
-  </Formatting>
+  </Style>
 
   <Page>
     <Row>
@@ -72,11 +72,11 @@ ADSI must be added to WinPE. This is not supported by Microsoft. See for an exam
             <Property Name="Name"/>
           </Query>
 
-          <Formatting>
+          <Style>
             <Control>
               <Height>100</Height>
             </Control>
-          </Formatting>
+          </Style>
         </GuiOption>
       </Column>
     </Row>

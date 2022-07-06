@@ -75,10 +75,10 @@ namespace TsGui.View.GuiOptions
         {
             this.RightCellWidth = this.LeftCellWidth + this.RightCellWidth;
             this.LeftCellWidth = 0;            
-            this.ControlFormatting.Padding = new Thickness(0);
-            this.ControlFormatting.Margin = new Thickness(0);
-            this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
+            this.ControlStyle.Padding = new Thickness(0);
+            this.ControlStyle.Margin = new Thickness(0);
+            this.ControlStyle.VerticalAlignment = VerticalAlignment.Center;
+            this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
         public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }

@@ -232,7 +232,7 @@
     </UserControl.Resources>
 
     <ComboBox x:Name="Control" ItemsSource="{Binding VisibleOptions}" SelectedItem="{Binding CurrentItem, Mode=TwoWay}" 
-              SelectedValuePath="Value" Foreground="{Binding ControlFormatting.FontColorBrush}" 
+              SelectedValuePath="Value" Foreground="{Binding ControlStyle.FontColorBrush}" 
               IsEditable="{Binding IsEditable}" IsReadOnly="{Binding IsReadOnly}" Style="{StaticResource ControlStyle}" Template="{DynamicResource DropDownListControlTemplate}">
         <ComboBox.ItemTemplate>
             <DataTemplate>

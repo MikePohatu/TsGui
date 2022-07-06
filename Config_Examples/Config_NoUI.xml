@@ -15,10 +15,10 @@ from your NoUI section. -->
 	<Page>
 		<Row>
 			<Column>
-				<Formatting>
+				<Style>
 					<LeftCellWidth>110</LeftCellWidth>
 					<RightCellWidth>160</RightCellWidth>
-				</Formatting>
+				</Style>
 				
 				<GuiOption Type="ComputerName" />
 				

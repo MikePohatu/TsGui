@@ -47,10 +47,10 @@ Query types:
 	<Page>
 		<Row>
 			<Column>
-				<Formatting>
+				<Style>
 					<LeftCellWidth>150</LeftCellWidth>
 					<RightCellWidth>250</RightCellWidth>
-				</Formatting>
+				</Style>
 
 				<!-- ComputerName option with custom default value set -->
 				<GuiOption Type="ComputerName">
@@ -233,11 +233,11 @@ Query types:
 							</Query>
 						</Query>
 					</SetValue>
-					<Formatting>
+					<Style>
 						<Label>
 							<VerticalAlignment>Top</VerticalAlignment>
 						</Label>
-					</Formatting>
+					</Style>
 				</GuiOption>
 
 				<!-- Traffic light using a Compare query, used for string comparison. 

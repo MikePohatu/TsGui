@@ -30,11 +30,11 @@
   <Page>
     <Row>
       <Column>
-        <Formatting>
+        <Style>
           <Width>280</Width>
           <LeftCellWidth>110</LeftCellWidth>
           <RightCellWidth>160</RightCellWidth>
-        </Formatting>
+        </Style>
 
         <!-- GuiOptions -->
         <GuiOption Type="ComputerName" />

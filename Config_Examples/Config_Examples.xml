@@ -56,11 +56,11 @@ GuiOption types:
   <Page>
     <Row>
       <Column>
-        <Formatting>
+        <Style>
           <Width>280</Width>
           <LeftCellWidth>110</LeftCellWidth>
           <RightCellWidth>160</RightCellWidth>
-        </Formatting>
+        </Style>
 
         <!-- GuiOptions -->
         <GuiOption Type="ComputerName" />
@@ -103,10 +103,10 @@ GuiOption types:
 
       <!-- **** Advanced config options  **** -->
       <Column>
-        <Formatting>
+        <Style>
           <LeftCellWidth>110</LeftCellWidth>
           <RightCellWidth>160</RightCellWidth>
-        </Formatting>
+        </Style>
 
         <GuiOption Type="Heading">
           <Label>Additional Info</Label>
@@ -166,11 +166,11 @@ GuiOption types:
     </Heading>
     <Row>
       <Column>
-        <Formatting>
+        <Style>
           <Width>360</Width>
           <LeftCellWidth>150</LeftCellWidth>
           <RightCellWidth>200</RightCellWidth>
-        </Formatting>
+        </Style>
 
         <!-- GuiOptions -->
 

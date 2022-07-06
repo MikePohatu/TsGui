@@ -182,15 +182,15 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this._nodefaultvalue = false;
             this._noselectionmessage = "Please select a value";
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Stretch;
 
             if (Director.Instance.UseTouchDefaults)
             {
-                this.ControlFormatting.Padding = new Thickness(6, 5, 2, 5);
+                this.ControlStyle.Padding = new Thickness(6, 5, 2, 5);
             }
             else
             {
-                this.ControlFormatting.Padding = new Thickness(6, 2, 2, 3);
+                this.ControlStyle.Padding = new Thickness(6, 2, 2, 3);
             }
         }
 

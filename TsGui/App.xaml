@@ -11,18 +11,18 @@
             <Converters:XmlStringLineConverter x:Key="XmlStringLine"/>
 
             <Style x:Key="LabelStyle" TargetType="Label">
-                <Setter Property="Control.Height" Value="{Binding LabelFormatting.Height}"/>
-                <Setter Property="Control.Width" Value="{Binding LabelFormatting.Width}"/>
-                <Setter Property="Control.Margin" Value="{Binding LabelFormatting.Margin}"/>
-                <Setter Property="Control.VerticalAlignment" Value="{Binding LabelFormatting.VerticalAlignment}"/>
-                <Setter Property="Control.HorizontalAlignment" Value="{Binding LabelFormatting.HorizontalAlignment}"/>
-                <Setter Property="Control.HorizontalContentAlignment" Value="{Binding LabelFormatting.HorizontalContentAlignment}"/>
-                <Setter Property="Control.VerticalContentAlignment" Value="{Binding LabelFormatting.VerticalContentAlignment}"/>
-                <Setter Property="Control.Padding" Value="{Binding LabelFormatting.Padding}"/>
-                <Setter Property="Control.FontWeight" Value="{Binding Path=LabelFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
-                <Setter Property="Control.FontStyle" Value="{Binding Path=LabelFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
-                <Setter Property="Control.FontSize" Value="{Binding LabelFormatting.FontSize}"/>
-                <Setter Property="Foreground" Value="{Binding LabelFormatting.FontColorBrush}"/>
+                <Setter Property="Control.Height" Value="{Binding LabelStyle.Height}"/>
+                <Setter Property="Control.Width" Value="{Binding LabelStyle.Width}"/>
+                <Setter Property="Control.Margin" Value="{Binding LabelStyle.Margin}"/>
+                <Setter Property="Control.VerticalAlignment" Value="{Binding LabelStyle.VerticalAlignment}"/>
+                <Setter Property="Control.HorizontalAlignment" Value="{Binding LabelStyle.HorizontalAlignment}"/>
+                <Setter Property="Control.HorizontalContentAlignment" Value="{Binding LabelStyle.HorizontalContentAlignment}"/>
+                <Setter Property="Control.VerticalContentAlignment" Value="{Binding LabelStyle.VerticalContentAlignment}"/>
+                <Setter Property="Control.Padding" Value="{Binding LabelStyle.Padding}"/>
+                <Setter Property="Control.FontWeight" Value="{Binding Path=LabelStyle.FontWeight, Converter={StaticResource FontWeight}}"/>
+                <Setter Property="Control.FontStyle" Value="{Binding Path=LabelStyle.FontStyle, Converter={StaticResource FontStyle}}"/>
+                <Setter Property="Control.FontSize" Value="{Binding LabelStyle.FontSize}"/>
+                <Setter Property="Foreground" Value="{Binding LabelStyle.FontColorBrush}"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Label}">
@@ -43,17 +43,17 @@
             </Style>
 
             <Style x:Key="ControlStyle">
-                <Setter Property="Control.Height" Value="{Binding ControlFormatting.Height}"/>
-                <Setter Property="Control.Width" Value="{Binding ControlFormatting.Width}"/>
-                <Setter Property="Control.Margin" Value="{Binding ControlFormatting.Margin}"/>
-                <Setter Property="Control.Padding" Value="{Binding ControlFormatting.Padding}"/>
-                <Setter Property="Control.VerticalAlignment" Value="{Binding ControlFormatting.VerticalAlignment}"/>
-                <Setter Property="Control.HorizontalAlignment" Value="{Binding ControlFormatting.HorizontalAlignment}"/>
-                <Setter Property="Control.HorizontalContentAlignment" Value="{Binding ControlFormatting.HorizontalContentAlignment}"/>
-                <Setter Property="Control.VerticalContentAlignment" Value="{Binding ControlFormatting.VerticalContentAlignment}"/>
-                <Setter Property="Control.FontWeight" Value="{Binding Path=ControlFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
-                <Setter Property="Control.FontStyle" Value="{Binding Path=ControlFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
-                <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
+                <Setter Property="Control.Height" Value="{Binding ControlStyle.Height}"/>
+                <Setter Property="Control.Width" Value="{Binding ControlStyle.Width}"/>
+                <Setter Property="Control.Margin" Value="{Binding ControlStyle.Margin}"/>
+                <Setter Property="Control.Padding" Value="{Binding ControlStyle.Padding}"/>
+                <Setter Property="Control.VerticalAlignment" Value="{Binding ControlStyle.VerticalAlignment}"/>
+                <Setter Property="Control.HorizontalAlignment" Value="{Binding ControlStyle.HorizontalAlignment}"/>
+                <Setter Property="Control.HorizontalContentAlignment" Value="{Binding ControlStyle.HorizontalContentAlignment}"/>
+                <Setter Property="Control.VerticalContentAlignment" Value="{Binding ControlStyle.VerticalContentAlignment}"/>
+                <Setter Property="Control.FontWeight" Value="{Binding Path=ControlStyle.FontWeight, Converter={StaticResource FontWeight}}"/>
+                <Setter Property="Control.FontStyle" Value="{Binding Path=ControlStyle.FontStyle, Converter={StaticResource FontStyle}}"/>
+                <Setter Property="Control.FontSize" Value="{Binding ControlStyle.FontSize}"/>
             </Style>
 
             <Style x:Key="TrafficLightStyle">
@@ -63,8 +63,8 @@
             </Style>
 
             <Style x:Key="ContentControlStyle" TargetType="ContentControl" BasedOn="{StaticResource ControlStyle}">
-                <Setter Property="Foreground" Value="{Binding ControlFormatting.FontColorBrush}"/>
-                <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
+                <Setter Property="Foreground" Value="{Binding ControlStyle.FontColorBrush}"/>
+                <Setter Property="Control.FontSize" Value="{Binding ControlStyle.FontSize}"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ContentControl}">
@@ -86,20 +86,20 @@
             </Style>
 
             <Style x:Key="FreeTextStyle" TargetType="TextBox" BasedOn="{StaticResource ControlStyle}">
-                <Setter Property="TextAlignment" Value="{Binding ControlFormatting.TextAlignment}"/>
+                <Setter Property="TextAlignment" Value="{Binding ControlStyle.TextAlignment}"/>
                 <Setter Property="MaxLength" Value="{Binding MaxLength}"/>
-                <Setter Property="Foreground" Value="{Binding ControlFormatting.FontColorBrush}"/>
-                <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
+                <Setter Property="Foreground" Value="{Binding ControlStyle.FontColorBrush}"/>
+                <Setter Property="Control.FontSize" Value="{Binding ControlStyle.FontSize}"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TextBox}">
-                            <Border Name="Border" BorderBrush="{Binding ControlFormatting.BorderBrush}" BorderThickness="{Binding ControlFormatting.BorderThickness}"
+                            <Border Name="Border" BorderBrush="{Binding ControlStyle.BorderBrush}" BorderThickness="{Binding ControlStyle.BorderThickness}"
                                     Background="White">
                                 <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="TextBox.IsMouseOver" Value="True">
-                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding ControlFormatting.MouseOverBorderBrush}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding ControlStyle.MouseOverBorderBrush}"/>
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Opacity" TargetName="Border" Value="0.56"/>
@@ -113,18 +113,18 @@
 
             <Style x:Key="PasswordBoxStyle" TargetType="PasswordBox" BasedOn="{StaticResource ControlStyle}">
                 <Setter Property="MaxLength" Value="{Binding MaxLength}"/>
-                <Setter Property="Foreground" Value="{Binding ControlFormatting.FontColorBrush}"/>
-                <Setter Property="Control.FontSize" Value="{Binding ControlFormatting.FontSize}"/>
+                <Setter Property="Foreground" Value="{Binding ControlStyle.FontColorBrush}"/>
+                <Setter Property="Control.FontSize" Value="{Binding ControlStyle.FontSize}"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type PasswordBox}">
-                            <Border Name="Border" BorderBrush="{Binding ControlFormatting.BorderBrush}" BorderThickness="{Binding ControlFormatting.BorderThickness}"
+                            <Border Name="Border" BorderBrush="{Binding ControlStyle.BorderBrush}" BorderThickness="{Binding ControlStyle.BorderThickness}"
                                     Background="White">
                                 <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="PasswordBox.IsMouseOver" Value="True">
-                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding ControlFormatting.MouseOverBorderBrush}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding ControlStyle.MouseOverBorderBrush}"/>
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Opacity" TargetName="Border" Value="0.56"/>
@@ -143,16 +143,16 @@
                 <Setter Property="Control.Padding" Value="0"/>
                 <Setter Property="Control.VerticalAlignment" Value="Stretch"/>
                 <Setter Property="Control.HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="Control.HorizontalContentAlignment" Value="{Binding ItemFormatting.HorizontalContentAlignment}"/>
-                <Setter Property="Control.VerticalContentAlignment" Value="{Binding ItemFormatting.VerticalContentAlignment}"/>
-                <Setter Property="Foreground" Value="{Binding ItemFormatting.FontColorBrush}"/>
-                <Setter Property="Control.FontWeight" Value="{Binding Path=ItemFormatting.FontWeight, Converter={StaticResource FontWeight}}"/>
-                <Setter Property="Control.FontStyle" Value="{Binding Path=ItemFormatting.FontStyle, Converter={StaticResource FontStyle}}"/>
-                <Setter Property="Control.FontSize" Value="{Binding ItemFormatting.FontSize}"/>
+                <Setter Property="Control.HorizontalContentAlignment" Value="{Binding ItemStyle.HorizontalContentAlignment}"/>
+                <Setter Property="Control.VerticalContentAlignment" Value="{Binding ItemStyle.VerticalContentAlignment}"/>
+                <Setter Property="Foreground" Value="{Binding ItemStyle.FontColorBrush}"/>
+                <Setter Property="Control.FontWeight" Value="{Binding Path=ItemStyle.FontWeight, Converter={StaticResource FontWeight}}"/>
+                <Setter Property="Control.FontStyle" Value="{Binding Path=ItemStyle.FontStyle, Converter={StaticResource FontStyle}}"/>
+                <Setter Property="Control.FontSize" Value="{Binding ItemStyle.FontSize}"/>
             </Style>
             
             <ControlTemplate x:Key="ButtonControlTemplate" TargetType="{x:Type ButtonBase}">
-                <Border x:Name="border" CornerRadius="{Binding ControlFormatting.CornerRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <Border x:Name="border" CornerRadius="{Binding ControlStyle.CornerRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                     <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                 </Border>
                 <ControlTemplate.Triggers>

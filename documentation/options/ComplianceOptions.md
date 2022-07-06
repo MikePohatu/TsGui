@@ -30,7 +30,7 @@ Full example configuration file is available in the [example file](/Config_Examp
 ---
 
 ## Compliance Configuration
-A compliance GuiOption is configured in the normal way to set it's value using the ```<SetValue>``` element. Variable name, label, and formatting are also set in the normal way. 
+A compliance GuiOption is configured in the normal way to set it's value using the ```<SetValue>``` element. Variable name, label, and style are also set in the normal way. 
 
 To create the compliance evaluation of the current value, you need to add one or ```<Compliance>``` elements to your GuiOption, which will look something like below:
 

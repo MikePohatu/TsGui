@@ -158,7 +158,7 @@ namespace TsGui.View.GuiOptions
             if (Director.Instance.UseTouchDefaults == true)
             {
                 this.CbBorderMargin = new Thickness(1,2,1,2);
-                this.ControlFormatting.Margin = new Thickness(5);
+                this.ControlStyle.Margin = new Thickness(5);
                 this._checkboxui.CbBorder.TouchDown += this.OnBorderTouched;
                 this._checkboxui.CbBorder.MouseLeftButtonDown += this.OnBorderTouched;
                 this._checkboxui.CbBorder.BorderThickness = new Thickness(1);
@@ -167,12 +167,12 @@ namespace TsGui.View.GuiOptions
             }
             else
             {
-                this.ControlFormatting.Margin = new Thickness(1);
+                this.ControlStyle.Margin = new Thickness(1);
             }
-            this.ControlFormatting.Padding = new Thickness(0);
-            this.ControlFormatting.HorizontalContentAlignment = HorizontalAlignment.Center;
-            this.ControlFormatting.VerticalContentAlignment = VerticalAlignment.Center;
-            this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
+            this.ControlStyle.Padding = new Thickness(0);
+            this.ControlStyle.HorizontalContentAlignment = HorizontalAlignment.Center;
+            this.ControlStyle.VerticalContentAlignment = VerticalAlignment.Center;
+            this.ControlStyle.VerticalAlignment = VerticalAlignment.Center;
         }
 
         private void LoadLegacyXml(XElement InputXml)
@@ -186,16 +186,16 @@ namespace TsGui.View.GuiOptions
                 switch (s)
                 {
                     case "RIGHT":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Right;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Right;
                         break;
                     case "LEFT":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Left;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Left;
                         break;
                     case "CENTER":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Center;
                         break;
                     case "STRETCH":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Stretch;
                         break;
                     default:
                         break;

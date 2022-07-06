@@ -12,10 +12,10 @@
 	<Page>
 		<Row>
 			<Column>
-				<Formatting>
+				<Style>
 					<LeftCellWidth>140</LeftCellWidth>
 					<RightCellWidth>130</RightCellWidth>
-				</Formatting>
+				</Style>
 
 				<!--CheckBox used as a toggle -->
 				<GuiOption Type="CheckBox">
@@ -154,10 +154,10 @@
 			<Column>
 				<Group>Group_Apps</Group>
 
-				<Formatting>
+				<Style>
 					<LeftCellWidth>110</LeftCellWidth>
 					<RightCellWidth>160</RightCellWidth>
-				</Formatting>
+				</Style>
 				
 				<GuiOption Type="CheckBox">				
 					<Variable>VAR_Office2013</Variable>
@@ -204,11 +204,11 @@
 			<Column>
 				<Group>Group_Apps</Group>
 				
-				<Formatting>
+				<Style>
 					<Width>200</Width>
 					<LeftCellWidth>120</LeftCellWidth>
 					<RightCellWidth>80</RightCellWidth>
-				</Formatting>
+				</Style>
 				
 				<!-- GuiOptions -->
 				<GuiOption Type="Heading">

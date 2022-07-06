@@ -25,6 +25,7 @@ using TsGui.Grouping;
 
 using System.Xml.Linq;
 using TsGui.Validation;
+using System.Collections.Generic;
 
 namespace TsGui.View.Layout
 {
@@ -34,9 +35,9 @@ namespace TsGui.View.Layout
         private double _leftcellwidth;
         private double _rightcellwidth;
 
-        public Formatting LabelFormatting { get; set; }
-        public Formatting ControlFormatting { get; set; }
-        public Formatting Formatting { get; set; }
+        public Style LabelStyle { get; set; }
+        public Style ControlStyle { get; set; }
+        public Style Style { get; set; }
         public bool LabelOnRight { get; set; }
         public bool ShowGridLines
         {
@@ -74,32 +75,36 @@ namespace TsGui.View.Layout
             //Load legacy options
             this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LeftCellWidth);
             this.RightCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.RightCellWidth);
-            this.Formatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Formatting.Width);
-            this.Formatting.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Formatting.Height);
+            this.Style.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Style.Width);
+            this.Style.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Style.Height);
 
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
             
             XElement x;
             XElement subx;
             
-
-            x = InputXml.Element("Formatting");
-            if (x != null)
+            List<string> styleLabels = new List<string>{ "Formatting", "Style"};
+            foreach (string label in styleLabels)
             {
-                this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(x, "LeftCellWidth", this.LeftCellWidth);
-                this.RightCellWidth = XmlHandler.GetDoubleFromXElement(x, "RightCellWidth", this.RightCellWidth);
-                this.LabelOnRight = XmlHandler.GetBoolFromXElement(x, "LabelOnRight", this.LabelOnRight);
+                x = InputXml.Element(label);
+                if (x != null)
+                {
+                    this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(x, "LeftCellWidth", this.LeftCellWidth);
+                    this.RightCellWidth = XmlHandler.GetDoubleFromXElement(x, "RightCellWidth", this.RightCellWidth);
+                    this.LabelOnRight = XmlHandler.GetBoolFromXElement(x, "LabelOnRight", this.LabelOnRight);
 
-                this.Formatting.LoadXml(x);
+                    this.Style.LoadXml(x);
 
-                subx = x.Element("Label");
-                if (subx != null)
-                { this.LabelFormatting.LoadXml(subx); }
+                    subx = x.Element("Label");
+                    if (subx != null)
+                    { this.LabelStyle.LoadXml(subx); }
 
-                subx = x.Element("Control");
-                if (subx != null)
-                { this.ControlFormatting.LoadXml(subx); }
+                    subx = x.Element("Control");
+                    if (subx != null)
+                    { this.ControlStyle.LoadXml(subx); }
+                }
             }
+            
         }
 
         //public GetComplianceRootElement i.e. get the root without having any existing root
@@ -130,23 +135,23 @@ namespace TsGui.View.Layout
         {
             if (this.Parent == null)
             {
-                this.LabelFormatting = new Formatting();
-                this.ControlFormatting = new Formatting();
-                this.Formatting = new Formatting();
+                this.LabelStyle = new Style();
+                this.ControlStyle = new Style();
+                this.Style = new Style();
                 this.LeftCellWidth = double.NaN;
                 this.RightCellWidth = double.NaN;
                 this.ShowGridLines = false;
                 this.LabelOnRight = false;
-                this.LabelFormatting.Padding = new Thickness(1);
-                this.LabelFormatting.Margin = new Thickness(2);
-                this.ControlFormatting.Margin = new Thickness(2);
-                this.ControlFormatting.Padding = new Thickness(1);
+                this.LabelStyle.Padding = new Thickness(1);
+                this.LabelStyle.Margin = new Thickness(2);
+                this.ControlStyle.Margin = new Thickness(2);
+                this.ControlStyle.Padding = new Thickness(1);
             }
             else
             {
-                this.LabelFormatting = this.Parent.LabelFormatting.Clone();
-                this.ControlFormatting = this.Parent.ControlFormatting.Clone();
-                this.Formatting = this.Parent.Formatting.Clone();
+                this.LabelStyle = this.Parent.LabelStyle.Clone();
+                this.ControlStyle = this.Parent.ControlStyle.Clone();
+                this.Style = this.Parent.Style.Clone();
                 this.LeftCellWidth = this.Parent.LeftCellWidth;
                 this.RightCellWidth = this.Parent.RightCellWidth;
                 this.ShowGridLines = this.Parent.ShowGridLines;

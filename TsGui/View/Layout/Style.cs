@@ -17,7 +17,7 @@
 //
 #endregion
 
-// Formatting.cs - view model for the layout of GuiOptions. Controls the layout and 
+// Style.cs - view model for the layout of GuiOptions. Controls the layout and 
 // formatting options for the associated controls
 
 using System;
@@ -28,7 +28,7 @@ using Core;
 
 namespace TsGui.View.Layout
 {
-    public class Formatting: ViewModelBase
+    public class Style: ViewModelBase
     {
         //Fields
         #region
@@ -156,12 +156,12 @@ namespace TsGui.View.Layout
         #endregion
 
         //Constructor 
-        public Formatting()
+        public Style()
         {
             this.SetDefaults();
         }
 
-        public Formatting(XElement InputXml)
+        public Style(XElement InputXml)
         {
             this.SetDefaults();
             this.LoadXml(InputXml);
@@ -224,9 +224,9 @@ namespace TsGui.View.Layout
             #endregion
         }
 
-        public Formatting Clone()
+        public Style Clone()
         {
-            Formatting f = new Formatting();
+            Style f = new Style();
             f.FontWeight = this.FontWeight;
             f.FontStyle = this.FontStyle;
             f.FontSize = this.FontSize;

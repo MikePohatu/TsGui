@@ -56,7 +56,7 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "CancelEnabled");
             }
         }
-        public Formatting ControlFormatting { get; }
+        public Style ControlStyle { get; }
         public string ButtonTextCancel
         {
             get { return this._buttonTextCancel; }
@@ -102,13 +102,13 @@ namespace TsGui.View.Layout
             this.ButtonTextCancel = "Cancel";
             this.ButtonTextFinish = "Finish";
             this.ButtonTextNext = "Next";
-            this.ControlFormatting = new Formatting();
+            this.ControlStyle = new Style();
             this.SetDefaults();
         }
 
         private void SetDefaults()
         {
-            ControlDefaults.SetButtonDefaults(this.ControlFormatting);
+            ControlDefaults.SetButtonDefaults(this.ControlStyle);
         }
 
         public void LoadXml(XElement InputXml)
@@ -122,8 +122,8 @@ namespace TsGui.View.Layout
             this.ButtonTextFinish = XmlHandler.GetStringFromXElement(InputXml, "Finish", this.ButtonTextFinish);
             this.ButtonTextCancel = XmlHandler.GetStringFromXElement(InputXml, "Cancel", this.ButtonTextCancel);
 
-            x = InputXml.Element("Formatting");
-            if (x != null) { this.ControlFormatting.LoadXml(x); }
+            x = InputXml.Element("Style");
+            if (x != null) { this.ControlStyle.LoadXml(x); }
 
             x = InputXml.Element("HideCancel");
             if (x != null)
