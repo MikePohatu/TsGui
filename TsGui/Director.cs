@@ -295,6 +295,7 @@ namespace TsGui
             {
                 //start layout import
                 this.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);
+                StyleLibrary.LoadXml(SourceXml);
 
                 this._buttons = new TsButtons();
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));

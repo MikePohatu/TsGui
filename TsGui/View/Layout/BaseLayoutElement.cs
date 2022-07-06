@@ -32,28 +32,15 @@ namespace TsGui.View.Layout
     public abstract class BaseLayoutElement: GroupableUIElementBase
     {
         private bool _showgridlines;
-        private double _leftcellwidth;
-        private double _rightcellwidth;
-
-        public Style LabelStyle { get; set; }
-        public Style ControlStyle { get; set; }
-        public Style Style { get; set; }
-        public bool LabelOnRight { get; set; }
+        public Style LabelStyle { get { return this.Style.LabelStyle; } }
+        public Style ControlStyle { get { return this.Style.ControlStyle; } }
+        public StyleTree Style { get; private set; } = new StyleTree();
         public bool ShowGridLines
         {
             get { return this._showgridlines; }
             set { this._showgridlines = value; this.OnPropertyChanged(this, "ShowGridLines"); }
         }
-        public double LeftCellWidth
-        {
-            get { return this._leftcellwidth; }
-            set { this._leftcellwidth = value; this.OnPropertyChanged(this, "LeftCellWidth"); }
-        }
-        public double RightCellWidth
-        {
-            get { return this._rightcellwidth; }
-            set { this._rightcellwidth = value; this.OnPropertyChanged(this, "RightCellWidth"); }
-        }
+        
 
         public ParentLayoutElement Parent { get; set; }
 
@@ -72,39 +59,39 @@ namespace TsGui.View.Layout
         protected new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            //Load legacy options
-            this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LeftCellWidth);
-            this.RightCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.RightCellWidth);
-            this.Style.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Style.Width);
-            this.Style.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Style.Height);
 
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
-            
-            XElement x;
-            XElement subx;
-            
-            List<string> styleLabels = new List<string>{ "Formatting", "Style"};
-            foreach (string label in styleLabels)
+
+            //import any styles
+            string styleids = XmlHandler.GetStringFromXAttribute(InputXml, "Style", null);
+            if (string.IsNullOrWhiteSpace(styleids) == false) { this.Style.Import(styleids.Trim()); }
+
+            styleids = XmlHandler.GetStringFromXAttribute(InputXml, "Styles", null);
+            if (string.IsNullOrWhiteSpace(styleids) == false)
             {
-                x = InputXml.Element(label);
-                if (x != null)
+                foreach (string id in styleids.Split(' '))
                 {
-                    this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(x, "LeftCellWidth", this.LeftCellWidth);
-                    this.RightCellWidth = XmlHandler.GetDoubleFromXElement(x, "RightCellWidth", this.RightCellWidth);
-                    this.LabelOnRight = XmlHandler.GetBoolFromXElement(x, "LabelOnRight", this.LabelOnRight);
-
-                    this.Style.LoadXml(x);
-
-                    subx = x.Element("Label");
-                    if (subx != null)
-                    { this.LabelStyle.LoadXml(subx); }
-
-                    subx = x.Element("Control");
-                    if (subx != null)
-                    { this.ControlStyle.LoadXml(subx); }
+                    if (string.IsNullOrWhiteSpace(id)==false) { this.Style.Import(id); }
                 }
             }
+
+            //Load legacy options
+            this.Style.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Style.Width);
+            this.Style.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Style.Height);
             
+            //We need to also check for Formatting options for backwards compatibility
+            List<string> formattings = new List<string>{ "Formatting", "Style"};
+            foreach (string label in formattings)
+            {
+                var stylesX = InputXml.Elements(label);
+                if (stylesX != null)
+                {
+                    foreach (var stylex in stylesX)
+                    {
+                        this.Style.LoadXml(stylex);
+                    }
+                }                
+            }       
         }
 
         //public GetComplianceRootElement i.e. get the root without having any existing root
@@ -135,13 +122,10 @@ namespace TsGui.View.Layout
         {
             if (this.Parent == null)
             {
-                this.LabelStyle = new Style();
-                this.ControlStyle = new Style();
-                this.Style = new Style();
-                this.LeftCellWidth = double.NaN;
-                this.RightCellWidth = double.NaN;
+                this.Style.LeftCellWidth = double.NaN;
+                this.Style.RightCellWidth = double.NaN;
                 this.ShowGridLines = false;
-                this.LabelOnRight = false;
+                this.Style.LabelOnRight = false;
                 this.LabelStyle.Padding = new Thickness(1);
                 this.LabelStyle.Margin = new Thickness(2);
                 this.ControlStyle.Margin = new Thickness(2);
@@ -149,13 +133,9 @@ namespace TsGui.View.Layout
             }
             else
             {
-                this.LabelStyle = this.Parent.LabelStyle.Clone();
-                this.ControlStyle = this.Parent.ControlStyle.Clone();
                 this.Style = this.Parent.Style.Clone();
-                this.LeftCellWidth = this.Parent.LeftCellWidth;
-                this.RightCellWidth = this.Parent.RightCellWidth;
                 this.ShowGridLines = this.Parent.ShowGridLines;
-                this.LabelOnRight = this.Parent.LabelOnRight;
+                this.Style.LabelOnRight = this.Parent.Style.LabelOnRight;
             }
         }
     }

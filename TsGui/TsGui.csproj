@@ -244,6 +244,8 @@
     </Compile>
     <Compile Include="View\GuiOptions\TsTickCross.cs" />
     <Compile Include="View\Layout\ParentLayoutElement.cs" />
+    <Compile Include="View\Layout\StyleLibrary.cs" />
+    <Compile Include="View\Layout\StyleTree.cs" />
     <Compile Include="View\Layout\UIContainer.cs" />
     <Compile Include="View\Symbols\SymbolFactory.cs" />
     <Compile Include="View\Symbols\TsFolderUI.xaml.cs">

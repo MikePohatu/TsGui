@@ -202,7 +202,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetLayoutRightLeft()
         {
-            if (this.LabelOnRight == false)
+            if (this.Style.LabelOnRight == false)
             {
                 this.UserControl.RightPresenter.Content = this.Control;
                 this.UserControl.LeftPresenter.Content = this.Label;

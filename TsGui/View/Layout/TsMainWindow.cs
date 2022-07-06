@@ -121,7 +121,6 @@ namespace TsGui.View.Layout
             this.FooterText = "Powered by TsGui - www.20road.com";
             this.FooterHeight = 15;
             this.FooterHAlignment = HorizontalAlignment.Right;
-            
         }
 
         public override void LoadXml(XElement InputXml, ParentLayoutElement parent)

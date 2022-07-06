@@ -155,7 +155,7 @@ namespace TsGui.Validation
         private void SetPlacement()
         {
             //this is to handle WPF quirks with touch devices
-            if (this._guioption.LabelOnRight == false)
+            if (this._guioption.Style.LabelOnRight == false)
             {
                 if (SystemParameters.MenuDropAlignment == false) { this._validationerrortooltip.Placement = PlacementMode.Right; }
                 else { this._validationerrortooltip.Placement = PlacementMode.Left; }

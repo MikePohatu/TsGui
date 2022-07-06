@@ -73,8 +73,8 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.RightCellWidth = this.LeftCellWidth + this.RightCellWidth;
-            this.LeftCellWidth = 0;            
+            this.Style.RightCellWidth = this.Style.LeftCellWidth + this.Style.RightCellWidth;
+            this.Style.LeftCellWidth = 0;            
             this.ControlStyle.Padding = new Thickness(0);
             this.ControlStyle.Margin = new Thickness(0);
             this.ControlStyle.VerticalAlignment = VerticalAlignment.Center;
