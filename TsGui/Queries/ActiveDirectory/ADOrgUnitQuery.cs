@@ -55,7 +55,7 @@ namespace TsGui.Queries.ActiveDirectory
         {
             this._linktargetoption = owner;
             this.LoadXml(InputXml);
-            Director.Instance.AuthLibrary.AddAuthenticatorConsumer(this);
+            AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public new void LoadXml(XElement InputXml)

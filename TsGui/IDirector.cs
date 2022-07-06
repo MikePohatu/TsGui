@@ -38,7 +38,6 @@ namespace TsGui
         event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
         //properties
-        AuthLibrary AuthLibrary { get; }
         GroupLibrary GroupLibrary { get; }
         TsMainWindow TsMainWindow { get; set; }
         OptionLibrary OptionLibrary { get; }

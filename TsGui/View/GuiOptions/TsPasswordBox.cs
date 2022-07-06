@@ -120,7 +120,7 @@ namespace TsGui.View.GuiOptions
             if (x != null)
             {
                 this.AuthID = x.Value;
-                Director.Instance.AuthLibrary.AddPasswordSource(this);
+                AuthLibrary.AddPasswordSource(this);
             }  
             else { throw new KnownException("Missing AuthID in config:", inputxml.ToString()); }      
         }
@@ -163,7 +163,7 @@ namespace TsGui.View.GuiOptions
 
         private void OnConfigLoadFinished(object sender, EventArgs e)
         {
-            this._authenticator = Director.Instance.AuthLibrary.GetAuthenticator(this.AuthID);
+            this._authenticator = AuthLibrary.GetAuthenticator(this.AuthID);
             if (this._authenticator != null)
             {
                 this._authenticator.AuthStateChanged += this.OnAuthStateChanged;

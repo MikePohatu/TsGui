@@ -56,7 +56,7 @@ namespace TsGui.Queries.WebServices
         public WebServicesQuery(XElement InputXml, ILinkTarget owner): base(owner)
         {
             this.LoadXml(InputXml);
-            Director.Instance.AuthLibrary.AddAuthenticatorConsumer(this);
+            AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public new void LoadXml(XElement InputXml)

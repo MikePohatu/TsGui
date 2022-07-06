@@ -71,12 +71,10 @@ namespace TsGui
         private GroupLibrary _grouplibrary;
         private List<IToggleControl> _toggles;
         private OptionLibrary _optionlibrary;
-        private AuthLibrary _authlibrary;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
 
         //properties
-        public AuthLibrary AuthLibrary { get { return this._authlibrary; } }
         public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get { return this._optionlibrary; } }
@@ -115,7 +113,6 @@ namespace TsGui
             this._grouplibrary = new GroupLibrary();
             this._toggles = new List<IToggleControl>();
             this._optionlibrary = new OptionLibrary();
-            this._authlibrary = new AuthLibrary();
             this._args = Arguments;
             this.ParentWindow = ParentWindow;
             this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
@@ -323,10 +320,7 @@ namespace TsGui
                 this.TsMainWindow.LoadXml(SourceXml);
                 GuiTimeout.Init(SourceXml.Element("Timeout"));
 
-                foreach (XElement xauth in SourceXml.Elements("Authentication"))
-                {
-                    this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth));
-                }
+                AuthLibrary.LoadXml(SourceXml);
 
                 ScriptLibrary.LoadXml(SourceXml);
 

@@ -48,7 +48,7 @@ namespace TsGui.View.GuiOptions
             if (x != null)
             {
                 this._authid = x.Value;
-                Director.Instance.AuthLibrary.AddUsernameSource(this);
+                AuthLibrary.AddUsernameSource(this);
             }
             else { throw new KnownException("Missing AuthID in config", inputxml.ToString()); }
         }

@@ -34,7 +34,7 @@ namespace TsGui.Actions
         {
             this.LoadXml(inputxml);
             //this._director.AuthLibrary.AddAuthenticator(new ActiveDirectoryAuthenticator(this._authid, this._domain));
-            Director.Instance.AuthLibrary.AddAuthenticatorConsumer(this);
+            AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public void RunAction()
