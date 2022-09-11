@@ -10,16 +10,16 @@ using TsGui.Linking;
 using TsGui.Queries;
 using MessageCrap;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TsGui.Scripts
 {
     public class PoshScript: BaseScript
     {
-        private ILinkTarget _owner;
         private List<Parameter> _parameters = new List<Parameter>();
 
         public ScriptResult<PSDataCollection<PSObject>> Result { get; private set; }
-
 
         public PoshScript(XElement InputXml) : base(InputXml) 
         {
@@ -32,8 +32,10 @@ namespace TsGui.Scripts
             this._owner = owner;
         }
 
-        private void LoadXml(XElement InputXml)
+        protected override void LoadXml(XElement InputXml)
         {
+            base.LoadXml(InputXml);
+
             foreach (XElement x in InputXml.Elements("Switch"))
             {
                 Parameter p = new Parameter(x, this._owner);
@@ -43,6 +45,53 @@ namespace TsGui.Scripts
             {
                 Parameter p = new Parameter(x, this._owner);
                 this._parameters.Add(p);
+            }
+        }
+
+
+        /// <summary>
+        /// Load the script file 
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        public async Task LoadScript()
+        {
+            if (string.IsNullOrWhiteSpace(this.Path) == false)
+            {
+                this._scriptcontent = await IOHelpers.ReadFileAsync(this.Path);
+
+                if (string.IsNullOrWhiteSpace(this._scriptcontent) == false)
+                {
+                    using (StringReader reader = new StringReader(this._scriptcontent))
+                    {
+                        bool readingsettings = false;
+                        StringBuilder builder = new StringBuilder();
+                        string line = string.Empty;
+                        do
+                        {
+                            line = reader.ReadLine();
+                            if (line != null)
+                            {
+                                if (readingsettings)
+                                {
+                                    if (line.TrimStart().ToLower().StartsWith("scriptsettings#>")) { readingsettings = false; }
+                                    else { builder.AppendLine(line); }
+                                }
+                                else
+                                {
+                                    if (line.TrimStart().ToLower().StartsWith("<#scriptsettings")) { readingsettings = true; }
+                                }
+                            }
+
+                        } while (line != null);
+
+                        string settingsjson = builder.ToString();
+                        if (string.IsNullOrWhiteSpace(settingsjson) == false)
+                        {
+                            this._settings = ScriptSettings.Create(settingsjson);
+                        }
+                    }
+                }
             }
         }
 
