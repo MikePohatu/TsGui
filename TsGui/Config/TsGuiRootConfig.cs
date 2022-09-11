@@ -82,10 +82,7 @@ namespace TsGui.Config
             { HardwareEval = false; }
 
             DefaultPath = XmlHandler.GetStringFromXElement(inputxml, "DefaultPath", DefaultPath);
-            
-
             PurgeInactive = XmlHandler.GetBoolFromXAttribute(inputxml, "PurgeInactive", PurgeInactive);
-
             OutputType = XmlHandler.GetStringFromXAttribute(inputxml, "Output", OutputType);
 
         }

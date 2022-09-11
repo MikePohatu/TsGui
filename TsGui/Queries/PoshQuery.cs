@@ -1,4 +1,4 @@
-﻿using MessageCrap;
+using MessageCrap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,6 @@ namespace TsGui.Queries
     {
         private PoshScript _script;
         private bool _exceptionOnError = true;
-        private bool _exceptionOnMissingFile = true;
 
         private List<KeyValuePair<string, XElement>> _propertyTemplates;
 

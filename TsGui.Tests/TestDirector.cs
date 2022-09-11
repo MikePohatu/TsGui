@@ -34,16 +34,12 @@ namespace TsGui.Tests
     public class TestDirector: IDirector
     {
 
-
-        private AuthLibrary _authlib = new AuthLibrary();
-
         public event TsGuiWindowEventHandler WindowLoaded;
         public event TsGuiWindowMovingEventHandler WindowMoving;
         public event TsGuiWindowEventHandler WindowMouseUp;
         public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
         //properties
-        public AuthLibrary AuthLibrary { get { return this._authlib; } }
         public GroupLibrary GroupLibrary { get; }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get; }
