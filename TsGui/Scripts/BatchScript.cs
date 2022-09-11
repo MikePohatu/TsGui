@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Core.Diagnostics;
@@ -21,7 +21,7 @@ namespace TsGui.Scripts
         /// </summary>
         /// <returns></returns>
         /// <exception cref="KnownException"></exception>
-        public async Task RunScriptAsync()
+        public override async Task RunScriptAsync()
         {
             this.Result = new ScriptResult<string>();
 

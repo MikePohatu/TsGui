@@ -13,8 +13,8 @@ namespace TsGui.Scripts
         protected bool _exceptionOnMissingFile = true;
         protected string _params;
 
-        public string Path { get; private set; }
-        public string Name { get; private set; }
+        public string Path { get; protected set; }
+        public string Name { get; protected set; }
 
         protected BaseScript(XElement InputXml)
         {
@@ -26,6 +26,7 @@ namespace TsGui.Scripts
             this._params = XmlHandler.GetStringFromXElement(InputXml, "Params", this._params);
             this._exceptionOnError = XmlHandler.GetBoolFromXElement(InputXml, "HaltOnError", this._exceptionOnError);
             this._exceptionOnMissingFile = XmlHandler.GetBoolFromXElement(InputXml, "HaltOnMissing", this._exceptionOnError);
+            this.Name = XmlHandler.GetStringFromXAttribute(InputXml, "Name", this.Name);
             this.Name = XmlHandler.GetStringFromXElement(InputXml, "Name", this.Name);
 
             this.Path = InputXml.Element("Script")?.Value;

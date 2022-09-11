@@ -1,4 +1,4 @@
-using MessageCrap;
+﻿using MessageCrap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +36,11 @@ namespace TsGui.Queries
             this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
             this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
+        }
+
+        public async Task OnSourceValueUpdatedAsync(Message message)
+        {
+            if (this._reprocess || !this._processed) { await this.ProcessQuery(message); }
         }
 
         public override async Task<ResultWrangler> ProcessQuery(Message message)
