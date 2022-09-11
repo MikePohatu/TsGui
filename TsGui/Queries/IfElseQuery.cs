@@ -47,7 +47,8 @@ namespace TsGui.Queries
                 ResultWrangler returnval = await condition.GetResultWrangler(message);
                 if ((returnval != null) && (this.ShouldIgnore(returnval.GetString()) == false)) { return returnval; }
             }
-            return await this._else?.GetResultWrangler(message);
+            if (this._else != null) { return await this._else?.GetResultWrangler(message); }
+            return null;            
         }
 
         protected new void LoadXml(XElement inputxml)
