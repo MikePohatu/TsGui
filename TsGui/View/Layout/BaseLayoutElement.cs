@@ -69,9 +69,9 @@ namespace TsGui.View.Layout
             styleids = XmlHandler.GetStringFromXAttribute(InputXml, "Styles", null);
             if (string.IsNullOrWhiteSpace(styleids) == false)
             {
-                foreach (string id in styleids.Split(' '))
+                foreach (string id in styleids.Split(','))
                 {
-                    if (string.IsNullOrWhiteSpace(id)==false) { this.Style.Import(id); }
+                    if (string.IsNullOrWhiteSpace(id)==false) { this.Style.Import(id.Trim()); }
                 }
             }
 

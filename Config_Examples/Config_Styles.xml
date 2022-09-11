@@ -9,11 +9,12 @@
 		<Text>Style</Text>
 	</Heading>
 
-	<WindowLocation>
-		<Left>100</Left>
-		<Top>20</Top>
-		<StartupLocation>Manual</StartupLocation>		<!-- Manual | Center -->
-	</WindowLocation>
+	<Styles>
+		<Style ID="Example_Global_Style">
+			<Label />
+			<Control /> 
+		</Style>
+	</Styles>
 
 	<Buttons>
 		<Next>=Next=</Next>
@@ -83,6 +84,8 @@
 						</Control>
 					</Style>
 				</GuiOption>
+
+				<GuiOption Type="TrafficLight" Prebuilt="PowerConnected" Styles="Example_Global_Style" />
 			</Column>
 		</Row>
 	</Page>
