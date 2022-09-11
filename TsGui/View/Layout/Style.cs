@@ -303,23 +303,28 @@ namespace TsGui.View.Layout
             target.FontColorBrush = source.FontColorBrush.Clone();
         }
 
-        public void Import(Style f)
+        /// <summary>
+        /// Import a Style, only setting elements that have been set in the config
+        /// </summary>
+        /// <param name="from"></param>
+        /// <exception cref="KnownException"></exception>
+        public void Import(Style from)
         {
-            if (f == null) { throw new KnownException("Cannot import from null Style. Check for correct ID", null); }
+            if (from == null) { throw new KnownException("Cannot import from null Style. Check for correct ID", null); }
 
-            if (f._setElements.ContainsKey("FontWeight")) { this.FontWeight = f.FontWeight; }
-            if (f._setElements.ContainsKey("FontStyle")) { this.FontStyle = f.FontStyle; }
-            if (f._setElements.ContainsKey("FontSize")) { this.FontSize = f.FontSize; }
-            if (f._setElements.ContainsKey("FontColor")) { this.FontColorBrush = f.FontColorBrush.Clone(); }
-            if (f._setElements.ContainsKey("Width")) { this.Width = f.Width; }
-            if (f._setElements.ContainsKey("Height")) { this.Height = f.Height; }
-            if (f._setElements.ContainsKey("CornerRadius")) { this.CornerRadius = f.CornerRadius; }
-            if (f._setElements.ContainsKey("Padding")) { this.Padding = f.Padding; }
-            if (f._setElements.ContainsKey("HorizontalAlignment")) { this.HorizontalAlignment = f.HorizontalAlignment; }
-            if (f._setElements.ContainsKey("VerticalAlignment")) { this.VerticalAlignment = f.VerticalAlignment; }
-            if (f._setElements.ContainsKey("HorizontalContentAlignment")) { this.HorizontalContentAlignment = f.HorizontalContentAlignment; }
-            if (f._setElements.ContainsKey("VerticalContentAlignment")) { this.VerticalContentAlignment = f.VerticalContentAlignment; }
-            if (f._setElements.ContainsKey("TextAlignment")) { this.TextAlignment = f.TextAlignment; }
+            if (from._setElements.ContainsKey("FontWeight")) { this.FontWeight = from.FontWeight; }
+            if (from._setElements.ContainsKey("FontStyle")) { this.FontStyle = from.FontStyle; }
+            if (from._setElements.ContainsKey("FontSize")) { this.FontSize = from.FontSize; }
+            if (from._setElements.ContainsKey("FontColor")) { this.FontColorBrush = from.FontColorBrush.Clone(); }
+            if (from._setElements.ContainsKey("Width")) { this.Width = from.Width; }
+            if (from._setElements.ContainsKey("Height")) { this.Height = from.Height; }
+            if (from._setElements.ContainsKey("CornerRadius")) { this.CornerRadius = from.CornerRadius; }
+            if (from._setElements.ContainsKey("Padding")) { this.Padding = from.Padding; }
+            if (from._setElements.ContainsKey("HorizontalAlignment")) { this.HorizontalAlignment = from.HorizontalAlignment; }
+            if (from._setElements.ContainsKey("VerticalAlignment")) { this.VerticalAlignment = from.VerticalAlignment; }
+            if (from._setElements.ContainsKey("HorizontalContentAlignment")) { this.HorizontalContentAlignment = from.HorizontalContentAlignment; }
+            if (from._setElements.ContainsKey("VerticalContentAlignment")) { this.VerticalContentAlignment = from.VerticalContentAlignment; }
+            if (from._setElements.ContainsKey("TextAlignment")) { this.TextAlignment = from.TextAlignment; }
         }
     }
 }

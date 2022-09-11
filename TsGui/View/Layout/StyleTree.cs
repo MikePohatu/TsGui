@@ -1,16 +1,14 @@
-﻿using Core;
+﻿
 using Core.Diagnostics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace TsGui.View.Layout
 {
     /// <summary>
-    /// Style tree extends a style for the Label and Control styles and other items for GuiOptions
+    /// StyleTree acts as a 'root' for the Label and Control styles and other items for GuiOptions. This
+    /// extends the 'Style' type as it provides all the same options at the root of the LayoutElement. 
+    /// Replaces the old 'Formatting' object type
     /// </summary>
     public class StyleTree: Style
     {   
