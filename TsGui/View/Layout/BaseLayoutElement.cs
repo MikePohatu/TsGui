@@ -63,10 +63,7 @@ namespace TsGui.View.Layout
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
 
             //import any styles
-            string styleids = XmlHandler.GetStringFromXAttribute(InputXml, "Style", null);
-            if (string.IsNullOrWhiteSpace(styleids) == false) { this.Style.Import(styleids.Trim()); }
-
-            styleids = XmlHandler.GetStringFromXAttribute(InputXml, "Styles", null);
+            string styleids = XmlHandler.GetStringFromXAttribute(InputXml, "Styles", null);
             if (string.IsNullOrWhiteSpace(styleids) == false)
             {
                 foreach (string id in styleids.Split(','))
