@@ -2,6 +2,12 @@
 
 **Contents**
 * [Overview](#overview)
+    * [Base Configuration](#base-configuration)
+    * [Style Tree](#style-tree)
+    * [Global Styles](#global-styles)
+        * [Defining Global Styles](#defining-global-styles)
+        * [Applying Global Styles](#applying-global-styles)
+    * [Inheritance](#inheritance)
 
 ## Overview
 
