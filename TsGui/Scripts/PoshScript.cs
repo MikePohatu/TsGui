@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Core.Diagnostics;
@@ -9,7 +9,7 @@ using TsGui.Scripts;
 
 namespace TsGui.Scripts
 {
-    public class PoshScript: BaseScript, IScript
+    public class PoshScript: BaseScript
     {
         public ScriptResult<PSDataCollection<PSObject>> Result { get; private set; }
 

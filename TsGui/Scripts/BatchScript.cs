@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Core.Diagnostics;
@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace TsGui.Scripts
 {
-    public class BatchScript: BaseScript, IScript
+    public class BatchScript: BaseScript
     {
         public ScriptResult<string> Result { get; private set; }
 

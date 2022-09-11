@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace TsGui.Scripts
 {
-    public class BaseScript
+    public abstract class BaseScript
     {
         protected bool _exceptionOnError = true;
         protected bool _exceptionOnMissingFile = true;
@@ -35,5 +35,7 @@ namespace TsGui.Scripts
             //fallback in case not set
             if (string.IsNullOrWhiteSpace(this.Name)) { this.Name = this.Path; }
         }
+
+        public abstract Task RunScriptAsync();
     }
 }

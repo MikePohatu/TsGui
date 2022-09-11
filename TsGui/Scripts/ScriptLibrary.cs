@@ -8,7 +8,7 @@ namespace TsGui.Scripts
 {
     public static class ScriptLibrary
     {
-        private static Dictionary<string, IScript> _scripts = new Dictionary<string, IScript>();
+        private static Dictionary<string, BaseScript> _scripts = new Dictionary<string, BaseScript>();
 
         public static void LoadXml(XElement InputXml)
         {
@@ -18,9 +18,9 @@ namespace TsGui.Scripts
             }
         }
 
-        public static IScript GetScript(string name)
+        public static BaseScript GetScript(string name)
         {
-            IScript outscript;
+            BaseScript outscript;
             if (_scripts.TryGetValue(name, out outscript)==false)
             {
                 Log.Warn("Unable to find script in library: " + name);
@@ -32,7 +32,7 @@ namespace TsGui.Scripts
             }
         }
 
-        public static void AddScript(IScript script)
+        public static void AddScript(BaseScript script)
         {
             if (_scripts.ContainsKey(script.Name))
             {

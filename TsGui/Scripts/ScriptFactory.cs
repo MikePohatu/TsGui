@@ -10,7 +10,7 @@ namespace TsGui.Scripts
 {
     public class ScriptFactory
     {
-        public static IScript GetScript(XElement inputxml)
+        public static BaseScript GetScript(XElement inputxml)
         {
             if (inputxml == null) { return null; }
 
