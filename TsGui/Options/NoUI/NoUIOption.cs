@@ -39,7 +39,7 @@ namespace TsGui.Options.NoUI
         private bool _usecurrent = false;
         private QueryPriorityList _querylist;
         private string _id;
-
+          
         //properties
         public bool IsToggle { get; set; }
         public string Path { get; set; }
@@ -171,7 +171,7 @@ namespace TsGui.Options.NoUI
             this._value = (await this._querylist.GetResultWrangler(message))?.GetString();
 
             LinkingHub.Instance.SendUpdateMessage(this, message);
-
+            this.InvokeToggleEvent();
             this.NotifyViewUpdate();
         }
 
@@ -234,6 +234,7 @@ namespace TsGui.Options.NoUI
 
         public void InvokeToggleEvent()
         {
+            Log.Trace("Toggle Event invoked from NoUI: " + this.VariableName);
             this.ToggleEvent?.Invoke();
         }
 
