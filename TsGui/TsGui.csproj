@@ -116,6 +116,7 @@
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="ConsoleWindow.cs" />
     <Compile Include="Debounce.cs" />
+    <Compile Include="Diagnostics\LoggingUiViewModel.cs" />
     <Compile Include="Diagnostics\TestingWindow.cs" />
     <Compile Include="Diagnostics\TestingWindowUI.xaml.cs">
       <DependentUpon>TestingWindowUI.xaml</DependentUpon>
@@ -172,6 +173,10 @@
     <Compile Include="Validation\StringMatching\EndsWith.cs" />
     <Compile Include="Validation\StringMatching\StartsWith.cs" />
     <Compile Include="Validation\Topics.cs" />
+    <Compile Include="View\GuiOptions\TsLoggingOutput.cs" />
+    <Compile Include="View\GuiOptions\TsLoggingOutputUI.xaml.cs">
+      <DependentUpon>TsLoggingOutputUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Layout\ControlDefaults.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\CollectionViewGuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
@@ -368,6 +373,10 @@
     <Page Include="View\GuiOptions\CollectionViews\TsTreeViewUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\GuiOptions\TsLoggingOutputUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\GuiOptions\TsPasswordBoxUI.xaml">
       <SubType>Designer</SubType>

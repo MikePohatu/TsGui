@@ -129,6 +129,10 @@ namespace TsGui.View.GuiOptions
                 if (GuiTimeout.Instance == null) { throw new KnownException("No Timeout section defined in config. Timeout GuiOption type not available", string.Empty); }
                 newoption = new TsTimeout(OptionXml, Parent);
             }
+            else if (xtype.Value == "LoggingOutput")
+            {
+                newoption = new TsLoggingOutput(OptionXml, Parent);
+            }
             else
             { return null; }
             #endregion

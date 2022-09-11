@@ -1,0 +1,30 @@
+<!-- Configuration of options for outputting logging data -->
+<TsGui LiveData="TRUE" Debug="FALSE">
+	<Height>300</Height>
+	<Width>300</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI</Text>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<Style>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>160</RightCellWidth>
+				</Style>
+				
+				<GuiOption Type="ComputerName" />
+				
+				<GuiOption Type="LoggingOutput">
+					<AllowVerbose>TRUE</AllowVerbose>  <!-- This option enables/disables the 'Verbose' checkbox -->
+					<VerboseLabel>Verbose</VerboseLabel>  <!-- Change the text of the 'Verbose' checkbox -->
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>

@@ -39,21 +39,17 @@ using NLog;
 
 namespace TsGui.Diagnostics
 {
-    public class TestingWindow: ViewModelBase
+    public class TestingWindow: LoggingUiViewModel
     {
         private int _pendingresize = 0;
-        private IDirector _controller;
         private TestingWindowUI _testingwindowui;
         private ObservableCollection<IOption> _options;
         private int _currentscaling;
-        private string _logs;
-        private bool _pendinglogrefresh;
 
         public ObservableCollection<IOption> Options { get { return this._options; } }
         public TsMainWindow TsMainWindow { get; set; }
         public double ScreenHeight { get; set; }
         public double ScreenWidth { get; set; }
-        public string Output { get { return EnvironmentController.OutputType.ToString(); } }
         public double WindowMaxHeight { get { return SystemParameters.PrimaryScreenHeight - 20; } }
         public int CurrentScaling
         {
@@ -61,17 +57,12 @@ namespace TsGui.Diagnostics
             set { this._currentscaling = value; this.OnPropertyChanged(this, "CurrentScaling"); }
         }
         public ImageSource Icon { get; set; }
-        public string Logs
-        {
-            get { return this._logs; }
-            set { this._logs = value; this.OnPropertyChanged(this, "Logs"); }
-        }
 
-        public TestingWindow(IDirector Controller)
+        public TestingWindow()
         {
-            this._controller = Controller;
             this.SubscribeToLogs();
             this._testingwindowui = new TestingWindowUI();
+            this._loggingtextbox = this._testingwindowui._logtextbox;
             this._testingwindowui.DataContext = this;
             this._testingwindowui.Closed += this.OnWindowClosed;
             this._testingwindowui.ContentRendered += this.OnTestingWindowRendered;
@@ -79,17 +70,12 @@ namespace TsGui.Diagnostics
             this.ScreenWidth = SystemParameters.PrimaryScreenWidth;
             this.ScreenHeight = SystemParameters.PrimaryScreenHeight;
             this.Icon = IconHelper.ConvertToImageSource(SystemIcons.Information);
-            this._options = this._controller.OptionLibrary.Options;
-            this.TsMainWindow = this._controller.TsMainWindow;
+            this._options = Director.Instance.OptionLibrary.Options;
+            this.TsMainWindow = Director.Instance.TsMainWindow;
             this._testingwindowui._logclearbtn.Click += this.OnLogClearClick;
-            this._controller.ParentWindow.Loaded += this.OnParentWindowLoaded;
-            this._controller.ParentWindow.Closed += this.OnParentWindowClosed;
+            Director.Instance.ParentWindow.Loaded += this.OnParentWindowLoaded;
+            Director.Instance.ParentWindow.Closed += this.OnParentWindowClosed;
             this._testingwindowui.Show();
-        }
-
-        public void OnWindowClosed(object o, EventArgs e)
-        {
-            this.UnsubscribeFromLogs();
         }
 
         public void OnParentWindowLoaded(object o, EventArgs e)
@@ -101,30 +87,6 @@ namespace TsGui.Diagnostics
         {
             this._testingwindowui.Close();
         }
-
-        public void OnNewLogMessage(UserUITarget sender, EventArgs e)
-        {
-            this._logs = this._logs + sender.LastMessage + Environment.NewLine;
-
-            if (this._pendinglogrefresh == false)
-            {
-                this._pendinglogrefresh = true;
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.RefreshLogView()));
-            }
-        }
-
-        public void RefreshLogView()
-        {
-            if (this._pendinglogrefresh == true)
-            {
-                this.OnPropertyChanged(this, "Logs");
-                this._pendinglogrefresh = false;
-                this._testingwindowui._logtextbox.ScrollToEnd();
-            }
-        }
-
-        public void OnLogClearClick(object sender, RoutedEventArgs e)
-        { this.Logs = string.Empty; }
 
         public void OnTestingWindowRendered(object sender, EventArgs e)
         {
@@ -151,18 +113,6 @@ namespace TsGui.Diagnostics
             this._testingwindowui._optionswrappergrid.Width = this._testingwindowui._dataGrid.ActualWidth;
             this._testingwindowui._optionsgrid.Width = this._testingwindowui._optionswrappergrid.ActualWidth;
             this._pendingresize--;
-        }
-
-        private void SubscribeToLogs()
-        {
-            foreach (ILoggingReceiver receiver in LoggingHelpers.GetLoggingReceivers())
-            { receiver.NewLogMessage += this.OnNewLogMessage; }
-        }
-
-        private void UnsubscribeFromLogs()
-        {
-            foreach (ILoggingReceiver receiver in LoggingHelpers.GetLoggingReceivers())
-            { receiver.NewLogMessage -= this.OnNewLogMessage; }
         }
     }
 }

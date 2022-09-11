@@ -194,14 +194,14 @@ namespace TsGui
             //has been set
             if (this._args.TestMode == false && this._prodmode == true)
             {
-                if (TsGuiRootConfig.Debug == true) { this._testingwindow = new TestingWindow(this); }
+                if (TsGuiRootConfig.Debug == true) { this._testingwindow = new TestingWindow(); }
             }
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
             else
             {
                 if (this.PromptTestMode() != true) { this.Cancel(); return; }
-                if ((TsGuiRootConfig.Debug == true) || (TsGuiRootConfig.LiveData == true)) { this._testingwindow = new TestingWindow(this); }
+                if ((TsGuiRootConfig.Debug == true) || (TsGuiRootConfig.LiveData == true)) { this._testingwindow = new TestingWindow(); }
             }
 
             //now send a ConfigLoadFinished event so things know they can finish setting themselves up e.g. OptionValueQuery
