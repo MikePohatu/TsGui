@@ -19,6 +19,6 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <TextBox x:Name="TextBox" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+    <TextBox x:Name="TextBox" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" 
              Style="{StaticResource FreeTextStyle}" CharacterCasing="{Binding CharacterCasing}"/>
 </UserControl>

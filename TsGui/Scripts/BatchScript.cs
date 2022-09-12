@@ -14,7 +14,8 @@ namespace TsGui.Scripts
     {
         public ScriptResult<string> Result { get; private set; }
 
-        public BatchScript(XElement InputXml): base(InputXml) { }
+        public BatchScript(XElement InputXml): base() 
+        { this.LoadXml(InputXml); }
 
         /// <summary>
         /// Run the script. Results can be consumed from the Result property when finished

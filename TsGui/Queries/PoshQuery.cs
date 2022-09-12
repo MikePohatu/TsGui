@@ -32,7 +32,7 @@ namespace TsGui.Queries
         {
             base.LoadXml(InputXml);
 
-            this._script = new PoshScript(InputXml);
+            this._script = new PoshScript(InputXml, this._linktarget);
             this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
             this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
@@ -44,7 +44,7 @@ namespace TsGui.Queries
         }
 
         public override async Task<ResultWrangler> ProcessQuery(Message message)
-        {
+        { 
             //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
             try
             {

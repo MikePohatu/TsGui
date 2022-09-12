@@ -59,6 +59,7 @@ namespace TsGui.Scripts
             try
             {
                 ScriptSettings settings = JsonConvert.DeserializeObject<ScriptSettings>(json);
+                if (settings == null) { settings = new ScriptSettings(); }
                 return settings;
             }
             catch (Exception e)

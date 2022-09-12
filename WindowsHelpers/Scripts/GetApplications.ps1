@@ -1,3 +1,7 @@
+Param (
+    [string]$AppSearch
+)
+
 $InstalledSoftware64 = Get-ChildItem "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall" -Depth 0
 $InstalledSoftware32 = Get-ChildItem "HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall" -Depth 0
 
@@ -37,4 +41,9 @@ $InstalledSoftware64 | ForEach-Object {
     }
 }
 
-$AllInstalledSoftware | Sort-Object -Property Name
+if ($AppSearch) {
+    Write-Information "Searching $AppSearch"
+    $AllInstalledSoftware | Where { $_.Name -like "*$AppSearch*" } | Sort-Object -Property Name
+} else {
+    $AllInstalledSoftware | Sort-Object -Property Name
+}

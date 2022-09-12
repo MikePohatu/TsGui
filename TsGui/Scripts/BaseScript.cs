@@ -1,4 +1,4 @@
-﻿using Core.Diagnostics;
+using Core.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,10 +21,6 @@ namespace TsGui.Scripts
         public string Path { get; protected set; }
         public string Name { get; protected set; }
 
-        protected BaseScript(XElement InputXml)
-        {
-            this.LoadXml(InputXml);
-        }
 
         protected virtual void LoadXml(XElement InputXml)
         {

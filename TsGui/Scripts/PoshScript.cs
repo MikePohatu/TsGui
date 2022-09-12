@@ -17,24 +17,34 @@ namespace TsGui.Scripts
 {
     public class PoshScript: BaseScript
     {
-        private List<Parameter> _parameters = new List<Parameter>();
+        private ILinkTarget _linktarget;
+        public List<Parameter> Parameters { get; private set; } = new List<Parameter>();
 
         public ScriptResult<PSDataCollection<PSObject>> Result { get; private set; }
 
-        public PoshScript(XElement InputXml) : base(InputXml) { }
+        public PoshScript(XElement InputXml) : base() 
+        { 
+            this.LoadXml(InputXml);
+        }
+
+        public PoshScript(XElement InputXml, ILinkTarget target) : base() 
+        {
+            this._linktarget = target;
+            this.LoadXml(InputXml);
+        }
 
         protected override void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
             foreach (XElement x in InputXml.Elements("Switch"))
             {
-                Parameter p = new Parameter(x);
-                this._parameters.Add(p);
+                Parameter p = new Parameter(x, this._linktarget);
+                this.Parameters.Add(p);
             }
             foreach (XElement x in InputXml.Elements("Parameter"))
             {
-                Parameter p = new Parameter(x);
-                this._parameters.Add(p);
+                Parameter p = new Parameter(x, this._linktarget);
+                this.Parameters.Add(p);
             }
         }
 
@@ -113,7 +123,7 @@ namespace TsGui.Scripts
 
                 using (var posh = new PoshHandler(this._scriptcontent))
                 {
-                    foreach (Parameter p in this._parameters)
+                    foreach (Parameter p in this.Parameters)
                     {
                         var wrangler = await p.GetResultWrangler(null);
                         string value = wrangler.GetString();
