@@ -117,6 +117,7 @@
                         <Setter Property="Foreground" Value="{StaticResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                     </Trigger>
                 </Style.Triggers>
+                <Setter Property="TextBlock.Foreground" Value="{Binding ControlStyle.FontColorBrush}"/>
             </Style>
 
             <Style x:Key="LogOutputStyle" TargetType="TextBox" BasedOn="{StaticResource ControlStyle}">
