@@ -44,7 +44,12 @@ namespace TsGui.Queries
         }
 
         public override async Task<ResultWrangler> ProcessQuery(Message message)
-        { 
+        {
+            //if the script is currently processing, return the current return wrangler
+            //(which may be null)
+            if (this._processing) { return this._returnwrangler; }
+
+            this._processing = true;
             //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
             try
             {
@@ -52,10 +57,10 @@ namespace TsGui.Queries
                 if (this._processed == true && this._reprocess == false) { return this._returnwrangler; }
                 else if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
 
+
                 await this._script.RunScriptAsync();
                 var results = this._script.Result.ReturnedObject;
                 this.AddPoshPropertiesToWrangler(this._processingwrangler, results, this._propertyTemplates);
-                this._processed = true;
             }
             catch (Exception e)
             {
@@ -73,6 +78,9 @@ namespace TsGui.Queries
             if (this.ShouldIgnore(this._processingwrangler.GetString()) == false)
             { this._returnwrangler = this._processingwrangler; }
             else { this._returnwrangler = null; }
+
+            this._processed = true;
+            this._processing = false;
 
             return this._returnwrangler;
         }

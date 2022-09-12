@@ -30,6 +30,7 @@ namespace TsGui.Queries
         protected List<IStringMatchingRule> _ignorerules = new List<IStringMatchingRule>();
         protected bool _reprocess = false;
         protected bool _processed = false;
+        protected bool _processing = false;
         protected ResultWrangler _processingwrangler = new ResultWrangler();
         protected ResultWrangler _returnwrangler;
         protected bool _ignoreempty = true;
