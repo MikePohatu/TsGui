@@ -60,7 +60,6 @@ namespace TsGui.Diagnostics
 
         public TestingWindow()
         {
-            this.SubscribeToLogs();
             this._testingwindowui = new TestingWindowUI();
             this._loggingtextbox = this._testingwindowui._logtextbox;
             this._testingwindowui.DataContext = this;
