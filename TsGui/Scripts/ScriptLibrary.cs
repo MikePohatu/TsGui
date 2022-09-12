@@ -12,9 +12,9 @@ namespace TsGui.Scripts
 
         public static void LoadXml(XElement InputXml)
         {
-            foreach (XElement x in InputXml.Elements("Scrtip"))
+            foreach (XElement x in InputXml.Elements("Script"))
             {
-                AddScript(ScriptFactory.GetScript(x));
+                AddScript(ScriptFactory.CreateScript(x));
             }
         }
 

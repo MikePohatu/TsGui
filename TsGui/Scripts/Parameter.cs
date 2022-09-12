@@ -11,45 +11,52 @@ using TsGui.Queries;
 
 namespace TsGui.Scripts
 {
-    internal class Parameter
+    internal class Parameter: ILinkTarget
     {
         private QueryPriorityList _querylist;
         public string Name { get; set; }
         public bool IsSwitch { get; set; } = false;
+
+        public Parameter(XElement InputXml)
+        {
+            this.LoadXml(InputXml);
+        }
 
         public async Task<ResultWrangler> GetResultWrangler(Message message)
         {
             return await _querylist?.GetResultWrangler(message);
         }
 
-        public Parameter(XElement InputXml, ILinkTarget owner)
-        {
-            this.LoadXml(InputXml, owner);
-        }
-
-        public void LoadXml(XElement InputXml, ILinkTarget owner)
+        public void LoadXml(XElement InputXml)
         {
             if (InputXml.Name == "Switch") { this.IsSwitch = true; }
 
-            XmlHandler.GetStringFromXAttribute(InputXml, "Name", this.Name);
+            this.Name = XmlHandler.GetStringFromXAttribute(InputXml, "Name", this.Name);
             this.Name = XmlHandler.GetStringFromXElement(InputXml, "Name", this.Name);
             string value = XmlHandler.GetStringFromXAttribute(InputXml, "Value", null);
 
             //validation values
-            if (string.IsNullOrEmpty(this.Name)) { throw new KnownException($"Parameter name not defined: {InputXml}", null); }
+            if (string.IsNullOrEmpty(this.Name)) { throw new KnownException($"Parameter name not defined:\n{InputXml}", null); }
 
             //Values set as elements win over attributes
             XElement set = InputXml.Element("SetValue");
             if (set != null)
             {
-                this._querylist = new QueryPriorityList(set, owner);
+                this._querylist = new QueryPriorityList(set, this);
                 if (this._querylist.Queries.Count == 0)
                 {
-                    if (!string.IsNullOrEmpty(value) && this.IsSwitch == false) { throw new KnownException($"Parameter {this.Name} does not define a value: {InputXml}", null); }
-                    this._querylist = new QueryPriorityList(owner);
+                    if (string.IsNullOrEmpty(value) && this.IsSwitch == false) { throw new KnownException($"Parameter {this.Name} does not define a value:\n{InputXml}", null); }
+                    this._querylist = new QueryPriorityList(this);
                     this._querylist.AddQuery(new ValueOnlyQuery(value));
                 }
             }            
+        }
+
+        //do nothing on source value updated. These are triggered by the script running and querying
+        //the parameter
+        public async Task OnSourceValueUpdatedAsync(Message message) 
+        {
+            await Task.CompletedTask;
         }
     }
 }

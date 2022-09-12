@@ -21,29 +21,19 @@ namespace TsGui.Scripts
 
         public ScriptResult<PSDataCollection<PSObject>> Result { get; private set; }
 
-        public PoshScript(XElement InputXml) : base(InputXml) 
-        {
-            this.LoadXml(InputXml);
-        }
-
-        public PoshScript(XElement InputXml, ILinkTarget owner) : base(InputXml)
-        {
-            this.LoadXml(InputXml);
-            this._owner = owner;
-        }
+        public PoshScript(XElement InputXml) : base(InputXml) { }
 
         protected override void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-
             foreach (XElement x in InputXml.Elements("Switch"))
             {
-                Parameter p = new Parameter(x, this._owner);
+                Parameter p = new Parameter(x);
                 this._parameters.Add(p);
             }
-            foreach (XElement x in InputXml.Elements("Paramter"))
+            foreach (XElement x in InputXml.Elements("Parameter"))
             {
-                Parameter p = new Parameter(x, this._owner);
+                Parameter p = new Parameter(x);
                 this._parameters.Add(p);
             }
         }
@@ -54,7 +44,7 @@ namespace TsGui.Scripts
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        public async Task LoadScript()
+        public async Task LoadScriptAsync()
         {
             if (string.IsNullOrWhiteSpace(this.Path) == false)
             {
@@ -86,10 +76,7 @@ namespace TsGui.Scripts
                         } while (line != null);
 
                         string settingsjson = builder.ToString();
-                        if (string.IsNullOrWhiteSpace(settingsjson) == false)
-                        {
-                            this._settings = ScriptSettings.Create(settingsjson);
-                        }
+                        this._settings = ScriptSettings.Create(settingsjson);
                     }
                 }
             }
@@ -107,15 +94,9 @@ namespace TsGui.Scripts
             //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
             try
             {
-                string script = string.Empty;
-                string scriptroot = AppDomain.CurrentDomain.BaseDirectory + @"\scripts\";
                 if (System.IO.File.Exists(this.Path))
                 {
-                    script = await IOHelpers.ReadFileAsync(this.Path);
-                }
-                else if (System.IO.File.Exists(scriptroot + this.Path))
-                {
-                    script = await IOHelpers.ReadFileAsync(scriptroot + this.Path);
+                    await this.LoadScriptAsync();
                 }
                 else
                 {
@@ -130,16 +111,17 @@ namespace TsGui.Scripts
                     }
                 }
 
-                using (var posh = new PoshHandler(script))
+                using (var posh = new PoshHandler(this._scriptcontent))
                 {
                     foreach (Parameter p in this._parameters)
                     {
                         var wrangler = await p.GetResultWrangler(null);
+                        string value = wrangler.GetString();
                         posh.Runner.AddParameter(p.Name, wrangler.GetString());
                     }
                     if (!string.IsNullOrWhiteSpace(this._params)) { posh.Runner.AddArgument(this._params); }
 
-                    this.Result.ReturnedObject = await posh.InvokeRunnerAsync();
+                    this.Result.ReturnedObject = await posh.InvokeRunnerAsync(!this._settings.LogScriptContent, this._settings.LogOutput);
                     this.Result.ReturnCode = 0;
                 }
             }

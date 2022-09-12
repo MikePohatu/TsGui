@@ -42,8 +42,8 @@ namespace TsGui.View.GuiOptions
 
         public bool Verbose
         {
-            get { return LoggingHelpers.GetLoggingLevel("test") < 2; }
-            set { LoggingHelpers.SetLoggingLevel(0, "test"); this.OnPropertyChanged(this, "Verbose"); }
+            get { return LoggingHelpers.GetLoggingLevel("livedata") < 2; }
+            set { LoggingHelpers.SetLoggingLevel(0, "livedata"); this.OnPropertyChanged(this, "Verbose"); }
         }
 
         public double LogOutputHeight

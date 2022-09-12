@@ -1,4 +1,4 @@
-﻿using Core.Diagnostics;
+using Core.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace TsGui.Scripts
 {
     public class ScriptFactory
     {
-        public static BaseScript GetScript(XElement inputxml)
+        public static BaseScript CreateScript(XElement inputxml)
         {
             if (inputxml == null) { return null; }
 

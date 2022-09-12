@@ -86,8 +86,13 @@ namespace TsGui.Linking
 
         public void RegisterLinkTarget(ILinkTarget target, ILinkSource source)
         {
-            if (target == null) { throw new KnownException($"Error registering target. Target is null",null); }
-            if (source == null) { throw new KnownException("Error registering target. Source is null. ", null); }
+            if (target == null) { 
+                if (source == null) { throw new KnownException($"Error registering target. Target is null", null); }
+                throw new KnownException($"Error registering target. Target is null, source: {source.ID}", null);
+            }
+            if (source == null) { 
+                throw new KnownException("Error registering target. Source is null. ", null);            
+            }
             MessageHub.Subscribe(source, (Message message) =>
             {
                 target.OnSourceValueUpdatedAsync(message);

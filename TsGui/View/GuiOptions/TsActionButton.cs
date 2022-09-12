@@ -88,7 +88,7 @@ namespace TsGui.View.GuiOptions
 
         public void OnButtonClick(object o, RoutedEventArgs e)
         {
-            Log.Info("Action button clicked");
+            Log.Debug("Action button clicked");
             this._action?.RunAction();
         }
 

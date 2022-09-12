@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config_Examples", "Config_E
 		Config_Examples\Config_Heading.xml = Config_Examples\Config_Heading.xml
 		Config_Examples\Config_Images.xml = Config_Examples\Config_Images.xml
 		Config_Examples\Config_Linking.xml = Config_Examples\Config_Linking.xml
+		Config_Examples\Config_Logging.xml = Config_Examples\Config_Logging.xml
 		Config_Examples\Config_NoUI.xml = Config_Examples\Config_NoUI.xml
 		Config_Examples\Config_Queries.xml = Config_Examples\Config_Queries.xml
 		Config_Examples\Config_Timeout.xml = Config_Examples\Config_Timeout.xml

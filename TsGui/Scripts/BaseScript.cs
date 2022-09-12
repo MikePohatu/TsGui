@@ -13,9 +13,8 @@ namespace TsGui.Scripts
     public abstract class BaseScript
     {
         protected ScriptSettings _settings;
-        protected ILinkTarget _owner;
         protected string _scriptcontent = string.Empty;
-        protected bool _exceptionOnError = true;
+        protected bool _exceptionOnError = false;
         protected bool _exceptionOnMissingFile = true;
         protected string _params;
 
@@ -46,7 +45,7 @@ namespace TsGui.Scripts
             //build a list of path options to check
             string exefolder = AppDomain.CurrentDomain.BaseDirectory;
             List<string> testpaths = new List<string>();
-            if (string.IsNullOrWhiteSpace(this.Path))
+            if (string.IsNullOrWhiteSpace(this.Path)==false)
             {
                 testpaths.Add(this.Path);
             }

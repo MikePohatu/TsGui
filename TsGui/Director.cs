@@ -293,9 +293,12 @@ namespace TsGui
 
             if (SourceXml != null)
             {
+                StyleLibrary.LoadXml(SourceXml);
+                AuthLibrary.LoadXml(SourceXml);
+                ScriptLibrary.LoadXml(SourceXml);
+
                 //start layout import
                 this.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);
-                StyleLibrary.LoadXml(SourceXml);
 
                 this._buttons = new TsButtons();
                 this._buttons.LoadXml(SourceXml.Element("Buttons"));
@@ -320,10 +323,6 @@ namespace TsGui
 
                 this.TsMainWindow.LoadXml(SourceXml);
                 GuiTimeout.Init(SourceXml.Element("Timeout"));
-
-                AuthLibrary.LoadXml(SourceXml);
-
-                ScriptLibrary.LoadXml(SourceXml);
 
                 //now read in the options and add to a dictionary for later use
                 pagesXml = SourceXml.Elements("Page");

@@ -186,7 +186,7 @@ namespace WindowsHelpers
             }
             catch (Exception e)
             {
-                Log.Error(e, "Error running PowerShell script");
+                Log.Error(e, "Error running PowerShell script: " + e.Message);
             }
             this.HasRun = true;
             return this.Results;
