@@ -49,7 +49,7 @@ namespace TsGui.Config
         public static bool UseTouchDefaults { get; private set; } = false;
 
         /// <summary>
-        /// Default path value for GuiOptions (default = null;
+        /// Default path value for GuiOptions (default = null)
         /// </summary>
         public static string DefaultPath { get; private set; } = null;
 
