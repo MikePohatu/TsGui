@@ -4,13 +4,8 @@
 
 * [Adding a Script](#adding-a-script)
 * [Metadata](#metadata)
-* [Output](#output)
-  * [Logging](#logging)
-  * [Data](#data)
-    * [**OutputType**: List](#outputtype-list)
-    * [**OutputType**: Object](#outputtype-object)
-    * [**OutputType**: Text](#outputtype-text)
-    * [**OutputType**: None](#outputtype-none)
+* [Script Output](#script-output)
+* [Logging](#logging)
 
 
 ---
@@ -23,7 +18,7 @@ To add a script, copy your custom .ps1 script file to the **Scripts** folder.
 
 ## Metadata
 
-Metadata can be added to your script to control how your scripts output is read by TsGui.
+Metadata can be added to your script to control how your script output is read by TsGui.
 
 To add metadata, copy and paste the following somewhere in your PowerShell script. This is a comment block so will not effect the functionality of your script. 
 
@@ -31,47 +26,27 @@ To add metadata, copy and paste the following somewhere in your PowerShell scrip
 <#ScriptSettings
 {
     "LogOutput": false,
-    "LogScriptContent": false,
-    "OutputType": "List",
+    "LogScriptContent": false
 }
 ScriptSettings#>
 ```
 
 Update the fields appropriately:
-* **LogOutput**: Will log the output of the script to the output pane, even if DisplayElement is Tab or Modal
+* **LogOutput**: Will log the output of the script to the logging pane
 * **LogScriptContent**: Set this to true to output the content of the script file to the logging pane in TsGui
-* **OutputType**: Define the expected output of the script. Valid options (case sensitive): 
-  * [List](#outputtype-list)
-  * [Object](#outputtype-object)
-  * [Text](#outputtype-text)
-  * [None](#outputtype-none)
 
 The json in the comment block will be parsed when the script is read to create the appropriate configuration.
 
-
 ---
-## Output
 
-### Logging
+## Script Output
+Remember that certain GuiOption types require two values, one for the value, and one for the display text i.e. collection types such as DropDownList and TreeView. To achieve this you need to be able to configure which properties are used to create these values. 
+
+If your script is being used as a query for one of these types, make sure your scripts returns a list of object data types that set properties, such as a hashtable or custom object. Returning a simple string or integer won't work. 
+
+If used in a FreeText, InfoBox, Heading type, you can return an object type or a 'primitive' type. Object data types will concatenate the property values into a string like normal.
+
+## Logging
 TsGui will capture Write-Information, Write-Warning, Write-Error etc. from your script and output it to the *Output* pane.
 
 If you wish to highlight your text in the Output pane, add **\*\*** to the start of your message.
-
-
-### Data
-The output of your script can be viewed in a number of ways. These are configured in the custom script [metadata](#metadata) using the **OutputType** fields:
-
-
-
-#### **OutputType**: List
-List of PowerShell objects
-
-
-#### **OutputType**: Object
-A single PowerShell object created from a hashtable
-
-#### **OutputType**: Text
-Simple text output
-
-#### **OutputType**: None
-No output
