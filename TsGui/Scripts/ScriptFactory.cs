@@ -16,21 +16,20 @@ namespace TsGui.Scripts
 
             string type = XmlHandler.GetStringFromXAttribute(inputxml, "Type", null);
 
-            if (string.IsNullOrWhiteSpace(type) != true)
+            if (string.IsNullOrWhiteSpace(type))
             {
-                switch (type.ToLower())
-                {
-                    case "powershell":
-                        return new PoshScript(inputxml);
-                    case "batch":
-                        return new BatchScript(inputxml);
-                    default:
-                        throw new KnownException("Invalid type specified in script", inputxml.ToString());
-                }
+                throw new KnownException($"Type attribute not set on script\n{inputxml}", null);
             }
 
-            else
-            { return null; }
+            switch (type.ToLower())
+            {
+                case "powershell":
+                    return new PoshScript(inputxml);
+                case "batch":
+                    return new BatchScript(inputxml);
+                default:
+                    throw new KnownException("Invalid type specified in script", inputxml.ToString());
+            }
         }
     }
 }

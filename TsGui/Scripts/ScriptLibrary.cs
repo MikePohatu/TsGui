@@ -12,7 +12,8 @@ namespace TsGui.Scripts
 
         public static void LoadXml(XElement InputXml)
         {
-            foreach (XElement x in InputXml.Elements("Script"))
+            XElement scripts = InputXml.Element("Scripts");
+            foreach (XElement x in scripts.Elements("Script"))
             {
                 AddScript(ScriptFactory.CreateScript(x));
             }
@@ -21,6 +22,8 @@ namespace TsGui.Scripts
         public static BaseScript GetScript(string name)
         {
             BaseScript outscript;
+            var scripts = _scripts;
+
             if (_scripts.TryGetValue(name, out outscript)==false)
             {
                 Log.Warn("Unable to find script in library: " + name);

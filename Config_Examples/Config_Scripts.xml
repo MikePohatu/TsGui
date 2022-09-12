@@ -60,13 +60,16 @@
 					<Label>Installed Applications</Label>
 
 					<Query Type="PowerShell">
-						<Name>GetApplications.ps1</Name>
-						<Parameter Name="AppSearch">
-							<!-- You can use SetValue like you do with a GuiOption for the value of the parameter -->
-							<SetValue>
-								<Query Type="LinkTo">ID_AppSearch</Query>
-							</SetValue>
-						</Parameter>
+						<Script>
+							<Name>GetApplications.ps1</Name>
+							<Parameter Name="AppSearch">
+								<!-- You can use SetValue like you do with a GuiOption for the value of the parameter -->
+								<SetValue>
+									<Query Type="LinkTo">ID_AppSearch</Query>
+								</SetValue>
+							</Parameter>
+						</Script>
+						
 
 						<!-- Properties from the output to include in the list -->
 						<Property Name="Name"/>

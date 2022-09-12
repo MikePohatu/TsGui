@@ -3,7 +3,7 @@ Param (
 )
 
 Write-Information $Message
-
+Write-Output $Message
 <#ScriptSettings
 {
     "LogOutput": true,
