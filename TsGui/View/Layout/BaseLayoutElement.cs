@@ -61,6 +61,13 @@ namespace TsGui.View.Layout
             base.LoadXml(InputXml);
 
             this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
+            
+            //Load legacy options
+            this.Style.LeftCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.Style.LeftCellWidth);
+            this.Style.RightCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.Style.RightCellWidth);
+
+            this.Style.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Style.Width);
+            this.Style.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Style.Height);
 
             //import any styles
             string styleids = XmlHandler.GetStringFromXAttribute(InputXml, "Styles", null);
@@ -72,9 +79,6 @@ namespace TsGui.View.Layout
                 }
             }
 
-            //Load legacy options
-            this.Style.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Style.Width);
-            this.Style.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Style.Height);
             
             //We need to also check for Formatting options for backwards compatibility
             List<string> formattings = new List<string>{ "Formatting", "Style"};
