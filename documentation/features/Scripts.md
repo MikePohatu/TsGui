@@ -30,8 +30,6 @@ To add metadata, copy and paste the following somewhere in your PowerShell scrip
 ```json
 <#ScriptSettings
 {
-    "Description": "List deployments for the connected client",
-    "DisplayName": "ConfigMgr Deployments",
     "LogOutput": false,
     "LogScriptContent": false,
     "OutputType": "List",
@@ -40,8 +38,6 @@ ScriptSettings#>
 ```
 
 Update the fields appropriately:
-* **Description**: The description to appear in TsGui
-* **DisplayName**: The name to be shown in TsGui. If this is empty the script file name will be used
 * **LogOutput**: Will log the output of the script to the output pane, even if DisplayElement is Tab or Modal
 * **LogScriptContent**: Set this to true to output the content of the script file to the logging pane in TsGui
 * **OutputType**: Define the expected output of the script. Valid options (case sensitive): 
