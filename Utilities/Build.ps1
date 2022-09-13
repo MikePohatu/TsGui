@@ -1,4 +1,4 @@
-Function SignAssembliesInPath {
+﻿Function SignAssembliesInPath {
     Param(
         [Parameter(Mandatory=$true)][string]$PackagePath,
         [string]$SignPath='C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64',
@@ -50,20 +50,26 @@ Function PackageFolder {
     [System.IO.Compression.ZipFile]::CreateFromDirectory("$PackageFolder",$DestinationPath,'Optimal',$false)
 }
 
-function Set-ProjectVersion {
+function Set-ProjectDetails {
     Param (
         [Parameter(Mandatory=$true)][string]$ProjectPath,
-        [Parameter(Mandatory=$true)][string]$Version
+        [Parameter(Mandatory=$true)][string]$Version,
+        [string]$Copyright,
+        [string]$Product
     )
 
     #https://stackoverflow.com/q/57666790
     $assemblyInfoPath = "$($ProjectPath)\Properties\AssemblyInfo.cs"
 
-    Write-Host "Updating $assemblyInfoPath to $Version"
-
     $assemblyInfoText = (Get-Content -Path $assemblyInfoPath -Encoding UTF8 -ReadCount 0)
     $assemblyInfoText = $assemblyInfoText -replace '\[assembly: AssemblyVersion\("((\d)+|(\.))*"\)\]', "[assembly: AssemblyVersion(`"$Version`")]"
     $assemblyInfoText = $assemblyInfoText -replace '\[assembly: AssemblyFileVersion\("((\d)+|(\.))*"\)\]', "[assembly: AssemblyFileVersion(`"$Version`")]" 
+    if ($Copyright) {
+        $assemblyInfoText = $assemblyInfoText -replace '\[assembly: AssemblyCopyright\(".*"\)\]', "[assembly: AssemblyCopyright(`"$Copyright`")]" 
+    }
+    if ($Product) {
+        $assemblyInfoText = $assemblyInfoText -replace '\[assembly: AssemblyProduct\(".*"\)\]', "[assembly: AssemblyProduct(`"$Product`")]" 
+    }
     $assemblyInfoText | Set-Content -Path $assemblyInfoPath -Encoding UTF8 | Out-Null
 }
 
@@ -86,7 +92,8 @@ Function pause ()
 }
 
 #run builds
-$version = '1.5.1.2'
+$version = '2.0.0.0'
+$copyRight = "Copyright © 20Road Limited $(get-date -Format yyyy)"
 $repoRoot = 'C:\Source\repos\TsGui'
 $devenv = 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe'
 $dotnet = 'dotnet.exe'
@@ -97,9 +104,18 @@ $ProductReleasePath="$($ReleaseRootPath)\tsgui"
 $ProjectReleasePath="$($repoRoot)\TsGui\bin\Release"
 $BuildFile = "$($repoRoot)\TsGui\TsGui.csproj"
 
-Write-Host "Updating $productName versions to $version"
-Set-ProjectVersion -ProjectPath "$($repoRoot)\MessageCrap" -Version $version
-Set-ProjectVersion -ProjectPath "$($repoRoot)\TsGui" -Version $version
+Write-Host "Updating product details"
+Write-Host "Product name: $productName"
+Write-Host "Product version: $version"
+Write-Host "Product copyright: $copyright"
+
+Set-ProjectDetails -ProjectPath "$($repoRoot)\MessageCrap" -Version $version -Copyright $copyRight -Product $productName
+Set-ProjectDetails -ProjectPath "$($repoRoot)\TsGui" -Version $version -Copyright $copyRight -Product $productName
+Set-ProjectDetails -ProjectPath "$($repoRoot)\Core" -Version $version -Copyright $copyRight -Product $productName
+Set-ProjectDetails -ProjectPath "$($repoRoot)\CustomActions" -Version $version -Copyright $copyRight -Product $productName
+Set-ProjectDetails -ProjectPath "$($repoRoot)\MessageCrap" -Version $version -Copyright $copyRight -Product $productName
+Set-ProjectDetails -ProjectPath "$($repoRoot)\WindowsHelpers" -Version $version -Copyright $copyRight -Product $productName
+Set-ProjectDetails -ProjectPath "$($repoRoot)\TsGui.Tests" -Version $version -Copyright $copyRight -Product $productName
 
 
 
@@ -107,7 +123,8 @@ Set-ProjectVersion -ProjectPath "$($repoRoot)\TsGui" -Version $version
 Write-Host "Building $BuildFile"
 Start-Process -WorkingDirectory $repoRoot -FilePath $cmd -ArgumentList "/c `"`"$devenv`" `"$BuildFile`" /rebuild Release`""
 
-pause -message "Click OK when build has complete"
+Write-Host ""
+Read-Host -Prompt "Press Enter when build has completed"
 
 if (Test-Path $ProductReleasePath) { 
     Remove-Item $ProductReleasePath -Force -Recurse
