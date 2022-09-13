@@ -56,6 +56,16 @@ namespace TsGui.Diagnostics
             get { return this._currentscaling; }
             set { this._currentscaling = value; this.OnPropertyChanged(this, "CurrentScaling"); }
         }
+        public bool Verbose
+        {
+            get { return LoggingHelpers.GetLoggingLevel("livedata") < 2; }
+            set
+            {
+                if (value) { LoggingHelpers.SetLoggingLevel(0, "livedata"); }
+                else { LoggingHelpers.SetLoggingLevel(2, "livedata"); }
+                this.OnPropertyChanged(this, "Verbose");
+            }
+        }
         public ImageSource Icon { get; set; }
 
         public TestingWindow()

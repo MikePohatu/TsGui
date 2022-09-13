@@ -76,7 +76,7 @@ namespace TsGui.Linking
             {
                 Log.Trace($"New update message create, no response. Source ID: {source?.ID}");
             }
-            return MessageHub.CreateMessage(source, message).SetTopic(Topics.SourceValueChanged).SetPayload(source.CurrentValue).Send(); ;
+            return MessageHub.CreateMessage(source, message).SetTopic(Topics.SourceValueChanged).SetPayload(source.CurrentValue).Send();
         }
 
         public Message SendReprocessRequestMessage(object sender, string id, Message message)
