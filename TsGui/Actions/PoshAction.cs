@@ -28,8 +28,7 @@ namespace TsGui.Actions
 
             if (string.IsNullOrEmpty(scriptid))
             {
-                XElement scriptx = InputXml.Element("Script");
-                this._script = new PoshScript(scriptx);
+                this._script = new PoshScript(InputXml);
             }
             else
             {
