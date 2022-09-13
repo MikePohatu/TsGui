@@ -152,6 +152,7 @@ namespace TsGui
         private async Task StartupAsync()
         {
             Log.Debug("*TsGui startup started");
+            DateTime start = DateTime.Now;
             this.StartupFinished = false;
 
             //read the config file in. Don't process it yet
@@ -236,7 +237,8 @@ namespace TsGui
                 this.StartupFinished = true;
                 
                 GuiTimeout.Instance?.Start(this.OnTimeoutReached);
-                Log.Info("*TsGui startup finished");
+                Log.Info($"Startup time {(DateTime.Now - start).Seconds} seconds");
+                Log.Info($"*TsGui startup finished");
             }
             else 
             {
