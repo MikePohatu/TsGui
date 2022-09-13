@@ -19,14 +19,14 @@ namespace TsGui.Scripts
             }
         }
 
-        public static BaseScript GetScript(string name)
+        public static BaseScript GetScript(string id)
         {
             BaseScript outscript;
             var scripts = _scripts;
 
-            if (_scripts.TryGetValue(name, out outscript)==false)
+            if (_scripts.TryGetValue(id, out outscript)==false)
             {
-                Log.Warn("Unable to find script in library: " + name);
+                Log.Warn("Unable to find script in library: " + id);
                 return null;
             }
             else
@@ -37,13 +37,13 @@ namespace TsGui.Scripts
 
         public static void AddScript(BaseScript script)
         {
-            if (_scripts.ContainsKey(script.Name))
+            if (_scripts.ContainsKey(script.ID))
             {
-                throw new KnownException("Script with that name already exists in configuration: " + script.Name, String.Empty);
+                throw new KnownException("Script with that ID already exists in configuration: " + script.ID, String.Empty);
             }
             else
             {
-                _scripts.Add(script.Name, script);
+                _scripts.Add(script.ID, script);
             }
         }
     }

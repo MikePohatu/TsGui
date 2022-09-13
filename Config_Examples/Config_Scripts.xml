@@ -88,4 +88,10 @@
 			</Column>
 		</Row>
 	</Page>
+
+	<Scripts>
+		<Script Type="PowerShell" Name="Example.ps1">
+			<Parameter Name="Message" Value="This one is global" />
+		</Script>
+	</Scripts>
 </TsGui>

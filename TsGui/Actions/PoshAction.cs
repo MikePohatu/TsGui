@@ -24,16 +24,19 @@ namespace TsGui.Actions
 
         public void LoadXml(XElement InputXml)
         {
-            string scriptid = XmlHandler.GetStringFromXAttribute(InputXml, "ID", null);
+            string scriptid = XmlHandler.GetStringFromXAttribute(InputXml, "Global", null);
+
             if (string.IsNullOrEmpty(scriptid))
             {
-                this._script = new PoshScript(InputXml);
-            } 
+                XElement scriptx = InputXml.Element("Script");
+                this._script = new PoshScript(scriptx);
+            }
             else
             {
                 this._script = ScriptLibrary.GetScript(scriptid) as PoshScript;
             }
             if (this._script == null) { throw new KnownException($"No script configuration for action:\n{InputXml}", null); }
+
         }
 
         public void RunAction()

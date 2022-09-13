@@ -20,6 +20,7 @@ namespace TsGui.Scripts
 
         public string Path { get; protected set; }
         public string Name { get; protected set; }
+        public string ID { get; protected set; }
 
 
         protected virtual void LoadXml(XElement InputXml)
@@ -31,6 +32,8 @@ namespace TsGui.Scripts
             this.Name = XmlHandler.GetStringFromXElement(InputXml, "Name", this.Name);
             this.Path = XmlHandler.GetStringFromXAttribute(InputXml, "Path", this.Path);
             this.Path = XmlHandler.GetStringFromXElement(InputXml, "Path", this.Path);
+            this.ID = XmlHandler.GetStringFromXAttribute(InputXml, "ID", this.ID);
+            this.ID = XmlHandler.GetStringFromXElement(InputXml, "ID", this.ID);
 
             //make sure there is a script set
             if (string.IsNullOrWhiteSpace(this.Name) && string.IsNullOrEmpty(this.Path))

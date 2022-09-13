@@ -32,16 +32,16 @@ namespace TsGui.Queries
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            string scriptname = XmlHandler.GetStringFromXAttribute(InputXml, "Script", null);
+            string scriptid = XmlHandler.GetStringFromXAttribute(InputXml, "Global", null);
 
-            if (string.IsNullOrEmpty(scriptname))
+            if (string.IsNullOrEmpty(scriptid))
             {
                 XElement scriptx = InputXml.Element("Script");
                 this._script = new PoshScript(scriptx, this._linktarget);
             }
             else
             {
-                this._script = ScriptLibrary.GetScript(scriptname) as PoshScript;
+                this._script = ScriptLibrary.GetScript(scriptid) as PoshScript;
             }
             if (this._script == null) { throw new KnownException($"No script configuration for query:\n{InputXml}", null); }
 

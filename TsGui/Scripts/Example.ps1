@@ -6,7 +6,7 @@ Write-Information $Message
 Write-Output $Message
 <#ScriptSettings
 {
-    "LogOutput": true,
+    "LogOutput": false,
     "LogScriptContent": false,
     "OutputType": "Text",
 }
