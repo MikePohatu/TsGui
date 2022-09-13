@@ -1,18 +1,41 @@
 # Scripts
 
 
-
 * [Adding a Script](#adding-a-script)
+* [Parameters](#parameters)
 * [Metadata](#metadata)
 * [Script Output](#script-output)
 * [Logging](#logging)
-
 
 ---
 
 ## Adding a Script
 
 To add a script, copy your custom .ps1 script file to the **Scripts** folder. 
+
+---
+
+## Parameters
+Parameters & Switches can be passed to the script using a \<Parameter> or a \<Switch> element. 
+
+A Parameter can either have a value set statically, or set using a query similar to a GuiOption using the \<SetValue> element. Using a query allows you to pass values from the UI or other values from WMI or environment variables.
+
+```xml
+<!-- Set a parameter like this. This is equivalent to 
+  Example.ps1 -Message 'Why hello there' -->
+<Parameter Name="Message" Value="Why hello there" />
+
+<!-- Set a switch like this. Combined with the above this is equivalent to:
+  Example.ps1 -Message 'Why hello there' -Verbose -->
+<Switch Name="Verbose" />
+
+<!-- You can use SetValue like you do with a GuiOption for the value of the parameter -->
+<Parameter Name="AppSearch">
+  <SetValue>
+    <Query Type="LinkTo">Source_ID</Query>
+  </SetValue>
+</Parameter>
+```
 
 ---
 
