@@ -31,6 +31,8 @@ using System.Windows.Controls;
 using TsGui.View.Layout;
 using MessageCrap;
 using System.Threading.Tasks;
+using System.Windows.Data;
+using Core.Logging;
 
 namespace TsGui.View.GuiOptions
 {
@@ -149,6 +151,24 @@ namespace TsGui.View.GuiOptions
             this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", this.MaxLength);
             this.ValidationHandler.LoadLegacyXml(InputXml);
             this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
+
+            int delayMs = XmlHandler.GetIntFromXElement(InputXml, "Delay", 500);
+
+            if (delayMs < 0)
+            {
+                Log.Warn("Delay value cannot be less than 0");
+                delayMs = 500;
+            }
+
+            //set the binding with the correct delay
+            Binding binding = new Binding("ControlText");
+            binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            binding.Delay = delayMs;
+            binding.Mode = BindingMode.TwoWay;
+
+            this._freetextui.TextBox.SetBinding(TextBox.TextProperty, binding);
+
+            //BindingOperations.GetBinding(this._freetextui.TextBox, TextBox.TextProperty).Delay = delaySeconds;
 
             XElement x;         
 

@@ -68,6 +68,11 @@ GuiOption types:
         <GuiOption Type="FreeText">
           <Variable>Engineer</Variable>
           <Label>Engineer name:</Label>
+
+          <!-- Set the delay in milliseconds before a change in the text is updated in the data
+            and any links/queries are refreshed (default 500 ms)  -->
+          <Delay>500</Delay>  
+
           <SetValue>
             <Value>Jane Doe</Value>
           </SetValue>

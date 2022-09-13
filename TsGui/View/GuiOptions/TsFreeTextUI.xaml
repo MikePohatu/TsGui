@@ -19,6 +19,8 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <TextBox x:Name="TextBox" Text="{Binding Path=ControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" 
+    
+    <!-- Binding created in code to allowing setting delay -->
+    <TextBox x:Name="TextBox" 
              Style="{StaticResource FreeTextStyle}" CharacterCasing="{Binding CharacterCasing}"/>
 </UserControl>
