@@ -70,7 +70,7 @@
 					<Variable>InstalledApps</Variable>
 					<Label>Installed Applications</Label>
 
-					<Query Type="PowerShell">
+					<Query Type="PowerShell" Reprocess="TRUE">
 						<Script>
 							<Name>GetApplications.ps1</Name>
 							<Parameter Name="AppSearch">
