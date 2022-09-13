@@ -49,6 +49,17 @@
 					</Action>
 				</GuiOption>
 
+				<GuiOption Type="ActionButton">
+					<ButtonText>Run global</ButtonText>
+					<Formatting>
+						<LeftCellWidth>30</LeftCellWidth>
+						<RightCellWidth>110</RightCellWidth>
+					</Formatting>
+					
+					<!-- Example referencing a global script --> 
+					<Action Type="PowerShell" Global="Example" />
+				</GuiOption>
+
 				<GuiOption Type="FreeText" ID="ID_AppSearch">
 					<Variable>ApplicationSearch</Variable>
 					<Label>Application Search</Label>
@@ -90,7 +101,7 @@
 	</Page>
 
 	<Scripts>
-		<Script Type="PowerShell" Name="Example.ps1">
+		<Script Type="PowerShell" Name="Example.ps1" ID="Example">
 			<Parameter Name="Message" Value="This one is global" />
 		</Script>
 	</Scripts>

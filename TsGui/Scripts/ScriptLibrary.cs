@@ -40,14 +40,17 @@ namespace TsGui.Scripts
 
         public static void AddScript(BaseScript script)
         {
+            if (script.ID == null)
+            {
+                throw new KnownException($"Global scripts must include an ID: {script.Name}", String.Empty);
+            }
+
             if (_scripts.ContainsKey(script.ID))
             {
                 throw new KnownException("Script with that ID already exists in configuration: " + script.ID, String.Empty);
             }
-            else
-            {
-                _scripts.Add(script.ID, script);
-            }
+            
+            _scripts.Add(script.ID, script);
         }
     }
 }
