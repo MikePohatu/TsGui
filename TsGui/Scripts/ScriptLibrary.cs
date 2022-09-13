@@ -13,10 +13,13 @@ namespace TsGui.Scripts
         public static void LoadXml(XElement InputXml)
         {
             XElement scripts = InputXml.Element("Scripts");
-            foreach (XElement x in scripts.Elements("Script"))
+            if (scripts != null)
             {
-                AddScript(ScriptFactory.CreateScript(x));
-            }
+                foreach (XElement x in scripts.Elements("Script"))
+                {
+                    AddScript(ScriptFactory.CreateScript(x));
+                }
+            }           
         }
 
         public static BaseScript GetScript(string id)
