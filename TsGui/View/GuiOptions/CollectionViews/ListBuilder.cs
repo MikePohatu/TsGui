@@ -58,7 +58,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 QueryPriorityList qlist;
                 if (this._querylists.TryGetValue(i, out qlist) == true)
                 {
-                    await qlist.ProcessAllQueries(message);
+                    await qlist.ProcessAllQueriesAsync(message);
                     ResultWrangler wrangler = await qlist.GetResultWrangler(message);
                     if (wrangler != null)
                     {

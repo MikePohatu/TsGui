@@ -17,6 +17,7 @@
 //
 #endregion
 using NUnit.Framework;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Queries.WebServices;
 
@@ -28,7 +29,7 @@ namespace TsGui.Tests
         [Test]
         [TestCase("GetCMDiscoveredUsers", new string[]{"secret", "a4f6accb-0746-4c94-a9d3-e700ae8109e0"}, 
             ExpectedResult = @"<?xml version=""1.0"" encoding=""UTF - 8""?>< ArrayOfCMUser xmlns = ""http://www.scconfigmgr.com"" xmlns: xsi = ""http://www.w3.org/2001/XMLSchema-instance"" xmlns: xsd = ""http://www.w3.org/2001/XMLSchema"" /> ")]       
-        public string BasicWebServiceTest(string Method, string[] Parameters)
+        public async Task<string> BasicWebServiceTestAsync(string Method, string[] Parameters)
         {
             XElement conf = new XElement("Query");            
             conf.Add(new XElement("ServiceURL", "http://sccm01/ConfigMgrWebService/ConfigMgr.asmx"));
@@ -44,7 +45,7 @@ namespace TsGui.Tests
             TestDirector director = new TestDirector();
             Director.OverrideInstance(director);
             WebServicesQuery newquery = new WebServicesQuery(conf, null);
-            newquery.ProcessQuery(null);
+            await newquery.ProcessQueryAsync(null);
             return newquery.Response;
         }
     }

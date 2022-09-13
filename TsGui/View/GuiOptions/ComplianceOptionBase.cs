@@ -153,7 +153,7 @@ namespace TsGui.View.GuiOptions
 
         public override async Task UpdateValueAsync(Message message)
         {
-            this._querylist.ProcessAllQueries(message);
+            await this._querylist.ProcessAllQueriesAsync(message);
             await this.ProcessQueryAsync(message);
             this.Validate();
             this.InvokeToggleEvent();

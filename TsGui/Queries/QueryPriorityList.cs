@@ -82,7 +82,7 @@ namespace TsGui.Queries
             this._queries.Clear();
         }
 
-        public async Task ProcessAllQueries(Message message)
+        public async Task ProcessAllQueriesAsync(Message message)
         {
             foreach (IQuery query in this._queries)
             { await query.ProcessQueryAsync(message); }
