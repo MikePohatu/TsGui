@@ -49,6 +49,15 @@ Scripts can be added as a query by using the 'PowerShell' type and adding a \<Sc
   <Separator> | </Separator>
 </Query>
 ```
+
+**Note** Scripts in queries will only run once by default. This is to prevent constant updating causing multiple long running processing from hanging the application. This is most common with FreeText options being [linked](/documentation/features/OptionLinking.md) to [parameters](#parameters).
+
+To override this behaviour, set the 'Reprocess' attribute on the query as below:
+
+```xml
+<Query Type="PowerShell" Reprocess="TRUE">
+```
+
 ---
 
 ### As an action
