@@ -60,7 +60,7 @@ namespace TsGui.Queries
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
 
-        public override async Task<ResultWrangler> ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             //Now go through the management objects return from WMI, and add the relevant values to the wrangler. 
             //New sublists are created for each management object in the wrangler. 

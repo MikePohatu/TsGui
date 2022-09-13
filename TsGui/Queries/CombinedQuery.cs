@@ -53,10 +53,10 @@ namespace TsGui.Queries
 
         public override Task<ResultWrangler> GetResultWrangler(Message message)
         {
-            return this.ProcessQuery(message);
+            return this.ProcessQueryAsync(message);
         }
 
-        public override async Task<ResultWrangler> ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             this._processingwrangler = this._processingwrangler.Clone();
             this._processingwrangler.NewResult();

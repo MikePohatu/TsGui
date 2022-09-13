@@ -76,7 +76,7 @@ namespace TsGui.Queries
             }
         }
 
-        public override async Task<ResultWrangler> ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             //Query the reg value
             try

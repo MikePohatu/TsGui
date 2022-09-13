@@ -74,7 +74,7 @@ namespace TsGui.Queries.ActiveDirectory
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
 
-        public override async Task<ResultWrangler> ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             if (this._authenticator?.State != AuthState.Authorised)
             {
@@ -111,7 +111,7 @@ namespace TsGui.Queries.ActiveDirectory
 
         public async void OnAuthenticatorStateChange()
         {
-            await this.ProcessQuery(null);
+            await this.ProcessQueryAsync(null);
             this._linktargetoption?.OnSourceValueUpdatedAsync(null);
         }
 

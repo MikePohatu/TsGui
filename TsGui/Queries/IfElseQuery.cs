@@ -37,10 +37,10 @@ namespace TsGui.Queries
 
         public override async Task<ResultWrangler> GetResultWrangler(Message message)
         {
-            return await this.ProcessQuery(message);
+            return await this.ProcessQueryAsync(message);
         }
 
-        public override async Task<ResultWrangler> ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             foreach (Conditional condition in this._conditions)
             {

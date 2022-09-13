@@ -24,6 +24,6 @@ namespace TsGui.Queries
     public interface IQuery
     {
         Task<ResultWrangler> GetResultWrangler(Message message);
-        Task<ResultWrangler> ProcessQuery(Message message);
+        Task<ResultWrangler> ProcessQueryAsync(Message message);
     }
 }

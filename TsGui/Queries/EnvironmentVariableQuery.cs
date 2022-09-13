@@ -67,7 +67,7 @@ namespace TsGui.Queries
         /// </summary>
         /// <param name="InputXml"></param>
         /// <returns></returns>
-        public override async Task<ResultWrangler> ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             this._formatter.Input = this.GetEnvironmentVariableValue(this._formatter.Name.Trim());
             this._processed = true;

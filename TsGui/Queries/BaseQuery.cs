@@ -38,11 +38,11 @@ namespace TsGui.Queries
 
         public virtual async Task<ResultWrangler> GetResultWrangler(Message message)
         {
-            if ((this._reprocess == true) || (this._processed == false)) { return await this.ProcessQuery(message); }
+            if ((this._reprocess == true) || (this._processed == false)) { return await this.ProcessQueryAsync(message); }
             else { return this._returnwrangler; }
         }
 
-        public abstract Task<ResultWrangler> ProcessQuery(Message message);
+        public abstract Task<ResultWrangler> ProcessQueryAsync(Message message);
 
         public BaseQuery(ILinkTarget linktarget)
         {

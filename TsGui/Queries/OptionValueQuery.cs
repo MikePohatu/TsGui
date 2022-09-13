@@ -48,7 +48,7 @@ namespace TsGui.Queries
             LinkingHub.Instance.RegisterLinkTarget(this._linktarget, this._source);
         }
 
-        public override async Task<ResultWrangler> ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             this._formatter.Input = this._source?.CurrentValue;
             this._processed = true;

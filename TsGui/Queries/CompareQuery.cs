@@ -59,10 +59,10 @@ namespace TsGui.Queries
 
         public override Task<ResultWrangler> GetResultWrangler(Message message)
         {
-            return this.ProcessQuery(message);
+            return this.ProcessQueryAsync(message);
         }
 
-        public override async Task<ResultWrangler> ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             //if someone hasn't supplied to queries to compare, just return null i.e. invalid result
             if (this._querylist.Queries.Count <2) { return null; } 

@@ -127,7 +127,7 @@ namespace TsGui.Scripts
                     {
                         var wrangler = await p.GetResultWrangler(null);
                         string value = wrangler.GetString();
-                        posh.Runner.AddParameter(p.Name, wrangler.GetString());
+                        posh.Runner.AddParameter(p.Name, value);
                     }
                     if (!string.IsNullOrWhiteSpace(this._params)) { posh.Runner.AddArgument(this._params); }
 

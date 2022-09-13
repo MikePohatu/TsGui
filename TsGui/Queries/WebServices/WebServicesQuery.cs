@@ -79,7 +79,7 @@ namespace TsGui.Queries.WebServices
             }
         }
 
-        public override async Task<ResultWrangler> ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             //if (this._authenticator?.State != AuthState.Authorised)
             //{
@@ -107,7 +107,7 @@ namespace TsGui.Queries.WebServices
 
         public async void OnAuthenticatorStateChange()
         {
-            await this.ProcessQuery(null);
+            await this.ProcessQueryAsync(null);
             this._linktarget?.OnSourceValueUpdatedAsync(null);
         }
 

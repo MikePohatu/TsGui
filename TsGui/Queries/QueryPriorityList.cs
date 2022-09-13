@@ -82,10 +82,10 @@ namespace TsGui.Queries
             this._queries.Clear();
         }
 
-        public void ProcessAllQueries(Message message)
+        public async Task ProcessAllQueries(Message message)
         {
             foreach (IQuery query in this._queries)
-            { query.ProcessQuery(message); }
+            { await query.ProcessQueryAsync(message); }
         }
 
         public async Task<List<FormattedProperty>> GetAllPropertyFormatters(Message message)

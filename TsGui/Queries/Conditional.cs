@@ -69,10 +69,10 @@ namespace TsGui.Queries
 
         public async Task<ResultWrangler> GetResultWrangler(Message message)
         {
-            return await this.ProcessQuery(message);
+            return await this.ProcessQueryAsync(message);
         }
 
-        public async Task<ResultWrangler> ProcessQuery(Message message)
+        public async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             string sourcevalue = (await this._sourcequerylist.GetResultWrangler(message))?.GetString();
 

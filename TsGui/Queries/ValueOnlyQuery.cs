@@ -53,7 +53,7 @@ namespace TsGui.Queries
             return this._wrangler; 
         }
 
-        public async Task<ResultWrangler> ProcessQuery(Message message)
+        public async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             await Task.CompletedTask;
             return this._wrangler; 

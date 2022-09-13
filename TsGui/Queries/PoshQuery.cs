@@ -52,10 +52,10 @@ namespace TsGui.Queries
 
         public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            if (this._reprocess || !this._processed) { await this.ProcessQuery(message); }
+            if (this._reprocess || !this._processed) { await this.ProcessQueryAsync(message); }
         }
 
-        public override async Task<ResultWrangler> ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             //if the script is currently processing, return the current return wrangler
             //(which may be null)
