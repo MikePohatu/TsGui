@@ -1,15 +1,33 @@
+Version 2.0.0.0
+Release date: 14 Sep 2022
+
+*Features (see documentation for details)
+	PowerShell script support for queries and standalone actions
+	New 'LoggingOutput' GuiOption to show logging info in the UI (may be important for PowerShell errors etc)
+	'Styles' now replace 'Formatting' which are more flexible
+	Added a delay to FreeText. This will prevent changes flowing through immediately with every key press, reducing
+		the number of query and link refreshes. Configurable using the <Delay> option 
+	Added better behaviour for validation popup messages including a specific close button
+
+*Fixes
+	Fixed some layout and styling issues
+
+*Known issues
+	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
+	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
+	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
+	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
+
+*Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
+
+
+
 Version 1.5.1.2
 Release date: 17 Nov 2021
 
 *Fixes
 	Fixed Compliance/Validation options not functioning as group toggles
 
-*Known issues
-	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
-	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
-	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
-
-*Requires Microsoft .NET (WinPE-NetFx) and HTML (WinPE-HTA) be added to your boot image 
 
 
 Version 1.5.1.1
