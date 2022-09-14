@@ -12,6 +12,7 @@ Documentation is currently a work in progress. For usage information, also see t
 
 ## Features
 * [Option Linking](/documentation/features/OptionLinking.md)
+* [Scripts](/documentation/features/Scripts.md)
 * [Styles (previously Formatting)](/documentation/features/Styles.md)
 * [TsGui Output](/documentation/features/TsGuiOutput.md)
 
