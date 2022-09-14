@@ -26,6 +26,7 @@ namespace TsGui
 {
     public class Variable
     {
+        public bool Hide { get; set; } = false;
         public string Path { get; set; }
 
         private string _value;
