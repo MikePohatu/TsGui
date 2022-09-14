@@ -30,6 +30,9 @@ using TsGui.Queries;
 using System.Windows.Controls;
 using TsGui.View.Layout;
 using MessageCrap;
+using System.Threading.Tasks;
+using System.Windows.Data;
+using Core.Logging;
 
 namespace TsGui.View.GuiOptions
 {
@@ -117,7 +120,7 @@ namespace TsGui.View.GuiOptions
             this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.UserControl.DataContext = this;
-            Director.Instance.WindowLoaded += this.OnWindowLoaded;
+            Director.Instance.PageLoaded += this.OnWindowLoaded;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
             this._freetextui.TextBox.GotFocus += this.OnGotFocus;
             this._freetextui.TextBox.TextChanged += this.OnTextChanged;
@@ -138,7 +141,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Stretch;
         }
 
         public new void LoadXml(XElement InputXml)
@@ -148,6 +151,24 @@ namespace TsGui.View.GuiOptions
             this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", this.MaxLength);
             this.ValidationHandler.LoadLegacyXml(InputXml);
             this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
+
+            int delayMs = XmlHandler.GetIntFromXElement(InputXml, "Delay", 500);
+
+            if (delayMs < 0)
+            {
+                Log.Warn("Delay value cannot be less than 0");
+                delayMs = 500;
+            }
+
+            //set the binding with the correct delay
+            Binding binding = new Binding("ControlText");
+            binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            binding.Delay = delayMs;
+            binding.Mode = BindingMode.TwoWay;
+
+            this._freetextui.TextBox.SetBinding(TextBox.TextProperty, binding);
+
+            //BindingOperations.GetBinding(this._freetextui.TextBox, TextBox.TextProperty).Delay = delaySeconds;
 
             XElement x;         
 
@@ -218,9 +239,9 @@ namespace TsGui.View.GuiOptions
         public void OnValidationChange()
         { this.Validate(); }
 
-        public override void UpdateValue(Message message)
+        public override async Task UpdateValueAsync(Message message)
         {
-            string s = this._querylist.GetResultWrangler(message)?.GetString();
+            string s = (await this._querylist.GetResultWrangler(message))?.GetString();
             if (s != null) 
             {
                 //if required, remove invalid characters and truncate
@@ -234,9 +255,9 @@ namespace TsGui.View.GuiOptions
             LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
-        public void OnSourceValueUpdated(Message message)
+        public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            this.UpdateValue(message);
+            await this.UpdateValueAsync(message);
         }
     }
 }

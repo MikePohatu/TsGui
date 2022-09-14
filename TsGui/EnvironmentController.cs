@@ -28,8 +28,8 @@ using TsGui.Queries;
 using TsGui.Validation;
 using TsGui.Connectors;
 using TsGui.Linking;
-using TsGui.Diagnostics.Logging;
-using TsGui.Diagnostics;
+using Core.Logging;
+using Core.Diagnostics;
 using TsGui.Config;
 
 namespace TsGui
@@ -66,7 +66,7 @@ namespace TsGui
                     }
                     catch
                     {
-                        LoggerFacade.Trace("Couldn't create SCCM connector. Creating testing connector");
+                        Log.Trace("Couldn't create SCCM connector. Creating testing connector");
                         _outputconnector = new TestingConnector();
                         return false;
                     }
@@ -77,7 +77,7 @@ namespace TsGui
                     _outputconnector = new RegistryConnector();
                     return true;
                 default:
-                    throw new TsGuiKnownException("Invalid connector type specified", null);
+                    throw new KnownException("Invalid connector type specified", null);
             }
         }
 
@@ -108,7 +108,7 @@ namespace TsGui
                     _type = ConnectorType.Registry;
                     break;
                 default:
-                    LoggerFacade.Warn("Invalid OutputType set, defaulting to ConfigMgr");
+                    Log.Warn("Invalid OutputType set, defaulting to ConfigMgr");
                     _type = ConnectorType.ConfigMgr;
                     break;
             }

@@ -21,6 +21,7 @@
 
 
 using MessageCrap;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Linking;
 
@@ -56,23 +57,23 @@ namespace TsGui.Queries
             }
         }
 
-        public override ResultWrangler GetResultWrangler(Message message)
+        public override Task<ResultWrangler> GetResultWrangler(Message message)
         {
-            return this.ProcessQuery(message);
+            return this.ProcessQueryAsync(message);
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             //if someone hasn't supplied to queries to compare, just return null i.e. invalid result
             if (this._querylist.Queries.Count <2) { return null; } 
 
             ResultWrangler wrangler = new ResultWrangler();
 
-            string first = this._querylist.Queries[0]?.GetResultWrangler(message)?.GetString();
+            string first = (await this._querylist.Queries[0]?.GetResultWrangler(message))?.GetString();
 
             for (int i = 1; i < this._querylist.Queries.Count; i++)
             {
-                string second = this._querylist.Queries[i].GetResultWrangler(message)?.GetString();
+                string second = this._querylist.Queries[i].GetResultWrangler(message)?.Result.GetString();
                 wrangler.NewResult();
                 FormattedProperty prop = new FormattedProperty();
                 prop.Name = "Result";
@@ -91,7 +92,7 @@ namespace TsGui.Queries
             return wrangler;
         }
 
-        public void OnSourceValueUpdated(Message message)
-        { this._linktarget.OnSourceValueUpdated(message); }
+        public async Task OnSourceValueUpdatedAsync(Message message)
+        { await this._linktarget.OnSourceValueUpdatedAsync(message); }
     }
 }

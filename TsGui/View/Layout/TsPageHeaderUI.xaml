@@ -8,7 +8,7 @@
              d:DesignHeight="50" d:DesignWidth="300">
     <Border Background="{Binding BgColor}" >
         <StackPanel x:Name="HeaderStackPanel">
-            <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="{Binding Formatting.Margin}">
+            <Grid x:Name="HeadingGrid" ShowGridLines="{Binding ShowGridLines}" Margin="{Binding Style.Margin}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="HeadingTitleColumn" Width="100*"/>
                     <ColumnDefinition x:Name="HeadingImageColumn" Width="Auto"/>
@@ -27,7 +27,7 @@
                                Source="{Binding Image.MultiImage.CurrentImage}" RenderOptions.BitmapScalingMode="Fant" 
                                Stretch="{Binding Image.StretchMode}" HorizontalAlignment="Right"/>
             </Grid>
-            <ContentPresenter x:Name="HeaderTablePresenter" Content="{Binding Table.Grid}" Margin="10,0,10,0"/>
+            <ContentPresenter x:Name="HeaderTablePresenter" Content="{Binding Table.Grid}" Margin="{Binding Style.Margin}" />
         </StackPanel>
     </Border>
 </UserControl>

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="300">
     <Grid>
-        <TextBlock x:Name="Control" Text="{Binding ControlText, Converter={StaticResource XmlStringLine}}" Style="{StaticResource ControlStyle}" TextWrapping="Wrap"
-                   Foreground="{Binding ControlFormatting.FontColorBrush}" VerticalAlignment="{Binding ControlFormatting.VerticalContentAlignment}" Height="Auto"/>
+        <TextBlock x:Name="Control" Text="{Binding ControlText, Converter={StaticResource XmlStringLine}}" Style="{StaticResource InfoBoxStyle}" IsEnabled="{Binding IsEnabled}" TextWrapping="Wrap"
+                   Height="Auto"/>
     </Grid>
 </UserControl>

@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 
 namespace TsGui.Connectors
 {
@@ -34,7 +34,7 @@ namespace TsGui.Connectors
 
         public void AddVariable(Variable Variable)
         {
-            LoggerFacade.Info("Testing variable applied: " + Variable.Name + ". Value: " + Variable.Value);
+            Log.Info("Testing variable applied: " + Variable.Name + ". Value: " + Variable.Value);
             this.variables.Add(Variable);
         }
 

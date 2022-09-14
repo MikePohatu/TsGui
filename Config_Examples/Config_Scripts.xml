@@ -1,0 +1,108 @@
+<!-- Configuration of options for outputting logging data -->
+<TsGui LiveData="TRUE" Debug="FALSE">
+	<Height>400</Height>
+	<Width>450</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI</Text>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<Style>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>230</RightCellWidth>
+				</Style>
+				
+				<GuiOption Type="ComputerName" />
+				
+				<!-- Use an ActionButton to trigger a script manually -->
+                <GuiOption Type="ActionButton">
+					<ButtonText>Run script</ButtonText>
+					<Formatting>
+						<LeftCellWidth>30</LeftCellWidth>
+						<RightCellWidth>110</RightCellWidth>
+					</Formatting>
+					
+					<!-- Set the details of the PowerShell script in the Action element --> 
+					<Action Type="PowerShell">
+						<!-- Use the Name element to set the file name of the script 
+							including extension. Script files should be in the Scripts
+							folder -->
+						<Name>Example.ps1</Name> 
+
+						<!-- Use the Path element to set the full path of the script extension. 
+							Script files can be anywhere that is accessible to the TsGui process -->
+						<!-- <Path>c:\Path\To\Script\Example.ps1</Path> -->
+
+						<!-- Set a parameter like this. This is equivalent to 
+							Example.ps1 -Message 'Why hello there' -->
+						<Parameter Name="Message" Value="Why hello there" />
+
+						<!-- Set a switch like this. Combined with the above this is equivalent to:
+							Example.ps1 -Message 'Why hello there' -Verbose -->
+						<Switch Name="Verbose" />
+					</Action>
+				</GuiOption>
+
+				<GuiOption Type="ActionButton">
+					<ButtonText>Run global</ButtonText>
+					<Formatting>
+						<LeftCellWidth>30</LeftCellWidth>
+						<RightCellWidth>110</RightCellWidth>
+					</Formatting>
+					
+					<!-- Example referencing a global script --> 
+					<Action Type="PowerShell" Global="Example" />
+				</GuiOption>
+
+				<GuiOption Type="FreeText" ID="ID_AppSearch">
+					<Variable>ApplicationSearch</Variable>
+					<Label>Application Search</Label>
+				</GuiOption>
+
+				<!-- Option list built from Script query -->
+				<GuiOption Type="DropDownList">
+					<Variable>InstalledApps</Variable>
+					<Label>Installed Applications</Label>
+
+					<Query Type="PowerShell">
+						<Script>
+							<Name>GetApplications.ps1</Name>
+							<Parameter Name="AppSearch">
+								<!-- You can use SetValue like you do with a GuiOption for the value of the parameter -->
+								<SetValue>
+									<Query Type="LinkTo">ID_AppSearch</Query>
+								</SetValue>
+							</Parameter>
+						</Script>
+						
+
+						<!-- Properties from the output to include in the list -->
+						<Property Name="Name"/>
+						<Property Name="Name" />
+						<Property Name="Version">
+							<Prefix>Version: </Prefix>
+						</Property>
+						<Separator> | </Separator>
+					</Query>
+				</GuiOption>
+                
+				<GuiOption Type="LoggingOutput">
+					<AllowVerbose>TRUE</AllowVerbose>  <!-- This option enables/disables the 'Verbose' checkbox -->
+					<VerboseLabel>Verbose</VerboseLabel>  <!-- Change the text of the 'Verbose' checkbox -->
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+
+	<Scripts>
+		<Script Type="PowerShell" Name="Example.ps1" ID="Example">
+			<Parameter Name="Message" Value="This one is global" />
+		</Script>
+	</Scripts>
+</TsGui>

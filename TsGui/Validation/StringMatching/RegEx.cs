@@ -19,7 +19,7 @@
 using System;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 using TsGui.Linking;
 
 namespace TsGui.Validation.StringMatching
@@ -40,7 +40,7 @@ namespace TsGui.Validation.StringMatching
                 if (this.IsCaseSensitive == true) { return Regex.IsMatch(s, this.Content); }
                 else { return Regex.IsMatch(s, this.Content, RegexOptions.IgnoreCase); }
             }
-            catch (Exception e) { throw new TsGuiKnownException("Error processing RegEx: " + this.Content, e.Message); }
+            catch (Exception e) { throw new KnownException("Error processing RegEx: " + this.Content, e.Message); }
         }
     }
 }

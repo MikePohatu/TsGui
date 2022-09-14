@@ -33,7 +33,8 @@ using TsGui.Options;
 using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using TsGui.Linking;
 using TsGui.Authentication;
 using TsGui.Validation;
@@ -41,6 +42,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using TsGui.Config;
 using System.Threading.Tasks;
+using TsGui.Scripts;
 
 namespace TsGui
 {
@@ -54,8 +56,10 @@ namespace TsGui
                 return Director._instance;
             } 
         }
+        public event TsGuiWindowEventHandler PageLoaded;
         public event TsGuiWindowEventHandler WindowLoaded;
         public event TsGuiWindowMovingEventHandler WindowMoving;
+        public event TsGuiWindowMovingEventHandler WindowMoved;
         public event TsGuiWindowEventHandler WindowMouseUp;
         public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
@@ -69,12 +73,10 @@ namespace TsGui
         private GroupLibrary _grouplibrary;
         private List<IToggleControl> _toggles;
         private OptionLibrary _optionlibrary;
-        private AuthLibrary _authlibrary;
         private NoUIContainer _nouicontainer;
         private TestingWindow _testingwindow;
 
         //properties
-        public AuthLibrary AuthLibrary { get { return this._authlibrary; } }
         public GroupLibrary GroupLibrary { get { return this._grouplibrary; } }
         public TsMainWindow TsMainWindow { get; set; }
         public OptionLibrary OptionLibrary { get { return this._optionlibrary; } }
@@ -99,7 +101,8 @@ namespace TsGui
             {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
                 {
-                    this.WindowMoving?.Invoke(this, new EventArgs());
+                    this.ParentWindow.LocationChanged -= this.OnWindowMoved;
+                    this.WindowMoved?.Invoke(this, new EventArgs());
                 }));
             });
         }
@@ -108,19 +111,18 @@ namespace TsGui
         //crash. 
         public async Task InitAsync(MainWindow ParentWindow, Arguments Arguments)
         {
-            LoggerFacade.Trace("MainController initializing");
+            Log.Trace("MainController initializing");
             this._pages = new List<TsPage>();
             this._grouplibrary = new GroupLibrary();
             this._toggles = new List<IToggleControl>();
             this._optionlibrary = new OptionLibrary();
-            this._authlibrary = new AuthLibrary();
             this._args = Arguments;
             this.ParentWindow = ParentWindow;
-            this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
-            this.ParentWindow.LocationChanged += this.OnWindowMoving;
+
+            this.ParentWindow.Loaded += this.OnWindowLoaded;
 
             try { await this.StartupAsync(); }
-            catch (TsGuiKnownException e)
+            catch (KnownException e)
             {
                 string msg = "Error message: " + e.CustomMessage + Environment.NewLine + e.Message;
                 this.CloseWithError("Application Startup Exception", msg);
@@ -143,8 +145,8 @@ namespace TsGui
 
         public void CloseWithError(string Title, string Message)
         {
-            LoggerFacade.Fatal("TsGui closing due to error: " + Title);
-            LoggerFacade.Fatal("Error message: " + Message);
+            Log.Fatal("TsGui closing due to error: " + Title);
+            Log.Fatal("Error message: " + Message);
             MessageBox.Show(Message,Title, MessageBoxButton.OK, MessageBoxImage.Error);
             this.ParentWindow.Closing -= this.OnWindowClosing;
             this.ParentWindow.Close();
@@ -152,7 +154,8 @@ namespace TsGui
 
         private async Task StartupAsync()
         {
-            LoggerFacade.Debug("*TsGui startup started");
+            Log.Debug("*TsGui startup started");
+            DateTime start = DateTime.Now;
             this.StartupFinished = false;
 
             //read the config file in. Don't process it yet
@@ -162,15 +165,15 @@ namespace TsGui
             //Now load the XML, catching errors
             try {
                 TsGuiRootConfig.LoadXml(xconfig);
-                LoggerFacade.Info("Finished applying root configuration");
+                Log.Info("Finished applying root configuration");
 
                 //Init the envController so we know what we're writing to and attach the SCCM COM object if required
                 this._prodmode = EnvironmentController.Init();
 
                 this.LoadXml(xconfig);
-                LoggerFacade.Info("Finished applying main config");
+                Log.Info("Finished applying main config");
             }
-            catch (TsGuiKnownException e)
+            catch (KnownException e)
             {
                 string msg = "Error loading config " + Environment.NewLine + e.CustomMessage + Environment.NewLine + e.Message;
                 this.CloseWithError("Error loading config ", msg);
@@ -182,11 +185,11 @@ namespace TsGui
             {
                 HardwareEvaluator.Init(xconfig);
 
-                LoggerFacade.Debug("Running hardware evaluator");
+                Log.Debug("Running hardware evaluator");
                 foreach (Variable var in HardwareEvaluator.GetTsVariables())
                 {
                     NoUIOption newhwoption = new NoUIOption();
-                    newhwoption.ImportFromTsVariable(var);
+                    await newhwoption.ImportFromTsVariableAsync(var);
                     this._optionlibrary.Add(newhwoption);
                 }
             }
@@ -195,28 +198,28 @@ namespace TsGui
             //has been set
             if (this._args.TestMode == false && this._prodmode == true)
             {
-                if (TsGuiRootConfig.Debug == true) { this._testingwindow = new TestingWindow(this); }
+                if (TsGuiRootConfig.Debug == true) { this._testingwindow = new TestingWindow(); }
             }
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
             else
             {
                 if (this.PromptTestMode() != true) { this.Cancel(); return; }
-                if ((TsGuiRootConfig.Debug == true) || (TsGuiRootConfig.LiveData == true)) { this._testingwindow = new TestingWindow(this); }
+                if ((TsGuiRootConfig.Debug == true) || (TsGuiRootConfig.LiveData == true)) { this._testingwindow = new TestingWindow(); }
             }
 
             //now send a ConfigLoadFinished event so things know they can finish setting themselves up e.g. OptionValueQuery
             this.ConfigLoadFinished?.Invoke(this, null);
 
             //now init all the options
-            this._optionlibrary.InitialiseOptions();
+            await this._optionlibrary.InitialiseOptionsAsync();
 
             //subscribe to closing event
             this.ParentWindow.Closing += this.OnWindowClosing;
 
             if (this._pages.Count > 0)
             {
-                LoggerFacade.Debug("Loading pages");
+                Log.Debug("Loading pages");
                 this.CurrentPage = this._pages.First();
                 //update group settings to all controls
                 foreach (IToggleControl t in this._toggles)
@@ -226,7 +229,7 @@ namespace TsGui
 
                 // Now show and close the ghost window to make sure WinPE honours the 
                 // windowstartuplocation
-                LoggerFacade.Trace("Loading ghost window");
+                Log.Trace("Loading ghost window");
                 GhostWindow ghost = new GhostWindow();
                 ghost.Show();
                 ghost.Close();
@@ -237,12 +240,13 @@ namespace TsGui
                 this.StartupFinished = true;
                 
                 GuiTimeout.Instance?.Start(this.OnTimeoutReached);
-                LoggerFacade.Info("*TsGui startup finished");
+                Log.Info($"Startup time {(DateTime.Now - start).Seconds} seconds");
+                Log.Info($"*TsGui startup finished");
             }
             else 
             {
                 //No pages, finish using only the NoUI options
-                LoggerFacade.Info("*No pages configured. Finishing TsGui");
+                Log.Info("*No pages configured. Finishing TsGui");
                 this.Finish();
             }
         }
@@ -270,7 +274,7 @@ namespace TsGui
                 this.ParentWindow.Close();
                 return null;
             }
-            catch (TsGuiKnownException e)
+            catch (KnownException e)
             {
                 throw e;
             }
@@ -294,6 +298,10 @@ namespace TsGui
 
             if (SourceXml != null)
             {
+                StyleLibrary.LoadXml(SourceXml);
+                AuthLibrary.LoadXml(SourceXml);
+                ScriptLibrary.LoadXml(SourceXml);
+
                 //start layout import
                 this.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);
 
@@ -321,11 +329,6 @@ namespace TsGui
                 this.TsMainWindow.LoadXml(SourceXml);
                 GuiTimeout.Init(SourceXml.Element("Timeout"));
 
-                foreach (XElement xauth in SourceXml.Elements("Authentication"))
-                {
-                    this._authlibrary.AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth));
-                }
-
                 //now read in the options and add to a dictionary for later use
                 pagesXml = SourceXml.Elements("Page");
                 if (pagesXml != null)
@@ -352,7 +355,7 @@ namespace TsGui
                         if (prevPage != null) { prevPage.NextPage = currPage; }
 
                         this._pages.Add(currPage);
-                        currPage.Page.Loaded += this.OnWindowLoaded;
+                        currPage.Page.Loaded += this.OnPageLoaded;
                         #endregion
                     }
 
@@ -398,7 +401,7 @@ namespace TsGui
         //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()
         {
-            LoggerFacade.Trace("UpdateWindow called");
+            Log.Trace("UpdateWindow called");
             this.ParentWindow.ContentArea.Navigate(this.CurrentPage.Page);
             this.ParentWindow.ContentArea.DataContext = this.CurrentPage;
             this.CurrentPage.Update();
@@ -461,21 +464,47 @@ namespace TsGui
         }
 
         /// <summary>
+        /// Method to handle when content has finished rendering on the page
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
+        public void OnPageLoaded(object o, RoutedEventArgs e)
+        {
+            this.PageLoaded?.Invoke(o,e);
+        }
+
+        /// <summary>
         /// Method to handle when content has finished rendering on the window
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>
         public void OnWindowLoaded(object o, RoutedEventArgs e)
         {
-            this.WindowLoaded?.Invoke(o,e);
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => {
+                this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
+                this.ParentWindow.TouchUp += this.OnWindowMouseUp;
+                this.ParentWindow.LocationChanged += this.OnWindowMoving;
+                this.WindowLoaded?.Invoke(o, e);
+            }));            
         }
 
         /// <summary>
-        /// Method to handle when TsGui window has been moved
+        /// Method to handle when TsGui window is moving
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>
         public void OnWindowMoving(object o, EventArgs e)
+        {
+            this.WindowMoving?.Invoke(this, new EventArgs());
+            this.ParentWindow.LocationChanged += this.OnWindowMoved;
+        }
+
+        /// <summary>
+        /// Method to handle when TsGui window is moved
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
+        public void OnWindowMoved(object o, EventArgs e)
         {
             this._movetimer.Start();
         }

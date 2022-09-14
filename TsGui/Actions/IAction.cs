@@ -16,10 +16,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using System.Threading.Tasks;
+
 namespace TsGui.Actions
 {
     public interface IAction
     {
         void RunAction();
+        Task RunActionAsync();
     }
 }

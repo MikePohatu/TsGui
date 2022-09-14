@@ -20,9 +20,11 @@
 // Toggle.cs - class to detect changes to IToggleControl objects and apply the changes
 // to the associated group.
 
+using Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using System.Linq;
 
 namespace TsGui.Grouping
 {
@@ -71,7 +73,7 @@ namespace TsGui.Grouping
 
             IEnumerable<XElement> togglesX;
             togglesX = InputXml.Elements("Enabled");
-            if (togglesX != null)
+            if (togglesX.Count() > 0)
             {
                 foreach (XElement togglex in togglesX)
                 {
@@ -81,8 +83,13 @@ namespace TsGui.Grouping
                     }
                 }
             }
+            else
+            {
+                this._toggleValMappings.Add("TRUE", true);
+            }
+
             togglesX = InputXml.Elements("Disabled");
-            if (togglesX != null)
+            if (togglesX.Count() > 0)
             {
                 foreach (XElement togglex in togglesX)
                 {
@@ -92,10 +99,15 @@ namespace TsGui.Grouping
                     }
                 }
             }
+            else
+            {
+                this._toggleValMappings.Add("FALSE", false);
+            }
         }
 
         public void OnToggleEvent()
         {
+            Log.Trace($"Toggle Event received by toggle | VariableName: {this._option.VariableName} | Group: {this._group?.ID}" );
             string val;
             bool newenabled;
 

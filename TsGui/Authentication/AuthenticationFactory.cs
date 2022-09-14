@@ -16,8 +16,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication.LocalConfig;
 using TsGui.Authentication.ExposedPassword;
@@ -34,7 +34,7 @@ namespace TsGui.Authentication
             string type = XmlHandler.GetStringFromXAttribute(inputxml,"Type",null);
             string authid = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
 
-            if (string.IsNullOrWhiteSpace(authid) == true) { throw new TsGuiKnownException("Mising AuthID attribute from XML:", inputxml.ToString()); }
+            if (string.IsNullOrWhiteSpace(authid) == true) { throw new KnownException("Mising AuthID attribute from XML:", inputxml.ToString()); }
 
             if (string.IsNullOrWhiteSpace(type) != true)
             {
@@ -49,7 +49,7 @@ namespace TsGui.Authentication
                         Director.Instance.AddOptionToLibary(auth);
                         return auth;
                     default:
-                        throw new TsGuiKnownException("Invalid type specified in query", inputxml.ToString());
+                        throw new KnownException("Invalid type specified in query", inputxml.ToString());
                 }
             }
 

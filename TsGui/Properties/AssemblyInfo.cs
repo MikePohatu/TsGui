@@ -29,8 +29,8 @@ using System.Windows;
 [assembly: AssemblyDescription("A GUI frontend for SCCM task sequences")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("20Road")]
-[assembly: AssemblyProduct("Task Sequence Gui")]
-[assembly: AssemblyCopyright("Copyright © Mike Pohatu 2021")]
+[assembly: AssemblyProduct("TsGui")]
+[assembly: AssemblyCopyright("Copyright © 20Road Limited 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -69,7 +69,7 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.5.1.2")]
-[assembly: AssemblyFileVersion("1.5.1.2")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
 [assembly: NeutralResourcesLanguage("")]
 

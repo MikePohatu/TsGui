@@ -23,7 +23,7 @@
 using System;
 using System.Management;
 using System.Collections.Generic;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 
 namespace TsGui.Connectors
 {
@@ -77,7 +77,7 @@ namespace TsGui.Connectors
             }
             catch
             {
-                LoggerFacade.Error("Error running query against namespace " + NameSpace + ": " + WmiQuery);
+                Log.Error("Error running query against namespace " + NameSpace + ": " + WmiQuery);
                 return null;
             }
             
@@ -92,7 +92,7 @@ namespace TsGui.Connectors
             }
             catch
             {
-                LoggerFacade.Error("Error running query against namespace " + NameSpace + ": " + WmiQuery);
+                Log.Error("Error running query against namespace " + NameSpace + ": " + WmiQuery);
                 return null;
             }
         }

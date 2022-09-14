@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="20">
     <Border x:Name="CbBorder" Width="Auto" Height="Auto" Margin="{Binding CbBorderMargin}"
-            HorizontalAlignment="{Binding ControlFormatting.HorizontalAlignment}" VerticalAlignment="{Binding ControlFormatting.VerticalAlignment}">
+            HorizontalAlignment="{Binding ControlStyle.HorizontalAlignment}" VerticalAlignment="{Binding ControlStyle.VerticalAlignment}">
         <CheckBox x:Name="CheckBox" IsChecked="{Binding IsChecked}" Style="{StaticResource ControlStyle}"/>
     </Border>
 </UserControl>

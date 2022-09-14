@@ -21,8 +21,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 
 namespace TsGui.Authentication.LocalConfig
 {
@@ -48,13 +48,13 @@ namespace TsGui.Authentication.LocalConfig
         {
             if (string.IsNullOrEmpty(this.PasswordSource.Password) == true)
             {
-                LoggerFacade.Warn("Cannot autheticate with empty password");
+                Log.Warn("Cannot autheticate with empty password");
                 this.SetState(AuthState.NoPassword);
                 this.AuthStateChanged?.Invoke();
                 return AuthState.AccessDenied;
             }
 
-            LoggerFacade.Info("Authenticating against local config with ID " + this.AuthID);
+            Log.Info("Authenticating against local config with ID " + this.AuthID);
             AuthState newstate = AuthState.AccessDenied;
 
             foreach (Password pw in this._validpasswords)
@@ -62,14 +62,14 @@ namespace TsGui.Authentication.LocalConfig
                 if (pw.PasswordMatches(this.PasswordSource?.Password))
                 {
                     newstate = AuthState.Authorised;
-                    LoggerFacade.Info("Authorised.");
+                    Log.Info("Authorised.");
                     break;
                 }
             }
 
             if (newstate != AuthState.Authorised)
             {
-                LoggerFacade.Warn("Authentication failed");
+                Log.Warn("Authentication failed");
             }
 
 
@@ -82,7 +82,7 @@ namespace TsGui.Authentication.LocalConfig
         {
             this.AuthID = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
             if (string.IsNullOrWhiteSpace(this.AuthID) == true)
-            { throw new TsGuiKnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
+            { throw new KnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
 
             foreach (XElement x in inputxml.Elements("Password"))
             {

@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="TsGui.View.GuiOptions.TsLoggingOutputUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TsGui.View.GuiOptions"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="300">
+    <StackPanel Orientation="Vertical">
+        <TextBox x:Name="_logtextbox" Text="{Binding Logs}" Background="LightGray" ScrollViewer.CanContentScroll="true" IsReadOnly="True"
+            ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            Style="{StaticResource LogOutputStyle}" />
+        <StackPanel Orientation="Horizontal" Visibility="{Binding VerboseVisibility}" HorizontalAlignment="Right">
+            <Label x:Name="_verboseLabel" Height="25" Content="{Binding VerboseLabel}" Padding="5,5,5,5" />
+            <CheckBox IsChecked="{Binding Verbose}" VerticalAlignment="Center" Padding="5,5,0,5" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

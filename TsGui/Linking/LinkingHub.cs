@@ -21,8 +21,8 @@
 
 using MessageCrap;
 using System.Collections.Generic;
-using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using TsGui.Options;
 
 namespace TsGui.Linking
@@ -50,11 +50,11 @@ namespace TsGui.Linking
         {
             IOption testoption;
 
-            if (this._sources.TryGetValue(NewSource.ID, out testoption) == true ) { throw new TsGuiKnownException("Duplicate ID found in LinkingLibrary: " + NewSource.ID,""); }
+            if (this._sources.TryGetValue(NewSource.ID, out testoption) == true ) { throw new KnownException("Duplicate ID found in LinkingLibrary: " + NewSource.ID,""); }
             else { this._sources.Add(NewSource.ID,NewSource); }
         }
 
-        public void OnTopicMessageReceived(string topic, Message message)
+        public async void OnTopicMessageReceived(string topic, Message message)
         {
             switch (topic)
             {
@@ -62,7 +62,7 @@ namespace TsGui.Linking
                     IOption option = this.GetSourceOption(message.Payload as string);
                     if (option != null)
                     {
-                        option.UpdateValue(message);
+                        await option.UpdateValueAsync(message);
                     }
                     break;
                 default:
@@ -74,9 +74,9 @@ namespace TsGui.Linking
         {
             if (message == null)
             {
-                LoggerFacade.Trace($"New update message create, no response. Source ID: {source?.ID}");
+                Log.Trace($"New update message create, no response. Source ID: {source?.ID}");
             }
-            return MessageHub.CreateMessage(source, message).SetTopic(Topics.SourceValueChanged).SetPayload(source.CurrentValue).Send(); ;
+            return MessageHub.CreateMessage(source, message).SetTopic(Topics.SourceValueChanged).SetPayload(source.CurrentValue).Send();
         }
 
         public Message SendReprocessRequestMessage(object sender, string id, Message message)
@@ -86,11 +86,16 @@ namespace TsGui.Linking
 
         public void RegisterLinkTarget(ILinkTarget target, ILinkSource source)
         {
-            if (target == null) { throw new TsGuiKnownException($"Error registering target. Target is null",null); }
-            if (source == null) { throw new TsGuiKnownException("Error registering target. Source is null. ", null); }
+            if (target == null) { 
+                if (source == null) { throw new KnownException($"Error registering target. Target is null", null); }
+                throw new KnownException($"Error registering target. Target is null, source: {source.ID}", null);
+            }
+            if (source == null) { 
+                throw new KnownException("Error registering target. Source is null. ", null);            
+            }
             MessageHub.Subscribe(source, (Message message) =>
             {
-                target.OnSourceValueUpdated(message);
+                target.OnSourceValueUpdatedAsync(message);
             });
         }
     }

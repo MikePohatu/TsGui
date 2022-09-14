@@ -22,8 +22,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Threading;
 using System.Xml.Linq;
-using TsGui.Diagnostics.Logging;
-using TsGui.Diagnostics;
+using Core.Logging;
+using Core.Diagnostics;
 using System.Windows;
 
 namespace TsGui
@@ -110,7 +110,7 @@ namespace TsGui
                 }
                 catch (Exception e)
                 {
-                    throw new TsGuiKnownException("DateTime entered in <Timeount><At> is not valid", e.Message);
+                    throw new KnownException("DateTime entered in <Timeount><At> is not valid", e.Message);
                 }
             }
         }
@@ -131,7 +131,7 @@ namespace TsGui
                 this._afterstarttime = DateTime.Now;
                 this._afterendtime = this._afterstarttime + this.TimeoutElapsed;
                 this.AfterTimer.Start();
-                LoggerFacade.Info("Timeout will occur in " + this.TimeoutElapsed.TotalMilliseconds + " milliseconds");
+                Log.Info("Timeout will occur in " + this.TimeoutElapsed.TotalMilliseconds + " milliseconds");
             }
             
             if (this.TimeoutDateTime != DateTime.MaxValue)
@@ -156,14 +156,14 @@ namespace TsGui
                 this.AtTimer.Interval = new TimeSpan(0, 5, 0);
                 this.AtTimer.Tick += this.ResetAtTimerBlock;
                 this.AtTimer.Start();
-                LoggerFacade.Info("Timeout will occur at " + this.TimeoutDateTime);
+                Log.Info("Timeout will occur at " + this.TimeoutDateTime);
             }
             else if (timeout.TotalMilliseconds > 0)
             {
                 this.AtTimer.Interval = timeout;
                 this.AtTimer.Tick += this.OnTimeoutReached;
                 this.AtTimer.Start();
-                LoggerFacade.Info("Timeout will occur at " + this.TimeoutDateTime);
+                Log.Info("Timeout will occur at " + this.TimeoutDateTime);
             }
         }
 
@@ -177,7 +177,7 @@ namespace TsGui
 
         private void OnTimeoutReached()
         {
-            LoggerFacade.Info("Timeout reached");
+            Log.Info("Timeout reached");
             this.AfterTimer.Stop();
             this.AtTimer.Stop();
             if (this._resetonactivity)

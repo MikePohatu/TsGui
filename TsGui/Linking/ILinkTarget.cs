@@ -20,6 +20,7 @@
 // ILinkingTarget - Linking target options
 
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Linking
 {
@@ -28,6 +29,6 @@ namespace TsGui.Linking
         /// <summary>
         /// Respond to a source updating it's value
         /// </summary>
-        void OnSourceValueUpdated(Message updateMessage);
+        Task OnSourceValueUpdatedAsync(Message updateMessage);
     }
 }

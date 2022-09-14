@@ -21,16 +21,17 @@
 // TsVariables because of security issues
 
 using System;
+using System.Threading.Tasks;
 using System.Security;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Linq;
 using TsGui.Queries;
 using TsGui.Authentication;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 using TsGui.Validation;
 using System.Windows.Input;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.View.Layout;
 using MessageCrap;
 
@@ -103,8 +104,8 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
-            this.ControlFormatting.Padding = new Thickness(this.ControlFormatting.Padding.Left + 1);
+            this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.ControlStyle.Padding = new Thickness(this.ControlStyle.Padding.Left + 1);
             this.LabelText = "Password:";
         }
 
@@ -119,9 +120,9 @@ namespace TsGui.View.GuiOptions
             if (x != null)
             {
                 this.AuthID = x.Value;
-                Director.Instance.AuthLibrary.AddPasswordSource(this);
+                AuthLibrary.AddPasswordSource(this);
             }  
-            else { throw new TsGuiKnownException("Missing AuthID in config:", inputxml.ToString()); }      
+            else { throw new KnownException("Missing AuthID in config:", inputxml.ToString()); }      
         }
 
 
@@ -135,8 +136,8 @@ namespace TsGui.View.GuiOptions
             if (this._authenticator.State == AuthState.Authorised)
             {
                 this._validationtooltiphandler.Clear();
-                this.ControlFormatting.BorderBrush = _greenbrush;
-                this.ControlFormatting.MouseOverBorderBrush = _hovergreenbrush;
+                this.ControlStyle.BorderBrush = _greenbrush;
+                this.ControlStyle.MouseOverBorderBrush = _hovergreenbrush;
             }
             else if (this._authenticator.State == AuthState.NoPassword)
             {
@@ -162,7 +163,7 @@ namespace TsGui.View.GuiOptions
 
         private void OnConfigLoadFinished(object sender, EventArgs e)
         {
-            this._authenticator = Director.Instance.AuthLibrary.GetAuthenticator(this.AuthID);
+            this._authenticator = AuthLibrary.GetAuthenticator(this.AuthID);
             if (this._authenticator != null)
             {
                 this._authenticator.AuthStateChanged += this.OnAuthStateChanged;
@@ -170,7 +171,7 @@ namespace TsGui.View.GuiOptions
             }
             else
             {
-                throw new TsGuiKnownException("Password box is not connected to a configured AuthID.", string.Empty);
+                throw new KnownException("Password box is not connected to a configured AuthID.", string.Empty);
             }
         }
 
@@ -190,18 +191,18 @@ namespace TsGui.View.GuiOptions
 
         public void OnPasswordChanged(object sender, EventArgs e)
         {
-            //LoggerFacade.Info("Password changed event");
+            //Log.Info("Password changed event");
             this.PasswordChanged?.Invoke();
         }
 
         //First state change needs the borderbrush thickness to be changed. Takes some thickness from padding and put it onto borderthickness
         private void FirstStateChange()
         {
-            this.ControlFormatting.Padding = new Thickness(this.ControlFormatting.Padding.Left - 1);
-            this.ControlFormatting.BorderThickness = new Thickness(this.ControlFormatting.BorderThickness.Left + 1);
+            this.ControlStyle.Padding = new Thickness(this.ControlStyle.Padding.Left - 1);
+            this.ControlStyle.BorderThickness = new Thickness(this.ControlStyle.BorderThickness.Left + 1);
             this._authenticator.AuthStateChanged -= this.FirstStateChange;
         }
 
-        public override void UpdateValue(Message message) { }
+        public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
     }
 }

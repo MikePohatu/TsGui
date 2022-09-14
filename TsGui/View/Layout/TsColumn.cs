@@ -55,7 +55,7 @@ namespace TsGui
             this._columnpanel.SetBinding(Grid.IsEnabledProperty, new Binding("IsEnabled"));
             this._columnpanel.SetBinding(Grid.VisibilityProperty, new Binding("Visibility"));
             this._columnpanel.SetBinding(Grid.ShowGridLinesProperty, new Binding("ShowGridLines"));
-            this._columnpanel.SetBinding(Grid.WidthProperty, new Binding("Formatting.Width"));
+            this._columnpanel.SetBinding(Grid.WidthProperty, new Binding("Style.Width"));
 
             this.LoadXml(SourceXml);
         }
@@ -63,7 +63,7 @@ namespace TsGui
 
         private new void LoadXml(XElement InputXml)
         {
-            this.Formatting.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", double.NaN);
+            this.Style.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", double.NaN);
             base.LoadXml(InputXml);
             this.LoadXml(InputXml, this);
         }

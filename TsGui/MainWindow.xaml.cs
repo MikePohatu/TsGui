@@ -22,7 +22,7 @@
 
 using System.Windows;
 using System.Windows.Input;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 
 namespace TsGui
 {
@@ -34,12 +34,12 @@ namespace TsGui
         public MainWindow()
         {            
             InitializeComponent();
-            LoggerFacade.Trace("MainWindow initialized");
-            MessageCrap.MessageHub.Error += LoggerFacade.Error;
-            MessageCrap.MessageHub.Warn += LoggerFacade.Warn;
-            MessageCrap.MessageHub.Info += LoggerFacade.Info;
-            MessageCrap.MessageHub.Debug += LoggerFacade.Debug;
-            MessageCrap.MessageHub.Trace += LoggerFacade.Trace;
+            Log.Trace("MainWindow initialized");
+            MessageCrap.MessageHub.Error += Log.Error;
+            MessageCrap.MessageHub.Warn += Log.Warn;
+            MessageCrap.MessageHub.Info += Log.Info;
+            MessageCrap.MessageHub.Debug += Log.Debug;
+            MessageCrap.MessageHub.Trace += Log.Trace;
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)

@@ -18,7 +18,7 @@
 #endregion
 using System.Windows;
 using TsGui.Authentication;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 using System.Xml.Linq;
 using TsGui.View.Layout;
 
@@ -48,9 +48,9 @@ namespace TsGui.View.GuiOptions
             if (x != null)
             {
                 this._authid = x.Value;
-                Director.Instance.AuthLibrary.AddUsernameSource(this);
+                AuthLibrary.AddUsernameSource(this);
             }
-            else { throw new TsGuiKnownException("Missing AuthID in config", inputxml.ToString()); }
+            else { throw new KnownException("Missing AuthID in config", inputxml.ToString()); }
         }
     }
 }

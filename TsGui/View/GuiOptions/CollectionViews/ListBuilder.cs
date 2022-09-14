@@ -19,9 +19,10 @@
 using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Queries;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.Queries.Trees;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -39,9 +40,9 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this._parent = parent;
         }
 
-        public List<ListItem> Rebuild(Message message)
+        public async Task<List<ListItem>> RebuildAsync(Message message)
         {
-            LoggerFacade.Debug("ListBuilder rebuild initialised");
+            Log.Debug("ListBuilder rebuild initialised");
             int i = 0;
             List<ListItem> newlist = new List<ListItem>();
             while (i <= this._lastindex)
@@ -57,8 +58,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 QueryPriorityList qlist;
                 if (this._querylists.TryGetValue(i, out qlist) == true)
                 {
-                    qlist.ProcessAllQueries(message);
-                    ResultWrangler wrangler = qlist.GetResultWrangler(message);
+                    await qlist.ProcessAllQueriesAsync(message);
+                    ResultWrangler wrangler = await qlist.GetResultWrangler(message);
                     if (wrangler != null)
                     {
                         List<KeyValueTreeNode> kvlist = wrangler.GetKeyValueTree();
@@ -82,7 +83,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             }
             this.Items = newlist;
 
-            LoggerFacade.Debug("ListBuilder rebuild finished");
+            Log.Debug("ListBuilder rebuild finished");
             return newlist;
         }
 
@@ -105,7 +106,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 //read in an option and add to a dictionary for later use
                 if (x.Name == "Option")
                 {
-                    ListItem newoption = new ListItem(x, this._parent.ControlFormatting, this._parent);
+                    ListItem newoption = new ListItem(x, this._parent.ControlStyle, this._parent);
                     this.Add(newoption);
                 }
 
@@ -123,7 +124,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         public ListItem CreateItem(KeyValueTreeNode node)
         {
-            ListItem newitem = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlFormatting, this._parent);
+            ListItem newitem = new ListItem(node.Value.Key, node.Value.Value, this._parent.ControlStyle, this._parent);
 
             foreach (KeyValueTreeNode subnode in node.Nodes)
             {

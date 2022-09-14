@@ -29,6 +29,7 @@ using TsGui.Validation;
 using TsGui.View.Layout;
 using TsGui.Linking;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {
@@ -53,11 +54,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
             this.SetDefaults();
             this.LoadXml(InputXml);
-            this._builder.Rebuild(null);
+            this._builder.RebuildAsync(null).ConfigureAwait(false);
             this.RegisterForItemGroupEvents();
-            this.SetComboBoxDefault();
+            this.SetComboBoxDefaultAsync().ConfigureAwait(false);
 
-            Director.Instance.WindowLoaded += this.OnLoadReload;
+            Director.Instance.PageLoaded += this.OnLoadReload;
             this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
             this._dropdownlistui.Control.LostFocus += this.OnLostFocus;
             this.UserControl.IsEnabledChanged += this.OnActiveChanged;
@@ -73,21 +74,21 @@ namespace TsGui.View.GuiOptions.CollectionViews
             {
                 //Changing the editable value on the combobox changes the inner control which has a different padding. 
                 //Tweak the left padding value to correct for this
-                Thickness pad = this.ControlFormatting.Padding;
+                Thickness pad = this.ControlStyle.Padding;
                 double newleft = System.Math.Max(pad.Left - 2, 0);
                 Thickness newpad = new Thickness(newleft, pad.Top, pad.Right, pad.Bottom);
-                this.ControlFormatting.Padding = newpad;
+                this.ControlStyle.Padding = newpad;
             }
         }
 
-        private void SetComboBoxDefault()
+        private async Task SetComboBoxDefaultAsync()
         {
             ListItem newdefault = null;
 
             if (this._nodefaultvalue == false)
             {
                 int index = 0;
-                string defaultval = this._querylist.GetResultWrangler(null)?.GetString();
+                string defaultval = (await this._querylist.GetResultWrangler(null))?.GetString();
                 foreach (ListItem item in this.VisibleOptions)
                 {
                     if ((item.Value == defaultval) || (index == 0))
@@ -136,10 +137,10 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this._dropdownlistui.Control.IsDropDownOpen = false;
         }
 
-        private void OnOptionsListUpdated()
+        private async void OnOptionsListUpdated()
         {
             this.OnPropertyChanged(this, "VisibleOptions");
-            this.SetComboBoxDefault();
+            await this.SetComboBoxDefaultAsync();
         }
 
         
@@ -151,11 +152,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
             }
         }
 
-        private void OnLostFocus(object sender, RoutedEventArgs e)
+        private async void OnLostFocus(object sender, RoutedEventArgs e)
         {
             if (this.CurrentItem == null)
             {
-                SetComboBoxDefault();
+                await SetComboBoxDefaultAsync();
             }
             else
             {

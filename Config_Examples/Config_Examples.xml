@@ -56,11 +56,11 @@ GuiOption types:
   <Page>
     <Row>
       <Column>
-        <Formatting>
+        <Style>
           <Width>280</Width>
           <LeftCellWidth>110</LeftCellWidth>
           <RightCellWidth>160</RightCellWidth>
-        </Formatting>
+        </Style>
 
         <!-- GuiOptions -->
         <GuiOption Type="ComputerName" />
@@ -68,6 +68,11 @@ GuiOption types:
         <GuiOption Type="FreeText">
           <Variable>Engineer</Variable>
           <Label>Engineer name:</Label>
+
+          <!-- Set the delay in milliseconds before a change in the text is updated in the data
+            and any links/queries are refreshed (default 500 ms)  -->
+          <Delay>500</Delay>  
+
           <SetValue>
             <Value>Jane Doe</Value>
           </SetValue>
@@ -103,10 +108,10 @@ GuiOption types:
 
       <!-- **** Advanced config options  **** -->
       <Column>
-        <Formatting>
+        <Style>
           <LeftCellWidth>110</LeftCellWidth>
           <RightCellWidth>160</RightCellWidth>
-        </Formatting>
+        </Style>
 
         <GuiOption Type="Heading">
           <Label>Additional Info</Label>
@@ -166,11 +171,11 @@ GuiOption types:
     </Heading>
     <Row>
       <Column>
-        <Formatting>
+        <Style>
           <Width>360</Width>
           <LeftCellWidth>150</LeftCellWidth>
           <RightCellWidth>200</RightCellWidth>
-        </Formatting>
+        </Style>
 
         <!-- GuiOptions -->
 

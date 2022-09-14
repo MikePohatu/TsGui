@@ -21,9 +21,8 @@
 
 using System.Xml.Linq;
 using System.Windows;
-
-
 using TsGui.Images;
+using Core;
 
 namespace TsGui.View.Layout
 {
@@ -35,7 +34,7 @@ namespace TsGui.View.Layout
         private Image _image;
 
 
-        public Formatting Formatting { get; set; }
+        public Style Style { get; set; }
         public Image Image
         {
             get { return this._image; }
@@ -73,7 +72,7 @@ namespace TsGui.View.Layout
         {
             this.PaneUI = new TsPaneUI();
             this.PaneUI.DataContext = this;
-            this.Formatting = new Formatting();
+            this.Style = new Style();
             this.SetDefaults();
         }
 
@@ -83,8 +82,8 @@ namespace TsGui.View.Layout
             this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
             this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
 
-            x = InputXml.Element("Formatting");
-            if (x != null) { this.Formatting.LoadXml(x); }
+            x = InputXml.Element("Style");
+            if (x != null) { this.Style.LoadXml(x); }
 
             x = InputXml.Element("Image");
             if (x != null) { this.Image = new Image(x); }
@@ -94,8 +93,8 @@ namespace TsGui.View.Layout
         {
             this.Width = 0;
             this.Height = 0;
-            this.Formatting.Padding = new Thickness(0);
-            this.Formatting.Margin = new Thickness(0);
+            this.Style.Padding = new Thickness(0);
+            this.Style.Margin = new Thickness(0);
         }
     }
 }

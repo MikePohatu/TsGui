@@ -33,6 +33,8 @@ namespace TsGui.Validation
     public class ValidationToolTipHandler
     {
         private bool _active = false;
+        private bool _shouldbeopen = false;
+        private bool _isonright = true;
         private SolidColorBrush _borderbrush;
         private SolidColorBrush _mouseoverborderbrush;
         private SolidColorBrush _focusborderbrush;
@@ -49,15 +51,13 @@ namespace TsGui.Validation
             Director.Instance.WindowLoaded += OnWindowLoaded;
 
             //record the default colors
-            this._borderbrush = this._guioption.ControlFormatting.BorderBrush;
-            this._mouseoverborderbrush = this._guioption.ControlFormatting.MouseOverBorderBrush;
-            this._focusborderbrush = this._guioption.ControlFormatting.FocusedBorderBrush;
+            this._borderbrush = this._guioption.ControlStyle.BorderBrush;
+            this._mouseoverborderbrush = this._guioption.ControlStyle.MouseOverBorderBrush;
+            this._focusborderbrush = this._guioption.ControlStyle.FocusedBorderBrush;
 
             this._validationerrortooltip = new ValidationErrorToolTip();
             this._validationerrortooltip.PlacementTarget = this._guioption.UserControl;
-            this._validationerrortooltip.LeftArrow.Visibility = Visibility.Visible;
-            this._validationerrortooltip.RightArrow.Visibility = Visibility.Hidden;
-            Director.Instance.WindowMoving += this.OnWindowMoving;
+            SetIconVisibilies(true);
         }
 
         public void SetTarget(UserControl Control)
@@ -67,25 +67,27 @@ namespace TsGui.Validation
 
         public void Close()
         {
-            this._validationerrortooltip.IsOpen = false;
+            this.SetOpen(false);
         }
 
         public void Clear()
         {
-            this._validationerrortooltip.IsOpen = false;
-            this._guioption.ControlFormatting.BorderBrush = this._borderbrush;
-            this._guioption.ControlFormatting.MouseOverBorderBrush = this._mouseoverborderbrush;
-            this._guioption.ControlFormatting.FocusedBorderBrush = this._focusborderbrush;
+            this.SetOpen(false);
+            this._guioption.ControlStyle.BorderBrush = this._borderbrush;
+            this._guioption.ControlStyle.MouseOverBorderBrush = this._mouseoverborderbrush;
+            this._guioption.ControlStyle.FocusedBorderBrush = this._focusborderbrush;
             this._active = false;
         }
 
+        
+
         public void ShowError()
         {
-            this._validationerrortooltip.IsOpen = true;
+            this.SetOpen(true);
             this.SetPlacement();
-            this._guioption.ControlFormatting.BorderBrush = _redbrush;
-            this._guioption.ControlFormatting.MouseOverBorderBrush = _redbrush;
-            this._guioption.ControlFormatting.FocusedBorderBrush = _redbrush;
+            this._guioption.ControlStyle.BorderBrush = _redbrush;
+            this._guioption.ControlStyle.MouseOverBorderBrush = _redbrush;
+            this._guioption.ControlStyle.FocusedBorderBrush = _redbrush;
             this._active = true;
             this.UpdateArrows();
         }
@@ -93,19 +95,45 @@ namespace TsGui.Validation
         public void ShowInformation()
         {
             this.SetPlacement();
-            this._validationerrortooltip.IsOpen = true;
+            this.SetOpen(true);
             this._active = true;
             this.UpdateArrows();
         }
 
         public void OnWindowMoving(object o, EventArgs e)
         {
-            this.Close();
+            if (this._validationerrortooltip.IsOpen == true)
+            {
+                Director.Instance.WindowMouseUp += this.OnWindowMoved;
+            }
+            this._validationerrortooltip.IsOpen = false;
+        }
+
+        //reopen the popup if it was before
+        public void OnWindowMoved(object o, RoutedEventArgs e)
+        {
+            if (this._shouldbeopen) {
+                Director.Instance.WindowMouseUp -= this.OnWindowMoved;
+                this._validationerrortooltip.IsOpen = true;
+                UpdateArrows();
+            }
+        }
+
+
+        private void SetOpen(bool isopen)
+        {
+            this._validationerrortooltip.IsOpen = isopen;
+            this._shouldbeopen = isopen;
         }
 
         public void OnWindowLoaded(object o, RoutedEventArgs e)
         {
             this._windowloaded = true;
+            Director.Instance.WindowMoving += this.OnWindowMoving;
+            this._validationerrortooltip.MouseEnter += this.OnHover;
+            this._validationerrortooltip.MouseLeave += this.OnHoverLeave;
+            this._validationerrortooltip.TouchEnter += this.OnHover;
+            this._validationerrortooltip.TouchLeave += this.OnHoverLeave;
         }
 
         private void UpdateArrows()
@@ -117,17 +145,43 @@ namespace TsGui.Validation
 
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
             {
-                if (this.HasHitRightScreenEdge() == false)
-                {
-                    this._validationerrortooltip.LeftArrow.Visibility = Visibility.Visible;
-                    this._validationerrortooltip.RightArrow.Visibility = Visibility.Hidden;
-                }
-                else
-                {
-                    this._validationerrortooltip.LeftArrow.Visibility = Visibility.Hidden;
-                    this._validationerrortooltip.RightArrow.Visibility = Visibility.Visible;
-                }
+                SetIconVisibilies(!this.HasHitRightScreenEdge());
             }));
+        }
+
+        private void SetIconVisibilies(bool isonright)
+        {
+            
+            if (isonright)
+            {
+                this._validationerrortooltip.LeftArrow.Visibility = Visibility.Visible;
+                this._validationerrortooltip.RightArrow.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                this._validationerrortooltip.LeftArrow.Visibility = Visibility.Collapsed;
+                this._validationerrortooltip.RightArrow.Visibility = Visibility.Visible;
+            }
+
+            this._isonright = isonright;
+        }
+
+        public void OnHover(object o, RoutedEventArgs e)
+        {
+            if (this._isonright)
+            {
+                this._validationerrortooltip.RightX.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this._validationerrortooltip.LeftX.Visibility = Visibility.Visible;
+            }
+        }
+
+        public void OnHoverLeave(object o, RoutedEventArgs e)
+        {
+            this._validationerrortooltip.RightX.Visibility = Visibility.Collapsed;
+            this._validationerrortooltip.LeftX.Visibility = Visibility.Collapsed;
         }
 
         private bool HasHitRightScreenEdge()
@@ -155,7 +209,7 @@ namespace TsGui.Validation
         private void SetPlacement()
         {
             //this is to handle WPF quirks with touch devices
-            if (this._guioption.LabelOnRight == false)
+            if (this._guioption.Style.LabelOnRight == false)
             {
                 if (SystemParameters.MenuDropAlignment == false) { this._validationerrortooltip.Placement = PlacementMode.Right; }
                 else { this._validationerrortooltip.Placement = PlacementMode.Left; }

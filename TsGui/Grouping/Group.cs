@@ -20,7 +20,7 @@
 // Group.cs - groups of elements to be enabled and disabled by a toggle
 
 using System.Collections.Generic;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 
 namespace TsGui.Grouping
 {
@@ -42,7 +42,7 @@ namespace TsGui.Grouping
                 {
                     this._state = value;
                     StateEvent?.Invoke();
-                    LoggerFacade.Info("Group " + this.ID + "state changed. New state: " + this._state.ToString());
+                    Log.Info("Group " + this.ID + "state changed. New state: " + this._state.ToString());
                 }              
             }
         }

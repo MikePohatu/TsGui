@@ -41,10 +41,10 @@
 	<Page>
 		<Row>
 			<Column>
-				<Formatting>
+				<Style>
 					<LeftCellWidth>80</LeftCellWidth>
 					<RightCellWidth>80</RightCellWidth>
-				</Formatting>
+				</Style>
 				
 				
 				<GuiOption Type="Image">

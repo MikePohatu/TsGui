@@ -23,7 +23,7 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 
 namespace TsGui.Authentication.LocalConfig
 {
@@ -100,7 +100,7 @@ namespace TsGui.Authentication.LocalConfig
             }
             catch (Exception e)
             {
-                throw new TsGuiKnownException("There was an error encrypting data. There may be an issue with the configured hash values", e.Message);
+                throw new KnownException("There was an error encrypting data. There may be an issue with the configured hash values", e.Message);
             }
 
             return Convert.ToBase64String(encrypted); 
@@ -115,7 +115,7 @@ namespace TsGui.Authentication.LocalConfig
             }
             catch (FormatException e)
             {
-                throw new TsGuiKnownException("Error with hash value", e.Message);
+                throw new KnownException("Error with hash value", e.Message);
             }
             return output;
         }

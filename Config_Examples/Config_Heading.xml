@@ -11,7 +11,7 @@
 		<Font-Color>#FFFFFF</Font-Color>
 		<Height>90</Height>
 		<Row>
-			<Formatting>
+			<Style>
 				<LeftCellWidth>80</LeftCellWidth>
 				<RightCellWidth>100</RightCellWidth>
 				<Label>
@@ -24,7 +24,7 @@
 						<Color>White</Color>
 					</Font>	
 				</Control>
-			</Formatting>
+			</Style>
 			
 			
 			<Column>
@@ -49,10 +49,10 @@
 	<Page>
 		<Row>
 			<Column>
-				<Formatting>
+				<Style>
 					<LeftCellWidth>100</LeftCellWidth>
 					<RightCellWidth>250</RightCellWidth>
-				</Formatting>
+				</Style>
 				
 				<GuiOption Type="ComputerName"/>
 			</Column>
@@ -62,10 +62,10 @@
 	<Page>
 		<Row>
 			<Column>
-				<Formatting>
+				<Style>
 					<LeftCellWidth>100</LeftCellWidth>
 					<RightCellWidth>250</RightCellWidth>
-				</Formatting>
+				</Style>
 				
 				<GuiOption Type="InfoBox" MaxLength="20">
 					<Variable>INFO_Memory</Variable>

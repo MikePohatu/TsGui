@@ -24,11 +24,12 @@ using System.Xml.Linq;
 
 using TsGui.Linking;
 using TsGui.Authentication;
-using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using System.Text;
 using System.IO;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries.WebServices
 {
@@ -55,7 +56,7 @@ namespace TsGui.Queries.WebServices
         public WebServicesQuery(XElement InputXml, ILinkTarget owner): base(owner)
         {
             this.LoadXml(InputXml);
-            Director.Instance.AuthLibrary.AddAuthenticatorConsumer(this);
+            AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public new void LoadXml(XElement InputXml)
@@ -73,12 +74,12 @@ namespace TsGui.Queries.WebServices
             foreach (XElement x in InputXml.Elements("Parameter"))
             {
                 XAttribute xa = x.Attribute("Name");
-                if (xa == null) { throw new TsGuiKnownException("Missing Name attribute in XML: " + x.ToString(), ""); }
+                if (xa == null) { throw new KnownException("Missing Name attribute in XML: " + x.ToString(), ""); }
                 this._parameters.Add(new KeyValuePair<string, string>(xa.Value, x.Value));
             }
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             //if (this._authenticator?.State != AuthState.Authorised)
             //{
@@ -99,13 +100,15 @@ namespace TsGui.Queries.WebServices
             { this._returnwrangler = this._processingwrangler; }
             else { this._returnwrangler = null; }
 
+            await Task.CompletedTask;
+
             return this._returnwrangler;
         }
 
-        public void OnAuthenticatorStateChange()
+        public async void OnAuthenticatorStateChange()
         {
-            this.ProcessQuery(null);
-            this._linktarget?.OnSourceValueUpdated(null);
+            await this.ProcessQueryAsync(null);
+            this._linktarget?.OnSourceValueUpdatedAsync(null);
         }
 
         public byte[] GetParametersByteArray(List<KeyValuePair<string, string>> parameterlist)
@@ -148,7 +151,7 @@ namespace TsGui.Queries.WebServices
             {
                 //const string CONST_ERROR_FORMAT = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Exception><{0}Error>{1}<InnerException>{2}</InnerException></{0}Error></Exception>";
                 //response = string.Format(CONST_ERROR_FORMAT, this._method, e.ToString(), (e.InnerException != null ? e.InnerException.ToString() : string.Empty));
-                throw new TsGuiKnownException("Web error", e.Message);
+                throw new KnownException("Web error", e.Message);
             }
             return response;
         }

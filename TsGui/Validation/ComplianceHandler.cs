@@ -25,6 +25,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using TsGui.Linking;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Validation
 {
@@ -115,7 +116,10 @@ namespace TsGui.Validation
             else { return string.Empty; }
         }
 
-        public void OnSourceValueUpdated(Message message)
-        { this._owner.OnValidationChange(); }
+        public async Task OnSourceValueUpdatedAsync(Message message)
+        {
+            await Task.CompletedTask;
+            this._owner.OnValidationChange(); 
+        }
     }
 }

@@ -21,6 +21,7 @@
 
 using System.Xml.Linq;
 using System.Windows;
+using System.Threading.Tasks;
 
 using TsGui.Images;
 using TsGui.View.Layout;
@@ -72,14 +73,14 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.RightCellWidth = this.LeftCellWidth + this.RightCellWidth;
-            this.LeftCellWidth = 0;            
-            this.ControlFormatting.Padding = new Thickness(0);
-            this.ControlFormatting.Margin = new Thickness(0);
-            this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
-            this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
+            this.Style.RightCellWidth = this.Style.LeftCellWidth + this.Style.RightCellWidth;
+            this.Style.LeftCellWidth = 0;            
+            this.ControlStyle.Padding = new Thickness(0);
+            this.ControlStyle.Margin = new Thickness(0);
+            this.ControlStyle.VerticalAlignment = VerticalAlignment.Center;
+            this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
-        public override void UpdateValue(Message message) { }
+        public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
     }
 }

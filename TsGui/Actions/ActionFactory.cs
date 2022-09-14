@@ -18,7 +18,7 @@
 #endregion
 using System;
 using System.Xml.Linq;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 
 namespace TsGui.Actions
 {
@@ -29,15 +29,20 @@ namespace TsGui.Actions
             XAttribute xtype = inputxml.Attribute("Type");
             if (xtype == null) { throw new ArgumentException("Missing Type attribute on Action" + Environment.NewLine); }
 
-            LoggerFacade.Info("Creating Action, type: " + xtype.Value);
+            Log.Info("Creating Action, type: " + xtype.Value);
+            string type = xtype.Value.ToLower();
 
             #region
-            if (xtype.Value == "Authentication")
+            if (type == "authentication")
             {
                 var action = new AuthenticationAction(inputxml);
                 return action;
             }
-
+            else if (type == "powershell")
+            {
+                var action = new PoshAction(inputxml);
+                return action;
+            }
             else
             { return null; }
             #endregion

@@ -156,12 +156,12 @@ namespace MessageCrap
         /// <returns></returns>
         public bool ChainIncludesSender(object sender)
         {
-            Message m = this;
-            do
+            Message m = this.RespondingTo;
+            while (m != null)
             {
                 if (sender == m.Sender) { return true; }
                 m = m.RespondingTo;
-            } while (m != null);
+            }
 
             return false;
         }

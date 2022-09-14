@@ -26,9 +26,10 @@ using System.Windows.Media;
 using TsGui.Validation;
 using TsGui.Queries;
 using TsGui.Linking;
-using TsGui.Diagnostics;
+using Core.Diagnostics;
 using MessageCrap;
 using TsGui.View.Layout;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -94,7 +95,7 @@ namespace TsGui.View.GuiOptions
             this._rootelement = this.GetComplianceRootElement();
             if (this._rootelement == null)
             {
-                throw new TsGuiKnownException("There is problem in the compliance tree. Root is null", string.Empty);
+                throw new KnownException("There is problem in the compliance tree. Root is null", string.Empty);
             }
             this._rootelement.ComplianceRetry += this.OnComplianceRetry;
 
@@ -145,23 +146,23 @@ namespace TsGui.View.GuiOptions
         public void OnValidationChange()
         { this.Validate(); }
 
-        public void OnComplianceRetry(IComplianceRoot o, EventArgs e)
+        public async void OnComplianceRetry(IComplianceRoot o, EventArgs e)
         {
-            this.UpdateValue(null);
+            await this.UpdateValueAsync(null);
         }
 
-        public override void UpdateValue(Message message)
+        public override async Task UpdateValueAsync(Message message)
         {
-            this._querylist.ProcessAllQueries(message);
-            this.ProcessQuery(message);
+            await this._querylist.ProcessAllQueriesAsync(message);
+            await this.ProcessQueryAsync(message);
             this.Validate();
             this.InvokeToggleEvent();
             LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
-        public void OnSourceValueUpdated(Message message)
+        public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            this.UpdateValue(message);
+            await this.UpdateValueAsync(message);
         }
 
         public new void LoadXml(XElement InputXml)
@@ -180,9 +181,9 @@ namespace TsGui.View.GuiOptions
             if (x != null) { this._querylist.LoadXml(x); }  
         } 
 
-        protected void ProcessQuery(Message message)
+        protected async Task ProcessQueryAsync(Message message)
         {
-            this._value = this._querylist.GetResultWrangler(message)?.GetString();
+            this._value = (await this._querylist.GetResultWrangler(message))?.GetString();
         }
 
         protected void UpdateState()
@@ -203,9 +204,9 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ControlFormatting.Padding = new Thickness(0, 0, 0, 0);
-            this.ControlFormatting.Margin = new Thickness(2, 1, 2, 1);
-            this.ControlFormatting.VerticalAlignment = VerticalAlignment.Center;
+            this.ControlStyle.Padding = new Thickness(0, 0, 0, 0);
+            this.ControlStyle.Margin = new Thickness(2, 1, 2, 1);
+            this.ControlStyle.VerticalAlignment = VerticalAlignment.Center;
             this.IconHeight = 15;
             this.IconWidth = 15;
             this._showvalueinpopup = false;
@@ -224,16 +225,16 @@ namespace TsGui.View.GuiOptions
                 switch (s)
                 {
                     case "RIGHT":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Right;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Right;
                         break;
                     case "LEFT":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Left;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Left;
                         break;
                     case "CENTER":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Center;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Center;
                         break;
                     case "STRETCH":
-                        this.ControlFormatting.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Stretch;
                         break;
                     default:
                         break;

@@ -31,6 +31,7 @@ using System.Windows.Threading;
 using TsGui.Helpers;
 using TsGui.View;
 using TsGui.Events;
+using Core;
 
 namespace TsGui.Images
 {
@@ -61,7 +62,7 @@ namespace TsGui.Images
         }
         public MultiImage (string FileName)
         {
-            Director.Instance.WindowLoaded += this.OnWindowLoaded;
+            Director.Instance.PageLoaded += this.OnPageLoaded;
 
             this._images = new SortedDictionary<int, BitmapImage>(new ReverseComparer<int>(Comparer<int>.Default));
             this._rootpath = AppDomain.CurrentDomain.BaseDirectory + @"\images\";
@@ -79,7 +80,7 @@ namespace TsGui.Images
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() => this.UpdateImage(DisplayInformation.GetScaling())));
         }
 
-        public void OnWindowLoaded(object sender, RoutedEventArgs e)
+        public void OnPageLoaded(object sender, RoutedEventArgs e)
         {
             this.UpdateImage(DisplayInformation.GetScaling());
         }

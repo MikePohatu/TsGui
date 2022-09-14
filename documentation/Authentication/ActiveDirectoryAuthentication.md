@@ -241,10 +241,10 @@ Note the **ad_auth** value across the configuration pieces.
 
   <Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="domain.local"/>
 
-  <Formatting>
+  <Style>
     <LeftCellWidth>100</LeftCellWidth>
     <RightCellWidth>250</RightCellWidth>
-  </Formatting>
+  </Style>
 
   <Page>
     <Row>
@@ -283,11 +283,11 @@ Note the **ad_auth** value across the configuration pieces.
             <Property Name="Name"/>
           </Query>
 
-          <Formatting>
+          <Style>
             <Control>
               <Height>100</Height>
             </Control>
-          </Formatting>
+          </Style>
         </GuiOption>
       </Column>
     </Row>

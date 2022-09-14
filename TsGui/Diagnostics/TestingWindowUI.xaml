@@ -99,20 +99,26 @@
             <DockPanel VerticalAlignment="Stretch">
                 <TextBlock DockPanel.Dock="Top" x:Name="_logtitle" Text="Log output" FontWeight="Bold"/>
 
-                
+
 
                 <Grid DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Height="30">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="70"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Visibility="{Binding VerboseVisibility}" HorizontalAlignment="Right">
+                        <Label x:Name="_verboseLabel" Height="25" Content="Verbose" Padding="5,5,5,5" />
+                        <CheckBox IsChecked="{Binding Verbose}" VerticalAlignment="Center" Padding="5,5,0,5" />
+                    </StackPanel>
                     <Button Grid.Column="1" x:Name="_logclearbtn" Content="Clear" Width="50" HorizontalAlignment="Right" Margin="2,4,0,0"></Button>
                 </Grid>
                 <Border x:Name="_logtextBorder" HorizontalAlignment="Stretch">
                     <TextBox x:Name="_logtextbox" Text="{Binding Logs}" Background="LightGray" ScrollViewer.CanContentScroll="true" IsReadOnly="True"
-                                   ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                 MinHeight="150" Width="{Binding ActualWidth, ElementName=_logtextBorder}" Height="{Binding ActualHeight, ElementName=_logtextBorder}" />
+                                ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                MinHeight="150" Width="{Binding ActualWidth, ElementName=_logtextBorder}" Height="{Binding ActualHeight, ElementName=_logtextBorder}" />
                 </Border>
+
             </DockPanel>
         </Grid>
     </Grid>

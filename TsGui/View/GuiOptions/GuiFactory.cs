@@ -23,8 +23,8 @@
 using System;
 using System.Xml.Linq;
 using System.Windows;
-using TsGui.Diagnostics.Logging;
-using TsGui.Diagnostics;
+using Core.Logging;
+using Core.Diagnostics;
 using TsGui.View.GuiOptions.CollectionViews;
 using TsGui.Prebuilt;
 using TsGui.View.Layout;
@@ -58,7 +58,7 @@ namespace TsGui.View.GuiOptions
             XAttribute xtype = OptionXml.Attribute("Type");
             if (xtype == null) { throw new ArgumentException("Missing Type attribute on GuiOption" + Environment.NewLine); }
 
-            LoggerFacade.Info("Creating GuiOption, type: " + xtype.Value);
+            Log.Info("Creating GuiOption, type: " + xtype.Value);
 
             IGuiOption newoption = null;
 
@@ -126,8 +126,12 @@ namespace TsGui.View.GuiOptions
             }
             else if (xtype.Value == "Timeout")
             {
-                if (GuiTimeout.Instance == null) { throw new TsGuiKnownException("No Timeout section defined in config. Timeout GuiOption type not available", string.Empty); }
+                if (GuiTimeout.Instance == null) { throw new KnownException("No Timeout section defined in config. Timeout GuiOption type not available", string.Empty); }
                 newoption = new TsTimeout(OptionXml, Parent);
+            }
+            else if (xtype.Value == "LoggingOutput")
+            {
+                newoption = new TsLoggingOutput(OptionXml, Parent);
             }
             else
             { return null; }

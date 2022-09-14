@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29324.140
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsGui", "TsGui\TsGui.csproj", "{5E3CFB02-4012-4298-8770-A101BC0AE200}"
 EndProject
@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config_Examples", "Config_E
 		Config_Examples\Config_Heading.xml = Config_Examples\Config_Heading.xml
 		Config_Examples\Config_Images.xml = Config_Examples\Config_Images.xml
 		Config_Examples\Config_Linking.xml = Config_Examples\Config_Linking.xml
+		Config_Examples\Config_Logging.xml = Config_Examples\Config_Logging.xml
 		Config_Examples\Config_NoUI.xml = Config_Examples\Config_NoUI.xml
 		Config_Examples\Config_Queries.xml = Config_Examples\Config_Queries.xml
 		Config_Examples\Config_Timeout.xml = Config_Examples\Config_Timeout.xml
@@ -48,6 +49,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageCrap", "MessageCrap\MessageCrap.csproj", "{EEEDEF0C-4542-49DE-B415-64CE44EDE3B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{B0AD195B-B60A-4083-9D62-6907381DDCB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsHelpers", "WindowsHelpers\WindowsHelpers.csproj", "{4CA8920A-B2C1-4726-9155-49F6FAE3DD5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomActions", "CustomActions\CustomActions.csproj", "{CAD21ED8-29A7-4423-A6CC-F2D7F45C51E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +73,18 @@ Global
 		{EEEDEF0C-4542-49DE-B415-64CE44EDE3B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEEDEF0C-4542-49DE-B415-64CE44EDE3B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEEDEF0C-4542-49DE-B415-64CE44EDE3B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0AD195B-B60A-4083-9D62-6907381DDCB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0AD195B-B60A-4083-9D62-6907381DDCB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0AD195B-B60A-4083-9D62-6907381DDCB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0AD195B-B60A-4083-9D62-6907381DDCB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA8920A-B2C1-4726-9155-49F6FAE3DD5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA8920A-B2C1-4726-9155-49F6FAE3DD5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA8920A-B2C1-4726-9155-49F6FAE3DD5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA8920A-B2C1-4726-9155-49F6FAE3DD5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAD21ED8-29A7-4423-A6CC-F2D7F45C51E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAD21ED8-29A7-4423-A6CC-F2D7F45C51E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAD21ED8-29A7-4423-A6CC-F2D7F45C51E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAD21ED8-29A7-4423-A6CC-F2D7F45C51E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

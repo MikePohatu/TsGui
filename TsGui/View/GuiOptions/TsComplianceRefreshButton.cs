@@ -24,6 +24,7 @@ using System.Windows;
 using TsGui.View.Layout;
 using MessageCrap;
 using TsGui.Validation;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -87,10 +88,10 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            ControlDefaults.SetButtonDefaults(this.ControlFormatting);
+            ControlDefaults.SetButtonDefaults(this.ControlStyle);
             this.ButtonText = "Refresh";
         }
 
-        public override void UpdateValue(Message message) { }
+        public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
     }
 }

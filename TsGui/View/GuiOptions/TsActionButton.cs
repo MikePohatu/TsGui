@@ -20,9 +20,10 @@ using System.Xml.Linq;
 using System.Windows;
 using TsGui.View.Layout;
 using TsGui.Actions;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.Validation;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -87,17 +88,17 @@ namespace TsGui.View.GuiOptions
 
         public void OnButtonClick(object o, RoutedEventArgs e)
         {
-            LoggerFacade.Info("Action button clicked");
+            Log.Debug("Action button clicked");
             this._action?.RunAction();
         }
 
         private void SetDefaults()
         {
-            ControlDefaults.SetButtonDefaults(this.ControlFormatting);
+            ControlDefaults.SetButtonDefaults(this.ControlStyle);
             this._isdefault = false;
             this.ButtonText = "Apply";
         }
 
-        public override void UpdateValue(Message message) { }
+        public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
     }
 }

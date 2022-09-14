@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using TsGui.View.Layout;
 using TsGui.Grouping;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.View.Symbols;
 using System.Windows;
 
@@ -51,25 +51,25 @@ namespace TsGui.View.GuiOptions.CollectionViews
             get { return this._isexpanded; }
             set { this._isexpanded = value; this.OnPropertyChanged(this, "IsExpanded"); }
         }
-        public Formatting ItemFormatting { get; set; }
+        public Layout.Style ItemStyle { get; set; }
         public List<ListItem> ItemsList { get; set; }
         public UserControl Icon { get; set; }
 
-        public ListItem(string Value, string Text, Formatting Formatting, CollectionViewGuiOptionBase parentlist) : base()
+        public ListItem(string Value, string Text, Layout.Style Style, CollectionViewGuiOptionBase parentlist) : base()
         {
-            this.Init(Formatting, parentlist);
+            this.Init(Style, parentlist);
             this.Value = Value;
             if (string.IsNullOrEmpty(Text)) { this.Text = Value; } //if no text is set, just use the value
             else { this.Text = Text; }
 
-            LoggerFacade.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
+            Log.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
         }
 
-        public ListItem(XElement InputXml, Formatting Formatting, CollectionViewGuiOptionBase parentlist) : base()
+        public ListItem(XElement InputXml, Layout.Style Style, CollectionViewGuiOptionBase parentlist) : base()
         {
-            this.Init(Formatting, parentlist);
+            this.Init(Style, parentlist);
             this.LoadXml(InputXml);
-            LoggerFacade.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
+            Log.Info("Created ListItem: " + this.Text + ". Value: " + this.Value);
         }
 
         public ListItem NavigateToValue(string Value)
@@ -92,12 +92,12 @@ namespace TsGui.View.GuiOptions.CollectionViews
             return null;
         }
 
-        private void Init(Formatting Formatting, CollectionViewGuiOptionBase parentlist)
+        private void Init(Layout.Style Style, CollectionViewGuiOptionBase parentlist)
         {
             this.Focusable = true;
             this.Icon = SymbolFactory.Copy(parentlist.Icon);
             this.ItemsList = new List<ListItem>();
-            this.ItemFormatting = Formatting;
+            this.ItemStyle = Style;
             this._parent = parentlist;
         }
 
@@ -119,7 +119,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 }
                 else if (x.Name == "Option")
                 {
-                    ListItem item = new ListItem(x, this.ItemFormatting, this._parent);
+                    ListItem item = new ListItem(x, this.ItemStyle, this._parent);
                     this.ItemsList.Add(item);
                 }
             }

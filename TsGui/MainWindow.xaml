@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TsGui"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="{Binding Formatting.Height, Mode=TwoWay}" Width="{Binding Formatting.Width, Mode=TwoWay}"
+        Title="{Binding WindowTitle}" Height="{Binding Style.Height, Mode=TwoWay}" Width="{Binding Style.Width, Mode=TwoWay}"
         Left="{Binding WindowLocation.Left, Mode=TwoWay}" Top="{Binding WindowLocation.Top, Mode=TwoWay}" 
         Topmost="{Binding TopMost}" 
         WindowStyle="None" MouseLeftButtonDown="OnMouseDown" ResizeMode="NoResize"

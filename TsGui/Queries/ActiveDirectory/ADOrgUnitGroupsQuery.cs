@@ -24,11 +24,12 @@ using TsGui.Queries;
 using TsGui.Linking;
 using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication;
-using TsGui.Diagnostics;
-using TsGui.Diagnostics.Logging;
+using Core.Diagnostics;
+using Core.Logging;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.Queries.ActiveDirectory
 {
@@ -54,7 +55,7 @@ namespace TsGui.Queries.ActiveDirectory
         {
             this._linktargetoption = owner;
             this.LoadXml(InputXml);
-            Director.Instance.AuthLibrary.AddAuthenticatorConsumer(this);
+            AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
         public new void LoadXml(XElement InputXml)
@@ -64,7 +65,7 @@ namespace TsGui.Queries.ActiveDirectory
             this.AuthID = XmlHandler.GetStringFromXAttribute(InputXml, "AuthID", this.AuthID);
             this._baseou = InputXml.Element("BaseOU")?.Value;
             //make sure there is a group to query
-            if (string.IsNullOrEmpty(this._baseou)) { throw new TsGuiKnownException("No BaseOU specified in XML: ", InputXml.ToString()); }
+            if (string.IsNullOrEmpty(this._baseou)) { throw new KnownException("No BaseOU specified in XML: ", InputXml.ToString()); }
 
 
             this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
@@ -73,7 +74,7 @@ namespace TsGui.Queries.ActiveDirectory
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
 
-        public override ResultWrangler ProcessQuery(Message message)
+        public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             if (this._authenticator?.State != AuthState.Authorised)
             {
@@ -102,8 +103,8 @@ namespace TsGui.Queries.ActiveDirectory
             }
             catch (Exception e)
             {
-                //throw new TsGuiKnownException("Active Directory OU query caused an error", e.Message);
-                LoggerFacade.Warn("Active Directory OU groups query caused an error: " + e.Message);
+                //throw new KnownException("Active Directory OU query caused an error", e.Message);
+                Log.Warn("Active Directory OU groups query caused an error: " + e.Message);
             }
 
             this._processed = true;
@@ -111,13 +112,15 @@ namespace TsGui.Queries.ActiveDirectory
             { this._returnwrangler = this._processingwrangler; }
             else { this._returnwrangler = null; }
 
+            await Task.CompletedTask;
+
             return this._returnwrangler;
         }
 
-        public void OnAuthenticatorStateChange()
+        public async void OnAuthenticatorStateChange()
         {
-            this.ProcessQuery(null);
-            this._linktargetoption?.OnSourceValueUpdated(null);
+            await this.ProcessQueryAsync(null);
+            await this._linktargetoption?.OnSourceValueUpdatedAsync(null);
         }
 
         private void AddPropertiesToWrangler(ResultWrangler wrangler, Principal group, List<KeyValuePair<string, XElement>> PropertyTemplates)

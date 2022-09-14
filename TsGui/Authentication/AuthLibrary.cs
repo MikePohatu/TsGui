@@ -17,142 +17,151 @@
 //
 #endregion
 using System.Collections.Generic;
-using TsGui.Diagnostics.Logging;
+using System.Xml.Linq;
+using Core.Logging;
 
 namespace TsGui.Authentication
 {
-    public class AuthLibrary
+    public static class AuthLibrary
     {
-        private Dictionary<string, IUsername> _usernames = new Dictionary<string, IUsername>();
-        private Dictionary<string, IPassword> _passwords = new Dictionary<string, IPassword>();
-        private Dictionary<string, IPassword> _passwordconfirmers = new Dictionary<string, IPassword>();
-        private Dictionary<string, IAuthenticator> _authenticators = new Dictionary<string, IAuthenticator>();
-        private Dictionary<string, List<IAuthenticatorConsumer>> _pendingconsumers = new Dictionary<string, List<IAuthenticatorConsumer>>();
+        private static Dictionary<string, IUsername> _usernames = new Dictionary<string, IUsername>();
+        private static Dictionary<string, IPassword> _passwords = new Dictionary<string, IPassword>();
+        private static Dictionary<string, IPassword> _passwordconfirmers = new Dictionary<string, IPassword>();
+        private static Dictionary<string, IAuthenticator> _authenticators = new Dictionary<string, IAuthenticator>();
+        private static Dictionary<string, List<IAuthenticatorConsumer>> _pendingconsumers = new Dictionary<string, List<IAuthenticatorConsumer>>();
 
-        public IUsername GetUsername(string ID)
+        public static void LoadXml(XElement InputXml)
+        {
+            foreach (XElement xauth in InputXml.Elements("Authentication"))
+            {
+                AddAuthenticator(AuthenticationFactory.GetAuthenticator(xauth));
+            }
+        }
+
+        public static IUsername GetUsername(string ID)
         {
             IUsername option;
-            this._usernames.TryGetValue(ID, out option);
+            _usernames.TryGetValue(ID, out option);
             return option;
         }
 
-        public IPassword GetPassword(string ID)
+        public static IPassword GetPassword(string ID)
         {
             IPassword option;
-            this._passwords.TryGetValue(ID, out option);
+            _passwords.TryGetValue(ID, out option);
             return option;
         }
 
-        public IAuthenticator GetAuthenticator(string ID)
+        public static IAuthenticator GetAuthenticator(string ID)
         {
             IAuthenticator option;
-            this._authenticators.TryGetValue(ID, out option);
+            _authenticators.TryGetValue(ID, out option);
             return option;
         }
 
-        public void AddAuthenticatorConsumer(IAuthenticatorConsumer consumer)
+        public static void AddAuthenticatorConsumer(IAuthenticatorConsumer consumer)
         {
             IAuthenticator auth;
-            if (this._authenticators.TryGetValue(consumer.AuthID,out auth) == true)
+            if (_authenticators.TryGetValue(consumer.AuthID,out auth) == true)
             { consumer.Authenticator = auth; }
             else
             {
                 List<IAuthenticatorConsumer> consumerlist;
-                if (this._pendingconsumers.TryGetValue(consumer.AuthID,out consumerlist) != true)
+                if (_pendingconsumers.TryGetValue(consumer.AuthID,out consumerlist) != true)
                 {
                     consumerlist = new List<IAuthenticatorConsumer>();
-                    this._pendingconsumers.Add(consumer.AuthID, consumerlist);
+                    _pendingconsumers.Add(consumer.AuthID, consumerlist);
                 }
 
                 consumerlist.Add(consumer);
             }
         }
 
-        public void AddUsernameSource(IUsername newusersource)
+        public static void AddUsernameSource(IUsername newusersource)
         {
             IAuthenticator auth;
-            if (this._authenticators.TryGetValue(newusersource.AuthID, out auth) == true)
+            if (_authenticators.TryGetValue(newusersource.AuthID, out auth) == true)
             {
                 auth.UsernameSource = newusersource;
             }
             else
-            { this._usernames.Add(newusersource.AuthID, newusersource); }
+            { _usernames.Add(newusersource.AuthID, newusersource); }
         }
 
-        public void AddPasswordSource(IPassword newpwsource)
+        public static void AddPasswordSource(IPassword newpwsource)
         {
             IAuthenticator auth;
-            if (this._authenticators.TryGetValue(newpwsource.AuthID, out auth) == true)
+            if (_authenticators.TryGetValue(newpwsource.AuthID, out auth) == true)
             {
                 if (auth.PasswordSource == null) { auth.PasswordSource = newpwsource; }
-                else { this.AddPasswordConfirmationSource(newpwsource); }
+                else { AddPasswordConfirmationSource(newpwsource); }
                 
             }
             else
             {
                 IPassword outpw;
-                if (this._passwords.TryGetValue(newpwsource.AuthID, out outpw))
+                if (_passwords.TryGetValue(newpwsource.AuthID, out outpw))
                 {
-                    this.AddPasswordConfirmationSource(newpwsource);
+                    AddPasswordConfirmationSource(newpwsource);
                 } 
                 else
                 {
-                    this._passwords.Add(newpwsource.AuthID, newpwsource);
+                    _passwords.Add(newpwsource.AuthID, newpwsource);
                 }
             }
                 
         }
 
-        private void AddPasswordConfirmationSource(IPassword newpwsource)
+        private static void AddPasswordConfirmationSource(IPassword newpwsource)
         {
             IAuthenticator auth;
-            if (this._authenticators.TryGetValue(newpwsource.AuthID, out auth) == true)
+            if (_authenticators.TryGetValue(newpwsource.AuthID, out auth) == true)
             {
                 IPasswordConfirmingAuthenticator confirmerauth = auth as IPasswordConfirmingAuthenticator;
                 if (confirmerauth != null) { confirmerauth.PasswordConfirmationSource = newpwsource; }
-                else { LoggerFacade.Error($"AuthID {newpwsource.AuthID} is not a password confirmer"); }
+                else { Log.Error($"AuthID {newpwsource.AuthID} is not a password confirmer"); }
             }
             else
             {
                 IPassword outpw;
-                if (this._passwordconfirmers.TryGetValue(newpwsource.AuthID, out outpw))
+                if (_passwordconfirmers.TryGetValue(newpwsource.AuthID, out outpw))
                 {
-                    LoggerFacade.Error($"AuthID {newpwsource.AuthID} already has a confirmation password defined");
+                    Log.Error($"AuthID {newpwsource.AuthID} already has a confirmation password defined");
                 }
                 else
                 {
-                    this._passwordconfirmers.Add(newpwsource.AuthID, newpwsource);
+                    _passwordconfirmers.Add(newpwsource.AuthID, newpwsource);
                 }
             }
         }
 
-        public void AddAuthenticator(IAuthenticator newauth)
+        public static void AddAuthenticator(IAuthenticator newauth)
         {
             IUsername user;
-            if (this._usernames.TryGetValue(newauth.AuthID, out user) == true)
+            if (_usernames.TryGetValue(newauth.AuthID, out user) == true)
             {
                 newauth.UsernameSource = user;
-                this._usernames.Remove(newauth.AuthID);
+                _usernames.Remove(newauth.AuthID);
             }
 
             IPassword pass;
-            if (this._passwords.TryGetValue(newauth.AuthID, out pass) == true)
+            if (_passwords.TryGetValue(newauth.AuthID, out pass) == true)
             {
                 newauth.PasswordSource = pass;
-                this._passwords.Remove(newauth.AuthID);
+                _passwords.Remove(newauth.AuthID);
             }
-            if (this._passwordconfirmers.TryGetValue(newauth.AuthID, out pass) == true)
+            if (_passwordconfirmers.TryGetValue(newauth.AuthID, out pass) == true)
             {
                 IPasswordConfirmingAuthenticator confirmerauth = newauth as IPasswordConfirmingAuthenticator;
                 if (confirmerauth != null)
                 {
                     confirmerauth.PasswordConfirmationSource = pass;
-                    this._passwordconfirmers.Remove(newauth.AuthID);
+                    _passwordconfirmers.Remove(newauth.AuthID);
                 }
             }
 
             List<IAuthenticatorConsumer> consumerlist;
-            if (this._pendingconsumers.TryGetValue(newauth.AuthID, out consumerlist) == true)
+            if (_pendingconsumers.TryGetValue(newauth.AuthID, out consumerlist) == true)
             {
                 foreach (IAuthenticatorConsumer consumer in consumerlist)
                 {
@@ -162,10 +171,10 @@ namespace TsGui.Authentication
                     }
                 }
 
-                this._pendingconsumers.Remove(newauth.AuthID);
+                _pendingconsumers.Remove(newauth.AuthID);
             }
 
-            this._authenticators.Add(newauth.AuthID, newauth);
+            _authenticators.Add(newauth.AuthID, newauth);
         }
     }
 }

@@ -27,11 +27,12 @@ using System.Windows;
 using System.Windows.Media;
 using TsGui.Linking;
 using TsGui.Options;
-using TsGui.Diagnostics.Logging;
+using Core.Logging;
 using TsGui.Queries;
 using TsGui.Grouping;
 using System.Collections.Generic;
 using MessageCrap;
+using System.Threading.Tasks;
 
 namespace TsGui.View.GuiOptions
 {
@@ -96,7 +97,7 @@ namespace TsGui.View.GuiOptions
             //load legacy
             XElement x;
             x = InputXml.Element("Bold");
-            if (x != null) { this.LabelFormatting.FontWeight = "Bold"; }
+            if (x != null) { this.LabelStyle.FontWeight = "Bold"; }
 
             //path and variable can be set either as an element, or an attribute
             this.Path = XmlHandler.GetStringFromXElement(InputXml, "Path", this.Path);
@@ -146,11 +147,11 @@ namespace TsGui.View.GuiOptions
         }
 
         //This is called by the Director once everything is loaded
-        public void Initialise()
+        public async Task InitialiseAsync()
         {
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
-            this.UpdateValue(null);
+            await this.UpdateValueAsync(null);
         }
 
         public void InvokeToggleEvent()
@@ -201,7 +202,7 @@ namespace TsGui.View.GuiOptions
 
         private void SetLayoutRightLeft()
         {
-            if (this.LabelOnRight == false)
+            if (this.Style.LabelOnRight == false)
             {
                 this.UserControl.RightPresenter.Content = this.Control;
                 this.UserControl.LeftPresenter.Content = this.Label;
@@ -217,9 +218,9 @@ namespace TsGui.View.GuiOptions
         {
             this.OnPropertyChanged(this, "CurrentValue");
             this.OnPropertyChanged(this, "LiveValue");
-            LoggerFacade.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
+            Log.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
         }
 
-        public abstract void UpdateValue(Message message);
+        public abstract Task UpdateValueAsync(Message message);
     }
 }

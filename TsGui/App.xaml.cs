@@ -20,8 +20,8 @@ using System.Windows;
 using System;
 using System.Windows.Threading;
 
-using TsGui.Diagnostics.Logging;
-using TsGui.Diagnostics;
+using Core.Logging;
+using Core.Diagnostics;
 using TsGui.Authentication.LocalConfig;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -41,7 +41,7 @@ namespace TsGui
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            LoggingFrameworkHelpers.InitializeLogFramework();
+            LoggingHelpers.InitLogging();
 
             try { this.Arguments = new Arguments(Environment.GetCommandLineArgs()); }
             catch (Exception exc)
@@ -87,7 +87,7 @@ namespace TsGui
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(this.OnUnhandledException);
          
-            LoggerFacade.Info("*TsGui started - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Log.Info("*TsGui started - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             this._mainwindow = new MainWindow();
             Director.Instance.InitAsync(this._mainwindow, this.Arguments).ConfigureAwait(false);
@@ -101,12 +101,12 @@ namespace TsGui
             args.Handled = true;
             if (args.Exception is System.IO.FileNotFoundException)
             {
-                LoggerFacade.Error("System.IO.FileNotFoundException logged. This is a known issue with DragDrop");
+                Log.Error("System.IO.FileNotFoundException logged. This is a known issue with DragDrop");
             }
             else
             {
-                LoggerFacade.Fatal("OnDispatcherUnhandledException:" + args.Exception.ToString());
-                LoggerFacade.Fatal("OnDispatcherUnhandledException:" + args.Exception.Message);
+                Log.Fatal("OnDispatcherUnhandledException:" + args.Exception.ToString());
+                Log.Fatal("OnDispatcherUnhandledException:" + args.Exception.Message);
                 this.HandleException(sender, args.Exception, args.Exception.StackTrace);
             }
             
@@ -115,13 +115,13 @@ namespace TsGui
         public void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
         {
             Exception e = (Exception)args.ExceptionObject;
-            LoggerFacade.Fatal("OnUnhandledException:" + e.Message);
+            Log.Fatal("OnUnhandledException:" + e.Message);
             this.HandleException(sender, e, e.StackTrace);     
         }
 
         private void HandleException(object sender, Exception e, string AdditionalText)
         {
-            if (e is TsGuiKnownException) { this.ShowErrorMessageAndClose((TsGuiKnownException)e); }
+            if (e is KnownException) { this.ShowErrorMessageAndClose((KnownException)e); }
             else
             {
                 string s = "Source: " + sender.ToString() + Environment.NewLine + Environment.NewLine + "Exception: " + e.Message + Environment.NewLine;
@@ -133,7 +133,7 @@ namespace TsGui
         #endregion
 
 
-        private void ShowErrorMessageAndClose(TsGuiKnownException e)
+        private void ShowErrorMessageAndClose(KnownException e)
         {
             string msg = e.CustomMessage + Environment.NewLine + Environment.NewLine + "Full error message:" + Environment.NewLine + e.Message;
             this.ShowErrorMessageAndClose(msg);
@@ -141,7 +141,7 @@ namespace TsGui
 
         private void ShowErrorMessageAndClose(string Message)
         {
-            LoggerFacade.Fatal("Closing TsGui. Error message: " + Message);
+            Log.Fatal("Closing TsGui. Error message: " + Message);
             string msg = Message;
             Director.Instance.CloseWithError("Application Runtime Exception", msg);
         }

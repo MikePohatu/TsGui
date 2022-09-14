@@ -20,6 +20,7 @@
 // TsVariable.cs - the mapping of a variable name and value
 
 using System;
+using TsGui.Config;
 
 namespace TsGui
 {
@@ -53,7 +54,7 @@ namespace TsGui
         {
             this.Name = Name;
             this.Value = Value;
-            this.Path = Path;
+            this.Path = Path == null ? TsGuiRootConfig.DefaultPath : Path;
         }
     }
 }

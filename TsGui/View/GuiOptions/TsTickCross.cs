@@ -66,9 +66,9 @@ namespace TsGui.View.GuiOptions
 
         private void SetDefaults()
         {
-            this.ControlFormatting.Padding = new Thickness(2);
-            this.ControlFormatting.Width = 15;
-            this.ControlFormatting.Height = 15;
+            this.ControlStyle.Padding = new Thickness(2);
+            this.ControlStyle.Width = 15;
+            this.ControlStyle.Height = 15;
         }
 
         private new void LoadXml(XElement InputXml)
