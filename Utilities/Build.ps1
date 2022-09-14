@@ -1,7 +1,7 @@
 ﻿Function SignAssembliesInPath {
     Param(
         [Parameter(Mandatory=$true)][string]$PackagePath,
-        [string]$SignPath='C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64',
+        [string]$SignPath='C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x64',
         [string]$Description
     )
 
