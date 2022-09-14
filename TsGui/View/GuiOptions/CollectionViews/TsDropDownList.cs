@@ -58,7 +58,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.RegisterForItemGroupEvents();
             this.SetComboBoxDefaultAsync().ConfigureAwait(false);
 
-            Director.Instance.WindowLoaded += this.OnLoadReload;
+            Director.Instance.PageLoaded += this.OnLoadReload;
             this._dropdownlistui.Control.SelectionChanged += this.OnSelectionChanged;
             this._dropdownlistui.Control.LostFocus += this.OnLostFocus;
             this.UserControl.IsEnabledChanged += this.OnActiveChanged;

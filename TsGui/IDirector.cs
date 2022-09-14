@@ -32,8 +32,10 @@ namespace TsGui
 {
     public interface IDirector
     {
+        event TsGuiWindowEventHandler PageLoaded;
         event TsGuiWindowEventHandler WindowLoaded;
         event TsGuiWindowMovingEventHandler WindowMoving;
+        event TsGuiWindowMovingEventHandler WindowMoved;
         event TsGuiWindowEventHandler WindowMouseUp;
         event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
@@ -57,7 +59,7 @@ namespace TsGui
         void Finish();
         void Cancel();
         void OnWindowClosing(object sender, CancelEventArgs e);
-        void OnWindowLoaded(object o, RoutedEventArgs e);
+        void OnPageLoaded(object o, RoutedEventArgs e);
         void OnWindowMoving(object o, EventArgs e);
         void OnWindowMouseUp(object o, RoutedEventArgs e);
     }

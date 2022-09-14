@@ -47,5 +47,10 @@ namespace TsGui.Validation
         {
             this.IsOpen = false;
         }
+
+        private void OnXMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            this.IsOpen = false;
+        }
     }
 }

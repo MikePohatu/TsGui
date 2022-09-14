@@ -56,8 +56,10 @@ namespace TsGui
                 return Director._instance;
             } 
         }
+        public event TsGuiWindowEventHandler PageLoaded;
         public event TsGuiWindowEventHandler WindowLoaded;
         public event TsGuiWindowMovingEventHandler WindowMoving;
+        public event TsGuiWindowMovingEventHandler WindowMoved;
         public event TsGuiWindowEventHandler WindowMouseUp;
         public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
 
@@ -99,7 +101,8 @@ namespace TsGui
             {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
                 {
-                    this.WindowMoving?.Invoke(this, new EventArgs());
+                    this.ParentWindow.LocationChanged -= this.OnWindowMoved;
+                    this.WindowMoved?.Invoke(this, new EventArgs());
                 }));
             });
         }
@@ -115,8 +118,8 @@ namespace TsGui
             this._optionlibrary = new OptionLibrary();
             this._args = Arguments;
             this.ParentWindow = ParentWindow;
-            this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
-            this.ParentWindow.LocationChanged += this.OnWindowMoving;
+
+            this.ParentWindow.Loaded += this.OnWindowLoaded;
 
             try { await this.StartupAsync(); }
             catch (KnownException e)
@@ -352,7 +355,7 @@ namespace TsGui
                         if (prevPage != null) { prevPage.NextPage = currPage; }
 
                         this._pages.Add(currPage);
-                        currPage.Page.Loaded += this.OnWindowLoaded;
+                        currPage.Page.Loaded += this.OnPageLoaded;
                         #endregion
                     }
 
@@ -461,21 +464,47 @@ namespace TsGui
         }
 
         /// <summary>
+        /// Method to handle when content has finished rendering on the page
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
+        public void OnPageLoaded(object o, RoutedEventArgs e)
+        {
+            this.PageLoaded?.Invoke(o,e);
+        }
+
+        /// <summary>
         /// Method to handle when content has finished rendering on the window
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>
         public void OnWindowLoaded(object o, RoutedEventArgs e)
         {
-            this.WindowLoaded?.Invoke(o,e);
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => {
+                this.ParentWindow.MouseLeftButtonUp += this.OnWindowMouseUp;
+                this.ParentWindow.TouchUp += this.OnWindowMouseUp;
+                this.ParentWindow.LocationChanged += this.OnWindowMoving;
+                this.WindowLoaded?.Invoke(o, e);
+            }));            
         }
 
         /// <summary>
-        /// Method to handle when TsGui window has been moved
+        /// Method to handle when TsGui window is moving
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>
         public void OnWindowMoving(object o, EventArgs e)
+        {
+            this.WindowMoving?.Invoke(this, new EventArgs());
+            this.ParentWindow.LocationChanged += this.OnWindowMoved;
+        }
+
+        /// <summary>
+        /// Method to handle when TsGui window is moved
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
+        public void OnWindowMoved(object o, EventArgs e)
         {
             this._movetimer.Start();
         }

@@ -35,6 +35,8 @@ namespace TsGui.Tests
     {
 
         public event TsGuiWindowEventHandler WindowLoaded;
+        public event TsGuiWindowEventHandler PageLoaded;
+        public event TsGuiWindowMovingEventHandler WindowMoved;
         public event TsGuiWindowMovingEventHandler WindowMoving;
         public event TsGuiWindowEventHandler WindowMouseUp;
         public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
@@ -62,7 +64,7 @@ namespace TsGui.Tests
         public void Finish() { }
         public void Cancel() { }
         public void OnWindowClosing(object sender, CancelEventArgs e) { }
-        public void OnWindowLoaded(object o, RoutedEventArgs e) { }
+        public void OnPageLoaded(object o, RoutedEventArgs e) { }
         public void OnWindowMoving(object o, EventArgs e) { }
         public void OnWindowMouseUp(object o, RoutedEventArgs e) { }
 

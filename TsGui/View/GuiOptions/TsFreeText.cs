@@ -120,7 +120,7 @@ namespace TsGui.View.GuiOptions
             this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.UserControl.DataContext = this;
-            Director.Instance.WindowLoaded += this.OnWindowLoaded;
+            Director.Instance.PageLoaded += this.OnWindowLoaded;
             this._freetextui.TextBox.LostFocus += this.OnValidationEvent;
             this._freetextui.TextBox.GotFocus += this.OnGotFocus;
             this._freetextui.TextBox.TextChanged += this.OnTextChanged;

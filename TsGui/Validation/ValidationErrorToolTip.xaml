@@ -14,24 +14,42 @@
                 <ScrollViewer x:Name="PART_ContentHost"/>
             </Border>
         </ControlTemplate>
+        <Style x:Key="XLine" TargetType="Line">
+            <Setter Property="Stroke" Value="Red" />
+            <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="Opacity" Value="0.6" />
+        </Style>
     </Popup.Resources>
-    <Grid x:Name="grid">
+    <Grid x:Name="grid" Background="Transparent">
         <TextBox x:Name="ToolTipTextBox" TextWrapping="Wrap" 
                  AcceptsReturn="True"
                  BorderBrush="Red" BorderThickness="2"
                  Focusable="False"
                  Margin="0" Width="Auto" Height="Auto"
-                 Padding="7,5,7,5" HorizontalContentAlignment="Stretch" VerticalAlignment="Top"
+                 Padding="10,5,10,5" HorizontalContentAlignment="Stretch" VerticalAlignment="Top"
                  Template="{StaticResource TextBoxBaseControlTemplate}"
                  Text="{Binding ValidationText, Converter={StaticResource XmlStringLine}}"/>
-        <Grid x:Name="LeftArrow" Margin="0,7,0,0">
-            <Polygon Margin="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="7" Height="7"
-            Points="0,0.5 1,0 1,1" Fill="White" Stretch="Fill" Stroke="Red" StrokeThickness="1" MouseUp="OnArrowMouseUp"/>
+
+        <Grid x:Name="LeftArrow" Margin="3,8,0,0" Width="7" Height="7" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Polygon Margin="0" Width="7" Height="7"
+            Points="0,0.5 1,0 1,1" Fill="Red" Stretch="Fill" Stroke="Red" StrokeThickness="1" MouseUp="OnArrowMouseUp"/>
         </Grid>
 
-        <Grid x:Name="RightArrow" Margin="0,7,0,0">
-            <Polygon Margin="2" HorizontalAlignment="Right" VerticalAlignment="Top" Width="7" Height="7"
-                Points="0,0 0,1 1,0.5" Fill="White" Stretch="Fill" Stroke="Red" StrokeThickness="1" MouseUp="OnArrowMouseUp" />
+        <Grid x:Name="RightArrow" Margin="0,8,3,0" Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Polygon Margin="0" Width="7" Height="7"
+                Points="0,0 0,1 1,0.5" Fill="Red" Stretch="Fill" Stroke="Red" StrokeThickness="1" MouseUp="OnArrowMouseUp" />
         </Grid>
+
+        <Grid x:Name="LeftX"  Cursor="Hand" Margin="4,4,0,0" Width="7" Height="7" HorizontalAlignment="Left" VerticalAlignment="Top" MouseUp="OnXMouseUp" Visibility="Collapsed">
+            <Line  X1="0" Y1="0" X2="7" Y2="7" Style="{StaticResource XLine}" />
+            <Line  X1="0" Y1="7" X2="7" Y2="0" Style="{StaticResource XLine}" />
+        </Grid>
+
+        <Grid x:Name="RightX" Cursor="Hand" Margin="0,4,4,0" Grid.Column="1" Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Top"  MouseUp="OnXMouseUp" Visibility="Collapsed">
+            <Line X1="0" Y1="0" X2="7" Y2="7" Style="{StaticResource XLine}" />
+            <Line X1="0" Y1="7" X2="7" Y2="0" Style="{StaticResource XLine}" />
+        </Grid>
+
+       
     </Grid>
 </Popup>
