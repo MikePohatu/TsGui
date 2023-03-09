@@ -41,6 +41,8 @@ namespace TsGui.View.GuiOptions
     {
         public event AuthValueChanged PasswordChanged;
 
+        private bool _allowempty = false;
+        private bool _isauthenticator = true;   //is this actually used for authentication, or just to record a pwf
         private bool _expose = false;
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;
@@ -84,12 +86,9 @@ namespace TsGui.View.GuiOptions
         public TsPasswordBox(XElement InputXml, ParentLayoutElement Parent): base (Parent)
         {
             this._querylist = null;
-
-            this._expose = XmlHandler.GetBoolFromXAttribute(InputXml, "ExposePassword", this._expose);
             this._passwordboxui = new TsPasswordBoxUI();
             this.Control = this._passwordboxui;
             this.Label = new TsLabelUI();
-            this._passwordboxui.PasswordBox.KeyDown += this.OnKeyDown;
             this._passwordboxui.PasswordBox.PasswordChanged += this.OnPasswordChanged;
 
             this.UserControl.DataContext = this;
@@ -114,6 +113,8 @@ namespace TsGui.View.GuiOptions
             base.LoadXml(inputxml);
             this._failuremessage = XmlHandler.GetStringFromXElement(inputxml, "FailureMessage", this._failuremessage);
             this._nopasswordmessage = XmlHandler.GetStringFromXElement(inputxml, "NoPasswordMessage", this._nopasswordmessage);
+            this._expose = XmlHandler.GetBoolFromXAttribute(inputxml, "ExposePassword", this._expose);
+            this._allowempty = XmlHandler.GetBoolFromXElement(inputxml, "AllowEmpty", this._allowempty);
 
             this.MaxLength = XmlHandler.GetIntFromXAttribute(inputxml, "MaxLength", this.MaxLength);
             XAttribute x = inputxml.Attribute("AuthID");
@@ -122,7 +123,13 @@ namespace TsGui.View.GuiOptions
                 this.AuthID = x.Value;
                 AuthLibrary.AddPasswordSource(this);
             }  
-            else { throw new KnownException("Missing AuthID in config:", inputxml.ToString()); }      
+            else { this._isauthenticator = false; }
+
+            if (this._expose == false && this._isauthenticator == false) 
+            { throw new KnownException("Missing AuthID in config:", inputxml.ToString()); }     
+            
+            if (this._expose == true && string.IsNullOrEmpty(this.VariableName))
+            { throw new KnownException("Variable name must be set if ExposePassword option is used:", inputxml.ToString()); }
         }
 
 
@@ -130,25 +137,43 @@ namespace TsGui.View.GuiOptions
         public bool Validate()
         {
             if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
+            bool newvalid = true;
 
-            bool newvalid = this._authenticator.State == AuthState.Authorised;
+            if (this._isauthenticator)
+            {
+                newvalid = this._authenticator.State == AuthState.Authorised;
 
-            if (this._authenticator.State == AuthState.Authorised)
-            {
-                this._validationtooltiphandler.Clear();
-                this.ControlStyle.BorderBrush = _greenbrush;
-                this.ControlStyle.MouseOverBorderBrush = _hovergreenbrush;
-            }
-            else if (this._authenticator.State == AuthState.NoPassword)
-            {
-                this.ValidationText = this._nopasswordmessage;
-                this._validationtooltiphandler.ShowError();
+                if (this._authenticator.State == AuthState.Authorised)
+                {
+                    this._validationtooltiphandler.Clear();
+                    this.ControlStyle.BorderBrush = _greenbrush;
+                    this.ControlStyle.MouseOverBorderBrush = _hovergreenbrush;
+                }
+                else if (this._authenticator.State == AuthState.NoPassword)
+                {
+                    this.ValidationText = this._nopasswordmessage;
+                    this._validationtooltiphandler.ShowError();
+                }
+                else
+                {
+                    this.ValidationText = this._failuremessage;
+                    this._validationtooltiphandler.ShowError();
+                }
             }
             else
             {
-                this.ValidationText = this._failuremessage;
-                this._validationtooltiphandler.ShowError();
+                if (string.IsNullOrEmpty(this.Password) && this._allowempty == false)
+                {
+                    this.ValidationText = this._nopasswordmessage;
+                    this._validationtooltiphandler.ShowError();
+                    newvalid = false;
+                }
+                else
+                {
+                    this._validationtooltiphandler.Clear();
+                }
             }
+
 
             return newvalid;
         }
@@ -163,16 +188,20 @@ namespace TsGui.View.GuiOptions
 
         private void OnConfigLoadFinished(object sender, EventArgs e)
         {
-            this._authenticator = AuthLibrary.GetAuthenticator(this.AuthID);
-            if (this._authenticator != null)
+            if (this._isauthenticator)
             {
-                this._authenticator.AuthStateChanged += this.OnAuthStateChanged;
-                this._authenticator.AuthStateChanged += this.FirstStateChange;
-            }
-            else
-            {
-                throw new KnownException("Password box is not connected to a configured AuthID.", string.Empty);
-            }
+                this._passwordboxui.PasswordBox.KeyDown += this.OnKeyDown;
+                this._authenticator = AuthLibrary.GetAuthenticator(this.AuthID);
+                if (this._authenticator != null)
+                {
+                    this._authenticator.AuthStateChanged += this.OnAuthStateChanged;
+                    this._authenticator.AuthStateChanged += this.FirstStateChange;
+                }
+                else
+                {
+                    throw new KnownException("Password box is not connected to a configured AuthID.", string.Empty);
+                }
+            }            
         }
 
         private void OnAuthStateChanged()

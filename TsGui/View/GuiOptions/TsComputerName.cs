@@ -32,21 +32,22 @@
 //		<SetValue UseCurrent="False">
 //			<Query Type="EnvironmentVariable">
 //				<Variable Name="OSDComputerName"/>
-//				<Ignore>MINNT</Ignore>
+//				<Ignore>MININT</Ignore>
 //				<Ignore>MINWIN</Ignore>						
 //			</Query>				
 //			<Query Type="EnvironmentVariable">
 //				<Variable Name="_SMSTSMachineName"/>
-//				<Ignore>MINNT</Ignore>
+//				<Ignore>MININT</Ignore>
 //				<Ignore>MINWIN</Ignore>					
 //			</Query>					
 //			<Query Type="EnvironmentVariable">
 //				<Variable Name="ComputerName"/>		
-//				<Ignore>MINNT</Ignore>
+//				<Ignore>MININT</Ignore>
 //				<Ignore>MINWIN</Ignore>						
 //			</Query>					
 //			<Query Type="Wmi">
 //				<Wql>SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure</Wql>
+//              <IncludeNullValues>FALSE</IncludeNullValues>
 //				<Ignore>No Asset Tag</Ignore>
 //              <Ignore>NoAssetTag</Ignore>
 //              <Ignore>No Asset Information</Ignore>
@@ -103,6 +104,7 @@ namespace TsGui.View.GuiOptions
             XElement assettag = new XElement("Query");
             assettag.Add(new XAttribute("Type", "Wmi"));
             assettag.Add(new XElement("Wql", "SELECT SMBIOSAssetTag FROM Win32_SystemEnclosure"));
+            assettag.Add(new XElement("IncludeNullValues", "FALSE"));
             assettag.Add(new XElement("Ignore", "No Asset Tag"));
             assettag.Add(new XElement("Ignore", "NoAssetTag"));
             assettag.Add(new XElement("Ignore", "NoAssetInformation"));
