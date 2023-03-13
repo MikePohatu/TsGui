@@ -1,6 +1,6 @@
-# Validation
+# Compliance (pre-flight checks)
 
-Documentation is on the to-do list for this feature. For usage information, see the how-to video on [YouTube](https://youtu.be/4GjpDAYp-CU) or the [example configuration file](/Config_Examples/Config_Validation.xml).
+Documentation is on the to-do list for this feature. For usage information, see the how-to video on [YouTube](https://youtu.be/RiOLjTdrd1U) or the [example configuration file](/Config_Examples/Config_Compliance.xml).
 
 ## Rules
 Valid rule types are listed below:

@@ -1,6 +1,7 @@
 # If/Else Queries
 
-* [Overview](#overview)
+If/Else queries are how you do conditional logic in TsGui. 
+
 * [Configuration](#configuration)
   * [Source](#source)
   * [RuleSet](#ruleset)
@@ -14,11 +15,6 @@
     * [ResultSet Attributes](#resultset-attributes)
     * [Short-hand example](#short-hand-example)
 
-
-
-
-## Overview
-If/Else queries are how you do conditional logic in TsGui. 
 
 ## Configuration
 An If/Else query contains one or more IF statements, and optionally an ELSE statement. Each IF statement contains 3 items:

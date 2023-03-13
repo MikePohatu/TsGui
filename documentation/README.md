@@ -11,10 +11,14 @@ Documentation is currently a work in progress. For usage information, also see t
 * [Authentication](/documentation/Authentication/README.md)
 
 ## Features
+* [Compliance (pre-flight checks)](/documentation/features/Compliance.md)
+* [Groups and Toggles](/documentation/features/GroupsAndToggles.md)
 * [Option Linking](/documentation/features/OptionLinking.md)
+* [Queries](/documentation/features/Queries.md)
 * [Scripts](/documentation/features/Scripts.md)
 * [Styles (previously Formatting)](/documentation/features/Styles.md)
 * [TsGui Output](/documentation/features/TsGuiOutput.md)
+* [Validation](/documentation/features/Validation.md)
 
 ## Command line options
 tsgui.exe -config [filepath] -webconfig [url] -hash [password]
