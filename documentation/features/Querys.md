@@ -8,6 +8,7 @@
 
 ### Query Types
 
+* [If/Else](queries/IfElse.md)
 * [Registry](queries/Registry.md)
 * [WMI](queries/WMI.md)
 
