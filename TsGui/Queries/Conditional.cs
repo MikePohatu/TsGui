@@ -31,7 +31,7 @@ namespace TsGui.Queries
     {
         private QueryPriorityList _sourcequerylist;
         private QueryPriorityList _resultquerylist;
-        private RuleSet _ruleset ;
+        private RuleSet _ruleset;
 
         public Conditional(XElement inputxml, ILinkTarget targetoption)
         {
@@ -41,22 +41,88 @@ namespace TsGui.Queries
             this.LoadXml(inputxml);
         }
 
-        #region
-        //<IF>
-        //  <Source>
-        //      <Query/>
-        //  </Source>
-        //  <Ruleset>
-        //      <Rule Type="StartsWith">test</Rule>
-        //  </Ruleset>
-        //  <Result>
-        //      <Query/>
-        //  </Result>
-        //</IF>
-        #endregion
+        
         public void LoadXml(XElement InputXml)
         {
             XElement x;
+
+            #region Shorthand config options - eval these first
+            //<IF SourceID="LinkSource1" Equals="SomeTestValue" Result="ThisOne" />
+            //<IF SourceID="LinkSource2" Equals="SomeOtherValue" Result="ThatOne" />
+
+            XElement xresSet = new XElement("Resultset");
+            foreach (XAttribute attr in InputXml.Attributes())
+            {
+                switch (attr.Name.ToString().ToLower())
+                {
+                    case "startswith":
+                    case "endswith":
+                    case "contains":
+                    case "characters":
+                    case "regex":
+                    case "equals":
+                    case "greaterthan":
+                    case "greaterthanorequalto":
+                    case "lessthan":
+                    case "lessthanorequalto":
+                    case "isnumeric":
+                        x = new XElement("Rule",
+                                new XAttribute("Type", attr.Name),
+                                attr.Value
+                            );
+                        xresSet.Add(x);
+                        break;
+                    case "sourcewmi":
+                        x = new XElement("Source",
+                                new XElement("Query",
+                                    new XAttribute("Type", "Wmi"),
+                                    new XElement("Wql", attr.Value)
+                                )
+                            );
+                        this._sourcequerylist.LoadXml(x);
+                        break;
+                    case "sourceid":
+                        x = new XElement("Source",
+                                new XElement("Query",
+                                    new XAttribute("Type", "LinkTo"),
+                                    attr.Value
+                                )
+                            );
+                        this._sourcequerylist.LoadXml(x);
+                        break;
+                    case "andor":
+                        xresSet.Add(new XAttribute("Type",attr.Value));
+                        break;
+                    case "result":
+                        x = new XElement("Result",
+                            new XElement("Value", attr.Value)
+                        );
+                        this._resultquerylist.LoadXml(x);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (xresSet.HasElements)
+            {
+                this._ruleset.LoadXml(xresSet);
+            }
+            #endregion
+
+            #region Full config options
+            #region
+            //<IF>
+            //  <Source>
+            //      <Query/>
+            //  </Source>
+            //  <Ruleset>
+            //      <Rule Type="StartsWith">test</Rule>
+            //  </Ruleset>
+            //  <Result>
+            //      <Query/>
+            //  </Result>
+            //</IF>
+            #endregion
             x = InputXml.Element("Source");
             if (x != null) { this._sourcequerylist.LoadXml(x); }
 
@@ -65,6 +131,7 @@ namespace TsGui.Queries
 
             x = InputXml.Element("Result");
             if (x != null) { this._resultquerylist.LoadXml(x); }
+            #endregion
         }
 
         public async Task<ResultWrangler> GetResultWrangler(Message message)

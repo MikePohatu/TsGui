@@ -10,7 +10,7 @@ Dim strScriptParentFolder: strScriptParentFolder = objScriptFile.ParentFolder
 Dim objScriptParentFolder: set objScriptParentFolder = objFSO.GetFolder(strScriptParentFolder)
 
 Dim intFileNumber, strCompareYn, bolCompare,strRefExe,strTestExe
-Dim file, currentfile
+Dim file, currentfile, allFiles
 
 strRefExe = strScriptParentFolder & "\\Reference\\TsGui.exe"
 strTestExe = strScriptParentFolder & "\\Test\\TsGui.exe"
@@ -32,10 +32,22 @@ end if
 WScript.Echo "Test: " & strRefExe & VbCrLf & VbCrLf
 
 
-do while true
-	currentfile = strScriptParentFolder & "\Config." & intFileNumber & ".xml"
-	if objFSO.FileExists(currentfile) then 
-		SET file = objFSO.GetFile(currentfile)
+set allFiles = objScriptParentFolder.Files
+Dim bolStart: bolStart = false
+Dim strStartFilePrefix: strStartFilePrefix = "Config." & IntToString(intFileNumber)
+
+wscript.echo "Starting with file: " & strStartFilePrefix & "*.xml"
+
+
+
+For Each file in allFiles
+	currentfile = file.Name
+	'wscript.echo currentfile
+	If InStr(1,currentfile, strStartFilePrefix,1) > 0 Then
+		bolStart = true
+	End if
+
+	if bolStart And InStr(1,currentfile, ".xml") > 0 Then
 		wscript.echo currentfile
 
 		if bolCompare then
@@ -49,9 +61,17 @@ do while true
 		objShell.Run strTestExe & " -config " &  file.path
 		WScript.Echo "Press [ENTER] to continue..."
 		WScript.StdIn.ReadLine
-	else 
-		wscript.echo "File not found, exiting: " & currentfile
-		exit do
 	end if
 	intFileNumber = intFileNumber + 1
-loop
+Next
+
+
+Function IntToString(intVal)
+	Dim s: s = CStr(intVal)
+
+	if Len(s) < 2 then
+		s = "0" & s
+	end if
+
+	IntToString = s
+End Function

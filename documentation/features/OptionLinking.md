@@ -2,6 +2,8 @@
 
 Option Linking enables the value of one option to influence the value of another. This differs from groups in that groups only set whether an option is enabled or not, Linking will update an option as the options they are linked to change.
 
+A how-to video is also available on [YouTube](https://youtu.be/cZdb_qSu1eE)
+
 **Contents**
 * [Configuration](#configuration)
   * [Source](#source)
