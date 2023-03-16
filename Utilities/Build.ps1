@@ -92,7 +92,7 @@ Function pause ()
 }
 
 #run builds
-$version = '2.0.1.0'
+$version = '2.0.2.0'
 $copyRight = "Copyright © 20Road Limited $(get-date -Format yyyy)"
 $repoRoot = 'C:\Source\repos\TsGui'
 $devenv = 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe'
