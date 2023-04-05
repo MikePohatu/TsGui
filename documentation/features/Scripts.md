@@ -3,10 +3,13 @@
 **[Example Config](/Config_Examples/Config_Scripts.xml)**
 
 * [Adding a Script](#adding-a-script)
-  * [In a query](#in-a-query)
+  * [In a Query](#in-a-query)
   * [As an action](#as-an-action)
   * [Global Scripts](#global-scripts)
   * [Parameters](#parameters)
+  * [Passwords \& SecureStrings](#passwords--securestrings)
+    * [Masked Task Sequence Variables](#masked-task-sequence-variables)
+    * [Using a PasswordBox](#using-a-passwordbox)
 * [Metadata](#metadata)
 * [Script Output](#script-output)
 * [Logging](#logging)
@@ -57,6 +60,7 @@ To override this behaviour, set the 'Reprocess' attribute on the query as below:
 ```xml
 <Query Type="PowerShell" Reprocess="TRUE">
 ```
+<br/>
 
 ---
 
@@ -78,6 +82,7 @@ To do this, create an "ActionButton" GuiOption, then add an \<Action Type="Power
 ```
 
 The script will be run whenever the button is pressed.
+<br/><br/>
 
 ---
 
@@ -113,6 +118,7 @@ To use the script, in your GuiOption create a "PowerShell" query type, then crea
   </SetValue>
 </GuiOption>
 ```
+<br/>
 
 ---
 
@@ -137,6 +143,46 @@ A Parameter can either have a value set statically, or set using a query similar
   </SetValue>
 </Parameter>
 ```
+<br/>
+
+---
+
+### Passwords & SecureStrings
+Passwords and secrets should never be stored in clear text e.g. inside scripts. To deal with the requirement to pass secure credentials when using scripts, the following approaches can be taken:
+* Masked Task Sequence Variables
+* Using a PasswordBox
+<br/><br/>
+
+#### Masked Task Sequence Variables
+When using a ConfigMgr task sequence, store your secret in a task sequence variable. This can then be passed into the script as a [parameter](#parameters), queried using an [EnvironmentVariable query](/documentation/features/queries/EnvironmentVariable.md) in the \<SetValue> element
+
+![TrafficLightErr](/documentation/images/configmgr_masked_var.png)
+<br/><br/>
+
+#### Using a PasswordBox
+Alternatively you can use a [PasswordBox](/documentation/options/PasswordBox.md) GuiOption. The user can then enter the password at run time. This is already stored as a SecureString object internally, so can be passed directly to the script parameter. To use this approach:
+
+   * The PasswordBox GuiOption must have the **ID** attribute set. This is the same ID used by the [Option Linking](/documentation/features/OptionLinking.md) feature. 
+   * Use a **SecureParameter** rather than Parameter element. 
+   * Set the **SourceID** attribute on the SecureParameter. This must match the ID set on the PasswordBox 
+
+
+```xml
+<GuiOption Type="PasswordBox" ID="id_of_passwordbox">
+    <Label>Password:</Label>
+    <NoPasswordMessage>Password cannot be empty</NoPasswordMessage>
+    <AllowEmpty>FALSE</AllowEmpty>
+</GuiOption>
+```
+```xml
+<Script Type="PowerShell" Name="Example.ps1">
+  <SecureParameter Name="pw" SourceID="id_of_passwordbox" />
+</Script>
+
+```
+
+Note although the ID is used, this does not function like Option Linking e.g. when the source changes a refresh is triggered. The SecureString value of the PasswordBox will be queried each time the script is run. 
+<br/><br/>
 
 ---
 

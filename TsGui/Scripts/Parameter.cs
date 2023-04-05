@@ -2,6 +2,7 @@
 using MessageCrap;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ using TsGui.Queries;
 
 namespace TsGui.Scripts
 {
-    public class Parameter: ILinkTarget
+    public class Parameter: ILinkTarget, IParameter
     {
         private ILinkTarget _linktarget;
         private QueryPriorityList _querylist;
@@ -30,9 +31,10 @@ namespace TsGui.Scripts
             this.LoadXml(InputXml);
         }
 
-        public async Task<ResultWrangler> GetResultWrangler(Message message)
+        public async Task<object> GetValue(Message message)
         {
-            return await _querylist?.GetResultWrangler(message);
+            var wrangler = await _querylist?.GetResultWrangler(message);
+            return wrangler?.GetString();
         }
 
         public void LoadXml(XElement InputXml)

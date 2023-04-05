@@ -95,7 +95,6 @@ namespace TsGui.Authentication
             {
                 if (auth.PasswordSource == null) { auth.PasswordSource = newpwsource; }
                 else { AddPasswordConfirmationSource(newpwsource); }
-                
             }
             else
             {
