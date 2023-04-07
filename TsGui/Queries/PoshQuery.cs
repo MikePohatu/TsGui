@@ -103,39 +103,42 @@ namespace TsGui.Queries
 
             foreach (PSObject result in results)
             {
-                Wrangler.NewResult();
-                FormattedProperty prop = null;
+                if (result != null)
+                {
+                    Wrangler.NewResult();
+                    FormattedProperty prop = null;
 
-                //first check it's not just a string
-                if (TypeHelpers.IsString(result.BaseObject) || TypeHelpers.IsPrimitiveType(result.BaseObject))
-                {
-                    prop = new FormattedProperty();
-                    prop.Input = result.ToString();
-                    Wrangler.AddFormattedProperty(prop);
-                }
-                else
-                {
-                    //if properties have been specified in the xml, query them directly in order
-                    if (PropertyTemplates.Count != 0)
+                    //first check it's not just a string
+                    if (TypeHelpers.IsString(result.BaseObject) || TypeHelpers.IsPrimitiveType(result.BaseObject))
                     {
-                        foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
-                        {
-                            prop = new FormattedProperty(template.Value);
-                            prop.Input = PoshHandler.GetPropertyValue<string>(result, template.Key);
-                            Wrangler.AddFormattedProperty(prop);
-                        }
+                        prop = new FormattedProperty();
+                        prop.Input = result.ToString();
+                        Wrangler.AddFormattedProperty(prop);
                     }
-                    //if properties not set, add them all 
                     else
                     {
-                        foreach (PSPropertyInfo property in result.Properties)
+                        //if properties have been specified in the xml, query them directly in order
+                        if (PropertyTemplates.Count != 0)
                         {
-                            prop = new FormattedProperty();
-                            prop.Input = property.Value?.ToString();
-                            Wrangler.AddFormattedProperty(prop);
+                            foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
+                            {
+                                prop = new FormattedProperty(template.Value);
+                                prop.Input = PoshHandler.GetPropertyValue<string>(result, template.Key);
+                                Wrangler.AddFormattedProperty(prop);
+                            }
+                        }
+                        //if properties not set, add them all 
+                        else
+                        {
+                            foreach (PSPropertyInfo property in result.Properties)
+                            {
+                                prop = new FormattedProperty();
+                                prop.Input = property.Value?.ToString();
+                                Wrangler.AddFormattedProperty(prop);
+                            }
                         }
                     }
-                }                
+                }
             }
         }
     }

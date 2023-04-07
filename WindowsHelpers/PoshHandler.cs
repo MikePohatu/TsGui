@@ -194,8 +194,8 @@ namespace WindowsHelpers
 
         public static string ToOutputString(PSObject psobj)
         {
-            Hashtable obj = psobj.BaseObject as Hashtable;
-            if (obj == null) { return psobj.ToString(); }
+            Hashtable obj = psobj?.BaseObject as Hashtable;
+            if (obj == null) { return psobj?.ToString(); }
             else
             {
                 StringBuilder sb = new StringBuilder("Output:" + Environment.NewLine);

@@ -104,6 +104,7 @@ namespace TsGui.Scripts
         /// <exception cref="KnownException"></exception>
         public override async Task RunScriptAsync()
         {
+            Log.Debug($"Running script {this.Name}");
             this.Result = new ScriptResult<PSDataCollection<PSObject>>();
 
             //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
