@@ -33,17 +33,13 @@ namespace TsGui
     /// </summary>
     public partial class App : Application
     {
-        //private IDirector _controller;
-
-        public Arguments Arguments;
         MainWindow _mainwindow;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            LoggingHelpers.InitLogging();
 
-            try { this.Arguments = new Arguments(Environment.GetCommandLineArgs()); }
+            try { Arguments.Instance.Import(Environment.GetCommandLineArgs()); }
             catch (Exception exc)
             {
                 string msg = exc.Message + Environment.NewLine;
@@ -52,9 +48,11 @@ namespace TsGui
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(this.Arguments.ToHash) == false)
+            LoggingHelpers.InitLogging();
+
+            if (string.IsNullOrWhiteSpace(Arguments.Instance.ToHash) == false)
             {
-                string key = Arguments.Key;
+                string key = Arguments.Instance.Key;
 
                 ConsoleWindow.WriteLine();
                 if (string.IsNullOrEmpty(key))
@@ -63,7 +61,7 @@ namespace TsGui
                     ConsoleWindow.WriteLine("Key: " + key);
                 }
 
-                string pw = Password.HashPassword(Arguments.ToHash, key);
+                string pw = Password.HashPassword(Arguments.Instance.ToHash, key);
 
                 ConsoleWindow.WriteLine("Hash: " + pw);
                 ConsoleWindow.WriteLine(Environment.NewLine + "Example config:");
@@ -90,7 +88,7 @@ namespace TsGui
             Log.Info("*TsGui started - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             this._mainwindow = new MainWindow();
-            Director.Instance.InitAsync(this._mainwindow, this.Arguments).ConfigureAwait(false);
+            Director.Instance.InitAsync(this._mainwindow, Arguments.Instance).ConfigureAwait(false);
         }
 
 
