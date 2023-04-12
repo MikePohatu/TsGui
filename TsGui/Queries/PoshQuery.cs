@@ -17,6 +17,7 @@ namespace TsGui.Queries
 {
     public class PoshQuery : BaseQuery
     {
+        private Task _processingTask;
         private PoshScript _script;
         private bool _exceptionOnError = true;
 
@@ -57,11 +58,15 @@ namespace TsGui.Queries
 
         public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
-            //if the script is currently processing, return the current return wrangler
-            //(which may be null)
-            if (this._processing) { return this._returnwrangler; }
+            if (this._script == null) { throw new KnownException("Script object not defined", "PoshQuery.ProcessQueryAsync"); }
 
-            this._processing = true;
+            //if the script is currently processing, wait for it to finish, then return the results from the other run
+            if (this._processingTask != null) 
+            {
+                await this._processingTask;
+                return this._returnwrangler; 
+            }
+
             //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
             try
             {
@@ -70,7 +75,8 @@ namespace TsGui.Queries
                 else if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
 
 
-                await this._script.RunScriptAsync();
+                this._processingTask = this._script.RunScriptAsync();
+                await this._processingTask;
                 var results = this._script.Result.ReturnedObject;
                 this.AddPoshPropertiesToWrangler(this._processingwrangler, results, this._propertyTemplates);
             }
@@ -92,7 +98,7 @@ namespace TsGui.Queries
             else { this._returnwrangler = null; }
 
             this._processed = true;
-            this._processing = false;
+            this._processingTask = null;
 
             return this._returnwrangler;
         }
