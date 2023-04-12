@@ -17,6 +17,7 @@ namespace TsGui.Queries
 {
     public class PoshQuery : BaseQuery
     {
+        private int _runningCount = 0;
         private Task _processingTask;
         private PoshScript _script;
         private bool _exceptionOnError = true;
@@ -59,46 +60,53 @@ namespace TsGui.Queries
         public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             if (this._script == null) { throw new KnownException("Script object not defined", "PoshQuery.ProcessQueryAsync"); }
-
-            //if the script is currently processing, wait for it to finish, then return the results from the other run
-            if (this._processingTask != null) 
-            {
-                await this._processingTask;
-                return this._returnwrangler; 
-            }
-
-            //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
-            try
-            {
-                //Don't run each and every time unless specifically specified
-                if (this._processed == true && this._reprocess == false) { return this._returnwrangler; }
-                else if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
-
-
-                this._processingTask = this._script.RunScriptAsync();
-                await this._processingTask;
-                var results = this._script.Result.ReturnedObject;
-                this.AddPoshPropertiesToWrangler(this._processingwrangler, results, this._propertyTemplates);
-            }
-            catch (Exception e)
-            {
-                if (this._exceptionOnError)
-                {
-                    throw new KnownException($"PowerShell query {this._script.Path} caused an error: {Environment.NewLine}", e.Message);
-                }
-                else
-                {
-                    Log.Error(e, $"PowerShell query {this._script.Path} caused an error: {e.Message}");
-                }
-            }
-
             
-            if (this.ShouldIgnore(this._processingwrangler.GetString()) == false)
-            { this._returnwrangler = this._processingwrangler; }
-            else { this._returnwrangler = null; }
+            this._runningCount++;
 
+            //check the _processingTask to make sure the query isn't already running. 
+            if (this._processingTask == null)
+            {
+                //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
+                try
+                {
+                    //Don't run each and every time unless specifically specified
+                    if (this._processed == true && this._reprocess == false) { return this._returnwrangler; }
+                    else if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
+
+
+                    this._processingTask = this._script.RunScriptAsync();
+                    await this._processingTask;
+                    var results = this._script.Result.ReturnedObject;
+                    this.AddPoshPropertiesToWrangler(this._processingwrangler, results, this._propertyTemplates);
+                }
+                catch (Exception e)
+                {
+                    if (this._exceptionOnError)
+                    {
+                        throw new KnownException($"PowerShell query {this._script.Path} caused an error: {Environment.NewLine}", e.Message);
+                    }
+                    else
+                    {
+                        Log.Error(e, $"PowerShell query {this._script.Path} caused an error: {e.Message}");
+                    }
+                }
+
+
+                if (this.ShouldIgnore(this._processingwrangler.GetString()) == false)
+                { this._returnwrangler = this._processingwrangler; }
+                else { this._returnwrangler = null; }
+
+                this._processingTask = null;
+            }
+            //if the script is currently processing, wait for it to finish, then return the results from the other run
+            else
+            {
+                Log.Trace($"Script {this._script.Name} run multiple times, run count: {this._runningCount}");
+                await this._processingTask;
+            }
+            
             this._processed = true;
-            this._processingTask = null;
+            this._runningCount--;
 
             return this._returnwrangler;
         }
