@@ -15,3 +15,5 @@ To enable this function, set the **ExposePassword** attribute on the PasswordBox
     <AllowEmpty>FALSE</AllowEmpty>
 </GuiOption>
 ```
+
+The PasswordBox control can also be used to pass a SecureString into a PowerShell script as a parameter. For more details see the [Scripts](/documentation/features/Scripts.md#passwords--securestrings) documentation

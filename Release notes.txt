@@ -1,8 +1,12 @@
-Version 2.0.1.0
-Release date: 9 Mar 2023
+Version 2.0.3.0
+Release date: 14 Apr 2023
+
+*Features
+	Added ability to pass SecureString from PasswordBox to parameters of a PowerShell script
+	Added ability to set Text and Value as attributes for lists e.g. DropDownList so you can do each option as one line
 
 *Fixes
-	Fixed an issue on machines that return multiple objects from Win32_SystemEnclosure. This was causing ComputerName to return blank
+	Fixed an issue where a script could return empty results
 
 *Known issues
 	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
@@ -13,6 +17,11 @@ Release date: 9 Mar 2023
 *Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
 
 
+Version 2.0.1.0
+Release date: 9 Mar 2023
+
+*Fixes
+	Fixed an issue on machines that return multiple objects from Win32_SystemEnclosure. This was causing ComputerName to return blank
 
 
 Version 2.0.0.0

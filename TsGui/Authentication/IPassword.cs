@@ -23,7 +23,7 @@ namespace TsGui.Authentication
     public interface IPassword
     {
         string AuthID { get; }
-        SecureString SecurePassword { get; }
+        SecureString SecureString { get; }
         string Password { get; }
         event AuthValueChanged PasswordChanged;
     }

@@ -25,7 +25,7 @@ namespace TsGui.Tests
     public class SystemConnectorTests
     {
         [Test]
-        [TestCase("ComputerName", ExpectedResult = "ROG")]
+        [TestCase("ComputerName", ExpectedResult = "BLACKBETTY")]
         [TestCase(null, ExpectedResult = null)]
         public string GetVariableValueTest(string Variable)
         {

@@ -17,6 +17,8 @@ namespace TsGui.Queries
 {
     public class PoshQuery : BaseQuery
     {
+        private int _runningCount = 0;
+        private Task _processingTask;
         private PoshScript _script;
         private bool _exceptionOnError = true;
 
@@ -57,42 +59,54 @@ namespace TsGui.Queries
 
         public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
-            //if the script is currently processing, return the current return wrangler
-            //(which may be null)
-            if (this._processing) { return this._returnwrangler; }
-
-            this._processing = true;
-            //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
-            try
-            {
-                //Don't run each and every time unless specifically specified
-                if (this._processed == true && this._reprocess == false) { return this._returnwrangler; }
-                else if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
-
-
-                await this._script.RunScriptAsync();
-                var results = this._script.Result.ReturnedObject;
-                this.AddPoshPropertiesToWrangler(this._processingwrangler, results, this._propertyTemplates);
-            }
-            catch (Exception e)
-            {
-                if (this._exceptionOnError)
-                {
-                    throw new KnownException($"PowerShell query {this._script.Path} caused an error: {Environment.NewLine}", e.Message);
-                }
-                else
-                {
-                    Log.Error(e, $"PowerShell query {this._script.Path} caused an error: {e.Message}");
-                }
-            }
-
+            if (this._script == null) { throw new KnownException("Script object not defined", "PoshQuery.ProcessQueryAsync"); }
             
-            if (this.ShouldIgnore(this._processingwrangler.GetString()) == false)
-            { this._returnwrangler = this._processingwrangler; }
-            else { this._returnwrangler = null; }
+            this._runningCount++;
 
+            //check the _processingTask to make sure the query isn't already running. 
+            if (this._processingTask == null)
+            {
+                //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
+                try
+                {
+                    //Don't run each and every time unless specifically specified
+                    if (this._processed == true && this._reprocess == false) { return this._returnwrangler; }
+                    else if (this._processed == true) { this._processingwrangler = this._processingwrangler.Clone(); }
+
+
+                    this._processingTask = this._script.RunScriptAsync();
+                    await this._processingTask;
+                    var results = this._script.Result.ReturnedObject;
+                    this.AddPoshPropertiesToWrangler(this._processingwrangler, results, this._propertyTemplates);
+                }
+                catch (Exception e)
+                {
+                    if (this._exceptionOnError)
+                    {
+                        throw new KnownException($"PowerShell query {this._script.Path} caused an error: {Environment.NewLine}", e.Message);
+                    }
+                    else
+                    {
+                        Log.Error(e, $"PowerShell query {this._script.Path} caused an error: {e.Message}");
+                    }
+                }
+
+
+                if (this.ShouldIgnore(this._processingwrangler.GetString()) == false)
+                { this._returnwrangler = this._processingwrangler; }
+                else { this._returnwrangler = null; }
+
+                this._processingTask = null;
+            }
+            //if the script is currently processing, wait for it to finish, then return the results from the other run
+            else
+            {
+                Log.Trace($"Script {this._script.Name} run multiple times, run count: {this._runningCount}");
+                await this._processingTask;
+            }
+            
             this._processed = true;
-            this._processing = false;
+            this._runningCount--;
 
             return this._returnwrangler;
         }
@@ -103,39 +117,42 @@ namespace TsGui.Queries
 
             foreach (PSObject result in results)
             {
-                Wrangler.NewResult();
-                FormattedProperty prop = null;
+                if (result != null)
+                {
+                    Wrangler.NewResult();
+                    FormattedProperty prop = null;
 
-                //first check it's not just a string
-                if (TypeHelpers.IsString(result.BaseObject) || TypeHelpers.IsPrimitiveType(result.BaseObject))
-                {
-                    prop = new FormattedProperty();
-                    prop.Input = result.ToString();
-                    Wrangler.AddFormattedProperty(prop);
-                }
-                else
-                {
-                    //if properties have been specified in the xml, query them directly in order
-                    if (PropertyTemplates.Count != 0)
+                    //first check it's not just a string
+                    if (TypeHelpers.IsString(result.BaseObject) || TypeHelpers.IsPrimitiveType(result.BaseObject))
                     {
-                        foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
-                        {
-                            prop = new FormattedProperty(template.Value);
-                            prop.Input = PoshHandler.GetPropertyValue<string>(result, template.Key);
-                            Wrangler.AddFormattedProperty(prop);
-                        }
+                        prop = new FormattedProperty();
+                        prop.Input = result.ToString();
+                        Wrangler.AddFormattedProperty(prop);
                     }
-                    //if properties not set, add them all 
                     else
                     {
-                        foreach (PSPropertyInfo property in result.Properties)
+                        //if properties have been specified in the xml, query them directly in order
+                        if (PropertyTemplates.Count != 0)
                         {
-                            prop = new FormattedProperty();
-                            prop.Input = property.Value?.ToString();
-                            Wrangler.AddFormattedProperty(prop);
+                            foreach (KeyValuePair<string, XElement> template in PropertyTemplates)
+                            {
+                                prop = new FormattedProperty(template.Value);
+                                prop.Input = PoshHandler.GetPropertyValue<string>(result, template.Key);
+                                Wrangler.AddFormattedProperty(prop);
+                            }
+                        }
+                        //if properties not set, add them all 
+                        else
+                        {
+                            foreach (PSPropertyInfo property in result.Properties)
+                            {
+                                prop = new FormattedProperty();
+                                prop.Input = property.Value?.ToString();
+                                Wrangler.AddFormattedProperty(prop);
+                            }
                         }
                     }
-                }                
+                }
             }
         }
     }

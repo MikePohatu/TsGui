@@ -36,7 +36,7 @@ namespace TsGui.Tests.Authentication
             get { return this._netcredential.UserName; }
             set { this._netcredential.UserName = value; }
         }
-        public SecureString SecurePassword
+        public SecureString SecureString
         {
             get { return this._netcredential.SecurePassword; }
             set { this._netcredential.SecurePassword = value; }

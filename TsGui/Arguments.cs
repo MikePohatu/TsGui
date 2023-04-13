@@ -41,11 +41,13 @@ namespace TsGui
 
         public string ToHash { get; private set; }
 
-        public Arguments(string[] Args)
+        public void Import(string[] Args)
         {
             this.SetDefaults();
             this.ProcessArguments(Args);
         }
+
+        public static Arguments Instance { get; } = new Arguments();
 
         private void ProcessArguments(string[] Args)
         {

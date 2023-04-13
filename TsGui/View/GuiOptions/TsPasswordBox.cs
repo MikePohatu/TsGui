@@ -56,7 +56,7 @@ namespace TsGui.View.GuiOptions
         //Properties
         #region
         public string AuthID { get; private set; }
-        public SecureString SecurePassword { get { return this._passwordboxui.PasswordBox.SecurePassword; } }
+        public SecureString SecureString { get { return this._passwordboxui.PasswordBox.SecurePassword; } }
         public string Password { get { return this._passwordboxui.PasswordBox.Password; } }
         public override string CurrentValue { get { return null; } }
         public int MaxLength
@@ -126,7 +126,7 @@ namespace TsGui.View.GuiOptions
             else { this._isauthenticator = false; }
 
             if (this._expose == false && this._isauthenticator == false) 
-            { throw new KnownException("Missing AuthID in config:", inputxml.ToString()); }     
+            { Log.Info("PasswordBox does not define an AuthID in config:" + inputxml.ToString()); }     
             
             if (this._expose == true && string.IsNullOrEmpty(this.VariableName))
             { throw new KnownException("Variable name must be set if ExposePassword option is used:", inputxml.ToString()); }

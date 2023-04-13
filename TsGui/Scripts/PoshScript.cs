@@ -18,7 +18,7 @@ namespace TsGui.Scripts
     public class PoshScript: BaseScript
     {
         private ILinkTarget _linktarget;
-        public List<Parameter> Parameters { get; private set; } = new List<Parameter>();
+        public List<IParameter> Parameters { get; private set; } = new List<IParameter>();
 
         public ScriptResult<PSDataCollection<PSObject>> Result { get; private set; }
 
@@ -44,6 +44,11 @@ namespace TsGui.Scripts
             foreach (XElement x in InputXml.Elements("Parameter"))
             {
                 Parameter p = new Parameter(x, this._linktarget);
+                this.Parameters.Add(p);
+            }
+            foreach (XElement x in InputXml.Elements("SecureParameter"))
+            {
+                IParameter p = new SecureStringParameter(x);
                 this.Parameters.Add(p);
             }
         }
@@ -99,6 +104,7 @@ namespace TsGui.Scripts
         /// <exception cref="KnownException"></exception>
         public override async Task RunScriptAsync()
         {
+            Log.Debug($"Running script {this.Name}");
             this.Result = new ScriptResult<PSDataCollection<PSObject>>();
 
             //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
@@ -123,12 +129,12 @@ namespace TsGui.Scripts
 
                 using (var posh = new PoshHandler(this._scriptcontent))
                 {
-                    foreach (Parameter p in this.Parameters)
+                    foreach (IParameter p in this.Parameters)
                     {
-                        var wrangler = await p.GetResultWrangler(null);
-                        string value = wrangler.GetString();
+                        var value = await p.GetValue(null);
                         posh.Runner.AddParameter(p.Name, value);
                     }
+                    
                     if (!string.IsNullOrWhiteSpace(this._params)) { posh.Runner.AddArgument(this._params); }
 
                     this.Result.ReturnedObject = await posh.InvokeRunnerAsync(!this._settings.LogScriptContent, this._settings.LogOutput);
