@@ -17,6 +17,7 @@ A TsGui user interface is built with one or more ```<GuiOption Type="xxx">``` el
 * [CheckBox](CheckBox.md)  - a tick box for TRUE/FALSE type selection
 * [InfoBox](InfoBox.md)  - a non-editable text box option for displaying information to the user
 * [Heading](Heading.md)  - a text label only, with no separate user control
+* [PasswordBox](PasswordBox.md)  - a password box for use with [authentication](/documentation/Authentication/README.md) and SecureString parameters in [PowerShell scripts](/documentation/features/Scripts.md#passwords--securestrings)
 * [TreeView](TreeView.md)  - a tree structure
 * [Image](Image.md)  - display an image in the UI
 * [Timeout](Timeout.md)  - a countdown timer before TsGui is cancelled or auto-finished
