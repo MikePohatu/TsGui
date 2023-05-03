@@ -179,6 +179,7 @@
     <Compile Include="View\GuiOptions\TsLoggingOutputUI.xaml.cs">
       <DependentUpon>TsLoggingOutputUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Layout\Border.cs" />
     <Compile Include="View\Layout\ControlDefaults.cs" />
     <Compile Include="View\GuiOptions\CollectionViews\CollectionViewGuiOptionBase.cs" />
     <Compile Include="View\GuiOptions\ContentChanger.xaml.cs">
