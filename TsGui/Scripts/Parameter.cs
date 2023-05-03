@@ -41,9 +41,9 @@ namespace TsGui.Scripts
         {
             if (InputXml.Name == "Switch") { this.IsSwitch = true; }
 
-            this.Name = XmlHandler.GetStringFromXAttribute(InputXml, "Name", this.Name);
-            this.Name = XmlHandler.GetStringFromXElement(InputXml, "Name", this.Name);
-            string value = XmlHandler.GetStringFromXAttribute(InputXml, "Value", null);
+            this.Name = XmlHandler.GetStringFromXml(InputXml, "Name", this.Name);
+            this.Name = XmlHandler.GetStringFromXml(InputXml, "Name", this.Name);
+            string value = XmlHandler.GetStringFromXml(InputXml, "Value", null);
 
             //validation values
             if (string.IsNullOrEmpty(this.Name)) { throw new KnownException($"Parameter name not defined:\n{InputXml}", null); }

@@ -106,13 +106,13 @@ namespace TsGui.Options.NoUI
             base.LoadXml(InputXml);
 
             //path and variable can be set either as an element, or an attribute
-            this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
-            this.VariableName = XmlHandler.GetStringFromXAttribute(InputXml, "Variable", this.VariableName);
-            this.Path = XmlHandler.GetStringFromXElement(InputXml, "Path", this.Path);
-            this.Path = XmlHandler.GetStringFromXAttribute(InputXml, "Path", this.Path);
+            this.VariableName = XmlHandler.GetStringFromXml(InputXml, "Variable", this.VariableName);
+            this.VariableName = XmlHandler.GetStringFromXml(InputXml, "Variable", this.VariableName);
+            this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
+            this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
 
-            this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
-            this._usecurrent = XmlHandler.GetBoolFromXAttribute(InputXml, "UseCurrent", this._usecurrent);
+            this.InactiveValue = XmlHandler.GetStringFromXml(InputXml, "InactiveValue", this.InactiveValue);
+            this._usecurrent = XmlHandler.GetBoolFromXml(InputXml, "UseCurrent", this._usecurrent);
 
             XElement x;
             XAttribute xa;

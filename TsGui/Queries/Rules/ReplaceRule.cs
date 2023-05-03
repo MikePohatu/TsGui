@@ -35,8 +35,8 @@ namespace TsGui.Queries.Rules
             //InputXml.Add(presearvespace);
 
 
-            this._searchstring = XmlHandler.GetStringFromXElement(InputXml, "Search", this._searchstring);
-            this._replacestring = XmlHandler.GetStringFromXElement(InputXml, "Replace", this._replacestring);
+            this._searchstring = XmlHandler.GetStringFromXml(InputXml, "Search", this._searchstring);
+            this._replacestring = XmlHandler.GetStringFromXml(InputXml, "Replace", this._replacestring);
             //this._replacestring = InputXml.Value;
 
             if (this._replacestring == null) { this._replacestring = string.Empty; }

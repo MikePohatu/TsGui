@@ -79,11 +79,11 @@ namespace TsGui.Images
         {
             if (InputXml != null)
             {
-                this._file = XmlHandler.GetStringFromXElement(InputXml, "File", string.Empty);
+                this._file = XmlHandler.GetStringFromXml(InputXml, "File", string.Empty);
                 this.MultiImage = new MultiImage(_file);
-                this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
-                this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
-                this.StretchMode = XmlHandler.GetStretchFromXElement(InputXml, "Stretch", this.StretchMode);
+                this.Width = XmlHandler.GetDoubleFromXml(InputXml, "Width", this.Width);
+                this.Height = XmlHandler.GetDoubleFromXml(InputXml, "Height", this.Height);
+                this.StretchMode = XmlHandler.GetStretchFromXml(InputXml, "Stretch", this.StretchMode);
             }
 
         }

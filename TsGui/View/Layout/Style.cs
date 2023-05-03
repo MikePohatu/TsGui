@@ -39,6 +39,8 @@ namespace TsGui.View.Layout
 
 
         //Properties
+        public Border Border { get; set; } = new Border();
+
         #region 
         private string _fontweight;
         public string FontWeight
@@ -218,17 +220,18 @@ namespace TsGui.View.Layout
             //Load the XML
             #region
             XElement x;
+            this.Border.LoadXml(InputXml.Element("Border"));
 
-            this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
-            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
-            this.CornerRadius = XmlHandler.GetDoubleFromXElement(InputXml, "CornerRadius", this.CornerRadius);
-            this.Padding = XmlHandler.GetThicknessFromXElement(InputXml, "Padding", this.Padding);
-            this.Margin = XmlHandler.GetThicknessFromXElement(InputXml, "Margin", this.Margin);
-            this.VerticalAlignment = XmlHandler.GetVerticalAlignmentFromXElement(InputXml, "VerticalAlignment", this.VerticalAlignment);
-            this.HorizontalAlignment = XmlHandler.GetHorizontalAlignmentFromXElement(InputXml, "HorizontalAlignment", this.HorizontalAlignment);
-            this.VerticalContentAlignment = XmlHandler.GetVerticalAlignmentFromXElement(InputXml, "VerticalContentAlignment", this.VerticalContentAlignment);
-            this.HorizontalContentAlignment = XmlHandler.GetHorizontalAlignmentFromXElement(InputXml, "HorizontalContentAlignment", this.HorizontalContentAlignment);
-            this.TextAlignment = XmlHandler.GetTextAlignmentFromXElement(InputXml, "TextAlignment", this.TextAlignment);
+            this.Height = XmlHandler.GetDoubleFromXml(InputXml, "Height", this.Height);
+            this.Width = XmlHandler.GetDoubleFromXml(InputXml, "Width", this.Width);
+            this.CornerRadius = XmlHandler.GetDoubleFromXml(InputXml, "CornerRadius", this.CornerRadius);
+            this.Padding = XmlHandler.GetThicknessFromXml(InputXml, "Padding", this.Padding);
+            this.Margin = XmlHandler.GetThicknessFromXml(InputXml, "Margin", this.Margin);
+            this.VerticalAlignment = XmlHandler.GetVerticalAlignmentFromXml(InputXml, "VerticalAlignment", this.VerticalAlignment);
+            this.HorizontalAlignment = XmlHandler.GetHorizontalAlignmentFromXml(InputXml, "HorizontalAlignment", this.HorizontalAlignment);
+            this.VerticalContentAlignment = XmlHandler.GetVerticalAlignmentFromXml(InputXml, "VerticalContentAlignment", this.VerticalContentAlignment);
+            this.HorizontalContentAlignment = XmlHandler.GetHorizontalAlignmentFromXml(InputXml, "HorizontalContentAlignment", this.HorizontalContentAlignment);
+            this.TextAlignment = XmlHandler.GetTextAlignmentFromXml(InputXml, "TextAlignment", this.TextAlignment);
 
 
             //record the set elements
@@ -244,10 +247,10 @@ namespace TsGui.View.Layout
             x = InputXml.Element("Font");
             if (x != null)
             {
-                this.FontWeight = XmlHandler.GetStringFromXElement(x, "Weight", this.FontWeight);
-                this.FontStyle = XmlHandler.GetStringFromXElement(x, "Style", this.FontStyle);
-                this.FontSize = XmlHandler.GetDoubleFromXElement(x, "Size", this.FontSize);
-                this.FontColorBrush = XmlHandler.GetSolidColorBrushFromXElement(x, "Color", this.FontColorBrush);
+                this.FontWeight = XmlHandler.GetStringFromXml(x, "Weight", this.FontWeight);
+                this.FontStyle = XmlHandler.GetStringFromXml(x, "Style", this.FontStyle);
+                this.FontSize = XmlHandler.GetDoubleFromXml(x, "Size", this.FontSize);
+                this.FontColorBrush = XmlHandler.GetSolidColorBrushFromXml(x, "Color", this.FontColorBrush);
 
                 //record the set elements
                 foreach (XElement el in x.Elements())
@@ -262,7 +265,7 @@ namespace TsGui.View.Layout
 
             if (processimports)
             {
-                string styleids = XmlHandler.GetStringFromXAttribute(InputXml, "Import", null);
+                string styleids = XmlHandler.GetStringFromXml(InputXml, "Import", null);
                 if (string.IsNullOrWhiteSpace(styleids) == false)
                 {
                     foreach (string id in styleids.Trim().Split(' '))

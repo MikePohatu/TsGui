@@ -50,8 +50,8 @@ namespace TsGui.Config
             {
                 if (element.Name == "Import")
                 {
-                    string path = XmlHandler.GetStringFromXElement(element, "Path", string.Empty);
-                    path = XmlHandler.GetStringFromXAttribute(element, "Path", path);
+                    string path = XmlHandler.GetStringFromXml(element, "Path", string.Empty);
+                    path = XmlHandler.GetStringFromXml(element, "Path", path);
                     XElement partx = await GetXml(path);
 
                     element.AddBeforeSelf(new XComment(element.ToString()));

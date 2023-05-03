@@ -14,7 +14,7 @@ namespace TsGui.Scripts
         {
             if (inputxml == null) { return null; }
 
-            string type = XmlHandler.GetStringFromXAttribute(inputxml, "Type", null);
+            string type = XmlHandler.GetStringFromXml(inputxml, "Type", null);
 
             if (string.IsNullOrWhiteSpace(type))
             {

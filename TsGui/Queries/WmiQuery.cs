@@ -53,9 +53,9 @@ namespace TsGui.Queries
             //make sure there is some WQL to query
             if (string.IsNullOrEmpty(this._wql)) { throw new InvalidOperationException("Empty WQL query in XML: " + Environment.NewLine + InputXml); }
 
-            this._namespace = XmlHandler.GetStringFromXElement(InputXml, "NameSpace", this._namespace);
-            this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
-            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
+            this._namespace = XmlHandler.GetStringFromXml(InputXml, "NameSpace", this._namespace);
+            this._processingwrangler.Separator = XmlHandler.GetStringFromXml(InputXml, "Separator", this._processingwrangler.Separator);
+            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXml(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
  
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }

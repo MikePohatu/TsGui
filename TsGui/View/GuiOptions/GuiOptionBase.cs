@@ -100,15 +100,15 @@ namespace TsGui.View.GuiOptions
             if (x != null) { this.LabelStyle.FontWeight = "Bold"; }
 
             //path and variable can be set either as an element, or an attribute
-            this.Path = XmlHandler.GetStringFromXElement(InputXml, "Path", this.Path);
-            this.Path = XmlHandler.GetStringFromXAttribute(InputXml, "Path", this.Path);
-            this.VariableName = XmlHandler.GetStringFromXElement(InputXml, "Variable", this.VariableName);
-            this.VariableName = XmlHandler.GetStringFromXAttribute(InputXml, "Variable", this.VariableName);
+            this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
+            this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
+            this.VariableName = XmlHandler.GetStringFromXml(InputXml, "Variable", this.VariableName);
+            this.VariableName = XmlHandler.GetStringFromXml(InputXml, "Variable", this.VariableName);
 
-            this.LabelText = XmlHandler.GetStringFromXElement(InputXml, "Label", this.LabelText);
-            this.HelpText = XmlHandler.GetStringFromXElement(InputXml, "HelpText", this.HelpText);
-            this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
-            this.InactiveValue = XmlHandler.GetStringFromXElement(InputXml, "InactiveValue", this.InactiveValue);
+            this.LabelText = XmlHandler.GetStringFromXml(InputXml, "Label", this.LabelText);
+            this.HelpText = XmlHandler.GetStringFromXml(InputXml, "HelpText", this.HelpText);
+            this.ShowGridLines = XmlHandler.GetBoolFromXml(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
+            this.InactiveValue = XmlHandler.GetStringFromXml(InputXml, "InactiveValue", this.InactiveValue);
             this.SetLayoutRightLeft();
 
             XAttribute xa = InputXml.Attribute("ID");

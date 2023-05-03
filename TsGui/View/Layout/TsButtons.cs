@@ -117,10 +117,10 @@ namespace TsGui.View.Layout
 
             XElement x;
 
-            this.ButtonTextNext = XmlHandler.GetStringFromXElement(InputXml, "Next", this.ButtonTextNext);
-            this.ButtonTextBack = XmlHandler.GetStringFromXElement(InputXml, "Back", this.ButtonTextBack);
-            this.ButtonTextFinish = XmlHandler.GetStringFromXElement(InputXml, "Finish", this.ButtonTextFinish);
-            this.ButtonTextCancel = XmlHandler.GetStringFromXElement(InputXml, "Cancel", this.ButtonTextCancel);
+            this.ButtonTextNext = XmlHandler.GetStringFromXml(InputXml, "Next", this.ButtonTextNext);
+            this.ButtonTextBack = XmlHandler.GetStringFromXml(InputXml, "Back", this.ButtonTextBack);
+            this.ButtonTextFinish = XmlHandler.GetStringFromXml(InputXml, "Finish", this.ButtonTextFinish);
+            this.ButtonTextCancel = XmlHandler.GetStringFromXml(InputXml, "Cancel", this.ButtonTextCancel);
 
             x = InputXml.Element("Style");
             if (x != null) { this.ControlStyle.LoadXml(x); }

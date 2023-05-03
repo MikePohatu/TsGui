@@ -138,9 +138,9 @@ namespace TsGui.View.Layout
         {
             XElement x;
 
-            this.PageId = XmlHandler.GetStringFromXAttribute(InputXml, "PageId", this.PageId);
-            this.IsEnabled = XmlHandler.GetBoolFromXElement(InputXml, "Enabled", this.IsEnabled);
-            this.IsHidden = XmlHandler.GetBoolFromXElement(InputXml, "Hidden", this.IsHidden);
+            this.PageId = XmlHandler.GetStringFromXml(InputXml, "PageId", this.PageId);
+            this.IsEnabled = XmlHandler.GetBoolFromXml(InputXml, "Enabled", this.IsEnabled);
+            this.IsHidden = XmlHandler.GetBoolFromXml(InputXml, "Hidden", this.IsHidden);
 
             x = InputXml.Element("Heading");
             if (x != null) { this.PageHeader = new TsPageHeader(parent, this.PageHeader, x); }

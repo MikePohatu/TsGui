@@ -100,10 +100,10 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this._builder.LoadXml(InputXml);
 
             this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
-            this._nodefaultvalue = XmlHandler.GetBoolFromXAttribute(InputXml, "NoDefaultValue", this._nodefaultvalue);
+            this._nodefaultvalue = XmlHandler.GetBoolFromXml(InputXml, "NoDefaultValue", this._nodefaultvalue);
 
-            this.Sort = XmlHandler.GetBoolFromXAttribute(InputXml, "Sort", this.Sort);
-            this._noselectionmessage = XmlHandler.GetStringFromXElement(InputXml, "NoSelectionMessage", this._noselectionmessage);
+            this.Sort = XmlHandler.GetBoolFromXml(InputXml, "Sort", this.Sort);
+            this._noselectionmessage = XmlHandler.GetStringFromXml(InputXml, "NoSelectionMessage", this._noselectionmessage);
 
             foreach (XElement x in InputXml.Elements())
             {

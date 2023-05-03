@@ -46,11 +46,11 @@ namespace TsGui.Queries
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
-            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
-            this._root = XmlHandler.GetStringFromXElement(InputXml, "Root", this._root);
-            this._value = XmlHandler.GetStringFromXElement(InputXml, "Value", this._value);
-            this._key = XmlHandler.GetStringFromXElement(InputXml, "Key", this._key);
+            this._processingwrangler.Separator = XmlHandler.GetStringFromXml(InputXml, "Separator", this._processingwrangler.Separator);
+            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXml(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
+            this._root = XmlHandler.GetStringFromXml(InputXml, "Root", this._root);
+            this._value = XmlHandler.GetStringFromXml(InputXml, "Value", this._value);
+            this._key = XmlHandler.GetStringFromXml(InputXml, "Key", this._key);
 
             //validate the root 
             switch (this._root.ToUpper())

@@ -60,7 +60,7 @@ namespace TsGui.View.GuiOptions
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            this.ControlText = XmlHandler.GetStringFromXElement(InputXml, "AltLabel", this.ControlText);
+            this.ControlText = XmlHandler.GetStringFromXml(InputXml, "AltLabel", this.ControlText);
         }
 
         public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
