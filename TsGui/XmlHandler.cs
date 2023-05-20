@@ -29,8 +29,6 @@ using TsGui.Validation;
 using Core.Diagnostics;
 using System.Threading.Tasks;
 using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using System.Text;
 
 namespace TsGui
 {
@@ -122,20 +120,28 @@ namespace TsGui
         private static bool GetValidXmlValue(XElement InputXml, string XName, out string xvalue)
         {
             xvalue = null;
+            bool set = false;
 
             if (InputXml == null) {
                 return true; 
             }
             XAttribute xa = InputXml.Attribute(XName);
-            if (xa != null) { xvalue = xa.Value; }
+            if (xa != null) 
+            { 
+                xvalue = xa.Value;
+                set = true;
+            }
             else
             {
                 XElement x = InputXml.Element(XName);
-                if (x != null) { xvalue = x.Value; }
+                if (x != null) 
+                { 
+                    xvalue = x.Value;
+                    set = true;
+                }
             }
 
-            if (string.IsNullOrEmpty(xvalue)) { return true; }
-            return false;
+            return set;
         }
 
 
@@ -143,14 +149,15 @@ namespace TsGui
         public static string GetStringFromXml(XElement InputXml, string XName, string DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
             return value;
         }
 
         public static int GetIntFromXml(XElement InputXml, string XName, int DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             return Convert.ToInt32(value);
         }
@@ -158,7 +165,8 @@ namespace TsGui
         public static int GetComplianceStateValueFromXml(XElement InputXml, string XName, int DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             switch (value)
             {
@@ -178,7 +186,8 @@ namespace TsGui
         public static double GetDoubleFromXml(XElement InputXml, string XName, double DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             if (value.ToUpper() == "AUTO") { return Double.NaN; }
             else { return Convert.ToDouble(value); }
@@ -187,7 +196,8 @@ namespace TsGui
         public static GridLength GetGridLengthFromXml(XElement InputXml, string XName, GridLength DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             return new GridLength(Convert.ToDouble(value));
         }
@@ -202,16 +212,19 @@ namespace TsGui
         public static bool GetBoolFromXml(XElement InputXml, string XName, bool DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
 
-            return Convert.ToBoolean(value);
+            //if element is set but no value, assume TRUE, e.g. for <ShowGridLines />
+            if (string.IsNullOrWhiteSpace(value)) { return true; }
+
+            return string.IsNullOrWhiteSpace(value) ? DefaultValue : Convert.ToBoolean(value);
         }
 
         public static Thickness GetThicknessFromXml(XElement InputXml, string XName, Thickness DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
-
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             string[] splitstring;
             splitstring = value.Split(',');
@@ -233,7 +246,8 @@ namespace TsGui
         public static Color GetColorFromXml(XElement InputXml, string XName, Color DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             return (Color)ColorConverter.ConvertFromString(value);
         }
@@ -241,7 +255,8 @@ namespace TsGui
         public static SolidColorBrush GetSolidColorBrushFromXml(XElement InputXml, string XName, SolidColorBrush DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             return new SolidColorBrush((Color)ColorConverter.ConvertFromString(value));
         }
@@ -249,7 +264,8 @@ namespace TsGui
         public static WindowStartupLocation GetWindowStartupLocationFromXml(XElement InputXml, string XName, WindowStartupLocation DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             if (value.ToUpper() == "MANUAL") { return WindowStartupLocation.Manual; }
             else if (value.ToUpper() == "CENTEROWNER") { return WindowStartupLocation.CenterOwner; }
@@ -259,7 +275,8 @@ namespace TsGui
         public static VerticalAlignment GetVerticalAlignmentFromXml(XElement InputXml, string XName, VerticalAlignment DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             switch (value.ToUpper())
             {
@@ -279,7 +296,8 @@ namespace TsGui
         public static HorizontalAlignment GetHorizontalAlignmentFromXml(XElement InputXml, string XName, HorizontalAlignment DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             switch (value.ToUpper())
             {
@@ -299,7 +317,8 @@ namespace TsGui
         public static TextAlignment GetTextAlignmentFromXml(XElement InputXml, string XName, TextAlignment DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             switch (value.ToUpper())
             {
@@ -317,7 +336,8 @@ namespace TsGui
         public static Stretch GetStretchFromXml(XElement InputXml, string XName, Stretch DefaultValue)
         {
             string value;
-            if (GetValidXmlValue(InputXml, XName, out value)) { return DefaultValue; }
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
             switch (value.ToUpper())
             {
