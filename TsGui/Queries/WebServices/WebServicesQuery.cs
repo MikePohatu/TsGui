@@ -63,14 +63,14 @@ namespace TsGui.Queries.WebServices
         {
             base.LoadXml(InputXml);
 
-            this.AuthID = XmlHandler.GetStringFromXAttribute(InputXml, "AuthID", this.AuthID);
+            this.AuthID = XmlHandler.GetStringFromXml(InputXml, "AuthID", this.AuthID);
 
-            this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
-            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
+            this._processingwrangler.Separator = XmlHandler.GetStringFromXml(InputXml, "Separator", this._processingwrangler.Separator);
+            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXml(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
 
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
-            this._serviceurl = XmlHandler.GetStringFromXElement(InputXml, "ServiceURL", this._serviceurl);
-            this._method = XmlHandler.GetStringFromXElement(InputXml, "Method", this._method);
+            this._serviceurl = XmlHandler.GetStringFromXml(InputXml, "ServiceURL", this._serviceurl);
+            this._method = XmlHandler.GetStringFromXml(InputXml, "Method", this._method);
             foreach (XElement x in InputXml.Elements("Parameter"))
             {
                 XAttribute xa = x.Attribute("Name");

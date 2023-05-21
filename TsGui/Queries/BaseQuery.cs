@@ -50,8 +50,8 @@ namespace TsGui.Queries
 
         protected void LoadXml(XElement InputXml)
         {
-            this._reprocess = XmlHandler.GetBoolFromXAttribute(InputXml, "Reprocess", this._reprocess);
-            this._ignoreempty = XmlHandler.GetBoolFromXAttribute(InputXml, "IgnoreEmpty", this._ignoreempty);
+            this._reprocess = XmlHandler.GetBoolFromXml(InputXml, "Reprocess", this._reprocess);
+            this._ignoreempty = XmlHandler.GetBoolFromXml(InputXml, "IgnoreEmpty", this._ignoreempty);
             foreach (XElement xignorerule in InputXml.Elements("Ignore"))
             {
                 this._ignorerules.Add(MatchingRuleFactory.GetRuleObject(xignorerule, this._linktarget));

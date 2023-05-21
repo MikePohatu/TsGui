@@ -33,9 +33,9 @@ namespace TsGui.Scripts
 
         public void LoadXml(XElement InputXml)
         {
-            this.ID = XmlHandler.GetStringFromXAttribute(InputXml, "SourceID", this.ID);
-            this.Name = XmlHandler.GetStringFromXAttribute(InputXml, "Name", this.Name);
-            this.Name = XmlHandler.GetStringFromXElement(InputXml, "Name", this.Name);
+            this.ID = XmlHandler.GetStringFromXml(InputXml, "SourceID", this.ID);
+            this.Name = XmlHandler.GetStringFromXml(InputXml, "Name", this.Name);
+            this.Name = XmlHandler.GetStringFromXml(InputXml, "Name", this.Name);
 
             //validation values
             if (string.IsNullOrEmpty(this.Name)) { throw new KnownException($"Parameter name not defined:\n{InputXml}", null); }

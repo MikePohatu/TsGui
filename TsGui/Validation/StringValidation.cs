@@ -79,10 +79,10 @@ namespace TsGui.Validation
             XElement x;
             IEnumerable<XElement> xlist;
 
-            this.ValidationMessage = XmlHandler.GetStringFromXElement(InputXml, "Message", this.ValidationMessage);
-            this._validateempty = XmlHandler.GetBoolFromXAttribute(InputXml, "ValidateEmpty", this._validateempty);
-            this._maxlength = XmlHandler.GetIntFromXElement(InputXml, "MaxLength", this._maxlength);
-            this._minlength = XmlHandler.GetIntFromXElement(InputXml, "MinLength", this._minlength);
+            this.ValidationMessage = XmlHandler.GetStringFromXml(InputXml, "Message", this.ValidationMessage);
+            this._validateempty = XmlHandler.GetBoolFromXml(InputXml, "ValidateEmpty", this._validateempty);
+            this._maxlength = XmlHandler.GetIntFromXml(InputXml, "MaxLength", this._maxlength);
+            this._minlength = XmlHandler.GetIntFromXml(InputXml, "MinLength", this._minlength);
 
             x = InputXml.Element("Valid");
             if (x != null)

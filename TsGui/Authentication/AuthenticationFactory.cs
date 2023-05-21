@@ -31,8 +31,8 @@ namespace TsGui.Authentication
         {
             if (inputxml == null) { return null; }
 
-            string type = XmlHandler.GetStringFromXAttribute(inputxml,"Type",null);
-            string authid = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
+            string type = XmlHandler.GetStringFromXml(inputxml,"Type",null);
+            string authid = XmlHandler.GetStringFromXml(inputxml, "AuthID", null);
 
             if (string.IsNullOrWhiteSpace(authid) == true) { throw new KnownException("Mising AuthID attribute from XML:", inputxml.ToString()); }
 

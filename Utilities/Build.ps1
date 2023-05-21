@@ -1,4 +1,6 @@
-﻿Function SignAssembliesInPath {
+﻿$version = '2.0.4.0'
+
+Function SignAssembliesInPath {
     Param(
         [Parameter(Mandatory=$true)][string]$PackagePath,
         [string]$SignPath='C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x64',
@@ -92,7 +94,6 @@ Function pause ()
 }
 
 #run builds
-$version = '2.0.3.0'
 $copyRight = "Copyright © 20Road Limited $(get-date -Format yyyy)"
 $repoRoot = 'C:\Source\repos\TsGui'
 $devenv = 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe'

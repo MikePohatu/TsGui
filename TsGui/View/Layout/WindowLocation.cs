@@ -73,9 +73,9 @@ namespace TsGui.View.Layout
 
         public void LoadXml(XElement InputXml)
         {
-            this.StartupLocation = XmlHandler.GetWindowStartupLocationFromXElement(InputXml, "StartupLocation", this.StartupLocation);
-            this.Left = XmlHandler.GetDoubleFromXElement(InputXml, "Left", this.Left);
-            this.Top = XmlHandler.GetDoubleFromXElement(InputXml, "Top", this.Top);
+            this.StartupLocation = XmlHandler.GetWindowStartupLocationFromXml(InputXml, "StartupLocation", this.StartupLocation);
+            this.Left = XmlHandler.GetDoubleFromXml(InputXml, "Left", this.Left);
+            this.Top = XmlHandler.GetDoubleFromXml(InputXml, "Top", this.Top);
         }
 
         private void Init(Window ParentWindow)

@@ -79,8 +79,8 @@ namespace TsGui.View.Layout
         public void LoadXml(XElement InputXml)
         {
             XElement x;
-            this.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Height);
-            this.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Width);
+            this.Height = XmlHandler.GetDoubleFromXml(InputXml, "Height", this.Height);
+            this.Width = XmlHandler.GetDoubleFromXml(InputXml, "Width", this.Width);
 
             x = InputXml.Element("Style");
             if (x != null) { this.Style.LoadXml(x); }

@@ -200,12 +200,12 @@ namespace TsGui.View.Layout
             {
                 base.LoadXml(InputXml);
 
-                this.FontColor = XmlHandler.GetSolidColorBrushFromXElement(InputXml, "Font-Color", this.FontColor);
-                this.BgColor = XmlHandler.GetSolidColorBrushFromXElement(InputXml, "Bg-Color", this.BgColor);
-                this.Title = XmlHandler.GetStringFromXElement(InputXml, "Title", this.Title);
-                this.Text = XmlHandler.GetStringFromXElement(InputXml, "Text", this.Text);
-                this.FontColor = XmlHandler.GetSolidColorBrushFromXElement(InputXml, "TextColor", this.FontColor);
-                this.Style.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Style.Height);
+                this.FontColor = XmlHandler.GetSolidColorBrushFromXml(InputXml, "Font-Color", this.FontColor);
+                this.BgColor = XmlHandler.GetSolidColorBrushFromXml(InputXml, "Bg-Color", this.BgColor);
+                this.Title = XmlHandler.GetStringFromXml(InputXml, "Title", this.Title);
+                this.Text = XmlHandler.GetStringFromXml(InputXml, "Text", this.Text);
+                this.FontColor = XmlHandler.GetSolidColorBrushFromXml(InputXml, "TextColor", this.FontColor);
+                this.Style.Height = XmlHandler.GetDoubleFromXml(InputXml, "Height", this.Style.Height);
 
                 x = InputXml.Element("Image");
                 if (x != null) { this.Image = new Image(x); }

@@ -53,8 +53,8 @@ namespace TsGui.Validation
         {
             IEnumerable<XElement> xlist;
 
-            this.Message = XmlHandler.GetStringFromXElement(InputXml, "Message", this.Message);
-            this._defaultstate = XmlHandler.GetComplianceStateValueFromXElement(InputXml, "DefaultState", this._defaultstate);
+            this.Message = XmlHandler.GetStringFromXml(InputXml, "Message", this.Message);
+            this._defaultstate = XmlHandler.GetComplianceStateValueFromXml(InputXml, "DefaultState", this._defaultstate);
 
             this._okrules.LoadXml(InputXml.Element("OK"));
             this._warningrules.LoadXml(InputXml.Element("Warning"));

@@ -25,15 +25,15 @@ namespace TsGui.Scripts
 
         protected virtual void LoadXml(XElement InputXml)
         {
-            this._params = XmlHandler.GetStringFromXElement(InputXml, "Params", this._params);
-            this._exceptionOnError = XmlHandler.GetBoolFromXElement(InputXml, "HaltOnError", this._exceptionOnError);
-            this._exceptionOnMissingFile = XmlHandler.GetBoolFromXElement(InputXml, "HaltOnMissing", this._exceptionOnError);
-            this.Name = XmlHandler.GetStringFromXAttribute(InputXml, "Name", this.Name);
-            this.Name = XmlHandler.GetStringFromXElement(InputXml, "Name", this.Name);
-            this.Path = XmlHandler.GetStringFromXAttribute(InputXml, "Path", this.Path);
-            this.Path = XmlHandler.GetStringFromXElement(InputXml, "Path", this.Path);
-            this.ID = XmlHandler.GetStringFromXAttribute(InputXml, "ID", this.ID);
-            this.ID = XmlHandler.GetStringFromXElement(InputXml, "ID", this.ID);
+            this._params = XmlHandler.GetStringFromXml(InputXml, "Params", this._params);
+            this._exceptionOnError = XmlHandler.GetBoolFromXml(InputXml, "HaltOnError", this._exceptionOnError);
+            this._exceptionOnMissingFile = XmlHandler.GetBoolFromXml(InputXml, "HaltOnMissing", this._exceptionOnError);
+            this.Name = XmlHandler.GetStringFromXml(InputXml, "Name", this.Name);
+            this.Name = XmlHandler.GetStringFromXml(InputXml, "Name", this.Name);
+            this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
+            this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
+            this.ID = XmlHandler.GetStringFromXml(InputXml, "ID", this.ID);
+            this.ID = XmlHandler.GetStringFromXml(InputXml, "ID", this.ID);
 
             //make sure there is a script set
             if (string.IsNullOrWhiteSpace(this.Name) && string.IsNullOrEmpty(this.Path))

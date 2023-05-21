@@ -33,8 +33,8 @@ namespace TsGui.Queries
 
         public ListValueQuery(XElement InputXml)
         {
-            this._value = XmlHandler.GetStringFromXElement(InputXml, "Value", this._value);
-            this._text = XmlHandler.GetStringFromXElement(InputXml, "Text", this._value);
+            this._value = XmlHandler.GetStringFromXml(InputXml, "Value", this._value);
+            this._text = XmlHandler.GetStringFromXml(InputXml, "Text", this._value);
 
             this._formatter.Input = this._text;
             this._wrangler.NewResult();

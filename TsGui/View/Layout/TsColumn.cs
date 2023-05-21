@@ -63,7 +63,7 @@ namespace TsGui
 
         private new void LoadXml(XElement InputXml)
         {
-            this.Style.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", double.NaN);
+            this.Style.Width = XmlHandler.GetDoubleFromXml(InputXml, "Width", double.NaN);
             base.LoadXml(InputXml);
             this.LoadXml(InputXml, this);
         }

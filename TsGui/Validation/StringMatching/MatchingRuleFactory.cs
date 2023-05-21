@@ -34,7 +34,7 @@ namespace TsGui.Validation.StringMatching
         public static IStringMatchingRule GetRuleObject(XElement InputXml, ILinkTarget linktarget)
         {
             string xname = InputXml?.Name.ToString();
-            string type = XmlHandler.GetStringFromXAttribute(InputXml, "Type", string.Empty);
+            string type = XmlHandler.GetStringFromXml(InputXml, "Type", string.Empty);
 
             if (xname == "Ruleset")
             { return new RuleSet(InputXml); }

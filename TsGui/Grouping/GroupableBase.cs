@@ -66,7 +66,7 @@ namespace TsGui.Grouping
 
         protected void LoadXml(XElement InputXml)
         {
-            this.PurgeInactive = XmlHandler.GetBoolFromXAttribute(InputXml, "PurgeInactive", this.PurgeInactive);
+            this.PurgeInactive = XmlHandler.GetBoolFromXml(InputXml, "PurgeInactive", this.PurgeInactive);
 
             IEnumerable<XElement> xGroups = InputXml.Elements("Group");
             if (xGroups != null)

@@ -34,7 +34,7 @@ namespace TsGui.Queries
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            string scriptid = XmlHandler.GetStringFromXAttribute(InputXml, "Global", null);
+            string scriptid = XmlHandler.GetStringFromXml(InputXml, "Global", null);
 
             if (string.IsNullOrEmpty(scriptid))
             {
@@ -47,8 +47,8 @@ namespace TsGui.Queries
             }
             if (this._script == null) { throw new KnownException($"No script configuration for query:\n{InputXml}", null); }
 
-            this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
-            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
+            this._processingwrangler.Separator = XmlHandler.GetStringFromXml(InputXml, "Separator", this._processingwrangler.Separator);
+            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXml(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }
 

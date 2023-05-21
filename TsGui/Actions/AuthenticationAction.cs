@@ -50,7 +50,7 @@ namespace TsGui.Actions
 
         private void LoadXml(XElement inputxml)
         {
-            this._authid = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
+            this._authid = XmlHandler.GetStringFromXml(inputxml, "AuthID", null);
             if (this._authid == null) { throw new KnownException("Missing AuthID attribute in config", inputxml.ToString()); }
         }
     }

@@ -74,7 +74,7 @@ namespace TsGui.Validation.StringMatching
                 if (xa.Value == "AND") { this._ruletype = AndOr.AND; }
             }
 
-            this.Not = XmlHandler.GetBoolFromXAttribute(InputXml, "Not", this.Not);
+            this.Not = XmlHandler.GetBoolFromXml(InputXml, "Not", this.Not);
         }
 
         public void Add(IStringMatchingRule rule)

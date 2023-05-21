@@ -77,13 +77,13 @@ namespace TsGui.View.GuiOptions
         {
             //load the xml for the base class stuff
             base.LoadXml(inputxml);
-            this.ButtonText = XmlHandler.GetStringFromXElement(inputxml, "ButtonText", this.ButtonText);
+            this.ButtonText = XmlHandler.GetStringFromXml(inputxml, "ButtonText", this.ButtonText);
 
             XElement x;
             x = inputxml.Element("Action");
             if (x != null) { this._action = ActionFactory.CreateAction(x); }
 
-            this.IsDefault = XmlHandler.GetBoolFromXAttribute(inputxml, "IsDefault", this.IsDefault);
+            this.IsDefault = XmlHandler.GetBoolFromXml(inputxml, "IsDefault", this.IsDefault);
         }
 
         public void OnButtonClick(object o, RoutedEventArgs e)

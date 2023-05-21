@@ -7,13 +7,15 @@
             mc:Ignorable="d" 
             d:DesignHeight="20" d:DesignWidth="300" Visibility="{Binding Visibility}" IsEnabled="{Binding IsEnabled}"
              >
-    <Grid x:Name="MainPanel" Width="{Binding Style.Width}" Height="{Binding Style.Height}" ToolTip="{Binding HelpText, Converter={StaticResource XmlStringLine}}" 
+    <Border BorderBrush="{Binding Style.Border.Brush}" BorderThickness="{Binding Style.Border.Thickness}">
+        <Grid x:Name="MainPanel" Width="{Binding Style.Width}" Height="{Binding Style.Height}" ToolTip="{Binding HelpText, Converter={StaticResource XmlStringLine}}" 
           Margin="{Binding Style.Margin}" ShowGridLines="{Binding ShowGridLines}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <ContentPresenter x:Name="LeftPresenter" Grid.Column="0" Width="{Binding Style.LeftCellWidth}"/>
-        <ContentPresenter x:Name="RightPresenter" Grid.Column="1" Width="{Binding Style.RightCellWidth}"/>
-    </Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ContentPresenter x:Name="LeftPresenter" Grid.Column="0" Width="{Binding Style.LeftCellWidth}"/>
+            <ContentPresenter x:Name="RightPresenter" Grid.Column="1" Width="{Binding Style.RightCellWidth}"/>
+        </Grid>
+    </Border>
 </UserControl>

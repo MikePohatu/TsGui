@@ -92,11 +92,11 @@ namespace TsGui.Authentication.ActiveDirectory
 
         private void LoadXml(XElement inputxml)
         {
-            this.AuthID = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
+            this.AuthID = XmlHandler.GetStringFromXml(inputxml, "AuthID", null);
             if (string.IsNullOrWhiteSpace(this.AuthID) == true)
             { throw new KnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
 
-            this._domain = XmlHandler.GetStringFromXAttribute(inputxml, "Domain", null);
+            this._domain = XmlHandler.GetStringFromXml(inputxml, "Domain", null);
             if (string.IsNullOrWhiteSpace(this._domain) == true)
             { throw new KnownException("Missing Domain attribute in XML:", inputxml.ToString()); }
         }

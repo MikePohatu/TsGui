@@ -105,12 +105,12 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             base.LoadXml(inputxml);
             //Values can be elements or attributes. Attributes get priority
-            this.Text = XmlHandler.GetStringFromXElement(inputxml, "Text", this.Text);
-            this.Value = XmlHandler.GetStringFromXElement(inputxml, "Value", this.Value);
-            this.Focusable = XmlHandler.GetBoolFromXElement(inputxml, "Selectable", this.Focusable);
-            this.Text = XmlHandler.GetStringFromXAttribute(inputxml, "Text", this.Text);
-            this.Value = XmlHandler.GetStringFromXAttribute(inputxml, "Value", this.Value);
-            this.Focusable = XmlHandler.GetBoolFromXAttribute(inputxml, "Selectable", this.Focusable);
+            this.Text = XmlHandler.GetStringFromXml(inputxml, "Text", this.Text);
+            this.Value = XmlHandler.GetStringFromXml(inputxml, "Value", this.Value);
+            this.Focusable = XmlHandler.GetBoolFromXml(inputxml, "Selectable", this.Focusable);
+            this.Text = XmlHandler.GetStringFromXml(inputxml, "Text", this.Text);
+            this.Value = XmlHandler.GetStringFromXml(inputxml, "Value", this.Value);
+            this.Focusable = XmlHandler.GetBoolFromXml(inputxml, "Selectable", this.Focusable);
 
             foreach (XElement x in inputxml.Elements())
             {
