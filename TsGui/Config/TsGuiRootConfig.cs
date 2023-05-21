@@ -63,8 +63,8 @@ namespace TsGui.Config
 
         public static void LoadXml(XElement inputxml)
         {
-            Debug = XmlHandler.GetBoolFromXAttribute(inputxml, "Debug", Debug);
-            LiveData = XmlHandler.GetBoolFromXAttribute(inputxml, "LiveData", LiveData);
+            Debug = XmlHandler.GetBoolFromXml(inputxml, "Debug", Debug);
+            LiveData = XmlHandler.GetBoolFromXml(inputxml, "LiveData", LiveData);
 
             XElement x;
             //Set show grid lines after pages and columns have been created.
@@ -81,9 +81,9 @@ namespace TsGui.Config
             if (x == null)
             { HardwareEval = false; }
 
-            DefaultPath = XmlHandler.GetStringFromXElement(inputxml, "DefaultPath", DefaultPath);
-            PurgeInactive = XmlHandler.GetBoolFromXAttribute(inputxml, "PurgeInactive", PurgeInactive);
-            OutputType = XmlHandler.GetStringFromXAttribute(inputxml, "Output", OutputType);
+            DefaultPath = XmlHandler.GetStringFromXml(inputxml, "DefaultPath", DefaultPath);
+            PurgeInactive = XmlHandler.GetBoolFromXml(inputxml, "PurgeInactive", PurgeInactive);
+            OutputType = XmlHandler.GetStringFromXml(inputxml, "Output", OutputType);
 
         }
     }

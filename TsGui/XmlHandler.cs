@@ -109,78 +109,97 @@ namespace TsGui
         }
 
         //XElement functions
-        public static string GetStringFromXElement(XElement InputXml, string XName, string DefaultValue)
+
+        /// <summary>
+        /// Check if a valid value is assigned to an XAttribute or XElement (in that order), out the string value if there is one
+        /// </summary>
+        /// <param name="InputXml"></param>
+        /// <param name="XName"></param>
+        /// <param name="xvalue"></param>
+        /// <returns></returns>
+        private static bool GetValidXmlValue(XElement InputXml, string XName, out string xvalue)
         {
-            if (InputXml == null) { return DefaultValue; }
+            xvalue = null;
+            bool set = false;
 
-            XElement x;
-
-            x = InputXml.Element(XName);
-            if (x != null) { return x.Value; }
-            else { return DefaultValue; }
-        }
-
-        public static int GetIntFromXElement(XElement InputXml, string XName, int DefaultValue)
-        {
-            if (InputXml == null) { return DefaultValue; }
-
-            XElement x;
-
-            x = InputXml.Element(XName);
-            if (x != null) { return Convert.ToInt32(x.Value); }
-            else { return DefaultValue; }
-        }
-
-        public static int GetComplianceStateValueFromXElement(XElement InputXml, string XName, int DefaultValue)
-        {
-            if (InputXml == null) { return DefaultValue; }
-
-            XElement x;
-
-            x = InputXml.Element(XName);
-            if (x != null)
+            if (InputXml == null) {
+                return true; 
+            }
+            XAttribute xa = InputXml.Attribute(XName);
+            if (xa != null) 
+            { 
+                xvalue = xa.Value;
+                set = true;
+            }
+            else
             {
-                switch (x.Value)
-                {
-                    case "OK":
-                        return ComplianceStateValues.OK;
-                    case "Warning":
-                        return ComplianceStateValues.Warning;
-                    case "Error":
-                        return ComplianceStateValues.Error;
-                    case "Invalid":
-                        return ComplianceStateValues.Invalid;
-                    default:
-                        return DefaultValue;
+                XElement x = InputXml.Element(XName);
+                if (x != null) 
+                { 
+                    xvalue = x.Value;
+                    set = true;
                 }
             }
-            else { return DefaultValue; }
+
+            return set;
         }
 
-        public static double GetDoubleFromXElement(XElement InputXml, string XName, double DefaultValue)
+
+
+        public static string GetStringFromXml(XElement InputXml, string XName, string DefaultValue)
         {
-            if (InputXml == null) { return DefaultValue; }
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            return value;
+        }
 
-            XElement x;
+        public static int GetIntFromXml(XElement InputXml, string XName, int DefaultValue)
+        {
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
-            x = InputXml.Element(XName);
-            if (x != null)
+            return Convert.ToInt32(value);
+        }
+
+        public static int GetComplianceStateValueFromXml(XElement InputXml, string XName, int DefaultValue)
+        {
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
+
+            switch (value)
             {
-                if (x.Value.ToUpper() == "AUTO") { return Double.NaN; }
-                else { return Convert.ToDouble(x.Value); }
+                case "OK":
+                    return ComplianceStateValues.OK;
+                case "Warning":
+                    return ComplianceStateValues.Warning;
+                case "Error":
+                    return ComplianceStateValues.Error;
+                case "Invalid":
+                    return ComplianceStateValues.Invalid;
+                default:
+                    return DefaultValue;
             }
-            else { return DefaultValue; }
         }
 
-        public static GridLength GetGridLengthFromXElement(XElement InputXml, string XName, GridLength DefaultValue)
+        public static double GetDoubleFromXml(XElement InputXml, string XName, double DefaultValue)
         {
-            if (InputXml == null) { return DefaultValue; }
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
-            XElement x;
+            if (value.ToUpper() == "AUTO") { return Double.NaN; }
+            else { return Convert.ToDouble(value); }
+        }
 
-            x = InputXml.Element(XName);
-            if (x != null) { return new GridLength(Convert.ToDouble(x.Value)); }
-            else { return DefaultValue; }
+        public static GridLength GetGridLengthFromXml(XElement InputXml, string XName, GridLength DefaultValue)
+        {
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
+
+            return new GridLength(Convert.ToDouble(value));
         }
 
         /// <summary>
@@ -190,225 +209,149 @@ namespace TsGui
         /// <param name="XName"></param>
         /// <param name="DefaultValue"></param>
         /// <returns></returns>
-        public static bool GetBoolFromXElement(XElement InputXml, string XName, bool DefaultValue)
+        public static bool GetBoolFromXml(XElement InputXml, string XName, bool DefaultValue)
         {
-            if (InputXml == null) { return DefaultValue; }
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
 
-            XElement x;
+            //if element is set but no value, assume TRUE, e.g. for <ShowGridLines />
+            if (string.IsNullOrWhiteSpace(value)) { return true; }
 
-            x = InputXml.Element(XName);
-            if (x != null) { 
-                if (string.IsNullOrWhiteSpace(x.Value)) { return true; }
-                return Convert.ToBoolean(x.Value); 
-            }
-            else { return DefaultValue; }
+            return string.IsNullOrWhiteSpace(value) ? DefaultValue : Convert.ToBoolean(value);
         }
 
-        public static Thickness GetThicknessFromXElement(XElement InputXml, string XName, Thickness DefaultValue)
+        public static Thickness GetThicknessFromXml(XElement InputXml, string XName, Thickness DefaultValue)
         {
-            if (InputXml == null) { return DefaultValue; }
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
-            XElement x;
             string[] splitstring;
-
-            x = InputXml.Element(XName);
-            if (x != null)
+            splitstring = value.Split(',');
+            if (splitstring.Length == 1)
             {
-                splitstring = x.Value.Split(',');
-                if (splitstring.Length == 1)
-                {
-                    return new Thickness(Convert.ToDouble(splitstring[0]));
-                }
-                else if (splitstring.Length == 4)
-                {
-                    double left = Convert.ToDouble(splitstring[0]);
-                    double top = Convert.ToDouble(splitstring[1]);
-                    double right = Convert.ToDouble(splitstring[2]);
-                    double bottom = Convert.ToDouble(splitstring[3]);
-                    return new Thickness(left,top,right,bottom);
-                }
-                else { throw new InvalidDataException("Invalid thickness in element " + XName + ": " + x.Value); }
+                return new Thickness(Convert.ToDouble(splitstring[0]));
             }
-            else { return DefaultValue; }
-        }
-
-        public static Color GetColorFromXElement(XElement InputXml, string XName, Color DefaultValue)
-        {
-            if (InputXml == null) { return DefaultValue; }
-
-            XElement x = InputXml.Element(XName);
-            if (x != null) { return (Color)ColorConverter.ConvertFromString(x.Value); }
-            else { return DefaultValue; }            
-        }
-
-        public static SolidColorBrush GetSolidColorBrushFromXElement(XElement InputXml, string XName, SolidColorBrush DefaultValue)
-        {
-            if (InputXml == null) { return DefaultValue; }
-
-            XElement x = InputXml.Element(XName);
-            if (x != null) { return new SolidColorBrush((Color)ColorConverter.ConvertFromString(x.Value)); }
-            else { return DefaultValue; }
-        }
-
-        public static WindowStartupLocation GetWindowStartupLocationFromXElement(XElement InputXml, string XName, WindowStartupLocation DefaultValue)
-        {
-            if (InputXml == null) { return DefaultValue; }
-
-            XElement x = InputXml.Element(XName);
-            if (x != null)
+            else if (splitstring.Length == 4)
             {
-                if (x.Value.ToUpper() == "MANUAL") { return WindowStartupLocation.Manual; }
-                else if (x.Value.ToUpper() == "CENTEROWNER") { return WindowStartupLocation.CenterOwner; }
-                else { return WindowStartupLocation.CenterScreen; }
+                double left = Convert.ToDouble(splitstring[0]);
+                double top = Convert.ToDouble(splitstring[1]);
+                double right = Convert.ToDouble(splitstring[2]);
+                double bottom = Convert.ToDouble(splitstring[3]);
+                return new Thickness(left,top,right,bottom);
             }
-            else { return DefaultValue; }
+            else { throw new InvalidDataException("Invalid thickness in element " + XName + ": " + value); }
         }
 
-        //XAttribute functions
-        public static string GetStringFromXAttribute(XElement InputXml, string XName, string DefaultValue)
+        public static Color GetColorFromXml(XElement InputXml, string XName, Color DefaultValue)
         {
-            if (InputXml == null) { return DefaultValue; }
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
-            XAttribute x;
-
-            x = InputXml.Attribute(XName);
-            if (x != null) { return x.Value; }
-            else { return DefaultValue; }
+            return (Color)ColorConverter.ConvertFromString(value);
         }
 
-        public static int GetIntFromXAttribute(XElement InputXml, string XName, int DefaultValue)
+        public static SolidColorBrush GetSolidColorBrushFromXml(XElement InputXml, string XName, SolidColorBrush DefaultValue)
         {
-            if (InputXml == null) { return DefaultValue; }
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
-            XAttribute x;
-
-            x = InputXml.Attribute(XName);
-            if (x != null) { return Convert.ToInt32(x.Value); }
-            else { return DefaultValue; }
+            return new SolidColorBrush((Color)ColorConverter.ConvertFromString(value));
         }
 
-        public static double GetDoubleFromXAttribute(XElement InputXml, string XName, double DefaultValue)
+        public static WindowStartupLocation GetWindowStartupLocationFromXml(XElement InputXml, string XName, WindowStartupLocation DefaultValue)
         {
-            if (InputXml == null) { return DefaultValue; }
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
-            XAttribute x;
+            if (value.ToUpper() == "MANUAL") { return WindowStartupLocation.Manual; }
+            else if (value.ToUpper() == "CENTEROWNER") { return WindowStartupLocation.CenterOwner; }
+            else { return WindowStartupLocation.CenterScreen; }
+        }
 
-            x = InputXml.Attribute(XName);
-            if (x != null)
+        public static VerticalAlignment GetVerticalAlignmentFromXml(XElement InputXml, string XName, VerticalAlignment DefaultValue)
+        {
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
+
+            switch (value.ToUpper())
             {
-                if (x.Value.ToUpper() == "AUTO") { return Double.NaN; }
-                else { return Convert.ToDouble(x.Value); }
+                case "TOP":
+                    return VerticalAlignment.Top;
+                case "BOTTOM":
+                    return VerticalAlignment.Bottom;
+                case "CENTER":
+                    return VerticalAlignment.Center;
+                case "STRETCH":
+                    return VerticalAlignment.Stretch;
+                default:
+                    return VerticalAlignment.Bottom;
             }
-            else { return DefaultValue; }
         }
 
-        public static bool GetBoolFromXAttribute(XElement InputXml, string XName, bool DefaultValue)
+        public static HorizontalAlignment GetHorizontalAlignmentFromXml(XElement InputXml, string XName, HorizontalAlignment DefaultValue)
         {
-            if (InputXml == null) { return DefaultValue; }
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
-            XAttribute x;
-
-            x = InputXml.Attribute(XName);
-            if (x != null) { return Convert.ToBoolean(x.Value); }
-            else { return DefaultValue; }
-        }
-
-        public static VerticalAlignment GetVerticalAlignmentFromXElement(XElement InputXml, string XName, VerticalAlignment DefaultValue)
-        {
-            if (InputXml == null) { return DefaultValue; }
-
-            XElement x;
-            x = InputXml.Element(XName);
-            if (x != null)
+            switch (value.ToUpper())
             {
-                switch (x.Value.ToUpper())
-                {
-                    case "TOP":
-                        return VerticalAlignment.Top;
-                    case "BOTTOM":
-                        return VerticalAlignment.Bottom;
-                    case "CENTER":
-                        return VerticalAlignment.Center;
-                    case "STRETCH":
-                        return VerticalAlignment.Stretch;
-                    default:
-                        return VerticalAlignment.Bottom;
-                }
+                case "LEFT":
+                    return HorizontalAlignment.Left;
+                case "RIGHT":
+                    return HorizontalAlignment.Right;
+                case "CENTER":
+                    return HorizontalAlignment.Center;
+                case "STRETCH":
+                    return HorizontalAlignment.Stretch;
+                default:
+                    return HorizontalAlignment.Left;
             }
-            else { return DefaultValue; }
         }
 
-        public static HorizontalAlignment GetHorizontalAlignmentFromXElement(XElement InputXml, string XName, HorizontalAlignment DefaultValue)
+        public static TextAlignment GetTextAlignmentFromXml(XElement InputXml, string XName, TextAlignment DefaultValue)
         {
-            if (InputXml == null) { return DefaultValue; }
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
-            XElement x;
-            x = InputXml.Element(XName);
-            if (x != null)
+            switch (value.ToUpper())
             {
-                switch (x.Value.ToUpper())
-                {
-                    case "LEFT":
-                        return HorizontalAlignment.Left;
-                    case "RIGHT":
-                        return HorizontalAlignment.Right;
-                    case "CENTER":
-                        return HorizontalAlignment.Center;
-                    case "STRETCH":
-                        return HorizontalAlignment.Stretch;
-                    default:
-                        return HorizontalAlignment.Left;
-                }
+                case "LEFT":
+                    return TextAlignment.Left;
+                case "RIGHT":
+                    return TextAlignment.Right;
+                case "CENTER":
+                    return TextAlignment.Center;
+                default:
+                    return TextAlignment.Left;
             }
-            else { return DefaultValue; }
         }
 
-        public static TextAlignment GetTextAlignmentFromXElement(XElement InputXml, string XName, TextAlignment DefaultValue)
+        public static Stretch GetStretchFromXml(XElement InputXml, string XName, Stretch DefaultValue)
         {
-            if (InputXml == null) { return DefaultValue; }
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
-            XElement x;
-            x = InputXml.Element(XName);
-            if (x != null)
+            switch (value.ToUpper())
             {
-                switch (x.Value.ToUpper())
-                {
-                    case "LEFT":
-                        return TextAlignment.Left;
-                    case "RIGHT":
-                        return TextAlignment.Right;
-                    case "CENTER":
-                        return TextAlignment.Center;
-                    default:
-                        return TextAlignment.Left;
-                }
+                case "FILL":
+                    return Stretch.Fill;
+                case "NONE":
+                    return Stretch.None;
+                case "UNIFORM":
+                    return Stretch.Uniform;
+                case "UNIFORMTOFILL":
+                    return Stretch.UniformToFill;
+                default:
+                    return Stretch.None;
             }
-            else { return DefaultValue; }
-        }
-
-        public static Stretch GetStretchFromXElement(XElement InputXml, string XName, Stretch DefaultValue)
-        {
-            if (InputXml == null) { return DefaultValue; }
-
-            XElement x;
-            x = InputXml.Element(XName);
-            if (x != null)
-            {
-                switch (x.Value.ToUpper())
-                {
-                    case "FILL":
-                        return Stretch.Fill;
-                    case "NONE":
-                        return Stretch.None;
-                    case "UNIFORM":
-                        return Stretch.Uniform;
-                    case "UNIFORMTOFILL":
-                        return Stretch.UniformToFill;
-                    default:
-                        return Stretch.None;
-                }
-            }
-            else { return DefaultValue; }
         }
     }
 }

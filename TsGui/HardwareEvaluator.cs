@@ -54,7 +54,7 @@ namespace TsGui
         /// </summary>
         public static void Init(XElement inputxml)
         {
-            _path = XmlHandler.GetStringFromXAttribute(inputxml, "Path", _path);
+            _path = XmlHandler.GetStringFromXml(inputxml, "Path", _path);
             if (string.IsNullOrWhiteSpace(_path)) { _path = Director.Instance.DefaultPath; }
             Evaluate();
         }

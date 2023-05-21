@@ -78,7 +78,7 @@ namespace TsGui.View.GuiOptions
         {
             //load the xml for the base class stuff
             base.LoadXml(InputXml);
-            this.ButtonText = XmlHandler.GetStringFromXElement(InputXml, "ButtonText", this.ButtonText);
+            this.ButtonText = XmlHandler.GetStringFromXml(InputXml, "ButtonText", this.ButtonText);
         }
 
         public void OnButtonClick(object o, RoutedEventArgs e)

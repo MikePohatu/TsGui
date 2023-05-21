@@ -60,17 +60,17 @@ namespace TsGui.View.Layout
         {
             base.LoadXml(InputXml);
 
-            this.ShowGridLines = XmlHandler.GetBoolFromXElement(InputXml, "ShowGridLines", this.ShowGridLines);
+            this.ShowGridLines = XmlHandler.GetBoolFromXml(InputXml, "ShowGridLines", this.ShowGridLines);
             
             //Load legacy options
-            this.Style.LeftCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.Style.LeftCellWidth);
-            this.Style.RightCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.Style.RightCellWidth);
+            this.Style.LeftCellWidth = XmlHandler.GetDoubleFromXml(InputXml, "LabelWidth", this.Style.LeftCellWidth);
+            this.Style.RightCellWidth = XmlHandler.GetDoubleFromXml(InputXml, "ControlWidth", this.Style.RightCellWidth);
 
-            this.Style.Width = XmlHandler.GetDoubleFromXElement(InputXml, "Width", this.Style.Width);
-            this.Style.Height = XmlHandler.GetDoubleFromXElement(InputXml, "Height", this.Style.Height);
+            this.Style.Width = XmlHandler.GetDoubleFromXml(InputXml, "Width", this.Style.Width);
+            this.Style.Height = XmlHandler.GetDoubleFromXml(InputXml, "Height", this.Style.Height);
 
             //import any styles
-            string styleids = XmlHandler.GetStringFromXAttribute(InputXml, "Styles", null);
+            string styleids = XmlHandler.GetStringFromXml(InputXml, "Styles", null);
             if (string.IsNullOrWhiteSpace(styleids) == false)
             {
                 foreach (string id in styleids.Split(','))

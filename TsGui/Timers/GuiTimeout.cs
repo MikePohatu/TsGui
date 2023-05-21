@@ -86,22 +86,22 @@ namespace TsGui
 
         public void LoadXml(XElement SourceXml)
         {
-            this.IgnoreValidation = XmlHandler.GetBoolFromXElement(SourceXml, "IgnoreValidation", this.IgnoreValidation);
-            this.CancelOnTimeout = XmlHandler.GetBoolFromXElement(SourceXml, "CancelOnTimeout", this.IgnoreValidation);
-            this._resetonactivity = XmlHandler.GetBoolFromXElement(SourceXml, "ResetOnActivity", this.IgnoreValidation);
+            this.IgnoreValidation = XmlHandler.GetBoolFromXml(SourceXml, "IgnoreValidation", this.IgnoreValidation);
+            this.CancelOnTimeout = XmlHandler.GetBoolFromXml(SourceXml, "CancelOnTimeout", this.IgnoreValidation);
+            this._resetonactivity = XmlHandler.GetBoolFromXml(SourceXml, "ResetOnActivity", this.IgnoreValidation);
 
             XElement after = SourceXml.Element("After");
             if (after != null)
             {
-                int ms = XmlHandler.GetIntFromXElement(after, "Milliseconds", 0);
-                int sec = XmlHandler.GetIntFromXElement(after, "Seconds", 0);
-                int minutes = XmlHandler.GetIntFromXElement(after, "Minutes", 0);
-                int hours = XmlHandler.GetIntFromXElement(after, "Hours", 0);
-                int days = XmlHandler.GetIntFromXElement(after, "Days", 0);
+                int ms = XmlHandler.GetIntFromXml(after, "Milliseconds", 0);
+                int sec = XmlHandler.GetIntFromXml(after, "Seconds", 0);
+                int minutes = XmlHandler.GetIntFromXml(after, "Minutes", 0);
+                int hours = XmlHandler.GetIntFromXml(after, "Hours", 0);
+                int days = XmlHandler.GetIntFromXml(after, "Days", 0);
                 this.TimeoutElapsed = new TimeSpan(days, hours, minutes, sec, ms); // ms + (sec * 1000) + (minutes * 60000) + (hours * 3600000) + (days * ;
             }
             
-            string at = XmlHandler.GetStringFromXElement(SourceXml, "At", null);
+            string at = XmlHandler.GetStringFromXml(SourceXml, "At", null);
             if (string.IsNullOrWhiteSpace(at) == false)
             {
                 try

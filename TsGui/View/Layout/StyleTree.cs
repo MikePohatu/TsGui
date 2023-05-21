@@ -64,17 +64,17 @@ namespace TsGui.View.Layout
                 }
             }
 
-            this.ID = XmlHandler.GetStringFromXAttribute(InputXml, "ID", this.ID);
+            this.ID = XmlHandler.GetStringFromXml(InputXml, "ID", this.ID);
             if (string.IsNullOrWhiteSpace(this.ID) == false && this.ID.Contains(" ")) { throw new KnownException("Spaces are not supported in ID attributes: " + this.ID, null); }
 
             //Load legacy options
-            this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LabelWidth", this.LeftCellWidth);
-            this.RightCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "ControlWidth", this.RightCellWidth);
+            this.LeftCellWidth = XmlHandler.GetDoubleFromXml(InputXml, "LabelWidth", this.LeftCellWidth);
+            this.RightCellWidth = XmlHandler.GetDoubleFromXml(InputXml, "ControlWidth", this.RightCellWidth);
 
             //load current options
-            this.LeftCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "LeftCellWidth", this.LeftCellWidth);
-            this.RightCellWidth = XmlHandler.GetDoubleFromXElement(InputXml, "RightCellWidth", this.RightCellWidth);
-            this.LabelOnRight = XmlHandler.GetBoolFromXElement(InputXml, "LabelOnRight", this.LabelOnRight);
+            this.LeftCellWidth = XmlHandler.GetDoubleFromXml(InputXml, "LeftCellWidth", this.LeftCellWidth);
+            this.RightCellWidth = XmlHandler.GetDoubleFromXml(InputXml, "RightCellWidth", this.RightCellWidth);
+            this.LabelOnRight = XmlHandler.GetBoolFromXml(InputXml, "LabelOnRight", this.LabelOnRight);
 
             XElement subx;
             subx = InputXml.Element("Label");
@@ -89,7 +89,7 @@ namespace TsGui.View.Layout
                 this.ControlStyle.LoadXml(subx);
             }
 
-            string styleids = XmlHandler.GetStringFromXAttribute(InputXml, "Import", null);
+            string styleids = XmlHandler.GetStringFromXml(InputXml, "Import", null);
             if (string.IsNullOrWhiteSpace(styleids) == false)
             {
                 foreach (string id in styleids.Trim().Split(' '))

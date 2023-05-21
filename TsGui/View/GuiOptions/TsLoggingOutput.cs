@@ -101,9 +101,9 @@ namespace TsGui.View.GuiOptions
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
-            this._verboseAllowed = XmlHandler.GetBoolFromXElement(InputXml, "AllowVerbose", this._verboseAllowed);
+            this._verboseAllowed = XmlHandler.GetBoolFromXml(InputXml, "AllowVerbose", this._verboseAllowed);
             if (this._verboseAllowed) { this.VerboseVisibility = Visibility.Visible; }
-            this.VerboseLabel = XmlHandler.GetStringFromXElement(InputXml, "VerboseLabel", this.VerboseLabel);
+            this.VerboseLabel = XmlHandler.GetStringFromXml(InputXml, "VerboseLabel", this.VerboseLabel);
         }
 
         #region Logging Bits

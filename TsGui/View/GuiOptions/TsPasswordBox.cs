@@ -111,12 +111,12 @@ namespace TsGui.View.GuiOptions
         public new void LoadXml(XElement inputxml)
         {
             base.LoadXml(inputxml);
-            this._failuremessage = XmlHandler.GetStringFromXElement(inputxml, "FailureMessage", this._failuremessage);
-            this._nopasswordmessage = XmlHandler.GetStringFromXElement(inputxml, "NoPasswordMessage", this._nopasswordmessage);
-            this._expose = XmlHandler.GetBoolFromXAttribute(inputxml, "ExposePassword", this._expose);
-            this._allowempty = XmlHandler.GetBoolFromXElement(inputxml, "AllowEmpty", this._allowempty);
+            this._failuremessage = XmlHandler.GetStringFromXml(inputxml, "FailureMessage", this._failuremessage);
+            this._nopasswordmessage = XmlHandler.GetStringFromXml(inputxml, "NoPasswordMessage", this._nopasswordmessage);
+            this._expose = XmlHandler.GetBoolFromXml(inputxml, "ExposePassword", this._expose);
+            this._allowempty = XmlHandler.GetBoolFromXml(inputxml, "AllowEmpty", this._allowempty);
 
-            this.MaxLength = XmlHandler.GetIntFromXAttribute(inputxml, "MaxLength", this.MaxLength);
+            this.MaxLength = XmlHandler.GetIntFromXml(inputxml, "MaxLength", this.MaxLength);
             XAttribute x = inputxml.Attribute("AuthID");
             if (x != null)
             {

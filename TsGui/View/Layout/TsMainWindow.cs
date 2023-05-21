@@ -40,6 +40,7 @@ namespace TsGui.View.Layout
         private MainWindow _parentwindow;
 
         //Properties
+        public Border Border { get; private set; } = new Border();
         public WindowLocation WindowLocation { get; private set; }
         public string WindowTitle
         {
@@ -148,8 +149,10 @@ namespace TsGui.View.Layout
                     GuiFactory.LoadHAlignment(x, ref this._footerHAlignment);
                 }
 
-                this.TopMost = XmlHandler.GetBoolFromXElement(InputXml, "TopMost", this.TopMost);
-                this.WindowTitle = XmlHandler.GetStringFromXElement(InputXml, "Title", this.WindowTitle);
+                this.Border.LoadXml(InputXml.Element("Border"));
+
+                this.TopMost = XmlHandler.GetBoolFromXml(InputXml, "TopMost", this.TopMost);
+                this.WindowTitle = XmlHandler.GetStringFromXml(InputXml, "Title", this.WindowTitle);
 
                 x = InputXml.Element("WindowLocation");
                 if (x != null) { this.WindowLocation.LoadXml(x); }

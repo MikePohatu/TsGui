@@ -54,8 +54,8 @@ namespace TsGui.Authentication.LocalConfig
 
         private void LoadXml(XElement inputxml)
         {
-            this.HashedPassword = XmlHandler.GetStringFromXElement(inputxml, "PasswordHash", this.HashedPassword);
-            this.HashKey = XmlHandler.GetStringFromXElement(inputxml, "Key", this.HashKey);
+            this.HashedPassword = XmlHandler.GetStringFromXml(inputxml, "PasswordHash", this.HashedPassword);
+            this.HashKey = XmlHandler.GetStringFromXml(inputxml, "Key", this.HashKey);
         }
 
         public bool PasswordMatches(string clearpassword)

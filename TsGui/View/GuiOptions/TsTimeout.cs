@@ -64,7 +64,7 @@ namespace TsGui.View.GuiOptions
         {
             base.LoadXml(InputXml);
 
-            this._showelapsed = XmlHandler.GetBoolFromXElement(InputXml, "ShowElapsed", this._showelapsed);
+            this._showelapsed = XmlHandler.GetBoolFromXml(InputXml, "ShowElapsed", this._showelapsed);
             if (this._showelapsed)
             {
                 this._timer.Interval = TimeSpan.FromSeconds(1);

@@ -55,9 +55,9 @@ namespace TsGui.Tests.Authentication
             XElement x;
 
             x = XmlHandler.Read(configfile);
-            this.AuthPassword = XmlHandler.GetStringFromXElement(x, "Password", this.AuthPassword);
-            this.AuthUser = XmlHandler.GetStringFromXElement(x, "User", this.AuthUser);
-            this.Domain = XmlHandler.GetStringFromXElement(x, "Domain", this.Domain);
+            this.AuthPassword = XmlHandler.GetStringFromXml(x, "Password", this.AuthPassword);
+            this.AuthUser = XmlHandler.GetStringFromXml(x, "User", this.AuthUser);
+            this.Domain = XmlHandler.GetStringFromXml(x, "Domain", this.Domain);
         }
     }
 }

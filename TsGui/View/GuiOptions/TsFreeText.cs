@@ -148,11 +148,11 @@ namespace TsGui.View.GuiOptions
         {
             base.LoadXml(InputXml);
 
-            this.MaxLength = XmlHandler.GetIntFromXAttribute(InputXml, "MaxLength", this.MaxLength);
+            this.MaxLength = XmlHandler.GetIntFromXml(InputXml, "MaxLength", this.MaxLength);
             this.ValidationHandler.LoadLegacyXml(InputXml);
             this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
 
-            int delayMs = XmlHandler.GetIntFromXElement(InputXml, "Delay", 500);
+            int delayMs = XmlHandler.GetIntFromXml(InputXml, "Delay", 500);
 
             if (delayMs < 0)
             {

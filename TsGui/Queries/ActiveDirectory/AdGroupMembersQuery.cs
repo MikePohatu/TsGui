@@ -58,14 +58,14 @@ namespace TsGui.Queries.ActiveDirectory
         {
             base.LoadXml(InputXml);
 
-            this.AuthID = XmlHandler.GetStringFromXAttribute(InputXml, "AuthID", this.AuthID);
+            this.AuthID = XmlHandler.GetStringFromXml(InputXml, "AuthID", this.AuthID);
             this._groupname = InputXml.Element("GroupName")?.Value;
             //make sure there is a group to query
             if (string.IsNullOrEmpty(this._groupname)) { throw new KnownException("No group specified in XML: ", InputXml.ToString()); }
 
 
-            this._processingwrangler.Separator = XmlHandler.GetStringFromXElement(InputXml, "Separator", this._processingwrangler.Separator);
-            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXElement(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
+            this._processingwrangler.Separator = XmlHandler.GetStringFromXml(InputXml, "Separator", this._processingwrangler.Separator);
+            this._processingwrangler.IncludeNullValues = XmlHandler.GetBoolFromXml(InputXml, "IncludeNullValues", this._processingwrangler.IncludeNullValues);
 
             this._propertyTemplates = QueryHelpers.GetTemplatesFromXmlElements(InputXml.Elements("Property"));
         }

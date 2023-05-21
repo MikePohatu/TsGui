@@ -68,7 +68,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public new void LoadXml(XElement inputxml)
         {
             base.LoadXml(inputxml);
-            bool autocompelete = XmlHandler.GetBoolFromXElement(inputxml, "AutoComplete", this.IsEditable);
+            bool autocompelete = XmlHandler.GetBoolFromXml(inputxml, "AutoComplete", this.IsEditable);
             SetAutoCompleteState(autocompelete);
             if (autocompelete)
             {

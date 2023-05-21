@@ -115,8 +115,8 @@ namespace TsGui.View.GuiOptions
             //load the xml for the base class stuff
             base.LoadXml(InputXml);
 
-            this._valTrue = XmlHandler.GetStringFromXElement(InputXml, "TrueValue", this._valTrue);
-            this._valFalse = XmlHandler.GetStringFromXElement(InputXml, "FalseValue", this._valFalse);
+            this._valTrue = XmlHandler.GetStringFromXml(InputXml, "TrueValue", this._valTrue);
+            this._valFalse = XmlHandler.GetStringFromXml(InputXml, "FalseValue", this._valFalse);
 
             this.ValidationHandler.LoadLegacyXml(InputXml);
             this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));

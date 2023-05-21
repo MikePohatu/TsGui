@@ -63,8 +63,8 @@ namespace TsGui.Validation.StringMatching
                 this._querylist.AddQuery(v);
             }
 
-            this.IsCaseSensitive = XmlHandler.GetBoolFromXAttribute(inputxml, "CaseSensitive", this.IsCaseSensitive);
-            this.Not = XmlHandler.GetBoolFromXAttribute(inputxml, "Not", this.Not);
+            this.IsCaseSensitive = XmlHandler.GetBoolFromXml(inputxml, "CaseSensitive", this.IsCaseSensitive);
+            this.Not = XmlHandler.GetBoolFromXml(inputxml, "Not", this.Not);
         }
     }
 }

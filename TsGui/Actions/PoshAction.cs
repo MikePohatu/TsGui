@@ -24,7 +24,7 @@ namespace TsGui.Actions
 
         public void LoadXml(XElement InputXml)
         {
-            string scriptid = XmlHandler.GetStringFromXAttribute(InputXml, "Global", null);
+            string scriptid = XmlHandler.GetStringFromXml(InputXml, "Global", null);
 
             if (string.IsNullOrEmpty(scriptid))
             {

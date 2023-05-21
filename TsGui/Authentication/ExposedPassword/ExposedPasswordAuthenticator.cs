@@ -80,18 +80,18 @@ namespace TsGui.Authentication.ExposedPassword
 
         private void LoadXml(XElement inputxml)
         {
-            this.VariableName = XmlHandler.GetStringFromXElement(inputxml, "Variable", this.VariableName);
-            this.VariableName = XmlHandler.GetStringFromXAttribute(inputxml, "Variable", this.VariableName);
-            this.Path = XmlHandler.GetStringFromXElement(inputxml, "Path", this.Path);
-            this.Path = XmlHandler.GetStringFromXAttribute(inputxml, "Path", this.Path);
+            this.VariableName = XmlHandler.GetStringFromXml(inputxml, "Variable", this.VariableName);
+            this.VariableName = XmlHandler.GetStringFromXml(inputxml, "Variable", this.VariableName);
+            this.Path = XmlHandler.GetStringFromXml(inputxml, "Path", this.Path);
+            this.Path = XmlHandler.GetStringFromXml(inputxml, "Path", this.Path);
 
-            this.AuthID = XmlHandler.GetStringFromXAttribute(inputxml, "AuthID", null);
-            this.ID = XmlHandler.GetStringFromXAttribute(inputxml, "ID", null);
+            this.AuthID = XmlHandler.GetStringFromXml(inputxml, "AuthID", null);
+            this.ID = XmlHandler.GetStringFromXml(inputxml, "ID", null);
             if (string.IsNullOrWhiteSpace(this.AuthID) == true)
             { throw new KnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
 
-            this._confirm = XmlHandler.GetBoolFromXAttribute(inputxml, "Confirm", this._confirm);
-            this._blankallowed = XmlHandler.GetBoolFromXAttribute(inputxml, "AllowBlank", this._blankallowed);
+            this._confirm = XmlHandler.GetBoolFromXml(inputxml, "Confirm", this._confirm);
+            this._blankallowed = XmlHandler.GetBoolFromXml(inputxml, "AllowBlank", this._blankallowed);
         }
 
         public string ID { get; private set; }
