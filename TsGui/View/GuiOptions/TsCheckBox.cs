@@ -38,7 +38,6 @@ namespace TsGui.View.GuiOptions
 {
     public class TsCheckBox : GuiOptionBase, IGuiOption, IValidationGuiOption, ILinkTarget
     {
-        private ValidationToolTipHandler _validationtooltiphandler;
         public ValidationHandler ValidationHandler { get; private set; }
 
         private TsCheckBoxUI _checkboxui;
@@ -99,7 +98,6 @@ namespace TsGui.View.GuiOptions
             this.InteractiveControl = cbui.CheckBox;
             this.Label = new TsLabelUI();
             this.ValidationHandler = new ValidationHandler(this);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.SetDefaults();
             this._querylist = new QueryPriorityList(this);          
@@ -118,8 +116,7 @@ namespace TsGui.View.GuiOptions
             this._valTrue = XmlHandler.GetStringFromXml(InputXml, "TrueValue", this._valTrue);
             this._valFalse = XmlHandler.GetStringFromXml(InputXml, "FalseValue", this._valFalse);
 
-            this.ValidationHandler.LoadLegacyXml(InputXml);
-            this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
+            this.ValidationHandler.LoadXml(InputXml);
 
             x = InputXml.Element("Checked");
             if (x != null)
@@ -210,7 +207,7 @@ namespace TsGui.View.GuiOptions
 
         public bool Validate()
         {
-            if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
+            if (this.IsActive == false) { this.ValidationHandler.ToolTipHandler.Clear(); return true; }
 
             bool newvalid = this.ValidationHandler.IsValid(this.CurrentValue);
 
@@ -222,15 +219,15 @@ namespace TsGui.View.GuiOptions
                 else { s = validationmessage; }
 
                 this.ValidationText = s;
-                this._validationtooltiphandler.ShowError();
+                this.ValidationHandler.ToolTipHandler.ShowError();
             }
-            else { this._validationtooltiphandler.Clear(); }
+            else { this.ValidationHandler.ToolTipHandler.Clear(); }
 
             return newvalid;
         }
 
         public void ClearToolTips()
-        { this._validationtooltiphandler.Clear(); }
+        { this.ValidationHandler.ToolTipHandler.Clear(); }
 
         public void OnValidationChange()
         { this.Validate(); }

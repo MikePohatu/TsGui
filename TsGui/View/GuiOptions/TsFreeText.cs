@@ -39,8 +39,6 @@ namespace TsGui.View.GuiOptions
     public class TsFreeText: GuiOptionBase, IGuiOption, IValidationGuiOption, ILinkTarget
     {
         protected TsFreeTextUI _freetextui;
-
-        private ValidationToolTipHandler _validationtooltiphandler;
         public ValidationHandler ValidationHandler { get; private set; }
 
         //Properties
@@ -117,7 +115,6 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
 
             this.ValidationHandler = new ValidationHandler(this);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.UserControl.DataContext = this;
             Director.Instance.PageLoaded += this.OnWindowLoaded;
@@ -149,8 +146,7 @@ namespace TsGui.View.GuiOptions
             base.LoadXml(InputXml);
 
             this.MaxLength = XmlHandler.GetIntFromXml(InputXml, "MaxLength", this.MaxLength);
-            this.ValidationHandler.LoadLegacyXml(InputXml);
-            this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
+            this.ValidationHandler.LoadXml(InputXml);
 
             int delayMs = XmlHandler.GetIntFromXml(InputXml, "Delay", 500);
 
@@ -214,7 +210,7 @@ namespace TsGui.View.GuiOptions
 
         public bool Validate()
         {
-            if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
+            if (this.IsActive == false) { this.ValidationHandler.ToolTipHandler.Clear(); return true; }
 
             bool newvalid = this.ValidationHandler.IsValid(this.ControlText);
 
@@ -226,15 +222,15 @@ namespace TsGui.View.GuiOptions
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
-                this._validationtooltiphandler.ShowError();
+                this.ValidationHandler.ToolTipHandler.ShowError();
             }
-            else { this._validationtooltiphandler.Clear(); }
+            else { this.ValidationHandler.ToolTipHandler.Clear(); }
 
             return newvalid;
         }
 
         public void ClearToolTips()
-        { this._validationtooltiphandler.Clear(); }
+        { this.ValidationHandler.ToolTipHandler.Clear(); }
 
         public void OnValidationChange()
         { this.Validate(); }

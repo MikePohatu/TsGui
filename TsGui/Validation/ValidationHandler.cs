@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -27,6 +27,7 @@ using TsGui.Linking;
 using Core.Logging;
 using MessageCrap;
 using System.Threading.Tasks;
+using TsGui.View.GuiOptions;
 
 namespace TsGui.Validation
 {
@@ -35,7 +36,6 @@ namespace TsGui.Validation
         private List<StringValidation> _validations = new List<StringValidation>();
         private XElement _legacyxml = new XElement("Legacy");
         private IValidationOwner _owner;
-
         //Properties
         #region
         /// <summary>
@@ -48,12 +48,14 @@ namespace TsGui.Validation
         public int MaxLength { get { return this.GetMaxLength(); } }
         #endregion
 
+        public ValidationToolTipHandler ToolTipHandler { get; private set; }
         public ValidationHandler(IValidationOwner Owner)
         {
             this._owner = Owner;
+            this.ToolTipHandler = new ValidationToolTipHandler(Owner as GuiOptionBase);
         }
 
-        public void AddValidation(XElement InputXml)
+        private void AddValidation(XElement InputXml)
         {
             if (InputXml == null) { return; }
             StringValidation sv = new StringValidation(this);
@@ -61,21 +63,22 @@ namespace TsGui.Validation
             this.AddValidation(sv);
         }
 
-        public void AddValidation(StringValidation Validation)
+        private void AddValidation(StringValidation Validation)
         {
             this._validations.Add(Validation);
             Validation.RevalidationRequired += this._owner.OnValidationChange;
         }
 
-        public void AddValidations(IEnumerable<XElement> InputXmlList)
+        private void AddValidations(IEnumerable<XElement> InputXmlList)
         {
             if (InputXmlList == null) { return; }
             foreach (XElement xval in InputXmlList)
             { this.AddValidation(xval); }   
         }
 
-        public void LoadLegacyXml(XElement InputXml)
+        public void LoadXml(XElement InputXml)
         {
+            //region load legacy
             XElement x;
             XElement result = new XElement("Legacy");
             //load legacy options
@@ -88,6 +91,9 @@ namespace TsGui.Validation
             StringValidation sv = new StringValidation(this);
             sv.LoadLegacyXml(result);
             this.AddValidation(sv);
+            //endregion
+
+            this.AddValidations(InputXml.Elements("Validation"));
         }
 
         public bool IsValid(string Input)
