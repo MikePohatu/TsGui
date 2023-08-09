@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -160,7 +160,7 @@ namespace TsGui.View.Layout
 
         public bool OptionsValid()
         {
-            if ((ResultValidator.OptionsValid(this._table.ValidationOptions)) && this.PageHeader.OptionsValid()) { return true; }
+            if ((ResultValidator.AllOptionsValid(this._table.ValidationOptions)) && this.PageHeader.OptionsValid()) { return true; }
             else { return false; }
         }
 
@@ -183,7 +183,13 @@ namespace TsGui.View.Layout
 
         public void MoveNext()
         {
-            if (this._nextpage != null && this.OptionsValid() == true)
+            if (this._nextpage == null)
+            {
+                Log.Error("Next page clicked but next page is null");
+                return;
+            }
+
+            if (this.OptionsValid() == true)
             {
                 this.ReleaseThisPage();
                 Director.Instance.MoveNext();

@@ -83,6 +83,8 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this._querylist = new QueryPriorityList(this);
             this._builder = new ListBuilder(this);
+            this.ValidationHandler = new ValidationHandler(this);
+            this._validationtooltiphandler = new ValidationToolTipHandler(this);
         }
 
 

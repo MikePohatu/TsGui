@@ -17,6 +17,7 @@
 //
 #endregion
 using System.Collections.Generic;
+using TsGui.View.GuiOptions;
 
 
 namespace TsGui.Validation
@@ -124,14 +125,13 @@ namespace TsGui.Validation
             else { return false; }
         } 
 
-        public static bool OptionsValid(List<IValidationGuiOption> OptionList)
+        public static bool AllOptionsValid(List<IValidationGuiOption> OptionList)
         {
             foreach (IValidationGuiOption option in OptionList)
             {
-                if (option.IsActive == true)
+                if (option.IsActive == true && option.IsValid == false)
                 {
-                    if (option.IsValid == false)
-                    { return false; }
+                    return false;
                 }
             }
             return true;

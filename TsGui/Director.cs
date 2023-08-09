@@ -43,6 +43,7 @@ using System.Windows.Threading;
 using TsGui.Config;
 using System.Threading.Tasks;
 using TsGui.Scripts;
+using TsGui.View.GuiOptions;
 
 namespace TsGui
 {
@@ -423,7 +424,7 @@ namespace TsGui
             }
             else
             {
-                if (ResultValidator.OptionsValid(this._optionlibrary.ValidationOptions))
+                if (ResultValidator.AllOptionsValid(this._optionlibrary.ValidationOptions))
                 {
                     if (GuiTimeout.Instance.CancelOnTimeout == false) { this.Finish(); }
                     else { this.Cancel(); }

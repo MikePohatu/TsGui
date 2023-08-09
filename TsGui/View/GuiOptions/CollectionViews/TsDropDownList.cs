@@ -48,8 +48,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.Control = this._dropdownlistui;
             this.InteractiveControl = this._dropdownlistui.Control;
             this.Label = new TsLabelUI();
-            this.ValidationHandler = new ValidationHandler(this);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this);
             this.UserControl.DataContext = this;
 
             this.SetDefaults();

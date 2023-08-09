@@ -161,7 +161,7 @@ namespace TsGui.View.Layout
 
         public bool OptionsValid()
         {
-            if (this.Table != null) { return ResultValidator.OptionsValid(this.Table.ValidationOptions); }
+            if (this.Table != null) { return ResultValidator.AllOptionsValid(this.Table.ValidationOptions); }
             else { return true; }
         }
 
