@@ -94,7 +94,7 @@ namespace TsGui.Validation
             //endregion
 
             this.AddValidations(InputXml.Elements("Validation"));
-            this.ToolTipHandler.OpenToolTipImmediately = !XmlHandler.GetBoolFromXml(InputXml, "ShowToolTipOnFinish", this.ToolTipHandler.OpenToolTipImmediately);
+            this.ToolTipHandler.LoadXml(InputXml);
         }
 
         public bool IsValid(string Input)

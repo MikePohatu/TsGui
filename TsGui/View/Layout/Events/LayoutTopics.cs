@@ -23,6 +23,8 @@ namespace TsGui.View.Layout.Events
     /// </summary>
     public static class LayoutTopics
     {
+        public static string ControlGotFocus { get; } = "TsGui.View.GuiOptions.ControlGotFocus";
+        public static string ControlLostFocus { get; } = "TsGui.View.GuiOptions.ControlLostFocus";
         public static string NextPageClicked { get; } = "TsGui.View.Layout.Page.NextPageClicked";
         public static string FinishedClicked { get; } = "TsGui.View.Layout.Page.FinishedClicked";
     }

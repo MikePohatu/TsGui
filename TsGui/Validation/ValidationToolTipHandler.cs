@@ -29,11 +29,15 @@ using System;
 using TsGui.View.GuiOptions;
 using TsGui.View.Layout.Events;
 using TsGui.View.Layout;
+using System.Xml.Linq;
 
 namespace TsGui.Validation
 {
     public class ValidationToolTipHandler: IEventer
     {
+        private enum OpenOnOption { NextFinish, Select, Immediately };
+
+        private OpenOnOption _openOn = OpenOnOption.Immediately;
         private bool _active = false;
         private bool _shouldbeopen = false;
         private bool _isonright = true;
@@ -47,11 +51,6 @@ namespace TsGui.Validation
         private SolidColorBrush _redbrush = new SolidColorBrush(Colors.Red);
 
         public LayoutEvents Events { get; private set; }
-
-        /// <summary>
-        /// Set true to open the tooltip immediately, false for on page next/finish
-        /// </summary>
-        public bool OpenToolTipImmediately { get; set; } = true;
 
         //Constructor
         public ValidationToolTipHandler(GuiOptionBase GuiOption)
@@ -69,12 +68,51 @@ namespace TsGui.Validation
 
             this._validationerrortooltip = new ValidationErrorToolTip();
             this._validationerrortooltip.PlacementTarget = this._guioption.UserControl;
+
             SetIconVisibilies(true);
+        }
+
+        public void LoadXml(XElement InputXml)
+        {
+            string openOn = XmlHandler.GetStringFromXml(InputXml, "ShowValidationOn", null);
+            if (openOn != null)
+            {
+                switch (openOn.ToLower()) 
+                {
+                    case "immediately":
+                        this._openOn = OpenOnOption.Immediately;
+                        break;
+                    case "nextfinish":
+                        this._openOn = OpenOnOption.NextFinish;
+                        break;
+                    case "select":
+                        this._openOn = OpenOnOption.Select;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (this._openOn == OpenOnOption.Select)
+            {
+                this.Events.Subscribe(LayoutTopics.ControlGotFocus, this.OnSelectGotFocus);
+                this.Events.Subscribe(LayoutTopics.ControlLostFocus, this.OnSelectLostFocus);
+            }
         }
 
         public void OnPageFinished(object sender, LayoutEventArgs e)
         {
-            this._validationerrortooltip.IsOpen = this._shouldbeopen;
+            this.SetOpen(this._shouldbeopen, true);
+        }
+
+        public void OnSelectGotFocus(object sender, LayoutEventArgs e)
+        {
+            this.SetOpen(this._shouldbeopen, true);
+        }
+
+        public void OnSelectLostFocus(object sender, LayoutEventArgs e)
+        {
+            this._validationerrortooltip.IsOpen = false;
+            this._active = false;
         }
 
         public void SetTarget(UserControl Control)
@@ -82,14 +120,9 @@ namespace TsGui.Validation
             this._validationerrortooltip.PlacementTarget = Control;
         }
 
-        public void Close()
-        {
-            this.SetOpen(false);
-        }
-
         public void Clear()
         {
-            this.SetOpen(false);
+            this.SetOpen(false, false);
             this._guioption.ControlStyle.BorderBrush = this._borderbrush;
             this._guioption.ControlStyle.MouseOverBorderBrush = this._mouseoverborderbrush;
             this._guioption.ControlStyle.FocusedBorderBrush = this._focusborderbrush;
@@ -97,7 +130,7 @@ namespace TsGui.Validation
 
         public void ShowError()
         {
-            this.SetOpen(true);
+            this.SetOpen(true, false);
             this.SetPlacement();
             this._guioption.ControlStyle.BorderBrush = _redbrush;
             this._guioption.ControlStyle.MouseOverBorderBrush = _redbrush;
@@ -108,7 +141,7 @@ namespace TsGui.Validation
         public void ShowInformation()
         {
             this.SetPlacement();
-            this.SetOpen(true);
+            this.SetOpen(true, false);
             this.UpdateArrows();
         }
 
@@ -131,18 +164,10 @@ namespace TsGui.Validation
             }
         }
 
-        /// <summary>
-        /// Open the tooltip if OpenToolTipImmediately has been set to false
-        /// </summary>
-        public void ForceIfShouldBeOpen()
-        {
-            this._validationerrortooltip.IsOpen = this._shouldbeopen;
-        }
-
-        private void SetOpen(bool isopen)
+        private void SetOpen(bool isopen, bool force)
         {
             //if not OpenToolTipImmediately, don't open, but always close
-            if (this.OpenToolTipImmediately || isopen == false)
+            if (force || isopen == false || this._openOn == OpenOnOption.Immediately)
             {
                 this._validationerrortooltip.IsOpen = isopen;
                 this._active = isopen;
