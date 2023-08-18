@@ -125,11 +125,6 @@ namespace TsGui.Validation
             else { return false; }
         } 
 
-        /// <summary>
-        /// Check if all options are valid. Returns immediately if invalid option found
-        /// </summary>
-        /// <param name="OptionList"></param>
-        /// <returns></returns>
         public static bool AllOptionsValid(List<IValidationGuiOption> OptionList)
         {
             foreach (IValidationGuiOption option in OptionList)
