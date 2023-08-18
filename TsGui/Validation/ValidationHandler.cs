@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -28,6 +28,7 @@ using Core.Logging;
 using MessageCrap;
 using System.Threading.Tasks;
 using TsGui.View.GuiOptions;
+using Core.Diagnostics;
 
 namespace TsGui.Validation
 {
@@ -52,7 +53,12 @@ namespace TsGui.Validation
         public ValidationHandler(IValidationOwner Owner)
         {
             this._owner = Owner;
-            this.ToolTipHandler = new ValidationToolTipHandler(Owner as GuiOptionBase);
+            var guiopt = Owner as GuiOptionBase;
+            if (guiopt == null)
+            {
+                throw new KnownException("Option passed to ValidationHandler is not a GuiOption","");
+            }
+            this.ToolTipHandler = new ValidationToolTipHandler(guiopt);
         }
 
         private void AddValidation(XElement InputXml)
@@ -94,6 +100,7 @@ namespace TsGui.Validation
             //endregion
 
             this.AddValidations(InputXml.Elements("Validation"));
+            this.ToolTipHandler.OpenToolTipImmediately = !XmlHandler.GetBoolFromXml(InputXml, "ShowToolTipOnFinish", this.ToolTipHandler.OpenToolTipImmediately);
         }
 
         public bool IsValid(string Input)
