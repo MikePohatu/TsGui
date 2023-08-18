@@ -18,3 +18,19 @@ Valid rule types are listed below:
 <Rule Type="RegEx" CaseSensitive="TRUE">^(YZ|XZ)[0-9]{6}$</Rule>
 <Rule Type="Equals" CaseSensitive="TRUE">*NULL</Rule>
 ```
+
+## Controlling Tooltips
+By default, tooltip messages will be shown immediately after a validation failure. If there are many GuiOptions with validation failures, this can result in the UI becoming full of tooltips. To control this you can change when these tooltips are shown using the **ShowValidationOn** option. Options are: 
+
+* Immediately - open on validation failure [default]
+* NextFinish - when the Next or Finish buttons are clicked
+* Hover - when the mouse hovers over the GuiOption control e.g. text box
+
+Example:
+```xml
+<GuiOption>
+    <ShowValidationOn>Hover</ShowValidationOn>
+</GuiOption>
+```
+
+In all cases, the control will show a red border when validation has failed. 

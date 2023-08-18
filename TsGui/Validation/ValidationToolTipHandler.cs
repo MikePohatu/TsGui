@@ -35,7 +35,7 @@ namespace TsGui.Validation
 {
     public class ValidationToolTipHandler: IEventer
     {
-        private enum OpenOnOption { NextFinish, Select, Immediately };
+        private enum OpenOnOption { NextFinish, Hover, Immediately };
 
         private OpenOnOption _openOn = OpenOnOption.Immediately;
         private bool _active = false;
@@ -47,6 +47,7 @@ namespace TsGui.Validation
         private ValidationErrorToolTip _validationerrortooltip;
         private GuiOptionBase _guioption;
         private bool _windowloaded = false;
+        private bool _hovering = false;
 
         private SolidColorBrush _redbrush = new SolidColorBrush(Colors.Red);
 
@@ -85,17 +86,17 @@ namespace TsGui.Validation
                     case "nextfinish":
                         this._openOn = OpenOnOption.NextFinish;
                         break;
-                    case "select":
-                        this._openOn = OpenOnOption.Select;
+                    case "hover":
+                        this._openOn = OpenOnOption.Hover;
                         break;
                     default:
                         break;
                 }
             }
-            if (this._openOn == OpenOnOption.Select)
+            if (this._openOn == OpenOnOption.Hover)
             {
-                this.Events.Subscribe(LayoutTopics.ControlGotFocus, this.OnSelectGotFocus);
-                this.Events.Subscribe(LayoutTopics.ControlLostFocus, this.OnSelectLostFocus);
+                this.Events.Subscribe(LayoutTopics.ControlGotFocus, this.OnHoverOn);
+                this.Events.Subscribe(LayoutTopics.ControlLostFocus, this.OnHoverOff);
             }
         }
 
@@ -104,13 +105,15 @@ namespace TsGui.Validation
             this.SetOpen(this._shouldbeopen, true);
         }
 
-        public void OnSelectGotFocus(object sender, LayoutEventArgs e)
+        public void OnHoverOn(object sender, LayoutEventArgs e)
         {
+            this._hovering = true;
             this.SetOpen(this._shouldbeopen, true);
         }
 
-        public void OnSelectLostFocus(object sender, LayoutEventArgs e)
+        public void OnHoverOff(object sender, LayoutEventArgs e)
         {
+            this._hovering = false;
             this._validationerrortooltip.IsOpen = false;
             this._active = false;
         }
@@ -166,13 +169,13 @@ namespace TsGui.Validation
 
         private void SetOpen(bool isopen, bool force)
         {
-            //if not OpenToolTipImmediately, don't open, but always close
-            if (force || isopen == false || this._openOn == OpenOnOption.Immediately)
+            this._shouldbeopen = isopen;
+            //some scenarios don't open automatically
+            if (force || isopen == false || this._hovering || this._openOn == OpenOnOption.Immediately)
             {
                 this._validationerrortooltip.IsOpen = isopen;
                 this._active = isopen;
             }
-            this._shouldbeopen = isopen;
         }
 
         public void OnWindowLoaded(object o, RoutedEventArgs e)
