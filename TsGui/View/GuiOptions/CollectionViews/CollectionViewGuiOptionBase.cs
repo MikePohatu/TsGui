@@ -37,7 +37,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
     {        
         protected ListItem _currentitem;
         protected string _validationtext;
-        protected ValidationToolTipHandler _validationtooltiphandler;
         public ValidationHandler ValidationHandler { get; protected set; }
 
         protected bool _nodefaultvalue;
@@ -83,6 +82,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         {
             this._querylist = new QueryPriorityList(this);
             this._builder = new ListBuilder(this);
+            this.ValidationHandler = new ValidationHandler(this);
         }
 
 
@@ -99,7 +99,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             base.LoadXml(InputXml);
             this._builder.LoadXml(InputXml);
 
-            this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
+            this.ValidationHandler.LoadXml(InputXml);
             this._nodefaultvalue = XmlHandler.GetBoolFromXml(InputXml, "NoDefaultValue", this._nodefaultvalue);
 
             this.Sort = XmlHandler.GetBoolFromXml(InputXml, "Sort", this.Sort);
@@ -117,7 +117,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
         }
 
         public void ClearToolTips()
-        { this._validationtooltiphandler.Clear(); }
+        { this.ValidationHandler.ToolTipHandler.Clear(); }
 
         public void OnValidationChange()
         { this.Validate(false); }
@@ -128,11 +128,11 @@ namespace TsGui.View.GuiOptions.CollectionViews
         public bool Validate(bool CheckSelectionMade)
         {
             if (Director.Instance.StartupFinished == false) { return true; }
-            if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
+            if (this.IsActive == false) { this.ValidationHandler.ToolTipHandler.Clear(); return true; }
             if ((CheckSelectionMade == true) && (this.CurrentItem == null))
             {
                 this.ValidationText = _noselectionmessage;
-                this._validationtooltiphandler.ShowError();
+                this.ValidationHandler.ToolTipHandler.ShowError();
                 return false;
             }
 
@@ -146,9 +146,9 @@ namespace TsGui.View.GuiOptions.CollectionViews
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
-                this._validationtooltiphandler.ShowError();
+                this.ValidationHandler.ToolTipHandler.ShowError();
             }
-            else { this._validationtooltiphandler.Clear(); }
+            else { this.ValidationHandler.ToolTipHandler.Clear(); }
 
             return newvalid;
         }

@@ -16,20 +16,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-
-// IValidationGuiOption.cs - interface for ITsGuiElement objects that can be edited directly
-// e.g. text boxes, that need validation. 
-
-using TsGui.Validation;
-
-namespace TsGui.View.GuiOptions
+namespace TsGui.View.Layout.Events
 {
-    public interface IValidationGuiOption : IValidationOwner
+    /// <summary>
+    /// Listing of layout event topics. 
+    /// </summary>
+    public static class LayoutTopics
     {
-        bool IsValid { get; }
-        bool IsActive { get; }
-        void ClearToolTips();
-        bool Validate();
-        ValidationHandler ValidationHandler { get; }
+        public static string ControlGotFocus { get; } = "TsGui.View.GuiOptions.ControlGotFocus";
+        public static string ControlLostFocus { get; } = "TsGui.View.GuiOptions.ControlLostFocus";
+        public static string NextPageClicked { get; } = "TsGui.View.Layout.Page.NextPageClicked";
+        public static string FinishedClicked { get; } = "TsGui.View.Layout.Page.FinishedClicked";
     }
 }

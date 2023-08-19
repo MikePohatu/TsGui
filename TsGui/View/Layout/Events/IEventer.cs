@@ -17,19 +17,14 @@
 //
 #endregion
 
-// IValidationGuiOption.cs - interface for ITsGuiElement objects that can be edited directly
-// e.g. text boxes, that need validation. 
-
-using TsGui.Validation;
-
-namespace TsGui.View.GuiOptions
+namespace TsGui.View.Layout.Events
 {
-    public interface IValidationGuiOption : IValidationOwner
+    /// <summary>
+    /// The IEventer has an Events property containing the LayoutEvents object. The Events object 
+    /// handles events through the tree.
+    /// </summary>
+    public interface IEventer
     {
-        bool IsValid { get; }
-        bool IsActive { get; }
-        void ClearToolTips();
-        bool Validate();
-        ValidationHandler ValidationHandler { get; }
+        LayoutEvents Events { get; }
     }
 }

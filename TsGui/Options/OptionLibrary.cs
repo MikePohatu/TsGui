@@ -26,6 +26,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using TsGui.Linking;
+using TsGui.View.GuiOptions;
 
 namespace TsGui.Options
 {

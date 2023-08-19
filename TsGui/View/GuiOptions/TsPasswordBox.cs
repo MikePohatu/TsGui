@@ -46,7 +46,6 @@ namespace TsGui.View.GuiOptions
         private bool _expose = false;
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;
-        private ValidationToolTipHandler _validationtooltiphandler;
         private IAuthenticator _authenticator;
         private string _failuremessage = "Authorization failed";
         private string _nopasswordmessage = "Password cannot be empty";
@@ -95,7 +94,6 @@ namespace TsGui.View.GuiOptions
             this.SetDefaults();
 
             this.ValidationHandler = new ValidationHandler(this);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this);
             
             this.LoadXml(InputXml);
             Director.Instance.ConfigLoadFinished += this.OnConfigLoadFinished;
@@ -111,6 +109,8 @@ namespace TsGui.View.GuiOptions
         public new void LoadXml(XElement inputxml)
         {
             base.LoadXml(inputxml);
+            this.ValidationHandler.LoadXml(inputxml);
+
             this._failuremessage = XmlHandler.GetStringFromXml(inputxml, "FailureMessage", this._failuremessage);
             this._nopasswordmessage = XmlHandler.GetStringFromXml(inputxml, "NoPasswordMessage", this._nopasswordmessage);
             this._expose = XmlHandler.GetBoolFromXml(inputxml, "ExposePassword", this._expose);
@@ -136,7 +136,7 @@ namespace TsGui.View.GuiOptions
         #region validation
         public bool Validate()
         {
-            if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
+            if (this.IsActive == false) { this.ValidationHandler.ToolTipHandler.Clear(); return true; }
             bool newvalid = true;
 
             if (this._isauthenticator)
@@ -145,19 +145,19 @@ namespace TsGui.View.GuiOptions
 
                 if (this._authenticator.State == AuthState.Authorised)
                 {
-                    this._validationtooltiphandler.Clear();
+                    this.ValidationHandler.ToolTipHandler.Clear();
                     this.ControlStyle.BorderBrush = _greenbrush;
                     this.ControlStyle.MouseOverBorderBrush = _hovergreenbrush;
                 }
                 else if (this._authenticator.State == AuthState.NoPassword)
                 {
                     this.ValidationText = this._nopasswordmessage;
-                    this._validationtooltiphandler.ShowError();
+                    this.ValidationHandler.ToolTipHandler.ShowError();
                 }
                 else
                 {
                     this.ValidationText = this._failuremessage;
-                    this._validationtooltiphandler.ShowError();
+                    this.ValidationHandler.ToolTipHandler.ShowError();
                 }
             }
             else
@@ -165,12 +165,12 @@ namespace TsGui.View.GuiOptions
                 if (string.IsNullOrEmpty(this.Password) && this._allowempty == false)
                 {
                     this.ValidationText = this._nopasswordmessage;
-                    this._validationtooltiphandler.ShowError();
+                    this.ValidationHandler.ToolTipHandler.ShowError();
                     newvalid = false;
                 }
                 else
                 {
-                    this._validationtooltiphandler.Clear();
+                    this.ValidationHandler.ToolTipHandler.Clear();
                 }
             }
 
@@ -179,7 +179,7 @@ namespace TsGui.View.GuiOptions
         }
 
         public void ClearToolTips()
-        { this._validationtooltiphandler.Clear(); }
+        { this.ValidationHandler.ToolTipHandler.Clear(); }
 
         public void OnValidationChange()
         { this.Validate(); }

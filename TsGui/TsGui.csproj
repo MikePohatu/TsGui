@@ -255,6 +255,10 @@
       <DependentUpon>TsButtonUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsTickCross.cs" />
+    <Compile Include="View\Layout\Events\IEventer.cs" />
+    <Compile Include="View\Layout\Events\LayoutEventArgs.cs" />
+    <Compile Include="View\Layout\Events\LayoutEvents.cs" />
+    <Compile Include="View\Layout\Events\LayoutTopics.cs" />
     <Compile Include="View\Layout\ParentLayoutElement.cs" />
     <Compile Include="View\Layout\StyleLibrary.cs" />
     <Compile Include="View\Layout\StyleTree.cs" />

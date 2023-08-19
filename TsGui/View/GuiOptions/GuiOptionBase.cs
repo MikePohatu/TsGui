@@ -33,6 +33,7 @@ using TsGui.Grouping;
 using System.Collections.Generic;
 using MessageCrap;
 using System.Threading.Tasks;
+using TsGui.View.Layout.Events;
 
 namespace TsGui.View.GuiOptions
 {
@@ -88,6 +89,20 @@ namespace TsGui.View.GuiOptions
         public void OnRendered (object sender, EventArgs e)
         {
             this.IsRendered = true;
+            this.Control.MouseEnter += OnControlGotFocus;
+            this.Control.MouseLeave += OnControlLostFocus;
+            this.Control.TouchEnter += OnControlGotFocus;
+            this.Control.TouchLeave += OnControlLostFocus;
+        }
+
+        private void OnControlGotFocus(object sender, RoutedEventArgs e)
+        {
+            this.Events.InvokeLayoutEvent(LayoutTopics.ControlGotFocus, EventDirection.Tunnel);
+        }
+
+        private void OnControlLostFocus(object sender, RoutedEventArgs e)
+        {
+            this.Events.InvokeLayoutEvent(LayoutTopics.ControlLostFocus, EventDirection.Tunnel);
         }
 
         protected new void LoadXml(XElement InputXml)
