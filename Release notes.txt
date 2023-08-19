@@ -1,9 +1,9 @@
-Version 2.0.4.0
-Release date: 21 May 2023
+Version 2.0.5.0
+Release date: 19 Aug 2023
 
 *Features
-	Added Border option so you can border around the whole TsGui window
-	Added generic option in config to replace single elements with an attribute to allow more 'one liners'
+	Added ShowValidationOn to control validation tooltips. See Validation documentation
+	Added Validation and Compliance documentation
 
 *Known issues
 	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
@@ -12,6 +12,14 @@ Release date: 21 May 2023
 	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
+
+---------------
+Version 2.0.4.0
+Release date: 21 May 2023
+
+*Features
+	Added Border option so you can border around the whole TsGui window
+	Added generic option in config to replace single elements with an attribute to allow more 'one liners'
 
 
 ---------------
