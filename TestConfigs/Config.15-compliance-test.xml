@@ -24,8 +24,8 @@
 						<HorizontalAlignment>Left</HorizontalAlignment> 	<!-- Options available: Left, Right, Center, Stretch -->						
 					</Control>
 				</Formatting>
-				
-				<GetValue>
+				<ShowValidationOn>Hover</ShowValidationOn>
+				<SetValue>
 					<Query Type="Wmi">
 						<Wql>SELECT Year,Day,Month FROM Win32_LocalTime</Wql>
 						<Property Name="Year">
@@ -36,7 +36,7 @@
 						<Property Name="Day"/>			
 						<Separator></Separator>
 					</Query>
-				</GetValue>
+				</SetValue>
 				
 				<Compliance>
 					<Group>Group_Test</Group>
