@@ -2,8 +2,8 @@
 * [Overview](#overview)
 * [Properties](#properties)
   * [CharacterCasing](#charactercasing)
-* [Delay](#delay)
-* [MaxLength](#maxlength)
+  * [Delay](#delay)
+  * [MaxLength](#maxlength)
   * [ReadOnly](#readonly)
 * [Example XML](#example-xml)
 
@@ -17,10 +17,10 @@ The following properties are unique to the FreeText GuiOption. These can be set 
 ### CharacterCasing
 Can be used to enforce upper or lower case in your value. Options are Normal, Upper, and Lower
 
-## Delay
+### Delay
 The Delay property is the time in milliseconds between the user entering text and the value being updated in the rest of TsGui. This allows for things like [Validation](/documentation/features/Validation.md) to not reprocess for every key press, but instead allow the user to finish typing and then update. Default is 500. 
 
-## MaxLength
+### MaxLength
 The maximum length of string that can be entered into the textbox. The textbox will not allow the user to enter more characters. 
 
 ### ReadOnly
