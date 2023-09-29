@@ -40,12 +40,13 @@ namespace Core.Logging
         public static void InitLogging(string targetName)
         {
             _logtargetName = targetName;
-            ConfigurationItemFactory.Default.Targets.RegisterDefinition(targetName, typeof(UserUITarget));
+            LogManager.Setup().SetupExtensions(ext => ext.RegisterTarget<UserUITarget>(targetName));
         }
 
         public static void InitLogging()
         {
-            ConfigurationItemFactory.Default.Targets.RegisterDefinition(_logtargetName, typeof(UserUITarget));
+
+            LogManager.Setup().SetupExtensions(ext => ext.RegisterTarget<UserUITarget>(_logtargetName));
         }
 
         /// <summary>

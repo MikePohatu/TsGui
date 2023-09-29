@@ -1,0 +1,27 @@
+<!-- Configuration of options for outputting logging data -->
+<TsGui LiveData="TRUE" Debug="FALSE">
+	<Height>500</Height>
+	<Width>450</Width>
+
+	<HardwareEval />
+	
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI</Text>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<Style>
+					<LeftCellWidth>110</LeftCellWidth>
+					<RightCellWidth>230</RightCellWidth>
+				</Style>
+				
+				<GuiOption Type="ComputerName" CharacterCasing="Lower" ReadOnly="TRUE" />
+				
+				
+			</Column>
+		</Row>
+	</Page>
+</TsGui>

@@ -91,6 +91,13 @@ namespace TsGui.View.GuiOptions
             get { return this._charactercasing; }
             set { this._charactercasing = value; this.OnPropertyChanged(this, "CharacterCasing"); }
         }
+
+        protected bool _controlenabled = true;
+        public bool ControlEnabled
+        {
+            get { return this._controlenabled; }
+            set { this._controlenabled = value; this.OnPropertyChanged(this, "ControlEnabled"); }
+        }
         #endregion
 
         //Constructor
@@ -174,15 +181,8 @@ namespace TsGui.View.GuiOptions
                 this.LoadSetValueXml(x,false);
             }
 
-            x = InputXml.Element("CharacterCasing");
-            if (x?.Value != null)
-            {
-                if (x.Value.Equals("Upper", StringComparison.OrdinalIgnoreCase))
-                { this.CharacterCasing = CharacterCasing.Upper; }
-                else if (x.Value.Equals("Lower", StringComparison.OrdinalIgnoreCase))
-                { this.CharacterCasing = CharacterCasing.Lower; }
-
-            }
+            this.CharacterCasing = XmlHandler.GetCharacterCasingFromXml(InputXml, "CharacterCasing", this.CharacterCasing);
+            this.ControlEnabled = !XmlHandler.GetBoolFromXml(InputXml, "ReadOnly", !this._controlenabled);
         }
 
         //Handle UI events
