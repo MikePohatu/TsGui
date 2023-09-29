@@ -77,11 +77,11 @@ namespace TsGui.View.GuiOptions
     {
         public TsComputerName(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
         {
-            base.LoadXml(this.BuildDefaultXml());
+            base.LoadXml(this.BuildDefaultXml(InputXml));
             base.LoadXml(InputXml);
         }
 
-        public XElement BuildDefaultXml()
+        public XElement BuildDefaultXml(XElement InputXml)
         {
             XElement osdvar = new XElement("Query");
             osdvar.Add(new XAttribute("Type", "EnvironmentVariable"));
@@ -141,7 +141,18 @@ namespace TsGui.View.GuiOptions
             x.Add(validation);
             x.Add(new XElement("Variable", "OSDComputerName"));
             x.Add(new XElement("Label", "Computer Name:"));
-            x.Add(new XElement("HelpText", "Enter a computer name for the device"));
+
+            //find out if ReadOnly attribute is set so we can tweak the default help text
+            var controlreadonly = XmlHandler.GetBoolFromXml(InputXml, "ReadOnly", false);
+            if (controlreadonly)
+            {
+                x.Add(new XElement("HelpText", "Computer name for the device"));
+            }
+            else
+            {
+                x.Add(new XElement("HelpText", "Enter a computer name for the device"));
+            }
+            
             x.Add(new XAttribute("MaxLength", "15"));
 
             return x;
