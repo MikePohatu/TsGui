@@ -181,16 +181,7 @@ namespace TsGui.View.GuiOptions
                 this.LoadSetValueXml(x,false);
             }
 
-            x = InputXml.Element("CharacterCasing");
-            if (x?.Value != null)
-            {
-                if (x.Value.Equals("Upper", StringComparison.OrdinalIgnoreCase))
-                { this.CharacterCasing = CharacterCasing.Upper; }
-                else if (x.Value.Equals("Lower", StringComparison.OrdinalIgnoreCase))
-                { this.CharacterCasing = CharacterCasing.Lower; }
-
-            }
-
+            this.CharacterCasing = XmlHandler.GetCharacterCasingFromXml(InputXml, "CharacterCasing", this.CharacterCasing);
             this.ControlEnabled = !XmlHandler.GetBoolFromXml(InputXml, "ReadOnly", !this._controlenabled);
         }
 

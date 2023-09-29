@@ -29,6 +29,7 @@ using TsGui.Validation;
 using Core.Diagnostics;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Windows.Controls;
 
 namespace TsGui
 {
@@ -351,6 +352,23 @@ namespace TsGui
                     return Stretch.UniformToFill;
                 default:
                     return Stretch.None;
+            }
+        }
+
+        public static CharacterCasing GetCharacterCasingFromXml(XElement InputXml, string XName, CharacterCasing DefaultValue)
+        {
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
+
+            switch (value.ToUpper())
+            {
+                case "UPPER":
+                    return CharacterCasing.Upper;
+                case "LOWER":
+                    return CharacterCasing.Lower;
+                default:
+                    return CharacterCasing.Normal;
             }
         }
     }
