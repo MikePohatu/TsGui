@@ -20,6 +20,8 @@
 // ReplaceRule.cs - replace text in a string result
 
 
+using Core.Logging;
+using System;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -41,7 +43,15 @@ namespace TsGui.Queries.Rules
         public string Process(string Input)
         {
             if (string.IsNullOrEmpty(this._pattern)) { return Input; }
-            return Regex.Replace(Input, this._pattern, this._replacestring);
+            try
+            {
+                return Regex.Replace(Input, this._pattern, this._replacestring);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Error processing regex pattern {this._pattern}: {e.Message}");
+                return Input;
+            }
         }
     }
 }
