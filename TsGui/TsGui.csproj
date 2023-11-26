@@ -129,6 +129,7 @@
     <Compile Include="Queries\ListValueQuery.cs" />
     <Compile Include="Queries\PoshQuery.cs" />
     <Compile Include="Queries\RegistryQuery.cs" />
+    <Compile Include="Queries\Rules\RegexReplaceRule.cs" />
     <Compile Include="Scripts\BaseScript.cs" />
     <Compile Include="Scripts\BatchScript.cs" />
     <Compile Include="Scripts\IParameter.cs" />

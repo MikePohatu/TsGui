@@ -80,6 +80,9 @@ namespace TsGui.Queries
                     case "Replace":
                         this._rules.Add(new ReplaceRule(xsetting));
                         break;
+                    case "RegexReplace":
+                        this._rules.Add(new RegexReplaceRule(xsetting));
+                        break;
                     default:
                         break;
                 }

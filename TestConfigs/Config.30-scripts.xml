@@ -19,6 +19,14 @@
 				</Style>
 				
 				<GuiOption Type="ComputerName" />
+
+				<GuiOption Type="FreeText">
+					<Variable>TestInline</Variable>
+					<Label>Inline - datetime</Label>
+					<SetValue>
+						<Query Type="PowerShell">(Get-Date).ToString()</Query>
+					</SetValue>
+				</GuiOption>
 				
 				<!-- Use an ActionButton to trigger a script manually -->
                 <GuiOption Type="ActionButton">
