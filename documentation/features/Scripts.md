@@ -22,7 +22,7 @@
 
 You can add a script in a query, as an action, or globally.
 
-## Inline scripts
+## Inline Scripts
 PowerShell can be added directly into your Config.xml using the 'PowerShell' query type and entering your script as the content of the element. 
 
 ```xml
