@@ -51,9 +51,9 @@ GuiOptions that require a single string are FreeText, ComputerName, InfoBox, Hea
 
 When the result of the query is single string already, this is obviously set as the value.
 
-When the result of the query is an object, the values of the properties of the object are concatenated together to make a single string.
+When the result of the query is an object, the property values of the object are concatenated together to make a single string.
 
-If the result is a list of objects, the values or the properties or all the objects are concatenated together. Usually this wouldn't be desireable. When using queries like WMI, it's recommended to return only a single object from your query. 
+If the result is a list of objects, the property values of *all* the objects are concatenated together. Usually this wouldn't be desireable. When using queries like WMI, it's recommended to return only a single object from your WQL query if outputting to a single string. 
 
 ### Collection Results
 GuiOptions that require a list of objects are DropDownList and TreeView. 
@@ -69,7 +69,7 @@ select Index,Caption,Size,Description FROM Win32_DiskDrive where MediaType='Fixe
 
 In this instance each returned object will have 4 properties, but we may only want Index and Caption. 
 
-To do this we set \<Property> elements in our query. Use the *Name* attribute to select the property:
+To do this we add \<Property> elements in our query. Use the *Name* attribute to select the property:
 
 ```xml
 <Query Type="Wmi">
@@ -80,7 +80,7 @@ To do this we set \<Property> elements in our query. Use the *Name* attribute to
 </Query>
 ```
 
-In the example above the Index property is set twice. This isn't a typo. The first \<Property> element is the **key** property. For collection types the key property is the one that is set as the value. The remaining \<Property> elements are used to define which properties to use as the text. 
+In the example above the Index property is set twice. This isn't a typo. The first \<Property> element is the **key** property. For collection types the key property is the one that is set as the value. The remaining \<Property> elements are used to define which properties are concatenated together as the text. 
 
 So if the WMI query returns two objects:
 ```json
@@ -102,7 +102,7 @@ These objects would be converted to options in the DropDownList, with a result e
     <Option Text="1, Disk drive 2" Value="1" />
 </GuiOption>
 ```
-Note that the key property has been used as the value.
+Note that the key property has been used as the value as well as the first part of the text.
 
 ### Separator
 Be default, the property values will be concatenated together with comma and trailing space. To change this, set the \<Separator> element with the desired value:
@@ -120,7 +120,7 @@ Be default, the property values will be concatenated together with comma and tra
 ### Transforming Properties
 If you want to transform properties, e.g. add prefix or suffix, do math, do a find/replace, you can add one or more transformation elements. In the example below, you can see examples of the Prefix, Calcuate, and Append transformations. 
 
-Each transformation is performed in order on the property value.
+Each transformation is performed in order, e.g. on the Size property, a calculation is done first, and then GB is appended to the result.  
 
 ```xml
 <Query Type="Wmi">
@@ -135,11 +135,15 @@ Each transformation is performed in order on the property value.
         <Append>GB</Append>
     </Property>
     <Property Name="Caption"/>
-    <Separator>, </Separator>
+    <Separator> | </Separator>
 </Query>
 ```
 
-Valid transformations are:
+In this example, the value in a DropDownList would be the drive Index (e.g. 0 or 1), and the text in ea items would look something like 
+
+*0 | 540GB | Hard disk 1*
+
+Valid transformations are listed below.
 
 #### \<Append>
 Add text to the end of the property value
