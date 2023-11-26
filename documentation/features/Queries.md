@@ -127,7 +127,7 @@ These objects would be converted to options in the DropDownList, with a result e
     <Option Text="1, Disk drive 2" Value="1" />
 </GuiOption>
 ```
-Note that the key property has been used as the value as well as the first part of the text.
+Note that the key property has been used as the value. The second \<Property Name="Index" /> has added the same property as the first part of the text.
 
 ### Separator
 Be default, the property values will be concatenated together with comma and trailing space. To change this, set the \<Separator> element with the desired value:
@@ -164,9 +164,9 @@ Each transformation is performed in order, e.g. on the Size property, a calculat
 </Query>
 ```
 
-In this example, the value in a DropDownList would be the drive Index (e.g. 0 or 1), and the text in ea items would look something like 
+In this example, the value in a DropDownList would be the drive Index (e.g. 0), and the text in each item would look something like 
 
-*0 | 540GB | Hard disk 1*
+*ID: 0 | 540GB | Hard disk 1*
 
 Valid transformations are listed below.
 
