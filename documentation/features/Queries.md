@@ -8,6 +8,8 @@ A how-to video can be viewed [here](https://youtu.be/YhIiRorF9SA?si=f5Jc5r65HsFz
 * [Query Results](#query-results)
   * [String Results](#string-results)
   * [Collection Results](#collection-results)
+    * [Use a query to select an item in a list](#use-a-query-to-select-an-item-in-a-list)
+    * [Use a query to generate items in a list](#use-a-query-to-generate-items-in-a-list)
   * [Selecting Properties \& Property Order](#selecting-properties--property-order)
   * [Separator](#separator)
   * [Transforming Properties](#transforming-properties)
@@ -56,7 +58,30 @@ When the result of the query is an object, the property values of the object are
 If the result is a list of objects, the property values of *all* the objects are concatenated together. Usually this wouldn't be desireable. When using queries like WMI, it's recommended to return only a single object from your WQL query if outputting to a single string. 
 
 ### Collection Results
-GuiOptions that require a list of objects are DropDownList and TreeView. 
+In opposition to the GuiOptions above, the DropDownList and TreeView options need to contain multiple items to select from. In this instance, you can use a query to either generate the list of items, or to select the default value for the existing list. 
+
+#### Use a query to select an item in a list
+
+When the \<Query> element exists as a child of the \<SetValue> element, the query will be used to select an item from the list. As with string results above, a query returning an object will have properties concatenated to get a final result. 
+
+This will then select the item with the matching *value* (not the text). In the example below, if the WMI query  returns HP, Microsoft, or Lenovo, it will select the appropriate option. 
+
+```xml
+<GuiOption Type="DropDownList">
+    <Option Value="HP" Text="HP" />
+    <Option Value="Microsoft" Text="MS" />
+    <Option Value="Lenovo" Text="Lenovo" />
+    <SetValue>
+        <Query Type="Wmi">
+            <Wql>SELECT Manufacturer FROM Win32_OperatingSystem</Wql>
+        </Query>
+    </SetValue>
+</GuiOption>
+```
+
+#### Use a query to generate items in a list
+
+When the \<Query> element exists as a child of the \<GuiOption> element, the query will generate a list of items. 
 
 Each returned object is added as a selectable item in the list. The values of each item are set as outlined below in [Selecting Properties & Property Order](#selecting-properties--property-order).
 
