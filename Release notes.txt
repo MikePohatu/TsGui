@@ -1,6 +1,9 @@
-Version 2.0.8.0
-Release date: 4 Dec 2023
+Version 2.0.9.0
+Release date: 5 Dec 2023
 
+*Features
+	Added ResultID shorthand for IfElse query
+	
 *Fixes
 	Fixed an issue where config imports sometimes wouldn't work
 
