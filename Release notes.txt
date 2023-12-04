@@ -1,10 +1,8 @@
-Version 2.0.7.0
-Release date: 26 Nov 2023
+Version 2.0.8.0
+Release date: 4 Dec 2023
 
-*Features
-	Added option for 'inline' scripts, adding PowerShell directly to Config.xml.
-	Added RegexReplace option for query properties. 
-	Added better documentation for queries.
+*Fixes
+	Fixed an issue where config imports sometimes wouldn't work
 
 *Known issues
 	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
@@ -13,6 +11,15 @@ Release date: 26 Nov 2023
 	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
+
+---------------
+Version 2.0.7.0
+Release date: 26 Nov 2023
+
+*Features
+	Added option for 'inline' scripts, adding PowerShell directly to Config.xml.
+	Added RegexReplace option for query properties. 
+	Added better documentation for queries.
 
 ---------------
 Version 2.0.6.0

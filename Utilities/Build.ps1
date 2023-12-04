@@ -1,4 +1,4 @@
-﻿$version = '2.0.7.0'
+﻿$version = '2.0.8.0'
 
 Function SignAssembliesInPath {
     Param(
