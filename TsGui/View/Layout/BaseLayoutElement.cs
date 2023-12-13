@@ -76,12 +76,12 @@ namespace TsGui.View.Layout
             this.Style.Height = XmlHandler.GetDoubleFromXml(InputXml, "Height", this.Style.Height);
 
             //import any styles
-            string styleids = XmlHandler.GetStringFromXml(InputXml, "Styles", null);
-            if (string.IsNullOrWhiteSpace(styleids) == false)
+            var stylesEl = InputXml.Attribute("Styles");
+            if (stylesEl != null)
             {
-                foreach (string id in styleids.Split(','))
+                foreach (string id in stylesEl.Value.Split(','))
                 {
-                    if (string.IsNullOrWhiteSpace(id)==false) { this.Style.Import(id.Trim()); }
+                    if (string.IsNullOrWhiteSpace(id) == false) { this.Style.Import(id.Trim()); }
                 }
             }
 
