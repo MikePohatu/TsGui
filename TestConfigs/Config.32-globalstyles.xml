@@ -1,0 +1,65 @@
+<TsGui>
+
+
+	<Height>250</Height>
+	<Width>300</Width>
+
+	<HardwareEval />
+
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Style</Text>
+	</Heading>
+
+	<Styles>
+		<Style ID="Example_Global_Style">
+		<Label>
+			<Font>
+				<Weight>Normal</Weight>				<!-- Options available: Normal, Bold, ExtraBold, Light -->
+				<Size>11</Size>
+				<Style>Normal</Style>				<!-- Options available: Normal, Italic, Oblique -->
+				<Color>Green</Color>
+			</Font>
+			</Label>
+		</Style>
+		
+		</Styles>
+	
+	<Buttons>
+		<Next>=Next=</Next>
+		<Back>=Back=</Back>
+		<Cancel>=Cancel=</Cancel>
+		<Finish>=Finish=</Finish>
+
+		<Style>
+			<!--<Width>Auto</Width>
+			<Height>Auto</Height>-->
+			<CornerRadius>5</CornerRadius>
+			<HorizontalAlignment>Right</HorizontalAlignment>
+			<Font>
+				<Weight>Normal</Weight>				<!-- Options available: Normal, Bold, ExtraBold, Light -->
+				<Size>14</Size>
+				<Style>Normal</Style>				<!-- Options available: Normal, Italic, Oblique -->
+				<Color>Red</Color>
+			</Font>
+		</Style>
+	</Buttons>
+
+	<Page>
+		<Row>
+			<Column>
+				
+
+				<GuiOption Type="ComputerName" Styles="Example_Global_Style">
+
+					<!-- The Style XML block. This can be used at any layer from the Page down to the GuiOption, with options inherited down the tree -->
+					
+				</GuiOption>
+
+				<GuiOption Type="TrafficLight" Prebuilt="PowerConnected" Styles="Example_Global_Style" />
+			</Column>
+		</Row>
+	</Page>
+
+
+</TsGui>

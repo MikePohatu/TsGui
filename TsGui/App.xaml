@@ -148,7 +148,6 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            
 
             <Style x:Key="CollectionItemLabelStyle" TargetType="Label">
                 <Setter Property="Control.Height" Value="Auto"/>
@@ -163,7 +162,11 @@
                 <Setter Property="Control.FontStyle" Value="{Binding Path=ItemStyle.FontStyle, Converter={StaticResource FontStyle}}"/>
                 <Setter Property="Control.FontSize" Value="{Binding ItemStyle.FontSize}"/>
             </Style>
-            
+
+            <Style x:Key="ButtonStyle" BasedOn="{StaticResource ControlStyle}">
+                <Setter Property="Control.Foreground" Value="{Binding ControlStyle.FontColorBrush}"/>
+            </Style>
+
             <ControlTemplate x:Key="ButtonControlTemplate" TargetType="{x:Type ButtonBase}">
                 <Border x:Name="border" CornerRadius="{Binding ControlStyle.CornerRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                     <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
