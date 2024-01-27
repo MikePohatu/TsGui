@@ -8,14 +8,13 @@
 
 	<Heading>
 		<Title>TsGui</Title>
-		<Text>Style</Text>
+		<Text>Style, labels should be bold and green</Text>
 	</Heading>
 
 	<Styles>
 		<Style ID="Example_Global_Style">
 		<Label>
-			<Font>
-				<Weight>Normal</Weight>				<!-- Options available: Normal, Bold, ExtraBold, Light -->
+			<Font Weight="Bold">
 				<Size>11</Size>
 				<Style>Normal</Style>				<!-- Options available: Normal, Italic, Oblique -->
 				<Color>Green</Color>
@@ -37,7 +36,6 @@
 			<CornerRadius>5</CornerRadius>
 			<HorizontalAlignment>Right</HorizontalAlignment>
 			<Font>
-				<Weight>Normal</Weight>				<!-- Options available: Normal, Bold, ExtraBold, Light -->
 				<Size>14</Size>
 				<Style>Normal</Style>				<!-- Options available: Normal, Italic, Oblique -->
 				<Color>Red</Color>

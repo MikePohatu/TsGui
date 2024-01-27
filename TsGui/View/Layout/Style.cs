@@ -235,13 +235,15 @@ namespace TsGui.View.Layout
 
 
             //record the set elements
-            foreach (XElement el in InputXml.Elements())
+            foreach (var el in InputXml.Elements())
             {
                 string name = el.Name.ToString();
-                if (this._setElements.ContainsKey(name) == false)
-                {
-                    this._setElements.Add(name, true);
-                }
+                this.RecordSetElement(name);
+            }
+            foreach (var a in InputXml.Attributes())
+            {
+                string name = a.Name.ToString();
+                this.RecordSetElement(name);
             }
 
             x = InputXml.Element("Font");
@@ -253,14 +255,17 @@ namespace TsGui.View.Layout
                 this.FontColorBrush = XmlHandler.GetSolidColorBrushFromXml(x, "Color", this.FontColorBrush);
 
                 //record the set elements
-                foreach (XElement el in x.Elements())
+                foreach (var el in x.Elements())
                 {
                     string name = "Font" + el.Name.ToString();
-                    if (this._setElements.ContainsKey(name) == false)
-                    {
-                        this._setElements.Add(name, true);
-                    }
+                    this.RecordSetElement(name);
                 }
+                foreach (var a in x.Attributes())
+                {
+                    string name = "Font" + a.Name.ToString();
+                    this.RecordSetElement(name);
+                }
+
             }
 
             if (processimports)
@@ -276,6 +281,14 @@ namespace TsGui.View.Layout
                 }
             }
             #endregion
+        }
+
+        private void RecordSetElement(string name)
+        {
+            if (this._setElements.ContainsKey(name) == false)
+            {
+                this._setElements.Add(name, true);
+            }
         }
 
         public Style Clone() 
@@ -319,6 +332,7 @@ namespace TsGui.View.Layout
             if (from._setElements.ContainsKey("FontStyle")) { this.FontStyle = from.FontStyle; }
             if (from._setElements.ContainsKey("FontSize")) { this.FontSize = from.FontSize; }
             if (from._setElements.ContainsKey("FontColor")) { this.FontColorBrush = from.FontColorBrush.Clone(); }
+
             if (from._setElements.ContainsKey("Width")) { this.Width = from.Width; }
             if (from._setElements.ContainsKey("Height")) { this.Height = from.Height; }
             if (from._setElements.ContainsKey("CornerRadius")) { this.CornerRadius = from.CornerRadius; }
