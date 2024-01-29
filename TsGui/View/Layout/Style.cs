@@ -303,8 +303,10 @@ namespace TsGui.View.Layout
             target.FontWeight = source.FontWeight;
             target.FontStyle = source.FontStyle;
             target.FontSize = source.FontSize;
+            target.FontColorBrush = source.FontColorBrush.Clone();
+
             target.Width = source.Width;
-            //target.Height = source.Height;
+            //target.Height = source.Height; // we don't clone this one because of how it effects the tree e.g. different layers behave differently
             target.CornerRadius = source.CornerRadius;
             target.Padding = source.Padding;
             target.Margin = source.Margin;
@@ -316,7 +318,6 @@ namespace TsGui.View.Layout
             target.BorderBrush = source.BorderBrush.Clone();
             target.FocusedBorderBrush = source.FocusedBorderBrush.Clone();
             target.MouseOverBorderBrush = source.MouseOverBorderBrush.Clone();
-            target.FontColorBrush = source.FontColorBrush.Clone();
         }
 
         /// <summary>
@@ -337,6 +338,7 @@ namespace TsGui.View.Layout
             if (from._setElements.ContainsKey("Height")) { this.Height = from.Height; }
             if (from._setElements.ContainsKey("CornerRadius")) { this.CornerRadius = from.CornerRadius; }
             if (from._setElements.ContainsKey("Padding")) { this.Padding = from.Padding; }
+            if (from._setElements.ContainsKey("Margin")) { this.Margin = from.Margin; }
             if (from._setElements.ContainsKey("HorizontalAlignment")) { this.HorizontalAlignment = from.HorizontalAlignment; }
             if (from._setElements.ContainsKey("VerticalAlignment")) { this.VerticalAlignment = from.VerticalAlignment; }
             if (from._setElements.ContainsKey("HorizontalContentAlignment")) { this.HorizontalContentAlignment = from.HorizontalContentAlignment; }
