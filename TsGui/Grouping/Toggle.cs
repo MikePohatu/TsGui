@@ -59,7 +59,7 @@ namespace TsGui.Grouping
             {
                 if (!string.IsNullOrEmpty(xa.Value))
                 {
-                    this._group = Director.Instance.GroupLibrary.GetGroupFromID(xa.Value);
+                    this._group = GroupLibrary.GetGroupFromID(xa.Value);
                 }
                 else { throw new InvalidOperationException("Invalid Toggle configured in XML: " + InputXml); }
             }

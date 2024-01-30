@@ -97,8 +97,16 @@ namespace TsGui.View.Layout
             this._rows.Add(r);
         }
 
+        //deregister this because a new table will be built
+        private void OnReload(object sender, EventArgs e)
+        {
+            Director.Instance.ConfigLoadFinished -= this.OnConfigLoadFinished;
+            Director.Instance.Reloaded -= this.OnReload;
+        }
+
         private void OnConfigLoadFinished(object sender, EventArgs e)
         {
+            Director.Instance.Reloaded += this.OnReload;
             this.Build();
         }
 

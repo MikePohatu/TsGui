@@ -24,20 +24,20 @@ using System.Collections.Generic;
 
 namespace TsGui.Grouping
 {
-    public class GroupLibrary
+    public static class GroupLibrary
     {
-        private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
+        private static Dictionary<string, Group> _groups = new Dictionary<string, Group>();
 
         /// <summary>
         /// Default value of PurgeInactive for new GroupableBase objects
         /// </summary>
-        public bool PurgeInactive { get; set; } = false;
+        public static bool PurgeInactive { get; set; } = false;
 
-        private Group CreateGroup(string ID)
+        private static Group CreateGroup(string ID)
         {
             Group group;
             group = new Group(ID);
-            this._groups.Add(ID, group);
+            _groups.Add(ID, group);
             return group;
         }
 
@@ -47,9 +47,9 @@ namespace TsGui.Grouping
         /// <param name="ID"></param>
         /// <param name="Element"></param>
         /// <returns></returns>
-        public Group AddToGroup(string ID, GroupableBase Element)
+        public static Group AddToGroup(string ID, GroupableBase Element)
         {
-            Group group = this.GetGroupFromID(ID);
+            Group group = GetGroupFromID(ID);
             group.Add(Element);
 
             return group;
@@ -60,13 +60,21 @@ namespace TsGui.Grouping
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        public Group GetGroupFromID(string ID)
+        public static Group GetGroupFromID(string ID)
         {
             Group group;
-            this._groups.TryGetValue(ID, out group);
-            if (group == null) { group = this.CreateGroup(ID); }
+            _groups.TryGetValue(ID, out group);
+            if (group == null) { group = CreateGroup(ID); }
 
             return group;
+        }
+
+        /// <summary>
+        /// Clear the loaded groups
+        /// </summary>
+        public static void Reset()
+        {
+            _groups.Clear();
         }
     }
 }

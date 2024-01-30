@@ -28,6 +28,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" x:Name="_outputgrid" Margin="0,5,0,5" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
@@ -79,7 +80,7 @@
             <Grid Grid.Row="3" x:Name="_optionswrappergrid" HorizontalAlignment="Stretch">
                 <DataGrid x:Name="_optionsgrid" ItemsSource="{Binding Options}" AlternatingRowBackground="LightGray"
                       AlternationCount="2" AutoGenerateColumns="False" HeadersVisibility="Column" 
-                      Margin="0,0,0,10" FrozenColumnCount="1" HorizontalAlignment="Left" EnableRowVirtualization="False"
+                      Margin="0,0,0,0" FrozenColumnCount="1" HorizontalAlignment="Left" EnableRowVirtualization="False"
                       ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}"
                       IsReadOnly="True" Height="Auto"
                       ScrollViewer.CanContentScroll="True" 
@@ -94,6 +95,8 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
+
+            <Button Grid.Row="4" x:Name="_reloadbtn" Content="Reload" Width="50" HorizontalAlignment="Left" Margin="0,4,0,0"></Button>
         </Grid>
         <Grid x:Name="_logGrid" Grid.Row="0" Grid.Column="1" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <DockPanel VerticalAlignment="Stretch">

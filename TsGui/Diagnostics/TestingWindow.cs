@@ -36,6 +36,7 @@ using TsGui.Options;
 using Core;
 using Core.Logging;
 using NLog;
+using System.Threading.Tasks;
 
 namespace TsGui.Diagnostics
 {
@@ -47,7 +48,6 @@ namespace TsGui.Diagnostics
         private int _currentscaling;
 
         public ObservableCollection<IOption> Options { get { return this._options; } }
-        public TsMainWindow TsMainWindow { get; set; }
         public double ScreenHeight { get; set; }
         public double ScreenWidth { get; set; }
         public double WindowMaxHeight { get { return SystemParameters.PrimaryScreenHeight - 20; } }
@@ -79,12 +79,18 @@ namespace TsGui.Diagnostics
             this.ScreenWidth = SystemParameters.PrimaryScreenWidth;
             this.ScreenHeight = SystemParameters.PrimaryScreenHeight;
             this.Icon = IconHelper.ConvertToImageSource(SystemIcons.Information);
-            this._options = Director.Instance.OptionLibrary.Options;
-            this.TsMainWindow = Director.Instance.TsMainWindow;
+            this._options = OptionLibrary.Options;
             this._testingwindowui._logclearbtn.Click += this.OnLogClearClick;
+
+            this._testingwindowui._reloadbtn.Click += this.OnReloadClicked;
             Director.Instance.ParentWindow.Loaded += this.OnParentWindowLoaded;
             Director.Instance.ParentWindow.Closed += this.OnParentWindowClosed;
             this._testingwindowui.Show();
+        }
+
+        private async void OnReloadClicked(object sender, RoutedEventArgs e)
+        {
+            await Director.Instance.ReloadAsync();
         }
 
         public void OnParentWindowLoaded(object o, EventArgs e)

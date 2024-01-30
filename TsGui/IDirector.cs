@@ -38,11 +38,10 @@ namespace TsGui
         event TsGuiWindowMovingEventHandler WindowMoved;
         event TsGuiWindowEventHandler WindowMouseUp;
         event ConfigLoadFinishedEventHandler ConfigLoadFinished;
+        event EventHandler Reloaded;
 
         //properties
-        GroupLibrary GroupLibrary { get; }
         TsMainWindow TsMainWindow { get; set; }
-        OptionLibrary OptionLibrary { get; }
         bool StartupFinished { get; set; }
         MainWindow ParentWindow { get; set; }
         TsPage CurrentPage { get; set; }
@@ -50,7 +49,10 @@ namespace TsGui
         string DefaultPath { get; }
         bool UseTouchDefaults { get; }
 
-        Task InitAsync(MainWindow ParentWindow, Arguments Arguments);
+        Task StartupAsync();
+
+        Task ReloadAsync();
+
         void CloseWithError(string Title, string Message);
         void AddOptionToLibary(IOption Option);
         void MoveNext();
