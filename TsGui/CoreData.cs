@@ -47,6 +47,7 @@ namespace TsGui
             StyleLibrary.Reset();
             GroupLibrary.Reset();
             OptionLibrary.Reset();
+            ScriptLibrary.Reset();
             Buttons = new TsButtons();
             Pages = new List<TsPage>();
             Toggles = new List<IToggleControl>();
