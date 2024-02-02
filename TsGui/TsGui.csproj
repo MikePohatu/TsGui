@@ -115,7 +115,7 @@
     <Compile Include="Connectors\RegistryConnector.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="ConsoleWindow.cs" />
-    <Compile Include="CoreData.cs" />
+    <Compile Include="ConfigData.cs" />
     <Compile Include="Debounce.cs" />
     <Compile Include="Diagnostics\LoggingUiViewModel.cs" />
     <Compile Include="Diagnostics\TestingWindow.cs" />

@@ -56,17 +56,19 @@ namespace TsGui
         public event EventHandler WindowMoved;
         public event RoutedEventHandler WindowMouseUp;
         public event EventHandler ConfigLoadFinished;
+        public event EventHandler AppClosing;
 
         private Debounce _movetimer;
 
         private bool _finished = false;
+        private bool _firstinitcomplete = false;
 
         //properties
         public TsMainWindow TsMainWindow { get; set; }
         public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
-        public bool ShowGridLines { get { return CoreData.ProdMode ? false : TsGuiRootConfig.ShowGridLines; } }
+        public bool ShowGridLines { get { return ConfigData.ProdMode ? false : TsGuiRootConfig.ShowGridLines; } }
         public bool UseTouchDefaults { get { return TsGuiRootConfig.UseTouchDefaults; } }
 
         /// <summary>
@@ -79,6 +81,7 @@ namespace TsGui
 
         public async Task ReloadAsync()
         {
+            Log.Info(Log.Highlight("Reload initiated"));
             #region Remove any event registrations
             if (PageLoaded != null)
             {
@@ -199,7 +202,7 @@ namespace TsGui
                 }));
             });
 
-            CoreData.Reset();
+            ConfigData.Reset();
 
             this.ParentWindow.Loaded += this.OnWindowLoaded;
 
@@ -213,7 +216,7 @@ namespace TsGui
                 Log.Info("Finished applying root configuration");
 
                 //Init the envController so we know what we're writing to and attach the SCCM COM object if required
-                CoreData.ProdMode = EnvironmentController.Init();
+                ConfigData.ProdMode = EnvironmentController.Init();
 
                 this.LoadXml(xconfig);
                 Log.Info("Finished applying main config");
@@ -241,9 +244,9 @@ namespace TsGui
 
             //If prodmode is true and testmode is false, only show the testing window if the debug option
             //has been set
-            if (Arguments.Instance.TestMode == false && CoreData.ProdMode == true)
+            if (Arguments.Instance.TestMode == false && ConfigData.ProdMode == true)
             {
-                if (TsGuiRootConfig.Debug == true) { CoreData.TestingWindow = new TestingWindow(); }
+                if (TsGuiRootConfig.Debug == true) { ConfigData.AddTestingWindow(); }
             }
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
@@ -252,7 +255,7 @@ namespace TsGui
                 if (this.PromptTestMode() != true) { this.Cancel(); return; }
                 if ((TsGuiRootConfig.Debug == true) || (TsGuiRootConfig.LiveData == true)) 
                 { 
-                    CoreData.TestingWindow = new TestingWindow(); 
+                    ConfigData.AddTestingWindow(); 
                 }
             }
 
@@ -265,12 +268,12 @@ namespace TsGui
             //subscribe to closing event
             this.ParentWindow.Closing += this.OnWindowClosing;
 
-            if (CoreData.Pages.Count > 0)
+            if (ConfigData.Pages.Count > 0)
             {
                 Log.Debug("Loading pages");
-                this.CurrentPage = CoreData.Pages.First();
+                this.CurrentPage = ConfigData.Pages.First();
                 //update group settings to all controls
-                foreach (IToggleControl t in CoreData.Toggles)
+                foreach (IToggleControl t in ConfigData.Toggles)
                 { t.InitialiseToggle(); }
 
                 this.ParentWindow.DataContext = this.TsMainWindow;
@@ -297,6 +300,9 @@ namespace TsGui
                 Log.Info("*No pages configured. Finishing TsGui");
                 this.Finish();
             }
+
+            //mark init complete. this won't change during reload
+            this._firstinitcomplete = true;
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
@@ -353,7 +359,7 @@ namespace TsGui
                 //start layout import
                 this.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);
 
-                CoreData.Buttons.LoadXml(SourceXml.Element("Buttons"));
+                ConfigData.Buttons.LoadXml(SourceXml.Element("Buttons"));
 
                 PageDefaults pagedef = new PageDefaults();
 
@@ -369,7 +375,7 @@ namespace TsGui
                 if (x != null) { pagedef.RightPane = new TsPane(x); }
                 else { pagedef.RightPane = new TsPane(); }
 
-                pagedef.Buttons = CoreData.Buttons;
+                pagedef.Buttons = ConfigData.Buttons;
                 pagedef.MainWindow = this.TsMainWindow;
 
 
@@ -401,7 +407,7 @@ namespace TsGui
                         currPage.PreviousPage = prevPage;
                         if (prevPage != null) { prevPage.NextPage = currPage; }
 
-                        CoreData.Pages.Add(currPage);
+                        ConfigData.Pages.Add(currPage);
                         currPage.Page.Loaded += this.OnPageLoaded;
                         #endregion
                     }
@@ -412,7 +418,7 @@ namespace TsGui
                 x = SourceXml.Element("NoUI");
                 if (x != null)
                 {
-                    CoreData.NouiContainer = new NoUIContainer(x);
+                    ConfigData.NouiContainer = new NoUIContainer(x);
                 }
             }
         }
@@ -442,7 +448,7 @@ namespace TsGui
         
         public void AddToggleControl(IToggleControl ToogleControl)
         {
-            CoreData.Toggles.Add(ToogleControl);
+            ConfigData.Toggles.Add(ToogleControl);
         }
 
         //Navigate to the current page, and update the datacontext of the window
@@ -507,6 +513,7 @@ namespace TsGui
         {
             if (_finished) { EnvironmentController.AddVariable(new Variable("TsGui_Cancel", "FALSE", null)); }
             else { EnvironmentController.AddVariable(new Variable("TsGui_Cancel", "TRUE", null)); }
+            AppClosing?.Invoke(this, new EventArgs());
             EnvironmentController.Release();
             Application.Current.Shutdown();
         }
@@ -569,6 +576,9 @@ namespace TsGui
 
         private bool PromptTestMode()
         {
+            //if first init has already run, skip this
+            if (this._firstinitcomplete) { return true; }
+
             string msg = "Could not connect to SCCM task sequence agent." + Environment.NewLine +
                     Environment.NewLine +
                     "This is because:" + Environment.NewLine +

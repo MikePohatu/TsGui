@@ -37,7 +37,7 @@ namespace TsGui
         event EventHandler WindowMoved;
         event RoutedEventHandler WindowMouseUp;
         event EventHandler ConfigLoadFinished;
-        //event EventHandler Reloaded;
+        event EventHandler AppClosing;
 
         //properties
         TsMainWindow TsMainWindow { get; set; }

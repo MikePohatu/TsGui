@@ -84,7 +84,7 @@ namespace TsGui.Diagnostics
 
             this._testingwindowui._reloadbtn.Click += this.OnReloadClicked;
             Director.Instance.ParentWindow.Loaded += this.OnParentWindowLoaded;
-            Director.Instance.ParentWindow.Closed += this.OnParentWindowClosed;
+            Director.Instance.AppClosing += this.OnAppClosing;
             this._testingwindowui.Show();
         }
 
@@ -98,7 +98,7 @@ namespace TsGui.Diagnostics
             this.CurrentScaling = DisplayInformation.GetScaling();
         }
 
-        public void OnParentWindowClosed(object o, EventArgs e)
+        public void OnAppClosing(object o, EventArgs e)
         {
             this._testingwindowui.Close();
         }
