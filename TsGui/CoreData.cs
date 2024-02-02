@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -28,6 +28,7 @@ using TsGui.Linking;
 using System.Xml.Linq;
 using TsGui.Authentication;
 using TsGui.Scripts;
+using MessageCrap;
 
 namespace TsGui
 {
@@ -41,8 +42,9 @@ namespace TsGui
         public static NoUIContainer NouiContainer { get; set; }
         public static TestingWindow TestingWindow { get; set; }
 
-        public static void Init()
+        public static void Reset()
         {
+            MessageHub.Reset();
             LinkingHub.Instance.Reset();
             StyleLibrary.Reset();
             GroupLibrary.Reset();

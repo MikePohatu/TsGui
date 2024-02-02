@@ -150,7 +150,7 @@ namespace TsGui
                 }));
             });
 
-            CoreData.Init();
+            CoreData.Reset();
 
             this.ParentWindow.Loaded += this.OnWindowLoaded;
 
