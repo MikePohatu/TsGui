@@ -40,7 +40,6 @@ namespace TsGui
         event EventHandler AppClosing;
 
         //properties
-        TsMainWindow TsMainWindow { get; set; }
         bool StartupFinished { get; set; }
         MainWindow ParentWindow { get; set; }
         TsPage CurrentPage { get; set; }

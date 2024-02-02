@@ -39,10 +39,9 @@ namespace TsGui.Tests
         public event EventHandler WindowMoving;
         public event RoutedEventHandler WindowMouseUp;
         public event EventHandler ConfigLoadFinished;
-        public event EventHandler Reloaded;
+        public event EventHandler AppClosing;
 
         //properties
-        public TsMainWindow TsMainWindow { get; set; }
         public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }

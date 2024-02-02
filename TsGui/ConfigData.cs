@@ -38,6 +38,7 @@ namespace TsGui
     /// </summary>
     public static class ConfigData
     {
+        public static TsMainWindow TsMainWindow { get; set; }
         public static bool ProdMode { get; set; } = false;
         public static TsButtons Buttons { get; set; }
 
@@ -60,6 +61,7 @@ namespace TsGui
             Pages = new List<TsPage>();
             Toggles = new List<IToggleControl>();
             NouiContainer = null;
+            TsMainWindow = null;
         }
 
         public static void AddTestingWindow()

@@ -64,7 +64,6 @@ namespace TsGui
         private bool _firstinitcomplete = false;
 
         //properties
-        public TsMainWindow TsMainWindow { get; set; }
         public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
@@ -276,7 +275,7 @@ namespace TsGui
                 foreach (IToggleControl t in ConfigData.Toggles)
                 { t.InitialiseToggle(); }
 
-                this.ParentWindow.DataContext = this.TsMainWindow;
+                this.ParentWindow.DataContext = ConfigData.TsMainWindow;
 
                 // Now show and close the ghost window to make sure WinPE honours the 
                 // windowstartuplocation
@@ -287,7 +286,7 @@ namespace TsGui
 
                 this.UpdateWindow();
                 this.ParentWindow.Visibility = Visibility.Visible;
-                this.ParentWindow.WindowStartupLocation = this.TsMainWindow.WindowLocation.StartupLocation;
+                this.ParentWindow.WindowStartupLocation = ConfigData.TsMainWindow.WindowLocation.StartupLocation;
                 this.StartupFinished = true;
                 
                 GuiTimeout.Instance?.Start(this.OnTimeoutReached);
@@ -357,14 +356,14 @@ namespace TsGui
                 ScriptLibrary.LoadXml(SourceXml);
 
                 //start layout import
-                this.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);
+                ConfigData.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);
 
                 ConfigData.Buttons.LoadXml(SourceXml.Element("Buttons"));
 
                 PageDefaults pagedef = new PageDefaults();
 
                 x = SourceXml.Element("Heading");
-                if (x != null) { pagedef.PageHeader = new TsPageHeader(this.TsMainWindow, x); }
+                if (x != null) { pagedef.PageHeader = new TsPageHeader(ConfigData.TsMainWindow, x); }
                 else { pagedef.PageHeader = new TsPageHeader(); }
 
                 x = SourceXml.Element("LeftPane");
@@ -376,10 +375,10 @@ namespace TsGui
                 else { pagedef.RightPane = new TsPane(); }
 
                 pagedef.Buttons = ConfigData.Buttons;
-                pagedef.MainWindow = this.TsMainWindow;
+                pagedef.MainWindow = ConfigData.TsMainWindow;
 
 
-                this.TsMainWindow.LoadXml(SourceXml);
+                ConfigData.TsMainWindow.LoadXml(SourceXml);
                 GuiTimeout.Init(SourceXml.Element("Timeout"));
 
                 //now read in the options and add to a dictionary for later use
@@ -395,11 +394,11 @@ namespace TsGui
                         {
                             //record the last page as the prevPage
                             prevPage = currPage;
-                            currPage = new TsPage(this.TsMainWindow, xPage, pagedef);                                                     
+                            currPage = new TsPage(ConfigData.TsMainWindow, xPage, pagedef);                                                     
                         }
                         else
                         {
-                            currPage = new TsPage(this.TsMainWindow, xPage,pagedef);
+                            currPage = new TsPage(ConfigData.TsMainWindow, xPage,pagedef);
                             currPage.IsFirst = true;
                         }
 
