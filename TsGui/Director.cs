@@ -131,6 +131,17 @@ namespace TsGui
             }
             #endregion
 
+
+            //remove testing keyup
+            if (ConfigData.TestingWindow != null)
+            {
+                ConfigData.TestingWindow.Window.KeyUp -= this.OnTestingKeyUp;
+            }
+            if (ConfigData.ProdMode == false)
+            {
+                this.ParentWindow.KeyUp -= this.OnTestingKeyUp;
+            }
+
             //unsubscribe to closing event
             this.ParentWindow.Closing -= this.OnWindowClosing;
             this.ParentWindow.Close();
@@ -251,10 +262,12 @@ namespace TsGui
             //prompt the user if they want to continue. exit if not. 
             else
             {
-                if (this.PromptTestMode() != true) { this.Cancel(); return; }
+                if (this.InitTestMode() != true) { this.Cancel(); return; }
                 if ((TsGuiRootConfig.Debug == true) || (TsGuiRootConfig.LiveData == true)) 
                 { 
-                    ConfigData.AddTestingWindow(); 
+                    ConfigData.AddTestingWindow();
+                    ConfigData.TestingWindow.Window.KeyUp += this.OnTestingKeyUp;
+                    this.ParentWindow.KeyUp += this.OnTestingKeyUp;
                 }
             }
 
@@ -302,6 +315,15 @@ namespace TsGui
 
             //mark init complete. this won't change during reload
             this._firstinitcomplete = true;
+        }
+
+        public async void OnTestingKeyUp(object o, KeyEventArgs e)
+        {
+            if (e.Key == Key.F5)
+            {
+                if (Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl))
+                { await this.ReloadAsync(); }
+            }
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
@@ -573,7 +595,7 @@ namespace TsGui
             this.WindowMouseUp?.Invoke(o, e);
         }
 
-        private bool PromptTestMode()
+        private bool InitTestMode()
         {
             //if first init has already run, skip this
             if (this._firstinitcomplete) { return true; }
@@ -590,8 +612,11 @@ namespace TsGui
             string title = "Warning";
             MessageBoxResult result = MessageBox.Show(msg, title, MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-            if (result == MessageBoxResult.Yes) return true;
-            else return false;
+            if (result == MessageBoxResult.Yes)
+            {
+                return true;
+            }
+            else { return false; }
         }
     }
 }

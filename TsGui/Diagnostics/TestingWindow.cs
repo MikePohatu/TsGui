@@ -43,10 +43,10 @@ namespace TsGui.Diagnostics
     public class TestingWindow: LoggingUiViewModel
     {
         private int _pendingresize = 0;
-        private TestingWindowUI _testingwindowui;
         private ObservableCollection<IOption> _options;
         private int _currentscaling;
 
+        public TestingWindowUI Window { get; private set; }
         public ObservableCollection<IOption> Options { get { return this._options; } }
         public double ScreenHeight { get; set; }
         public double ScreenWidth { get; set; }
@@ -70,22 +70,22 @@ namespace TsGui.Diagnostics
 
         public TestingWindow()
         {
-            this._testingwindowui = new TestingWindowUI();
-            this._loggingtextbox = this._testingwindowui._logtextbox;
-            this._testingwindowui.DataContext = this;
-            this._testingwindowui.Closed += this.OnWindowClosed;
-            this._testingwindowui.ContentRendered += this.OnTestingWindowRendered;
+            this.Window = new TestingWindowUI();
+            this._loggingtextbox = this.Window._logtextbox;
+            this.Window.DataContext = this;
+            this.Window.Closed += this.OnWindowClosed;
+            this.Window.ContentRendered += this.OnTestingWindowRendered;
 
             this.ScreenWidth = SystemParameters.PrimaryScreenWidth;
             this.ScreenHeight = SystemParameters.PrimaryScreenHeight;
             this.Icon = IconHelper.ConvertToImageSource(SystemIcons.Information);
             this._options = OptionLibrary.Options;
-            this._testingwindowui._logclearbtn.Click += this.OnLogClearClick;
+            this.Window._logclearbtn.Click += this.OnLogClearClick;
 
-            this._testingwindowui._reloadbtn.Click += this.OnReloadClicked;
+            this.Window._reloadbtn.Click += this.OnReloadClicked;
             Director.Instance.ParentWindow.Loaded += this.OnParentWindowLoaded;
             Director.Instance.AppClosing += this.OnAppClosing;
-            this._testingwindowui.Show();
+            this.Window.Show();
         }
 
         private async void OnReloadClicked(object sender, RoutedEventArgs e)
@@ -100,18 +100,18 @@ namespace TsGui.Diagnostics
 
         public void OnAppClosing(object o, EventArgs e)
         {
-            this._testingwindowui.Close();
+            this.Window.Close();
         }
 
         public void OnTestingWindowRendered(object sender, EventArgs e)
         {
             this.ResizeGrids();
             //set the logGrid to the same size i.e. half window
-            this._testingwindowui._logColDef.Width = new GridLength(this._testingwindowui._dataGrid.ActualWidth);
+            this.Window._logColDef.Width = new GridLength(this.Window._dataGrid.ActualWidth);
 
-            this._testingwindowui._optionsgrid.EnableRowVirtualization = false;
-            this._testingwindowui._valuecolumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
-            this._testingwindowui.SizeChanged += this.OnTestingWindowSizeChanged;
+            this.Window._optionsgrid.EnableRowVirtualization = false;
+            this.Window._valuecolumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+            this.Window.SizeChanged += this.OnTestingWindowSizeChanged;
         }
 
         public void OnTestingWindowSizeChanged(object o, EventArgs e)
@@ -125,8 +125,8 @@ namespace TsGui.Diagnostics
 
         private void ResizeGrids()
         {
-            this._testingwindowui._optionswrappergrid.Width = this._testingwindowui._dataGrid.ActualWidth;
-            this._testingwindowui._optionsgrid.Width = this._testingwindowui._optionswrappergrid.ActualWidth;
+            this.Window._optionswrappergrid.Width = this.Window._dataGrid.ActualWidth;
+            this.Window._optionsgrid.Width = this.Window._optionswrappergrid.ActualWidth;
             this._pendingresize--;
         }
     }
