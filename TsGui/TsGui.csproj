@@ -224,7 +224,6 @@
     <Compile Include="Calculator\CalculatorEnums.cs" />
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
-    <Compile Include="Events\Delegates.cs" />
     <Compile Include="Options\IOption.cs" />
     <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="Grouping\GroupableBlindBase.cs" />

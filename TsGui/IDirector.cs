@@ -22,7 +22,6 @@ using System.ComponentModel;
 
 using TsGui.View.Layout;
 using TsGui.Options;
-using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Authentication;
@@ -32,13 +31,13 @@ namespace TsGui
 {
     public interface IDirector
     {
-        event TsGuiWindowEventHandler PageLoaded;
-        event TsGuiWindowEventHandler WindowLoaded;
-        event TsGuiWindowMovingEventHandler WindowMoving;
-        event TsGuiWindowMovingEventHandler WindowMoved;
-        event TsGuiWindowEventHandler WindowMouseUp;
-        event ConfigLoadFinishedEventHandler ConfigLoadFinished;
-        event EventHandler Reloaded;
+        event RoutedEventHandler PageLoaded;
+        event RoutedEventHandler WindowLoaded;
+        event EventHandler WindowMoving;
+        event EventHandler WindowMoved;
+        event RoutedEventHandler WindowMouseUp;
+        event EventHandler ConfigLoadFinished;
+        //event EventHandler Reloaded;
 
         //properties
         TsMainWindow TsMainWindow { get; set; }

@@ -23,9 +23,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Threading;
-using System.Windows.Input
-;
-using TsGui.Events;
+using System.Windows.Input;
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 using TsGui.Validation;
@@ -83,7 +81,7 @@ namespace TsGui.View.Layout
 
         //Events
         #region
-        public event TsGuiWindowEventHandler PageWindowLoaded;
+        public event RoutedEventHandler PageWindowLoaded;
 
         /// <summary>
         /// Method to handle when content has finished rendering on the window

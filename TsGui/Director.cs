@@ -30,7 +30,6 @@ using System.ComponentModel;
 using TsGui.View.Layout;
 using TsGui.Options.NoUI;
 using TsGui.Options;
-using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Diagnostics;
 using Core.Diagnostics;
@@ -51,13 +50,12 @@ namespace TsGui
     {
         public static IDirector Instance { get; private set; } = new Director();
 
-        public event TsGuiWindowEventHandler PageLoaded;
-        public event TsGuiWindowEventHandler WindowLoaded;
-        public event TsGuiWindowMovingEventHandler WindowMoving;
-        public event TsGuiWindowMovingEventHandler WindowMoved;
-        public event TsGuiWindowEventHandler WindowMouseUp;
-        public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
-        public event EventHandler Reloaded;
+        public event RoutedEventHandler PageLoaded;
+        public event RoutedEventHandler WindowLoaded;
+        public event EventHandler WindowMoving;
+        public event EventHandler WindowMoved;
+        public event RoutedEventHandler WindowMouseUp;
+        public event EventHandler ConfigLoadFinished;
 
         private Debounce _movetimer;
 
@@ -81,10 +79,61 @@ namespace TsGui
 
         public async Task ReloadAsync()
         {
+            #region Remove any event registrations
+            if (PageLoaded != null)
+            {
+                foreach (Delegate d in PageLoaded.GetInvocationList())
+                {
+                    PageLoaded -= (RoutedEventHandler)d;
+                }
+            }
+
+            if (WindowLoaded != null)
+            {
+                foreach (Delegate d in WindowLoaded.GetInvocationList())
+                {
+                    WindowLoaded -= (RoutedEventHandler)d;
+                }
+            }
+
+            if (WindowMoving != null)
+            {
+                foreach (Delegate d in WindowMoving.GetInvocationList())
+                {
+                    WindowMoving -= (EventHandler)d;
+                }
+            }
+
+            if (WindowMoved != null)
+            {
+                foreach (Delegate d in WindowMoved.GetInvocationList())
+                {
+                    WindowMoved -= (EventHandler)d;
+                }
+            }
+
+            if (WindowMouseUp != null)
+            {
+                foreach (Delegate d in WindowMouseUp.GetInvocationList())
+                {
+                    WindowMouseUp -= (RoutedEventHandler)d;
+                }
+            }
+
+            if (ConfigLoadFinished != null)
+            {
+                foreach (Delegate d in ConfigLoadFinished.GetInvocationList())
+                {
+                    ConfigLoadFinished -= (EventHandler)d;
+                }
+            }
+            #endregion
+
             //unsubscribe to closing event
             this.ParentWindow.Closing -= this.OnWindowClosing;
             this.ParentWindow.Close();
-            this.Reloaded?.Invoke(this, new EventArgs());
+
+            //Reinit
             await this.InitAsync();
         }
 

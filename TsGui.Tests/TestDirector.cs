@@ -22,7 +22,6 @@ using System.ComponentModel;
 
 using TsGui.View.Layout;
 using TsGui.Options;
-using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Authentication;
@@ -34,12 +33,12 @@ namespace TsGui.Tests
     public class TestDirector: IDirector
     {
 
-        public event TsGuiWindowEventHandler WindowLoaded;
-        public event TsGuiWindowEventHandler PageLoaded;
-        public event TsGuiWindowMovingEventHandler WindowMoved;
-        public event TsGuiWindowMovingEventHandler WindowMoving;
-        public event TsGuiWindowEventHandler WindowMouseUp;
-        public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
+        public event RoutedEventHandler WindowLoaded;
+        public event RoutedEventHandler PageLoaded;
+        public event EventHandler WindowMoved;
+        public event EventHandler WindowMoving;
+        public event RoutedEventHandler WindowMouseUp;
+        public event EventHandler ConfigLoadFinished;
         public event EventHandler Reloaded;
 
         //properties
