@@ -44,6 +44,7 @@ namespace TsGui
 
         public static void Reset()
         {
+            HardwareEvaluator.Reset();
             MessageHub.Reset();
             LinkingHub.Instance.Reset();
             StyleLibrary.Reset();
