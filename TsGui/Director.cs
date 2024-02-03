@@ -254,7 +254,11 @@ namespace TsGui
             //prompt the user if they want to continue. exit if not. 
             else
             {
-                if (this.InitTestMode() != true) { this.Cancel(); return; }
+                if (this.InitTestMode() != true) 
+                {
+                    this.ShutDown();
+                    return; 
+                }
                 if ((TsGuiRootConfig.Debug == true) || (TsGuiRootConfig.LiveData == true)) 
                 { 
                     ConfigData.AddTestingWindow();
