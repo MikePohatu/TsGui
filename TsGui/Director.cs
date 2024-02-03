@@ -81,6 +81,11 @@ namespace TsGui
         public async Task ReloadAsync()
         {
             Log.Info(Log.Highlight("Reload initiated"));
+
+            //unsubscribe to closing event
+            this.ParentWindow.Closing -= this.OnWindowClosing;
+            this.ParentWindow.Close();
+
             #region Remove any event registrations
             if (PageLoaded != null)
             {
@@ -142,10 +147,6 @@ namespace TsGui
                 this.ParentWindow.KeyUp -= this.OnTestingKeyUp;
             }
 
-            //unsubscribe to closing event
-            this.ParentWindow.Closing -= this.OnWindowClosing;
-            this.ParentWindow.Close();
-
             //Reinit
             await this.InitAsync();
         }
@@ -178,15 +179,6 @@ namespace TsGui
         public static void OverrideInstance(IDirector newdirector)
         {
             Instance = newdirector;
-        }
-
-        public void CloseWithError(string Title, string Message)
-        {
-            Log.Fatal("TsGui closing due to error: " + Title);
-            Log.Fatal("Error message: " + Message);
-            MessageBox.Show(Message,Title, MessageBoxButton.OK, MessageBoxImage.Error);
-            this.ParentWindow.Closing -= this.OnWindowClosing;
-            this.ParentWindow.Close();
         }
 
         /// <summary>
@@ -267,8 +259,9 @@ namespace TsGui
                 { 
                     ConfigData.AddTestingWindow();
                     ConfigData.TestingWindow.Window.KeyUp += this.OnTestingKeyUp;
-                    this.ParentWindow.KeyUp += this.OnTestingKeyUp;
                 }
+
+                this.ParentWindow.KeyUp += this.OnTestingKeyUp;
             }
 
             //now send a ConfigLoadFinished event so things know they can finish setting themselves up e.g. OptionValueQuery
@@ -532,10 +525,26 @@ namespace TsGui
 
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            if (_finished) { EnvironmentController.AddVariable(new Variable("TsGui_Cancel", "FALSE", null)); }
+            if (this._finished) { EnvironmentController.AddVariable(new Variable("TsGui_Cancel", "FALSE", null)); }
             else { EnvironmentController.AddVariable(new Variable("TsGui_Cancel", "TRUE", null)); }
-            AppClosing?.Invoke(this, new EventArgs());
             EnvironmentController.Release();
+            this.ShutDown();
+
+        }
+
+        public void CloseWithError(string Title, string Message)
+        {
+            Log.Fatal("TsGui closing due to error: " + Title);
+            Log.Fatal("Error message: " + Message);
+            MessageBox.Show(Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            this.ParentWindow.Closing -= this.OnWindowClosing;
+            this.ParentWindow.Close();
+            this.ShutDown();
+        }
+
+        private void ShutDown()
+        {
+            AppClosing?.Invoke(this, new EventArgs());
             Application.Current.Shutdown();
         }
 
