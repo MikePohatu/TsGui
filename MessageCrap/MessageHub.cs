@@ -143,7 +143,6 @@ namespace MessageCrap
 
             //invoke object subscribers
             List<Action<Message>> callbacks;
-            var temp = _objectCallbacks;
             ISubscribable sender = message.Sender as ISubscribable;
             if (string.IsNullOrWhiteSpace(sender?.ID) == false && _objectCallbacks.TryGetValue(sender.ID, out callbacks))
             {
@@ -242,6 +241,16 @@ namespace MessageCrap
                 subs.Add(callback);
                 _objectCallbacks.Add(sender.ID, subs);
             }
+        }
+
+        /// <summary>
+        /// Clear all subscriptions
+        /// </summary>
+        public static void Reset()
+        {
+            _topicSubscribers.Clear();
+            _objectCallbacks.Clear();
+            _pendingResponses.Clear();
         }
     }
 }

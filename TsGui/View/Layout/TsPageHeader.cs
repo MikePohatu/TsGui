@@ -23,7 +23,6 @@ using System.Xml.Linq;
 using System.Windows.Media;
 using System.Windows;
 
-using TsGui.Events;
 using TsGui.Images;
 using TsGui.Validation;
 

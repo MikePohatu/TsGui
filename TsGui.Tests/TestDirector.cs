@@ -22,7 +22,6 @@ using System.ComponentModel;
 
 using TsGui.View.Layout;
 using TsGui.Options;
-using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Authentication;
@@ -34,17 +33,15 @@ namespace TsGui.Tests
     public class TestDirector: IDirector
     {
 
-        public event TsGuiWindowEventHandler WindowLoaded;
-        public event TsGuiWindowEventHandler PageLoaded;
-        public event TsGuiWindowMovingEventHandler WindowMoved;
-        public event TsGuiWindowMovingEventHandler WindowMoving;
-        public event TsGuiWindowEventHandler WindowMouseUp;
-        public event ConfigLoadFinishedEventHandler ConfigLoadFinished;
+        public event RoutedEventHandler WindowLoaded;
+        public event RoutedEventHandler PageLoaded;
+        public event EventHandler WindowMoved;
+        public event EventHandler WindowMoving;
+        public event RoutedEventHandler WindowMouseUp;
+        public event EventHandler ConfigLoadFinished;
+        public event EventHandler AppClosing;
 
         //properties
-        public GroupLibrary GroupLibrary { get; }
-        public TsMainWindow TsMainWindow { get; set; }
-        public OptionLibrary OptionLibrary { get; }
         public bool StartupFinished { get; set; }
         public MainWindow ParentWindow { get; set; }
         public TsPage CurrentPage { get; set; }
@@ -52,11 +49,11 @@ namespace TsGui.Tests
         public bool UseTouchDefaults { get; set; }
         public string DefaultPath { get; set; }
 
-        public async Task InitAsync(MainWindow ParentWindow, Arguments Arguments) { await Task.Delay(0); }
+        public async Task StartupAsync() { await Task.CompletedTask; }
 
-
+        public async Task ReloadAsync() { await Task.CompletedTask; }
         public void CloseWithError(string Title, string Message) { }
-        public void Startup() { }
+
         public void AddOptionToLibary(IOption Option) { }
         public void MoveNext() { }
         public void MovePrevious() { }

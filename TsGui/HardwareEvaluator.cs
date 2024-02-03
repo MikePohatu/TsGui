@@ -259,5 +259,26 @@ namespace TsGui
             else { s = basestring + ", " + newstring; }
             return s;
         }
+
+        public static void Reset()
+        {
+            _namespace = @"root\CIMV2";
+            _path = null;
+
+            IsLaptop = false;
+            IsDesktop = false;
+            IsServer = false;
+            IsVirtualMachine = false;
+            IsConvertible = false;
+            IsDetachable = false;
+            IsTablet = false;
+            IPAddresses4 = string.Empty;
+            IPAddresses6 = string.Empty;
+            IPNetMask4 = string.Empty;
+            IPNetMask6 = string.Empty;
+            DefaultGateways4 = string.Empty;
+            DefaultGateways6 = string.Empty;
+            DHCPServer = string.Empty;
+        }
     }
 }

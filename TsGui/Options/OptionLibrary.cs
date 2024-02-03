@@ -30,30 +30,39 @@ using TsGui.View.GuiOptions;
 
 namespace TsGui.Options
 {
-    public class OptionLibrary
+    public static class OptionLibrary
     {
-        public event OptionLibraryOptionAdded OptionAdded;
-        public ObservableCollection<IOption> Options { get; } = new ObservableCollection<IOption>();
-        public List<IValidationGuiOption> ValidationOptions { get; } = new List<IValidationGuiOption>();
+        public static event OptionLibraryOptionAdded OptionAdded;
+        public static ObservableCollection<IOption> Options { get; } = new ObservableCollection<IOption>();
+        public static List<IValidationGuiOption> ValidationOptions { get; } = new List<IValidationGuiOption>();
 
-        public void Add(IOption option)
+        public static void Add(IOption option)
         {
-            this.Options.Add(option);
+            Options.Add(option);
             IValidationGuiOption valop = option as IValidationGuiOption;
-            if (valop != null) { this.ValidationOptions.Add(valop); }
+            if (valop != null) { ValidationOptions.Add(valop); }
 
             if (string.IsNullOrWhiteSpace(option.ID) == false) 
             { LinkingHub.Instance.AddSource(option); }
 
-            this.OptionAdded?.Invoke(option, new EventArgs());
+            OptionAdded?.Invoke(option, new EventArgs());
         }
 
-        public async Task InitialiseOptionsAsync()
+        public static async Task InitialiseOptionsAsync()
         {
-            foreach (IOption option in this.Options)
+            foreach (IOption option in Options)
             {
                 await option.InitialiseAsync();
             }
+        }
+
+        /// <summary>
+        /// Clear the loaded options
+        /// </summary>
+        public static void Reset()
+        {
+            Options.Clear();
+            ValidationOptions.Clear();
         }
     }
 }

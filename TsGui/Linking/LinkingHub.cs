@@ -37,6 +37,15 @@ namespace TsGui.Linking
             MessageHub.Subscribe(Topics.ReprocessRequest, this);
         }
 
+
+        /// <summary>
+        /// Remove all styles for reload
+        /// </summary>
+        public void Reset()
+        {
+            this._sources.Clear();
+        }
+
         public IOption GetSourceOption(string ID)
         {
             if (string.IsNullOrWhiteSpace(ID)) { return null; }

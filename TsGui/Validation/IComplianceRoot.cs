@@ -20,8 +20,6 @@
 // IComplianceRoot.cs - interface for the root element of the compliance 'tree' i.e.
 // compliance retry events are triggered from here and propogated down
 
-using TsGui.Events;
-
 namespace TsGui.Validation
 {
     public interface IComplianceRoot

@@ -175,5 +175,14 @@ namespace TsGui.Authentication
 
             _authenticators.Add(newauth.AuthID, newauth);
         }
+
+        public static void Reset()
+        {
+            _authenticators.Clear();
+            _pendingconsumers.Clear();
+            _passwordconfirmers.Clear();
+            _passwords.Clear();
+            _usernames.Clear();
+        }
     }
 }

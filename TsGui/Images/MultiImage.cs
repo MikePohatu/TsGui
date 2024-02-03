@@ -30,14 +30,13 @@ using System.Windows.Threading;
 
 using TsGui.Helpers;
 using TsGui.View;
-using TsGui.Events;
 using Core;
 
 namespace TsGui.Images
 {
     public class MultiImage: ViewModelBase
     {
-        public event TsGuiWindowEventHandler ImageScalingUpdate;
+        public event RoutedEventHandler ImageScalingUpdate;
 
         private string _rootpath;
         private string _imagename;

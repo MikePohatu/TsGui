@@ -22,7 +22,6 @@ using System.ComponentModel;
 
 using TsGui.View.Layout;
 using TsGui.Options;
-using TsGui.Events;
 using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Authentication;
@@ -32,17 +31,15 @@ namespace TsGui
 {
     public interface IDirector
     {
-        event TsGuiWindowEventHandler PageLoaded;
-        event TsGuiWindowEventHandler WindowLoaded;
-        event TsGuiWindowMovingEventHandler WindowMoving;
-        event TsGuiWindowMovingEventHandler WindowMoved;
-        event TsGuiWindowEventHandler WindowMouseUp;
-        event ConfigLoadFinishedEventHandler ConfigLoadFinished;
+        event RoutedEventHandler PageLoaded;
+        event RoutedEventHandler WindowLoaded;
+        event EventHandler WindowMoving;
+        event EventHandler WindowMoved;
+        event RoutedEventHandler WindowMouseUp;
+        event EventHandler ConfigLoadFinished;
+        event EventHandler AppClosing;
 
         //properties
-        GroupLibrary GroupLibrary { get; }
-        TsMainWindow TsMainWindow { get; set; }
-        OptionLibrary OptionLibrary { get; }
         bool StartupFinished { get; set; }
         MainWindow ParentWindow { get; set; }
         TsPage CurrentPage { get; set; }
@@ -50,7 +47,10 @@ namespace TsGui
         string DefaultPath { get; }
         bool UseTouchDefaults { get; }
 
-        Task InitAsync(MainWindow ParentWindow, Arguments Arguments);
+        Task StartupAsync();
+
+        Task ReloadAsync();
+
         void CloseWithError(string Title, string Message);
         void AddOptionToLibary(IOption Option);
         void MoveNext();

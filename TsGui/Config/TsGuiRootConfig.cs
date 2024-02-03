@@ -69,22 +69,21 @@ namespace TsGui.Config
             XElement x;
             //Set show grid lines after pages and columns have been created.
             x = inputxml.Element("ShowGridLines");
-            if (x != null)
-            { ShowGridLines = true; }
+            if (x != null) { ShowGridLines = true; }
+            else { ShowGridLines = false; }
 
             x = inputxml.Element("UseTouchDefaults");
-            if (x != null)
-            { UseTouchDefaults = true; }
+            if (x != null) { UseTouchDefaults = true; }
+            else {  UseTouchDefaults = false; }
 
             //turn hardware eval on or off
             x = inputxml.Element("HardwareEval");
-            if (x == null)
-            { HardwareEval = false; }
+            if (x == null) { HardwareEval = false; }
+            else {  HardwareEval = true; }
 
             DefaultPath = XmlHandler.GetStringFromXml(inputxml, "DefaultPath", DefaultPath);
             PurgeInactive = XmlHandler.GetBoolFromXml(inputxml, "PurgeInactive", PurgeInactive);
             OutputType = XmlHandler.GetStringFromXml(inputxml, "Output", OutputType);
-
         }
     }
 }

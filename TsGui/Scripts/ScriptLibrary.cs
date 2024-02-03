@@ -52,5 +52,10 @@ namespace TsGui.Scripts
             
             _scripts.Add(script.ID, script);
         }
+
+        public static void Reset()
+        {
+            _scripts.Clear();
+        }
     }
 }

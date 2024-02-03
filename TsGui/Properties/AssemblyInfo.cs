@@ -30,7 +30,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("20Road")]
 [assembly: AssemblyProduct("TsGui")]
-[assembly: AssemblyCopyright("Copyright © 20Road Limited 2023")]
+[assembly: AssemblyCopyright("Copyright © 20Road Limited 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -69,7 +69,7 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.10.0")]
-[assembly: AssemblyFileVersion("2.0.10.0")]
+[assembly: AssemblyVersion("2.0.21.0")]
+[assembly: AssemblyFileVersion("2.0.21.0")]
 [assembly: NeutralResourcesLanguage("")]
 

@@ -33,11 +33,10 @@ namespace TsGui
     /// </summary>
     public partial class App : Application
     {
-        MainWindow _mainwindow;
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             try { Arguments.Instance.Import(Environment.GetCommandLineArgs()); }
             catch (Exception exc)
@@ -87,8 +86,7 @@ namespace TsGui
          
             Log.Info("*TsGui started - version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
-            this._mainwindow = new MainWindow();
-            Director.Instance.InitAsync(this._mainwindow, Arguments.Instance).ConfigureAwait(false);
+            Director.Instance.StartupAsync().ConfigureAwait(false);
         }
 
 

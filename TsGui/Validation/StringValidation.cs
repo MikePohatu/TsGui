@@ -101,7 +101,7 @@ namespace TsGui.Validation
             {
                 foreach (XElement groupx in xlist)
                 {
-                    Group g = Director.Instance.GroupLibrary.GetGroupFromID(groupx.Value);
+                    Group g = GroupLibrary.GetGroupFromID(groupx.Value);
                     this._groups.Add(g);
                     g.StateEvent += this.OnGroupStateChange;
                 }

@@ -61,7 +61,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.5.2.4\lib\net46\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.5.2.8\lib\net46\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
@@ -115,6 +115,7 @@
     <Compile Include="Connectors\RegistryConnector.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="ConsoleWindow.cs" />
+    <Compile Include="ConfigData.cs" />
     <Compile Include="Debounce.cs" />
     <Compile Include="Diagnostics\LoggingUiViewModel.cs" />
     <Compile Include="Diagnostics\TestingWindow.cs" />
@@ -223,7 +224,6 @@
     <Compile Include="Calculator\CalculatorEnums.cs" />
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
-    <Compile Include="Events\Delegates.cs" />
     <Compile Include="Options\IOption.cs" />
     <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="Grouping\GroupableBlindBase.cs" />

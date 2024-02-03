@@ -1358,19 +1358,22 @@
           <xs:element name="layout" type="Layout" minOccurs="0" maxOccurs="1" />
           <xs:element name="header" type="Layout" minOccurs="0" maxOccurs="1" />
           <xs:element name="footer" type="Layout" minOccurs="0" maxOccurs="1" />
-          <xs:element name="writeFooterOnArchivingOnly" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
-          <xs:element name="maxArchiveFiles" type="xs:integer" minOccurs="0" maxOccurs="1" default="0" />
           <xs:element name="maxArchiveDays" type="xs:integer" minOccurs="0" maxOccurs="1" default="0" />
+          <xs:element name="enableArchiveFileCompression" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="archiveOldFileOnStartupAboveSize" type="xs:long" minOccurs="0" maxOccurs="1" default="0" />
           <xs:element name="archiveOldFileOnStartup" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
-          <xs:element name="enableArchiveFileCompression" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
-          <xs:element name="archiveFileName" type="Layout" minOccurs="0" maxOccurs="1" />
           <xs:element name="archiveFileKind" type="NLog.Targets.FilePathKind" minOccurs="0" maxOccurs="1" default="Unknown" />
+          <xs:element name="archiveFileName" type="Layout" minOccurs="0" maxOccurs="1" />
+          <xs:element name="maxArchiveFiles" type="xs:integer" minOccurs="0" maxOccurs="1" default="0" />
           <xs:element name="archiveEvery" type="NLog.Targets.FileArchivePeriod" minOccurs="0" maxOccurs="1" default="None" />
           <xs:element name="archiveDateFormat" type="xs:string" minOccurs="0" maxOccurs="1" />
           <xs:element name="archiveAboveSize" type="xs:long" minOccurs="0" maxOccurs="1" default="-1" />
           <xs:element name="archiveNumbering" type="NLog.Targets.ArchiveNumberingMode" minOccurs="0" maxOccurs="1" default="Sequence" />
+          <xs:element name="writeFooterOnArchivingOnly" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
+          <xs:element name="writeHeaderWhenInitialFileNotEmpty" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="createDirs" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
+          <xs:element name="replaceFileContentsOnEachWrite" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
+          <xs:element name="lineEnding" type="LineEndingMode" minOccurs="0" maxOccurs="1" />
           <xs:element name="forceMutexConcurrentWrites" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="forceManaged" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
           <xs:element name="fileNameKind" type="NLog.Targets.FilePathKind" minOccurs="0" maxOccurs="1" default="Unknown" />
@@ -1378,10 +1381,10 @@
           <xs:element name="cleanupFileName" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
           <xs:element name="writeBom" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="enableFileDelete" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
-          <xs:element name="deleteOldFileOnStartup" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="encoding" type="xs:string" minOccurs="0" maxOccurs="1" default="utf-8" />
-          <xs:element name="replaceFileContentsOnEachWrite" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
-          <xs:element name="lineEnding" type="LineEndingMode" minOccurs="0" maxOccurs="1" />
+          <xs:element name="deleteOldFileOnStartup" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
+          <xs:element name="keepFileOpen" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
+          <xs:element name="discardAll" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="concurrentWriteAttempts" type="xs:integer" minOccurs="0" maxOccurs="1" default="10" />
           <xs:element name="concurrentWriteAttemptDelay" type="xs:integer" minOccurs="0" maxOccurs="1" default="1" />
           <xs:element name="openFileFlushTimeout" type="xs:integer" minOccurs="0" maxOccurs="1" default="0" />
@@ -1389,9 +1392,7 @@
           <xs:element name="networkWrites" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="bufferSize" type="xs:integer" minOccurs="0" maxOccurs="1" default="32768" />
           <xs:element name="autoFlush" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
-          <xs:element name="keepFileOpen" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
           <xs:element name="concurrentWrites" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
-          <xs:element name="discardAll" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="openFileCacheSize" type="xs:integer" minOccurs="0" maxOccurs="1" default="5" />
         </xs:choice>
         <xs:attribute name="name" type="xs:string">
@@ -1419,19 +1420,14 @@
             <xs:documentation>Footer.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="writeFooterOnArchivingOnly" type="xs:boolean">
-          <xs:annotation>
-            <xs:documentation>Indicates whether the footer should be written only when the file is archived.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="maxArchiveFiles" type="xs:integer">
-          <xs:annotation>
-            <xs:documentation>Maximum number of archive files that should be kept.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
         <xs:attribute name="maxArchiveDays" type="xs:integer">
           <xs:annotation>
             <xs:documentation>Maximum days of archive files that should be kept.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="enableArchiveFileCompression" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Indicates whether to compress archive files into the zip archive format.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="archiveOldFileOnStartupAboveSize" type="xs:long">
@@ -1444,9 +1440,9 @@
             <xs:documentation>Indicates whether to archive old log file on startup.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="enableArchiveFileCompression" type="xs:boolean">
+        <xs:attribute name="archiveFileKind" type="NLog.Targets.FilePathKind">
           <xs:annotation>
-            <xs:documentation>Indicates whether to compress archive files into the zip archive format.</xs:documentation>
+            <xs:documentation>Is the P:NLog.Targets.FileTarget.ArchiveFileName an absolute or relative path?</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="archiveFileName" type="SimpleLayoutAttribute">
@@ -1454,9 +1450,9 @@
             <xs:documentation>Name of the file to be used for an archive.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="archiveFileKind" type="NLog.Targets.FilePathKind">
+        <xs:attribute name="maxArchiveFiles" type="xs:integer">
           <xs:annotation>
-            <xs:documentation>Is the P:NLog.Targets.FileTarget.ArchiveFileName an absolute or relative path?</xs:documentation>
+            <xs:documentation>Maximum number of archive files that should be kept.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="archiveEvery" type="NLog.Targets.FileArchivePeriod">
@@ -1479,9 +1475,29 @@
             <xs:documentation>Way file archives are numbered.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
+        <xs:attribute name="writeFooterOnArchivingOnly" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Indicates whether the footer should be written only when the file is archived.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="writeHeaderWhenInitialFileNotEmpty" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Whether to write the Header on initial creation of file appender, even if the file is not empty. Default value is false, which means only write header when initial file is empty (Ex. ensures valid CSV files)</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
         <xs:attribute name="createDirs" type="xs:boolean">
           <xs:annotation>
             <xs:documentation>Indicates whether to create directories if they do not exist.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="replaceFileContentsOnEachWrite" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Indicates whether to replace file contents on each write instead of appending log message at the end.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="lineEnding" type="LineEndingMode">
+          <xs:annotation>
+            <xs:documentation>Line ending mode.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="forceMutexConcurrentWrites" type="xs:boolean">
@@ -1519,24 +1535,24 @@
             <xs:documentation>Indicates whether to enable log file(s) to be deleted.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="deleteOldFileOnStartup" type="xs:boolean">
-          <xs:annotation>
-            <xs:documentation>Indicates whether to delete old log file on startup.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
         <xs:attribute name="encoding" type="xs:string">
           <xs:annotation>
             <xs:documentation>File encoding.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="replaceFileContentsOnEachWrite" type="xs:boolean">
+        <xs:attribute name="deleteOldFileOnStartup" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Indicates whether to replace file contents on each write instead of appending log message at the end.</xs:documentation>
+            <xs:documentation>Indicates whether to delete old log file on startup.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="lineEnding" type="LineEndingMode">
+        <xs:attribute name="keepFileOpen" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Line ending mode.</xs:documentation>
+            <xs:documentation>Indicates whether to keep log file open instead of opening and closing it on each logging event.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="discardAll" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Whether or not this target should just discard all data that its asked to write. Mostly used for when testing NLog Stack except final write</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="concurrentWriteAttempts" type="xs:integer">
@@ -1574,19 +1590,9 @@
             <xs:documentation>Indicates whether to automatically flush the file buffers after each log message.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="keepFileOpen" type="xs:boolean">
-          <xs:annotation>
-            <xs:documentation>Indicates whether to keep log file open instead of opening and closing it on each logging event.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
         <xs:attribute name="concurrentWrites" type="xs:boolean">
           <xs:annotation>
             <xs:documentation>Indicates whether concurrent writes to the log file by multiple processes on the same host.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="discardAll" type="xs:boolean">
-          <xs:annotation>
-            <xs:documentation>Whether or not this target should just discard all data that its asked to write. Mostly used for when testing NLog Stack except final write</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="openFileCacheSize" type="xs:integer">
@@ -2628,7 +2634,7 @@
         </xs:choice>
         <xs:attribute name="customColumnDelimiter" type="xs:string">
           <xs:annotation>
-            <xs:documentation>Custom column delimiter value (valid when ColumnDelimiter is set to 'Custom').</xs:documentation>
+            <xs:documentation>Custom column delimiter value (valid when P:NLog.Layouts.CsvLayout.Delimiter is set to F:NLog.Layouts.CsvColumnDelimiterMode.Custom).</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="delimiter" type="NLog.Layouts.CsvColumnDelimiterMode">

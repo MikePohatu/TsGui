@@ -1,8 +1,12 @@
-Version 2.0.10.0
-Release date: 14 Dec 2023
+Version 2.0.21.0
+Release date: 3 Feb 2024
+
+*Features
+	Added Reload function in testing mode
 
 *Fixes
-	Fixed an issue loading global styles
+	Fixed an issue where Margin wouldn't apply from Global Style
+	Fixed Style configuration not working with XML attributes
 
 *Known issues
 	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
@@ -11,6 +15,14 @@ Release date: 14 Dec 2023
 	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
+
+---------------
+Version 2.0.10.0
+Release date: 14 Dec 2023
+
+*Fixes
+	Fixed an issue loading global styles
+
 
 ---------------
 Version 2.0.9.0
