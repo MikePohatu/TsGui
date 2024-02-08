@@ -244,10 +244,8 @@ namespace TsGui.View.GuiOptions
                 string invalchars = this.ValidationHandler.GetAllInvalidCharacters();
                 if (!string.IsNullOrEmpty(invalchars)) { s = ResultValidator.RemoveInvalid(s, this.ValidationHandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { s = ResultValidator.Truncate(s, this.MaxLength); }
-
-                if (this.ControlText != s) { this.SetValue(s, message); }
             }
-
+            if (this.ControlText != s) { this.SetValue(s, message); }
             LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
