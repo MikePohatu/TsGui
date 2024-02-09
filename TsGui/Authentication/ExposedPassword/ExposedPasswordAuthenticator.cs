@@ -36,7 +36,7 @@ namespace TsGui.Authentication.ExposedPassword
     {
         private bool _confirm = false;
         private bool _blankallowed = false;
-        private AuthState _state = AuthState.NoPassword;
+        private AuthState _state = AuthState.NotAuthed;
 
         public event AuthValueChanged AuthStateChanged;
 

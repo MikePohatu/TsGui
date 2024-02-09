@@ -29,38 +29,36 @@ namespace TsGui.Authentication.ActiveDirectory
 {
     public static class ActiveDirectoryMethods
     {
-        public static bool IsUserMemberOfGroups(PrincipalContext context, string samaccountname, List<string> groups)
+        public static Dictionary<string, bool> IsUserMemberOfGroups(PrincipalContext context, string samaccountname, List<string> groups)
         {
-            using (UserPrincipal user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, samaccountname))
-            {
-                if (user != null)
+            var memberships = new Dictionary<string, bool>();
+            if (groups != null) {
+                using (UserPrincipal user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, samaccountname))
                 {
-                    GroupPrincipal prigroup = GetPrimaryGroup(context, user);
-                    PrincipalSearchResult<Principal> usergroups = user.GetAuthorizationGroups();
-
-                    if (groups == null) { return true; }
-
-                    foreach (string groupname in groups)
+                    if (user != null)
                     {
-                        using (GroupPrincipal group = GroupPrincipal.FindByIdentity(context, groupname))
-                        {
-                            if (group == null) { Log.Warn("Group not found: " + groupname); }
-                            else
-                            {
-                                //work around issue where IsMemherOf always returns false on users primary group
-                                if (group.Equals(prigroup)) { return true; }
+                        GroupPrincipal prigroup = GetPrimaryGroup(context, user);
+                        //PrincipalSearchResult<Principal> usergroups = user.GetAuthorizationGroups();
 
-                                //now do normal processing
-                                bool ismember = user.IsMemberOf(group);
-                                if (ismember == false) { return false; }
+                        foreach (string groupname in groups)
+                        {
+                            using (GroupPrincipal group = GroupPrincipal.FindByIdentity(context, groupname))
+                            {
+                                if (group == null) { Log.Warn("Group not found: " + groupname); }
+                                else
+                                {
+                                    //work around issue where IsMemherOf always returns false on users primary group
+                                    if (group.Equals(prigroup)) { memberships.Add(groupname, true); }
+                                    else { memberships.Add(groupname, user.IsMemberOf(group)); }
+                                }
                             }
                         }
                     }
-                    return true;
-                }
 
-                else { throw new NoMatchingPrincipalException("User not found: " + samaccountname); }
+                    else { throw new NoMatchingPrincipalException("User not found: " + samaccountname); }
+                }
             }
+            return memberships;
         }
 
         public static GroupPrincipal GetPrimaryGroup(PrincipalContext context, UserPrincipal user)

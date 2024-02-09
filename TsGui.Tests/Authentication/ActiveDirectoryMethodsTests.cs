@@ -44,9 +44,9 @@ namespace TsGui.Tests.Authentication
             adauth.UsernameSource = source;
             source.Username = authargs.AuthUser;
             source.SecureString = GetSecureStringFromString(authargs.AuthPassword);
-            adauth.RequiredGroups = args.AuthArgs.Groups;
+            adauth.Groups = args.AuthArgs.Groups;
             adauth.Authenticate();
-            bool result = ActiveDirectoryMethods.IsUserMemberOfGroups(adauth.Context, args.UserName, args.Groups);
+            bool result = ActiveDirectoryMethods.IsUserMemberOfAllGroups(adauth.Context, args.UserName, args.Groups);
             Assert.AreEqual(args.ExpectedResult,result);
         }
 

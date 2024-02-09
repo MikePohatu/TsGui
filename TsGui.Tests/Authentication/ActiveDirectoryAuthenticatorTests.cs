@@ -44,7 +44,7 @@ namespace TsGui.Tests.Authentication
             adauth.UsernameSource = source;
             source.Username = args.AuthUser;
             source.SecureString = GetSecureStringFromString(args.AuthPassword);
-            adauth.RequiredGroups = args.Groups;
+            adauth.Groups = args.Groups;
             AuthState state = adauth.Authenticate();
             NUnit.Framework.Assert.AreEqual(args.ExpectedResult, state);
         }

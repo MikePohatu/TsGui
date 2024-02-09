@@ -41,7 +41,7 @@ namespace TsGui.Authentication.LocalConfig
         public LocalConfigPasswordAuthenticator(XElement inputxml)
         {
             this.LoadXml(inputxml);
-            this.State = AuthState.AccessDenied;
+            this.State = AuthState.NotAuthed;
         }
 
         public AuthState Authenticate()

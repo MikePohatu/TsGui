@@ -22,6 +22,9 @@ using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using Core.Logging;
 using Core.Diagnostics;
+using System.Management.Automation;
+using System.Linq;
+using System.Management.Automation.Language;
 
 namespace TsGui.Authentication.ActiveDirectory
 {
@@ -29,8 +32,9 @@ namespace TsGui.Authentication.ActiveDirectory
     {
         public event AuthValueChanged AuthStateChanged;
 
-        private AuthState _state;
+        private AuthState _state = AuthState.NotAuthed;
         private string _domain;
+        private bool _requireAllGroups = false;
 
         public PrincipalContext Context { get; set; }
         public AuthState State { get { return this._state; } }
@@ -38,13 +42,11 @@ namespace TsGui.Authentication.ActiveDirectory
         public IUsername UsernameSource { get; set; }
         public string Domain { get { return this._domain; } }
         public string AuthID { get; set; }
-        public List<string> RequiredGroups { get; set; } 
+        public List<string> Groups { get; set; } = new List<string>();
 
         public ActiveDirectoryAuthenticator(XElement inputxml)
         {
             this.LoadXml(inputxml);
-            this._state = AuthState.AccessDenied;
-            this.RequiredGroups = new List<string>();
         }
 
         public AuthState Authenticate()
@@ -58,8 +60,8 @@ namespace TsGui.Authentication.ActiveDirectory
             if (string.IsNullOrEmpty(this.PasswordSource.Password) == true)
             {
                 Log.Warn("Cannot autheticate with empty password");
-                this.SetState(AuthState.AccessDenied);
-                return AuthState.AccessDenied;
+                this.SetState(AuthState.NoPassword);
+                return AuthState.NoPassword;
             }
 
             Log.Info("Authenticating user: " + this.UsernameSource.Username + " against domain " + this._domain);
@@ -67,8 +69,28 @@ namespace TsGui.Authentication.ActiveDirectory
             try
             {
                 this.Context = new PrincipalContext(ContextType.Domain, this._domain, this.UsernameSource.Username, this.PasswordSource.Password);
+                
 
-                if (ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context, this.UsernameSource.Username, this.RequiredGroups) == true)
+                var groupmemberships = ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context, this.UsernameSource.Username, this.Groups);
+                
+                //if there are no groups required, default auth is true, otherwise false and requires check
+                bool authorized = this.Groups.Count == 0;
+
+                //not authorized, check groups
+                if (authorized == false) 
+                { 
+                    if (this._requireAllGroups)
+                    {
+                        authorized = groupmemberships.Values.All(x => x == true);
+                    }
+                    else
+                    {
+                        authorized = groupmemberships.Values.Any(x => x == true);
+                    }
+                }
+
+
+                if (authorized)
                 {
                     Log.Info("Active Directory authorised");
                     newstate = AuthState.Authorised;
@@ -99,6 +121,33 @@ namespace TsGui.Authentication.ActiveDirectory
             this._domain = XmlHandler.GetStringFromXml(inputxml, "Domain", null);
             if (string.IsNullOrWhiteSpace(this._domain) == true)
             { throw new KnownException("Missing Domain attribute in XML:", inputxml.ToString()); }
+
+            this._requireAllGroups = XmlHandler.GetBoolFromXml(inputxml, "RequireAllGroups", this._requireAllGroups);
+
+            var xa = inputxml.Attribute("Groups");
+            if (xa != null)
+            {
+                if (string.IsNullOrWhiteSpace(xa.Value) == false)
+                {
+                    var groupsplit = xa.Value.Split(',');
+                    foreach (var group in groupsplit)
+                    {
+                        if (string.IsNullOrWhiteSpace(group) == false)
+                        { this.Groups.Add(group); }
+                    } 
+                }
+            }
+
+            var x = inputxml.Element("Groups");
+            if (x != null)
+            {
+                foreach (var g in x.Elements("Group"))
+                {
+                    if (string.IsNullOrWhiteSpace(g.Value) == false)
+                    { this.Groups.Add(g.Value); }
+                    
+                }
+            }
         }
 
         private void SetState(AuthState newstate)

@@ -47,7 +47,8 @@ namespace TsGui.View.GuiOptions
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;
         private IAuthenticator _authenticator;
-        private string _failuremessage = "Authorization failed";
+        private string _authenticationfailuremessage = "Authentication failed";
+        private string _authorizationfailuremessage = "Authorization failed";
         private string _nopasswordmessage = "Password cannot be empty";
         private static SolidColorBrush _greenbrush = new SolidColorBrush(Colors.Green);
         private static SolidColorBrush _hovergreenbrush = new SolidColorBrush(Colors.OliveDrab);
@@ -111,7 +112,9 @@ namespace TsGui.View.GuiOptions
             base.LoadXml(inputxml);
             this.ValidationHandler.LoadXml(inputxml);
 
-            this._failuremessage = XmlHandler.GetStringFromXml(inputxml, "FailureMessage", this._failuremessage);
+            this._authorizationfailuremessage = XmlHandler.GetStringFromXml(inputxml, "FailureMessage", this._authorizationfailuremessage);
+            this._authorizationfailuremessage = XmlHandler.GetStringFromXml(inputxml, "AuthorizationWarning", this._authorizationfailuremessage);
+            this._authenticationfailuremessage = XmlHandler.GetStringFromXml(inputxml, "AuthenticationWarning", this._authenticationfailuremessage);
             this._nopasswordmessage = XmlHandler.GetStringFromXml(inputxml, "NoPasswordMessage", this._nopasswordmessage);
             this._expose = XmlHandler.GetBoolFromXml(inputxml, "ExposePassword", this._expose);
             this._allowempty = XmlHandler.GetBoolFromXml(inputxml, "AllowEmpty", this._allowempty);
@@ -154,9 +157,14 @@ namespace TsGui.View.GuiOptions
                     this.ValidationText = this._nopasswordmessage;
                     this.ValidationHandler.ToolTipHandler.ShowError();
                 }
+                else if (this._authenticator.State == AuthState.NotAuthorised)
+                {
+                    this.ValidationText = this._authorizationfailuremessage;
+                    this.ValidationHandler.ToolTipHandler.ShowError();
+                }
                 else
                 {
-                    this.ValidationText = this._failuremessage;
+                    this.ValidationText = this._authenticationfailuremessage;
                     this.ValidationHandler.ToolTipHandler.ShowError();
                 }
             }
