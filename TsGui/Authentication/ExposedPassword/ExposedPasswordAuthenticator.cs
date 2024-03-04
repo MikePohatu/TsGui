@@ -56,7 +56,7 @@ namespace TsGui.Authentication.ExposedPassword
             this.LoadXml(inputxml);
         }
 
-        public AuthState Authenticate()
+        public async Task<AuthState> AuthenticateAsync()
         {
             AuthState prevstate = this._state;
 
@@ -74,7 +74,7 @@ namespace TsGui.Authentication.ExposedPassword
             else { this._state = AuthState.Authorised; }
 
             if (prevstate != this._state) { this.AuthStateChanged?.Invoke(); }
-
+            await Task.CompletedTask;
             return this._state;
         }
 
@@ -107,20 +107,20 @@ namespace TsGui.Authentication.ExposedPassword
             if (this.PasswordSource == null) { Log.Warn($"AuthID {this.AuthID} does not have a PasswordSource defined"); }
             else
             {
-                this.PasswordSource.PasswordChanged += this.OnPasswordChanged;
+                this.PasswordSource.PasswordChangedAsync += this.OnPasswordChangedAsync;
             }
             if (this._confirm)
             {
                 if (this.PasswordConfirmationSource == null) { Log.Warn($"AuthID {this.AuthID} does not have a PasswordConfirmationSource defined"); }
-                else { this.PasswordConfirmationSource.PasswordChanged += this.OnPasswordChanged; }
+                else { this.PasswordConfirmationSource.PasswordChangedAsync += this.OnPasswordChangedAsync; }
             }
 
             await Task.CompletedTask;
         }
 
-        public void OnPasswordChanged()
+        public async Task OnPasswordChangedAsync()
         {
-            this.Authenticate();
+            await this.AuthenticateAsync();
             this.NotifyUpdate();
         }
 

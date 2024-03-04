@@ -37,15 +37,9 @@ namespace TsGui.Actions
             AuthLibrary.AddAuthenticatorConsumer(this);
         }
 
-        public void RunAction()
-        {
-            this.Authenticator?.Authenticate();
-        }
-
         public async Task RunActionAsync()
         {
-            await Task.CompletedTask;
-            this.RunAction();
+            await this.Authenticator?.AuthenticateAsync();
         }
 
         private void LoadXml(XElement inputxml)

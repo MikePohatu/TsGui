@@ -39,7 +39,7 @@ namespace TsGui.View.GuiOptions
 {
     public class TsPasswordBox: GuiOptionBase, IGuiOption, IPassword, IValidationGuiOption
     {
-        public event AuthValueChanged PasswordChanged;
+        public event AuthValueChangedAsync PasswordChangedAsync;
 
         private bool _allowempty = false;
         private bool _isauthenticator = true;   //is this actually used for authentication, or just to record a pwf
@@ -217,11 +217,11 @@ namespace TsGui.View.GuiOptions
             this.Validate();
         }
 
-        public void OnKeyDown(object sender, KeyEventArgs e)
+        public async void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return || e.Key == Key.Enter)
             {
-                this._authenticator.Authenticate();
+                await this._authenticator.AuthenticateAsync();
                 e.Handled = true;
             }
         }
@@ -229,7 +229,7 @@ namespace TsGui.View.GuiOptions
         public void OnPasswordChanged(object sender, EventArgs e)
         {
             //Log.Info("Password changed event");
-            this.PasswordChanged?.Invoke();
+            this.PasswordChangedAsync?.Invoke();
         }
 
         //First state change needs the borderbrush thickness to be changed. Takes some thickness from padding and put it onto borderthickness

@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Core.Diagnostics;
 using Core.Logging;
@@ -44,7 +45,7 @@ namespace TsGui.Authentication.LocalConfig
             this.State = AuthState.NotAuthed;
         }
 
-        public AuthState Authenticate()
+        public async Task<AuthState> AuthenticateAsync()
         {
             if (string.IsNullOrEmpty(this.PasswordSource.Password) == true)
             {
@@ -75,6 +76,9 @@ namespace TsGui.Authentication.LocalConfig
 
             this.SetState(newstate);
             this.AuthStateChanged?.Invoke();
+
+            await Task.CompletedTask;
+
             return newstate;
         }
 

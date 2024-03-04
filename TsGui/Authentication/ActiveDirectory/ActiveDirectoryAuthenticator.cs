@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -25,6 +25,7 @@ using Core.Diagnostics;
 using System.Management.Automation;
 using System.Linq;
 using System.Management.Automation.Language;
+using System.Threading.Tasks;
 
 namespace TsGui.Authentication.ActiveDirectory
 {
@@ -49,7 +50,7 @@ namespace TsGui.Authentication.ActiveDirectory
             this.LoadXml(inputxml);
         }
 
-        public AuthState Authenticate()
+        public async Task<AuthState> AuthenticateAsync()
         {
             if (string.IsNullOrWhiteSpace(this.UsernameSource.Username) == true)
             {

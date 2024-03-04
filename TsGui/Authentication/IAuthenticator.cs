@@ -16,6 +16,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using System.Threading.Tasks;
+
 namespace TsGui.Authentication
 {
     public interface IAuthenticator
@@ -23,7 +25,7 @@ namespace TsGui.Authentication
         event AuthValueChanged AuthStateChanged;
         AuthState State { get; }
         string AuthID { get; }
-        AuthState Authenticate();
+        Task<AuthState> AuthenticateAsync();
         IPassword PasswordSource { get; set; }
         IUsername UsernameSource { get; set; }
     }
