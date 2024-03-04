@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -22,10 +22,11 @@ using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using Core.Logging;
 using Core.Diagnostics;
-using System.Management.Automation;
 using System.Linq;
-using System.Management.Automation.Language;
+using TsGui.Linking;
 using System.Threading.Tasks;
+using MessageCrap;
+using TsGui.Options;
 
 namespace TsGui.Authentication.ActiveDirectory
 {
@@ -36,6 +37,8 @@ namespace TsGui.Authentication.ActiveDirectory
         private AuthState _state = AuthState.NotAuthed;
         private string _domain;
         private bool _requireAllGroups = false;
+        private bool _createIDs = false;
+        private string _groupIdPrefix;
 
         public PrincipalContext Context { get; set; }
         public AuthState State { get { return this._state; } }
@@ -88,8 +91,18 @@ namespace TsGui.Authentication.ActiveDirectory
                     {
                         authorized = groupmemberships.Values.Any(x => x == true);
                     }
-                }
 
+                    foreach (var group in this.Groups)
+                    {
+                        Log.Debug($"Group: {group} | IsMember: {groupmemberships[group].ToString()}");
+                        var option = LinkingHub.Instance.GetSourceOption(GetGroupID(group)) as MiscOption;
+                        if (option != null)
+                        {
+                            option.CurrentValue = groupmemberships[group].ToString().ToUpper();
+                            await option.UpdateValueAsync(MessageHub.CreateMessage(this, null));
+                        }
+                    }
+                }
 
                 if (authorized)
                 {
@@ -119,11 +132,13 @@ namespace TsGui.Authentication.ActiveDirectory
             if (string.IsNullOrWhiteSpace(this.AuthID) == true)
             { throw new KnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
 
+            this._groupIdPrefix = this.AuthID + "_";
             this._domain = XmlHandler.GetStringFromXml(inputxml, "Domain", null);
             if (string.IsNullOrWhiteSpace(this._domain) == true)
             { throw new KnownException("Missing Domain attribute in XML:", inputxml.ToString()); }
 
             this._requireAllGroups = XmlHandler.GetBoolFromXml(inputxml, "RequireAllGroups", this._requireAllGroups);
+            this._createIDs = XmlHandler.GetBoolFromXml(inputxml, "CreateGroupIDs", this._createIDs);
 
             var xa = inputxml.Attribute("Groups");
             if (xa != null)
@@ -134,7 +149,7 @@ namespace TsGui.Authentication.ActiveDirectory
                     foreach (var group in groupsplit)
                     {
                         if (string.IsNullOrWhiteSpace(group) == false)
-                        { this.Groups.Add(group); }
+                        { this.AddGroup(group); }
                     } 
                 }
             }
@@ -145,10 +160,26 @@ namespace TsGui.Authentication.ActiveDirectory
                 foreach (var g in x.Elements("Group"))
                 {
                     if (string.IsNullOrWhiteSpace(g.Value) == false)
-                    { this.Groups.Add(g.Value); }
+                    { this.AddGroup(g.Value); }
                     
                 }
             }
+        }
+
+        private void AddGroup(string groupname)
+        {
+            this.Groups.Add(groupname);
+            if (this._createIDs)
+            {
+                var noui = new MiscOption(GetGroupID(groupname), "FALSE");
+                noui.ID = GetGroupID(groupname);
+                OptionLibrary.Add(noui);
+            }
+        }
+
+        private string GetGroupID(string groupname)
+        {
+            return $"{this._groupIdPrefix}_{groupname}";
         }
 
         private void SetState(AuthState newstate)
