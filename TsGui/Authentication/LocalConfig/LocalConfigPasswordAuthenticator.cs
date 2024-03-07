@@ -45,14 +45,14 @@ namespace TsGui.Authentication.LocalConfig
             this.State = AuthState.NotAuthed;
         }
 
-        public async Task<AuthState> AuthenticateAsync()
+        public async Task<AuthenticationResult> AuthenticateAsync()
         {
             if (string.IsNullOrEmpty(this.PasswordSource.Password) == true)
             {
                 Log.Warn("Cannot autheticate with empty password");
                 this.SetState(AuthState.NoPassword);
                 this.AuthStateChanged?.Invoke();
-                return AuthState.AccessDenied;
+                return new AuthenticationResult(AuthState.AccessDenied);
             }
 
             Log.Info("Authenticating against local config with ID " + this.AuthID);
@@ -79,7 +79,7 @@ namespace TsGui.Authentication.LocalConfig
 
             await Task.CompletedTask;
 
-            return newstate;
+            return new AuthenticationResult(newstate);
         }
 
         private void LoadXml(XElement inputxml)

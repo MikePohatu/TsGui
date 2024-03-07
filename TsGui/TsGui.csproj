@@ -100,6 +100,7 @@
     <Compile Include="Authentication\AuthenticationDelegates.cs" />
     <Compile Include="Authentication\AuthenticationEnums.cs" />
     <Compile Include="Authentication\AuthenticationFactory.cs" />
+    <Compile Include="Authentication\AuthenticationResult.cs" />
     <Compile Include="Authentication\AuthLibrary.cs" />
     <Compile Include="Authentication\ExposedPassword\ExposedPasswordAuthenticator.cs" />
     <Compile Include="Authentication\IAuthenticationComponent.cs" />

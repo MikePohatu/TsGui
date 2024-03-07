@@ -53,29 +53,31 @@ namespace TsGui.Authentication.ActiveDirectory
             this.LoadXml(inputxml);
         }
 
-        public async Task<AuthState> AuthenticateAsync()
+        public async Task<AuthenticationResult> AuthenticateAsync()
         {
             if (string.IsNullOrWhiteSpace(this.UsernameSource.Username) == true)
             {
                 Log.Warn("Cannot autheticate with empty username");
                 this.SetState(AuthState.AccessDenied);
-                return AuthState.AccessDenied;
+                return new AuthenticationResult(AuthState.AccessDenied);
             }
             if (string.IsNullOrEmpty(this.PasswordSource.Password) == true)
             {
                 Log.Warn("Cannot autheticate with empty password");
                 this.SetState(AuthState.NoPassword);
-                return AuthState.NoPassword;
+                return new AuthenticationResult(AuthState.NoPassword);
             }
 
             Log.Info("Authenticating user: " + this.UsernameSource.Username + " against domain " + this._domain);
             AuthState newstate;
+            Dictionary<string, bool> groupmemberships = null;
+
             try
             {
                 this.Context = new PrincipalContext(ContextType.Domain, this._domain, this.UsernameSource.Username, this.PasswordSource.Password);
                 
 
-                var groupmemberships = ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context, this.UsernameSource.Username, this.Groups);
+                groupmemberships = ActiveDirectoryMethods.IsUserMemberOfGroups(this.Context, this.UsernameSource.Username, this.Groups);
                 
                 //if there are no groups required, default auth is true, otherwise false and requires check
                 bool authorized = this.Groups.Count == 0;
@@ -123,7 +125,9 @@ namespace TsGui.Authentication.ActiveDirectory
             }
 
             this.SetState(newstate);
-            return newstate;
+
+            var result = new AuthenticationResult(newstate, groupmemberships);
+            return result;
         }
 
         private void LoadXml(XElement inputxml)

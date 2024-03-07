@@ -56,7 +56,7 @@ namespace TsGui.Authentication.ExposedPassword
             this.LoadXml(inputxml);
         }
 
-        public async Task<AuthState> AuthenticateAsync()
+        public async Task<AuthenticationResult> AuthenticateAsync()
         {
             AuthState prevstate = this._state;
 
@@ -75,7 +75,7 @@ namespace TsGui.Authentication.ExposedPassword
 
             if (prevstate != this._state) { this.AuthStateChanged?.Invoke(); }
             await Task.CompletedTask;
-            return this._state;
+            return new AuthenticationResult(this._state);
         }
 
         private void LoadXml(XElement inputxml)

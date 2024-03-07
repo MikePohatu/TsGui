@@ -25,7 +25,7 @@ namespace TsGui.Authentication
         event AuthValueChanged AuthStateChanged;
         AuthState State { get; }
         string AuthID { get; }
-        Task<AuthState> AuthenticateAsync();
+        Task<AuthenticationResult> AuthenticateAsync();
         IPassword PasswordSource { get; set; }
         IUsername UsernameSource { get; set; }
     }
