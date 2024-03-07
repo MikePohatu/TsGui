@@ -46,7 +46,7 @@ namespace TsGui.Authentication.ActiveDirectory
         public IUsername UsernameSource { get; set; }
         public string Domain { get { return this._domain; } }
         public string AuthID { get; set; }
-        public List<string> Groups { get; set; } = new List<string>();
+        public List<string> Groups { get; private set; } = new List<string>();
 
         public ActiveDirectoryAuthenticator(XElement inputxml)
         {
@@ -69,7 +69,7 @@ namespace TsGui.Authentication.ActiveDirectory
             }
 
             Log.Info("Authenticating user: " + this.UsernameSource.Username + " against domain " + this._domain);
-            AuthState newstate;
+            AuthState newstate = AuthState.AccessDenied;
             Dictionary<string, bool> groupmemberships = null;
 
             try
@@ -170,7 +170,15 @@ namespace TsGui.Authentication.ActiveDirectory
             }
         }
 
-        private void AddGroup(string groupname)
+        public void AddGroups(List<string> groupnames)
+        {
+            if (groupnames != null)
+            {
+                foreach (string group in groupnames) { this.AddGroup(group); }
+            }
+        }
+
+        public void AddGroup(string groupname)
         {
             this.Groups.Add(groupname);
             if (this._createIDs)
