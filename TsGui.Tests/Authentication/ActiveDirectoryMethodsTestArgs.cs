@@ -24,16 +24,14 @@ namespace TsGui.Tests.Authentication
     public class ActiveDirectoryMethodsTestArgs
     {
         public ActiveDirectoryAuthenticatorTestArgs AuthArgs { get; set; }
-        public bool ExpectedResult { get; set; }
+        public Dictionary<string, bool> ExpectedResults { get; set; }
         public string UserName { get; set; }
-        public List<string> Groups { get; set; }
 
-        public ActiveDirectoryMethodsTestArgs(ActiveDirectoryAuthenticatorTestArgs authargs, string user, List<string> groups, bool expectedresult)
+        public ActiveDirectoryMethodsTestArgs(ActiveDirectoryAuthenticatorTestArgs authargs, string user, Dictionary<string, bool> expectedresults)
         {
             this.AuthArgs = authargs;
             this.UserName = user;
-            this.Groups = groups;
-            this.ExpectedResult = expectedresult;
+            this.ExpectedResults = expectedresults;
         }
     }
 }

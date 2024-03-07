@@ -25,26 +25,34 @@ namespace TsGui.Tests.Authentication
 {
     public class ActiveDirectoryAuthenticatorTestArgs
     {
-        public AuthState ExpectedResult { get; set; }
+        public Dictionary<string, bool> ExpectedMemberships { get; set; }
+        public AuthState ExpectedState { get; set; }
+
         public string AuthUser { get; set; }
         public string AuthPassword { get; set; }
         public string UserName { get; set; }
         public string Domain { get; set; }
         public List<string> Groups { get; set; }
 
-        public ActiveDirectoryAuthenticatorTestArgs(string authuser, string authpw, string domain, List<string> groups, AuthState expectedresult)
+        public ActiveDirectoryAuthenticatorTestArgs(List<string> groups, AuthState expectedstate, Dictionary<string, bool> expectedmemberships)
         {
             try { this.ReadConfigFile(); }
             catch { }
 
-            if (authuser != null)  { this.AuthUser = authuser; }
-            
-            if (authpw != null) { this.AuthPassword = authpw; }
-            
-            if (domain != null) { this.Domain = domain; }
+            this.Groups = groups;
+            this.ExpectedMemberships = expectedmemberships;
+            this.ExpectedState = expectedstate;
+        }
+
+        public ActiveDirectoryAuthenticatorTestArgs(string badpassword, List<string> groups, AuthState expectedstate, Dictionary<string, bool> expectedmemberships)
+        {
+            try { this.ReadConfigFile(); }
+            catch { }
+            this.AuthPassword = badpassword;
 
             this.Groups = groups;
-            this.ExpectedResult = expectedresult;
+            this.ExpectedMemberships = expectedmemberships;
+            this.ExpectedState = expectedstate;
         }
 
         //attempt to read the config.xml file, and display the right messages if it fails
