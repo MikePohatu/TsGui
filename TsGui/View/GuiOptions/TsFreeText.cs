@@ -237,15 +237,19 @@ namespace TsGui.View.GuiOptions
 
         public override async Task UpdateValueAsync(Message message)
         {
-            string s = (await this._querylist.GetResultWrangler(message))?.GetString();
-            if (s != null) 
+            var wrang = await this._querylist.GetResultWrangler(message);
+            
+            if (wrang != null) 
             {
+                string s = wrang.GetString();
+
                 //if required, remove invalid characters and truncate
                 string invalchars = this.ValidationHandler.GetAllInvalidCharacters();
                 if (!string.IsNullOrEmpty(invalchars)) { s = ResultValidator.RemoveInvalid(s, this.ValidationHandler.GetAllInvalidCharacters()); }
                 if (this.MaxLength > 0) { s = ResultValidator.Truncate(s, this.MaxLength); }
+
+                if (this.ControlText != s) { this.SetValue(s, message); }
             }
-            if (this.ControlText != s) { this.SetValue(s, message); }
             LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
