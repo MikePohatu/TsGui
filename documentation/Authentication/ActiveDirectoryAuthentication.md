@@ -4,17 +4,23 @@ Active Directory authentication provides authentication against a domain for use
 
 It should be noted that there are limitations to what is possible in WinPE due to a only a limited subset of the .Net Framework being avaiable. For this reason Active Directory Authentication is considered as a beta feature and requires WinPE customisation that will not be supported by Microsoft. 
 
-* [Prerequisites](#Prerequisites)
-* [Overview](#Overview)
-* [The Authentication Block](#The-Authentication-Block)
-* [The PasswordBox GuiOption](#The-PasswordBox-GuiOption)
-* [The ActionButton GuiOption](#The-ActionButton-GuiOption)
-* [Login Example](#Login-Example)
-* [Active Directory Queries](#Active-Directory-Queries)
-* [ADGroupMembers Query](#ADGroupMembers-Query)
-* [ADOU Query](#ADOU-Query)
-* [Query Usage examples](#Query-Usage-examples)
-* [Complete Config Example](#Complete-Config-Example)
+* [Prerequisites](#prerequisites)
+* [Overview](#overview)
+  * [The Authentication Block](#the-authentication-block)
+    * [Limiting authentication by group membership](#limiting-authentication-by-group-membership)
+    * [Any vs All groups](#any-vs-all-groups)
+    * [Using group membership to change the UI](#using-group-membership-to-change-the-ui)
+  * [The UsernameBox GuiOption](#the-usernamebox-guioption)
+  * [The PasswordBox GuiOption](#the-passwordbox-guioption)
+  * [The ActionButton GuiOption](#the-actionbutton-guioption)
+  * [Login Example](#login-example)
+* [Active Directory Queries](#active-directory-queries)
+  * [ADGroupMembers Query](#adgroupmembers-query)
+    * [ADGroupMembers query example](#adgroupmembers-query-example)
+  * [ADOU Query](#adou-query)
+    * [ADOU query example](#adou-query-example)
+  * [Query Usage examples](#query-usage-examples)
+* [Complete Config Example](#complete-config-example)
 ---
 <br>
 
@@ -37,11 +43,82 @@ Active Directory Authentication requires three things in your TsGui configuratio
 ### The Authentication Block
 The Authentication element of your configuration must have a **Type="ActiveDirectory"** attribute, a **Domain** attribute with the FQDN of the relevant domain, and an **AuthID** attribute with a value that is unique within the config. This AuthID will be used by GuiOptions to reference and trigger the Authentication process
 
-```
+```xml
 <Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="domain.local"/>
 ```
 
 When an authentication process is initiated, the [Username](#The-UsernameBox-GuiOption) and [Password](#The-PasswordBox-GuiOption) values entered by the user are used to authenticate against the configured domain. 
+
+#### Limiting authentication by group membership
+
+You can accept authentication based on the AD groups the user is a member of the using one of the following formats:
+
+<ins>As an attribute</ins><br>
+Use the **Groups** attribute to list your groups by name, separated by a comma. Make note of any spaces. Don't add a space before or after the group name.
+```xml
+<Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="domain.local" Groups="group 1, group 2" />
+```
+
+<ins>As elements</ins><br>
+Add a **Groups** element, then add a \<Group> element for each AD group
+```xml
+<Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="domain.local">
+  <Groups>
+    <Group>group 1</Group>
+    <Group>group 2</Group>
+  </Group>
+</Authentication>
+```
+
+#### Any vs All groups
+By default, the authentication will be accepted if the user is a member of **any** of the specified groups (or if none are specifed). To change this behaviour to require **all** groups, set the **RequireAllGroups** attribute to TRUE:
+
+```xml
+<Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="domain.local" Groups="group 1, group 2" RequireAllGroups="TRUE" />
+```
+
+#### Using group membership to change the UI
+It is sometimes useful to change the UI based on who is logged in. By setting the **CreateGroupIDs** attribute to TRUE, TsGui will create an ID for each AD group that can be used with the [option linking feature](/documentation/features/OptionLinking.md). The ID created for each group will in the format **%AuthID%_%GroupName%**.
+
+As an example, the following is a simple login page with two additional checkboxes. The checkboxes will be ticked and unticked based on the group memberships matched after authentication.  
+
+```xml
+	<Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="domain.local" Groups="group 1,group 2" CreateGroupIDs="TRUE" />
+
+	<Page>
+		<Row>
+			<Column>
+				<GuiOption Type="UsernameBox" AuthID="ad_auth">
+					<Variable>VAR_Username</Variable>
+				</GuiOption>
+
+				<GuiOption Type="PasswordBox" AuthID="ad_auth" />
+
+				<GuiOption Type="ActionButton" IsDefault="TRUE">
+					<Action Type="Authentication" AuthID="ad_auth" />
+					<ButtonText>Login</ButtonText>
+				</GuiOption>
+
+				<GuiOption Type="CheckBox">
+					<Variable>group_1</Variable>
+					<Label>group 1</Label>
+					<SetValue>
+						<Query Type="LinkTo">ad_auth_group 1</Query>
+					</SetValue>
+				</GuiOption>
+
+				<GuiOption Type="CheckBox">
+					<Variable>group_2</Variable>
+					<Label>group 2</Label>
+					<SetValue>
+						<Query Type="LinkTo">ad_auth_group 2</Query>
+					</SetValue>
+				</GuiOption>
+
+			</Column>
+		</Row>
+	</Page>
+```
 
 ---
 <br>
@@ -50,7 +127,7 @@ When an authentication process is initiated, the [Username](#The-UsernameBox-Gui
 ### The UsernameBox GuiOption
 The UsernameBox provides an input for the user to enter their AD username. An **AuthID** attribute is required to reference the Authentication block configured above. The value of this GuiOption can be saved to a Task Sequence Variable using the \<Variable\> element. 
 
-```
+```xml
 <GuiOption Type="UsernameBox" AuthID="ad_auth" >
     <Variable>VAR_Username</Variable>
 </GuiOption>
@@ -67,7 +144,7 @@ The following additional option elements are available:
 * FailureMessage - the message displayed to the user if the authentication fails
 * NoPasswordMessage - the message displayed to the user if authentication is attempted without a password specified.
 
-```
+```xml
 <GuiOption Type="PasswordBox" AuthID="conf_auth">
     <Label>Password:</Label>
     <FailureMessage>Authorization failed</FailureMessage>
@@ -94,7 +171,7 @@ The **ButtonText** element configures the text in the button to be displayed to 
 
 The **IsDefault** attribute on the GuiOption element will make the button attempt to click when the Enter key is pressed. Note that this behaviour may be overridden if another element is focused that already handles the key press event.  
 
-```
+```xml
 <GuiOption Type="ActionButton" IsDefault="TRUE">
     <Action Type="Authentication" AuthID="ad_auth"/>
     <ButtonText>Login</ButtonText>
@@ -106,7 +183,7 @@ The **IsDefault** attribute on the GuiOption element will make the button attemp
 ### Login Example
 The following example shows the configuration items above in position in a TsGui config file. Note the **ad_auth** value across the configuration pieces. 
 
-```
+```xml
 <TsGui LiveData="TRUE">
 d	<Authentication Type="ActiveDirectory" AuthID="ad_auth" Domain="domain.local"/>
 	
@@ -156,7 +233,7 @@ Note that only the following properties are available using this query:
 
 
 #### ADGroupMembers query example
-```
+```xml
 <Query Type="ADGroupMembers" AuthID="ad_auth">
     <GroupName>Domain Users</GroupName>
     <Property Name="DistinguishedName"/>
@@ -182,7 +259,7 @@ Note that only certain properties are available using this query:
 
 
 #### ADOU query example
-```
+```xml
 <Query Type="ADOU" AuthID="ad_auth">
     <BaseOU>OU=SubOU,DC=domain,DC=local</BaseOU>
     <Property Name="distinguishedName"/>
@@ -198,7 +275,7 @@ Using the query above, the **Name** property of each OU will be displayed in the
 ### Query Usage examples
 Note the **ad_auth** value across the configuration pieces. 
 
-```
+```xml
 <GuiOption Type="DropDownList">
     <Variable>AD_User</Variable>
     <Label>AD User:</Label>
@@ -211,7 +288,7 @@ Note the **ad_auth** value across the configuration pieces.
 </GuiOption>
 ```
 
-```
+```xml
 <GuiOption Type="TreeView">
     <Variable>AD_OU</Variable>
     <Label>AD OU:</Label>
@@ -229,7 +306,7 @@ Note the **ad_auth** value across the configuration pieces.
 
 ## Complete Config Example
 
-```
+```xml
 <TsGui LiveData="TRUE">
   <Height>500</Height>
   <Width>400</Width>
