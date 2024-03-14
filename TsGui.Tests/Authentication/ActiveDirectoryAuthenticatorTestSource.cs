@@ -26,7 +26,7 @@ namespace TsGui.Tests.Authentication
 {
     public class ActiveDirectoryAuthenticatorTestSource: IUsername, IPassword
     {
-        public event AuthValueChanged PasswordChanged;
+        public event AuthValueChangedAsync PasswordChangedAsync;
 
         private NetworkCredential _netcredential = new NetworkCredential();
 

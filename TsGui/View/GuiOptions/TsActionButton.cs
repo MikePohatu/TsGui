@@ -86,10 +86,10 @@ namespace TsGui.View.GuiOptions
             this.IsDefault = XmlHandler.GetBoolFromXml(inputxml, "IsDefault", this.IsDefault);
         }
 
-        public void OnButtonClick(object o, RoutedEventArgs e)
+        public async void OnButtonClick(object o, RoutedEventArgs e)
         {
             Log.Debug("Action button clicked");
-            this._action?.RunAction();
+            await this._action?.RunActionAsync();
         }
 
         private void SetDefaults()

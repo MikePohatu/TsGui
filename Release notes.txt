@@ -1,3 +1,23 @@
+Version 2.0.22.0
+Release date: 14 Mar 2024
+
+*Features
+	Added group membership evaluation to AD authentication feature
+
+*Fixes
+	Fixed Disallowed and MaxLength options being lost from InfoBox
+	Fixed Freetext not clearing when passed a null value
+
+
+*Known issues
+	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
+	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
+	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
+	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
+
+*Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
+
+---------------
 Version 2.0.21.0
 Release date: 3 Feb 2024
 
@@ -7,14 +27,6 @@ Release date: 3 Feb 2024
 *Fixes
 	Fixed an issue where Margin wouldn't apply from Global Style
 	Fixed Style configuration not working with XML attributes
-
-*Known issues
-	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
-	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
-	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
-	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
-
-*Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
 
 ---------------
 Version 2.0.10.0

@@ -36,7 +36,7 @@ namespace TsGui.Authentication.ExposedPassword
     {
         private bool _confirm = false;
         private bool _blankallowed = false;
-        private AuthState _state = AuthState.NoPassword;
+        private AuthState _state = AuthState.NotAuthed;
 
         public event AuthValueChanged AuthStateChanged;
 
@@ -56,7 +56,7 @@ namespace TsGui.Authentication.ExposedPassword
             this.LoadXml(inputxml);
         }
 
-        public AuthState Authenticate()
+        public async Task<AuthenticationResult> AuthenticateAsync()
         {
             AuthState prevstate = this._state;
 
@@ -74,8 +74,8 @@ namespace TsGui.Authentication.ExposedPassword
             else { this._state = AuthState.Authorised; }
 
             if (prevstate != this._state) { this.AuthStateChanged?.Invoke(); }
-
-            return this._state;
+            await Task.CompletedTask;
+            return new AuthenticationResult(this._state);
         }
 
         private void LoadXml(XElement inputxml)
@@ -107,20 +107,20 @@ namespace TsGui.Authentication.ExposedPassword
             if (this.PasswordSource == null) { Log.Warn($"AuthID {this.AuthID} does not have a PasswordSource defined"); }
             else
             {
-                this.PasswordSource.PasswordChanged += this.OnPasswordChanged;
+                this.PasswordSource.PasswordChangedAsync += this.OnPasswordChangedAsync;
             }
             if (this._confirm)
             {
                 if (this.PasswordConfirmationSource == null) { Log.Warn($"AuthID {this.AuthID} does not have a PasswordConfirmationSource defined"); }
-                else { this.PasswordConfirmationSource.PasswordChanged += this.OnPasswordChanged; }
+                else { this.PasswordConfirmationSource.PasswordChangedAsync += this.OnPasswordChangedAsync; }
             }
 
             await Task.CompletedTask;
         }
 
-        public void OnPasswordChanged()
+        public async Task OnPasswordChangedAsync()
         {
-            this.Authenticate();
+            await this.AuthenticateAsync();
             this.NotifyUpdate();
         }
 

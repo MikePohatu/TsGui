@@ -16,7 +16,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using System.Threading.Tasks;
+
 namespace TsGui.Authentication
 {
     public delegate void AuthValueChanged();
+    public delegate Task AuthValueChangedAsync();
 }

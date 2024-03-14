@@ -27,13 +27,16 @@ using TsGui.Linking;
 using TsGui.View.Layout;
 using MessageCrap;
 using System.Threading.Tasks;
+using TsGui.Validation;
 
 namespace TsGui.View.GuiOptions
 {
     public class TsInfoBox : GuiOptionBase, IGuiOption, ILinkTarget
     {
         private string _controltext = string.Empty;
-        
+        private int _maxlength = 32760;
+        private string _disallowedCharacters = string.Empty;
+
         //Properties
         public override string CurrentValue { get { return this._controltext; } }
         public string ControlText
@@ -70,6 +73,10 @@ namespace TsGui.View.GuiOptions
 
             XElement x;
 
+            //load legacy options
+            this._disallowedCharacters = XmlHandler.GetStringFromXml(InputXml, "Disallowed", this._disallowedCharacters);
+            this._maxlength = XmlHandler.GetIntFromXml(InputXml, "MaxLength", this._maxlength);
+
             x = InputXml.Element("DisplayValue");
             if (x != null)
             { this.LoadSetValueXml(x,false); }
@@ -87,6 +94,11 @@ namespace TsGui.View.GuiOptions
         private void SetValue(string value, Message message)
         {
             this._controltext = value;
+            //if required, remove invalid characters and truncate
+            if (!string.IsNullOrEmpty(this._disallowedCharacters)) { this._controltext = ResultValidator.RemoveInvalid(this._controltext, this._disallowedCharacters); }
+
+            if (this._maxlength > 0) { this._controltext = ResultValidator.Truncate(this._controltext, this._maxlength); }
+
             this.OnPropertyChanged(this, "ControlText");
             this.NotifyViewUpdate();
             LinkingHub.Instance.SendUpdateMessage(this, message);

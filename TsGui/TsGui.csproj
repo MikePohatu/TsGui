@@ -100,6 +100,7 @@
     <Compile Include="Authentication\AuthenticationDelegates.cs" />
     <Compile Include="Authentication\AuthenticationEnums.cs" />
     <Compile Include="Authentication\AuthenticationFactory.cs" />
+    <Compile Include="Authentication\AuthenticationResult.cs" />
     <Compile Include="Authentication\AuthLibrary.cs" />
     <Compile Include="Authentication\ExposedPassword\ExposedPasswordAuthenticator.cs" />
     <Compile Include="Authentication\IAuthenticationComponent.cs" />
@@ -124,6 +125,7 @@
     </Compile>
     <Compile Include="Linking\ILinkSource.cs" />
     <Compile Include="Linking\Topics.cs" />
+    <Compile Include="Options\MiscOption.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltWifiDisconnected.cs" />
     <Compile Include="Prebuilt\PrebuiltFactory.cs" />
     <Compile Include="Queries\ActiveDirectory\ADOrgUnitGroupsQuery.cs" />
