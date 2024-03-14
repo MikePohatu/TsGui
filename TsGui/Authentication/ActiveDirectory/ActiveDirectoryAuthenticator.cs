@@ -38,7 +38,6 @@ namespace TsGui.Authentication.ActiveDirectory
         private string _domain;
         private bool _requireAllGroups = false;
         private bool _createIDs = false;
-        private string _groupIdPrefix;
 
         public PrincipalContext Context { get; set; }
         public AuthState State { get { return this._state; } }
@@ -94,16 +93,13 @@ namespace TsGui.Authentication.ActiveDirectory
                         authorized = groupmemberships.Values.Any(x => x == true);
                     }
 
-                    foreach (var group in this.Groups)
+                    if (this._createIDs)
                     {
-                        Log.Debug($"Group: {group} | IsMember: {groupmemberships[group].ToString()}");
-                        var option = LinkingHub.Instance.GetSourceOption(GetGroupID(group)) as MiscOption;
-                        if (option != null)
+                        foreach (var group in this.Groups)
                         {
-                            option.CurrentValue = groupmemberships[group].ToString().ToUpper();
-                            await option.UpdateValueAsync(MessageHub.CreateMessage(this, null));
+                            await this.UpdateGroupIDAsync(group, groupmemberships[group]);
                         }
-                    }
+                    }                    
                 }
 
                 if (authorized)
@@ -122,6 +118,15 @@ namespace TsGui.Authentication.ActiveDirectory
                 Log.Warn("Active Directory access denied");
                 Log.Trace(e.Message + Environment.NewLine + e.StackTrace);
                 newstate = AuthState.AccessDenied;
+
+                //set group IDs
+                if (this._createIDs)
+                {
+                    foreach (var group in this.Groups)
+                    {
+                        await this.UpdateGroupIDAsync(group, false);
+                    }
+                }
             }
 
             this.SetState(newstate);
@@ -130,13 +135,24 @@ namespace TsGui.Authentication.ActiveDirectory
             return result;
         }
 
+        private async Task UpdateGroupIDAsync(string groupName, bool ismember)
+        {
+            string member = ismember.ToString().ToUpper();
+            Log.Debug($"Group: {groupName} | IsMember: {member}");
+            var option = LinkingHub.Instance.GetSourceOption(GetGroupID(groupName)) as MiscOption;
+            if (option != null)
+            {
+                option.CurrentValue = member;
+                await option.UpdateValueAsync(MessageHub.CreateMessage(this, null));
+            }
+        }
+
         private void LoadXml(XElement inputxml)
         {
             this.AuthID = XmlHandler.GetStringFromXml(inputxml, "AuthID", null);
             if (string.IsNullOrWhiteSpace(this.AuthID) == true)
             { throw new KnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
 
-            this._groupIdPrefix = this.AuthID + "_";
             this._domain = XmlHandler.GetStringFromXml(inputxml, "Domain", null);
             if (string.IsNullOrWhiteSpace(this._domain) == true)
             { throw new KnownException("Missing Domain attribute in XML:", inputxml.ToString()); }
@@ -191,7 +207,7 @@ namespace TsGui.Authentication.ActiveDirectory
 
         private string GetGroupID(string groupname)
         {
-            return $"{this._groupIdPrefix}_{groupname}";
+            return $"{this.AuthID}_{groupname}";
         }
 
         private void SetState(AuthState newstate)
