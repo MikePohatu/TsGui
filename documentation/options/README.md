@@ -10,6 +10,7 @@
   * [Example FreeText UI element](#example-freetext-ui-element)
 * [GuiOption Types](#guioption-types)
 * [NoUI Options](#noui-options)
+  * [NoUI Containers](#noui-containers)
 
 TsGui is built with a number of 'options' of various types. These options are used to generate [output](/documentation/features/TsGuiOutput.md) such as Task Sequence Variables. 
 
@@ -97,6 +98,7 @@ The NoUI options are contained within the \<NoUI> block of the configuration.
 <TsGui>
 ```
 
+### NoUI Containers
 If you are using NoUI options with the [Groups and Toggles](/documentation/features/GroupsAndToggles.md) feature, you can contain multiple NoUIOption elements within a \<Container> element. 
 
 You can then set the group in the \<Container> element. The group will apply to all child NoUIOption items.
