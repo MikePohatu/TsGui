@@ -30,7 +30,7 @@ namespace TsGui.Grouping
     {
         protected bool _isactive = true;
         protected List<Group> _groups = new List<Group>();
-        protected bool _purgeinactive = Director.Instance.GroupLibrary == null ? false : Director.Instance.GroupLibrary.PurgeInactive;
+        protected bool _purgeinactive = GroupLibrary.PurgeInactive;
 
         public List<Group> Groups { get { return this._groups; } }
         public bool PurgeInactive
@@ -78,7 +78,7 @@ namespace TsGui.Grouping
 
         protected virtual Group AddGroup(string GroupID)
         {
-            Group g = Director.Instance.GroupLibrary.AddToGroup(GroupID, this);
+            Group g = GroupLibrary.AddToGroup(GroupID, this);
             this._groups.Add(g);
             return g;
         }

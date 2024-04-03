@@ -16,13 +16,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Core.Diagnostics;
+using Core.Logging;
 
 namespace TsGui.Config
 {
@@ -46,12 +43,17 @@ namespace TsGui.Config
         /// <returns></returns>
         private static async Task Expand(XElement importxml)
         {
-            foreach (XElement element in importxml.Elements())
+            var elenum = importxml.Elements().GetEnumerator();
+            var hasnext = elenum.MoveNext();
+            while(hasnext)
             {
+                XElement element = elenum.Current;
                 if (element.Name == "Import")
                 {
                     string path = XmlHandler.GetStringFromXml(element, "Path", string.Empty);
                     path = XmlHandler.GetStringFromXml(element, "Path", path);
+                    Log.Info("Loading XML import: " + element.ToString());
+
                     XElement partx = await GetXml(path);
 
                     element.AddBeforeSelf(new XComment(element.ToString()));
@@ -62,11 +64,13 @@ namespace TsGui.Config
                     }
 
                     element.AddBeforeSelf(new XComment(element.ToString()));
+                    hasnext = elenum.MoveNext();
                     element.Remove();
                 } 
                 else
                 {
                     await Expand(element);
+                    hasnext = elenum.MoveNext();
                 }
             }
         }

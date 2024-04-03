@@ -22,7 +22,7 @@
 
 using TsGui.Validation;
 
-namespace TsGui
+namespace TsGui.View.GuiOptions
 {
     public interface IValidationGuiOption : IValidationOwner
     {

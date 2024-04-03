@@ -99,6 +99,15 @@ namespace TsGui.Queries
                         );
                         this._resultquerylist.LoadXml(x);
                         break;
+                    case "resultid":
+                        x = new XElement("Result",
+                                new XElement("Query",
+                                    new XAttribute("Type", "LinkTo"),
+                                    attr.Value
+                                )
+                            );
+                        this._resultquerylist.LoadXml(x);
+                        break;
                     default:
                         break;
                 }

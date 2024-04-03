@@ -37,12 +37,12 @@ namespace TsGui.Queries
         {         
             this.LoadXml(inputxml);
             this.AddExistingOptions();      //add and register any existing options
-            Director.Instance.OptionLibrary.OptionAdded += this.OnOptionAddedToLibrary; //register to get any new options
+            OptionLibrary.OptionAdded += this.OnOptionAddedToLibrary; //register to get any new options
         }
 
         private void AddExistingOptions()
         {
-            foreach (IOption option in Director.Instance.OptionLibrary.Options)
+            foreach (IOption option in OptionLibrary.Options)
             {
                 if ((string.IsNullOrEmpty(option.VariableName) == false) && (option.VariableName.Equals(this._formatter.Name, StringComparison.OrdinalIgnoreCase)))
                 {

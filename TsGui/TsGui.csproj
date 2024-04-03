@@ -61,7 +61,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.5.1.2\lib\net46\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.5.2.8\lib\net46\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
@@ -100,6 +100,7 @@
     <Compile Include="Authentication\AuthenticationDelegates.cs" />
     <Compile Include="Authentication\AuthenticationEnums.cs" />
     <Compile Include="Authentication\AuthenticationFactory.cs" />
+    <Compile Include="Authentication\AuthenticationResult.cs" />
     <Compile Include="Authentication\AuthLibrary.cs" />
     <Compile Include="Authentication\ExposedPassword\ExposedPasswordAuthenticator.cs" />
     <Compile Include="Authentication\IAuthenticationComponent.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Connectors\RegistryConnector.cs" />
     <Compile Include="Connectors\System\Kernel32Methods.cs" />
     <Compile Include="ConsoleWindow.cs" />
+    <Compile Include="ConfigData.cs" />
     <Compile Include="Debounce.cs" />
     <Compile Include="Diagnostics\LoggingUiViewModel.cs" />
     <Compile Include="Diagnostics\TestingWindow.cs" />
@@ -123,12 +125,14 @@
     </Compile>
     <Compile Include="Linking\ILinkSource.cs" />
     <Compile Include="Linking\Topics.cs" />
+    <Compile Include="Options\MiscOption.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltWifiDisconnected.cs" />
     <Compile Include="Prebuilt\PrebuiltFactory.cs" />
     <Compile Include="Queries\ActiveDirectory\ADOrgUnitGroupsQuery.cs" />
     <Compile Include="Queries\ListValueQuery.cs" />
     <Compile Include="Queries\PoshQuery.cs" />
     <Compile Include="Queries\RegistryQuery.cs" />
+    <Compile Include="Queries\Rules\RegexReplaceRule.cs" />
     <Compile Include="Scripts\BaseScript.cs" />
     <Compile Include="Scripts\BatchScript.cs" />
     <Compile Include="Scripts\IParameter.cs" />
@@ -222,7 +226,6 @@
     <Compile Include="Calculator\CalculatorEnums.cs" />
     <Compile Include="Calculator\Operand.cs" />
     <Compile Include="Calculator\Operator.cs" />
-    <Compile Include="Events\Delegates.cs" />
     <Compile Include="Options\IOption.cs" />
     <Compile Include="Grouping\GroupableBase.cs" />
     <Compile Include="Grouping\GroupableBlindBase.cs" />
@@ -255,6 +258,10 @@
       <DependentUpon>TsButtonUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuiOptions\TsTickCross.cs" />
+    <Compile Include="View\Layout\Events\IEventer.cs" />
+    <Compile Include="View\Layout\Events\LayoutEventArgs.cs" />
+    <Compile Include="View\Layout\Events\LayoutEvents.cs" />
+    <Compile Include="View\Layout\Events\LayoutTopics.cs" />
     <Compile Include="View\Layout\ParentLayoutElement.cs" />
     <Compile Include="View\Layout\StyleLibrary.cs" />
     <Compile Include="View\Layout\StyleTree.cs" />

@@ -27,11 +27,17 @@ using System.Windows.Threading;
 using System;
 
 using TsGui.View.GuiOptions;
+using TsGui.View.Layout.Events;
+using TsGui.View.Layout;
+using System.Xml.Linq;
 
 namespace TsGui.Validation
 {
-    public class ValidationToolTipHandler
+    public class ValidationToolTipHandler: IEventer
     {
+        private enum OpenOnOption { NextFinish, Hover, Immediately };
+
+        private OpenOnOption _openOn = OpenOnOption.Immediately;
         private bool _active = false;
         private bool _shouldbeopen = false;
         private bool _isonright = true;
@@ -41,13 +47,19 @@ namespace TsGui.Validation
         private ValidationErrorToolTip _validationerrortooltip;
         private GuiOptionBase _guioption;
         private bool _windowloaded = false;
+        private bool _hovering = false;
 
         private SolidColorBrush _redbrush = new SolidColorBrush(Colors.Red);
+
+        public LayoutEvents Events { get; private set; }
 
         //Constructor
         public ValidationToolTipHandler(GuiOptionBase GuiOption)
         {
             this._guioption = GuiOption;
+            this.Events = new LayoutEvents(this, GuiOption);
+            this.Events.Subscribe(LayoutTopics.NextPageClicked, this.OnPageFinished);
+            this.Events.Subscribe(LayoutTopics.FinishedClicked, this.OnPageFinished);
             Director.Instance.WindowLoaded += OnWindowLoaded;
 
             //record the default colors
@@ -57,7 +69,53 @@ namespace TsGui.Validation
 
             this._validationerrortooltip = new ValidationErrorToolTip();
             this._validationerrortooltip.PlacementTarget = this._guioption.UserControl;
+
             SetIconVisibilies(true);
+        }
+
+        public void LoadXml(XElement InputXml)
+        {
+            string openOn = XmlHandler.GetStringFromXml(InputXml, "ShowValidationOn", null);
+            if (openOn != null)
+            {
+                switch (openOn.ToLower()) 
+                {
+                    case "immediately":
+                        this._openOn = OpenOnOption.Immediately;
+                        break;
+                    case "nextfinish":
+                        this._openOn = OpenOnOption.NextFinish;
+                        break;
+                    case "hover":
+                        this._openOn = OpenOnOption.Hover;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (this._openOn == OpenOnOption.Hover)
+            {
+                this.Events.Subscribe(LayoutTopics.ControlGotFocus, this.OnHoverOn);
+                this.Events.Subscribe(LayoutTopics.ControlLostFocus, this.OnHoverOff);
+            }
+        }
+
+        public void OnPageFinished(object sender, LayoutEventArgs e)
+        {
+            this.SetOpen(this._shouldbeopen, true);
+        }
+
+        public void OnHoverOn(object sender, LayoutEventArgs e)
+        {
+            this._hovering = true;
+            this.SetOpen(this._shouldbeopen, true);
+        }
+
+        public void OnHoverOff(object sender, LayoutEventArgs e)
+        {
+            this._hovering = false;
+            this._validationerrortooltip.IsOpen = false;
+            this._active = false;
         }
 
         public void SetTarget(UserControl Control)
@@ -65,38 +123,28 @@ namespace TsGui.Validation
             this._validationerrortooltip.PlacementTarget = Control;
         }
 
-        public void Close()
-        {
-            this.SetOpen(false);
-        }
-
         public void Clear()
         {
-            this.SetOpen(false);
+            this.SetOpen(false, false);
             this._guioption.ControlStyle.BorderBrush = this._borderbrush;
             this._guioption.ControlStyle.MouseOverBorderBrush = this._mouseoverborderbrush;
             this._guioption.ControlStyle.FocusedBorderBrush = this._focusborderbrush;
-            this._active = false;
         }
-
-        
 
         public void ShowError()
         {
-            this.SetOpen(true);
+            this.SetOpen(true, false);
             this.SetPlacement();
             this._guioption.ControlStyle.BorderBrush = _redbrush;
             this._guioption.ControlStyle.MouseOverBorderBrush = _redbrush;
             this._guioption.ControlStyle.FocusedBorderBrush = _redbrush;
-            this._active = true;
             this.UpdateArrows();
         }
 
         public void ShowInformation()
         {
             this.SetPlacement();
-            this.SetOpen(true);
-            this._active = true;
+            this.SetOpen(true, false);
             this.UpdateArrows();
         }
 
@@ -105,8 +153,8 @@ namespace TsGui.Validation
             if (this._validationerrortooltip.IsOpen == true)
             {
                 Director.Instance.WindowMouseUp += this.OnWindowMoved;
+                this._validationerrortooltip.IsOpen = false;
             }
-            this._validationerrortooltip.IsOpen = false;
         }
 
         //reopen the popup if it was before
@@ -119,11 +167,15 @@ namespace TsGui.Validation
             }
         }
 
-
-        private void SetOpen(bool isopen)
+        private void SetOpen(bool isopen, bool force)
         {
-            this._validationerrortooltip.IsOpen = isopen;
             this._shouldbeopen = isopen;
+            //some scenarios don't open automatically
+            if (force || isopen == false || this._hovering || this._openOn == OpenOnOption.Immediately)
+            {
+                this._validationerrortooltip.IsOpen = isopen;
+                this._active = isopen;
+            }
         }
 
         public void OnWindowLoaded(object o, RoutedEventArgs e)

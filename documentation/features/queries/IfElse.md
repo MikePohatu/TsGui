@@ -11,6 +11,7 @@ If/Else queries are how you do conditional logic in TsGui.
   * [Full Configuration Example](#full-configuration-example)
   * [Configuration 'short hand'](#configuration-short-hand)
     * [SourceID Attribute](#sourceid-attribute)
+    * [ResultID Attribute](#resultid-attribute)
     * [SourceWmi Attribute](#sourcewmi-attribute)
     * [ResultSet Attributes](#resultset-attributes)
     * [Short-hand example](#short-hand-example)
@@ -242,6 +243,14 @@ SourceID uses the Option Linking feature to query another element in your TsGui 
 <Source>
     <Query Type="LinkTo">SomeID</Query>
 </Source>
+```
+
+#### ResultID Attribute
+ResultID functions similar to SourceID. ResultID="SomeID" is equivalent to:
+```xml
+<Result>
+    <Query Type="LinkTo">SomeID</Query>
+</Result>
 ```
 
 #### SourceWmi Attribute

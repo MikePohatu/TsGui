@@ -1,4 +1,4 @@
-﻿$version = '2.0.4.0'
+﻿$version = '2.0.22.0'
 
 Function SignAssembliesInPath {
     Param(
@@ -97,7 +97,6 @@ Function pause ()
 $copyRight = "Copyright © 20Road Limited $(get-date -Format yyyy)"
 $repoRoot = 'C:\Source\repos\TsGui'
 $devenv = 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe'
-$dotnet = 'dotnet.exe'
 $cmd = "cmd"
 $productName = "TsGui"
 $ReleaseRootPath='C:\Source\release'
@@ -132,10 +131,10 @@ if (Test-Path $ProductReleasePath) {
 } 
 
 
-md $ProductReleasePath -Force
-md "$($ProductReleasePath)\Config_Examples" -Force
-md "$($ProductReleasePath)\images" -Force
-md "$($ProductReleasePath)\scripts" -Force
+mkdir $ProductReleasePath -Force
+mkdir "$($ProductReleasePath)\Config_Examples" -Force
+mkdir "$($ProductReleasePath)\images" -Force
+mkdir "$($ProductReleasePath)\scripts" -Force
 
 Copy-Item -Path "$($repoRoot)\Config_Examples\*" -Destination "$($ProductReleasePath)\Config_Examples" -Recurse -Force
 Copy-Item -Path "$($repoRoot)\images\*" -Destination "$($ProductReleasePath)\images" -Recurse -Force
@@ -180,6 +179,10 @@ if ( $confirm -match "[yY]" ) {
             $errorfound = $true
             break
         }
+    }
+
+    if ($errorfound) {
+        Write-Error "Something went wrong, please review the output."
     }
 
     #Create the signed package zip

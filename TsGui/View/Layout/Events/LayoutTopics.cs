@@ -16,15 +16,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-
-// Delegates.cs - Delegates for control parts of the app
-
-using System;
-using System.Windows;
-
-namespace TsGui.Events
+namespace TsGui.View.Layout.Events
 {
-    public delegate void TsGuiWindowEventHandler(object sender, RoutedEventArgs e);
-    public delegate void TsGuiWindowMovingEventHandler(object sender, EventArgs e);
-    public delegate void ConfigLoadFinishedEventHandler(object sender, EventArgs e);
+    /// <summary>
+    /// Listing of layout event topics. 
+    /// </summary>
+    public static class LayoutTopics
+    {
+        public static string ControlGotFocus { get; } = "TsGui.View.GuiOptions.ControlGotFocus";
+        public static string ControlLostFocus { get; } = "TsGui.View.GuiOptions.ControlLostFocus";
+        public static string NextPageClicked { get; } = "TsGui.View.Layout.Page.NextPageClicked";
+        public static string FinishedClicked { get; } = "TsGui.View.Layout.Page.FinishedClicked";
+    }
 }

@@ -178,7 +178,10 @@ namespace TsGui.View.GuiOptions
 
             //wrap the query in another to make it suitable for the querylist. 
             x = InputXml.Element("GetValue");
-            if (x != null) { this._querylist.LoadXml(x); }  
+            if (x != null) { this._querylist.LoadXml(x); }
+
+            //load into the validation tooltip
+            this._validationtooltiphandler.LoadXml(InputXml);
         } 
 
         protected async Task ProcessQueryAsync(Message message)

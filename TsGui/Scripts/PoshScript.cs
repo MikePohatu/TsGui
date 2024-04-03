@@ -63,11 +63,11 @@ namespace TsGui.Scripts
         {
             if (string.IsNullOrWhiteSpace(this.Path) == false)
             {
-                this._scriptcontent = await IOHelpers.ReadFileAsync(this.Path);
+                this.ScriptContent = await IOHelpers.ReadFileAsync(this.Path);
 
-                if (string.IsNullOrWhiteSpace(this._scriptcontent) == false)
+                if (string.IsNullOrWhiteSpace(this.ScriptContent) == false)
                 {
-                    using (StringReader reader = new StringReader(this._scriptcontent))
+                    using (StringReader reader = new StringReader(this.ScriptContent))
                     {
                         bool readingsettings = false;
                         StringBuilder builder = new StringBuilder();
@@ -104,30 +104,41 @@ namespace TsGui.Scripts
         /// <exception cref="KnownException"></exception>
         public override async Task RunScriptAsync()
         {
-            Log.Debug($"Running script {this.Name}");
+            if (this.IsInlineScript)
+            {
+                Log.Debug($"Running script {this.ScriptContent}");
+            }
+            else
+            {
+                Log.Debug($"Running script {this.Name}");
+            }
             this.Result = new ScriptResult<PSDataCollection<PSObject>>();
 
             //Now go through the objects returned by the script, and add the relevant values to the wrangler. 
             try
             {
-                if (System.IO.File.Exists(this.Path))
+                if (this.IsInlineScript==false)
                 {
-                    await this.LoadScriptAsync();
-                }
-                else
-                {
-                    if (this._exceptionOnMissingFile)
+
+                    if (System.IO.File.Exists(this.Path))
                     {
-                        throw new KnownException($"PowerShell script not found: {this.Path}", "File not found");
+                        await this.LoadScriptAsync();
                     }
                     else
                     {
-                        Log.Error($"PowerShell script not found: {this.Path}");
-                        return;
+                        if (this._exceptionOnMissingFile)
+                        {
+                            throw new KnownException($"PowerShell script not found: {this.Path}", "File not found");
+                        }
+                        else
+                        {
+                            Log.Error($"PowerShell script not found: {this.Path}");
+                            return;
+                        }
                     }
                 }
 
-                using (var posh = new PoshHandler(this._scriptcontent))
+                using (var posh = new PoshHandler(this.ScriptContent))
                 {
                     foreach (IParameter p in this.Parameters)
                     {

@@ -2,12 +2,14 @@
 
 **Contents**
 * [Overview](#overview)
-    * [Base Configuration](#base-configuration)
-    * [Style Tree](#style-tree)
-    * [Global Styles](#global-styles)
-        * [Defining Global Styles](#defining-global-styles)
-        * [Applying Global Styles](#applying-global-styles)
-    * [Inheritance](#inheritance)
+* [Base configuration](#base-configuration)
+* [Style Tree](#style-tree)
+* [Global Styles](#global-styles)
+  * [Defining Global Styles](#defining-global-styles)
+* [Applying Global Styles](#applying-global-styles)
+* [Inheritance](#inheritance)
+* [ShowGridLines](#showgridlines)
+* [In more detail - a practical example](#in-more-detail---a-practical-example)
 
 ## Overview
 
@@ -49,17 +51,17 @@ A Style object consists of the options below:
 It is important to note that GuiOptions are made up of multiple items:
 * Label
 * Control
-* The GuiOption itself which wraps the Label and the Control together
+* A grid which contains the Label and the Control
 
 Each of these items has it's own Style object (see below in the [Style Tree](#style-tree) section for how these are structured). 
 
 ## Style Tree
-A 'Style Tree' is set on a 'root' element i.e. a GuiOption, which contains a Label and a Control element. All three items can be styled separately, plus the GuiOption element has some specific options e.g. which side to put the Label and Control.
+A 'Style Tree' is set on a 'root' element i.e. a grid, which contains a Label and a Control element. All three items can be styled separately, plus the grid element has some specific options e.g. which side to put the Label and Control.
 
 These are structured as follows:
 
 ```xml
-<Style>     <!-- The 'root' Style -->
+<Style>     <!-- The Style for the the grid element -->
     <Label /> <!-- The Style for the Label item -->
     <Control /> <!-- The Style for the Control item -->
 </Style>
@@ -145,3 +147,71 @@ Styles are inherited down the tree and applied in the following order:
 1. A clone of the complete Style from the parent element (Page/Row/Column etc) is is applied
 2. Global styles are imported
 3. The \<Style> set on the UI element is applied
+
+## ShowGridLines
+
+To help with styling, you can use the **\<ShowGridLines** config option to add dashes around UI elements:
+```xml
+<TsGui>
+    <ShowGridLines />
+    ...
+</TsGui>
+```
+These dashes will only show in [test mode](/documentation/TestMode.md).
+
+## In more detail - a practical example
+
+The following is an example of how the styling options of one item can effect the layout of others, and the why this can happen. Note the **\<ShowGridLines>** config option is used in the examples below.
+
+
+---
+
+A GuiOption is made up of three parts, the Label, the Control, and the Grid that contains the other two parts. 
+
+When you set options at the root level of the \<Style> element, you are styling the Grid. Things set there don’t flow down to the Label and Control. They are specifically for the Grid. The Grid contains two cells, and the larger of the two cell heights dictates the height of the Grid itself as the two Grid cells can’t have different heights. 
+ 
+In practise what this can mean is that expanding the overall height of the **Control** (e.g. with Padding and/or Margin) can effect the height of the cell that contains it, which then expands the height Grid, which then expands the height of the cell containing the **Label** (and vice versa expanding Label can effect Control).
+
+---
+For example, setting Padding on the label expands the overall height of the label:
+```xml
+<Label>
+    <Padding>10</Padding>
+    …
+</Label>
+``` 
+
+![StyleExample1](/documentation/images/styles-ex1.png)
+ 
+Note how the CPU text moves within the cell and the cell height gets larger. The cell height effects the Grid, which is also effecting the Control, but the text in the Control doesn’t move because it doesn’t have padding set.
+
+--- 
+Compared that to 0 padding and the Grid height is now lower:
+```xml
+<Label>
+    <Padding>0</Padding>
+    …
+</Label>
+```
+ 
+![StyleExample2](/documentation/images/styles-ex2.png)
+
+---
+However if the Control has a centered \<VerticalAlignment> combined with the padding of the Label from the first example:
+
+```xml
+<Label>
+    <Padding>10<Padding>
+    …
+</Label>
+<Control>
+    <VerticalAlignment>Center</VerticalAlignment>
+    …
+</Control>
+```
+
+![StyleExample3](/documentation/images/styles-ex3.png)
+ 
+Now it starts to look like you have padding effecting both cells. Actually the padding is effecting the height of the Grid, making it look like you have padding in the Control. Note how the Control text is left aligned, indicating there isn’t any left padding set.
+
+---

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -23,14 +23,13 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Threading;
-using System.Windows.Input
-;
-using TsGui.Events;
+using System.Windows.Input;
 using TsGui.Grouping;
 using TsGui.View.GuiOptions;
 using TsGui.Validation;
 using Core.Logging;
 using System;
+using TsGui.View.Layout.Events;
 
 namespace TsGui.View.Layout
 {
@@ -82,7 +81,7 @@ namespace TsGui.View.Layout
 
         //Events
         #region
-        public event TsGuiWindowEventHandler PageWindowLoaded;
+        public event RoutedEventHandler PageWindowLoaded;
 
         /// <summary>
         /// Method to handle when content has finished rendering on the window
@@ -108,7 +107,6 @@ namespace TsGui.View.Layout
         {
             //this._director = Defaults.RootController;
             Log.Info("New page created");
-            this.Parent = Parent;
             this.ShowGridLines = Director.Instance.ShowGridLines;
             this.Page = new TsPageUI(this);
             this.PageHeader = Defaults.PageHeader;
@@ -158,12 +156,6 @@ namespace TsGui.View.Layout
             this.Page.RightPanePresenter.Content = this.RightPane?.PaneUI;
         }
 
-        public bool OptionsValid()
-        {
-            if ((ResultValidator.OptionsValid(this._table.ValidationOptions)) && this.PageHeader.OptionsValid()) { return true; }
-            else { return false; }
-        }
-
         public void Cancel()
         {
             Director.Instance.Cancel();
@@ -181,9 +173,23 @@ namespace TsGui.View.Layout
             }
         }
 
+        public bool AllOptionsValid()
+        {
+            if ((ResultValidator.AllOptionsValid(this._table.ValidationOptions)) && this.PageHeader.AllOptionsValid()) { return true; }
+            else { return false; }
+        }
+
         public void MoveNext()
         {
-            if (this._nextpage != null && this.OptionsValid() == true)
+            if (this._nextpage == null)
+            {
+                Log.Error("Next page clicked but next page is null");
+                return;
+            }
+
+            this.Events.InvokeLayoutEvent(LayoutTopics.NextPageClicked, EventDirection.Tunnel);
+
+            if (this.AllOptionsValid() == true)
             {
                 this.ReleaseThisPage();
                 Director.Instance.MoveNext();
@@ -192,7 +198,8 @@ namespace TsGui.View.Layout
 
         public void Finish()
         {
-            if (this.OptionsValid() == true)
+            this.Events.InvokeLayoutEvent(LayoutTopics.FinishedClicked, EventDirection.Tunnel);
+            if (this.AllOptionsValid() == true)
             {
                 Director.Instance.Finish();
             }

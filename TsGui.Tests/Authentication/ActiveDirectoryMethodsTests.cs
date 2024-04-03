@@ -22,6 +22,7 @@ using System.Security;
 using System.Xml.Linq;
 using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication;
+using System.Linq;
 
 namespace TsGui.Tests.Authentication
 {
@@ -44,22 +45,38 @@ namespace TsGui.Tests.Authentication
             adauth.UsernameSource = source;
             source.Username = authargs.AuthUser;
             source.SecureString = GetSecureStringFromString(authargs.AuthPassword);
-            adauth.RequiredGroups = args.AuthArgs.Groups;
-            adauth.Authenticate();
-            bool result = ActiveDirectoryMethods.IsUserMemberOfGroups(adauth.Context, args.UserName, args.Groups);
-            Assert.AreEqual(args.ExpectedResult,result);
+            adauth.AddGroups(args.AuthArgs.Groups);
+            var dummy = adauth.AuthenticateAsync().Result;
+            var results = ActiveDirectoryMethods.IsUserMemberOfGroups(adauth.Context, args.UserName, args.ExpectedResults.Keys.ToList());
+            Assert.AreEqual(args.ExpectedResults, results);
         }
 
         public static IEnumerable<TestCaseData> ActiveDirectoryAuthentication_IsMemberOfGroupsTest_TestCases
         {
             get
             {
-                ActiveDirectoryAuthenticatorTestArgs authargs = new ActiveDirectoryAuthenticatorTestArgs(null, null, null, null, AuthState.Authorised);
-                yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs,"mikep", new List<string> { "Domain Admins" }, true));
-                yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "mikep", new List<string> { "Enterprise Admins" }, true));
-                yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "mikep", new List<string> { "Domain Users" }, true));
-                yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "mikep", new List<string> { "SCCM Admins" }, true));
-                yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "administrator", new List<string> { "SCCM Admins" }, false));
+                ActiveDirectoryAuthenticatorTestArgs authargs = new ActiveDirectoryAuthenticatorTestArgs(null, AuthState.Authorised, new Dictionary<string, bool>());
+
+                yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs,"mikep", new Dictionary<string, bool>
+                {
+                    { "Domain Admins", true }
+                })) ;
+                yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "mikep", new Dictionary<string, bool>
+                {
+                    { "Enterprise Admins", true }
+                }));
+                yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "mikep", new Dictionary<string, bool>
+                {
+                    { "Domain Users", true }
+                }));
+                yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "mikep", new Dictionary<string, bool>
+                {
+                    { "SCCM Admins", true }
+                }));
+                yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "administrator", new Dictionary<string, bool>
+                {
+                    { "SCCM Admins", false }
+                }));
             }
         }
         #endregion

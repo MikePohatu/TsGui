@@ -1,9 +1,13 @@
-Version 2.0.4.0
-Release date: 21 May 2023
+Version 2.0.22.0
+Release date: 14 Mar 2024
 
 *Features
-	Added Border option so you can border around the whole TsGui window
-	Added generic option in config to replace single elements with an attribute to allow more 'one liners'
+	Added group membership evaluation to AD authentication feature
+
+*Fixes
+	Fixed Disallowed and MaxLength options being lost from InfoBox
+	Fixed Freetext not clearing when passed a null value
+
 
 *Known issues
 	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
@@ -12,6 +16,73 @@ Release date: 21 May 2023
 	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
+
+---------------
+Version 2.0.21.0
+Release date: 3 Feb 2024
+
+*Features
+	Added Reload function in testing mode
+
+*Fixes
+	Fixed an issue where Margin wouldn't apply from Global Style
+	Fixed Style configuration not working with XML attributes
+
+---------------
+Version 2.0.10.0
+Release date: 14 Dec 2023
+
+*Fixes
+	Fixed an issue loading global styles
+
+
+---------------
+Version 2.0.9.0
+Release date: 5 Dec 2023
+
+*Features
+	Added ResultID shorthand for IfElse query
+	
+*Fixes
+	Fixed an issue where config imports sometimes wouldn't work
+
+
+---------------
+Version 2.0.7.0
+Release date: 26 Nov 2023
+
+*Features
+	Added option for 'inline' scripts, adding PowerShell directly to Config.xml.
+	Added RegexReplace option for query properties. 
+	Added better documentation for queries.
+
+---------------
+Version 2.0.6.0
+Release date: 30 Sep 2023
+
+*Features
+	Added ReadOnly option for FreeText/ComputerName GuiOption. 
+	Added documentation for FreeText and ComputerName GuiOptions.
+
+*Fixes
+	Fixed CharacterCasing not being settable in XML attribute
+
+---------------
+Version 2.0.5.0
+Release date: 19 Aug 2023
+
+*Features
+	Added ShowValidationOn to control validation tooltips. See Validation documentation
+	Added Validation and Compliance documentation
+
+
+---------------
+Version 2.0.4.0
+Release date: 21 May 2023
+
+*Features
+	Added Border option so you can border around the whole TsGui window
+	Added generic option in config to replace single elements with an attribute to allow more 'one liners'
 
 
 ---------------

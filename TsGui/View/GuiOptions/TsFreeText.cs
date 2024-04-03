@@ -39,8 +39,6 @@ namespace TsGui.View.GuiOptions
     public class TsFreeText: GuiOptionBase, IGuiOption, IValidationGuiOption, ILinkTarget
     {
         protected TsFreeTextUI _freetextui;
-
-        private ValidationToolTipHandler _validationtooltiphandler;
         public ValidationHandler ValidationHandler { get; private set; }
 
         //Properties
@@ -93,6 +91,13 @@ namespace TsGui.View.GuiOptions
             get { return this._charactercasing; }
             set { this._charactercasing = value; this.OnPropertyChanged(this, "CharacterCasing"); }
         }
+
+        protected bool _controlenabled = true;
+        public bool ControlEnabled
+        {
+            get { return this._controlenabled; }
+            set { this._controlenabled = value; this.OnPropertyChanged(this, "ControlEnabled"); }
+        }
         #endregion
 
         //Constructor
@@ -117,7 +122,6 @@ namespace TsGui.View.GuiOptions
             this.Label = new TsLabelUI();
 
             this.ValidationHandler = new ValidationHandler(this);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.UserControl.DataContext = this;
             Director.Instance.PageLoaded += this.OnWindowLoaded;
@@ -149,8 +153,7 @@ namespace TsGui.View.GuiOptions
             base.LoadXml(InputXml);
 
             this.MaxLength = XmlHandler.GetIntFromXml(InputXml, "MaxLength", this.MaxLength);
-            this.ValidationHandler.LoadLegacyXml(InputXml);
-            this.ValidationHandler.AddValidations(InputXml.Elements("Validation"));
+            this.ValidationHandler.LoadXml(InputXml);
 
             int delayMs = XmlHandler.GetIntFromXml(InputXml, "Delay", 500);
 
@@ -178,15 +181,8 @@ namespace TsGui.View.GuiOptions
                 this.LoadSetValueXml(x,false);
             }
 
-            x = InputXml.Element("CharacterCasing");
-            if (x?.Value != null)
-            {
-                if (x.Value.Equals("Upper", StringComparison.OrdinalIgnoreCase))
-                { this.CharacterCasing = CharacterCasing.Upper; }
-                else if (x.Value.Equals("Lower", StringComparison.OrdinalIgnoreCase))
-                { this.CharacterCasing = CharacterCasing.Lower; }
-
-            }
+            this.CharacterCasing = XmlHandler.GetCharacterCasingFromXml(InputXml, "CharacterCasing", this.CharacterCasing);
+            this.ControlEnabled = !XmlHandler.GetBoolFromXml(InputXml, "ReadOnly", !this._controlenabled);
         }
 
         //Handle UI events
@@ -214,7 +210,7 @@ namespace TsGui.View.GuiOptions
 
         public bool Validate()
         {
-            if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
+            if (this.IsActive == false) { this.ValidationHandler.ToolTipHandler.Clear(); return true; }
 
             bool newvalid = this.ValidationHandler.IsValid(this.ControlText);
 
@@ -226,24 +222,27 @@ namespace TsGui.View.GuiOptions
                 else { s = s + validationmessage; }
 
                 this.ValidationText = s;
-                this._validationtooltiphandler.ShowError();
+                this.ValidationHandler.ToolTipHandler.ShowError();
             }
-            else { this._validationtooltiphandler.Clear(); }
+            else { this.ValidationHandler.ToolTipHandler.Clear(); }
 
             return newvalid;
         }
 
         public void ClearToolTips()
-        { this._validationtooltiphandler.Clear(); }
+        { this.ValidationHandler.ToolTipHandler.Clear(); }
 
         public void OnValidationChange()
         { this.Validate(); }
 
         public override async Task UpdateValueAsync(Message message)
         {
-            string s = (await this._querylist.GetResultWrangler(message))?.GetString();
-            if (s != null) 
+            var wrang = await this._querylist.GetResultWrangler(message);
+            
+            if (wrang != null) 
             {
+                string s = wrang.GetString();
+
                 //if required, remove invalid characters and truncate
                 string invalchars = this.ValidationHandler.GetAllInvalidCharacters();
                 if (!string.IsNullOrEmpty(invalchars)) { s = ResultValidator.RemoveInvalid(s, this.ValidationHandler.GetAllInvalidCharacters()); }
@@ -251,7 +250,6 @@ namespace TsGui.View.GuiOptions
 
                 if (this.ControlText != s) { this.SetValue(s, message); }
             }
-
             LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 

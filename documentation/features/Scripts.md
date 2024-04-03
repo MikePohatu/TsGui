@@ -3,6 +3,8 @@
 **[Example Config](/Config_Examples/Config_Scripts.xml)**
 
 * [Adding a Script](#adding-a-script)
+* [Inline Scripts](#inline-scripts)
+* [Script Files](#script-files)
   * [In a Query](#in-a-query)
   * [As an action](#as-an-action)
   * [Global Scripts](#global-scripts)
@@ -20,12 +22,45 @@
 
 You can add a script in a query, as an action, or globally.
 
+## Inline Scripts
+PowerShell can be added directly into your Config.xml using the 'PowerShell' query type and entering your script as the content of the element. This is a simplified alternative to loading [script files](#script-files) when you don't need to use [property transforms ](/documentation/features/Queries.md#transforming-properties) or other query features. Your script output will be processed as is. 
+
+**Simple string example e.g. for FreeText**
+```xml
+<Query Type="PowerShell">(Get-Date).ToString()</Query>
+```
+
+**List of objects e.g. for DropDownList**
+```xml
+<Query xml:space="preserve" Type="PowerShell">
+Write-Output  @(
+	[pscustomobject]@{
+		val="0"
+		text="ID0"
+	},
+	[pscustomobject]@{
+		val="1"
+		text="ID1"
+	}
+)
+</Query>
+```
+Note that if you set the Name or Path attributes used for script files below, the script content will be ignored. 
+
+**Important Notes**
+1. Be aware of XML special characters. You may need to add escape characters in some scenarios.
+2. XML will strip 'unnecessary' whitespace by default. Add **xml:space="preserve"** to your element if this is an issue for your script. 
+3. See [Script Output](#script-output) for details about data returned by scripts. 
+
+## Script Files
+
 First copy your custom .ps1 script file to the **Scripts** folder.
 
 If you don't want to copy the script with your TsGui files e.g. you're using a script installed elsewhere, you can use the \<Path> element with the path to the files, rather than the \<Name> element.
 
 ### In a Query
-Scripts can be added as a query by using the 'PowerShell' type and adding a \<Script> block. The following sub elements 
+
+Script files can be added as a query by using the 'PowerShell' type and adding a \<Script> block. The following sub elements 
 
 * Name - the filename of the script copied above
 * Parameter - one or more Parameter elements can be used to set script parameters. See the [Parameters](#parameters) section below.
@@ -212,9 +247,11 @@ The json in the comment block will be parsed when the script is read to create t
 ## Script Output
 Remember that certain GuiOption types require two values, one for the value, and one for the display text i.e. collection types such as DropDownList and TreeView. To achieve this you need to be able to configure which properties are used to create these values. 
 
-If your script is being used as a query for one of these types, make sure your scripts returns a list of object data types that set properties, such as a hashtable or custom object. Returning a simple string or integer won't work. 
+If your script is being used as a query for one of these types, make sure your scripts returns a list of object data types that set properties, such as a PS custom object. Returning a simple string or integer won't work. 
 
 If used in a FreeText, InfoBox, Heading type, you can return an object type or a 'primitive' type. Object data types will concatenate the property values into a string like normal.
+
+Some commands return complex data types that TsGui might not be able to interpret. If this happens you may need to either use ToString() to return a simple string, or convert to a simple object such as a hashtable or custom object. 
 
 ## Logging
 TsGui will capture Write-Information, Write-Warning, Write-Error etc. from your script and output it to the *Output* pane.

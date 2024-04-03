@@ -16,6 +16,14 @@ namespace TsGui.View.Layout
     {
         private static Dictionary<string, StyleTree> _styles = new Dictionary<string, StyleTree>();
 
+        /// <summary>
+        /// Remove all styles for reload
+        /// </summary>
+        public static void Reset()
+        {
+            _styles.Clear();
+        }
+
         public static void Add(StyleTree style)
         {
             if (string.IsNullOrEmpty(style.ID))

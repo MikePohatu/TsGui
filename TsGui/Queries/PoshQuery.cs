@@ -38,8 +38,16 @@ namespace TsGui.Queries
 
             if (string.IsNullOrEmpty(scriptid))
             {
-                XElement scriptx = InputXml.Element("Script");
-                this._script = new PoshScript(scriptx, this._linktarget);
+                if (InputXml.HasElements)
+                {
+                    XElement scriptx = InputXml.Element("Script");
+                    this._script = new PoshScript(scriptx, this._linktarget);
+                }
+                else
+                {
+                    this._script = new PoshScript(InputXml, this._linktarget);
+                }
+                
             }
             else
             {
@@ -60,9 +68,9 @@ namespace TsGui.Queries
         public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
             if (this._script == null) { throw new KnownException("Script object not defined", "PoshQuery.ProcessQueryAsync"); }
-            
-            this._runningCount++;
 
+            this._runningCount++;
+            PSDataCollection<PSObject> results = null;
             //check the _processingTask to make sure the query isn't already running. 
             if (this._processingTask == null)
             {
@@ -76,8 +84,7 @@ namespace TsGui.Queries
 
                     this._processingTask = this._script.RunScriptAsync();
                     await this._processingTask;
-                    var results = this._script.Result.ReturnedObject;
-                    this.AddPoshPropertiesToWrangler(this._processingwrangler, results, this._propertyTemplates);
+                    results = this._script.Result.ReturnedObject;
                 }
                 catch (Exception e)
                 {
@@ -91,6 +98,25 @@ namespace TsGui.Queries
                     }
                 }
 
+                if (results != null)
+                {
+                    try
+                    {
+                        this.AddPoshPropertiesToWrangler(this._processingwrangler, results, this._propertyTemplates);
+                    }
+                    catch (Exception e)
+                    {
+                        var submessage = $"{Environment.NewLine}Check that script returns a string or simple object e.g. hashtable{Environment.NewLine}";
+                        if (this._script.IsInlineScript)
+                        {
+                            throw new KnownException($"Couldn't process results of PowerShell script: {Environment.NewLine}{this._script.ScriptContent}{submessage}{Environment.NewLine}Error: ", e.Message);
+                        }
+                        else
+                        {
+                            throw new KnownException($"Couldn't process results of PowerShell script {this._script.Path}{submessage}{Environment.NewLine}Error: ", e.Message);
+                        }
+                    }
+                }
 
                 if (this.ShouldIgnore(this._processingwrangler.GetString()) == false)
                 { this._returnwrangler = this._processingwrangler; }

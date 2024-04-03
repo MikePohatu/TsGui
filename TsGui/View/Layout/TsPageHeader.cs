@@ -23,7 +23,6 @@ using System.Xml.Linq;
 using System.Windows.Media;
 using System.Windows;
 
-using TsGui.Events;
 using TsGui.Images;
 using TsGui.Validation;
 
@@ -159,9 +158,9 @@ namespace TsGui.View.Layout
             if (this.Image == null) { this.UI.ImageElement.Visibility = Visibility.Collapsed; }
         }
 
-        public bool OptionsValid()
+        public bool AllOptionsValid()
         {
-            if (this.Table != null) { return ResultValidator.OptionsValid(this.Table.ValidationOptions); }
+            if (this.Table != null) { return ResultValidator.AllOptionsValid(this.Table.ValidationOptions); }
             else { return true; }
         }
 

@@ -39,16 +39,16 @@ namespace TsGui.View.GuiOptions
 {
     public class TsPasswordBox: GuiOptionBase, IGuiOption, IPassword, IValidationGuiOption
     {
-        public event AuthValueChanged PasswordChanged;
+        public event AuthValueChangedAsync PasswordChangedAsync;
 
         private bool _allowempty = false;
         private bool _isauthenticator = true;   //is this actually used for authentication, or just to record a pwf
         private bool _expose = false;
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;
-        private ValidationToolTipHandler _validationtooltiphandler;
         private IAuthenticator _authenticator;
-        private string _failuremessage = "Authorization failed";
+        private string _authenticationfailuremessage = "Authentication failed";
+        private string _authorizationfailuremessage = "Authorization failed";
         private string _nopasswordmessage = "Password cannot be empty";
         private static SolidColorBrush _greenbrush = new SolidColorBrush(Colors.Green);
         private static SolidColorBrush _hovergreenbrush = new SolidColorBrush(Colors.OliveDrab);
@@ -95,7 +95,6 @@ namespace TsGui.View.GuiOptions
             this.SetDefaults();
 
             this.ValidationHandler = new ValidationHandler(this);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this);
             
             this.LoadXml(InputXml);
             Director.Instance.ConfigLoadFinished += this.OnConfigLoadFinished;
@@ -111,7 +110,11 @@ namespace TsGui.View.GuiOptions
         public new void LoadXml(XElement inputxml)
         {
             base.LoadXml(inputxml);
-            this._failuremessage = XmlHandler.GetStringFromXml(inputxml, "FailureMessage", this._failuremessage);
+            this.ValidationHandler.LoadXml(inputxml);
+
+            this._authorizationfailuremessage = XmlHandler.GetStringFromXml(inputxml, "FailureMessage", this._authorizationfailuremessage);
+            this._authorizationfailuremessage = XmlHandler.GetStringFromXml(inputxml, "AuthorizationWarning", this._authorizationfailuremessage);
+            this._authenticationfailuremessage = XmlHandler.GetStringFromXml(inputxml, "AuthenticationWarning", this._authenticationfailuremessage);
             this._nopasswordmessage = XmlHandler.GetStringFromXml(inputxml, "NoPasswordMessage", this._nopasswordmessage);
             this._expose = XmlHandler.GetBoolFromXml(inputxml, "ExposePassword", this._expose);
             this._allowempty = XmlHandler.GetBoolFromXml(inputxml, "AllowEmpty", this._allowempty);
@@ -136,7 +139,7 @@ namespace TsGui.View.GuiOptions
         #region validation
         public bool Validate()
         {
-            if (this.IsActive == false) { this._validationtooltiphandler.Clear(); return true; }
+            if (this.IsActive == false) { this.ValidationHandler.ToolTipHandler.Clear(); return true; }
             bool newvalid = true;
 
             if (this._isauthenticator)
@@ -145,19 +148,24 @@ namespace TsGui.View.GuiOptions
 
                 if (this._authenticator.State == AuthState.Authorised)
                 {
-                    this._validationtooltiphandler.Clear();
+                    this.ValidationHandler.ToolTipHandler.Clear();
                     this.ControlStyle.BorderBrush = _greenbrush;
                     this.ControlStyle.MouseOverBorderBrush = _hovergreenbrush;
                 }
                 else if (this._authenticator.State == AuthState.NoPassword)
                 {
                     this.ValidationText = this._nopasswordmessage;
-                    this._validationtooltiphandler.ShowError();
+                    this.ValidationHandler.ToolTipHandler.ShowError();
+                }
+                else if (this._authenticator.State == AuthState.NotAuthorised)
+                {
+                    this.ValidationText = this._authorizationfailuremessage;
+                    this.ValidationHandler.ToolTipHandler.ShowError();
                 }
                 else
                 {
-                    this.ValidationText = this._failuremessage;
-                    this._validationtooltiphandler.ShowError();
+                    this.ValidationText = this._authenticationfailuremessage;
+                    this.ValidationHandler.ToolTipHandler.ShowError();
                 }
             }
             else
@@ -165,12 +173,12 @@ namespace TsGui.View.GuiOptions
                 if (string.IsNullOrEmpty(this.Password) && this._allowempty == false)
                 {
                     this.ValidationText = this._nopasswordmessage;
-                    this._validationtooltiphandler.ShowError();
+                    this.ValidationHandler.ToolTipHandler.ShowError();
                     newvalid = false;
                 }
                 else
                 {
-                    this._validationtooltiphandler.Clear();
+                    this.ValidationHandler.ToolTipHandler.Clear();
                 }
             }
 
@@ -179,7 +187,7 @@ namespace TsGui.View.GuiOptions
         }
 
         public void ClearToolTips()
-        { this._validationtooltiphandler.Clear(); }
+        { this.ValidationHandler.ToolTipHandler.Clear(); }
 
         public void OnValidationChange()
         { this.Validate(); }
@@ -209,11 +217,11 @@ namespace TsGui.View.GuiOptions
             this.Validate();
         }
 
-        public void OnKeyDown(object sender, KeyEventArgs e)
+        public async void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return || e.Key == Key.Enter)
             {
-                this._authenticator.Authenticate();
+                await this._authenticator.AuthenticateAsync();
                 e.Handled = true;
             }
         }
@@ -221,7 +229,7 @@ namespace TsGui.View.GuiOptions
         public void OnPasswordChanged(object sender, EventArgs e)
         {
             //Log.Info("Password changed event");
-            this.PasswordChanged?.Invoke();
+            this.PasswordChangedAsync?.Invoke();
         }
 
         //First state change needs the borderbrush thickness to be changed. Takes some thickness from padding and put it onto borderthickness

@@ -42,8 +42,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
             this.Label = new TsLabelUI();
             this.Icon = new TsFolderUI();
             this.UserControl.DataContext = this;
-            this.ValidationHandler = new ValidationHandler(this);
-            this._validationtooltiphandler = new ValidationToolTipHandler(this);
 
             this.SetDefaults();      
             this.LoadXml(InputXml);

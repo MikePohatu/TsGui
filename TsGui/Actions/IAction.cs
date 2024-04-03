@@ -22,7 +22,6 @@ namespace TsGui.Actions
 {
     public interface IAction
     {
-        void RunAction();
         Task RunActionAsync();
     }
 }
