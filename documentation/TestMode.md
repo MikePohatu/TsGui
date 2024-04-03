@@ -4,7 +4,7 @@ By default, TsGui will attempt to load the COM objects from a ConfigMgr task seq
 
 If [outputting to registry](/documentation/features/TsGuiOutput.md#registry-output), TsGui will also run in production mode unless the '-test' command line option is used.
 
-If TsGui is not outputting to registry, can't attach to the ConfigMgr COM objects, or the '-test' command line option has been used, it will enter 'test mode'.
+If TsGui is not outputting to registry and can't attach to the ConfigMgr COM objects, or the '-test' command line option has been used, it will enter 'test mode'.
 
 Test mode allows TsGui configuration to be quickly tested.
 
