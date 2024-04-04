@@ -5,6 +5,7 @@
   * [Variable](#variable)
   * [SetValue](#setvalue)
 * [GuiOptions](#guioptions)
+  * [GuiOption Layout Elements](#guioption-layout-elements)
   * [Label](#label)
   * [HelpText (Tooltip)](#helptext-tooltip)
   * [Example FreeText UI element](#example-freetext-ui-element)
@@ -29,6 +30,18 @@ To set the default value for the option, you use the ```<SetValue>``` element. T
 
 ## GuiOptions
 A TsGui user interface is built with one or more ```<GuiOption Type="xxx">``` elements. Each different type creates a different type of control. These are added to the layout as outlined in the [Layout](/documentation/Layout.md) documentation.
+
+### GuiOption Layout Elements
+
+It is useful to understand what makes up each GuiOption, especially when applying [Styles](/documentation/features/Styles.md) to alter the layout and appearance of TsGui.
+
+GuiOptions consist of two elements, a **Label** and a **Control** which is different for each type of GuiOption. For example the FreeText GuiOption uses a WPF [TextBox](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/textbox-overview?view=netframeworkdesktop-4.8) for its control, whereas an InfoBox uses a WPF [TextBlock](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/textblock-overview?view=netframeworkdesktop-4.8).
+
+The two elements are contained within a WPF [Grid](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/grid?view=netframeworkdesktop-4.8). By default the Label is on the left, the control on the right. This can be altered using the ```<LabelOnRight>TRUE</LabelOnRight>``` option in the [root style](/documentation/features/Styles.md#style-tree).
+
+A practical example of how these elements might interact when applying styling can be found in the [Styles](/documentation/features/Styles.md#in-more-detail---a-practical-example) documentation. 
+
+---
 
 GuiOptions have the following common configuration elements:
 
