@@ -115,7 +115,7 @@ namespace TsGui.View.Layout
 
             this.Page.Loaded += this.OnPageLoaded;
 
-            this.GroupingStateChange += this.OnPageHide;
+            this.GroupingStateChange += this.OnGroupingStateChange;
             this.Page.DataContext = this;
             this.Page.ButtonGrid.DataContext = Defaults.Buttons;
             this.Page.KeyDown += this.OnKeyDown;
@@ -227,12 +227,9 @@ namespace TsGui.View.Layout
             TsButtons.Update(this, this.Page);
         }
 
-        public void OnPageHide(object o, GroupingEventArgs e)
+        public void OnGroupingStateChange(object o, GroupingEventArgs e)
         {
-            if (e.GroupStateChanged == GroupStateChanged.IsHidden)
-            {
-                Director.Instance.CurrentPage.Update();
-            }
+            Director.Instance.CurrentPage?.Update();
         }
 
         public void RaiseComplianceRetryEvent()
