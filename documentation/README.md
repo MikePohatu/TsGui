@@ -12,14 +12,21 @@ Also see the [How to videos](https://www.youtube.com/playlist?list=PLbymiOxRQJvI
 * [Authentication](/documentation/Authentication/README.md)
 
 ## Features
-* [Compliance (pre-flight checks)](/documentation/features/Compliance.md)
-* [Groups and Toggles](/documentation/features/GroupsAndToggles.md)
-* [Option Linking](/documentation/features/OptionLinking.md)
-* [Queries](/documentation/features/Queries.md)
-* [Scripts](/documentation/features/Scripts.md)
-* [Styles (previously Formatting)](/documentation/features/Styles.md)
-* [TsGui Output](/documentation/features/TsGuiOutput.md)
-* [Validation](/documentation/features/Validation.md)
+
+TsGui includes a number of features to help you customise your UI to fit your needs.
+
+| Feature    | Description/usage |
+| -------- | ------- |
+| [Compliance](/documentation/features/Compliance.md)  | Pre-flight checks    |
+| [Groups and Toggles](/documentation/features/GroupsAndToggles.md) | Enable/disable UI elements |
+| [Option Linking](/documentation/features/OptionLinking.md)    | Use values of one UI element in another |
+| [Queries](/documentation/features/Queries.md) | Gather data for use in TsGui |
+| [Scripts](/documentation/features/Scripts.md) | Integration of separate scripts with TsGui |
+| [Styles (previously Formatting)](/documentation/features/Styles.md) | Layout, look and feel |
+| [TsGui Output](/documentation/features/TsGuiOutput.md) | Saving values to Task Sequence variables or Registry |
+| [Validation](/documentation/features/Validation.md) | Check user input |
+
+---
 
 ## Command line options
 tsgui.exe -config [filepath] -webconfig [url] -hash [password] -test
