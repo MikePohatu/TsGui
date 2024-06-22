@@ -27,6 +27,8 @@ namespace TsGui
 {
     public class Arguments
     {
+        public bool Debug { get; private set; }
+
         public string ConfigFile { get; private set; }
 
         public string WebConfigUrl { get; private set; }
@@ -58,6 +60,9 @@ namespace TsGui
                 {                  
                     switch (Args[index].ToUpper())
                     {
+                        case "-DEBUG":
+                            this.Debug = true;
+                            break;
                         case "-CONFIG":
                             if (Args.Length < index + 2) { throw new InvalidOperationException("Missing config file after parameter -config"); }
                             this.ConfigFile = this.CompleteFilePath(Args[index + 1]);                           
