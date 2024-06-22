@@ -36,40 +36,53 @@ namespace TsGui.Grouping
         private bool _inverse = false;
         private IToggleControl _option;
 
-        public Toggle(IToggleControl GuiOption, XElement InputXml)
+        private Toggle(IToggleControl option)
         {
-            this._option = GuiOption;
-            this.LoadXml(InputXml);
+            this._option = option;
+            Director.Instance.AddToggleControl(option);
             this._option.ToggleEvent += this.OnToggleEvent;
+        }
+
+        public Toggle(IToggleControl option, XElement InputXml)
+        {
+            this._option = option;
+            Director.Instance.AddToggleControl(option);
+            this._option.ToggleEvent += this.OnToggleEvent;
+            this.LoadXml(InputXml);
+        }
+
+        /// <summary>
+        /// Create a toggle with TRUE and FALSE for enabled/disabled values
+        /// </summary>
+        /// <param name="GuiOption"></param>
+        /// <param name="groupid"></param>
+        /// <param name="hide"></param>
+        /// <param name="invert"></param>
+        /// <returns></returns>
+        public static Toggle Create(IToggleControl option, string groupid, bool hide, bool invert)
+        {
+            var toggle = new Toggle(option);
+
+            toggle._group = GroupLibrary.GetGroupFromID(groupid);
+            toggle._hiddenMode = hide;
+            toggle._inverse = invert;
+            toggle._toggleValMappings.Add("TRUE", true);
+            toggle._toggleValMappings.Add("FALSE", false);
+            return toggle;
         }
 
         private void LoadXml(XElement InputXml)
         {
-            XElement x;
+            this._hiddenMode = XmlHandler.GetBoolFromXml(InputXml, "Hide", this._hiddenMode);
+            this._inverse = XmlHandler.GetBoolFromXml(InputXml, "Invert", false);
+            string groupid = XmlHandler.GetStringFromXml(InputXml, "Group", null);
 
-            x = InputXml.Element("Hide");
-            if (x != null)
-            {
-                this._hiddenMode = true;
+            if (string.IsNullOrWhiteSpace(groupid)) 
+            { 
+                throw new InvalidOperationException("No Group ID set in Toggle configured in XML: " + Environment.NewLine + InputXml); 
             }
 
-            XAttribute xa;
-            xa = InputXml.Attribute("Group");
-            if (xa != null)
-            {
-                if (!string.IsNullOrEmpty(xa.Value))
-                {
-                    this._group = GroupLibrary.GetGroupFromID(xa.Value);
-                }
-                else { throw new InvalidOperationException("Invalid Toggle configured in XML: " + InputXml); }
-            }
-            else { throw new InvalidOperationException("No Group ID set in Toggle configured in XML: " + Environment.NewLine + InputXml); }
-
-            xa = InputXml.Attribute("Invert");
-            if (xa != null)
-            {
-                this._inverse = Convert.ToBoolean(xa.Value);
-            }
+            this._group = GroupLibrary.GetGroupFromID(groupid);
 
             IEnumerable<XElement> togglesX;
             togglesX = InputXml.Elements("Enabled");

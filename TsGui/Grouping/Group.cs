@@ -42,7 +42,7 @@ namespace TsGui.Grouping
                 {
                     this._state = value;
                     StateEvent?.Invoke();
-                    Log.Info("Group " + this.ID + "state changed. New state: " + this._state.ToString());
+                    Log.Info("Group " + this.ID + " state changed. New state: " + this._state.ToString());
                 }              
             }
         }

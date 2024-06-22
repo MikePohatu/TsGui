@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -231,18 +231,7 @@ namespace TsGui
             }
 
             //populate hardware options if HardwareEval enabled
-            if (TsGuiRootConfig.HardwareEval == true)
-            {
-                HardwareEvaluator.Init(xconfig);
-
-                Log.Debug("Running hardware evaluator");
-                foreach (Variable var in HardwareEvaluator.GetTsVariables())
-                {
-                    NoUIOption newhwoption = new NoUIOption();
-                    await newhwoption.ImportFromTsVariableAsync(var);
-                    OptionLibrary.Add(newhwoption);
-                }
-            }
+            await HardwareEvaluator.InitAsync(xconfig);
 
             //If prodmode is true and testmode is false, only show the testing window if the debug option
             //has been set

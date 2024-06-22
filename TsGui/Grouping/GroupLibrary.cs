@@ -63,8 +63,10 @@ namespace TsGui.Grouping
         public static Group GetGroupFromID(string ID)
         {
             Group group;
-            _groups.TryGetValue(ID, out group);
-            if (group == null) { group = CreateGroup(ID); }
+            if (_groups.TryGetValue(ID, out group) == false)
+            {
+                group = CreateGroup(ID);
+            }
 
             return group;
         }
