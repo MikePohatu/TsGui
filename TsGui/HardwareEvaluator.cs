@@ -111,7 +111,7 @@ namespace TsGui
             vars.Add(new Variable("TsGui_IPv6", IPAddresses6, _path));
             vars.Add(new Variable("TsGui_DefaultGateway4", DefaultGateways4, _path));
             vars.Add(new Variable("TsGui_DefaultGateway6", DefaultGateways6, _path));
-            vars.Add(new Variable("TsGui_IPSubetMask4", IPNetMask4, _path));
+            vars.Add(new Variable("TsGui_IPSubnetMask4", IPNetMask4, _path));
             vars.Add(new Variable("TsGui_IPSubnetMask6", IPNetMask6, _path));
             vars.Add(new Variable("TsGui_DHCPServer", DHCPServer, _path));
 
