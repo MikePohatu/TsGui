@@ -21,11 +21,15 @@
 // ChassisTypes - https://technet.microsoft.com/en-us/library/ee156537.aspx
 // updated: https://blogs.technet.microsoft.com/brandonlinton/2017/09/15/updated-win32_systemenclosure-chassis-types/ 
 
+using Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Management;
 using System.Xml.Linq;
 using TsGui.Connectors;
+using TsGui.Options.NoUI;
+using TsGui.Options;
+using System.Threading.Tasks;
 
 namespace TsGui
 {
@@ -52,11 +56,30 @@ namespace TsGui
         /// <summary>
         /// Query WMI and populate the data for the TsGui_xxx variables
         /// </summary>
-        public static void Init(XElement inputxml)
+        public static async Task InitAsync(XElement inputxml)
         {
-            _path = XmlHandler.GetStringFromXml(inputxml, "Path", _path);
-            if (string.IsNullOrWhiteSpace(_path)) { _path = Director.Instance.DefaultPath; }
-            Evaluate();
+            var x = inputxml.Element("HardwareEval");
+            if (x != null)
+            {
+                _path = XmlHandler.GetStringFromXml(x, "Path", _path);
+                if (string.IsNullOrWhiteSpace(_path)) { _path = XmlHandler.GetStringFromXml(inputxml, "Path", _path); }
+                if (string.IsNullOrWhiteSpace(_path)) { _path = Director.Instance.DefaultPath; }
+
+                Log.Debug("Running hardware evaluator");
+                Evaluate();
+                foreach (Variable var in GetTsVariables())
+                {
+                    NoUIOption newhwoption = new NoUIOption();
+                    await newhwoption.ImportFromTsVariableAsync(var);
+                    OptionLibrary.Add(newhwoption);
+                    if (var.Name.StartsWith("TsGui_Is") == false) { continue; }
+
+                    newhwoption.AddToggle(var.Name, false, false);
+                    newhwoption.AddToggle($"{var.Name}_Hide", true, false);
+                    newhwoption.AddToggle($"{var.Name}_Invert", false, true);
+                    newhwoption.AddToggle($"{var.Name}_Hide_Invert", true, true);
+                }
+            }
         }
 
         public static List<Variable> GetTsVariables()
@@ -88,7 +111,7 @@ namespace TsGui
             vars.Add(new Variable("TsGui_IPv6", IPAddresses6, _path));
             vars.Add(new Variable("TsGui_DefaultGateway4", DefaultGateways4, _path));
             vars.Add(new Variable("TsGui_DefaultGateway6", DefaultGateways6, _path));
-            vars.Add(new Variable("TsGui_IPSubetMask4", IPNetMask4, _path));
+            vars.Add(new Variable("TsGui_IPSubnetMask4", IPNetMask4, _path));
             vars.Add(new Variable("TsGui_IPSubnetMask6", IPNetMask6, _path));
             vars.Add(new Variable("TsGui_DHCPServer", DHCPServer, _path));
 

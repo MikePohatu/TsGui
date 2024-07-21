@@ -4,6 +4,20 @@ How-to videos for this feature are available here: [Part 1](https://youtu.be/r3n
 
 Full example configuration file is available [here](/Config_Examples/Groups_and_Toggles.xml).
 
+* [Overview](#overview)
+* [Creating a Group](#creating-a-group)
+* [Adding a Toggle](#adding-a-toggle)
+  * [Toggle Configuration](#toggle-configuration)
+  * [Simple Example](#simple-example)
+  * [DropDownList Toggle Example](#dropdownlist-toggle-example)
+  * [Setting Toggles on DropDownList Options](#setting-toggles-on-dropdownlist-options)
+* [Group Precedence](#group-precedence)
+* [Values of Inactive Options](#values-of-inactive-options)
+  * [InactiveValue](#inactivevalue)
+  * [PurgeInactive](#purgeinactive)
+* [Automatically created toggles](#automatically-created-toggles)
+
+
 ## Overview
 
 The Groups and Toggles feature is used to enable and disable parts of the UI based on the options selected by the user. For example hide certain options if a certain business unit or build type is selected from a [DropDownList](/documentation/options/DropDownList.md).
@@ -64,6 +78,7 @@ It is best practise to only configure 1 toggle per group. If you configure more 
 * Set the values that will enable the Group using one or more ```<Enabled>``` elements (if not set, TRUE is assumed).
 * Set the values that will disable the Group using one or more ```<Disabled>``` elements (if not set, FALSE is assumed).
 * If you wish the UI elements in the Group to be fully hidden (rather than just disabled), add the ```<Hide />``` element. 
+* If you wish to invert the behaviour of the toggle, set the ```Invert``` attribute to "TRUE"
 
 
 ### Simple Example
@@ -73,7 +88,7 @@ It is best practise to only configure 1 toggle per group. If you configure more 
     <Label>Additional applications</Label>
     <HAlign>left</HAlign>
     
-    <Toggle Group="Group_Apps">
+    <Toggle Group="Group_Apps" Invert="FALSE">
         <Enabled>TRUE</Enabled>
         <Disabled>FALSE</Disabled>
         <Hide/>
@@ -231,4 +246,27 @@ The group is set on the ```<Page>``` element, so the entire page will be hidden 
 </Page>
 ```
 
+## Automatically created toggles
 
+To allow groups and toggles to be used based on the variables created by the [\<HardwareEval />](/documentation/MainWindow.md#hardwareeval) option, 4 toggles will automatically be created for each of the variables:
+
+* Toggle with basic enable/disable
+* Toggle with Hide option
+* Toggle with Invert option
+* Toggle with both Hide and Invert option
+
+For example the follwing toggles will be created for the TsGui_IsDesktop variable: 
+
+TsGui_IsDesktop\
+TsGui_IsDesktop_Hide\
+TsGui_IsDesktop_Invert\
+TsGui_IsDesktop_Hide_Invert
+
+You can then use these groups in your config, e.g.
+
+```xml
+<GuiOption Type="FreeText">
+    <Group>TsGui_IsLaptop_Hide</Group>
+    ...
+</GuiOption>
+```

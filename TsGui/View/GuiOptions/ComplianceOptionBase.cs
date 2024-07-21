@@ -174,6 +174,7 @@ namespace TsGui.View.GuiOptions
             this.LoadLegacyXml(InputXml);
             this._okHelpText = this.HelpText;
             this._compliancehandler.AddCompliances(InputXml.Elements("Compliance"));
+            this._showvalueinpopup = XmlHandler.GetBoolFromXml(InputXml, "ShowComplianceValue", this._showvalueinpopup);
             this._showvalueinpopup = XmlHandler.GetBoolFromXml(InputXml, "PopupShowValue", this._showvalueinpopup);
 
             //wrap the query in another to make it suitable for the querylist. 

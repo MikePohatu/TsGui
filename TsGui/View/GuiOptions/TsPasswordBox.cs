@@ -34,6 +34,8 @@ using System.Windows.Input;
 using Core.Logging;
 using TsGui.View.Layout;
 using MessageCrap;
+using System.ServiceModel.Channels;
+using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
@@ -44,6 +46,7 @@ namespace TsGui.View.GuiOptions
         private bool _allowempty = false;
         private bool _isauthenticator = true;   //is this actually used for authentication, or just to record a pwf
         private bool _expose = false;
+        private string _exposedpassword = null;
         private TsPasswordBoxUI _passwordboxui;
         private int _maxlength;
         private IAuthenticator _authenticator;
@@ -57,8 +60,9 @@ namespace TsGui.View.GuiOptions
         #region
         public string AuthID { get; private set; }
         public SecureString SecureString { get { return this._passwordboxui.PasswordBox.SecurePassword; } }
+
         public string Password { get { return this._passwordboxui.PasswordBox.Password; } }
-        public override string CurrentValue { get { return null; } }
+        public override string CurrentValue { get { return this._expose ? this._exposedpassword : null; } }
         public int MaxLength
         {
             get { return this._maxlength; }
@@ -67,7 +71,7 @@ namespace TsGui.View.GuiOptions
         public override Variable Variable
         {
             get {
-                if (this._expose) { return new Variable(this.VariableName, this.Password, this.Path); }
+                if (this._expose) { return new Variable(this.VariableName, this._exposedpassword, this.Path); }
                 else { return null; }
             }
         }
@@ -89,7 +93,6 @@ namespace TsGui.View.GuiOptions
             this._passwordboxui = new TsPasswordBoxUI();
             this.Control = this._passwordboxui;
             this.Label = new TsLabelUI();
-            this._passwordboxui.PasswordBox.PasswordChanged += this.OnPasswordChanged;
 
             this.UserControl.DataContext = this;
             this.SetDefaults();
@@ -97,6 +100,11 @@ namespace TsGui.View.GuiOptions
             this.ValidationHandler = new ValidationHandler(this);
             
             this.LoadXml(InputXml);
+
+            this._passwordboxui.PasswordBox.LostFocus += this.OnLostFocus;
+            this._passwordboxui.PasswordBox.KeyDown += this.OnKeyDown;
+            this._passwordboxui.PasswordBox.Loaded += this.OnLoaded;
+
             Director.Instance.ConfigLoadFinished += this.OnConfigLoadFinished;
         }
 
@@ -178,7 +186,13 @@ namespace TsGui.View.GuiOptions
                 }
                 else
                 {
-                    this.ValidationHandler.ToolTipHandler.Clear();
+                    newvalid = this.ValidationHandler.IsValid(this.Password);
+                    if (newvalid == false)
+                    {
+                        this.ValidationText = this.ValidationHandler.ValidationMessage;
+                        this.ValidationHandler.ToolTipHandler.ShowError();
+                    }
+                    else { this.ValidationHandler.ToolTipHandler.Clear(); }
                 }
             }
 
@@ -198,7 +212,6 @@ namespace TsGui.View.GuiOptions
         {
             if (this._isauthenticator)
             {
-                this._passwordboxui.PasswordBox.KeyDown += this.OnKeyDown;
                 this._authenticator = AuthLibrary.GetAuthenticator(this.AuthID);
                 if (this._authenticator != null)
                 {
@@ -217,19 +230,46 @@ namespace TsGui.View.GuiOptions
             this.Validate();
         }
 
+        //Loaded event happens during navigation into the page. Navigating away from the page empties the 
+        //passwordBox, but we want to keep that value if exposed is enabled. When we navigate back we
+        //need to empty it to match the empty controls
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            this.ChangePassword();
+        }
+
+        private void OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            this.ChangePassword();
+            this.Validate();
+        }
+
         public async void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return || e.Key == Key.Enter)
             {
-                await this._authenticator.AuthenticateAsync();
+                this.ChangePassword();
+                if (this._isauthenticator)
+                {
+                    //validation will be initiated by the authenticator
+                    await this._authenticator.AuthenticateAsync();
+                }
+                else
+                {
+                    this.Validate();
+                }
+
                 e.Handled = true;
             }
         }
 
-        public void OnPasswordChanged(object sender, EventArgs e)
+        private void ChangePassword()
         {
             //Log.Info("Password changed event");
+            if (this._expose) { this._exposedpassword = this._passwordboxui.PasswordBox.Password; }
             this.PasswordChangedAsync?.Invoke();
+            this.NotifyViewUpdate();
+            LinkingHub.Instance.SendUpdateMessage(this, null);
         }
 
         //First state change needs the borderbrush thickness to be changed. Takes some thickness from padding and put it onto borderthickness
@@ -240,6 +280,6 @@ namespace TsGui.View.GuiOptions
             this._authenticator.AuthStateChanged -= this.FirstStateChange;
         }
 
-        public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
+        public override async Task UpdateValueAsync(MessageCrap.Message message) { await Task.CompletedTask; }
     }
 }

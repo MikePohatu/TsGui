@@ -39,11 +39,6 @@ namespace TsGui.Config
         public static bool Debug { get; private set; } = false;
 
         /// <summary>
-        /// Run the Hardware Evaluator (default = true)
-        /// </summary>
-        public static bool HardwareEval { get; private set; } = true;
-
-        /// <summary>
         /// Set touch defaults in UI, gives more space and height for controls (default = false)
         /// </summary>
         public static bool UseTouchDefaults { get; private set; } = false;
@@ -75,11 +70,6 @@ namespace TsGui.Config
             x = inputxml.Element("UseTouchDefaults");
             if (x != null) { UseTouchDefaults = true; }
             else {  UseTouchDefaults = false; }
-
-            //turn hardware eval on or off
-            x = inputxml.Element("HardwareEval");
-            if (x == null) { HardwareEval = false; }
-            else {  HardwareEval = true; }
 
             DefaultPath = XmlHandler.GetStringFromXml(inputxml, "DefaultPath", DefaultPath);
             PurgeInactive = XmlHandler.GetBoolFromXml(inputxml, "PurgeInactive", PurgeInactive);

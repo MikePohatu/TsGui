@@ -70,6 +70,7 @@ namespace TsGui.Diagnostics
 
         public TestingWindow()
         {
+            this.Verbose = Arguments.Instance.Debug;
             this.Window = new TestingWindowUI();
             this._loggingtextbox = this.Window._logtextbox;
             this.Window.DataContext = this;

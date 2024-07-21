@@ -41,7 +41,6 @@ namespace TsGui.Options.NoUI
         private string _id;
           
         //properties
-        public bool IsToggle { get; set; }
         public string Path { get; set; }
         public string ID
         {
@@ -148,22 +147,26 @@ namespace TsGui.Options.NoUI
                 this.ID = xa.Value;
             }
 
-            IEnumerable<XElement> xlist = InputXml.Elements("Toggle");
-            if (xlist != null)
-            {
-                Director.Instance.AddToggleControl(this);
-
-                foreach (XElement subx in xlist)
-                {
-                    new Toggle(this, subx);
-                    this.IsToggle = true;
-                }
-            }
-
-            if (this.IsToggle == true) { Director.Instance.AddToggleControl(this); }
+            this.AddToggles(InputXml.Elements("Toggle"));
 
             //pull the default path from the director if not already set
             if (string.IsNullOrWhiteSpace(this.Path)) { this.Path = Director.Instance.DefaultPath; }
+        }
+
+        public void AddToggle(string groupid, bool hide, bool invert)
+        {
+            Toggle.Create(this, groupid, hide, invert);
+        }
+
+        public void AddToggles(IEnumerable<XElement> toggleElements)
+        {
+            if (toggleElements != null)
+            {
+                foreach (XElement subx in toggleElements)
+                {
+                    new Toggle(this, subx);
+                }
+            }
         }
 
         public async Task UpdateValueAsync(Message message)

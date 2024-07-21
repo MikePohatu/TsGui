@@ -231,24 +231,13 @@ namespace TsGui
             }
 
             //populate hardware options if HardwareEval enabled
-            if (TsGuiRootConfig.HardwareEval == true)
-            {
-                HardwareEvaluator.Init(xconfig);
-
-                Log.Debug("Running hardware evaluator");
-                foreach (Variable var in HardwareEvaluator.GetTsVariables())
-                {
-                    NoUIOption newhwoption = new NoUIOption();
-                    await newhwoption.ImportFromTsVariableAsync(var);
-                    OptionLibrary.Add(newhwoption);
-                }
-            }
+            await HardwareEvaluator.InitAsync(xconfig);
 
             //If prodmode is true and testmode is false, only show the testing window if the debug option
             //has been set
             if (Arguments.Instance.TestMode == false && ConfigData.ProdMode == true)
             {
-                if (TsGuiRootConfig.Debug == true) { ConfigData.AddTestingWindow(); }
+                if (TsGuiRootConfig.Debug == true || Arguments.Instance.Debug) { ConfigData.AddTestingWindow(); }
             }
             //if prodmode isn't true, the envcontroller couldn't connect to sccm
             //prompt the user if they want to continue. exit if not. 
