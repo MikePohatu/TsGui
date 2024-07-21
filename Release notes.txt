@@ -1,8 +1,14 @@
-Version 2.0.23.0
-Release date: 10 Apr 2024
+Version 2.0.25.0
+Release date: 22 Jul 2024
 
 *Fixes
-	Fixed issue when using NoUI as a toggle for a group set on a page
+	Fixded typo in TsGui_IPSubnetMask4
+	Fixed PasswordBox with ExposePassword losing value in certain scenarios e.g. during page navigation
+	Fixed ShowComplianceValue not working
+
+* Features
+	Added toggles for items in hardware evaluator e.g. TsGui_IPSubnetMask4_Hide. See Groups and Toggles for more information
+	Added PasswordBox with ExposePassword option being usable with Option Linking 
 
 *Known issues
 	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
@@ -11,6 +17,12 @@ Release date: 10 Apr 2024
 	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
+
+Version 2.0.23.0
+Release date: 10 Apr 2024
+
+*Fixes
+	Fixed issue when using NoUI as a toggle for a group set on a page
 
 ---------------
 Version 2.0.22.0
