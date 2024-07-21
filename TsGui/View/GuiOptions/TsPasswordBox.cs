@@ -34,6 +34,8 @@ using System.Windows.Input;
 using Core.Logging;
 using TsGui.View.Layout;
 using MessageCrap;
+using System.ServiceModel.Channels;
+using TsGui.Linking;
 
 namespace TsGui.View.GuiOptions
 {
@@ -267,6 +269,7 @@ namespace TsGui.View.GuiOptions
             if (this._expose) { this._exposedpassword = this._passwordboxui.PasswordBox.Password; }
             this.PasswordChangedAsync?.Invoke();
             this.NotifyViewUpdate();
+            LinkingHub.Instance.SendUpdateMessage(this, null);
         }
 
         //First state change needs the borderbrush thickness to be changed. Takes some thickness from padding and put it onto borderthickness
@@ -277,6 +280,6 @@ namespace TsGui.View.GuiOptions
             this._authenticator.AuthStateChanged -= this.FirstStateChange;
         }
 
-        public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
+        public override async Task UpdateValueAsync(MessageCrap.Message message) { await Task.CompletedTask; }
     }
 }
