@@ -1,3 +1,20 @@
+
+Version 2.0.26.0
+Release date: 27 Jul 2024
+
+*Fixes
+	Fixded InfoBox not working as a toggle
+	
+*Known issues
+	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
+	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
+	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
+	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
+
+*Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
+
+
+---------------
 Version 2.0.25.0
 Release date: 22 Jul 2024
 
@@ -10,14 +27,7 @@ Release date: 22 Jul 2024
 	Added toggles for items in hardware evaluator e.g. TsGui_IPSubnetMask4_Hide. See Groups and Toggles for more information
 	Added PasswordBox with ExposePassword option being usable with Option Linking 
 
-*Known issues
-	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
-	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
-	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
-	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
-
-*Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
-
+---------------
 Version 2.0.23.0
 Release date: 10 Apr 2024
 

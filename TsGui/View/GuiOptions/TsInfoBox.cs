@@ -101,6 +101,7 @@ namespace TsGui.View.GuiOptions
 
             this.OnPropertyChanged(this, "ControlText");
             this.NotifyViewUpdate();
+            this.InvokeToggleEvent();
             LinkingHub.Instance.SendUpdateMessage(this, message);
         }
     }
