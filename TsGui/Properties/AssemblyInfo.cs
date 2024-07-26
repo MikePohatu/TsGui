@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -69,7 +69,7 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.25.0")]
-[assembly: AssemblyFileVersion("2.0.25.0")]
+[assembly: AssemblyVersion("2.0.26.0")]
+[assembly: AssemblyFileVersion("2.0.26.0")]
 [assembly: NeutralResourcesLanguage("")]
 
