@@ -93,7 +93,7 @@ Function pause ()
     }
 }
 
-#run builds
+#Define details
 $copyRight = "Copyright © 20Road Limited $(get-date -Format yyyy)"
 $repoRoot = 'C:\Source\repos\TsGui'
 $devenv = 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe'
@@ -118,8 +118,17 @@ Set-ProjectDetails -ProjectPath "$($repoRoot)\WindowsHelpers" -Version $version 
 Set-ProjectDetails -ProjectPath "$($repoRoot)\TsGui.Tests" -Version $version -Copyright $copyRight -Product $productName
 
 
+#kill any tsgui processes
+$runningProcs = Get-Process 'tsgui' -ErrorAction SilentlyContinue
+if ($runningProcs) {
+    $confirm = Read-Host -Prompt "Running tsgui processes found. Kill and continue (y/n)?"
+    if ( $confirm -match "[yY]" ) {
+        $runningProcs | Stop-Process -Force
+    }
+}
 
 
+#run builds
 Write-Host "Building $BuildFile"
 Start-Process -WorkingDirectory $repoRoot -FilePath $cmd -ArgumentList "/c `"`"$devenv`" `"$BuildFile`" /rebuild Release`""
 
@@ -146,13 +155,15 @@ Copy-Item -Path "$($repoRoot)\Config_demo.xml" -Destination "$($ProductReleasePa
 
 
 $appFiles = @("TsGui.exe", 
+    "TsGui.exe.config", 
     "Core.dll", 
     "Messaging.dll", 
     "Microsoft.Management.Infrastructure.dll", 
     "Newtonsoft.Json.dll", 
     "NLog.dll", "NLog.config",
     "System.Management.Automation.dll", 
-    "WindowsHelpers.dll")
+    "WindowsHelpers.dll"
+)
 
 $appFiles | ForEach-Object {
     Copy-Item -Path "$($ProjectReleasePath)\$_" -Destination "$($ProductReleasePath)" -Force
