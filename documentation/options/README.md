@@ -4,6 +4,7 @@
 * [Common Configuration Elements](#common-configuration-elements)
   * [Variable](#variable)
   * [SetValue](#setvalue)
+  * [ReadOnly](#readonly)
 * [GuiOptions](#guioptions)
   * [GuiOption Layout Elements](#guioption-layout-elements)
   * [Label](#label)
@@ -26,6 +27,10 @@ Set the variable name. By default this will configure the Task Sequence variable
 
 ### SetValue
 To set the default value for the option, you use the ```<SetValue>``` element. This can contain one or more [Queries](/documentation/features/Queries.md) that will generate the value. Note that a ```<Value>``` element is actually a type of query that contains a static value.
+
+
+### ReadOnly
+When set to true, this will 'grey out' the control so the user can't edit the value. This is different from using the [Groups & Toggles](/documentation/features/GroupsAndToggles.md) feature which will disable both the control and the label and also change or remove the value of the GuiOption. **ReadOnly** will only disable the control. 
 
 
 ## GuiOptions

@@ -78,8 +78,14 @@ namespace TsGui.View.GuiOptions
                 }
             }
         }
-        
-        
+
+        protected bool _controlenabled = true;
+        public bool ControlEnabled
+        {
+            get { return this._controlenabled; }
+            set { this._controlenabled = value; this.OnPropertyChanged(this, "ControlEnabled"); }
+        }
+
         public GuiOptionBase(ParentLayoutElement Parent):base(Parent)
         {
             this.UserControl = new GuiOptionBaseUI();
@@ -124,6 +130,7 @@ namespace TsGui.View.GuiOptions
             this.HelpText = XmlHandler.GetStringFromXml(InputXml, "HelpText", this.HelpText);
             this.ShowGridLines = XmlHandler.GetBoolFromXml(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXml(InputXml, "InactiveValue", this.InactiveValue);
+            this.ControlEnabled = !XmlHandler.GetBoolFromXml(InputXml, "ReadOnly", !this._controlenabled);
             this.SetLayoutRightLeft();
 
             XAttribute xa = InputXml.Attribute("ID");
