@@ -44,7 +44,14 @@ namespace TsGui.View.Layout
             get { return this._showgridlines; }
             set { this._showgridlines = value; this.OnPropertyChanged(this, "ShowGridLines"); }
         }
-        
+
+
+        protected bool _controlenabled = true;
+        public bool ControlEnabled
+        {
+            get { return this._controlenabled; }
+            set { this._controlenabled = value; this.OnPropertyChanged(this, "ControlEnabled"); }
+        }
 
         public ParentLayoutElement Parent { get; set; }
 
@@ -67,13 +74,15 @@ namespace TsGui.View.Layout
             base.LoadXml(InputXml);
 
             this.ShowGridLines = XmlHandler.GetBoolFromXml(InputXml, "ShowGridLines", this.ShowGridLines);
-            
+            this.ControlEnabled = !XmlHandler.GetBoolFromXml(InputXml, "ReadOnly", !this._controlenabled);
+
             //Load legacy options
             this.Style.LeftCellWidth = XmlHandler.GetDoubleFromXml(InputXml, "LabelWidth", this.Style.LeftCellWidth);
             this.Style.RightCellWidth = XmlHandler.GetDoubleFromXml(InputXml, "ControlWidth", this.Style.RightCellWidth);
 
             this.Style.Width = XmlHandler.GetDoubleFromXml(InputXml, "Width", this.Style.Width);
             this.Style.Height = XmlHandler.GetDoubleFromXml(InputXml, "Height", this.Style.Height);
+
 
             //import any styles
             var stylesEl = InputXml.Attribute("Styles");
