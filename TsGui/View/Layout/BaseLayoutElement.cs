@@ -66,6 +66,10 @@ namespace TsGui.View.Layout
         {
             this.Parent = Parent;
             this.Events = new LayoutEvents(this,Parent);
+            if (Parent != null)
+            {
+                this._controlenabled = Parent.ControlEnabled;
+            }
             this.SetDefaults();
         }
 

@@ -83,10 +83,6 @@ namespace TsGui.View.GuiOptions
         {
             this.UserControl = new GuiOptionBaseUI();
             this.UserControl.Loaded += this.OnRendered;
-            if (Parent != null)
-            {
-                this._controlenabled = Parent.ControlEnabled;
-            }
         }
 
         public void OnRendered (object sender, EventArgs e)
