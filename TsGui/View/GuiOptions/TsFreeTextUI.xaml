@@ -22,5 +22,5 @@
     
     <!-- Binding created in code to allowing setting delay -->
     <TextBox x:Name="TextBox" 
-             Style="{StaticResource FreeTextStyle}" CharacterCasing="{Binding CharacterCasing}" IsEnabled="{Binding ControlEnabled}"/>
+             Style="{StaticResource FreeTextStyle}" CharacterCasing="{Binding CharacterCasing}"/>
 </UserControl>

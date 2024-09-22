@@ -4,7 +4,6 @@
   * [CharacterCasing](#charactercasing)
   * [Delay](#delay)
   * [MaxLength](#maxlength)
-  * [ReadOnly](#readonly)
 * [Example XML](#example-xml)
 
 ## Overview
@@ -22,10 +21,6 @@ The Delay property is the time in milliseconds between the user entering text an
 
 ### MaxLength
 The maximum length of string that can be entered into the textbox. The textbox will not allow the user to enter more characters. 
-
-### ReadOnly
-When set to true, this will 'grey out' the text box control so the user can't edit the value. This is different from using the [Groups & Toggles](/documentation/features/GroupsAndToggles.md) feature which will disable both the control and the label and also change or remove the value of the GuiOption. **ReadOnly** will only disable the control. 
-
 
 
 ## Example XML

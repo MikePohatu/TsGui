@@ -43,6 +43,7 @@
             </Style>
 
             <Style x:Key="ControlStyle">
+                <Setter Property="Control.IsEnabled" Value="{Binding ControlEnabled}"/>
                 <Setter Property="Control.Height" Value="{Binding ControlStyle.Height}"/>
                 <Setter Property="Control.Width" Value="{Binding ControlStyle.Width}"/>
                 <Setter Property="Control.Margin" Value="{Binding ControlStyle.Margin}"/>

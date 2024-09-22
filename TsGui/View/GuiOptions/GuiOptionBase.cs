@@ -78,8 +78,7 @@ namespace TsGui.View.GuiOptions
                 }
             }
         }
-        
-        
+
         public GuiOptionBase(ParentLayoutElement Parent):base(Parent)
         {
             this.UserControl = new GuiOptionBaseUI();
