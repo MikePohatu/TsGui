@@ -30,7 +30,9 @@ To set the default value for the option, you use the ```<SetValue>``` element. T
 
 
 ### ReadOnly
-When set to true, this will 'grey out' the control so the user can't edit the value. This is different from using the [Groups & Toggles](/documentation/features/GroupsAndToggles.md) feature which will disable both the control and the label and also change or remove the value of the GuiOption. **ReadOnly** will only disable the control. 
+When set to TRUE, this will 'grey out' the control so the user can't edit the value. This is different from using the [Groups & Toggles](/documentation/features/GroupsAndToggles.md) feature which will disable both the control and the label and also change or remove the value of the GuiOption. **ReadOnly** will only disable the control. 
+
+Note that setting this option at a higher level in the tree e.g. Row or Column, will cause this option to flow down to child items in the tree. 
 
 
 ## GuiOptions

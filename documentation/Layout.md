@@ -28,7 +28,7 @@ TsGui is built around a grid structure with rows and columns similar to an HTML 
 </Page>
 ```
 
-All items in the tree can have configuration applied to them e.g. [Style](/documentation/features/Styles.md)  or [Grouping](/documentation/features/GroupsAndToggles.md). Configuration applied to an item higher in the tree will propogate down the tree
+All items in the tree can have configuration applied to them e.g. [Style](/documentation/features/Styles.md), [Grouping](/documentation/features/GroupsAndToggles.md), [ReadOnly](/documentation/options/README.md#readonly) option. Configuration applied to an item higher in the tree will propogate down the tree
 
 ## Page
 A TsGui UI contains one or more pages. Each page is contained within a ```<Page>``` element, and can contain one or more [rows](#row). If more than one page exists, TsGui will automatically configure the Next/Previous buttons appropriately.
