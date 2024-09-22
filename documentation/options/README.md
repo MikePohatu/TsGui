@@ -30,10 +30,21 @@ To set the default value for the option, you use the ```<SetValue>``` element. T
 
 
 ### ReadOnly
-When set to TRUE, this will 'grey out' the control so the user can't edit the value. This is different from using the [Groups & Toggles](/documentation/features/GroupsAndToggles.md) feature which will disable both the control and the label and also change or remove the value of the GuiOption. **ReadOnly** will only disable the control. 
+When set to TRUE, this will 'grey out' the control so the user can't edit the value. This is different from using the [Groups & Toggles](/documentation/features/GroupsAndToggles.md) feature which will disable both the control and the label and also change or remove the value of the GuiOption. **ReadOnly** will only disable the control.
+
+```xml
+<GuiOption Type="CheckBox" ReadOnly="TRUE">
+  ...
+<GuiOption>
+```
 
 Note that setting this option at a higher level in the tree e.g. Row or Column, will cause this option to flow down to child items in the tree. 
 
+```xml
+<Row ReadOnly="TRUE">
+  ...
+<Row>
+```
 
 ## GuiOptions
 A TsGui user interface is built with one or more ```<GuiOption Type="xxx">``` elements. Each different type creates a different type of control. These are added to the layout as outlined in the [Layout](/documentation/Layout.md) documentation.
