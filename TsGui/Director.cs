@@ -452,11 +452,6 @@ namespace TsGui
             this.CurrentPage.Update();
             this.UpdateWindow();
         }
-        
-        public void AddToggleControl(IToggleControl ToogleControl)
-        {
-            ConfigData.Toggles.Add(ToogleControl);
-        }
 
         //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()

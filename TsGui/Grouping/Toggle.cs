@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -38,17 +38,20 @@ namespace TsGui.Grouping
 
         private Toggle(IToggleControl option)
         {
-            this._option = option;
-            Director.Instance.AddToggleControl(option);
-            this._option.ToggleEvent += this.OnToggleEvent;
+            this.Init(option);
         }
 
         public Toggle(IToggleControl option, XElement InputXml)
         {
-            this._option = option;
-            Director.Instance.AddToggleControl(option);
-            this._option.ToggleEvent += this.OnToggleEvent;
+            this.Init(option);
             this.LoadXml(InputXml);
+        }
+
+        private void Init(IToggleControl option)
+        {
+            this._option = option;
+            ConfigData.Toggles.Add(option);
+            this._option.ToggleEvent += this.OnToggleEvent;
         }
 
         /// <summary>

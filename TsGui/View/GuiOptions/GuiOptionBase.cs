@@ -137,16 +137,12 @@ namespace TsGui.View.GuiOptions
             IEnumerable<XElement> xlist = InputXml.Elements("Toggle");
             if (xlist != null)
             {
-                Director.Instance.AddToggleControl(this);
-
                 foreach (XElement subx in xlist)
                 {
                     new Toggle(this, subx);
                     this.IsToggle = true;
                 }
             }
-
-            if (this.IsToggle == true) { Director.Instance.AddToggleControl(this); }
         }
 
         //Grouping stuff

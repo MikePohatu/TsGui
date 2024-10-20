@@ -55,7 +55,6 @@ namespace TsGui
         void AddOptionToLibary(IOption Option);
         void MoveNext();
         void MovePrevious();
-        void AddToggleControl(IToggleControl ToogleControl);
         void Finish();
         void Cancel();
         void OnWindowClosing(object sender, CancelEventArgs e);
