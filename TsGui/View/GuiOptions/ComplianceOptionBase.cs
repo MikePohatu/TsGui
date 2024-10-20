@@ -148,10 +148,10 @@ namespace TsGui.View.GuiOptions
 
         public async void OnComplianceRetry(IComplianceRoot o, EventArgs e)
         {
-            await this.UpdateValueAsync(null);
+            await this.UpdateLinkedValueAsync(null);
         }
 
-        public override async Task UpdateValueAsync(Message message)
+        public override async Task UpdateLinkedValueAsync(Message message)
         {
             await this._querylist.ProcessAllQueriesAsync(message);
             await this.ProcessQueryAsync(message);
@@ -162,7 +162,7 @@ namespace TsGui.View.GuiOptions
 
         public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            await this.UpdateValueAsync(message);
+            await this.UpdateLinkedValueAsync(message);
         }
 
         public new void LoadXml(XElement InputXml)

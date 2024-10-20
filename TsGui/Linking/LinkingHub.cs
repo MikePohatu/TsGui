@@ -71,7 +71,7 @@ namespace TsGui.Linking
                     IOption option = this.GetSourceOption(message.Payload as string);
                     if (option != null)
                     {
-                        await option.UpdateValueAsync(message);
+                        await option.UpdateLinkedValueAsync(message);
                     }
                     break;
                 default:

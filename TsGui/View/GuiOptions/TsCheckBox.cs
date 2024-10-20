@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -123,7 +123,7 @@ namespace TsGui.View.GuiOptions
             { this.SetValue(true, null); }
         }
 
-        public override async Task UpdateValueAsync(Message message)
+        public override async Task UpdateLinkedValueAsync(Message message)
         {
             string newvalue = (await this._querylist.GetResultWrangler(message))?.GetString();
 
@@ -137,7 +137,7 @@ namespace TsGui.View.GuiOptions
 
         public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            await this.UpdateValueAsync(message);
+            await this.UpdateLinkedValueAsync(message);
         }
 
         private void SetValue(bool value, Message message)

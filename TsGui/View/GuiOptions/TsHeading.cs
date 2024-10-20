@@ -63,6 +63,6 @@ namespace TsGui.View.GuiOptions
             this.ControlText = XmlHandler.GetStringFromXml(InputXml, "AltLabel", this.ControlText);
         }
 
-        public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
+        public override async Task UpdateLinkedValueAsync(Message message) { await Task.CompletedTask; }
     }
 }

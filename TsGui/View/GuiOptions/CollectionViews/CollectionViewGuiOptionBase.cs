@@ -153,7 +153,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
             return newvalid;
         }
 
-        public override async Task UpdateValueAsync(Message message)
+        public override async Task UpdateLinkedValueAsync(Message message)
         {
             await this._builder.RebuildAsync(message);
             this.OnPropertyChanged(this, "VisibleOptions");
@@ -165,7 +165,7 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
         public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            await this.UpdateValueAsync(message);
+            await this.UpdateLinkedValueAsync(message);
         }
 
         protected abstract void SetSelected(string input, Message message);

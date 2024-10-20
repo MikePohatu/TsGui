@@ -82,14 +82,14 @@ namespace TsGui.View.GuiOptions
             { this.LoadSetValueXml(x,false); }
         }
 
-        public override async Task UpdateValueAsync(Message message)
+        public override async Task UpdateLinkedValueAsync(Message message)
         {
             string val = (await this._querylist.GetResultWrangler(message))?.GetString();
             this.SetValue(val, message);
         }
 
         public async Task OnSourceValueUpdatedAsync(Message message)
-        { await this.UpdateValueAsync(message); }
+        { await this.UpdateLinkedValueAsync(message); }
 
         private void SetValue(string value, Message message)
         {

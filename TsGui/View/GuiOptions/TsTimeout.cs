@@ -90,7 +90,7 @@ namespace TsGui.View.GuiOptions
             }
         }
 
-        public override async Task UpdateValueAsync(Message message)
+        public override async Task UpdateLinkedValueAsync(Message message)
         {
             LinkingHub.Instance.SendUpdateMessage(this, message);
             await Task.CompletedTask;

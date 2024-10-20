@@ -165,7 +165,7 @@ namespace TsGui.View.GuiOptions
         {
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
-            await this.UpdateValueAsync(null);
+            await this.UpdateLinkedValueAsync(null);
         }
 
         public void InvokeToggleEvent()
@@ -235,6 +235,6 @@ namespace TsGui.View.GuiOptions
             Log.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
         }
 
-        public abstract Task UpdateValueAsync(Message message);
+        public abstract Task UpdateLinkedValueAsync(Message message);
     }
 }

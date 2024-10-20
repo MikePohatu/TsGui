@@ -72,7 +72,7 @@ namespace TsGui.Options
         }
 
         //public methods
-        public async Task UpdateValueAsync(Message message)
+        public async Task UpdateLinkedValueAsync(Message message)
         {
             await Task.CompletedTask;
             LinkingHub.Instance.SendUpdateMessage(this, message);
@@ -81,7 +81,7 @@ namespace TsGui.Options
 
         public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            await this.UpdateValueAsync(message);
+            await this.UpdateLinkedValueAsync(message);
         }
 
         protected void NotifyViewUpdate()
@@ -94,7 +94,7 @@ namespace TsGui.Options
         //This is called by the controller once everything is loaded
         public async Task InitialiseAsync()
         {
-            await this.UpdateValueAsync(null);
+            await this.UpdateLinkedValueAsync(null);
         }
     }
 }

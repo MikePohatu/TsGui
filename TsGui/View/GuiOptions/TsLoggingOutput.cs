@@ -93,7 +93,7 @@ namespace TsGui.View.GuiOptions
             this.SubscribeToLogs();
         }
 
-        public override async Task UpdateValueAsync(Message message)
+        public override async Task UpdateLinkedValueAsync(Message message)
         {
             await Task.CompletedTask;
         }

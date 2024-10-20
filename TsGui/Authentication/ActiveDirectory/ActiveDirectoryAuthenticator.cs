@@ -143,7 +143,7 @@ namespace TsGui.Authentication.ActiveDirectory
             if (option != null)
             {
                 option.CurrentValue = member;
-                await option.UpdateValueAsync(MessageHub.CreateMessage(this, null));
+                await option.UpdateLinkedValueAsync(MessageHub.CreateMessage(this, null));
             }
         }
 

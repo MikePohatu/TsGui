@@ -131,7 +131,7 @@ namespace TsGui.Authentication.ExposedPassword
             this.OnPropertyChanged(this, "LiveValue");
         }
 
-        public async Task UpdateValueAsync(Message message)
+        public async Task UpdateLinkedValueAsync(Message message)
         {
             LinkingHub.Instance.SendUpdateMessage(this, message);
             await Task.CompletedTask;

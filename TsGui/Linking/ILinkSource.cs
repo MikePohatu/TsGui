@@ -32,6 +32,6 @@ namespace TsGui.Linking
         /// <summary>
         /// Request a link source to update the value set on the option.
         /// </summary>
-        Task UpdateValueAsync(Message message);
+        Task UpdateLinkedValueAsync(Message message);
     }
 }
