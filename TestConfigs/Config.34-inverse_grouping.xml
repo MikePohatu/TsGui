@@ -1,0 +1,70 @@
+<TsGui LiveData="TRUE">
+	<Height>530</Height>
+	<Width>500</Width>
+
+	<!--<ShowGridLines/>-->
+	<HardwareEval />
+
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Uncheck box to get extra page</Text>
+		<Bg-Color>#ff0000</Bg-Color>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<GuiOption Type="CheckBox">
+					<Variable>options</Variable>
+					<Checked />
+					<Label>Additional options</Label>
+					<Toggle Group="Group_options">
+						<Enabled>FALSE</Enabled>
+						<Disabled>TRUE</Disabled>
+						<Hide />
+					</Toggle>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+	<Page>
+		<Group>Group_options</Group>
+		<Row>
+			<Column>
+
+				<GuiOption Type="ComputerName" />
+
+				<GuiOption Type="CheckBox">
+					<Variable>TOGGLE_DiskID</Variable>
+					<Label>Choose disk</Label>
+					<HAlign>left</HAlign>
+
+					<Toggle Group="Group_Disk">
+						<Enabled>TRUE</Enabled>
+						<Disabled>FALSE</Disabled>
+					</Toggle>
+				</GuiOption>
+
+				<GuiOption Type="DropDownList" PurgeInactive="TRUE">
+					<Group>Group_Disk</Group>
+					<Variable>OSDDiskIndex</Variable>
+					<Label>Disk</Label>
+					<DefaultValue>0</DefaultValue>
+					<Query Type="Wmi">
+						<Wql>select Index,Caption,Size FROM Win32_DiskDrive where MediaType='Fixed hard disk media'</Wql>
+						<Property Name="Index" />
+						<Property Name="Index">
+							<Prefix>ID: </Prefix>
+						</Property>
+						<Property Name="Size">
+							<Calculate DecimalPlaces="2">VALUE/1073741824</Calculate>
+							<Append>GB</Append>
+						</Property>
+						<Property Name="Caption" />
+						<Separator> - </Separator>
+					</Query>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>

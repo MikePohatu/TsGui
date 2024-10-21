@@ -57,7 +57,6 @@ namespace TsGui.Tests
         public void AddOptionToLibary(IOption Option) { }
         public void MoveNext() { }
         public void MovePrevious() { }
-        public void AddToggleControl(IToggleControl ToogleControl) { }
         public void Finish() { }
         public void Cancel() { }
         public void OnWindowClosing(object sender, CancelEventArgs e) { }

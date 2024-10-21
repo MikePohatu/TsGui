@@ -121,9 +121,10 @@ namespace TsGui.View.GuiOptions
             x = InputXml.Element("Checked");
             if (x != null)
             { this.SetValue(true, null); }
+            else { this.SetValue(false, null); }
         }
 
-        public override async Task UpdateValueAsync(Message message)
+        public override async Task UpdateLinkedValueAsync(Message message)
         {
             string newvalue = (await this._querylist.GetResultWrangler(message))?.GetString();
 
@@ -131,13 +132,13 @@ namespace TsGui.View.GuiOptions
             {
                 if (newvalue == this._valTrue) { this.SetValue(true, message); }
                 else if (newvalue == this._valFalse) { this.SetValue(false, message); }
-                else { newvalue = null; }
             }
+            LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
         public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            await this.UpdateValueAsync(message);
+            await this.UpdateLinkedValueAsync(message);
         }
 
         private void SetValue(bool value, Message message)

@@ -137,38 +137,27 @@ namespace TsGui.View.GuiOptions
             IEnumerable<XElement> xlist = InputXml.Elements("Toggle");
             if (xlist != null)
             {
-                Director.Instance.AddToggleControl(this);
-
                 foreach (XElement subx in xlist)
                 {
                     new Toggle(this, subx);
                     this.IsToggle = true;
                 }
             }
-
-            if (this.IsToggle == true) { Director.Instance.AddToggleControl(this); }
         }
 
         //Grouping stuff
         #region
         public event ToggleEvent ToggleEvent;
 
-        //fire an intial event to make sure things are set correctly. This is
-        //called by the controller once everything is loaded
-        public void InitialiseToggle()
-        {
-            this.InvokeToggleEvent();
-        }
-
         //This is called by the Director once everything is loaded
         public async Task InitialiseAsync()
         {
             this.UserControl.IsEnabledChanged += this.OnGroupStateChanged;
             this.UserControl.IsVisibleChanged += this.OnGroupStateChanged;
-            await this.UpdateValueAsync(null);
+            await this.UpdateLinkedValueAsync(null);
         }
 
-        public void InvokeToggleEvent()
+        protected void InvokeToggleEvent()
         {
             this.ToggleEvent?.Invoke();
         }
@@ -235,6 +224,6 @@ namespace TsGui.View.GuiOptions
             Log.Info(this.VariableName + " variable value changed. New value: " + this.LiveValue);
         }
 
-        public abstract Task UpdateValueAsync(Message message);
+        public abstract Task UpdateLinkedValueAsync(Message message);
     }
 }

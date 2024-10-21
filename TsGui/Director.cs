@@ -263,6 +263,9 @@ namespace TsGui
             //now init all the options
             await OptionLibrary.InitialiseOptionsAsync();
 
+            //init the groups
+            GroupLibrary.Init();
+
             //subscribe to closing event
             this.ParentWindow.Closing += this.OnWindowClosing;
 
@@ -270,10 +273,6 @@ namespace TsGui
             {
                 Log.Debug("Loading pages");
                 this.CurrentPage = ConfigData.Pages.First();
-                //update group settings to all controls
-                foreach (IToggleControl t in ConfigData.Toggles)
-                { t.InitialiseToggle(); }
-
                 this.ParentWindow.DataContext = ConfigData.TsMainWindow;
 
                 // Now show and close the ghost window to make sure WinPE honours the 
@@ -451,11 +450,6 @@ namespace TsGui
             this.CurrentPage = this.CurrentPage.PreviousActivePage;
             this.CurrentPage.Update();
             this.UpdateWindow();
-        }
-        
-        public void AddToggleControl(IToggleControl ToogleControl)
-        {
-            ConfigData.Toggles.Add(ToogleControl);
         }
 
         //Navigate to the current page, and update the datacontext of the window

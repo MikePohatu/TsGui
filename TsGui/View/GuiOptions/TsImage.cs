@@ -81,6 +81,6 @@ namespace TsGui.View.GuiOptions
             this.ControlStyle.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
-        public override async Task UpdateValueAsync(Message message) { await Task.CompletedTask; }
+        public override async Task UpdateLinkedValueAsync(Message message) { await Task.CompletedTask; }
     }
 }

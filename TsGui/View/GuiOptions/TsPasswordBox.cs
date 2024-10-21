@@ -280,6 +280,6 @@ namespace TsGui.View.GuiOptions
             this._authenticator.AuthStateChanged -= this.FirstStateChange;
         }
 
-        public override async Task UpdateValueAsync(MessageCrap.Message message) { await Task.CompletedTask; }
+        public override async Task UpdateLinkedValueAsync(MessageCrap.Message message) { await Task.CompletedTask; }
     }
 }

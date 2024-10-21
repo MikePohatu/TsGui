@@ -78,5 +78,13 @@ namespace TsGui.Grouping
         {
             _groups.Clear();
         }
+
+        public static void Init()
+        {
+            foreach (var group in _groups.Values)
+            {
+                group.Init();
+            }
+        }
     }
 }

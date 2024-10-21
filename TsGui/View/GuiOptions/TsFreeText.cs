@@ -229,7 +229,7 @@ namespace TsGui.View.GuiOptions
         public void OnValidationChange()
         { this.Validate(); }
 
-        public override async Task UpdateValueAsync(Message message)
+        public override async Task UpdateLinkedValueAsync(Message message)
         {
             var wrang = await this._querylist.GetResultWrangler(message);
             
@@ -249,7 +249,7 @@ namespace TsGui.View.GuiOptions
 
         public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            await this.UpdateValueAsync(message);
+            await this.UpdateLinkedValueAsync(message);
         }
     }
 }

@@ -169,7 +169,7 @@ namespace TsGui.Options.NoUI
             }
         }
 
-        public async Task UpdateValueAsync(Message message)
+        public async Task UpdateLinkedValueAsync(Message message)
         {
             this._value = (await this._querylist.GetResultWrangler(message))?.GetString();
 
@@ -180,7 +180,7 @@ namespace TsGui.Options.NoUI
 
         public async Task OnSourceValueUpdatedAsync(Message message)
         {
-            await this.UpdateValueAsync(message);
+            await this.UpdateLinkedValueAsync(message);
         }
 
         public async Task ImportFromTsVariableAsync(Variable var)
@@ -190,7 +190,7 @@ namespace TsGui.Options.NoUI
             this._querylist.AddQuery(newvoquery);
             this.ID = var.Name;
             this.Path = var.Path;
-            await this.UpdateValueAsync(null);
+            await this.UpdateLinkedValueAsync(null);
         }
 
         protected void LoadSetValueXml(XElement inputxml)
@@ -222,17 +222,10 @@ namespace TsGui.Options.NoUI
         #region
         public event ToggleEvent ToggleEvent;
 
-        //fire an intial event to make sure things are set correctly. This is
-        //called by the controller once everything is loaded
-        public void InitialiseToggle()
-        {
-            this.InvokeToggleEvent();
-        }
-
         //This is called by the controller once everything is loaded
         public async Task InitialiseAsync()
         {
-            await this.UpdateValueAsync(null);
+            await this.UpdateLinkedValueAsync(null);
         }
 
         public void InvokeToggleEvent()

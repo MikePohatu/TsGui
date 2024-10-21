@@ -1,8 +1,8 @@
-Version 2.0.27.0
-Release date: 22 Sep 2024
+Version 2.0.28.0
+Release date: 21 Oct 2024
 
-*Features
-	Made 'ReadOnly' option common across all GuiOption types
+*Fixes
+	Fixed toggles not initialising properly: https://github.com/MikePohatu/TsGui/issues/22
 
 	
 *Known issues
@@ -14,7 +14,14 @@ Release date: 22 Sep 2024
 *Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
 
 
+---------------
+Version 2.0.27.0
+Release date: 22 Sep 2024
 
+*Features
+	Made 'ReadOnly' option common across all GuiOption types
+
+---------------
 Version 2.0.26.0
 Release date: 27 Jul 2024
 
