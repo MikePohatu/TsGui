@@ -27,6 +27,5 @@ namespace TsGui.Grouping
         string CurrentValue { get; }
         bool IsActive { get; }
         event ToggleEvent ToggleEvent;
-        void InitialiseToggle();
     }
 }

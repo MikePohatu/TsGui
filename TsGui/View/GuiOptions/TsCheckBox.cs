@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -121,6 +121,7 @@ namespace TsGui.View.GuiOptions
             x = InputXml.Element("Checked");
             if (x != null)
             { this.SetValue(true, null); }
+            else { this.SetValue(false, null); }
         }
 
         public override async Task UpdateLinkedValueAsync(Message message)
@@ -131,8 +132,8 @@ namespace TsGui.View.GuiOptions
             {
                 if (newvalue == this._valTrue) { this.SetValue(true, message); }
                 else if (newvalue == this._valFalse) { this.SetValue(false, message); }
-                else { newvalue = null; }
             }
+            LinkingHub.Instance.SendUpdateMessage(this, message);
         }
 
         public async Task OnSourceValueUpdatedAsync(Message message)

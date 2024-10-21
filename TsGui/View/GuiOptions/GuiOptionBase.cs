@@ -149,13 +149,6 @@ namespace TsGui.View.GuiOptions
         #region
         public event ToggleEvent ToggleEvent;
 
-        //fire an intial event to make sure things are set correctly. This is
-        //called by the controller once everything is loaded
-        public void InitialiseToggle()
-        {
-            this.InvokeToggleEvent();
-        }
-
         //This is called by the Director once everything is loaded
         public async Task InitialiseAsync()
         {
@@ -164,7 +157,7 @@ namespace TsGui.View.GuiOptions
             await this.UpdateLinkedValueAsync(null);
         }
 
-        public void InvokeToggleEvent()
+        protected void InvokeToggleEvent()
         {
             this.ToggleEvent?.Invoke();
         }

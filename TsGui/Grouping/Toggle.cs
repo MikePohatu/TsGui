@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2020 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -30,11 +30,14 @@ namespace TsGui.Grouping
 {
     public class Toggle
     {
+        //ID is set by either LoadXml or Create via the SetID() method
+        public string ID { get; private set; }
         private Group _group;
         private Dictionary<string, bool> _toggleValMappings = new Dictionary<string, bool>();
         private bool _hiddenMode = false;
         private bool _inverse = false;
         private IToggleControl _option;
+
 
         private Toggle(IToggleControl option)
         {
@@ -53,6 +56,12 @@ namespace TsGui.Grouping
             ConfigData.Toggles.Add(option);
             this._option.ToggleEvent += this.OnToggleEvent;
         }
+        
+        private void SetGroup(Group group)
+        {
+            this._group = group;
+            this.ID = $"var:{this._option.VariableName}_gid:{group?.ID}";
+        }
 
         /// <summary>
         /// Create a toggle with TRUE and FALSE for enabled/disabled values
@@ -66,7 +75,7 @@ namespace TsGui.Grouping
         {
             var toggle = new Toggle(option);
 
-            toggle._group = GroupLibrary.GetGroupFromID(groupid);
+            toggle.SetGroup(GroupLibrary.GetGroupFromID(groupid));
             toggle._hiddenMode = hide;
             toggle._inverse = invert;
             toggle._toggleValMappings.Add("TRUE", true);
@@ -85,7 +94,7 @@ namespace TsGui.Grouping
                 throw new InvalidOperationException("No Group ID set in Toggle configured in XML: " + Environment.NewLine + InputXml); 
             }
 
-            this._group = GroupLibrary.GetGroupFromID(groupid);
+            this.SetGroup(GroupLibrary.GetGroupFromID(groupid));
 
             IEnumerable<XElement> togglesX;
             togglesX = InputXml.Elements("Enabled");
@@ -123,7 +132,7 @@ namespace TsGui.Grouping
 
         public void OnToggleEvent()
         {
-            Log.Trace($"Toggle Event received by toggle | VariableName: {this._option.VariableName} | Group: {this._group?.ID}" );
+            Log.Trace($"Toggle Event received by toggle: " + this.ID );
             string val;
             bool newenabled;
 
@@ -149,8 +158,10 @@ namespace TsGui.Grouping
                 }
                 else
                 {
-                    if (newenabled == true) { this.DisableGroup(); }
-                    else { this.EnableGroup(); }
+                    if (newenabled == true) 
+                    { this.DisableGroup(); }
+                    else 
+                    { this.EnableGroup(); }
                 }
             }
         }

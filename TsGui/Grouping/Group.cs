@@ -41,8 +41,8 @@ namespace TsGui.Grouping
                 if (this._state != value)
                 {
                     this._state = value;
-                    StateEvent?.Invoke();
                     Log.Info("Group " + this.ID + " state changed. New state: " + this._state.ToString());
+                    StateEvent?.Invoke();
                 }              
             }
         }
@@ -65,6 +65,12 @@ namespace TsGui.Grouping
         {
             this._groupables.Add(GroupableElement);
             this.StateEvent += GroupableElement.OnGroupStateChange;
+        }
+
+        public void Init()
+        {
+            Log.Info("Group " + this.ID + " Initialised. State: " + this._state.ToString());
+            StateEvent?.Invoke();
         }
     }
 }

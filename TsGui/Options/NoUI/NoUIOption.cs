@@ -222,13 +222,6 @@ namespace TsGui.Options.NoUI
         #region
         public event ToggleEvent ToggleEvent;
 
-        //fire an intial event to make sure things are set correctly. This is
-        //called by the controller once everything is loaded
-        public void InitialiseToggle()
-        {
-            this.InvokeToggleEvent();
-        }
-
         //This is called by the controller once everything is loaded
         public async Task InitialiseAsync()
         {
