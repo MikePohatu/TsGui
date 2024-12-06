@@ -65,7 +65,7 @@ namespace TsGui.View.GuiOptions
         }
         public virtual Control InteractiveControl { get; set; }
         public abstract string CurrentValue { get; }
-        public abstract Variable Variable { get; }
+        public abstract IEnumerable<Variable> Variables { get; }
         public string LiveValue
         {
             get

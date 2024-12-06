@@ -25,6 +25,7 @@ using TsGui.View.Layout;
 using MessageCrap;
 using TsGui.Validation;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace TsGui.View.GuiOptions
 {
@@ -35,7 +36,7 @@ namespace TsGui.View.GuiOptions
         private TsButtonUI _ui;
 
         public override string CurrentValue { get { return null; } }
-        public override Variable Variable { get { return null; } }
+        public override IEnumerable<Variable> Variables { get { return null; } }
         public string ButtonText
         {
             get { return this._buttontext; }

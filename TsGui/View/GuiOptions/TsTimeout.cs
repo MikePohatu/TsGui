@@ -26,6 +26,7 @@ using System.Windows.Threading;
 using System.Xml.Linq;
 using TsGui.View.Layout;
 using TsGui.Linking;
+using System.Collections.Generic;
 
 namespace TsGui.View.GuiOptions
 {
@@ -48,7 +49,7 @@ namespace TsGui.View.GuiOptions
                 this.OnPropertyChanged(this, "CurrentValue");
             }
         }
-        public override Variable Variable { get { return null; } }
+        public override IEnumerable<Variable> Variables { get { return null; } }
 
         //constructor
         public TsTimeout(XElement InputXml, ParentLayoutElement Parent) : base(Parent)

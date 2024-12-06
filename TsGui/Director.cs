@@ -491,13 +491,21 @@ namespace TsGui
             foreach (IOption option in OptionLibrary.Options)
             {
                 //first check for null option variables e.g. for headings
-                if (option.Variable != null)
+                if (option.Variables != null)
                 {
                     //now check if the option is active or not and variables created as required
                     if (option.IsActive == true)
-                    { EnvironmentController.AddVariable(option.Variable); }
+                    {
+                        foreach (Variable variable in option.Variables)
+                        {
+                            EnvironmentController.AddVariable(variable);
+                        }
+                    }
                     else
-                    { EnvironmentController.AddVariable(new Variable(option.VariableName, option.InactiveValue, option.Path)); }
+                    { 
+                        EnvironmentController.AddVariable(new Variable(option.VariableName, option.InactiveValue, option.Path)); 
+                    }
+                    
                 }
             }
 

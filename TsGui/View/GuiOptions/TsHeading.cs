@@ -21,6 +21,8 @@
 // amongst the other options. 
 
 using MessageCrap;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Linking;
@@ -45,7 +47,7 @@ namespace TsGui.View.GuiOptions
                 LinkingHub.Instance.SendUpdateMessage(this, null);
             }
         }
-        public override Variable Variable { get { return null; } }
+        public override IEnumerable<Variable> Variables { get { return null; } }
 
         //constructor
         public TsHeading(XElement InputXml, ParentLayoutElement Parent) : base(Parent)

@@ -19,6 +19,7 @@
 
 using Core.Logging;
 using MessageCrap;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsGui.Grouping;
 using TsGui.Linking;
@@ -48,10 +49,15 @@ namespace TsGui.Options
                 this.NotifyViewUpdate();
             }
         }
-        public Variable Variable
+        public IEnumerable<Variable> Variables
         {
-            get { return new Variable(this.VariableName, this._value, this.Path); }
+            get
+            {
+                var variable = new Variable(this.VariableName, this._value, this.Path);
+                return new List<Variable> { variable };
+            }
         }
+
         public string LiveValue
         {
             get { return this.CurrentValue; }

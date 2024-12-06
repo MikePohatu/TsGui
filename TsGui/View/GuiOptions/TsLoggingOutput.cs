@@ -19,7 +19,7 @@ namespace TsGui.View.GuiOptions
         private bool _verboseAllowed = false;
 
         public override string CurrentValue { get; } = null;
-        public override Variable Variable { get; } = null;
+        public override IEnumerable<Variable> Variables { get; } = null;
 
         private Visibility _verbosevisibility = Visibility.Collapsed;
         public Visibility VerboseVisibility
