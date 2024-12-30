@@ -22,6 +22,7 @@ TsGui includes a number of features to help you customise your UI to fit your ne
 | [Option Linking](/documentation/features/OptionLinking.md)    | Use values of one UI element in another |
 | [Queries](/documentation/features/Queries.md) | Gather data for use in TsGui |
 | [Scripts](/documentation/features/Scripts.md) | Integration of separate scripts with TsGui |
+| [Sets](/documentation/features/Sets.md) | Create a set or dynamic list of variables |
 | [Styles (previously Formatting)](/documentation/features/Styles.md) | Layout, look and feel |
 | [TsGui Output](/documentation/features/TsGuiOutput.md) | Saving values to Task Sequence variables or Registry |
 | [Validation](/documentation/features/Validation.md) | Check user input |
