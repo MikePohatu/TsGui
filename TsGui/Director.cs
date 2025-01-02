@@ -43,6 +43,7 @@ using TsGui.Config;
 using System.Threading.Tasks;
 using TsGui.Scripts;
 using TsGui.View.GuiOptions;
+using TsGui.Sets;
 
 namespace TsGui
 {
@@ -426,6 +427,12 @@ namespace TsGui
                 {
                     ConfigData.NouiContainer = new NoUIContainer(x);
                 }
+
+                x = SourceXml.Element("Sets");
+                if (x != null)
+                {
+                    SetLibrary.LoadXml(x);
+                }
             }
         }
 
@@ -506,6 +513,17 @@ namespace TsGui
                         EnvironmentController.AddVariable(new Variable(option.VariableName, option.InactiveValue, option.Path)); 
                     }
                     
+                }
+            }
+
+            foreach (Set set in SetLibrary.Sets)
+            {
+                if (set.IsActive == true && set.Enabled == true)
+                {
+                    foreach (Variable variable in set.Variables)
+                    {
+                        EnvironmentController.AddVariable(variable);
+                    }
                 }
             }
 

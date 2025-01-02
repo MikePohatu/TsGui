@@ -29,6 +29,7 @@ using System.Xml.Linq;
 using TsGui.Authentication;
 using TsGui.Scripts;
 using MessageCrap;
+using TsGui.Sets;
 
 namespace TsGui
 {
@@ -57,6 +58,7 @@ namespace TsGui
             OptionLibrary.Reset();
             ScriptLibrary.Reset();
             AuthLibrary.Reset();
+            SetLibrary.Reset();
             Buttons = new TsButtons();
             Pages = new List<TsPage>();
             Toggles = new List<IToggleControl>();
