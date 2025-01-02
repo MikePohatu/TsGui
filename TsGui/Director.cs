@@ -516,15 +516,11 @@ namespace TsGui
                 }
             }
 
-            foreach (Set set in SetLibrary.Sets)
+
+            List<Variable> setvars = SetLibrary.ProcessAllAsync().Result;
+            foreach (Variable variable in setvars)
             {
-                if (set.IsActive == true && set.Enabled == true)
-                {
-                    foreach (Variable variable in set.Variables)
-                    {
-                        EnvironmentController.AddVariable(variable);
-                    }
-                }
+                EnvironmentController.AddVariable(variable);
             }
 
             this._finished = true;

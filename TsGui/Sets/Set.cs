@@ -20,22 +20,21 @@ using Core.Logging;
 using MessageCrap;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Queries;
-using TsGui.Validation;
 
 namespace TsGui.Sets
 {
     public class Set: GroupableBlindBase, ILinkTarget
     {
-        public List<Variable> Variables { get; } = new List<Variable>();
+        private List<Variable> _variables = new List<Variable>();
         private QueryPriorityList _enabledQueries;
+        public List<SetList> SetLists { get; } = new List<SetList>();
 
+        public string Path { get; private set; } = Director.Instance.DefaultPath;
         public bool Enabled { get; private set; } = true;
 
         public Set(XElement inputXml): base()
@@ -47,6 +46,8 @@ namespace TsGui.Sets
         private new void LoadXml(XElement inputXml)
         {
             base.LoadXml(inputXml);
+            this.Path = XmlHandler.GetStringFromXml(inputXml, "Path", this.Path);
+
             XElement x = inputXml.Element("Enabled");
             if (x != null)
             {
@@ -59,13 +60,19 @@ namespace TsGui.Sets
                 string value = XmlHandler.GetStringFromXml(element, "Value", null);
                 if (name != null)
                 {
-                    this.Variables.Add(new Variable(name, value, Director.Instance.DefaultPath));
+                    this._variables.Add(new Variable(name, value, this.Path));
                 }
                 else
                 {
                     Log.Error("Set contains variable without name");
                 }
 
+            }
+
+            foreach (XElement element in inputXml.Elements("List"))
+            {
+                var list = new SetList(element, this);
+                this.SetLists.Add(list);
             }
         }
 
@@ -88,6 +95,24 @@ namespace TsGui.Sets
 
             Log.Info("Set disabled");
             this.Enabled = false;
+        }
+
+        /// <summary>
+        /// Process any lists and return the full list of variables
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Variable>> ProcessAsync()
+        {
+            List<Variable> list = new List<Variable>();
+            list.AddRange(this._variables); 
+
+            foreach (var setlist in this.SetLists)
+            {
+                var processed = await setlist.ProcessAsync();
+                list.AddRange(processed);
+            }
+
+            return list;
         }
     }
 }

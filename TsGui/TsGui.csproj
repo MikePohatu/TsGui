@@ -183,6 +183,7 @@
     <Compile Include="Scripts\ScriptLibrary.cs" />
     <Compile Include="Scripts\ScriptResult.cs" />
     <Compile Include="Scripts\ScriptSettings.cs" />
+    <Compile Include="Sets\SetList.cs" />
     <Compile Include="Sets\Set.cs" />
     <Compile Include="Sets\SetLibrary.cs" />
     <Compile Include="Timers\GuiTimeout.cs" />

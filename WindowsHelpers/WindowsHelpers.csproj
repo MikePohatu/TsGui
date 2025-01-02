@@ -68,6 +68,7 @@
     <Compile Include="RemoteSystem.cs" />
     <Compile Include="RepairTools.cs" />
     <Compile Include="UacHelpers.cs" />
+    <Compile Include="Web.cs" />
     <Compile Include="WmiQuery.cs" />
   </ItemGroup>
   <ItemGroup>

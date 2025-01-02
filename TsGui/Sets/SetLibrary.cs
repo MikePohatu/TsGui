@@ -19,8 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -42,6 +40,20 @@ namespace TsGui.Sets
             {
                 Sets.Add(new Set(x));
             }
+        }
+
+        public async static Task<List<Variable>> ProcessAllAsync()
+        {
+            List<Variable> list = new List<Variable>();
+            foreach (Set set in Sets)
+            {
+                if (set.IsActive == true && set.Enabled == true)
+                {
+                    var processed = await set.ProcessAsync();
+                    list.AddRange(processed);
+                }
+            }
+            return list;
         }
     }
 }
