@@ -83,61 +83,54 @@ namespace TsGui.Sets
                 }
             }
 
-            if (this._file.EndsWith(".ini", StringComparison.OrdinalIgnoreCase))
-            { 
-                return this.ProcessIni(filecontents); 
-            }
-            else if (this._file.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
-            { 
-                return this.ProcessTxt(filecontents); 
-            }
-            else
+            if (string.IsNullOrWhiteSpace(filecontents))
             {
                 return new List<Variable>();
             }
+            if (string.IsNullOrWhiteSpace(this._prefix))
+            { 
+                return this.ProcessStatic(filecontents); 
+            }
+
+            return this.ProcessDynamic(filecontents);
         }
 
-        private List<Variable> ProcessIni(string filecontents)
+        private List<Variable> ProcessStatic(string filecontents)
         {
             var variables = new List<Variable>();
-
+            var lines = filecontents.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            foreach (string line in lines)
+            {
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    char[] separator = { '=' };
+                    var parts = line.Split(separator, 2);
+                    string name = parts.Length > 0 ? parts[0] : null;
+                    string value = parts.Length > 1 ? parts[1] : null;
+                    if (name != null)
+                    {
+                        variables.Add(new Variable(name, value, this._parent.Path));
+                    }
+                }
+            }
             return variables;
         }
 
-        private List<Variable> ProcessTxt(string filecontents)
+        private List<Variable> ProcessDynamic(string filecontents)
         {
             var variables = new List<Variable>();
             var lines = filecontents.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
-            if (string.IsNullOrWhiteSpace(this._prefix) == false)
+            int count = 0;
+            foreach (string line in lines)
             {
-                int count = 0;
-                foreach (string line in lines)
+                if (!string.IsNullOrWhiteSpace(line))
                 {
-                    if (!string.IsNullOrWhiteSpace(line))
-                    {
-                        variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), line, this._parent.Path));
-                        count++;
-                    }
+                    count++;
+                    variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), line, this._parent.Path));
                 }
             }
-            else
-            {
-                foreach (string line in lines)
-                {
-                    if (!string.IsNullOrWhiteSpace(line))
-                    {
-                        char[] separator = { '=' };
-                        var parts = line.Split(separator, 2);
-                        string name = parts.Length > 0 ? parts[0] : null;
-                        string value = parts.Length > 1 ? parts[1] : null;
-                        if (name != null)
-                        {
-                            variables.Add(new Variable(name, value, this._parent.Path));
-                        }
-                    }
-                }
-            }
+
             return variables;
         }
     }
