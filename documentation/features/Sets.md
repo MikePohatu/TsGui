@@ -20,30 +20,35 @@ You can import from text files to simplify and your configuration files.
 
 
 ```xml
-<Set>
-    <!-- Configure whether the Set is enabled based on a query -->
-    <Enabled>
-        <Query>
-            <IF SourceID="TsGui_IsServer" Equals="TRUE" Result="TRUE" />
-        </Query>
-    </Enabled>
+<TsGui>
+    ...
+    <Sets>
+        <Set>
+            <!-- Configure whether the Set is enabled based on a query -->
+            <Enabled>
+                <Query Type="IfElse">
+                    <IF SourceID="TsGui_IsServer" Equals="TRUE" Result="TRUE" />
+                </Query>
+            </Enabled>
 
-    <!-- Configure whether the Set is enabled based on a group -->
-    <Group>TestGroup</Group>
+            <!-- Configure whether the Set is enabled based on a group -->
+            <Group>TestGroup</Group>
 
-    <!-- Create variables based on an imported ini file -->
-    <List File="file.ini" />
-    
-    <!-- Create a dynamic list of variables imported from file -->
-    <List File="file.txt" Prefix="AppNamePrefix" />
+            <!-- Create variables based on an imported ini file -->
+            <List File="file.ini" />
+            
+            <!-- Create a dynamic list of variables imported from file -->
+            <List File="file.txt" Prefix="AppNamePrefix" />
 
-    <!-- Manually create variables in the set -->
-    <Variable Name="OSDRegisteredOrgName" Value="Contoso" />
-    <Variable Name="OSDTimeZone" Value="New Zealand Standard Time" />
-    <Variable Name="OSDDomainOUName">
-        <Value>LDAP://OU=MyOu,DC=Servers,DC=contoso,DC=com</Value>
-    </Variable>
-</Set>
+            <!-- Manually create variables in the set -->
+            <Variable Name="OSDRegisteredOrgName" Value="Contoso" />
+            <Variable Name="OSDTimeZone" Value="New Zealand Standard Time" />
+            <Variable Name="OSDDomainOUName">
+                <Value>LDAP://OU=MyOu,DC=Servers,DC=contoso,DC=com</Value>
+            </Variable>
+        </Set>
+    </Sets>
+</TsGui>
 ```
 
 ## Importing from Files
@@ -80,9 +85,9 @@ MS Project
 ```
 
 The following variables will be created:\
-AppList01=MS Office\
+_AppList01=MS Office\
 AppList02=MS Project\
-AppList03=7-zip
+AppList03=7-zip_
 
 
 
