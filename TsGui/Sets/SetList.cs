@@ -57,7 +57,7 @@ namespace TsGui.Sets
             string filecontents = string.Empty;
             if (this._file.StartsWith("http://") || this._file.StartsWith("https://") || this._file.StartsWith("ftp://"))
             {
-                filecontents = await WindowsHelpers.Web.ReadStringAsync(this._file);
+                filecontents = await Web.ReadStringAsync(this._file);
             }
             else
             {
@@ -66,7 +66,7 @@ namespace TsGui.Sets
                 {
                     if (File.Exists(this._file))
                     {
-                        filecontents = File.ReadAllText(this._file);
+                        filecontents = await IOHelpers.ReadFileAsync(this._file);
                     }
                 }
                 //otherwise use the lookup options
@@ -77,7 +77,7 @@ namespace TsGui.Sets
                         string testpath = dir + this._file;
                         if (File.Exists(testpath))
                         {
-                            filecontents = File.ReadAllText(testpath);
+                            filecontents = await IOHelpers.ReadFileAsync(testpath);
                         }
                     }
                 }

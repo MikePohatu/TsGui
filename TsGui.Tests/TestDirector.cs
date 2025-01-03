@@ -57,7 +57,7 @@ namespace TsGui.Tests
         public void AddOptionToLibary(IOption Option) { }
         public void MoveNext() { }
         public void MovePrevious() { }
-        public void Finish() { }
+        public async Task FinishAsync() { await Task.CompletedTask; }
         public void Cancel() { }
         public void OnWindowClosing(object sender, CancelEventArgs e) { }
         public void OnPageLoaded(object o, RoutedEventArgs e) { }

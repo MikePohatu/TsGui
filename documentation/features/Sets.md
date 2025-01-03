@@ -14,7 +14,7 @@
 ## Overview
 The 'Sets' feature allows the creation of multiple variables in a simple list format, rather than having to create individual GuiOptions or NoUiOptions. 
 
-You can import from text files to simplify and your configuration files. 
+You can import from text files to simplify your configuration files. 
 
 ## Config Overview
 

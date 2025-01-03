@@ -31,10 +31,8 @@ using TsGui.View.Layout;
 using TsGui.Options.NoUI;
 using TsGui.Options;
 using TsGui.Grouping;
-using TsGui.Diagnostics;
 using Core.Diagnostics;
 using Core.Logging;
-using TsGui.Linking;
 using TsGui.Authentication;
 using TsGui.Validation;
 using System.Windows.Input;
@@ -296,7 +294,7 @@ namespace TsGui
             {
                 //No pages, finish using only the NoUI options
                 Log.Info("*No pages configured. Finishing TsGui");
-                this.Finish();
+                await this.FinishAsync();
             }
 
             //mark init complete. this won't change during reload
@@ -468,7 +466,7 @@ namespace TsGui
             this.CurrentPage.Update();
         }
 
-        public void OnTimeoutReached()
+        public async void OnTimeoutReached()
         {
             if (GuiTimeout.Instance.IgnoreValidation == true)
             {
@@ -479,21 +477,25 @@ namespace TsGui
                     valop.ClearToolTips();
                 }
 
-                if (GuiTimeout.Instance.CancelOnTimeout == false) { this.Finish(); }
+                if (GuiTimeout.Instance.CancelOnTimeout == false) 
+                { await this.FinishAsync(); }
                 else { this.Cancel(); }
             }
             else
             {
                 if (ResultValidator.AllOptionsValid(OptionLibrary.ValidationOptions))
                 {
-                    if (GuiTimeout.Instance.CancelOnTimeout == false) { this.Finish(); }
+                    if (GuiTimeout.Instance.CancelOnTimeout == false) 
+                    { 
+                        await this.FinishAsync(); 
+                    }
                     else { this.Cancel(); }
                 }
             }
         }
 
         //finish and create the TS Variables
-        public void Finish()
+        public async Task  FinishAsync()
         {
             foreach (IOption option in OptionLibrary.Options)
             {
@@ -517,7 +519,7 @@ namespace TsGui
             }
 
 
-            List<Variable> setvars = SetLibrary.ProcessAllAsync().Result;
+            List<Variable> setvars = await SetLibrary.ProcessAllAsync();
             foreach (Variable variable in setvars)
             {
                 EnvironmentController.AddVariable(variable);

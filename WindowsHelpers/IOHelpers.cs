@@ -44,12 +44,14 @@ namespace WindowsHelpers
                 {
                     reader.Peek();
                     encoding = reader.CurrentEncoding;
+                    reader.Close();
                 }
 
                 using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
                     result = new byte[fs.Length];
-                    await fs.ReadAsync(result, 0, (int)fs.Length);
+                    await fs.ReadAsync(result, 0, result.Length);
+                    fs.Close();
                 }
                 //get the string and strip the BOM
                 //script = encoding.GetString(result).Trim(new char[] { '\uFEFF', '\u200B' });

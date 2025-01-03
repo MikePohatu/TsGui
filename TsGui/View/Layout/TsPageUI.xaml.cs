@@ -51,9 +51,9 @@ namespace TsGui.View.Layout
             this._page.MoveNext();
         }
 
-        public void buttonFinish_Click(object sender, RoutedEventArgs e)
+        public async void buttonFinish_Click(object sender, RoutedEventArgs e)
         {
-            this._page.Finish();
+            await this._page.FinishAsync();
         }
     }
 }

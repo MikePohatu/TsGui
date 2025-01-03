@@ -55,7 +55,7 @@ namespace TsGui
         void AddOptionToLibary(IOption Option);
         void MoveNext();
         void MovePrevious();
-        void Finish();
+        Task FinishAsync();
         void Cancel();
         void OnWindowClosing(object sender, CancelEventArgs e);
         void OnPageLoaded(object o, RoutedEventArgs e);
