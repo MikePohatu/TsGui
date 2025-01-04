@@ -12,6 +12,7 @@
   * [Static List From Text File](#static-list-from-text-file)
     * [File format](#file-format)
     * [Example file](#example-file-1)
+* [Testing](#testing)
 
 
 ## Overview
@@ -27,7 +28,7 @@ The **\<Sets>** element can contain one or more sets, each defined in a **\<Set>
 <TsGui>
     ...
     <Sets>
-        <Set>
+        <Set ID="Example set">
             <!-- Configure whether the Set is enabled based on a query -->
             <Enabled>
                 <Query Type="IfElse">
@@ -56,7 +57,11 @@ The **\<Sets>** element can contain one or more sets, each defined in a **\<Set>
 ```
 
 ## Enabling a Set
-Sets can be enabled and disabled based on options set elsewhere in TsGui using either the [Groups and Toggles](./GroupsAndToggles.md) feature or by using a TsGui [Query](./Queries.md). If neither of these options are set, the set will always be enabled. 
+Sets can be enabled and disabled based on options set elsewhere in TsGui using either the [Groups and Toggles](./GroupsAndToggles.md) feature or by using a TsGui [Query](./Queries.md). 
+
+If neither of these options are set, the set will always be enabled. 
+
+If both options are set, both need to be enabled for the set to be enabled. 
 
 ### Using Groups
 Sets can be enabled and disabled using the [Groups](GroupsAndToggles.md) feature the same way GuiOptions and NoUIOptions are. 
@@ -151,3 +156,13 @@ OSDRegisteredOrgName=Contoso
 OSDTimeZone=New Zealand Standard Time
 OSDDomainOUName=LDAP://OU=Project Office,DC=Workstations,DC=contoso,DC=com
 ```
+
+## Testing
+
+Sets are displayed in the _Sets_ area in the [LiveData](/documentation/TestMode.md#the-livedata-window) window. To make identifying multiple sets easier in the testing window, set an ID attribute on the set. 
+
+```xml
+<Set ID="ExampleID">
+```
+
+The ID isn't usable with the [Option Linking](./OptionLinking.md) feature.

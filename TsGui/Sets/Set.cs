@@ -40,7 +40,7 @@ namespace TsGui.Sets
 
         public string LiveValue
         {
-            get { return this.Enabled ? "TRUE" : "FALSE"; }
+            get { return this.Enabled && this.IsActive ? "TRUE" : "FALSE"; }
         }
 
         private bool _enabled = true;
@@ -57,13 +57,6 @@ namespace TsGui.Sets
         public Set(XElement inputXml): base()
         {
             this.LoadXml(inputXml);
-        }
-
-        protected override void EvaluateGroups()
-        {
-            base.EvaluateGroups();
-            if (this.IsActive) { this.Enabled = true; }
-            else {  this.Enabled = false; }
         }
 
         private new void LoadXml(XElement inputXml)
@@ -98,6 +91,15 @@ namespace TsGui.Sets
                 var list = new SetList(element, this);
                 this.SetLists.Add(list);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void EvaluateGroups()
+        {
+            base.EvaluateGroups();
+            this.OnPropertyChanged(this, "LiveValue");
         }
 
         public async Task OnSourceValueUpdatedAsync(Message message)
