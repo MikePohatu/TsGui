@@ -20,6 +20,7 @@ using Core.Logging;
 using MessageCrap;
 using System;
 using System.Collections.Generic;
+using System.Management.Automation;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Grouping;
@@ -35,18 +36,41 @@ namespace TsGui.Sets
         public List<SetList> SetLists { get; } = new List<SetList>();
 
         public string Path { get; private set; } = Director.Instance.DefaultPath;
-        public bool Enabled { get; private set; } = true;
+        public string ID { get; private set; }
+
+        public string LiveValue
+        {
+            get { return this.Enabled ? "TRUE" : "FALSE"; }
+        }
+
+        private bool _enabled = true;
+        public bool Enabled
+        {
+            get { return this._enabled; }
+            set 
+            { 
+                this._enabled = value;
+                this.OnPropertyChanged(this, "LiveValue");
+            }
+        }
 
         public Set(XElement inputXml): base()
         {
-            
             this.LoadXml(inputXml);
+        }
+
+        protected override void EvaluateGroups()
+        {
+            base.EvaluateGroups();
+            if (this.IsActive) { this.Enabled = true; }
+            else {  this.Enabled = false; }
         }
 
         private new void LoadXml(XElement inputXml)
         {
             base.LoadXml(inputXml);
             this.Path = XmlHandler.GetStringFromXml(inputXml, "Path", this.Path);
+            this.ID = XmlHandler.GetStringFromXml(inputXml, "ID", this.ID);
 
             XElement x = inputXml.Element("Enabled");
             if (x != null)

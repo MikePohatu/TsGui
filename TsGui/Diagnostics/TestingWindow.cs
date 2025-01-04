@@ -37,17 +37,18 @@ using Core;
 using Core.Logging;
 using NLog;
 using System.Threading.Tasks;
+using TsGui.Sets;
 
 namespace TsGui.Diagnostics
 {
     public class TestingWindow: LoggingUiViewModel
     {
         private int _pendingresize = 0;
-        private ObservableCollection<IOption> _options;
         private int _currentscaling;
 
         public TestingWindowUI Window { get; private set; }
-        public ObservableCollection<IOption> Options { get { return this._options; } }
+        public ObservableCollection<IOption> Options { get { return OptionLibrary.Options; } }
+        public ObservableCollection<Set> Sets { get { return SetLibrary.Sets; } }
         public double ScreenHeight { get; set; }
         public double ScreenWidth { get; set; }
         public double WindowMaxHeight { get { return SystemParameters.PrimaryScreenHeight - 20; } }
@@ -80,7 +81,6 @@ namespace TsGui.Diagnostics
             this.ScreenWidth = SystemParameters.PrimaryScreenWidth;
             this.ScreenHeight = SystemParameters.PrimaryScreenHeight;
             this.Icon = IconHelper.ConvertToImageSource(SystemIcons.Information);
-            this._options = OptionLibrary.Options;
             this.Window._logclearbtn.Click += this.OnLogClearClick;
 
             this.Window._reloadbtn.Click += this.OnReloadClicked;
