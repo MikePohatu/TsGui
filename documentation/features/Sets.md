@@ -2,6 +2,9 @@
 
 * [Overview](#overview)
 * [Config Overview](#config-overview)
+* [Enabling a Set](#enabling-a-set)
+  * [Using Groups](#using-groups)
+  * [Using Queries](#using-queries)
 * [Importing from Files](#importing-from-files)
   * [File Paths](#file-paths)
   * [Dynamic List From Text File](#dynamic-list-from-text-file)
@@ -12,12 +15,13 @@
 
 
 ## Overview
-The 'Sets' feature allows the creation of multiple variables in a simple list format, rather than having to create individual GuiOptions or NoUiOptions. 
+The 'Sets' feature allows the creation of multiple variables using a simple list format in a text file, rather than having to create individual GuiOptions or NoUiOptions using XML. 
 
 You can import from text files to simplify your configuration files. 
 
 ## Config Overview
 
+The **\<Sets>** element can contain one or more sets, each defined in a **\<Set>** element. The \<Set> configuration is outlined in more detail in the following sections. 
 
 ```xml
 <TsGui>
@@ -51,7 +55,41 @@ You can import from text files to simplify your configuration files.
 </TsGui>
 ```
 
+## Enabling a Set
+Sets can be enabled and disabled based on options set elsewhere in TsGui using either the [Groups and Toggles](./GroupsAndToggles.md) feature or by using a TsGui [Query](./Queries.md). If neither of these options are set, the set will always be enabled. 
+
+### Using Groups
+Sets can be enabled and disabled using the [Groups](GroupsAndToggles.md) feature the same way GuiOptions and NoUIOptions are. 
+
+If you add a \<Group\> element to your set, the Set will be enabled when the group is enabled. When the group is disabled, no variables from the set will be created i.e. the [InactiveValue](GroupsAndToggles.md#inactivevalue) option doesn't apply to Sets.
+
+```xml
+<Set>
+    <Group>ExampleGroup</Group>
+    ...
+</Set>
+```
+
+### Using Queries
+
+To use a [TsGui Query](./Queries.md) to enable the set, add an \<Enabled\> element to your set. Within the Enabled element you can add one or more queries. Each query will be processed in order. If any of the queries return the value **TRUE** then the set will be enabled. 
+
+Usually this option would be used an [IfElse](./queries/IfElse.md#configuration-short-hand) query with the [Option Linking](./OptionLinking.md) feature. This will enable the set based on the value of another GuiOption e.g. a [DropDownList](/documentation/options/DropDownList.md).
+
+```xml
+<Set>
+    <Enabled>
+        <Query Type="IfElse">
+            <IF SourceID="TsGui_IsServer" Equals="TRUE" Result="TRUE" />
+        </Query>
+    </Enabled>
+    ...
+</Set>
+```
+
 ## Importing from Files
+Lists of variables/values can be imported from text file to simplify creating a list variables. Text files are read and imported when TsGui completes e.g. when the _Finish_ button is pressed. This is done so that only the files needed for the enabled sets are imported. 
+
 
 ### File Paths
 File paths can specified be to normal file/UNC paths, or to web URLs. TsGui will treat any path starting with http:// or https:// as a web URL, otherwise a normal file/UNC path.
