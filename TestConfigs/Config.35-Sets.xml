@@ -1,0 +1,75 @@
+<TsGui LiveData="TRUE">
+	<Height>230</Height>
+	<Width>500</Width>
+
+	<!--<ShowGridLines/>-->
+	<HardwareEval />
+
+	<Heading>
+		<Title>TsGui</Title>
+		<Text>Task Sequence GUI base config</Text>
+		<Bg-Color>#ff0000</Bg-Color>
+		<Image>
+			<File>avatar.jpg</File>
+			<Width>70</Width>
+			<Height>50</Height>
+			<Stretch>None</Stretch>
+		</Image>
+		<TextColor>#ff0000</TextColor>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<GuiOption Type="CheckBox" InactiveValue="TRUE">
+					<Variable>Apps_Common</Variable>
+					<Checked/>
+					<Label>Install common apps</Label>
+					<Toggle Group="Group_Apps" Invert="FALSE">
+						<Enabled>FALSE</Enabled>
+						<Disabled>TRUE</Disabled>
+						<Hide/>
+					</Toggle>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+	<Page>
+		<Group>Group_Apps</Group>
+		<GuiOption Type="InfoBox">
+			<Variable>INFO_Apps</Variable>
+			<Label>Apps enabled</Label>
+		
+			<SetValue>
+				<Value>TRUE</Value>
+			</SetValue>
+		</GuiOption>
+	</Page>
+
+	<Sets>
+        <Set ID="Testing 123">
+            <!-- Configure whether the Set is enabled based on a query -->
+            <Enabled>
+                <Query Type="IfElse">
+                    <IF SourceID="TsGui_IsDesktop" Equals="TRUE" Result="TRUE" />
+                </Query>
+            </Enabled>
+
+            <!-- Configure whether the Set is enabled based on a group -->
+            <Group>Group_Apps</Group>
+
+            <!-- Create variables based on an imported ini file -->
+            <List File="static.txt" />
+            
+            <!-- Create a dynamic list of variables imported from file -->
+            <List File="http://test.domain.local/apps.txt" Prefix="AppList" />
+
+            <!-- Manually create variables in the set -->
+            <!-- <Variable Name="OSDRegisteredOrgName" Value="Contoso" />
+            <Variable Name="OSDTimeZone" Value="New Zealand Standard Time" />
+            <Variable Name="OSDDomainOUName">
+                <Value>LDAP://OU=MyOu,DC=Servers,DC=contoso,DC=com</Value>
+            </Variable> -->
+        </Set>
+    </Sets>
+</TsGui>
