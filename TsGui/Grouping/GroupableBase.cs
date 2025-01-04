@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -19,7 +19,6 @@
 
 // GroupableBase.cs - base class for grouable objects
 
-using TsGui.View;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Core;

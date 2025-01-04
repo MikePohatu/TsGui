@@ -1,5 +1,5 @@
 #region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -19,9 +19,7 @@
 
 // TestingWindowUI.cs - shows live data at runtime  
 
-using System;
 using System.Windows;
-using System.Windows.Threading;
 
 
 namespace TsGui.Diagnostics

@@ -1,5 +1,5 @@
 #region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -30,6 +30,7 @@ using TsGui.Validation;
 using Core.Logging;
 using System;
 using TsGui.View.Layout.Events;
+using System.Threading.Tasks;
 
 namespace TsGui.View.Layout
 {
@@ -196,12 +197,12 @@ namespace TsGui.View.Layout
             }
         }
 
-        public void Finish()
+        public async Task FinishAsync()
         {
             this.Events.InvokeLayoutEvent(LayoutTopics.FinishedClicked, EventDirection.Tunnel);
             if (this.AllOptionsValid() == true)
             {
-                Director.Instance.Finish();
+                await Director.Instance.FinishAsync();
             }
         }
 

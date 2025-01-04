@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -22,8 +22,6 @@
 using System;
 using System.Xml.Linq;
 using System.Windows;
-using System.Windows.Media;
-using System.ComponentModel;
 
 using TsGui.View.GuiOptions;
 

@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -18,8 +18,6 @@
 #endregion
 using System.Windows;
 using System.Windows.Controls;
-using System;
-using System.Windows.Threading;
 
 namespace TsGui.View.Layout
 {
@@ -51,9 +49,9 @@ namespace TsGui.View.Layout
             this._page.MoveNext();
         }
 
-        public void buttonFinish_Click(object sender, RoutedEventArgs e)
+        public async void buttonFinish_Click(object sender, RoutedEventArgs e)
         {
-            this._page.Finish();
+            await this._page.FinishAsync();
         }
     }
 }

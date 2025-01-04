@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -19,16 +19,12 @@
 
 // TsCheckBox.cs - combobox control for user input
 
-using System;
 using System.Xml.Linq;
 using System.Windows;
 using System.Collections.Generic;
-
-using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Queries;
 using System.Windows.Media;
-using System.Windows.Controls;
 using TsGui.Validation;
 using TsGui.View.Layout;
 using MessageCrap;
@@ -64,14 +60,17 @@ namespace TsGui.View.GuiOptions
             }
         }
         public bool IsValid { get { return this.Validate(); } }
-        public override Variable Variable
+        public override IEnumerable<Variable> Variables
         {
             get
             {
                 if ((this.IsActive == false) && (PurgeInactive == true))
                 { return null; }
                 else
-                { return new Variable(this.VariableName, this.CurrentValue, this.Path); }
+                {
+                    var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
+                    return new List<Variable> { variable };
+                }
             }
         }
 

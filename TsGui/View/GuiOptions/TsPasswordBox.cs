@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -26,16 +26,14 @@ using System.Security;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Linq;
-using TsGui.Queries;
 using TsGui.Authentication;
 using Core.Diagnostics;
 using TsGui.Validation;
 using System.Windows.Input;
 using Core.Logging;
 using TsGui.View.Layout;
-using MessageCrap;
-using System.ServiceModel.Channels;
 using TsGui.Linking;
+using System.Collections.Generic;
 
 namespace TsGui.View.GuiOptions
 {
@@ -68,10 +66,13 @@ namespace TsGui.View.GuiOptions
             get { return this._maxlength; }
             set { this._maxlength = value; this.OnPropertyChanged(this, "MaxLength"); }
         }
-        public override Variable Variable
+        public override IEnumerable<Variable> Variables
         {
             get {
-                if (this._expose) { return new Variable(this.VariableName, this._exposedpassword, this.Path); }
+                if (this._expose) {
+                    var variable = new Variable(this.VariableName, this._exposedpassword, this.Path);
+                    return new List<Variable> { variable };
+                }
                 else { return null; }
             }
         }

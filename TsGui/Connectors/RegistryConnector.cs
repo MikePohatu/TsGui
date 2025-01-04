@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -18,12 +18,9 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Core.Logging;
 using Core.Diagnostics;
 using TsGui.Connectors.System;
-using WindowsHelpers;
 
 namespace TsGui.Connectors
 {

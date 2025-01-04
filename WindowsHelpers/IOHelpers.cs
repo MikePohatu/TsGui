@@ -1,9 +1,9 @@
 ﻿#region license
-// Copyright (c) 2021 20Road Limited
+// Copyright (c) 2025 Mike Pohatu
 //
-// This file is part of DevChecker.
+// This file is part of TsGui.
 //
-// DevChecker is free software: you can redistribute it and/or modify
+// TsGui is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, version 3 of the License.
 //
@@ -18,9 +18,7 @@
 #endregion
 using Core.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,12 +42,14 @@ namespace WindowsHelpers
                 {
                     reader.Peek();
                     encoding = reader.CurrentEncoding;
+                    reader.Close();
                 }
 
                 using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
                     result = new byte[fs.Length];
-                    await fs.ReadAsync(result, 0, (int)fs.Length);
+                    await fs.ReadAsync(result, 0, result.Length);
+                    fs.Close();
                 }
                 //get the string and strip the BOM
                 //script = encoding.GetString(result).Trim(new char[] { '\uFEFF', '\u200B' });

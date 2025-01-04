@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -20,8 +20,6 @@
 // Arguments.cs - objec to process and store command line arguments
 
 using System;
-
-using Core.Diagnostics;
 
 namespace TsGui
 {

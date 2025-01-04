@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -62,14 +62,17 @@ namespace TsGui.Options.NoUI
                 this.NotifyViewUpdate();
             }
         }
-        public Variable Variable
+        public IEnumerable<Variable> Variables
         {
             get
             {
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new Variable(this.VariableName, this._value, this.Path); }
+                { 
+                    var variable = new Variable(this.VariableName, this._value, this.Path);
+                    return new List<Variable> { variable };
+                }
             }
         }
         public string LiveValue

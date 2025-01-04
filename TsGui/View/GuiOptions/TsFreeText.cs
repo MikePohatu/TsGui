@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -33,6 +33,7 @@ using MessageCrap;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Core.Logging;
+using System.Collections.Generic;
 
 namespace TsGui.View.GuiOptions
 {
@@ -67,14 +68,17 @@ namespace TsGui.View.GuiOptions
             get { return this._maxlength; }
             set { this._maxlength = value; this.OnPropertyChanged(this, "MaxLength"); }
         }
-        public override Variable Variable
+        public override IEnumerable<Variable> Variables
         {
             get
             {
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new Variable(this.VariableName, this.ControlText, this.Path); }
+                {
+                    var variable = new Variable(this.VariableName, this.ControlText, this.Path);
+                    return new List<Variable> { variable };
+                }
             }
         }
 

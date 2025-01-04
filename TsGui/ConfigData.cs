@@ -1,5 +1,5 @@
 #region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -16,19 +16,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using TsGui.Diagnostics;
 using TsGui.Grouping;
 using TsGui.Options.NoUI;
 using TsGui.Options;
 using TsGui.View.Layout;
 using TsGui.Linking;
-using System.Xml.Linq;
 using TsGui.Authentication;
 using TsGui.Scripts;
 using MessageCrap;
+using TsGui.Sets;
 
 namespace TsGui
 {
@@ -57,6 +55,7 @@ namespace TsGui
             OptionLibrary.Reset();
             ScriptLibrary.Reset();
             AuthLibrary.Reset();
+            SetLibrary.Reset();
             Buttons = new TsButtons();
             Pages = new List<TsPage>();
             Toggles = new List<IToggleControl>();

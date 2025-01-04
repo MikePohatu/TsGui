@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -31,10 +31,8 @@ using TsGui.View.Layout;
 using TsGui.Options.NoUI;
 using TsGui.Options;
 using TsGui.Grouping;
-using TsGui.Diagnostics;
 using Core.Diagnostics;
 using Core.Logging;
-using TsGui.Linking;
 using TsGui.Authentication;
 using TsGui.Validation;
 using System.Windows.Input;
@@ -43,6 +41,7 @@ using TsGui.Config;
 using System.Threading.Tasks;
 using TsGui.Scripts;
 using TsGui.View.GuiOptions;
+using TsGui.Sets;
 
 namespace TsGui
 {
@@ -295,7 +294,7 @@ namespace TsGui
             {
                 //No pages, finish using only the NoUI options
                 Log.Info("*No pages configured. Finishing TsGui");
-                this.Finish();
+                await this.FinishAsync();
             }
 
             //mark init complete. this won't change during reload
@@ -426,6 +425,12 @@ namespace TsGui
                 {
                     ConfigData.NouiContainer = new NoUIContainer(x);
                 }
+
+                x = SourceXml.Element("Sets");
+                if (x != null)
+                {
+                    SetLibrary.LoadXml(x);
+                }
             }
         }
 
@@ -461,7 +466,7 @@ namespace TsGui
             this.CurrentPage.Update();
         }
 
-        public void OnTimeoutReached()
+        public async void OnTimeoutReached()
         {
             if (GuiTimeout.Instance.IgnoreValidation == true)
             {
@@ -472,33 +477,52 @@ namespace TsGui
                     valop.ClearToolTips();
                 }
 
-                if (GuiTimeout.Instance.CancelOnTimeout == false) { this.Finish(); }
+                if (GuiTimeout.Instance.CancelOnTimeout == false) 
+                { await this.FinishAsync(); }
                 else { this.Cancel(); }
             }
             else
             {
                 if (ResultValidator.AllOptionsValid(OptionLibrary.ValidationOptions))
                 {
-                    if (GuiTimeout.Instance.CancelOnTimeout == false) { this.Finish(); }
+                    if (GuiTimeout.Instance.CancelOnTimeout == false) 
+                    { 
+                        await this.FinishAsync(); 
+                    }
                     else { this.Cancel(); }
                 }
             }
         }
 
         //finish and create the TS Variables
-        public void Finish()
+        public async Task  FinishAsync()
         {
             foreach (IOption option in OptionLibrary.Options)
             {
                 //first check for null option variables e.g. for headings
-                if (option.Variable != null)
+                if (option.Variables != null)
                 {
                     //now check if the option is active or not and variables created as required
                     if (option.IsActive == true)
-                    { EnvironmentController.AddVariable(option.Variable); }
+                    {
+                        foreach (Variable variable in option.Variables)
+                        {
+                            EnvironmentController.AddVariable(variable);
+                        }
+                    }
                     else
-                    { EnvironmentController.AddVariable(new Variable(option.VariableName, option.InactiveValue, option.Path)); }
+                    { 
+                        EnvironmentController.AddVariable(new Variable(option.VariableName, option.InactiveValue, option.Path)); 
+                    }
+                    
                 }
+            }
+
+
+            List<Variable> setvars = await SetLibrary.ProcessAllAsync();
+            foreach (Variable variable in setvars)
+            {
+                EnvironmentController.AddVariable(variable);
             }
 
             this._finished = true;

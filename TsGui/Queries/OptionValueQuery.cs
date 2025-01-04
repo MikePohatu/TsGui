@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -23,7 +23,6 @@ using MessageCrap;
 using System;
 using System.Xml.Linq;
 using Core.Diagnostics;
-using Core.Logging;
 using TsGui.Linking;
 using TsGui.Options;
 using System.Threading.Tasks;

@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -30,6 +30,7 @@ using Core.Diagnostics;
 using MessageCrap;
 using TsGui.View.Layout;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace TsGui.View.GuiOptions
 {
@@ -77,14 +78,17 @@ namespace TsGui.View.GuiOptions
             get { return this._validationtext; }
             set { this._validationtext = value; this.OnPropertyChanged(this, "ValidationText"); }
         }
-        public override Variable Variable
+        public override IEnumerable<Variable> Variables
         {
             get
             {
                 if ((this.IsActive == false) && (this.PurgeInactive == true))
                 { return null; }
                 else
-                { return new Variable(this.VariableName, this.CurrentValue, this.Path); }
+                {
+                    var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
+                    return new List<Variable> { variable };
+                }
             }
         }
 

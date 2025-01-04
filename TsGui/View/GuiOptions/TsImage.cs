@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -26,13 +26,14 @@ using System.Threading.Tasks;
 using TsGui.Images;
 using TsGui.View.Layout;
 using MessageCrap;
+using System.Collections.Generic;
 
 namespace TsGui.View.GuiOptions
 {
     public class TsImage : GuiOptionBase, IGuiOption
     {
         public Image Image { get; set; }
-        public override Variable Variable { get { return null; } }
+        public override IEnumerable<Variable> Variables { get { return null; } }
         public override string CurrentValue { get { return this.Image.MultiImage.CurrentFilePath; } }
 
         //Constructor

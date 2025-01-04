@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -19,8 +19,6 @@
 
 // IValidationOwner.cs - Parent element of a ValidationHandler. Required to pickup events
 // on the handler e.g. group changes. 
-
-using MessageCrap;
 
 namespace TsGui.Validation
 {

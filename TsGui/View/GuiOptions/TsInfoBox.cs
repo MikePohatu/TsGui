@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -21,13 +21,13 @@
 // amongst the other options. 
 
 using System.Xml.Linq;
-using System.Windows;
 using TsGui.Queries;
 using TsGui.Linking;
 using TsGui.View.Layout;
 using MessageCrap;
 using System.Threading.Tasks;
 using TsGui.Validation;
+using System.Collections.Generic;
 
 namespace TsGui.View.GuiOptions
 {
@@ -46,12 +46,15 @@ namespace TsGui.View.GuiOptions
                 this.SetValue(value, null);
             }
         }
-        public override Variable Variable
+        public override IEnumerable<Variable> Variables
         {
             get
             {
                 if (string.IsNullOrWhiteSpace(this.VariableName) == false)
-                { return new Variable(this.VariableName, this.ControlText, this.Path); }
+                {
+                    var variable = new Variable(this.VariableName, this.ControlText, this.Path);
+                    return new List<Variable> { variable };
+                }
                 else
                 { return null; }
             }

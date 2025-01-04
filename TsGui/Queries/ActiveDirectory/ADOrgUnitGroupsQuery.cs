@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -19,15 +19,12 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-
-using TsGui.Queries;
 using TsGui.Linking;
 using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication;
 using Core.Diagnostics;
 using Core.Logging;
 using System.DirectoryServices.AccountManagement;
-using System.DirectoryServices;
 using MessageCrap;
 using System.Threading.Tasks;
 

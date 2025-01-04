@@ -1,8 +1,8 @@
-Version 2.0.28.0
-Release date: 21 Oct 2024
+Version 2.1.0.0
+Release date: 4 Jan 2025
 
-*Fixes
-	Fixed toggles not initialising properly: https://github.com/MikePohatu/TsGui/issues/22
+*Features
+	Added Sets feature: https://github.com/MikePohatu/TsGui/blob/master/documentation/features/Sets.md
 
 	
 *Known issues
@@ -13,6 +13,11 @@ Release date: 21 Oct 2024
 
 *Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
 
+Version 2.0.28.0
+Release date: 21 Oct 2024
+
+*Fixes
+	Fixed toggles not initialising properly: https://github.com/MikePohatu/TsGui/issues/22
 
 ---------------
 Version 2.0.27.0

@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using System.Windows.Threading;
 
 using TsGui.Helpers;
-using TsGui.View;
 using Core;
 
 namespace TsGui.Images

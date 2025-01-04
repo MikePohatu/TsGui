@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -28,7 +28,6 @@ using System;
 
 using TsGui.View.GuiOptions;
 using TsGui.View.Layout.Events;
-using TsGui.View.Layout;
 using System.Xml.Linq;
 
 namespace TsGui.Validation

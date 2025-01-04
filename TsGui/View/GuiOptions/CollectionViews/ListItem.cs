@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -20,11 +20,9 @@ using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using TsGui.View.Layout;
 using TsGui.Grouping;
 using Core.Logging;
 using TsGui.View.Symbols;
-using System.Windows;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {

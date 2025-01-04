@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -22,9 +22,6 @@ using System.ComponentModel;
 
 using TsGui.View.Layout;
 using TsGui.Options;
-using TsGui.Grouping;
-using TsGui.Linking;
-using TsGui.Authentication;
 using System.Threading.Tasks;
 
 #pragma warning disable CS0067
@@ -57,7 +54,7 @@ namespace TsGui.Tests
         public void AddOptionToLibary(IOption Option) { }
         public void MoveNext() { }
         public void MovePrevious() { }
-        public void Finish() { }
+        public async Task FinishAsync() { await Task.CompletedTask; }
         public void Cancel() { }
         public void OnWindowClosing(object sender, CancelEventArgs e) { }
         public void OnPageLoaded(object o, RoutedEventArgs e) { }

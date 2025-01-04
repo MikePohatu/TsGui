@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -17,16 +17,12 @@
 //
 #endregion
 using MessageCrap;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using Core.Diagnostics;
 using Core.Logging;
 using TsGui.Linking;
 using TsGui.Options;
-using TsGui.View;
 using Core;
 using System.Threading.Tasks;
 
@@ -95,7 +91,14 @@ namespace TsGui.Authentication.ExposedPassword
         }
 
         public string ID { get; private set; }
-        public Variable Variable { get { return new Variable(this.VariableName, this.LiveValue, this.Path); } }
+        public IEnumerable<Variable> Variables 
+        { 
+            get 
+            { 
+                var variable = new Variable(this.VariableName, this.LiveValue, this.Path);
+                return new List<Variable> { variable };
+            } 
+        }
         public string LiveValue { get { return this.PasswordSource?.Password; } }
         public string CurrentValue { get { return this.LiveValue; } }
         public string VariableName { get; private set; }

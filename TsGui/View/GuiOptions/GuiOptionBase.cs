@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2020 Mike Pohatu
+// Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -24,8 +24,6 @@ using System.Xml.Linq;
 using TsGui.View.Layout;
 using System.Windows.Controls;
 using System.Windows;
-using System.Windows.Media;
-using TsGui.Linking;
 using TsGui.Options;
 using Core.Logging;
 using TsGui.Queries;
@@ -65,7 +63,7 @@ namespace TsGui.View.GuiOptions
         }
         public virtual Control InteractiveControl { get; set; }
         public abstract string CurrentValue { get; }
-        public abstract Variable Variable { get; }
+        public abstract IEnumerable<Variable> Variables { get; }
         public string LiveValue
         {
             get

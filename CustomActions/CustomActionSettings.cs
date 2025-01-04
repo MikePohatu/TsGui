@@ -1,9 +1,9 @@
 ﻿#region license
-// Copyright (c) 2021 20Road Limited
+// Copyright (c) 2025 Mike Pohatu
 //
-// This file is part of DevChecker.
+// This file is part of TsGui.
 //
-// DevChecker is free software: you can redistribute it and/or modify
+// TsGui is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, version 3 of the License.
 //
@@ -20,10 +20,6 @@ using Core.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WindowsHelpers;
 
 namespace CustomActions
 {
