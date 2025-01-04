@@ -20,6 +20,9 @@ The 'Sets' feature allows the creation of multiple variables using a simple list
 
 You can import from text files to simplify your configuration files. 
 
+This feature requires TsGui version 2.1.0.0 or above.
+
+
 ## Config Overview
 
 The **\<Sets>** element can contain one or more sets, each defined in a **\<Set>** element. The \<Set> configuration is outlined in more detail in the following sections. 
