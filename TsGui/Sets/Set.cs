@@ -20,7 +20,6 @@ using Core.Logging;
 using MessageCrap;
 using System;
 using System.Collections.Generic;
-using System.Management.Automation;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Grouping;

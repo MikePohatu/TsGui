@@ -16,7 +16,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using System.Windows;
 using TsGui.Authentication;
 using Core.Diagnostics;
 using System.Xml.Linq;

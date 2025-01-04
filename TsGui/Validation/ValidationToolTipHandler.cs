@@ -28,7 +28,6 @@ using System;
 
 using TsGui.View.GuiOptions;
 using TsGui.View.Layout.Events;
-using TsGui.View.Layout;
 using System.Xml.Linq;
 
 namespace TsGui.Validation

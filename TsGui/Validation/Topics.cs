@@ -16,8 +16,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using MessageCrap;
-
 namespace TsGui.Validation
 {
     public static class Topics

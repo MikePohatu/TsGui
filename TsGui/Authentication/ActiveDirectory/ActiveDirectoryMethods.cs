@@ -16,7 +16,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using System.Windows;
 using System.Linq;
 using System.Text;
 using System.Security.Principal;

@@ -22,9 +22,6 @@ using System.ComponentModel;
 
 using TsGui.View.Layout;
 using TsGui.Options;
-using TsGui.Grouping;
-using TsGui.Linking;
-using TsGui.Authentication;
 using System.Threading.Tasks;
 
 namespace TsGui

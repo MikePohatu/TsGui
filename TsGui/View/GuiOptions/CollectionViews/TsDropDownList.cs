@@ -25,9 +25,7 @@ using System.Linq;
 using System.Windows;
 
 using TsGui.Grouping;
-using TsGui.Validation;
 using TsGui.View.Layout;
-using TsGui.Linking;
 using MessageCrap;
 using System.Threading.Tasks;
 

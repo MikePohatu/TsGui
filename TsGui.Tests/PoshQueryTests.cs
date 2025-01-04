@@ -16,17 +16,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.Threading.Tasks;
 using TsGui.Queries;
-using TsGui.Tests.Linking;
-using TsGui.Scripts;
 using MessageCrap;
 using System.IO;
 

@@ -18,15 +18,11 @@
 #endregion
 using MessageCrap;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
-using System.Text;
 using System.Xml.Linq;
 using TsGui.Connectors.System;
 using Core.Diagnostics;
 using TsGui.Linking;
-using WindowsHelpers;
 using System.Threading.Tasks;
 
 namespace TsGui.Queries

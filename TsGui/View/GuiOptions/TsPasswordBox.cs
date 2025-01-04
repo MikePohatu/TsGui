@@ -26,15 +26,12 @@ using System.Security;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Linq;
-using TsGui.Queries;
 using TsGui.Authentication;
 using Core.Diagnostics;
 using TsGui.Validation;
 using System.Windows.Input;
 using Core.Logging;
 using TsGui.View.Layout;
-using MessageCrap;
-using System.ServiceModel.Channels;
 using TsGui.Linking;
 using System.Collections.Generic;
 

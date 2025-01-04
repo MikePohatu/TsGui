@@ -18,7 +18,6 @@
 #endregion
 using System.Collections.Generic;
 using System;
-using System.ComponentModel;
 
 namespace MessageCrap
 {

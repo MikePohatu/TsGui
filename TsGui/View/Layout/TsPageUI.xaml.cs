@@ -18,8 +18,6 @@
 #endregion
 using System.Windows;
 using System.Windows.Controls;
-using System;
-using System.Windows.Threading;
 
 namespace TsGui.View.Layout
 {

@@ -17,7 +17,6 @@
 //
 #endregion
 using System.Windows;
-using TsGui.View.Layout;
 
 namespace TsGui.View.Layout
 {

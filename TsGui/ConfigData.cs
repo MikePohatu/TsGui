@@ -17,14 +17,12 @@
 //
 #endregion
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using TsGui.Diagnostics;
 using TsGui.Grouping;
 using TsGui.Options.NoUI;
 using TsGui.Options;
 using TsGui.View.Layout;
 using TsGui.Linking;
-using System.Xml.Linq;
 using TsGui.Authentication;
 using TsGui.Scripts;
 using MessageCrap;

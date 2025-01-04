@@ -20,10 +20,8 @@ using System;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Core.Diagnostics;
-using System.Management.Automation;
 using WindowsHelpers;
 using Core.Logging;
-using TsGui.Scripts;
 using System.Diagnostics;
 
 namespace TsGui.Scripts

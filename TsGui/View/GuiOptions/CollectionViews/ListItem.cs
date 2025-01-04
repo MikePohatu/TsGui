@@ -20,11 +20,9 @@ using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using TsGui.View.Layout;
 using TsGui.Grouping;
 using Core.Logging;
 using TsGui.View.Symbols;
-using System.Windows;
 
 namespace TsGui.View.GuiOptions.CollectionViews
 {

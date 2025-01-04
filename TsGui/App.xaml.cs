@@ -23,8 +23,6 @@ using System.Windows.Threading;
 using Core.Logging;
 using Core.Diagnostics;
 using TsGui.Authentication.LocalConfig;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace TsGui
 {

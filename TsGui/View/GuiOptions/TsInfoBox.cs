@@ -21,14 +21,12 @@
 // amongst the other options. 
 
 using System.Xml.Linq;
-using System.Windows;
 using TsGui.Queries;
 using TsGui.Linking;
 using TsGui.View.Layout;
 using MessageCrap;
 using System.Threading.Tasks;
 using TsGui.Validation;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace TsGui.View.GuiOptions

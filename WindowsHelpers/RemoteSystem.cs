@@ -16,17 +16,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Management;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using Core.Logging;
 using Core;
-using WindowsHelpers;
 using System.Management.Automation;
 using System.IO;
 using System.Diagnostics;

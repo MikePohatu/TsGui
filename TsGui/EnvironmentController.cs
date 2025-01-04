@@ -20,14 +20,7 @@
 // EnvironmentController.cs - responsible for getting the right information from the right connector
 // in the right format so it can be passed back to the MainController. 
 
-using System.Xml.Linq;
-using System.Collections.Generic;
-using System;
-
-using TsGui.Queries;
-using TsGui.Validation;
 using TsGui.Connectors;
-using TsGui.Linking;
 using Core.Logging;
 using Core.Diagnostics;
 using TsGui.Config;

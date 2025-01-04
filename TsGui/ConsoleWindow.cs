@@ -16,14 +16,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using Microsoft.Win32.SafeHandles;
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 
 using TsGui.View.Layout;
-using TsGui.View;
 using Core;
 
 namespace TsGui

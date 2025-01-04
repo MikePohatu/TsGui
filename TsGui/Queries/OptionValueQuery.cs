@@ -23,7 +23,6 @@ using MessageCrap;
 using System;
 using System.Xml.Linq;
 using Core.Diagnostics;
-using Core.Logging;
 using TsGui.Linking;
 using TsGui.Options;
 using System.Threading.Tasks;

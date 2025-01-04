@@ -19,9 +19,7 @@
 
 // TestingWindowUI.cs - shows live data at runtime  
 
-using System;
 using System.Windows;
-using System.Windows.Threading;
 
 
 namespace TsGui.Diagnostics

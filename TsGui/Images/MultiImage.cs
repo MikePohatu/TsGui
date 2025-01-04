@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using System.Windows.Threading;
 
 using TsGui.Helpers;
-using TsGui.View;
 using Core;
 
 namespace TsGui.Images

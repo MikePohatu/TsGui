@@ -22,8 +22,6 @@
 using System;
 using System.Xml.Linq;
 using System.Windows;
-using System.Windows.Media;
-using System.ComponentModel;
 
 using TsGui.View.GuiOptions;
 

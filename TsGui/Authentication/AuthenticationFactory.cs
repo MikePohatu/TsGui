@@ -17,7 +17,6 @@
 //
 #endregion
 using Core.Diagnostics;
-using Core.Logging;
 using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication.LocalConfig;
 using TsGui.Authentication.ExposedPassword;

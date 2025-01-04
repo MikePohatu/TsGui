@@ -21,8 +21,6 @@
 
 using System;
 
-using Core.Diagnostics;
-
 namespace TsGui
 {
     public class Arguments

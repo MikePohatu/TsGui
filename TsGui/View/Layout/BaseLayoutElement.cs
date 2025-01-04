@@ -26,7 +26,6 @@ using TsGui.Grouping;
 using System.Xml.Linq;
 using TsGui.Validation;
 using System.Collections.Generic;
-using System;
 using TsGui.View.Layout.Events;
 
 namespace TsGui.View.Layout

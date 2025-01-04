@@ -16,7 +16,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Core.Logging;

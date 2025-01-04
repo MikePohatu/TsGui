@@ -24,8 +24,6 @@ using System.Xml.Linq;
 using TsGui.View.Layout;
 using System.Windows.Controls;
 using System.Windows;
-using System.Windows.Media;
-using TsGui.Linking;
 using TsGui.Options;
 using Core.Logging;
 using TsGui.Queries;

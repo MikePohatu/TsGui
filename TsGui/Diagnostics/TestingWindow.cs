@@ -26,17 +26,10 @@ using System;
 using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Threading;
-
-using TsGui.View;
-using TsGui.View.Layout;
 using TsGui.View.Helpers;
 using TsGui.Helpers;
-using TsGui.Diagnostics;
 using TsGui.Options;
-using Core;
 using Core.Logging;
-using NLog;
-using System.Threading.Tasks;
 using TsGui.Sets;
 
 namespace TsGui.Diagnostics

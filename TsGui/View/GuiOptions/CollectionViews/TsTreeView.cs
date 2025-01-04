@@ -17,10 +17,8 @@
 //
 #endregion
 using System.Xml.Linq;
-using System.Windows.Controls;
 using System.Collections.Generic;
 using TsGui.View.Symbols;
-using TsGui.Validation;
 using TsGui.Linking;
 using System.Windows;
 using TsGui.View.Layout;

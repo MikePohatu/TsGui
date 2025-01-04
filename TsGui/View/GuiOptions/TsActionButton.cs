@@ -24,7 +24,6 @@ using Core.Logging;
 using TsGui.Validation;
 using MessageCrap;
 using System.Threading.Tasks;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace TsGui.View.GuiOptions

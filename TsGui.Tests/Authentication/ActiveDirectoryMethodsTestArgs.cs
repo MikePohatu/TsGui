@@ -17,7 +17,6 @@
 //
 #endregion
 using System.Collections.Generic;
-using TsGui.Authentication;
 
 namespace TsGui.Tests.Authentication
 {

@@ -23,7 +23,6 @@ using System;
 
 using NLog;
 using NLog.Targets;
-using NLog.Config;
 
 namespace Core.Logging
 {

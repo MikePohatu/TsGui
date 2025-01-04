@@ -16,7 +16,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using System;
 using System.Diagnostics;
 using System.Net;
 using System.Collections.Generic;
@@ -25,7 +24,6 @@ using System.Xml.Linq;
 using TsGui.Linking;
 using TsGui.Authentication;
 using Core.Diagnostics;
-using Core.Logging;
 using System.Text;
 using System.IO;
 using MessageCrap;

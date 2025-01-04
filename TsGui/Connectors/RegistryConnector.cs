@@ -18,12 +18,9 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Core.Logging;
 using Core.Diagnostics;
 using TsGui.Connectors.System;
-using WindowsHelpers;
 
 namespace TsGui.Connectors
 {

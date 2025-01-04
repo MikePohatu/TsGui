@@ -16,17 +16,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
-using MessageCrap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Core.Diagnostics;
-using TsGui.Linking;
-using System.Management.Automation;
-using WindowsHelpers;
 using TsGui.Scripts;
 
 namespace TsGui.Actions

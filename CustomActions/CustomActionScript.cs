@@ -26,7 +26,6 @@ using WindowsHelpers;
 using System.Collections.ObjectModel;
 using Core;
 //using ConfigMgrHelpers;
-using System.Collections.Generic;
 
 namespace CustomActions
 {

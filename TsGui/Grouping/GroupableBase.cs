@@ -19,7 +19,6 @@
 
 // GroupableBase.cs - base class for grouable objects
 
-using TsGui.View;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Core;

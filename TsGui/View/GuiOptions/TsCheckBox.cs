@@ -19,16 +19,12 @@
 
 // TsCheckBox.cs - combobox control for user input
 
-using System;
 using System.Xml.Linq;
 using System.Windows;
 using System.Collections.Generic;
-
-using TsGui.Grouping;
 using TsGui.Linking;
 using TsGui.Queries;
 using System.Windows.Media;
-using System.Windows.Controls;
 using TsGui.Validation;
 using TsGui.View.Layout;
 using MessageCrap;
