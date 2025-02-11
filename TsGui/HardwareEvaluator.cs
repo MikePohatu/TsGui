@@ -161,6 +161,12 @@ namespace TsGui
                         IsVirtualMachine = true;
                         break;
                     }
+                    //Nutanix
+                    if (maker.Contains("Nutanix"))
+                    {
+                        IsVirtualMachine = true;
+                        break;
+                    }
                 }
             }
 
