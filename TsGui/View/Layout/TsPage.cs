@@ -114,6 +114,8 @@ namespace TsGui.View.Layout
             this.LeftPane = Defaults.LeftPane;
             this.RightPane = Defaults.RightPane;
 
+            this.Style.Width = double.NaN;
+
             this.Page.Loaded += this.OnPageLoaded;
 
             this.GroupingStateChange += this.OnGroupingStateChange;
@@ -226,6 +228,7 @@ namespace TsGui.View.Layout
             this.Page.LeftPanePresenter.Content = this.LeftPane?.PaneUI;
             this.Page.RightPanePresenter.Content = this.RightPane?.PaneUI;
             TsButtons.Update(this, this.Page);
+            ConfigData.TsMainWindow.ChangeSize(this.Style.Height, this.Style.Width);
         }
 
         public void OnGroupingStateChange(object o, GroupingEventArgs e)

@@ -37,6 +37,10 @@ namespace TsGui.View.Layout
         private HorizontalAlignment _footerHAlignment;
         private MainWindow _parentwindow;
 
+        //values for configured height and width. These can be overridden, so need to be saved. 
+        private double _configuredHeight = double.NaN;
+        private double _configuredWidth = double.NaN;
+
         //Properties
         public Border Border { get; private set; } = new Border();
         public WindowLocation WindowLocation { get; private set; }
@@ -157,6 +161,24 @@ namespace TsGui.View.Layout
 
                 GuiFactory.LoadMargins(InputXml, this._pageMargin);
             }
+
+            this._configuredHeight = this.Style.Height;
+            this._configuredWidth = this.Style.Width;
+        }
+
+        /// <summary>
+        /// Set a temporary height for the Window. If you don't want to set one of the values, pass double.NaN.
+        /// The NaN will be reset to the default value set during configuration.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        public void ChangeSize(double height, double width)
+        {
+            if (double.IsNaN(height) == false) { this.Style.Height = height; }
+            else { this.Style.Height = this._configuredHeight; }
+
+            if (double.IsNaN(width) == false) { this.Style.Width = width; }  
+            else { this.Style.Width = this._configuredWidth; }
         }
     }
 }
