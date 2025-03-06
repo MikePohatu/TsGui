@@ -17,11 +17,14 @@ if (-not $compare) {
 }
 
 $testExe = "$($wd)\Test\TsGui.exe"
-$testExeVer = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($testExe).FileVersion
+$testExeVer = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($testExe).FileVersionRaw
 if ($runCompare) { 
     $refExe = "$($wd)\Reference\TsGui.exe"
-    $refExeVer = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($refExe).FileVersion
+    $refExeVer = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($refExe).FileVersionRaw
 }
+
+#new testing params version
+$newParamsVer = [System.Version]::Parse("2.1.0.3")
 
 $startTests = $false
 foreach ($configFile in $testConfigs) {
@@ -30,14 +33,19 @@ foreach ($configFile in $testConfigs) {
     if ($startTests) {
         Write-Host "Starting test: $($configFile.Name)" -NoNewline
 
-        $tsguiArgs = @("-config","$($configFile.FullName)")
 
         Write-Host " | test ($testExeVer)" -NoNewline
-        $proc1 = Start-Process -FilePath $testExe -ArgumentList $tsguiArgs -PassThru
+        $proc1 = Start-Process -FilePath $testExe -ArgumentList "-testingleft","-config","$($configFile.FullName)" -PassThru
         if ($runCompare) {
             Start-Sleep -Seconds 3
             Write-Host " | reference ($refExeVer)" -NoNewline -ForegroundColor Green
-            $proc2 = Start-Process -FilePath $refExe -ArgumentList $tsguiArgs -PassThru
+
+            if ($refExeVer -ge $newParamsVer ) {
+                $proc2 = Start-Process -FilePath $refExe -ArgumentList "-config","$($configFile.FullName)","-IgnoreParamErrors","-TestingRight"  -PassThru
+            }
+            else {
+                $proc2 = Start-Process -FilePath $refExe -ArgumentList "-config","$($configFile.FullName)" -PassThru
+            }            
         }
 
         Start-Sleep -Seconds 1
