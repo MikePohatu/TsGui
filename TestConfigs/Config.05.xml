@@ -10,7 +10,7 @@
 	-->
 	<Heading>
 		<Title>Task Sequence Gui</Title>
-		<Text>Do whatever you want. I don't care</Text>
+		<Text>Width should change on pages</Text>
 		<!--
 		<Bg-Color>#FF006AD4</Bg-Color>
 		<Font-Color>#FFFFFF</Font-Color>
@@ -26,10 +26,10 @@
 
 	<Page>
 		<Height>300</Height>
-		<Width>490</Width>
+		<Width>590</Width>
 		<Heading>
 			<Title>DEBUG - Task Sequence Gui - Enter computer name</Title>
-			<Text>Enter the new computer details</Text>
+			<Text>Width should change on pages</Text>
 			<Bg-Color>#ff0000</Bg-Color>
 			<Font-Color>#FFFFFF</Font-Color>
 		</Heading>
