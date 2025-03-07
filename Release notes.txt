@@ -1,10 +1,10 @@
-Version 2.1.0.1
-Release date: 11 Feb 2025
+Version 2.1.0.3
+Release date: 7 Mar 2025
 
-*Fixes
-	Added Nutanix to TsGui_IsVirtualMachine detection.
+*Features
+	Added ability to override page sizes: https://github.com/MikePohatu/TsGui/blob/master/documentation/Layout.md#page
 
-	
+
 *Known issues
 	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
 	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
@@ -13,13 +13,22 @@ Release date: 11 Feb 2025
 
 *Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
 
+
+---------------
+Version 2.1.0.1
+Release date: 11 Feb 2025
+
+*Fixes
+	Added Nutanix to TsGui_IsVirtualMachine detection.
+
+---------------	
 Version 2.1.0.0
 Release date: 4 Jan 2025
 
 *Features
 	Added Sets feature: https://github.com/MikePohatu/TsGui/blob/master/documentation/features/Sets.md
 
-	
+---------------	
 Version 2.0.28.0
 Release date: 21 Oct 2024
 
