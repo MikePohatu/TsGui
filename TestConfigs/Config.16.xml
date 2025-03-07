@@ -90,9 +90,6 @@
 	
 	<!-- *** Pages *** -->
 	<Page>
-		<Formatting>
-			<Width>110</Width>
-		</Formatting>
 
 		<Column>
 			<Formatting>

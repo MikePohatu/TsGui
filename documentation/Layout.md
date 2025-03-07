@@ -33,6 +33,34 @@ All items in the tree can have configuration applied to them e.g. [Style](/docum
 ## Page
 A TsGui UI contains one or more pages. Each page is contained within a ```<Page>``` element, and can contain one or more [rows](#row). If more than one page exists, TsGui will automatically configure the Next/Previous buttons appropriately.
 
+Note that when you [Style](/documentation/features/Styles.md) the height or width of a page, it will override the values set for the size of the window. In the example below, the second page will have height of 350 and width of 400. Pages 1 & 3 will have the default height of 230 and width of 300.
+
+```xml
+<TsGui>
+    <Height>230</Height>
+	<Width>300</Width>
+
+    <!-- Page 1 -->
+    <Page>
+        ...
+    </Page>
+    
+    <!-- Page 2 -->
+    <Page>
+        <Style>
+            <Height>350</Height>
+            <Width>400</Width>
+        </Style>
+        ...
+    </Page>
+
+    <!-- Page 3 -->
+    <Page>
+        ...
+    </Page>
+</TsGui>
+```
+
 ## Row
 Each page can contain one or more rows to break up the page space horizontally. Each row can contain one or more [columns](#column).
 

@@ -87,8 +87,18 @@ namespace TsGui.View.Layout
         private void SetDefaults()
         {
             this.StartupLocation = WindowStartupLocation.CenterScreen;
-            this.Left = 40;
-            this.Top = 40;
+            if (Arguments.Instance.TestingLeft) 
+            { 
+                this.StartupLocation = WindowStartupLocation.Manual;
+                this.Left = 300;
+                this.Top = 40;
+            }
+            else if (Arguments.Instance.TestingRight)
+            {
+                this.StartupLocation = WindowStartupLocation.Manual;
+                this.Left = 900;
+                this.Top = 40;
+            }
         }
     }
 }

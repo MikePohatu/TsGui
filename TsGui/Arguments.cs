@@ -35,6 +35,10 @@ namespace TsGui
 
         public bool TestMode { get; private set; }
 
+        public bool TestingLeft { get; private set; } = false;
+
+        public bool TestingRight { get; private set; } = false;
+
         public bool CreateKey { get; private set; } = false;
 
         public string Key { get; private set; }
@@ -54,7 +58,7 @@ namespace TsGui
             //string[] args = Environment.GetCommandLineArgs();
             if (Args.Length > 1)
             {
-                for (int index = 1; index < Args.Length; index += 2)
+                for (int index = 1; index < Args.Length; index++)
                 {                  
                     switch (Args[index].ToUpper())
                     {
@@ -63,15 +67,18 @@ namespace TsGui
                             break;
                         case "-CONFIG":
                             if (Args.Length < index + 2) { throw new InvalidOperationException("Missing config file after parameter -config"); }
-                            this.ConfigFile = this.CompleteFilePath(Args[index + 1]);                           
+                            this.ConfigFile = this.CompleteFilePath(Args[index + 1]);
+                            index++;
                             break;
                         case "-WEBCONFIG":
                             if (Args.Length < index + 2) { throw new InvalidOperationException("Missing URL after parameter -webconfig"); }
                             this.WebConfigUrl = Args[index + 1];
+                            index++;
                             break;
                         case "-LOG":
                             if (Args.Length < index + 2) { throw new InvalidOperationException("Missing config file after parameter -log"); }
                             this.LogFile = this.CompleteFilePath(Args[index + 1]);
+                            index++;
                             break;
                         case "-CREATEKEY":
                             this.CreateKey = true;
@@ -79,13 +86,24 @@ namespace TsGui
                         case "-HASH":
                             if (Args.Length < index + 2) { throw new InvalidOperationException("Missing value after -hash"); }
                             this.ToHash = Args[index + 1];
+                            index++;
                             break;
                         case "-KEY":
                             if (Args.Length < index + 2) { throw new InvalidOperationException("Missing value after -key"); }
                             this.Key = Args[index + 1];
+                            index++;
                             break;
                         case "-TEST":
                             this.TestMode = true;
+                            break;
+                        case "-TESTINGLEFT":
+                            this.TestingLeft = true;
+                            break;
+                        case "-TESTINGRIGHT":
+                            this.TestingRight = true;
+                            break;
+                        case "-IGNOREPARAMERRORS":
+                            this.TestingRight = true;
                             break;
                         default:
                             throw new InvalidOperationException("Invalid parameter: " + Args[index]);
