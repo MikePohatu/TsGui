@@ -271,24 +271,40 @@ namespace TsGui
             if (ConfigData.Pages.Count > 0)
             {
                 Log.Debug("Loading pages");
+
                 this.CurrentPage = ConfigData.Pages.First();
-                this.ParentWindow.DataContext = ConfigData.TsMainWindow;
+                if (this.CurrentPage.IsHidden) 
+                {
+                    this.CurrentPage = this.CurrentPage.NextActivePage; 
+                }
 
-                // Now show and close the ghost window to make sure WinPE honours the 
-                // windowstartuplocation
-                Log.Trace("Loading ghost window");
-                GhostWindow ghost = new GhostWindow();
-                ghost.Show();
-                ghost.Close();
+                if (this.CurrentPage == null)
+                {
+                    //No active pages, finish using only the NoUI options
+                    Log.Info("*No active pages found. Finishing TsGui");
+                    await this.FinishAsync();
+                }
+                else
+                {
+                    this.UpdateWindow();
+                    this.ParentWindow.DataContext = ConfigData.TsMainWindow;
 
-                this.UpdateWindow();
-                this.ParentWindow.Visibility = Visibility.Visible;
-                this.ParentWindow.WindowStartupLocation = ConfigData.TsMainWindow.WindowLocation.StartupLocation;
-                this.StartupFinished = true;
-                
-                GuiTimeout.Instance?.Start(this.OnTimeoutReached);
-                Log.Info($"Startup time {(DateTime.Now - start).Seconds} seconds");
-                Log.Info($"*TsGui startup finished");
+                    // Now show and close the ghost window to make sure WinPE honours the 
+                    // windowstartuplocation
+                    Log.Trace("Loading ghost window");
+                    GhostWindow ghost = new GhostWindow();
+                    ghost.Show();
+                    ghost.Close();
+
+                    this.UpdateWindow();
+                    this.ParentWindow.Visibility = Visibility.Visible;
+                    this.ParentWindow.WindowStartupLocation = ConfigData.TsMainWindow.WindowLocation.StartupLocation;
+                    this.StartupFinished = true;
+
+                    GuiTimeout.Instance?.Start(this.OnTimeoutReached);
+                    Log.Info($"Startup time {(DateTime.Now - start).Seconds} seconds");
+                    Log.Info($"*TsGui startup finished");
+                }
             }
             else 
             {
@@ -441,21 +457,6 @@ namespace TsGui
             OptionLibrary.Add(Option);
         }
 
-        //move to the next page and update the next/prev/finish buttons
-        public void MoveNext()
-        {
-            this.CurrentPage = this.CurrentPage.NextActivePage;
-            this.CurrentPage.Update();         
-            this.UpdateWindow();
-        }
-
-        //move to the previous page and update the next/prev/finish buttons
-        public void MovePrevious()
-        {
-            this.CurrentPage = this.CurrentPage.PreviousActivePage;
-            this.CurrentPage.Update();
-            this.UpdateWindow();
-        }
 
         //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()
@@ -464,6 +465,12 @@ namespace TsGui
             this.ParentWindow.ContentArea.Navigate(this.CurrentPage.Page);
             this.ParentWindow.ContentArea.DataContext = this.CurrentPage;
             this.CurrentPage.Update();
+        }
+
+        public void UpdatePage(TsPage CurrentPage)
+        {
+            this.CurrentPage = CurrentPage;
+            this.UpdateWindow();
         }
 
         public async void OnTimeoutReached()

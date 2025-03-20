@@ -171,7 +171,7 @@ $appFiles | ForEach-Object {
 
 #Create the unsigned package zip
 PackageFolder -PackageFolder $ProductReleasePath -DestinationPath "$($ReleaseRootPath)\$($productName)_$($version).zip"
-
+Get-FileHash "$($ReleaseRootPath)\$($productName)_$($version).zip" -Algorithm MD5
 
 $confirm = Read-Host -Prompt "Do you want to sign binaries?[y/n]"
 if ( $confirm -match "[yY]" ) { 
@@ -198,5 +198,6 @@ if ( $confirm -match "[yY]" ) {
 
     #Create the signed package zip
     PackageFolder -PackageFolder $ProductReleasePath -DestinationPath "$($ReleaseRootPath)\$($productName)_$($version)_signed.zip"
+    Get-FileHash "$($ReleaseRootPath)\$($productName)_$($version)_signed.zip" -Algorithm MD5
 }
 
