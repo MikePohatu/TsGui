@@ -56,19 +56,19 @@ namespace TsGui.Queries
                     case "listvalue":
                         return new ListValueQuery(InputXml);
                     case "linkto":
-                        return GetLinkToQuery(InputXml.Value, linktarget);
+                        return GetLinkToQuery(InputXml, linktarget);
                     //Set to true when source is true
                     case "linktrue":
-                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, true, false);
+                        return GetLinkTrueFalseOnlyQuery(InputXml, linktarget, true, false);
                     //set to false when source is false
                     case "linkfalse":
-                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, false, false);
+                        return GetLinkTrueFalseOnlyQuery(InputXml, linktarget, false, false);
                     //set to true when source is false
                     case "notlinkfalse":
-                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, false, true);
+                        return GetLinkTrueFalseOnlyQuery(InputXml, linktarget, false, true);
                     //set to false when source is true
                     case "notlinktrue":
-                        return GetLinkTrueFalseOnlyQuery(InputXml.Value, linktarget, true, true);
+                        return GetLinkTrueFalseOnlyQuery(InputXml, linktarget, true, true);
                     case "adgroupmembers":
                         return new ADGroupMembersQuery(InputXml, linktarget);
                     case "adou":
@@ -101,13 +101,16 @@ namespace TsGui.Queries
         //          <ID Name = "TestLink1"/>
         //      </Query>
         #endregion
-        public static IQuery GetLinkToQuery(string SourceID, ILinkTarget linktarget)
+        public static IQuery GetLinkToQuery(XElement InputXml, ILinkTarget linktarget)
         {
+            string sourceid = InputXml.Value;
             XElement sourcequeryx = new XElement("Query");
             sourcequeryx.Add(new XAttribute("Type", "OptionValue"));
+            bool init = XmlHandler.GetBoolFromXml(InputXml, "InitLink", true);
+            sourcequeryx.Add(new XAttribute("InitLink", init.ToString()));
 
             XElement idx = new XElement("ID");
-            idx.Add(new XAttribute("Name", SourceID));
+            idx.Add(new XAttribute("Name", sourceid));
             sourcequeryx.Add(idx);
 
             return new OptionValueQuery(sourcequeryx, linktarget);
@@ -128,14 +131,17 @@ namespace TsGui.Queries
         //      </Result>
         //  </Query>
         #endregion
-        public static IQuery GetLinkTrueFalseOnlyQuery(string SourceID, ILinkTarget linktarget, bool truefalse, bool invert)
+        public static IQuery GetLinkTrueFalseOnlyQuery(XElement InputXml, ILinkTarget linktarget, bool truefalse, bool invert)
         {
-            
+            string sourceid = InputXml.Value;
             XElement sourceqx = new XElement("Query");
             sourceqx.Add(new XAttribute("Type", "OptionValue"));
             XElement idx = new XElement("ID");
-            idx.Add(new XAttribute("Name", SourceID));
+            idx.Add(new XAttribute("Name", sourceid));
             sourceqx.Add(idx);
+
+            bool init = XmlHandler.GetBoolFromXml(InputXml, "InitLink", true);
+            sourceqx.Add(new XAttribute("InitLink", init.ToString()));
 
             XElement rulex = new XElement("Rule",truefalse.ToString().ToUpper());
             rulex.Add(new XAttribute("Type", "Equals"));

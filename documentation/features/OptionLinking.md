@@ -8,6 +8,7 @@ A how-to video is also available on [YouTube](https://youtu.be/cZdb_qSu1eE)
 * [Configuration](#configuration)
   * [Source](#source)
   * [Target](#target)
+  * [Initialisation](#initialisation)
 * [Config examples](#config-examples)
   * [Standard OptionValue query](#standard-optionvalue-query)
   * [LinkTo query](#linkto-query)
@@ -46,6 +47,51 @@ The standard OptionValue query type will reference the ID attribute configured i
 ```
 
 The 'shorthand' types such as *LinkTo, LinkTrue, LinkFalse* all set the source ID as the value of the element (see below).
+
+---
+
+### Initialisation
+During TsGui startup, all options are initialised to make sure values are up to date based on their source values. This can be problematic if you want to use option linking to update values on user input, but you want to set different _initial_ values.
+
+In this scenario, you can set the **InitLink** attribute to FALSE. When you do this, OptionValue queries will only update after TsGui has finished its startup process.
+
+Example in a 'Select/unselect all' checkbox scenario:
+
+```xml
+<GuiOption Type="CheckBox" ID="Link_SelectAll">
+    <Variable>LinkVar_SelectAll</Variable>
+    <Label>Select/Unselect All</Label>
+</GuiOption>
+
+<GuiOption Type="CheckBox">
+    <Variable>App1</Variable>
+    <Label>App 1</Label>
+
+    <Checked />
+    <SetValue>
+        <!-- This query has the InitLink attribute set to false, so the source value will be ignored
+        until TsGui startup finishes and <Checked /> will instead be be respected. You could also 
+        use <Value>SomeValue</Value> below this query instead.  -->
+        <Query Type="LinkTo" InitLink="FALSE">Link_SelectAll</Query>
+    </SetValue>
+</GuiOption>
+
+<GuiOption Type="CheckBox">
+    <Variable>App2</Variable>
+    <Label>App 2</Label>
+    <SetValue>
+        <Query Type="LinkTo">Link_SelectAll</Query>
+    </SetValue>
+</GuiOption>
+
+<GuiOption Type="CheckBox">
+    <Variable>App3</Variable>
+    <Label>App 3</Label>
+    <SetValue>
+        <Query Type="LinkTo">Link_SelectAll</Query>
+    </SetValue>
+</GuiOption>
+```
 
 ---
 
