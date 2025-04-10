@@ -50,10 +50,11 @@ namespace TsGui
 
         void CloseWithError(string Title, string Message);
         void AddOptionToLibary(IOption Option);
-        void MoveNext();
-        void MovePrevious();
+        //void MoveNext();
+        //void MovePrevious();
         Task FinishAsync();
         void Cancel();
+        void UpdatePage(TsPage CurrentPage);
         void OnWindowClosing(object sender, CancelEventArgs e);
         void OnPageLoaded(object o, RoutedEventArgs e);
         void OnWindowMoving(object o, EventArgs e);

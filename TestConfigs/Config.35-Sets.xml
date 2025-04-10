@@ -36,40 +36,44 @@
 	</Page>
 	<Page>
 		<Group>Group_Apps</Group>
-		<GuiOption Type="InfoBox">
-			<Variable>INFO_Apps</Variable>
-			<Label>Apps enabled</Label>
-		
-			<SetValue>
-				<Value>TRUE</Value>
-			</SetValue>
-		</GuiOption>
+		<Row>
+			<Column>
+				<GuiOption Type="InfoBox">
+					<Variable>INFO_Apps</Variable>
+					<Label>Apps enabled</Label>
+
+					<SetValue>
+						<Value>TRUE</Value>
+					</SetValue>
+				</GuiOption>
+			</Column>
+		</Row>
 	</Page>
 
 	<Sets>
-        <Set ID="Testing 123">
-            <!-- Configure whether the Set is enabled based on a query -->
-            <Enabled>
-                <Query Type="IfElse">
-                    <IF SourceID="TsGui_IsDesktop" Equals="TRUE" Result="TRUE" />
-                </Query>
-            </Enabled>
+		<Set ID="Testing 123">
+			<!-- Configure whether the Set is enabled based on a query -->
+			<Enabled>
+				<Query Type="IfElse">
+					<IF SourceID="TsGui_IsDesktop" Equals="TRUE" Result="TRUE" />
+				</Query>
+			</Enabled>
 
-            <!-- Configure whether the Set is enabled based on a group -->
-            <Group>Group_Apps</Group>
+			<!-- Configure whether the Set is enabled based on a group -->
+			<Group>Group_Apps</Group>
 
-            <!-- Create variables based on an imported ini file -->
-            <List File="static.txt" />
-            
-            <!-- Create a dynamic list of variables imported from file -->
-            <List File="http://test.domain.local/apps.txt" Prefix="AppList" />
+			<!-- Create variables based on an imported ini file -->
+			<List File="static.txt" />
 
-            <!-- Manually create variables in the set -->
-            <!-- <Variable Name="OSDRegisteredOrgName" Value="Contoso" />
+			<!-- Create a dynamic list of variables imported from file -->
+			<List File="http://test.domain.local/apps.txt" Prefix="AppList" />
+
+			<!-- Manually create variables in the set -->
+			<!-- <Variable Name="OSDRegisteredOrgName" Value="Contoso" />
             <Variable Name="OSDTimeZone" Value="New Zealand Standard Time" />
             <Variable Name="OSDDomainOUName">
                 <Value>LDAP://OU=MyOu,DC=Servers,DC=contoso,DC=com</Value>
             </Variable> -->
-        </Set>
-    </Sets>
+		</Set>
+	</Sets>
 </TsGui>

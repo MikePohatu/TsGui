@@ -32,6 +32,7 @@ namespace TsGui.Queries
     public class OptionValueQuery: BaseQuery
     {
         private FormattedProperty _formatter;
+        private bool _initvalue = true;
         IOption _source;
         public OptionValueQuery(XElement inputxml, ILinkTarget owner): base(owner)
         {
@@ -49,6 +50,11 @@ namespace TsGui.Queries
 
         public override async Task<ResultWrangler> ProcessQueryAsync(Message message)
         {
+            if (this._initvalue == false && Director.Instance.StartupFinished == false)
+            {
+                return null;
+            }
+
             this._formatter.Input = this._source?.CurrentValue;
             this._processed = true;
             await Task.CompletedTask;
@@ -96,6 +102,8 @@ namespace TsGui.Queries
                 this._formatter = new FormattedProperty(x);
                 this._processingwrangler.AddFormattedProperty(this._formatter);
             }
+
+            this._initvalue = XmlHandler.GetBoolFromXml(InputXml, "InitLink", this._initvalue);
         }
     }
 }

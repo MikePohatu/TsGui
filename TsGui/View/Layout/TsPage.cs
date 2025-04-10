@@ -172,16 +172,24 @@ namespace TsGui.View.Layout
                 { option.ClearToolTips(); }
 
                 this.ReleaseThisPage();
-                Director.Instance.MovePrevious();
+                Director.Instance.UpdatePage(this.PreviousActivePage);
             }
         }
 
+        /// <summary>
+        /// Check if any Options fail validation, preventing navigation. 
+        /// </summary>
+        /// <returns></returns>
         public bool AllOptionsValid()
         {
             if ((ResultValidator.AllOptionsValid(this._table.ValidationOptions)) && this.PageHeader.AllOptionsValid()) { return true; }
             else { return false; }
         }
 
+        /// <summary>
+        /// Try and move next. If there isn't a next page, or if validation prevents navigation, return null. 
+        /// </summary>
+        /// <returns></returns>
         public void MoveNext()
         {
             if (this._nextpage == null)
@@ -192,10 +200,10 @@ namespace TsGui.View.Layout
 
             this.Events.InvokeLayoutEvent(LayoutTopics.NextPageClicked, EventDirection.Tunnel);
 
-            if (this.AllOptionsValid() == true)
+            if (this.IsEnabled == false || this.AllOptionsValid() == true)
             {
                 this.ReleaseThisPage();
-                Director.Instance.MoveNext();
+                Director.Instance.UpdatePage(this.NextActivePage);
             }
         }
 
@@ -206,11 +214,6 @@ namespace TsGui.View.Layout
             {
                 await Director.Instance.FinishAsync();
             }
-        }
-
-        private void UpdatePrevious()
-        {
-            this.PreviousActivePage?.Update();
         }
 
         private void ReleaseThisPage()
