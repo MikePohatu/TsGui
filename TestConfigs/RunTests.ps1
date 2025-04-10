@@ -35,8 +35,13 @@ foreach ($configFile in $testConfigs) {
 
 
         Write-Host " | test ($testExeVer)" -NoNewline
-        $proc1 = Start-Process -FilePath $testExe -ArgumentList "-testingleft","-config","$($configFile.FullName)" -PassThru
-        if ($runCompare) {
+        
+        if (-not $runCompare) {
+            $proc1 = Start-Process -FilePath $testExe -ArgumentList "-config","$($configFile.FullName)" -PassThru
+        }
+        else {
+            $proc1 = Start-Process -FilePath $testExe -ArgumentList "-testingleft","-config","$($configFile.FullName)" -PassThru
+
             Start-Sleep -Seconds 3
             Write-Host " | reference ($refExeVer)" -NoNewline -ForegroundColor Green
 
