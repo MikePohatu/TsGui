@@ -33,18 +33,23 @@ namespace TsGui.Actions
             string type = xtype.Value.ToLower();
 
             #region
-            if (type == "authentication")
+            IAction action = null;
+            switch (type)
             {
-                var action = new AuthenticationAction(inputxml);
-                return action;
+                case "authentication":
+                    action = new AuthenticationAction(inputxml);
+                    break;
+                case "reprocess":
+                    action = new ReprocessAction(inputxml);
+                    break;
+                case "powershell":
+                        action = new PoshAction(inputxml);
+                    break;
+                default:
+                    break;
             }
-            else if (type == "powershell")
-            {
-                var action = new PoshAction(inputxml);
-                return action;
-            }
-            else
-            { return null; }
+
+            return action;
             #endregion
         }
     }

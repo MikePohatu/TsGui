@@ -92,6 +92,7 @@
     <Compile Include="Actions\ActionFactory.cs" />
     <Compile Include="Actions\IAction.cs" />
     <Compile Include="Actions\PoshAction.cs" />
+    <Compile Include="Actions\ReprocessAction.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
