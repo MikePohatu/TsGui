@@ -48,13 +48,14 @@ namespace TsGui.Scripts
             this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
             this.ID = XmlHandler.GetStringFromXml(InputXml, "ID", this.ID);
 
-            if (InputXml.Elements().Count() == 0)
+            //script name/path not specified. Must be inline
+            if (string.IsNullOrEmpty(this.Name) && string.IsNullOrEmpty(this.Path))
             {
                 this.IsInlineScript = true;
                 this.ScriptContent = InputXml.Value;
             }
 
-            //make sure there is a script set
+            //make sure there is a script set somehow after all the above.
             if (string.IsNullOrWhiteSpace(this.Name) 
                 && string.IsNullOrEmpty(this.Path) && string.IsNullOrWhiteSpace(this.ScriptContent))
             {
