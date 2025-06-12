@@ -9,6 +9,7 @@
 * [Applying Global Styles](#applying-global-styles)
 * [Inheritance](#inheritance)
 * [ShowGridLines](#showgridlines)
+* [Loading External Font Files](#loading-external-font-files)
 * [In more detail - a practical example](#in-more-detail---a-practical-example)
 
 ## Overview
@@ -159,6 +160,24 @@ To help with styling, you can use the **\<ShowGridLines** config option to add d
 </TsGui>
 ```
 These dashes will only show in [test mode](/documentation/TestMode.md).
+
+## Loading External Font Files
+When using the \<Family> option to change the font, you can load external fonts from file e.g. using a .ttf file. To do this you need to using a specific format. 
+
+For example, if we download the [Painting with Chocolate](https://www.fontspace.com/painting-with-chocolate-font-f29268) font, we will download a file called *Paintingwithchocolate-K5mo.ttf* to C:\Temp\Fonts. To load this font we would use this format:
+
+file:///%folder_path%#%font_name%
+
+Note the following:
+1. There are three slashes after *file:*
+2. The folder path replaces the \ with / and is the path to the folder containing the font file (Paintingwithchocolate-K5mo.ttf in this case).
+3. After the # is the font **name**, not the file name. So we would use "Painting with Chocolate" or "Painting with Chocolate Regular", not "Paintingwithchocolate-K5mo.ttf".
+
+So specifying our font would look like this:
+
+```xml
+<Family>file:///C:/Temp/Fonts/#Painting with Chocolate Regular</Family>
+```
 
 ## In more detail - a practical example
 
