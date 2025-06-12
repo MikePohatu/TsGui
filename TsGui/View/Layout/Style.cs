@@ -27,6 +27,7 @@ using System.Xml.Linq;
 using System.Windows.Media;
 using Core;
 using Core.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace TsGui.View.Layout
 {
@@ -167,6 +168,13 @@ namespace TsGui.View.Layout
             get { return this._fontcolorbrush; }
             set { this._fontcolorbrush = value; this.OnPropertyChanged(this, "FontColorBrush"); }
         }
+
+        private FontFamily _fontFamily;
+        public FontFamily FontFamily
+        {
+            get { return this._fontFamily; }
+            set { this._fontFamily = value; this.OnPropertyChanged(this, "FontFamily"); }
+        }
         #endregion
 
         //Constructor 
@@ -208,6 +216,7 @@ namespace TsGui.View.Layout
             this.MouseOverBorderBrush = new SolidColorBrush(Colors.DarkGray);
             this.FocusedBorderBrush = new SolidColorBrush(Colors.LightBlue);
             this.FontColorBrush = new SolidColorBrush(Colors.Black);
+            this.FontFamily = new FontFamily("Global User Interface");
         }
 
         public void LoadXml(XElement InputXml)
@@ -249,6 +258,7 @@ namespace TsGui.View.Layout
             x = InputXml.Element("Font");
             if (x != null)
             {
+                this.FontFamily = XmlHandler.GetFontFamilyFromXml(x, "Family", this.FontFamily);
                 this.FontWeight = XmlHandler.GetStringFromXml(x, "Weight", this.FontWeight);
                 this.FontStyle = XmlHandler.GetStringFromXml(x, "Style", this.FontStyle);
                 this.FontSize = XmlHandler.GetDoubleFromXml(x, "Size", this.FontSize);
@@ -303,6 +313,7 @@ namespace TsGui.View.Layout
             target.FontWeight = source.FontWeight;
             target.FontStyle = source.FontStyle;
             target.FontSize = source.FontSize;
+            target.FontFamily = source.FontFamily;
             target.FontColorBrush = source.FontColorBrush.Clone();
 
             target.Width = source.Width;
@@ -333,6 +344,7 @@ namespace TsGui.View.Layout
             if (from._setElements.ContainsKey("FontStyle")) { this.FontStyle = from.FontStyle; }
             if (from._setElements.ContainsKey("FontSize")) { this.FontSize = from.FontSize; }
             if (from._setElements.ContainsKey("FontColor")) { this.FontColorBrush = from.FontColorBrush.Clone(); }
+            if (from._setElements.ContainsKey("FontFamily")) { this.FontFamily = from.FontFamily; }
 
             if (from._setElements.ContainsKey("Width")) { this.Width = from.Width; }
             if (from._setElements.ContainsKey("Height")) { this.Height = from.Height; }

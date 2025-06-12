@@ -44,6 +44,7 @@ A Style object consists of the options below:
         <Size>11</Size>
         <Style>Normal</Style>	    <!-- Options available: Normal, Italic, Oblique -->
         <Color>Black</Color>
+        <Family>Segoe UI</Family>   <!-- https://learn.microsoft.com/en-us/typography/font-list/ -->
     </Font>
 </Style>
 ```

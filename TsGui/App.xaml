@@ -22,6 +22,7 @@
                 <Setter Property="Control.FontWeight" Value="{Binding Path=LabelStyle.FontWeight, Converter={StaticResource FontWeight}}"/>
                 <Setter Property="Control.FontStyle" Value="{Binding Path=LabelStyle.FontStyle, Converter={StaticResource FontStyle}}"/>
                 <Setter Property="Control.FontSize" Value="{Binding LabelStyle.FontSize}"/>
+                <Setter Property="Control.FontFamily" Value="{Binding LabelStyle.FontFamily}"/>
                 <Setter Property="Foreground" Value="{Binding LabelStyle.FontColorBrush}"/>
                 <Setter Property="Template">
                     <Setter.Value>
@@ -55,6 +56,7 @@
                 <Setter Property="Control.FontWeight" Value="{Binding Path=ControlStyle.FontWeight, Converter={StaticResource FontWeight}}"/>
                 <Setter Property="Control.FontStyle" Value="{Binding Path=ControlStyle.FontStyle, Converter={StaticResource FontStyle}}"/>
                 <Setter Property="Control.FontSize" Value="{Binding ControlStyle.FontSize}"/>
+                <Setter Property="Control.FontFamily"  Value="{Binding ControlStyle.FontFamily}"/>
             </Style>
 
             <Style x:Key="TrafficLightStyle">

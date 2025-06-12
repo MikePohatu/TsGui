@@ -371,5 +371,14 @@ namespace TsGui
                     return CharacterCasing.Normal;
             }
         }
+
+        public static FontFamily GetFontFamilyFromXml(XElement InputXml, string XName, FontFamily DefaultValue)
+        {
+            string value;
+            if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
+            if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
+
+            return new FontFamily(value);
+        }
     }
 }
