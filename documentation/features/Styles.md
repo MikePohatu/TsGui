@@ -98,6 +98,7 @@ Each of the three items above is a \<Style /> element as shown above in the [Sty
             <Size>11</Size>
             <Style>Normal</Style>	    <!-- Options available: Normal, Italic, Oblique -->
             <Color>Black</Color>
+            <Family>Segoe UI</Family>   <!-- https://learn.microsoft.com/en-us/typography/font-list/ -->
         </Font>
     </Label>
 
@@ -171,13 +172,19 @@ file:///%folder_path%#%font_name%
 Note the following:
 1. There are three slashes after *file:*
 2. The folder path replaces the \ with / and is the path to the folder containing the font file (Paintingwithchocolate-K5mo.ttf in this case).
-3. After the # is the font **name**, not the file name. So we would use "Painting with Chocolate" or "Painting with Chocolate Regular", not "Paintingwithchocolate-K5mo.ttf".
+3. After the # is the **font** name, not the file name. So we would use "Painting with Chocolate" or "Painting with Chocolate Regular", not "Paintingwithchocolate-K5mo.ttf".
 
 So specifying our font would look like this:
 
 ```xml
 <Family>file:///C:/Temp/Fonts/#Painting with Chocolate Regular</Family>
 ```
+
+To load a file reletive to TsGui.exe you use './' type notation, e.g. to use a Fonts subfolder with your TsGui files:
+```xml
+<Family>file:///./Fonts/#Painting with Chocolate Regular</Family>
+``` 
+Note that TsGui will expand the './' notation at run time to the parent directory of TsGui.exe. This isn't relative to the working directory of the process. 
 
 ## In more detail - a practical example
 

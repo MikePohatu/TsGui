@@ -378,6 +378,7 @@ namespace TsGui
             if (GetValidXmlValue(InputXml, XName, out value) == false) { return DefaultValue; }
             if (string.IsNullOrWhiteSpace(value)) { return DefaultValue; }
 
+            value = value.Replace("file:///./", $"file:///{System.AppDomain.CurrentDomain.BaseDirectory}/");
             return new FontFamily(value);
         }
     }
