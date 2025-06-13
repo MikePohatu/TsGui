@@ -22,33 +22,41 @@ using TsGui.Linking;
 using MessageCrap;
 using System.Collections.Generic;
 using System.Linq;
+using TsGui.Scripts;
 
 namespace TsGui.Actions
 {
     public class ReprocessAction : IAction
     {
         List<string> _sourceIds;
-        List<ILinkSource> _sources;
+        List<IReprocessable> _sources;
 
         public ReprocessAction(XElement InputXml)
         {
-            Director.Instance.ConfigLoadFinished += OnConfigLoadFinished;
             this.LoadXml(InputXml);
+            Director.Instance.ConfigLoadFinished += OnConfigLoadFinished;
         }
 
         private void OnConfigLoadFinished(object sender, System.EventArgs e)
         {
             foreach (var sourceId in this._sourceIds)
             {
-                var source = LinkingHub.Instance.GetSourceOption(sourceId);
-                if (source != null) { this._sources.Add(source); }
+                var linkingsource = LinkingHub.Instance.GetSourceOption(sourceId) as IReprocessable;
+                if (linkingsource != null) { this._sources.Add(linkingsource); }
+                else
+                {
+                    var script = ScriptLibrary.GetScript(sourceId);
+                    this._sources.Add(script);
+                }
             }
         }
 
         public void LoadXml(XElement InputXml)
         {
-            this._sources = new List<ILinkSource>();
+            //init lists before load/reload
+            this._sources = new List<IReprocessable>();
             this._sourceIds = new List<string>();
+
             foreach (var element in InputXml.Elements("ID"))
             {
                 string sourceId = element.Value;
@@ -77,7 +85,7 @@ namespace TsGui.Actions
             if (this._sources.Count == 0) { return; }
             foreach (var source in this._sources)
             {
-                await source.UpdateLinkedValueAsync(MessageHub.CreateMessage(this, null));
+                await source.OnReprocessAsync();
             }
         }
     }

@@ -23,10 +23,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TsGui.Actions;
 
 namespace TsGui.Scripts
 {
-    public abstract class BaseScript
+    public abstract class BaseScript: IReprocessable
     {
         protected ScriptSettings _settings = new ScriptSettings();
         protected bool _exceptionOnError = false;
@@ -91,5 +92,10 @@ namespace TsGui.Scripts
         }
 
         public abstract Task RunScriptAsync();
+
+        public async Task OnReprocessAsync()
+        {
+            await this.RunScriptAsync();
+        }
     }
 }

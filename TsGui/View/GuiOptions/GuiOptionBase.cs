@@ -32,10 +32,11 @@ using System.Collections.Generic;
 using MessageCrap;
 using System.Threading.Tasks;
 using TsGui.View.Layout.Events;
+using TsGui.Actions;
 
 namespace TsGui.View.GuiOptions
 {
-    public abstract class GuiOptionBase : BaseLayoutElement, IOption, IToggleControl
+    public abstract class GuiOptionBase : BaseLayoutElement, IOption, IToggleControl, IReprocessable
     {
         private string _labeltext = string.Empty;
         private string _helptext = null;
@@ -223,5 +224,10 @@ namespace TsGui.View.GuiOptions
         }
 
         public abstract Task UpdateLinkedValueAsync(Message message);
+
+        public async Task OnReprocessAsync()
+        {
+            await this.UpdateLinkedValueAsync(null);
+        }
     }
 }

@@ -3,7 +3,7 @@
 An action is used to initiate some process not directly related to setting a variable e.g. refresh validation status, run a script, or initiate [Authentication](/documentation/Authentication/README.md) 
 
 * [Authentication](/documentation/Authentication/ActiveDirectoryAuthentication.md#the-actionbutton-guioption) - initiate an authentication process.
-* [Reprocess](/documentation/features/Queries.md#reprocessing-queries) - Reprocess the queries on an option.
+* [Reprocess](/documentation/features/Queries.md#reprocessing-queries) - Reprocess the queries on an option or rerun a script.
 * [PowerShell](/documentation/features/Scripts.md#as-an-action) - Run a script.
 
 ### The ActionButton GuiOption
