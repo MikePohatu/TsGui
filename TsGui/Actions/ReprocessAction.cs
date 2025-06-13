@@ -49,7 +49,7 @@ namespace TsGui.Actions
         {
             this._sources = new List<ILinkSource>();
             this._sourceIds = new List<string>();
-            foreach (var element in InputXml.Elements("SourceID"))
+            foreach (var element in InputXml.Elements("ID"))
             {
                 string sourceId = element.Value;
                 this._sourceIds.Add(sourceId);
@@ -58,7 +58,7 @@ namespace TsGui.Actions
             //nothing found, support SourceID as an attribute to add one Source
             if (this._sourceIds.Count == 0)
             {
-                var sourceId = XmlHandler.GetStringFromXml(InputXml, "SourceID", string.Empty);
+                var sourceId = XmlHandler.GetStringFromXml(InputXml, "ID", string.Empty);
                 if (string.IsNullOrEmpty(sourceId) == false)
                 {
                     this._sourceIds.Add(sourceId);

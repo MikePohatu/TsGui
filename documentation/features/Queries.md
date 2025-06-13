@@ -23,6 +23,7 @@ A how-to video can be viewed [here](https://youtu.be/YhIiRorF9SA?si=f5Jc5r65HsFz
     * [\<Truncate\>](#truncate)
 * [Ignoring Values](#ignoring-values)
 * [Multiple Queies \& Null values](#multiple-queies--null-values)
+* [Reprocessing queries](#reprocessing-queries)
 
 
 ## Query Types
@@ -261,3 +262,49 @@ To override this behaviour, add the \<IncludeNullValues> element with a value of
     <IncludeNullValues>TRUE</IncludeNullValues>
 </Query>
 ```
+
+## Reprocessing queries
+There are some query types that may benefit from being manually run by the end user, rather than being dynmically run following changes of GuiOptions.  
+
+For example suppose we have some info that is retrieved by running a script that takes a while to return. We might only want to run this when the user requests it. 
+
+```xml
+<GuiOption Type="InfoBox" ID="LongRunningScript">
+    <Variable>INFO_Script</Variable>
+    <Label>Something: </Label>
+
+    <SetValue>
+        <Query Type="PowerShell" xml:space="preserve">
+            #Some long running script
+        </Query>
+    </SetValue>
+</GuiOption>
+```
+
+In this case we set an ID on the GuiOption or NoUIOption that we want to reprocess, and then use an [ActionButton](/documentation/features/Actions.md) to reprocess the queries associated with that option. 
+
+The **Type** attribute of the \<Action> element must be set to **Reprocess**.
+
+
+```xml
+<GuiOption Type="ActionButton">
+    <Action Type="Reprocess" ID="LongRunningScript"/>
+    <ButtonText>Refresh</ButtonText>
+</GuiOption>
+```
+
+If you want to reprocess more that one option when the button is pressed, set multiple \<ID> elements. The options associated with those IDs will be processed in order. 
+
+Note that if you set one or more \<ID> elements, the ID attribute on the \<Action> element will be ignored. 
+
+```xml
+<GuiOption Type="ActionButton">
+    <Action Type="Reprocess">
+        <ID>LongRunningScript</ID>
+        <ID>SomeOtherID</ID>
+    </Action>
+    <ButtonText>Refresh</ButtonText>
+</GuiOption>
+```
+
+**Note** that IDs set on an option must be unique within the config. These are the same IDs as those used for [Option Linking](/documentation/features/OptionLinking.md).

@@ -100,7 +100,7 @@ To override this behaviour, set the 'Reprocess' attribute on the query as below:
 ---
 
 ### As an action
-If you want to trigger a script manually from TsGui, rather than using it to get data for the UI, you can do this using an Action. 
+If you want to trigger a script manually from TsGui, rather than using it to get data for the UI, you can do this using an [Action](/documentation/features/Actions.md). 
 
 To do this, create an "ActionButton" GuiOption, then add an \<Action Type="PowerShell"> element. The content of the \<Action> element is identical to the \<Script> element used in the [query](#in-a-query)
 
