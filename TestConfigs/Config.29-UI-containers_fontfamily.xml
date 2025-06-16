@@ -5,7 +5,7 @@
 
     <Heading>
         <Title>Containers</Title>
-        <Text>Testing the container UI structure. </Text>
+        <Text>Testing the container UI structure and fonts. </Text>
     </Heading>
 
 
@@ -35,6 +35,7 @@
                                 <Size>13</Size>
                                 <Style>Normal</Style>                                <!-- Options available: Normal, Italic, Oblique -->
                                 <Color>Blue</Color>
+                                <Family>Times New Roman</Family>
                             </Font>
                         </Label>
                     </Formatting>
