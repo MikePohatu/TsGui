@@ -23,10 +23,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TsGui.Actions;
 
 namespace TsGui.Scripts
 {
-    public abstract class BaseScript
+    public abstract class BaseScript: IReprocessable
     {
         protected ScriptSettings _settings = new ScriptSettings();
         protected bool _exceptionOnError = false;
@@ -48,13 +49,14 @@ namespace TsGui.Scripts
             this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
             this.ID = XmlHandler.GetStringFromXml(InputXml, "ID", this.ID);
 
-            if (InputXml.Elements().Count() == 0)
+            //script name/path not specified. Must be inline
+            if (string.IsNullOrEmpty(this.Name) && string.IsNullOrEmpty(this.Path))
             {
                 this.IsInlineScript = true;
                 this.ScriptContent = InputXml.Value;
             }
 
-            //make sure there is a script set
+            //make sure there is a script set somehow after all the above.
             if (string.IsNullOrWhiteSpace(this.Name) 
                 && string.IsNullOrEmpty(this.Path) && string.IsNullOrWhiteSpace(this.ScriptContent))
             {
@@ -90,5 +92,10 @@ namespace TsGui.Scripts
         }
 
         public abstract Task RunScriptAsync();
+
+        public async Task OnReprocessAsync()
+        {
+            await this.RunScriptAsync();
+        }
     }
 }

@@ -6,8 +6,8 @@
 * [Inline Scripts](#inline-scripts)
 * [Script Files](#script-files)
   * [In a Query](#in-a-query)
-  * [As an action](#as-an-action)
   * [Global Scripts](#global-scripts)
+  * [As an action](#as-an-action)
   * [Parameters](#parameters)
   * [Passwords \& SecureStrings](#passwords--securestrings)
     * [Masked Task Sequence Variables](#masked-task-sequence-variables)
@@ -99,27 +99,6 @@ To override this behaviour, set the 'Reprocess' attribute on the query as below:
 
 ---
 
-### As an action
-If you want to trigger a script manually from TsGui, rather than using it to get data for the UI, you can do this using an Action. 
-
-To do this, create an "ActionButton" GuiOption, then add an \<Action Type="PowerShell"> element. The content of the \<Action> element is identical to the \<Script> element used in the [query](#in-a-query)
-
-```xml
-<GuiOption Type="ActionButton">
-  <ButtonText>Run script</ButtonText>
-  
-  <Action Type="PowerShell">
-    <Name>Example.ps1</Name> 
-    <Parameter Name="Message" Value="Why hello there" />
-    <Switch Name="Verbose" />
-  </Action>
-</GuiOption>
-```
-
-The script will be run whenever the button is pressed.
-<br/><br/>
-
----
 
 ### Global Scripts
 Scripts can also be defined globally and then referenced by one or more queries. This can be useful if you want to define all your scripts in a separate XML file and then use [Configuration Imports](/documentation/ConfigImports.md).
@@ -156,6 +135,56 @@ To use the script, in your GuiOption create a "PowerShell" query type, then crea
 <br/>
 
 ---
+
+### As an action
+If you want to trigger a script manually from TsGui, rather than using it to get data for the UI, you can do this using an [Action](/documentation/features/Actions.md). 
+
+To do this, create an "ActionButton" GuiOption, then add an \<Action Type="PowerShell"> element. The content of the \<Action> element is identical to the \<Script> element used in the [query](#in-a-query)
+
+```xml
+<GuiOption Type="ActionButton">
+  <ButtonText>Run script</ButtonText>
+  
+  <Action Type="PowerShell">
+    <Name>Example.ps1</Name> 
+    <Parameter Name="Message" Value="Why hello there" />
+    <Switch Name="Verbose" />
+  </Action>
+</GuiOption>
+```
+
+The script will be run whenever the button is pressed.
+<br/>
+
+Alternatively, you can run a [Global script](#global-scripts) by using a [Reprocess Action](/documentation/features/Actions.md), referencing the ID of the global script.
+
+```xml
+<Scripts>
+  <Script Type="PowerShell" ID="ScriptTest">
+    [pscustomobject]@{
+      username="bob.test"
+      description="This is a test user"
+    } | ConvertTo-Json|  Out-File -FilePath "$($env:temp)\tsgui_temp.json" -Encoding UTF8
+  </Script>
+</Scripts>
+```
+
+Action button to reprocess the script.
+```xml
+<GuiOption Type="ActionButton">
+  <ButtonText>Refresh</ButtonText>
+
+  <Action Type="Reprocess">
+    <ID>ScriptTest</ID>
+  </Action>
+</GuiOption>
+```
+
+
+
+---
+
+
 
 ### Parameters
 Parameters & Switches can be passed to the script using a \<Parameter> or a \<Switch> element. 

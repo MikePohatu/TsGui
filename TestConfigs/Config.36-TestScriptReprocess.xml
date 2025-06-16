@@ -1,0 +1,86 @@
+<TsGui LiveData="TRUE" Output="ConfigMgr" PurgeInactive="TRUE">
+	<Height>450</Height>
+	<Width>600</Width>
+
+	<HardwareEval />
+
+	<Buttons>
+		<Next>Next</Next>
+		<Back>Back</Back>
+		<Cancel>Cancel</Cancel>
+		<Finish>Finish</Finish>
+		<HideCancel>TRUE</HideCancel>
+	</Buttons>
+
+	<Footer>
+		<Text></Text>
+		<Height>17</Height>
+		<HAlign>right</HAlign>
+	</Footer>
+
+	<Heading>
+		<Title>Script and Reprocess test</Title>
+		<Text></Text>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>220</LeftCellWidth>
+					<RightCellWidth>260</RightCellWidth>
+				</Formatting>
+
+				<GuiOption Type="ComputerName" />
+
+				<GuiOption Type="InfoBox" ID="username">
+					<Variable>INFO_username</Variable>
+					<Label>Username:</Label>
+					<SetValue>
+						<Query xml:space="preserve" Type="PowerShell" Reprocess="TRUE">
+							$jsonData = Get-Content -Path "$($env:temp)\tsgui_temp.json" -Raw | ConvertFrom-Json
+							Write-Output $jsonData.username
+						</Query>
+					</SetValue>
+				</GuiOption>
+
+				<GuiOption Type="InfoBox" ID="description">
+					<Variable>INFO_description</Variable>
+					<Label>Description:</Label>
+					<SetValue>
+						<Query xml:space="preserve" Type="PowerShell" Reprocess="TRUE">
+							$jsonData = Get-Content -Path "$($env:temp)\tsgui_temp.json" -Raw | ConvertFrom-Json
+							Write-Output $jsonData.description
+						</Query>
+					</SetValue>
+				</GuiOption>
+
+				<GuiOption Type="ActionButton">
+					<ButtonText>Refresh</ButtonText>
+
+					<Action Type="Reprocess">
+						<ID>ScriptTest</ID>
+						<ID>username</ID>
+						<ID>description</ID>
+						<ID>ScriptTestCleanup</ID>
+					</Action>
+				</GuiOption>
+
+			</Column>
+		</Row>
+	</Page>
+
+	<Scripts>
+		<Script Type="PowerShell" ID="ScriptTest">
+			[pscustomobject]@{
+				username="bob.test"
+				description="This is a test user"
+			} | ConvertTo-Json|  Out-File -FilePath "$($env:temp)\tsgui_temp.json" -Encoding UTF8
+		</Script>
+		
+		<Script Type="PowerShell" ID="ScriptTestCleanup">
+			Remove-Item -Path "$($env:temp)\tsgui_temp.json" -Force
+		</Script>
+	</Scripts>
+</TsGui>
+  

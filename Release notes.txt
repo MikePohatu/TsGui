@@ -1,10 +1,13 @@
 ---------------
-Version 2.1.0.4
-Release date: 7 Apr 2025
+Version 2.1.0.6
+Release date: 16 Jun 2025
+
+*Features
+	Added Font Family support to Styles. 
+	Added 'Reprocess' action 
 
 *Fixes
-	Added InitLink attribute to OptionLinking queries to work allow 'select/unselect all' type setups
-	Fixed groups not working properly on first page
+	Fixed script not processing if defined totally with attributes
 
 *Known issues
 	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
@@ -13,6 +16,16 @@ Release date: 7 Apr 2025
 	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx), Windows PowerShell (WinPE-PowerShell), and HTML (WinPE-HTA) be added to your boot image 
+
+
+---------------
+Version 2.1.0.4
+Release date: 7 Apr 2025
+
+*Fixes
+	Added InitLink attribute to OptionLinking queries to work allow 'select/unselect all' type setups
+	Fixed groups not working properly on first page
+
 
 ---------------
 Version 2.1.0.3

@@ -30,10 +30,11 @@ using System.Collections.Generic;
 using System.Windows;
 using MessageCrap;
 using System.Threading.Tasks;
+using TsGui.Actions;
 
 namespace TsGui.Options.NoUI
 {
-    public class NoUIOption: GroupableBlindBase, IOption, ILinkTarget, IToggleControl
+    public class NoUIOption: GroupableBlindBase, IOption, ILinkTarget, IToggleControl, IReprocessable
     {
         private string _value = string.Empty;
         private bool _usecurrent = false;
@@ -253,5 +254,10 @@ namespace TsGui.Options.NoUI
             this.InvokeToggleEvent();
         }
         #endregion
+
+        public async Task OnReprocessAsync()
+        {
+            await this.UpdateLinkedValueAsync(null);
+        }
     }
 }

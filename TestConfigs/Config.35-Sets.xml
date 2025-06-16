@@ -7,7 +7,7 @@
 
 	<Heading>
 		<Title>TsGui</Title>
-		<Text>Task Sequence GUI base config</Text>
+		<Text>Uncheck the box (custom apps)</Text>
 		<Bg-Color>#ff0000</Bg-Color>
 		<Image>
 			<File>avatar.jpg</File>
@@ -15,7 +15,7 @@
 			<Height>50</Height>
 			<Stretch>None</Stretch>
 		</Image>
-		<TextColor>#ff0000</TextColor>
+		<TextColor>#bb00aa</TextColor>
 	</Heading>
 
 	<Page>
