@@ -57,6 +57,7 @@
                 <Setter Property="Control.FontStyle" Value="{Binding Path=ControlStyle.FontStyle, Converter={StaticResource FontStyle}}"/>
                 <Setter Property="Control.FontSize" Value="{Binding ControlStyle.FontSize}"/>
                 <Setter Property="Control.FontFamily"  Value="{Binding ControlStyle.FontFamily}"/>
+                <Setter Property="Control.TabIndex" Value="{Binding TabIndex}"/>
             </Style>
 
             <Style x:Key="TrafficLightStyle">

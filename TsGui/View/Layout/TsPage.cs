@@ -92,13 +92,22 @@ namespace TsGui.View.Layout
         public void OnPageLoaded(object o, RoutedEventArgs e)
         {
             this.PageWindowLoaded?.Invoke(o, e);
+            IGuiOption tofocus = null;
             foreach (IGuiOption opt in this._table.Options)
             {
-                if (opt.IsEnabled && opt.InteractiveControl?.Focusable == true)
-                {
-                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() => opt.InteractiveControl.Focus()));
-                    break;
-                }
+                //first check option is eligible for focusing, skip if not
+                if (opt.InteractiveControl == null || opt.IsEnabled == false || opt.InteractiveControl.Focusable == false)
+                { continue; }
+
+                //set the option to be focused if there isn't a focused control yet, 
+                //or the TabIndex is lower than the current one. 
+                if (tofocus == null || opt.TabIndex < tofocus.TabIndex) { tofocus = opt; }
+            }
+
+            //set the focused control
+            if (tofocus != null)
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() => tofocus.InteractiveControl.Focus()));
             }
         }
         #endregion

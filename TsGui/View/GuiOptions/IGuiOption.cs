@@ -31,6 +31,8 @@ namespace TsGui.View.GuiOptions
         GuiOptionBaseUI UserControl { get; }
         Control InteractiveControl { get; }
 
+        int TabIndex { get; }
+
         void LoadXml(XElement inputxml);
     }
 }
