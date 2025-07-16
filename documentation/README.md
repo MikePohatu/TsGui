@@ -18,6 +18,7 @@ TsGui includes a number of features to help you customise your UI to fit your ne
 | Feature    | Description/usage |
 | -------- | ------- |
 | [Actions](/documentation/features/Actions.md)  | Initiate actions using a button in TsGui  |
+| [Authentication](/documentation/Authentication/README.md)  | Login fields in TsGui  |
 | [Compliance](/documentation/features/Compliance.md)  | Pre-flight checks |
 | [Groups and Toggles](/documentation/features/GroupsAndToggles.md) | Enable/disable UI elements |
 | [Option Linking](/documentation/features/OptionLinking.md)    | Use values of one UI element in another |
