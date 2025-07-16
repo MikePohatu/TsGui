@@ -78,6 +78,13 @@ namespace TsGui.View.GuiOptions
             }
         }
 
+        private int _tabIndex = int.MaxValue;
+        public int TabIndex
+        {
+            get { return this._tabIndex; }
+            set { this._tabIndex = value; this.OnPropertyChanged(this, "TabIndex"); }
+        }
+
         public GuiOptionBase(ParentLayoutElement Parent):base(Parent)
         {
             this.UserControl = new GuiOptionBaseUI();
@@ -122,6 +129,7 @@ namespace TsGui.View.GuiOptions
             this.HelpText = XmlHandler.GetStringFromXml(InputXml, "HelpText", this.HelpText);
             this.ShowGridLines = XmlHandler.GetBoolFromXml(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXml(InputXml, "InactiveValue", this.InactiveValue);
+            this.TabIndex = XmlHandler.GetIntFromXml(InputXml, "TabIndex", this.TabIndex);
             this.SetLayoutRightLeft();
 
             XAttribute xa = InputXml.Attribute("ID");

@@ -5,6 +5,7 @@
   * [Variable](#variable)
   * [SetValue](#setvalue)
   * [ReadOnly](#readonly)
+  * [TabIndex](#tabindex)
 * [GuiOptions](#guioptions)
   * [GuiOption Layout Elements](#guioption-layout-elements)
   * [Label](#label)
@@ -44,6 +45,17 @@ Note that setting this option at a higher level in the tree e.g. Row or Column, 
 <Row ReadOnly="TRUE">
   ...
 <Row>
+```
+
+### TabIndex
+The TabIndex sets the order that controls are focused when navigating to a page, and when using the Tab key to navigate between controls. A lower TabIndex value is higher priority. 
+
+The control with the lowest TabIndex value will be focused automatically when you navigate to a page. If no active controls have a TabIndex set, the first control on the page will be focused. 
+
+```xml
+<GuiOption Type="CheckBox" TabIndex="4">
+  ...
+<GuiOption>
 ```
 
 ## GuiOptions

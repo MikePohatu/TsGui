@@ -1,0 +1,83 @@
+<TsGui>
+
+
+    <Height>450</Height>
+    <Width>600</Width>
+
+    <HardwareEval />
+
+    <Heading>
+        <Title>TsGui</Title>
+        <Text>TabIndex test. CheckBox should be focused on both pages, then text</Text>
+    </Heading>
+
+    <Style>
+        <LeftCellWidth>220</LeftCellWidth>
+        <RightCellWidth>260</RightCellWidth>
+    </Style>
+    <Page>
+        <Row>
+            <Column>
+
+
+                <GuiOption Type="ComputerName" TabIndex="5">
+
+                    <!-- The Style XML block. This can be used at any layer from the Page down to the GuiOption, with options inherited down the tree -->
+
+                </GuiOption>
+
+                <GuiOption Type="TrafficLight" Prebuilt="PowerConnected" />
+
+                <GuiOption Type="CheckBox" TabIndex="2">
+                    <Variable>Index2</Variable>
+                    <Label>Index2</Label>
+                    <HAlign>right</HAlign>
+                </GuiOption>
+
+                <GuiOption Type="DropDownList" Sort="FALSE">
+                    <Variable>IT_Team</Variable>
+                    <Label>Team:</Label>
+                    <SetValue>
+                        <Value>Desktop</Value>
+                    </SetValue>
+                    <Option>
+                        <Text>Desktop</Text>
+                        <Value>Desktop</Value>
+                    </Option>
+                    <Option>
+                        <Text>Infrastructure</Text>
+                        <Value>Inf</Value>
+                    </Option>
+                    <Option>
+                        <Text>Service Desk</Text>
+                        <Value>SD</Value>
+                    </Option>
+                </GuiOption>
+            </Column>
+        </Row>
+    </Page>
+
+    <Page>
+        <Row>
+            <Column>
+                <GuiOption Type="FreeText"  TabIndex="3">
+                    <Variable>Engineer</Variable>
+                    <Label>Engineer name:</Label>
+
+                    <SetValue>
+                        <Value>Jane Doe</Value>
+                    </SetValue>
+                    <HelpText>Enter the user to be using this device</HelpText>
+                </GuiOption>
+
+                <GuiOption Type="DropDownList" Prebuilt="DiskIndex" />
+
+                <GuiOption Type="CheckBox" TabIndex="1">
+                    <Variable>Index1</Variable>
+                    <Label>Index1</Label>
+                    <HAlign>right</HAlign>
+                </GuiOption>
+            </Column>
+        </Row>
+    </Page>
+</TsGui>

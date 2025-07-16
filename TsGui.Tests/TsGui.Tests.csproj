@@ -68,6 +68,7 @@
     <Compile Include="Queries\WebServices\WebServiceQueryTests.cs" />
     <Compile Include="TestDirector.cs" />
     <Compile Include="Validation\MatchingRuleTests.cs" />
+    <Compile Include="VariableTests.cs" />
     <Compile Include="WmiQueryTestArgs.cs" />
     <Compile Include="ResultValidatorTests.cs" />
     <Compile Include="WmiQueryTests.cs" />
