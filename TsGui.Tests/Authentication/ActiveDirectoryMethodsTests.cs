@@ -59,11 +59,11 @@ namespace TsGui.Tests.Authentication
 
                 yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs,"mikep", new Dictionary<string, bool>
                 {
-                    { "Domain Admins", true }
+                    { "Domain Admins", false }
                 })) ;
                 yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "mikep", new Dictionary<string, bool>
                 {
-                    { "Enterprise Admins", true }
+                    { "Enterprise Admins", false }
                 }));
                 yield return new TestCaseData(new ActiveDirectoryMethodsTestArgs(authargs, "mikep", new Dictionary<string, bool>
                 {

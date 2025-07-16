@@ -61,5 +61,7 @@ namespace TsGui.Tests
         public void OnWindowMoving(object o, EventArgs e) { }
         public void OnWindowMouseUp(object o, RoutedEventArgs e) { }
 
+        public void UpdatePage(TsPage page) { }
+
     }
 }

@@ -27,6 +27,7 @@ using TsGui.Linking;
 using System.Threading.Tasks;
 using MessageCrap;
 using TsGui.Options;
+using System.Text;
 
 namespace TsGui.Authentication.ActiveDirectory
 {
@@ -199,15 +200,21 @@ namespace TsGui.Authentication.ActiveDirectory
             this.Groups.Add(groupname);
             if (this._createIDs)
             {
-                var noui = new MiscOption(GetGroupID(groupname), "FALSE");
-                noui.ID = GetGroupID(groupname);
+                var groupid = GetGroupID(groupname);
+                var noui = new MiscOption(groupid, "FALSE");
+                noui.ID = groupid;
                 OptionLibrary.Add(noui);
             }
         }
 
         private string GetGroupID(string groupname)
         {
-            return $"{this.AuthID}_{groupname}";
+            string validatedName = null;
+            if (Variable.ConfirmValidName(groupname, out validatedName) == false)
+            {
+                Log.Warn($"Invalid characters removed from group ID '{groupname}'");
+            }
+            return $"{this.AuthID}_{validatedName}";
         }
 
         private void SetState(AuthState newstate)

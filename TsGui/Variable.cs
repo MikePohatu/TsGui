@@ -19,7 +19,10 @@
 
 // TsVariable.cs - the mapping of a variable name and value
 
+using Core.Logging;
 using System;
+using System.Linq;
+using System.Text;
 using TsGui.Config;
 
 namespace TsGui
@@ -53,9 +56,65 @@ namespace TsGui
 
         public Variable (string Name, string Value, string Path)
         {
+            string confirmedName;
+            if (ConfirmValidName(Name, out confirmedName) == false)
+            {
+                Log.Warn($"Invalid TS variable name specified: {Name}. Valid name would be {confirmedName}");
+            }
             this.Name = Name;
             this.Value = Value;
             this.Path = Path == null ? TsGuiRootConfig.DefaultPath : Path;
+        }
+
+
+        private static char[] _allowedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-1234567890".ToCharArray();
+        private static char[] _allowedFirstCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+
+        /// <summary>
+        /// Confirrm a string is a valid variable name. 
+        /// </summary>
+        /// <param name="variableName"></param>
+        /// <returns></returns>
+        public static bool ConfirmValidName(string variableName, out string validName)
+        {
+            //variable name rules
+            //https://learn.microsoft.com/en-us/intune/configmgr/osd/understand/using-task-sequence-variables#bkmk_custom
+
+            bool wasInputValid = true;
+            if (string.IsNullOrWhiteSpace(variableName))
+            {
+                Log.Error("Variable name is empty");
+                validName = string.Empty;
+                return false;
+            }
+
+            var builder = new StringBuilder(variableName.Length);
+
+            var nameArray = variableName.ToCharArray();
+            for (int i = 0; i < nameArray.Length; i++)
+            {
+                char c = nameArray[i];
+
+                //first letter rules:
+                if (builder.Length == 0 && _allowedFirstCharacters.Contains(c) == false)
+                {
+                    wasInputValid = false;
+                }
+                //allowed character rules
+                else if (_allowedCharacters.Contains(c))
+                { builder.Append(c); }
+                else
+                { wasInputValid = false; }
+            }
+
+            validName = builder.ToString();
+
+            if (string.IsNullOrEmpty(validName))
+            {
+                Log.Error($"Unable to create a valid variable name from '{variableName}'");
+            }
+
+            return wasInputValid;
         }
     }
 }
