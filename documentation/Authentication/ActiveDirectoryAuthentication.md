@@ -78,7 +78,9 @@ By default, the authentication will be accepted if the user is a member of **any
 ```
 
 #### Using group membership to change the UI
-It is sometimes useful to change the UI based on who is logged in. By setting the **CreateGroupIDs** attribute to TRUE, TsGui will create an ID for each AD group that can be used with the [option linking feature](/documentation/features/OptionLinking.md). The ID created for each group will in the format **%AuthID%_%GroupName%**.
+It is sometimes useful to change the UI based on who is logged in. By setting the **CreateGroupIDs** attribute to TRUE, TsGui will create a variable with a matching ID for each AD group that can be used with the [option linking feature](/documentation/features/OptionLinking.md). The ID created for each group will in the format **%AuthID%_%GroupName%**\*. 
+
+Note that characters that aren't valid for Task Sequence Variable names will be removed. See [here](https://learn.microsoft.com/en-us/intune/configmgr/osd/understand/using-task-sequence-variables#bkmk_custom) for more details on valid task sequence variable names. 
 
 As an example, the following is a simple login page with two additional checkboxes. The checkboxes will be ticked and unticked based on the group memberships matched after authentication.  
 
@@ -103,7 +105,7 @@ As an example, the following is a simple login page with two additional checkbox
 					<Variable>group_1</Variable>
 					<Label>group 1</Label>
 					<SetValue>
-						<Query Type="LinkTo">ad_auth_group 1</Query>
+						<Query Type="LinkTo">ad_auth_group1</Query>
 					</SetValue>
 				</GuiOption>
 
@@ -111,7 +113,7 @@ As an example, the following is a simple login page with two additional checkbox
 					<Variable>group_2</Variable>
 					<Label>group 2</Label>
 					<SetValue>
-						<Query Type="LinkTo">ad_auth_group 2</Query>
+						<Query Type="LinkTo">ad_auth_group2</Query>
 					</SetValue>
 				</GuiOption>
 
