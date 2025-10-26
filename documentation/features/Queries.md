@@ -22,7 +22,8 @@ A how-to video can be viewed [here](https://youtu.be/YhIiRorF9SA?si=f5Jc5r65HsFz
     * [\<ToUpper\>](#toupper)
     * [\<Truncate\>](#truncate)
 * [Ignoring Values](#ignoring-values)
-* [Multiple Queies \& Null values](#multiple-queies--null-values)
+* [Multiple Queries \& Null/Empty values](#multiple-queries--nullempty-values)
+* [Queries with Null or Empty Property Values](#queries-with-null-or-empty-property-values)
 * [Reprocessing queries](#reprocessing-queries)
 
 
@@ -245,21 +246,57 @@ To ignore a value and an \<Ignore> element to your query.
 </Query>
 ```
 
-## Multiple Queies & Null values
-By default, TsGui will ignore the result of a query with a null/empty values. If you have multiple \<Query> blocks defined, a null result will make TsGui skip the query and try the next one. 
+## Multiple Queries & Null/Empty values
+By default, TsGui will ignore the a query that returns null or is empty. If you have multiple \<Query> blocks defined, a null result will make TsGui skip the query and try the next one. 
 
-To override this behaviour, add the \<IncludeNullValues> element with a value of TRUE.
+To override this behaviour, add the \<IgnoreEmpty> element with a value of FALSE. You might want to do this if you want the result in your GuiOption to be empty.
 
 ```xml
 <Query Type="Wmi">
-    <Wql>SELECT * FROM Win32_OperatingSystem</Wql>
+    <Wql>SELECT * FROM Win32_OperatingSystem WHERE Version LIKE "10.0.22%"</Wql>
     <Property Name="LocalDateTime">
         <Truncate Type="KeepFromStart">6</Truncate>								<!-- Truncate Type options: KeepFromEnd, KeepFromStart, RemoveFromEnd, RemoveFromStart -->
         <Truncate Type="KeepFromEnd">4</Truncate>
         <Prefix>PC-</Prefix>
     </Property>
     <Separator></Separator>
-    <IncludeNullValues>TRUE</IncludeNullValues>
+    <IgnoreEmpty>FALSE</IgnoreEmpty>
+</Query>
+```
+
+## Queries with Null or Empty Property Values
+By default, if a query returns multiple properties, TsGui will include a null value as part of the result. For example consider the query below to be concatenated together as the value for a FreeText GuiOption:
+
+
+```xml
+<Query Type="Wmi">
+    <Wql>SELECT * FROM Win32_OperatingSystem</Wql>
+    <Property Name="Caption" />
+    <Property Name="Organization" />
+    <Property Name="Status" />
+    <Separator> | </Separator>
+</Query>
+```
+
+In this instance the Organization property could be empty, in which case the result could end up as something like this:
+
+**Micrsoft Windows 11 Enterprise | | OK**
+
+Note the double bar with empty text between them, caused by there being an empty value for the Organization property. 
+
+To override this behaviour, add the \<IncludeNullValues> element with a value of FALSE. Now the empty value will not be included:
+
+**Micrsoft Windows 11 Enterprise | OK**
+
+
+```xml
+<Query Type="Wmi">
+    <Wql>SELECT * FROM Win32_OperatingSystem</Wql>
+    <Property Name="Caption" />
+    <Property Name="Organization" />
+    <Property Name="Status" />
+    <Separator> | </Separator>
+    <IncludeNullValues>FALSE</IncludeNullValues>
 </Query>
 ```
 
