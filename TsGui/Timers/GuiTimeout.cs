@@ -25,6 +25,9 @@ using System.Windows;
 
 namespace TsGui
 {
+    /// <summary>
+    /// Timeout for the whole Gui e.g. if no user input, finish TsGui
+    /// </summary>
     public class GuiTimeout
     {
         public delegate void TimeoutFunction();

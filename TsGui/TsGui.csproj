@@ -121,6 +121,7 @@
     <Compile Include="ConsoleWindow.cs" />
     <Compile Include="ConfigData.cs" />
     <Compile Include="Debounce.cs" />
+    <Compile Include="DeferalHandler.cs" />
     <Compile Include="Diagnostics\LoggingUiViewModel.cs" />
     <Compile Include="Diagnostics\TestingWindow.cs" />
     <Compile Include="Diagnostics\TestingWindowUI.xaml.cs">

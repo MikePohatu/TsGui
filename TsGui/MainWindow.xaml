@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TsGui"
         mc:Ignorable="d"
+        Icon="{Binding Icon}" ShowInTaskbar="True"
         Title="{Binding WindowTitle}" Height="{Binding Style.Height, Mode=TwoWay}" Width="{Binding Style.Width, Mode=TwoWay}"
         Left="{Binding WindowLocation.Left, Mode=TwoWay}" Top="{Binding WindowLocation.Top, Mode=TwoWay}" 
         Topmost="{Binding TopMost}" 

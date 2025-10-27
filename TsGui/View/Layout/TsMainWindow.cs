@@ -20,10 +20,12 @@
 // TsMainWindow.cs - view model for the MainWindow
 
 using System;
-using System.Xml.Linq;
+using System.Drawing;
 using System.Windows;
-
+using System.Windows.Media;
+using System.Xml.Linq;
 using TsGui.View.GuiOptions;
+using TsGui.View.Helpers;
 
 namespace TsGui.View.Layout
 {
@@ -42,6 +44,7 @@ namespace TsGui.View.Layout
         private double _configuredWidth = double.NaN;
 
         //Properties
+        public ImageSource Icon { get; set; }
         public Border Border { get; private set; } = new Border();
         public WindowLocation WindowLocation { get; private set; }
         public string WindowTitle
@@ -124,6 +127,7 @@ namespace TsGui.View.Layout
             this.FooterText = "Powered by TsGui - www.20road.com";
             this.FooterHeight = 15;
             this.FooterHAlignment = HorizontalAlignment.Right;
+            this.Icon = IconHelper.ConvertToImageSource(SystemIcons.Information);
         }
 
         public override void LoadXml(XElement InputXml, ParentLayoutElement parent)

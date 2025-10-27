@@ -53,5 +53,10 @@ namespace TsGui.View.Layout
         {
             await this._page.FinishAsync();
         }
+
+        public void buttonDefer_Click(object sender, RoutedEventArgs e)
+        {
+            DeferalHandler.Defer();
+        }
     }
 }
