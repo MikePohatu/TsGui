@@ -10,7 +10,7 @@ The following section outlines the 'top level' settings for TsGui. These are thi
 
 
 ## Buttons
-The Buttons configuration allows you to change the text of the navigation buttons. It  is set at the root level of the configuration
+The Buttons configuration allows you to change the text of the navigation buttons, and enable/disable the Cancel and Defer buttons. It  is set at the root level of the configuration
 ```xml
 <TsGui>
     <Buttons>
@@ -19,7 +19,13 @@ The Buttons configuration allows you to change the text of the navigation button
         <Cancel>Cancel</Cancel>
         <Finish>Finish</Finish>
         <HideCancel>FALSE</HideCancel>
-        <!-- Set this to TRUE to remove the cancel button from the GUI. -->
+        <!-- Set this to TRUE to remove the cancel button from the GUI, or DISABLED to disable the control, but remove it from the UI -->
+
+        <ShowDefer Timeout="300" Text="Defer" Mode="Hide" />
+        <!-- Use the Defer block to enable the Defer button, which will hide the UI for the time specified. Set a timeout in seconds before the UI is shown again (default is 30 seconds) and mode. Mode can be either Hide (default), or Minimize. 
+
+        Note that the TsGui will not end, the process will continue running. 
+        --> 
     </Buttons>
 ...
 </TsGui>

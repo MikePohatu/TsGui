@@ -41,14 +41,18 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="75*"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="buttonNext" IsDefault="True" IsEnabled="False" Visibility="Hidden" Content="{Binding ButtonTextNext}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" Click="buttonNext_Click"/>
-                <Button x:Name="buttonFinish" IsDefault="True" Content="{Binding ButtonTextFinish}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right" Margin="5,0,0,0" Grid.Row="1" Grid.Column="2" Click="buttonFinish_Click"/>
-                <Button x:Name="buttonPrev" IsEnabled="False" Visibility="Hidden" Content="{Binding ButtonTextBack}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="0,0,5,0" Grid.Row="1" Grid.Column="1" Click="buttonPrev_Click"/>
-                <Button x:Name="buttonCancel" Content="{Binding ButtonTextCancel}" Visibility="{Binding CancelVisibility}" IsEnabled="{Binding CancelEnabled}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" Grid.Column="0" Click="buttonCancel_Click"/>
+                <Button x:Name="buttonCancel" Grid.Row="1" Grid.Column="0" Margin="0,0,5,0" Content="{Binding ButtonTextCancel}" Visibility="{Binding CancelVisibility}" IsEnabled="{Binding CancelEnabled}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Click="buttonCancel_Click"/>
+                <Button x:Name="buttonDefer" Grid.Row="1" Grid.Column="1" Margin="5,0,0,0" Content="{Binding ButtonTextDefer}" Visibility="{Binding DeferVisibility}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Click="buttonDefer_Click"/>
+
+                <Button x:Name="buttonPrev" Grid.Row="1" Grid.Column="3" Margin="5,0,5,0" IsEnabled="False" Visibility="Hidden" Content="{Binding ButtonTextBack}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left"  Click="buttonPrev_Click"/>
+                <Button x:Name="buttonNext" Grid.Row="1" Grid.Column="4" Margin="5,0,0,0" IsDefault="True" IsEnabled="False" Visibility="Hidden" Content="{Binding ButtonTextNext}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right" Click="buttonNext_Click"/>
+                <Button x:Name="buttonFinish" Grid.Row="1" Grid.Column="4" Margin="5,0,0,0" IsDefault="True" Content="{Binding ButtonTextFinish}" Template="{DynamicResource ButtonControlTemplate}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right" Click="buttonFinish_Click"/>
             </Grid>
         </Grid>
     </Grid>

@@ -29,13 +29,16 @@ namespace TsGui.View.Layout
     {
         private string _buttonTextNext;
         private string _buttonTextFinish;
+        private string _buttonTextDefer;
         private string _buttonTextCancel;
         private string _buttonTextBack;
         private Visibility _cancelvisibility = Visibility.Visible;
         private bool _cancelenabled = true;
+        private Visibility _defervisibility = Visibility.Collapsed;
 
         //Properties
         #region
+        public Style ControlStyle { get; }
 
         public Visibility CancelVisibility
         {
@@ -55,7 +58,18 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "CancelEnabled");
             }
         }
-        public Style ControlStyle { get; }
+
+        public Visibility DeferVisibility
+        {
+            get { return this._defervisibility; }
+            set
+            {
+                this._defervisibility = value;
+                this.OnPropertyChanged(this, "DeferVisibility");
+            }
+        }
+
+
         public string ButtonTextCancel
         {
             get { return this._buttonTextCancel; }
@@ -92,14 +106,29 @@ namespace TsGui.View.Layout
                 this.OnPropertyChanged(this, "ButtonTextFinish");
             }
         }
+
+        public string ButtonTextDefer
+        {
+            get { return this._buttonTextDefer; }
+            set
+            {
+                this._buttonTextDefer = value;
+                this.OnPropertyChanged(this, "ButtonTextDefer");
+            }
+        }
+
+        public int DeferalTimeout { get; private set; }
+
         #endregion
 
         //Constructor
         public TsButtons()
         {
+            this.DeferalTimeout = 30;
             this.ButtonTextBack = "Back";
             this.ButtonTextCancel = "Cancel";
             this.ButtonTextFinish = "Finish";
+            this.ButtonTextDefer = "Defer";
             this.ButtonTextNext = "Next";
             this.ControlStyle = new Style();
             this.SetDefaults();
@@ -129,6 +158,14 @@ namespace TsGui.View.Layout
             {
                 if (x.Value.ToUpper() == "TRUE") { this.CancelVisibility = Visibility.Collapsed; }
                 else if (x.Value.ToUpper() == "DISABLED") { this.CancelEnabled = false; }
+            }
+
+            x = InputXml.Element("ShowDefer");
+            if (x != null)
+            {
+                this.DeferVisibility = Visibility.Visible;
+                this.ButtonTextDefer = XmlHandler.GetStringFromXml(x, "Text", this.ButtonTextFinish);
+                DeferalHandler.LoadXml(x);
             }
         }
 

@@ -504,6 +504,8 @@ namespace TsGui
         //finish and create the TS Variables
         public async Task  FinishAsync()
         {
+            await Task.Delay(new TimeSpan(0,0,0,0, ConfigData.MaxDelayMs));
+
             foreach (IOption option in OptionLibrary.Options)
             {
                 //first check for null option variables e.g. for headings
