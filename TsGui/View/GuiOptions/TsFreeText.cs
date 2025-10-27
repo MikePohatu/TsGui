@@ -166,6 +166,7 @@ namespace TsGui.View.GuiOptions
             Binding binding = new Binding("ControlText");
             binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             binding.Delay = delayMs;
+            ConfigData.NotifyDelay(delayMs);
             binding.Mode = BindingMode.TwoWay;
 
             this._freetextui.TextBox.SetBinding(TextBox.TextProperty, binding);

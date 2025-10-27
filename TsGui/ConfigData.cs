@@ -36,6 +36,7 @@ namespace TsGui
     /// </summary>
     public static class ConfigData
     {
+        public static int MaxDelayMs { get; private set; } = 0;
         public static TsMainWindow TsMainWindow { get; set; }
         public static bool ProdMode { get; set; } = false;
         public static TsButtons Buttons { get; set; }
@@ -66,6 +67,15 @@ namespace TsGui
         public static void AddTestingWindow()
         {
             if (TestingWindow == null) { TestingWindow = new TestingWindow(); }
+        }
+
+        /// <summary>
+        /// Notify that there is a delay in the config e.g. on a FreeText. This will be checked before UI is finished. 
+        /// </summary>
+        /// <param name="delay"></param>
+        public static void NotifyDelay(int delay)
+        {
+            if (delay > MaxDelayMs) { MaxDelayMs = delay; }
         }
     }
 }
