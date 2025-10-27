@@ -98,10 +98,6 @@
 	
 	<!-- *** Pages *** -->
 	<Page>
-		<Formatting>
-			<Width>110</Width>
-		</Formatting>
-
 		<Row>
 			<Column>
 				<Formatting>
@@ -311,8 +307,8 @@
 		<Row>
 			<Column>
 				<Formatting>
-					<Width>360</Width>
-					<LeftCellWidth>190</LeftCellWidth>
+					<Width>220</Width>
+					<LeftCellWidth>110</LeftCellWidth>
 					<RightCellWidth>40</RightCellWidth>
 				</Formatting>
 				
