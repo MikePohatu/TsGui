@@ -25,11 +25,12 @@ using Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Management;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Connectors;
-using TsGui.Options.NoUI;
 using TsGui.Options;
-using System.Threading.Tasks;
+using TsGui.Options.NoUI;
 
 namespace TsGui
 {
@@ -52,6 +53,7 @@ namespace TsGui
         public static string DefaultGateways4 { get; private set; } = string.Empty;
         public static string DefaultGateways6 { get; private set; } = string.Empty;
         public static string DHCPServer { get; private set; } = string.Empty;
+        public static string MacAddresses { get; private set; } = string.Empty;
 
         /// <summary>
         /// Query WMI and populate the data for the TsGui_xxx variables
@@ -114,6 +116,7 @@ namespace TsGui
             vars.Add(new Variable("TsGui_IPSubnetMask4", IPNetMask4, _path));
             vars.Add(new Variable("TsGui_IPSubnetMask6", IPNetMask6, _path));
             vars.Add(new Variable("TsGui_DHCPServer", DHCPServer, _path));
+            vars.Add(new Variable("TsGui_MAC", MacAddresses, _path));
 
             return vars;
         }
@@ -239,7 +242,7 @@ namespace TsGui
             }
 
             //ip info gather
-            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(_namespace, @"Select DefaultIPGateway,IPAddress,IPSubnet,DHCPServer from Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'True'"))
+            foreach (ManagementObject m in SystemConnector.GetWmiManagementObjectCollection(_namespace, @"Select DefaultIPGateway,IPAddress,IPSubnet,DHCPServer,MacAddress from Win32_NetworkAdapterConfiguration WHERE IPEnabled = 'True'"))
             {
                 string[] ipaddresses = (string[])m["IPAddress"];
 
@@ -278,6 +281,10 @@ namespace TsGui
 
                 string svr = (string)m["DHCPServer"];
                 if (string.IsNullOrWhiteSpace(svr) == false) { DHCPServer = AppendToStringList(DHCPServer, svr); }
+
+                string mac = (string)m["MacAddress"];
+                if (string.IsNullOrWhiteSpace(mac) == false) { MacAddresses = AppendToStringList(MacAddresses, mac); }
+                
             }
         }
 

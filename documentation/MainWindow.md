@@ -50,6 +50,7 @@ The variables collected are:
 * TsGui_IPSubnetMask4
 * TsGui_IPSubnetMask6
 * TsGui_DHCPServer
+* TsGui_MAC
 
 Enable the hardware evaluator by added a \<HardwareEval /> element to your configuration
 ```xml
