@@ -1,12 +1,8 @@
-Version 2.2.0.0
-Release date: 27 October 2025
+Version 2.2.0.2
+Release date: 6 November 2025
 
 *Features
-	Added deferral option. See the documentation here https://github.com/MikePohatu/TsGui/blob/master/documentation/MainWindow.md#buttons
-
-*Fixes
-	Fixed width options in demo config
-	Fixed a timing issue where clicking Finish quickly (< 500ms) after changing a FreeText option could miss the update. 
+	Added TsGui_MAC to hardware evaluator to gather the MAC address
 
 *Known issues
 	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
@@ -15,6 +11,18 @@ Release date: 27 October 2025
 	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx) and Windows PowerShell (WinPE-PowerShell) be added to your boot image 
+
+
+
+Version 2.2.0.1
+Release date: 27 October 2025
+
+*Features
+	Added deferral option. See the documentation here https://github.com/MikePohatu/TsGui/blob/master/documentation/MainWindow.md#buttons
+
+*Fixes
+	Fixed width options in demo config
+	Fixed a timing issue where clicking Finish quickly (< 500ms) after changing a FreeText option could miss the update. 
 
 
 Version 2.1.0.7
