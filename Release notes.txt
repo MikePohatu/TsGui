@@ -1,8 +1,9 @@
-Version 2.2.0.2
-Release date: 6 November 2025
+Version tbc
+Release date: tbc
 
 *Features
-	Added TsGui_MAC to hardware evaluator to gather the MAC address
+	Added Placeholder option to FreeText
+
 
 *Known issues
 	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
@@ -12,6 +13,12 @@ Release date: 6 November 2025
 
 *Requires Microsoft .NET (WinPE-NetFx) and Windows PowerShell (WinPE-PowerShell) be added to your boot image 
 
+
+Version 2.2.0.2
+Release date: 6 November 2025
+
+*Features
+	Added TsGui_MAC to hardware evaluator to gather the MAC address
 
 
 Version 2.2.0.1

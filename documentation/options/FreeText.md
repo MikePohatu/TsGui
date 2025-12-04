@@ -4,6 +4,7 @@
   * [CharacterCasing](#charactercasing)
   * [Delay](#delay)
   * [MaxLength](#maxlength)
+  * [Placeholder](#placeholder)
 * [Example XML](#example-xml)
 
 ## Overview
@@ -22,6 +23,9 @@ The Delay property is the time in milliseconds between the user entering text an
 ### MaxLength
 The maximum length of string that can be entered into the textbox. The textbox will not allow the user to enter more characters. 
 
+### Placeholder
+Text that is shown when no text has been entered.
+
 
 ## Example XML
 
@@ -30,6 +34,7 @@ The maximum length of string that can be entered into the textbox. The textbox w
     <Variable>OSDComputerName_FullQuery</Variable>
     <Label>Computer Name:</Label>
     <HelpText>Enter a computer name for the device</HelpText>
+    <Placeholder>%DeviceName%</Placeholder>
     <CharacterCasing>Normal</CharacterCasing>
     <!-- Sets and enforces the case of text. Options are Normal, Upper, and Lower -->
 

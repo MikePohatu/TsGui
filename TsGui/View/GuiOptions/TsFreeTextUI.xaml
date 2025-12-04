@@ -21,6 +21,28 @@
     </UserControl.Resources>
     
     <!-- Binding created in code to allowing setting delay -->
-    <TextBox x:Name="TextBox" 
-             Style="{StaticResource FreeTextStyle}" CharacterCasing="{Binding CharacterCasing}"/>
+    <Grid>
+        <TextBox x:Name="TextBox" 
+             Style="{StaticResource FreeTextStyle}" CharacterCasing="{Binding CharacterCasing}" />
+        <TextBlock IsHitTestVisible="False" Text="{Binding Placeholder}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="{Binding PlaceholderMargin}" Foreground="DarkGray">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Setter Property="Control.VerticalAlignment" Value="{Binding ControlStyle.VerticalAlignment}"/>
+                    <Setter Property="Control.HorizontalAlignment" Value="{Binding ControlStyle.HorizontalAlignment}"/>
+                    <Setter Property="Control.HorizontalContentAlignment" Value="{Binding ControlStyle.HorizontalContentAlignment}"/>
+                    <Setter Property="Control.VerticalContentAlignment" Value="{Binding ControlStyle.VerticalContentAlignment}"/>
+                    <Setter Property="Control.FontWeight" Value="{Binding Path=ControlStyle.FontWeight, Converter={StaticResource FontWeight}}"/>
+                    <Setter Property="Control.FontStyle" Value="{Binding Path=ControlStyle.FontStyle, Converter={StaticResource FontStyle}}"/>
+                    <Setter Property="Control.FontSize" Value="{Binding ControlStyle.FontSize}"/>
+                    <Setter Property="Control.FontFamily"  Value="{Binding ControlStyle.FontFamily}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=TextBox}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+    </Grid>
 </UserControl>
