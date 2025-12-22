@@ -1,26 +1,29 @@
 <TsGui LiveData="TRUE">
 	<Height>500</Height>
 	<Width>400</Width>
-	
+
 	<UseTouchDefaults />
 	<HardwareEval />
-	
+
 	<Heading>
 		<Title>Touch example</Title>
 		<Text>Changes to layout</Text>
 	</Heading>
-	
+
 	<Page>
 		<Column>
 			<Formatting>
 				<LeftCellWidth>280</LeftCellWidth>
 				<RightCellWidth>100</RightCellWidth>
 			</Formatting>
-			
-			<GuiOption Type="ComputerName" ID="link_name" />	
-				
+
+			<GuiOption Type="ComputerName" ID="link_name">
+
+				<Placeholder>Enter computer name</Placeholder>
+			</GuiOption>
+
 			<GuiOption Type="FreeText">
-			
+
 				<Variable>FreeTextTest</Variable>
 				<Label>FreeTextTest</Label>
 				<SetValue>
@@ -45,16 +48,16 @@
 							<Value>This is a laptop</Value>
 						</ELSE>
 					</Query>
-					
+
 				</SetValue>
 			</GuiOption>
-			
+
 			<GuiOption Type="CheckBox" ID="link_source">
 				<Variable>link_source</Variable>
 				<Label>SOURCE</Label>
 				<HAlign>left</HAlign>
 			</GuiOption>
-			
+
 			<GuiOption Type="CheckBox">
 				<Variable>linkto</Variable>
 				<Label>Match SOURCE</Label>
@@ -64,7 +67,7 @@
 					<Query Type="LinkTo">link_source</Query>
 				</SetValue>
 			</GuiOption>
-			
+
 			<GuiOption Type="CheckBox">
 				<Variable>linktrue</Variable>
 				<Label>Check when SOURCE is checked</Label>
@@ -118,7 +121,7 @@
 					</Query>
 				</SetValue>
 			</GuiOption>
-			
+
 			<GuiOption Type="FreeText">
 				<Variable>FreeTextTarget</Variable>
 				<Label>Free text target</Label>
@@ -140,7 +143,7 @@
 					</Query>
 				</SetValue>
 			</GuiOption>
-			
+
 			<GuiOption Type="FreeText">
 				<Variable>Link_append_example</Variable>
 				<Label>Link append example</Label>
@@ -154,7 +157,7 @@
 					</Query>
 				</SetValue>
 			</GuiOption>
-			
+
 			<GuiOption Type="DropDownList" ID="Country_1">
 				<!-- The NoSelectionMessage element overrides the default "Please select a value" text when nothing is selected by the user -->
 				<NoSelectionMessage>Please select something</NoSelectionMessage>
@@ -190,12 +193,12 @@
 					</Query>
 				</SetValue>
 			</GuiOption>
-			
+
 			<GuiOption Type="InfoBox">
 				<Variable>INFO_SystemInfo</Variable>
 				<Label>System Info:</Label>
-				
-				
+
+
 				<!-- Query for the display value. Return the first valid value. Note
 				the Ignore values for evaluating the value returned by the query -->
 				<SetValue>

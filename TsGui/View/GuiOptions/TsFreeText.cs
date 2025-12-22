@@ -95,8 +95,20 @@ namespace TsGui.View.GuiOptions
             get { return this._charactercasing; }
             set { this._charactercasing = value; this.OnPropertyChanged(this, "CharacterCasing"); }
         }
+        protected string _placeholder;
+        public string Placeholder
+        {
+            get { return this._placeholder; }
+            set { this._placeholder = value; this.OnPropertyChanged(this, "Placeholder"); }
+        }
 
-        
+        private Thickness _placeholdermargin;
+        public Thickness PlaceholderMargin
+        {
+            get { return this._placeholdermargin; }
+            set { this._placeholdermargin = value; this.OnPropertyChanged(this, "PlaceholderMargin"); }
+        }
+
         #endregion
 
         //Constructor
@@ -153,6 +165,7 @@ namespace TsGui.View.GuiOptions
 
             this.MaxLength = XmlHandler.GetIntFromXml(InputXml, "MaxLength", this.MaxLength);
             this.ValidationHandler.LoadXml(InputXml);
+            this.Placeholder = XmlHandler.GetStringFromXml(InputXml, "Placeholder", this.Placeholder);
 
             int delayMs = XmlHandler.GetIntFromXml(InputXml, "Delay", 500);
 
@@ -182,6 +195,7 @@ namespace TsGui.View.GuiOptions
             }
 
             this.CharacterCasing = XmlHandler.GetCharacterCasingFromXml(InputXml, "CharacterCasing", this.CharacterCasing);
+            UpdatePlaceholderMargin();
         }
 
         //Handle UI events
@@ -255,6 +269,18 @@ namespace TsGui.View.GuiOptions
         public async Task OnSourceValueUpdatedAsync(Message message)
         {
             await this.UpdateLinkedValueAsync(message);
+        }
+
+        private void UpdatePlaceholderMargin()
+        {
+
+            var t = 0;
+            var b = 0;
+            var l = this.ControlStyle.Margin.Left + this.ControlStyle.Padding.Left + 3;
+            var r = this.ControlStyle.Margin.Right + this.ControlStyle.Padding.Right + 2;
+
+            this.PlaceholderMargin = new Thickness(l, t, r, b);
+            this.OnPropertyChanged(this, "PlaceholderMargin");
         }
     }
 }

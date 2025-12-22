@@ -1,4 +1,4 @@
-﻿$version = '2.2.0.2'
+﻿$version = '2.2.0.3'
 
 Function SignAssembliesInPath {
     Param(
@@ -8,7 +8,7 @@ Function SignAssembliesInPath {
     )
 
     $assemblies = Get-ChildItem $PackagePath -Recurse -Include ('*.exe', '*.dll') | Foreach-Object {
-        $signature = Get-AuthenticodeSignature $_ 
+        $signature = Get-AuthenticodeSignature $_
         if ($signature.Status -ne "Valid") { $_.FullName }
     }
 

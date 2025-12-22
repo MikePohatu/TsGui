@@ -50,6 +50,7 @@ namespace TsGui.Prebuilt.Options
 						<Invalid>
 							<Rule Type=""Contains"">Wireless</Rule>
 							<Rule Type=""Contains"">Wifi</Rule>
+							<Rule Type=""Contains"">Wi-Fi</Rule>
 							<Rule Type=""Contains"">WLAN</Rule>
 						</Invalid>		 
 					</Compliance>
