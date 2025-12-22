@@ -21,6 +21,7 @@ using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication.LocalConfig;
 using TsGui.Authentication.ExposedPassword;
 using System.Xml.Linq;
+using TsGui.Authentication.LDAP;
 
 namespace TsGui.Authentication
 {
@@ -37,16 +38,18 @@ namespace TsGui.Authentication
 
             if (string.IsNullOrWhiteSpace(type) != true)
             {
-                switch (type)
+                switch (type.ToLower())
                 {
-                    case "ActiveDirectory":                     
+                    case "activedirectory":                     
                         return new ActiveDirectoryAuthenticator(inputxml);
-                    case "Password":
+                    case "password":
                         return new LocalConfigPasswordAuthenticator(inputxml);
-                    case "ExposedPassword":
+                    case "exposedpassword":
                         ExposedPasswordAuthenticator auth = new ExposedPasswordAuthenticator(inputxml);
                         Director.Instance.AddOptionToLibary(auth);
                         return auth;
+                    case "ldap":
+                        return new LdapAuthenticator(inputxml);
                     default:
                         throw new KnownException("Invalid type specified in query", inputxml.ToString());
                 }

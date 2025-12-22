@@ -21,11 +21,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TsGui.Options;
 
 namespace TsGui.Sets
 {
     public static class SetLibrary
     {
+        private static Dictionary<string, List<IOption>> pendingLinkedOptions = new Dictionary<string, List<IOption>>();
+
         public static ObservableCollection<Set> Sets { get; private set; } = new ObservableCollection<Set>();
         public static void Reset()
         {
