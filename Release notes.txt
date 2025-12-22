@@ -1,8 +1,11 @@
-Version tbc
-Release date: tbc
+Version 2.2.0.3
+Release date: 22 Dec 2025
 
 *Features
 	Added Placeholder option to FreeText
+
+*Fixes
+	Fixed missing 'Wi-Fi' value in prebuilt WiFi check
 
 
 *Known issues
