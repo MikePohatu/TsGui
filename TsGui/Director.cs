@@ -506,25 +506,9 @@ namespace TsGui
         {
             await Task.Delay(new TimeSpan(0,0,0,0, ConfigData.MaxDelayMs));
 
-            foreach (IOption option in OptionLibrary.Options)
+            foreach (Variable variable in OptionLibrary.GetVariables())
             {
-                //first check for null option variables e.g. for headings
-                if (option.Variables != null)
-                {
-                    //now check if the option is active or not and variables created as required
-                    if (option.IsActive == true)
-                    {
-                        foreach (Variable variable in option.Variables)
-                        {
-                            EnvironmentController.AddVariable(variable);
-                        }
-                    }
-                    else
-                    { 
-                        EnvironmentController.AddVariable(new Variable(option.VariableName, option.InactiveValue, option.Path)); 
-                    }
-                    
-                }
+                EnvironmentController.AddVariable(variable);
             }
 
 

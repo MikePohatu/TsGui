@@ -121,11 +121,11 @@ namespace TsGui.View.GuiOptions
 
             //path and variable can be set either as an element, or an attribute
             this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
-            this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
             this.VariableName = XmlHandler.GetStringFromXml(InputXml, "Variable", this.VariableName);
-            this.VariableName = XmlHandler.GetStringFromXml(InputXml, "Variable", this.VariableName);
-
             this.LabelText = XmlHandler.GetStringFromXml(InputXml, "Label", this.LabelText);
+
+            if (string.IsNullOrEmpty(this.LabelText)) { this.LabelText = this.VariableName; }
+
             this.HelpText = XmlHandler.GetStringFromXml(InputXml, "HelpText", this.HelpText);
             this.ShowGridLines = XmlHandler.GetBoolFromXml(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXml(InputXml, "InactiveValue", this.InactiveValue);

@@ -25,7 +25,7 @@ using WindowsHelpers;
 
 namespace TsGui.Sets
 {
-    public class SetList
+    public class FileSetList: ISetList
     {
         private static List<string> _defaultPaths = new List<string>
         {
@@ -38,7 +38,7 @@ namespace TsGui.Sets
         private int _countLength;
         private Set _parent;
 
-        public SetList(XElement inputXml, Set Parent)
+        public FileSetList(XElement inputXml, Set Parent)
         {
             this._parent = Parent;
             this._file = XmlHandler.GetStringFromXml(inputXml, "File", null);

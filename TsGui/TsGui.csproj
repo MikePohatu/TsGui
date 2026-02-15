@@ -130,6 +130,7 @@
     <Compile Include="Linking\ILinkSource.cs" />
     <Compile Include="Linking\Topics.cs" />
     <Compile Include="Options\MiscOption.cs" />
+    <Compile Include="Options\OptionList.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltWifiDisconnected.cs" />
     <Compile Include="Prebuilt\PrebuiltFactory.cs" />
     <Compile Include="Queries\ActiveDirectory\ADOrgUnitGroupsQuery.cs" />
@@ -147,7 +148,9 @@
     <Compile Include="Scripts\ScriptLibrary.cs" />
     <Compile Include="Scripts\ScriptResult.cs" />
     <Compile Include="Scripts\ScriptSettings.cs" />
-    <Compile Include="Sets\SetList.cs" />
+    <Compile Include="Sets\FileSetList.cs" />
+    <Compile Include="Sets\ISetList.cs" />
+    <Compile Include="Sets\OptionSetList.cs" />
     <Compile Include="Sets\Set.cs" />
     <Compile Include="Sets\SetLibrary.cs" />
     <Compile Include="Timers\GuiTimeout.cs" />

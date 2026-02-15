@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using TsGui.Linking;
 using TsGui.View.GuiOptions;
 
@@ -32,8 +33,10 @@ namespace TsGui.Options
     public static class OptionLibrary
     {
         public static event OptionLibraryOptionAdded OptionAdded;
+
         public static ObservableCollection<IOption> Options { get; } = new ObservableCollection<IOption>();
         public static List<IValidationGuiOption> ValidationOptions { get; } = new List<IValidationGuiOption>();
+        public static Dictionary<string, OptionList> OptionLists { get; } = new Dictionary<string, OptionList>();
 
         public static void Add(IOption option)
         {
@@ -44,6 +47,19 @@ namespace TsGui.Options
             if (string.IsNullOrWhiteSpace(option.ID) == false) 
             { LinkingHub.Instance.AddSource(option); }
 
+            //split and process the lists
+            if (string.IsNullOrWhiteSpace(option.Lists) == false)
+            {
+                foreach (string list in option.Lists.Split(','))
+                {
+                    if (string.IsNullOrWhiteSpace(list) == false)
+                    {
+                        var optList = GetList(list);
+                        optList.AddOption(option);
+                    }
+                }
+            }
+                
             OptionAdded?.Invoke(option, new EventArgs());
         }
 
@@ -56,11 +72,59 @@ namespace TsGui.Options
         }
 
         /// <summary>
+        /// Get the OptionList for the ID. A new one will be created if it doesn't already exist
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static OptionList GetList(string id)
+        {
+            OptionList outlist;
+            if (OptionLists.TryGetValue(id, out outlist) == false)
+            {
+                outlist = new OptionList(id);
+                OptionLists.Add(id, outlist);
+            }
+            return outlist;
+        }
+
+        public static List<Variable> GetVariables()
+        {
+            var variables = new List<Variable>();
+            foreach (IOption option in Options)
+            {
+                //first check for null option variables e.g. for headings
+                if (option.Variables != null)
+                {
+                    //now check if the option is active or not and variables created as required
+                    if (option.IsActive == true)
+                    {
+                        foreach (Variable variable in option.Variables)
+                        {
+                            variables.Add(variable);
+                        }
+                    }
+                    else
+                    {
+                        variables.Add(new Variable(option.VariableName, option.InactiveValue, option.Path));
+                    }
+                }
+            }
+
+            foreach (OptionList optList in OptionLists.Values) {
+                variables.AddRange(optList.GetVariables());
+            }
+
+            return variables;
+        }
+
+
+        /// <summary>
         /// Clear the loaded options
         /// </summary>
         public static void Reset()
         {
             Options.Clear();
+            OptionLists.Clear();
             ValidationOptions.Clear();
         }
     }

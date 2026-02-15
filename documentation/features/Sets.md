@@ -43,7 +43,7 @@ The **\<Sets>** element can contain one or more sets, each defined in a **\<Set>
             <Group>TestGroup</Group>
             
             <!-- Create a static list of variables imported from file -->
-            <List File="file.txt" Prefix="AppNamePrefix" />
+            <List File="file.txt" />
 
             <!-- Create a dynamic list of variables imported from file -->
             <List File="file.txt" Prefix="AppNamePrefix" />

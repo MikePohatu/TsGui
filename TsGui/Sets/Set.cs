@@ -32,7 +32,7 @@ namespace TsGui.Sets
     {
         private List<Variable> _variables = new List<Variable>();
         private QueryPriorityList _enabledQueries;
-        public List<SetList> SetLists { get; } = new List<SetList>();
+        public List<ISetList> SetLists { get; } = new List<ISetList>();
 
         public string Path { get; private set; } = Director.Instance.DefaultPath;
         public string ID { get; private set; }
@@ -87,7 +87,7 @@ namespace TsGui.Sets
 
             foreach (XElement element in inputXml.Elements("List"))
             {
-                var list = new SetList(element, this);
+                var list = new FileSetList(element, this);
                 this.SetLists.Add(list);
             }
         }

@@ -38,6 +38,9 @@ namespace TsGui.View.Layout
         public StyleTree Style { get; private set; } = new StyleTree();
 
         public LayoutEvents Events { get; private set; }
+        public string Lists { get; private set; }
+
+
         public bool ShowGridLines
         {
             get { return this._showgridlines; }
@@ -64,6 +67,7 @@ namespace TsGui.View.Layout
         public BaseLayoutElement(ParentLayoutElement Parent):base (Parent)
         {
             this.Parent = Parent;
+            this.Lists = Parent.Lists;
             this.Events = new LayoutEvents(this,Parent);
             if (Parent != null)
             {
@@ -75,6 +79,8 @@ namespace TsGui.View.Layout
         protected new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
+
+            this.Lists = XmlHandler.GetStringFromXml(InputXml, "Lists", this.Lists);
 
             this.ShowGridLines = XmlHandler.GetBoolFromXml(InputXml, "ShowGridLines", this.ShowGridLines);
             this.ControlEnabled = !XmlHandler.GetBoolFromXml(InputXml, "ReadOnly", !this._controlenabled);

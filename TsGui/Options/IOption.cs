@@ -33,7 +33,7 @@ namespace TsGui.Options
         string InactiveValue { get; }
         bool PurgeInactive { get; set; }
         bool IsActive { get; }
-
+        string Lists { get; }
         /// <summary>
         /// The path property can be set by other output methods e.g. registry key. It is not used for Task Sequence output
         /// </summary>
