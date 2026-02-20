@@ -22,10 +22,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TsGui.Sets
+namespace TsGui
 {
-    public interface ISetList
+    public interface IVariableParent
     {
-        Task<List<Variable>> ProcessAsync();
+        string Path { get; }
     }
 }

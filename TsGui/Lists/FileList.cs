@@ -21,11 +21,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TsGui.Sets;
 using WindowsHelpers;
 
-namespace TsGui.Sets
+namespace TsGui.Lists
 {
-    public class FileSetList: ISetList
+    public class FileList: IList
     {
         private static List<string> _defaultPaths = new List<string>
         {
@@ -36,14 +37,17 @@ namespace TsGui.Sets
         private string _file;
         private string _prefix;
         private int _countLength;
-        private Set _parent;
+        private string _path;
+        private readonly IVariableParent _parent;
 
-        public FileSetList(XElement inputXml, Set Parent)
+        public FileList(XElement inputXml, IVariableParent Parent)
         {
             this._parent = Parent;
+            this._path = Parent?.Path;
             this._file = XmlHandler.GetStringFromXml(inputXml, "File", null);
             this._prefix = XmlHandler.GetStringFromXml(inputXml, "Prefix", null);
             this._countLength = XmlHandler.GetIntFromXml(inputXml, "CountLength", 2);
+            this._path = XmlHandler.GetStringFromXml(inputXml, "Path", this._path);
         }
 
         public async Task<List<Variable>> ProcessAsync()
@@ -103,7 +107,7 @@ namespace TsGui.Sets
                     string value = parts.Length > 1 ? parts[1] : null;
                     if (name != null)
                     {
-                        variables.Add(new Variable(name, value, this._parent.Path));
+                        variables.Add(new Variable(name, value, this._path));
                     }
                 }
             }
@@ -121,7 +125,7 @@ namespace TsGui.Sets
                 if (!string.IsNullOrWhiteSpace(line))
                 {
                     count++;
-                    variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), line, this._parent.Path));
+                    variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), line, this._path));
                 }
             }
 

@@ -24,15 +24,16 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Grouping;
 using TsGui.Linking;
+using TsGui.Lists;
 using TsGui.Queries;
 
 namespace TsGui.Sets
 {
-    public class Set: GroupableBlindBase, ILinkTarget
+    public class Set: GroupableBlindBase, ILinkTarget, IVariableParent
     {
         private List<Variable> _variables = new List<Variable>();
         private QueryPriorityList _enabledQueries;
-        public List<ISetList> SetLists { get; } = new List<ISetList>();
+        public List<IList> Lists { get; } = new List<IList>();
 
         public string Path { get; private set; } = Director.Instance.DefaultPath;
         public string ID { get; private set; }
@@ -87,8 +88,8 @@ namespace TsGui.Sets
 
             foreach (XElement element in inputXml.Elements("List"))
             {
-                var list = new FileSetList(element, this);
-                this.SetLists.Add(list);
+                var list = ListLibrary.GetListFromXml(element, this);
+                this.Lists.Add(list);
             }
         }
 
@@ -128,16 +129,16 @@ namespace TsGui.Sets
         /// <returns></returns>
         public async Task<List<Variable>> ProcessAsync()
         {
-            List<Variable> list = new List<Variable>();
-            list.AddRange(this._variables); 
+            List<Variable> vars = new List<Variable>();
+            vars.AddRange(this._variables); 
 
-            foreach (var setlist in this.SetLists)
+            foreach (var setlist in this.Lists)
             {
-                var processed = await setlist.ProcessAsync();
-                list.AddRange(processed);
+                var processedVars = await setlist.ProcessAsync();
+                vars.AddRange(processedVars);
             }
 
-            return list;
+            return vars;
         }
     }
 }

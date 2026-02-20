@@ -24,11 +24,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Linking;
+using TsGui.Lists;
 using TsGui.Options;
 
 namespace TsGui.Sets
 {
-    public class OptionSetList: ISetList, ILinkTarget
+    public class OptionSetList: IList, ILinkTarget
     {
         private List<IOption> _linkSources = new List<IOption>();
         private List<string> _linkIDs = new List<string>();

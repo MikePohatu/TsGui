@@ -42,6 +42,7 @@ using System.Threading.Tasks;
 using TsGui.Scripts;
 using TsGui.View.GuiOptions;
 using TsGui.Sets;
+using TsGui.Lists;
 
 namespace TsGui
 {
@@ -511,6 +512,10 @@ namespace TsGui
                 EnvironmentController.AddVariable(variable);
             }
 
+            foreach (Variable variable in ListLibrary.GetVariables())
+            {
+                EnvironmentController.AddVariable(variable);
+            }
 
             List<Variable> setvars = await SetLibrary.ProcessAllAsync();
             foreach (Variable variable in setvars)

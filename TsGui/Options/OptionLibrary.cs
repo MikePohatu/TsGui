@@ -20,6 +20,7 @@
 // OptionLibrary.cs - class for the MainController to keep track of all the IGuiOption in 
 // the app
 
+using Core.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,6 +28,7 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using TsGui.Linking;
 using TsGui.View.GuiOptions;
+using TsGui.Lists;
 
 namespace TsGui.Options
 {
@@ -36,7 +38,7 @@ namespace TsGui.Options
 
         public static ObservableCollection<IOption> Options { get; } = new ObservableCollection<IOption>();
         public static List<IValidationGuiOption> ValidationOptions { get; } = new List<IValidationGuiOption>();
-        public static Dictionary<string, OptionList> OptionLists { get; } = new Dictionary<string, OptionList>();
+
 
         public static void Add(IOption option)
         {
@@ -52,9 +54,10 @@ namespace TsGui.Options
             {
                 foreach (string list in option.Lists.Split(','))
                 {
+
                     if (string.IsNullOrWhiteSpace(list) == false)
                     {
-                        var optList = GetList(list);
+                        var optList = ListLibrary.GetOptionList(list);
                         optList.AddOption(option);
                     }
                 }
@@ -69,22 +72,6 @@ namespace TsGui.Options
             {
                 await option.InitialiseAsync();
             }
-        }
-
-        /// <summary>
-        /// Get the OptionList for the ID. A new one will be created if it doesn't already exist
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static OptionList GetList(string id)
-        {
-            OptionList outlist;
-            if (OptionLists.TryGetValue(id, out outlist) == false)
-            {
-                outlist = new OptionList(id);
-                OptionLists.Add(id, outlist);
-            }
-            return outlist;
         }
 
         public static List<Variable> GetVariables()
@@ -110,10 +97,6 @@ namespace TsGui.Options
                 }
             }
 
-            foreach (OptionList optList in OptionLists.Values) {
-                variables.AddRange(optList.GetVariables());
-            }
-
             return variables;
         }
 
@@ -124,7 +107,6 @@ namespace TsGui.Options
         public static void Reset()
         {
             Options.Clear();
-            OptionLists.Clear();
             ValidationOptions.Clear();
         }
     }

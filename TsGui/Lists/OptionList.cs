@@ -19,16 +19,11 @@
 using Core.Diagnostics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Shapes;
 using System.Xml.Linq;
-using TsGui.Diagnostics;
-using TsGui.Sets;
+using TsGui.Options;
 
-namespace TsGui.Options
+namespace TsGui.Lists
 {
     /// <summary>
     /// An OptionList consolidates a number of Options into a list, outputting to a list of
@@ -36,25 +31,30 @@ namespace TsGui.Options
     /// "Install applications according to dynamic variable list"
     /// https://learn.microsoft.com/en-us/mem/configmgr/osd/understand/task-sequence-steps#BKMK_InstallApplication
     /// </summary>
-    public class OptionList
+    public class OptionList: IList
     {
         private string _prefix;
         private int _countLength = 2;
         private bool _useValue = false;
         private string _valueTest = "TRUE"; //value to compare to value of Option. If not the same ignore the option
         private List<IOption> _options = new List<IOption>();
+        private readonly IVariableParent _parent;
+        private string _path;
         public string ID { get; private set; }
 
-        public OptionList(string id)
+        public OptionList(string id, IVariableParent parent)
         {
             this.ID = id;
             if (string.IsNullOrEmpty(this.ID)) { throw new KnownException("List missing ID attribute", ""); }
 
             this._prefix = this.ID;
+            this._parent = parent;
+            if (this._parent != null) { this._path = this._parent.Path; }
         }
 
         public void LoadXml(XElement inputXml)
         {
+            this._path = XmlHandler.GetStringFromXml(inputXml, "Path", this._path);
             this._prefix = XmlHandler.GetStringFromXml(inputXml, "Prefix", this._prefix);
             if (string.IsNullOrEmpty(this._prefix)) { this._prefix = this.ID; }
 
@@ -66,26 +66,34 @@ namespace TsGui.Options
             this._options.Add(option);
         }
 
-        public IEnumerable<Variable> GetVariables()
+        public async Task<List<Variable>> ProcessAsync()
+        {
+            await Task.CompletedTask;
+            return this.GetVariables();
+        }
+
+        public List<Variable> GetVariables()
         {
             var variables = new List<Variable>();
             int count = 0;
 
             foreach (var option in this._options)
             {
+                string path = string.IsNullOrWhiteSpace(this._parent?.Path) ? option.Path : this._parent?.Path;
+
                 if (option.IsActive == true)
                 {
                     count++;
                     if (this._useValue)
                     {
-                        variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), option.CurrentValue, option.Path));
+                        variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), option.CurrentValue, path));
                     }
                     else
                     {
                         //check if option value matches the test
                         if (option.CurrentValue.Equals(this._valueTest, StringComparison.OrdinalIgnoreCase))
                         {
-                            variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), option.VariableName, option.Path));
+                            variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), option.VariableName, path));
                         }
                     }
                 }
