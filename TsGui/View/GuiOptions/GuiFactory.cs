@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -137,10 +137,9 @@ namespace TsGui.View.GuiOptions
             { return null; }
             #endregion
 
-            //pull the default path from the director if not already set
+            OptionLibrary.Add(newoption);
             if (string.IsNullOrWhiteSpace(newoption.Path)) { newoption.Path = Director.Instance.DefaultPath; }
 
-            Director.Instance.AddOptionToLibary(newoption);
             
             return newoption;
         }

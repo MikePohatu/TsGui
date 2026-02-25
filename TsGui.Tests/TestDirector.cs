@@ -50,8 +50,6 @@ namespace TsGui.Tests
 
         public async Task ReloadAsync() { await Task.CompletedTask; }
         public void CloseWithError(string Title, string Message) { }
-
-        public void AddOptionToLibary(IOption Option) { }
         public void MoveNext() { }
         public void MovePrevious() { }
         public async Task FinishAsync() { await Task.CompletedTask; }

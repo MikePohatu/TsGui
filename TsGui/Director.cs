@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -449,13 +449,6 @@ namespace TsGui
                     SetLibrary.LoadXml(x);
                 }
             }
-        }
-
-        //add options from sub classes to the main library. used to generate the final list of 
-        //tsvariables
-        public void AddOptionToLibary(IOption Option)
-        {
-            OptionLibrary.Add(Option);
         }
 
 

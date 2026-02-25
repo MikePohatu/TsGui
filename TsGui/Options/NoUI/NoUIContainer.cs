@@ -63,7 +63,7 @@ namespace TsGui.Options.NoUI
         private void AddOption (IOption Option)
         {
             this._options.Add(Option);
-            Director.Instance.AddOptionToLibary(Option);
+            OptionLibrary.Add(Option);
         }
     }
 }

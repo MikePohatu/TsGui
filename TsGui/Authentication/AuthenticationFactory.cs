@@ -21,6 +21,7 @@ using TsGui.Authentication.ActiveDirectory;
 using TsGui.Authentication.LocalConfig;
 using TsGui.Authentication.ExposedPassword;
 using System.Xml.Linq;
+using TsGui.Options;
 
 namespace TsGui.Authentication
 {
@@ -45,7 +46,7 @@ namespace TsGui.Authentication
                         return new LocalConfigPasswordAuthenticator(inputxml);
                     case "ExposedPassword":
                         ExposedPasswordAuthenticator auth = new ExposedPasswordAuthenticator(inputxml);
-                        Director.Instance.AddOptionToLibary(auth);
+                        OptionLibrary.Add(auth);
                         return auth;
                     default:
                         throw new KnownException("Invalid type specified in query", inputxml.ToString());
