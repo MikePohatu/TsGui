@@ -13,6 +13,8 @@
 
 An Option List links to other options in your TsGui config, and creates a list of variables based on those. Option Lists are primarily designed to be used with the "[Install applications according to dynamic variable list](https://learn.microsoft.com/en-us/mem/configmgr/osd/understand/task-sequence-steps#BKMK_InstallApplication)" feature in ConfigMgr. 
 
+Option Lists require TsGui version 2.3.0.0 or above. 
+
 
 ## Creating a List
 

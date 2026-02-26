@@ -1,11 +1,11 @@
-Version 2.2.0.3
-Release date: 22 Dec 2025
+Version 2.3.0.1
+Release date: 27 Feb 2026
 
 *Features
-	Added Placeholder option to FreeText
+	Added Lists feature for better support of ConfigMgr dynamic variable lists
 
-*Fixes
-	Fixed missing 'Wi-Fi' value in prebuilt WiFi check
+*Changes
+	If a Label is not set, the Variable name will now be used for the Label. 
 
 
 *Known issues
@@ -17,13 +17,24 @@ Release date: 22 Dec 2025
 *Requires Microsoft .NET (WinPE-NetFx) and Windows PowerShell (WinPE-PowerShell) be added to your boot image 
 
 
+---------------
+Version 2.2.0.3
+Release date: 22 Dec 2025
+
+*Features
+	Added Placeholder option to FreeText
+
+*Fixes
+	Fixed missing 'Wi-Fi' value in prebuilt WiFi check
+
+---------------
 Version 2.2.0.2
 Release date: 6 November 2025
 
 *Features
 	Added TsGui_MAC to hardware evaluator to gather the MAC address
 
-
+---------------
 Version 2.2.0.1
 Release date: 27 October 2025
 
@@ -34,7 +45,7 @@ Release date: 27 October 2025
 	Fixed width options in demo config
 	Fixed a timing issue where clicking Finish quickly (< 500ms) after changing a FreeText option could miss the update. 
 
-
+---------------
 Version 2.1.0.7
 Releast date: 17 July 2025
 
@@ -44,7 +55,6 @@ Releast date: 17 July 2025
 
 *Fixes
 	Fixes issue with AD groups where invalid TS variable names can be created based on group names
-
 
 ---------------
 Version 2.1.0.6
