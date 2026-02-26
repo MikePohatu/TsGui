@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TsGui LiveData="TRUE" Output="ConfigMgr" PurgeInactive="TRUE">
+	<Height>370</Height>
+	<Width>410</Width>
+
+	<HardwareEval />
+
+	<Heading>
+		<Title>Lists Test</Title>
+		<Text>Don't check Office to make sure numbers still work properly.</Text>
+	</Heading>
+
+	<Page>
+		<Row>
+			<Column>
+				<Formatting>
+					<LeftCellWidth>210</LeftCellWidth>
+					<RightCellWidth>160</RightCellWidth>
+				</Formatting>
+
+				<GuiOption Type="ComputerName" Lists="AppSet1_"/>
+
+                <GuiOption Type="CheckBox" Variable="Process Apps List" ID="ProcApps" />
+
+				<Container Lists="AppList">
+                    <GuiOption Type="CheckBox" Variable="Microsoft Office 365" />
+                    <GuiOption Type="CheckBox" Variable="7-zip" />
+                    <GuiOption Type="CheckBox" Variable="Adobe Creative Cloud" />
+                </Container>
+			</Column>
+		</Row>
+	</Page>
+
+	<Lists>
+		<List File="static.txt" Prefix="StaticPrefix" CountLength="4" />
+	</Lists>
+
+	<Sets>
+        <Set ID="Example set">
+            <!-- Configure whether the Set is enabled based on a query -->
+            <Enabled>
+                <Query Type="IfElse">
+                    <IF SourceID="ProcApps" Equals="TRUE" Result="TRUE" />
+                </Query>
+            </Enabled>
+
+			
+			<List ID="AppSet1_" UseValue="TRUE" />
+			<List ID="AppList" CountLength="3" />
+
+			<!-- Manually create variables in the set -->
+			<Variable Name="OSDRegisteredOrgName" Value="Contoso" />
+			<Variable Name="OSDTimeZone" Value="New Zealand Standard Time" />
+			<Variable Name="OSDDomainOUName">
+				<Value>LDAP://OU=MyOu,DC=Servers,DC=contoso,DC=com</Value>
+			</Variable>
+		</Set>
+    </Sets>
+</TsGui>

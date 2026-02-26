@@ -36,7 +36,9 @@ namespace TsGui.Options
         //properties
         public bool IsToggle { get; set; }
         public string Path { get; set; }
+        public string Lists { get; set; }
         public string ID { get; set; }
+        public string List { get; set; }
         public string VariableName { get; set; }
         public string InactiveValue { get; set; } = "TSGUI_INACTIVE";
         public string CurrentValue

@@ -44,6 +44,8 @@ namespace TsGui.Authentication.ExposedPassword
         public IPassword PasswordSource { get; set; }
         public IPassword PasswordConfirmationSource { get; set; }
         public string Path { get; set; }
+        public string Lists { get; set; }
+
         public string AuthID { get; set; }
         public List<string> RequiredGroups { get; private set; } = new List<string>();
 

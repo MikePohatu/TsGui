@@ -24,18 +24,19 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using TsGui.Grouping;
 using TsGui.Linking;
+using TsGui.Lists;
 using TsGui.Queries;
 
 namespace TsGui.Sets
 {
-    public class Set: GroupableBlindBase, ILinkTarget
+    public class Set: GroupableBlindBase, ILinkTarget, IConfigParent
     {
         private List<Variable> _variables = new List<Variable>();
         private QueryPriorityList _enabledQueries;
-        public List<SetList> SetLists { get; } = new List<SetList>();
+        public List<BaseList> Lists { get; } = new List<BaseList>();
 
-        public string Path { get; private set; } = Director.Instance.DefaultPath;
-        public string ID { get; private set; }
+        public string Path { get; set; } = Director.Instance.DefaultPath;
+        public string ID { get; private set; } = Guid.NewGuid().ToString();
 
         public string LiveValue
         {
@@ -87,8 +88,9 @@ namespace TsGui.Sets
 
             foreach (XElement element in inputXml.Elements("List"))
             {
-                var list = new SetList(element, this);
-                this.SetLists.Add(list);
+                var list = ListLibrary.LoadListFromXml(element);
+                ListLibrary.ClaimListOwnership(list.ID, this);
+                this.Lists.Add(list);
             }
         }
 
@@ -128,16 +130,16 @@ namespace TsGui.Sets
         /// <returns></returns>
         public async Task<List<Variable>> ProcessAsync()
         {
-            List<Variable> list = new List<Variable>();
-            list.AddRange(this._variables); 
+            List<Variable> vars = new List<Variable>();
+            vars.AddRange(this._variables); 
 
-            foreach (var setlist in this.SetLists)
+            foreach (var setlist in this.Lists)
             {
-                var processed = await setlist.ProcessAsync();
-                list.AddRange(processed);
+                var processedVars = await setlist.ProcessAsync();
+                vars.AddRange(processedVars);
             }
 
-            return list;
+            return vars;
         }
     }
 }

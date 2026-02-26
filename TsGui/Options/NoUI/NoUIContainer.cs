@@ -29,7 +29,7 @@ namespace TsGui.Options.NoUI
     {
         private List<IOption> _options = new List<IOption>();
         private List<NoUIContainer> _containers = new List<NoUIContainer>();
-        
+        public string Lists { get; private set; }
         //constructors
         public NoUIContainer(XElement InputXml) : base()
         {
@@ -37,6 +37,7 @@ namespace TsGui.Options.NoUI
         }
         public NoUIContainer(NoUIContainer Parent, XElement InputXml) : base(Parent)
         {
+            this.Lists = Parent.Lists;
             this.LoadXml(InputXml);
         }
 
@@ -44,6 +45,7 @@ namespace TsGui.Options.NoUI
         private new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
+            this.Lists = XmlHandler.GetStringFromXml(InputXml,"Lists", string.Empty);
             foreach (XElement opx in InputXml.Elements())
             {
                 if (opx.Name == "NoUIOption")
@@ -61,7 +63,7 @@ namespace TsGui.Options.NoUI
         private void AddOption (IOption Option)
         {
             this._options.Add(Option);
-            Director.Instance.AddOptionToLibary(Option);
+            OptionLibrary.Add(Option);
         }
     }
 }

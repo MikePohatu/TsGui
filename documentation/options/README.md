@@ -78,6 +78,8 @@ GuiOptions have the following common configuration elements:
 ### Label
 This will configure the text of the label to be shown to the left or right of the GuiOption control. 
 
+If you don't set a label, the value set for Variable will also apply to the Label. 
+
 ### HelpText (Tooltip) 
 Setting a value in the ```<HelpText>``` will configure the text of the tooltip that will appear to the user when they hover over the GuiOption.
 

@@ -27,6 +27,7 @@ using TsGui.Authentication;
 using TsGui.Scripts;
 using MessageCrap;
 using TsGui.Sets;
+using TsGui.Lists;
 
 namespace TsGui
 {
@@ -54,6 +55,7 @@ namespace TsGui
             StyleLibrary.Reset();
             GroupLibrary.Reset();
             OptionLibrary.Reset();
+            ListLibrary.Reset();
             ScriptLibrary.Reset();
             AuthLibrary.Reset();
             SetLibrary.Reset();

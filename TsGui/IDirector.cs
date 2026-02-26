@@ -49,7 +49,6 @@ namespace TsGui
         Task ReloadAsync();
 
         void CloseWithError(string Title, string Message);
-        void AddOptionToLibary(IOption Option);
         //void MoveNext();
         //void MovePrevious();
         Task FinishAsync();

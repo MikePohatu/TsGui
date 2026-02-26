@@ -58,10 +58,10 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.5.3.4\lib\net46\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.5.5.1\lib\net46\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
@@ -127,9 +127,13 @@
     <Compile Include="Diagnostics\TestingWindowUI.xaml.cs">
       <DependentUpon>TestingWindowUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IConfigParent.cs" />
     <Compile Include="Linking\ILinkSource.cs" />
     <Compile Include="Linking\Topics.cs" />
+    <Compile Include="Lists\BaseList.cs" />
+    <Compile Include="Lists\ListLibrary.cs" />
     <Compile Include="Options\MiscOption.cs" />
+    <Compile Include="Lists\OptionList.cs" />
     <Compile Include="Prebuilt\Options\PrebuiltWifiDisconnected.cs" />
     <Compile Include="Prebuilt\PrebuiltFactory.cs" />
     <Compile Include="Queries\ActiveDirectory\ADOrgUnitGroupsQuery.cs" />
@@ -147,7 +151,7 @@
     <Compile Include="Scripts\ScriptLibrary.cs" />
     <Compile Include="Scripts\ScriptResult.cs" />
     <Compile Include="Scripts\ScriptSettings.cs" />
-    <Compile Include="Sets\SetList.cs" />
+    <Compile Include="Lists\FileList.cs" />
     <Compile Include="Sets\Set.cs" />
     <Compile Include="Sets\SetLibrary.cs" />
     <Compile Include="Timers\GuiTimeout.cs" />

@@ -16,16 +16,18 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using Core.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TsGui.Sets;
 using WindowsHelpers;
 
-namespace TsGui.Sets
+namespace TsGui.Lists
 {
-    public class SetList
+    public class FileList: BaseList
     {
         private static List<string> _defaultPaths = new List<string>
         {
@@ -34,19 +36,30 @@ namespace TsGui.Sets
             Directory.GetCurrentDirectory() + "\\"
         };
         private string _file;
-        private string _prefix;
-        private int _countLength;
-        private Set _parent;
 
-        public SetList(XElement inputXml, Set Parent)
+
+        public FileList(string file, IConfigParent parent): base (parent)
         {
-            this._parent = Parent;
-            this._file = XmlHandler.GetStringFromXml(inputXml, "File", null);
-            this._prefix = XmlHandler.GetStringFromXml(inputXml, "Prefix", null);
-            this._countLength = XmlHandler.GetIntFromXml(inputXml, "CountLength", 2);
+            this._file = file;
+            this.ID = file; 
+
+            if (string.IsNullOrEmpty(this._file)) { throw new KnownException("List missing File attribute", ""); }
         }
 
-        public async Task<List<Variable>> ProcessAsync()
+
+        public override void LoadXml(XElement inputxml)
+        {
+            base.LoadXml(inputxml);
+
+            this._file = XmlHandler.GetStringFromXml(inputxml, "File", this._file);
+            if (string.IsNullOrWhiteSpace(this._file))
+            { throw new KnownException("File attribute is required for File List", inputxml.ToString()); }
+
+            if (string.IsNullOrWhiteSpace(this.ID))
+            { this.ID = this._file; }
+        }
+
+        public override async Task<List<Variable>> ProcessAsync()
         {
             string filecontents = string.Empty;
             if (this._file.StartsWith("http://") || this._file.StartsWith("https://") || this._file.StartsWith("ftp://"))
@@ -103,7 +116,7 @@ namespace TsGui.Sets
                     string value = parts.Length > 1 ? parts[1] : null;
                     if (name != null)
                     {
-                        variables.Add(new Variable(name, value, this._parent.Path));
+                        variables.Add(new Variable(name, value, this._path));
                     }
                 }
             }
@@ -121,7 +134,7 @@ namespace TsGui.Sets
                 if (!string.IsNullOrWhiteSpace(line))
                 {
                     count++;
-                    variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), line, this._parent.Path));
+                    variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), line, this._path));
                 }
             }
 

@@ -43,6 +43,7 @@ namespace TsGui.Options.NoUI
           
         //properties
         public string Path { get; set; }
+        public string Lists { get; set; }
         public string ID
         {
             get { return this._id; }
@@ -91,6 +92,7 @@ namespace TsGui.Options.NoUI
         //constructors     
         public NoUIOption(NoUIContainer Parent, XElement InputXml) : base(Parent)
         {
+            this.Lists = Parent.Lists;
             this.Path = Director.Instance.DefaultPath;
             this._querylist = new QueryPriorityList(this);
             this.LoadXml(InputXml);
@@ -110,9 +112,8 @@ namespace TsGui.Options.NoUI
 
             //path and variable can be set either as an element, or an attribute
             this.VariableName = XmlHandler.GetStringFromXml(InputXml, "Variable", this.VariableName);
-            this.VariableName = XmlHandler.GetStringFromXml(InputXml, "Variable", this.VariableName);
             this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
-            this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
+            this.Lists = XmlHandler.GetStringFromXml(InputXml, "Lists", this.Lists);
 
             this.InactiveValue = XmlHandler.GetStringFromXml(InputXml, "InactiveValue", this.InactiveValue);
             this._usecurrent = XmlHandler.GetBoolFromXml(InputXml, "UseCurrent", this._usecurrent);
