@@ -14,6 +14,7 @@
 ## Overview
 Lists create multiple variables. They are designed to be used with the "[Install applications according to dynamic variable list](https://learn.microsoft.com/en-us/mem/configmgr/osd/understand/task-sequence-steps#BKMK_InstallApplication)" task sequence option in ConfigMgr. 
 
+Lists require TsGui version 2.3.0.0 or above. 
 
 ## Sets vs Lists
 A [Set](./Sets.md) can contain one or more Variables, and one or more [Lists](./Lists.md). Think of a List as creating a dataset, a Set as a container of one or more datasets. 
