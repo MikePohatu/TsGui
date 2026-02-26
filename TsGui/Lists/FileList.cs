@@ -47,7 +47,7 @@ namespace TsGui.Lists
         }
 
 
-        public new void LoadXml(XElement inputxml)
+        public override void LoadXml(XElement inputxml)
         {
             base.LoadXml(inputxml);
 

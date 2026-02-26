@@ -26,7 +26,7 @@ namespace TsGui.Lists
     {
         protected string _prefix;
         protected int _countLength = 2;
-        protected string _path;
+        protected string _path = Director.Instance.DefaultPath;
         protected IConfigParent _parent;
 
         public string ID { get; protected set; }
@@ -36,7 +36,7 @@ namespace TsGui.Lists
             this.UpdateParent(parent);
         }
 
-        public void LoadXml(XElement inputxml)
+        public virtual void LoadXml(XElement inputxml)
         {
             this._prefix = XmlHandler.GetStringFromXml(inputxml, "Prefix", this._prefix);
             this._countLength = XmlHandler.GetIntFromXml(inputxml, "CountLength", _countLength);

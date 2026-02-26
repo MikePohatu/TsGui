@@ -48,7 +48,7 @@ namespace TsGui.Lists
             this._prefix = this.ID;
         }
 
-        public new void LoadXml(XElement inputXml)
+        public override void LoadXml(XElement inputXml)
         {
             base.LoadXml(inputXml);
             if (string.IsNullOrEmpty(this._prefix)) { this._prefix = this.ID; }
