@@ -1,5 +1,14 @@
 # File Lists
 
+* [Importing from Files](#importing-from-files)
+  * [File Paths](#file-paths)
+  * [Dynamic List From Text File](#dynamic-list-from-text-file)
+    * [Example file](#example-file)
+  * [Static List From Text File](#static-list-from-text-file)
+    * [File format](#file-format)
+    * [Example file](#example-file-1)
+
+
 ## Importing from Files
 Lists of variables/values can be imported from text file to simplify creating a list variables. Text files are read and imported when TsGui completes e.g. when the _Finish_ button is pressed. This is done so that only the files needed for the enabled [Sets](./Sets.md) are imported. 
 
@@ -23,9 +32,7 @@ Each line in the text file contains the value of variables to create.
 
 **Example XML**
 ```xml
-<Set>
-    <List File="file.txt" Prefix="VariablePrefix" />
-</Set>
+<List File="file.txt" Prefix="VariablePrefix" />
 ```
 
 
@@ -49,9 +56,7 @@ AppList03=7-zip_
 You can import a .txt file to set specific variables in a _Variable_Name=Variable_Value_ format. Don't set a _Prefix_ attribute to use this mode. 
 
 ```xml
-<Set>
-    <List File="file.txt" />
-</Set>
+<List File="file.txt" />
 ```
 
 #### File format

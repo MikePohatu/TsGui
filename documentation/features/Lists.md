@@ -1,5 +1,15 @@
 # Lists
 
+* [Overview](#overview)
+* [Sets vs Lists](#sets-vs-lists)
+* [List types](#list-types)
+* [Creating Lists](#creating-lists)
+  * [Lists in the Lists Block](#lists-in-the-lists-block)
+  * [Lists in a Set](#lists-in-a-set)
+  * [List IDs](#list-ids)
+* [Prefix](#prefix)
+* [CountLength](#countlength)
+
 
 ## Overview
 Lists create multiple variables. They are designed to be used with the "[Install applications according to dynamic variable list](https://learn.microsoft.com/en-us/mem/configmgr/osd/understand/task-sequence-steps#BKMK_InstallApplication)" task sequence option in ConfigMgr. 
