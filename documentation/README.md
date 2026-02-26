@@ -22,10 +22,10 @@ TsGui includes a number of features to help you customise your UI to fit your ne
 | [Compliance](/documentation/features/Compliance.md)  | Pre-flight checks |
 | [Groups and Toggles](/documentation/features/GroupsAndToggles.md) | Enable/disable UI elements |
 | [Option Linking](/documentation/features/OptionLinking.md)    | Use values of one UI element in another |
-| [Option Lists](/documentation/features/OptionLists.md)  | Add options to a dynamic variable list |
+| [Lists](/documentation/features/Lists.md)  | Add values to a dynamic variable list |
 | [Queries](/documentation/features/Queries.md) | Gather data for use in TsGui |
 | [Scripts](/documentation/features/Scripts.md) | Integration of separate scripts with TsGui |
-| [Sets](/documentation/features/Sets.md) | Create a set or dynamic list of variables |
+| [Sets](/documentation/features/Sets.md) | Create a set of variables and/or lists |
 | [Styles (previously Formatting)](/documentation/features/Styles.md) | Layout, look and feel |
 | [TsGui Output](/documentation/features/TsGuiOutput.md) | Saving values to Task Sequence variables or Registry |
 | [Validation](/documentation/features/Validation.md) | Check user input |

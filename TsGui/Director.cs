@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -448,6 +448,12 @@ namespace TsGui
                 {
                     SetLibrary.LoadXml(x);
                 }
+
+                x = SourceXml.Element("Lists");
+                if (x != null)
+                {
+                    ListLibrary.LoadXml(x);
+                }
             }
         }
 
@@ -505,7 +511,8 @@ namespace TsGui
                 EnvironmentController.AddVariable(variable);
             }
 
-            foreach (Variable variable in ListLibrary.GetVariables())
+            var listvars = await ListLibrary.ProcessAllAsync();
+            foreach (Variable variable in listvars)
             {
                 EnvironmentController.AddVariable(variable);
             }

@@ -46,7 +46,6 @@ namespace TsGui.View.GuiOptions
         public bool IsToggle { get; set; }
         public bool IsRendered { get; private set; } = false;
         public string ID { get; set; }
-        public string Path { get; set; }
         public UserControl Control { get; set; }
         public UserControl Label { get; set; }
         public GuiOptionBaseUI UserControl { get; set; }

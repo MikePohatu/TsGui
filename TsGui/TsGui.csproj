@@ -127,9 +127,10 @@
     <Compile Include="Diagnostics\TestingWindowUI.xaml.cs">
       <DependentUpon>TestingWindowUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IVariableParent.cs" />
+    <Compile Include="IConfigParent.cs" />
     <Compile Include="Linking\ILinkSource.cs" />
     <Compile Include="Linking\Topics.cs" />
+    <Compile Include="Lists\BaseList.cs" />
     <Compile Include="Lists\ListLibrary.cs" />
     <Compile Include="Options\MiscOption.cs" />
     <Compile Include="Lists\OptionList.cs" />
@@ -151,8 +152,6 @@
     <Compile Include="Scripts\ScriptResult.cs" />
     <Compile Include="Scripts\ScriptSettings.cs" />
     <Compile Include="Lists\FileList.cs" />
-    <Compile Include="Lists\IList.cs" />
-    <Compile Include="Sets\OptionSetList.cs" />
     <Compile Include="Sets\Set.cs" />
     <Compile Include="Sets\SetLibrary.cs" />
     <Compile Include="Timers\GuiTimeout.cs" />

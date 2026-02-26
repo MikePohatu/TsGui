@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2025 Mike Pohatu
 //
 // This file is part of TsGui.
@@ -20,13 +20,14 @@
 //  GuiFactory.cs
 //  Factory class just to generate the right class from the xml based on type
 
-using System;
-using System.Xml.Linq;
-using System.Windows;
-using Core.Logging;
 using Core.Diagnostics;
-using TsGui.View.GuiOptions.CollectionViews;
+using Core.Logging;
+using System;
+using System.Windows;
+using System.Xml.Linq;
+using TsGui.Options;
 using TsGui.Prebuilt;
+using TsGui.View.GuiOptions.CollectionViews;
 using TsGui.View.Layout;
 
 namespace TsGui.View.GuiOptions
@@ -46,7 +47,6 @@ namespace TsGui.View.GuiOptions
                 XAttribute xtype = OptionXml.Attribute("Type");
                 prebuiltx.Add(xtype);
                 IGuiOption g = GetGuiOption(prebuiltx, Parent);
-                g.Path = Director.Instance.DefaultPath;
                 g.LoadXml(OptionXml);
                 return g;
             }
@@ -138,8 +138,6 @@ namespace TsGui.View.GuiOptions
             #endregion
 
             OptionLibrary.Add(newoption);
-            if (string.IsNullOrWhiteSpace(newoption.Path)) { newoption.Path = Director.Instance.DefaultPath; }
-
             
             return newoption;
         }

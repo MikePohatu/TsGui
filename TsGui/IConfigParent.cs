@@ -21,10 +21,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TsGui
 {
-    public interface IVariableParent
+    /// <summary>
+    /// Item in the config that can propogate values down the entire config tree
+    /// </summary>
+    public interface IConfigParent
     {
         string Path { get; }
     }

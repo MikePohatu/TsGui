@@ -31,34 +31,30 @@ namespace TsGui.Lists
     /// "Install applications according to dynamic variable list"
     /// https://learn.microsoft.com/en-us/mem/configmgr/osd/understand/task-sequence-steps#BKMK_InstallApplication
     /// </summary>
-    public class OptionList: IList
+    public class OptionList: BaseList
     {
-        private string _prefix;
-        private int _countLength = 2;
         private bool _useValue = false;
         private string _valueTest = "TRUE"; //value to compare to value of Option. If not the same ignore the option
         private List<IOption> _options = new List<IOption>();
-        private readonly IVariableParent _parent;
-        private string _path;
-        public string ID { get; private set; }
 
-        public OptionList(string id, IVariableParent parent)
+
+
+        public OptionList(string id, IConfigParent parent): base(parent)
         {
+            this.UpdateParent(parent);
             this.ID = id;
             if (string.IsNullOrEmpty(this.ID)) { throw new KnownException("List missing ID attribute", ""); }
 
             this._prefix = this.ID;
-            this._parent = parent;
-            if (this._parent != null) { this._path = this._parent.Path; }
         }
 
-        public void LoadXml(XElement inputXml)
+        public new void LoadXml(XElement inputXml)
         {
-            this._path = XmlHandler.GetStringFromXml(inputXml, "Path", this._path);
-            this._prefix = XmlHandler.GetStringFromXml(inputXml, "Prefix", this._prefix);
+            base.LoadXml(inputXml);
             if (string.IsNullOrEmpty(this._prefix)) { this._prefix = this.ID; }
 
-            this._countLength = XmlHandler.GetIntFromXml(inputXml, "CountLength", this._countLength);
+            this._useValue = XmlHandler.GetBoolFromXml(inputXml, "UseValue", this._useValue);
+            this._valueTest = XmlHandler.GetStringFromXml(inputXml, "ValueTest", this._valueTest);
         }
 
         public void AddOption(IOption option)
@@ -66,14 +62,9 @@ namespace TsGui.Lists
             this._options.Add(option);
         }
 
-        public async Task<List<Variable>> ProcessAsync()
+        public override async Task<List<Variable>> ProcessAsync()
         {
             await Task.CompletedTask;
-            return this.GetVariables();
-        }
-
-        public List<Variable> GetVariables()
-        {
             var variables = new List<Variable>();
             int count = 0;
 
@@ -81,21 +72,21 @@ namespace TsGui.Lists
             {
                 string path = string.IsNullOrWhiteSpace(this._parent?.Path) ? option.Path : this._parent?.Path;
 
-                if (option.IsActive == true)
+                if (option.IsActive == false)
+                {
+                    continue;
+                }
+
+                if (this._useValue)
                 {
                     count++;
-                    if (this._useValue)
-                    {
-                        variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), option.CurrentValue, path));
-                    }
-                    else
-                    {
-                        //check if option value matches the test
-                        if (option.CurrentValue.Equals(this._valueTest, StringComparison.OrdinalIgnoreCase))
-                        {
-                            variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), option.VariableName, path));
-                        }
-                    }
+                    variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), option.CurrentValue, path));
+                }
+                //check if option value matches the test
+                else if (option.CurrentValue.Equals(this._valueTest, StringComparison.OrdinalIgnoreCase))
+                {
+                    count++;
+                    variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), option.VariableName, path));
                 }
             }
             return variables;

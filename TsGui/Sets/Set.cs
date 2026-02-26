@@ -29,14 +29,14 @@ using TsGui.Queries;
 
 namespace TsGui.Sets
 {
-    public class Set: GroupableBlindBase, ILinkTarget, IVariableParent
+    public class Set: GroupableBlindBase, ILinkTarget, IConfigParent
     {
         private List<Variable> _variables = new List<Variable>();
         private QueryPriorityList _enabledQueries;
-        public List<IList> Lists { get; } = new List<IList>();
+        public List<BaseList> Lists { get; } = new List<BaseList>();
 
-        public string Path { get; private set; } = Director.Instance.DefaultPath;
-        public string ID { get; private set; }
+        public string Path { get; set; } = Director.Instance.DefaultPath;
+        public string ID { get; private set; } = Guid.NewGuid().ToString();
 
         public string LiveValue
         {
@@ -88,7 +88,8 @@ namespace TsGui.Sets
 
             foreach (XElement element in inputXml.Elements("List"))
             {
-                var list = ListLibrary.GetListFromXml(element, this);
+                var list = ListLibrary.LoadListFromXml(element);
+                ListLibrary.ClaimListOwnership(list.ID, this);
                 this.Lists.Add(list);
             }
         }

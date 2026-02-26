@@ -24,6 +24,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using TsGui.Options;
 
 namespace TsGui.Lists
@@ -33,66 +34,97 @@ namespace TsGui.Lists
         /// <summary>
         /// All files lists, including those owned by others
         /// </summary>
-        private static Dictionary<string, FileList> AllFileLists { get; } = new Dictionary<string, FileList>();
-
+        private static Dictionary<string, BaseList> AllLists { get; } = new Dictionary<string, BaseList>();
 
         /// <summary>
-        /// All Option Lists, including those owned by others
+        /// File Lists owned and processed by the OptionLibrary
         /// </summary>
-        private static Dictionary<string, OptionList> AllOptionLists { get; } = new Dictionary<string, OptionList>();
+        private static Dictionary<string, BaseList> OwnedLists { get; } = new Dictionary<string, BaseList>();
+
 
         /// <summary>
-        /// Option Lists owned and processed by the OptionLibrary
+        /// Claim ownership of an BaseList i.e. remove it from ownership by the library. Will throw an 
+        /// exception if List has already been claimed by another owner
         /// </summary>
-        private static Dictionary<string, OptionList> OwnedOptionLists { get; } = new Dictionary<string, OptionList>();
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static BaseList ClaimListOwnership(string id, IConfigParent parent)
+        {
+            BaseList outlist;
+            if (OwnedLists.TryGetValue(id, out outlist))
+            {
+                OwnedLists.Remove(id);
+                outlist.UpdateParent(parent);
+                return outlist;
+            }
 
-
+            if (AllLists.TryGetValue(id, out outlist))
+            {
+                throw new KnownException($"Attempt to claim List multiple times: {id}", "");
+            }
+            throw new KnownException($"List not found: {id}", "");
+        }
 
         /// <summary>
-        /// Get the OptionList for the ID. A new one will be created if it doesn't already exist
+        /// Get a List by ID. Create a new default OptionList if doesn't exist
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public static OptionList GetOptionList(string id)
         {
-            OptionList outlist;
-            if (AllOptionLists.TryGetValue(id, out outlist) == false)
+            BaseList outlist = null;
+            OptionList outOptList = null;
+            if (AllLists.TryGetValue(id, out outlist))
             {
-                outlist = new OptionList(id, null);
-                AllOptionLists.Add(id, outlist);
-                OwnedOptionLists.Add(id, outlist);
+                outOptList = outlist as OptionList;
+                if (outOptList == null)
+                {
+                    throw new KnownException($"List with ID '{id}' already exists but is not an OptionList", "");
+                }
             }
-            return outlist;
+            else
+            {
+                outOptList = new OptionList(id, null);
+                AddList(outOptList);
+            }
+
+            return outOptList;
         }
 
         /// <summary>
-        /// Claim ownership of an OptionList i.e. remove it from ownership by the library. Will throw an 
-        /// exception if List has already been claimed by another owner
+        /// Get a List by File. Create a new default FileList if doesn't exist 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="file"></param>
         /// <returns></returns>
-        public static OptionList ClaimOptionListOwnership(string id)
+        /// <exception cref="KnownException"></exception>
+        public static FileList GetFileList(string file)
         {
-            OptionList outlist;
-            if (OwnedOptionLists.TryGetValue(id, out outlist))
+            BaseList outlist = null;
+            FileList outFileList = null;
+            if (AllLists.TryGetValue(file, out outlist))
             {
-                OwnedOptionLists.Remove(id);
-                return outlist;
+                outFileList = outlist as FileList;
+                if (outFileList == null)
+                {
+                    throw new KnownException($"List with File '{file}' already exists but is not a FileList", "");
+                }
+            }
+            else
+            {
+                outFileList = new FileList(file, null);
+                AddList(outFileList);
             }
 
-            if (AllOptionLists.TryGetValue(id, out outlist))
-            {
-                throw new KnownException($"Attempt to claim OptionList multiple times: {id}", "");
-            }
-            throw new KnownException($"OptionList not found: {id}", "");
+            return outFileList;
         }
 
-        public static List<Variable> GetVariables()
+        public async static Task<List<Variable>> ProcessAllAsync()
         {
             var variables = new List<Variable>();
-            foreach (OptionList optList in OwnedOptionLists.Values)
+            foreach (BaseList list in OwnedLists.Values)
             {
-                variables.AddRange(optList.GetVariables());
+                var listvars = await list.ProcessAsync();
+                variables.AddRange(listvars);
             }
 
             return variables;
@@ -102,42 +134,67 @@ namespace TsGui.Lists
         {
             foreach (XElement listxml in inputxml.Elements("List"))
             {
-                IList newlist = GetListFromXml(listxml, null);
-
+                BaseList newlist = LoadListFromXml(listxml);
             }
         }
 
-        public static IList GetListFromXml(XElement inputxml, IVariableParent parent)
+        /// <summary>
+        /// Add an OptionList to the Library
+        /// </summary>
+        /// <param name="list"></param>
+        /// <exception cref="KnownException"></exception>
+        private static void AddList(BaseList list)
+        {
+            BaseList outList;
+            if (AllLists.TryGetValue(list.ID, out outList))
+            {
+                throw new KnownException($"Duplicate ID found adding List ID: {list.ID}","");
+            }
+            AllLists.Add(list.ID, list);
+            OwnedLists.Add(list.ID, list);
+        } 
+
+        /// <summary>
+        /// Factory method to get a List from an XML config. Load the XML for existing Lists
+        /// </summary>
+        /// <param name="inputxml"></param>
+        /// <returns></returns>
+        /// <exception cref="KnownException"></exception>
+        public static BaseList LoadListFromXml(XElement inputxml)
         {
             if (inputxml == null || inputxml.Name.ToString().Equals("List", StringComparison.OrdinalIgnoreCase) == false)
             {
                 throw new KnownException("Invalid XML name passed to GetListFromXml function", inputxml.ToString());
             }
 
-            string id = XmlHandler.GetStringFromXml(inputxml, "ID", null);
-            if (id != null)
-            {
-                var list = new OptionList(id, parent);
-                if (inputxml != null) { list.LoadXml(inputxml); }
-                return list;
-            }
+            BaseList list = null;
 
             string file = XmlHandler.GetStringFromXml(inputxml, "File", null);
+            string id = XmlHandler.GetStringFromXml(inputxml, "ID", null);
+
+            if (file == null && id == null)
+            { throw new KnownException("No valid list type found in XML, set a File or ID attribute", inputxml.ToString()); }
+
             if (file != null)
             {
-                var list = new FileList(inputxml, parent);
-                return list;
+                list = GetFileList(file);
+            }
+            else
+            {
+                list = GetOptionList(id);
             }
 
-            throw new KnownException("No valid list type found in XML, set a File or ID attribute", inputxml.ToString()); 
+            list.LoadXml(inputxml);
+            return list;
         }
+
         /// <summary>
         /// Clear the loaded lists
         /// </summary>
         public static void Reset()
         {
-            AllOptionLists.Clear();
-            OwnedOptionLists.Clear();
+            AllLists.Clear();
+            OwnedLists.Clear();
         }
     }
 }

@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using Core.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +27,7 @@ using WindowsHelpers;
 
 namespace TsGui.Lists
 {
-    public class FileList: IList
+    public class FileList: BaseList
     {
         private static List<string> _defaultPaths = new List<string>
         {
@@ -35,22 +36,30 @@ namespace TsGui.Lists
             Directory.GetCurrentDirectory() + "\\"
         };
         private string _file;
-        private string _prefix;
-        private int _countLength;
-        private string _path;
-        private readonly IVariableParent _parent;
 
-        public FileList(XElement inputXml, IVariableParent Parent)
+
+        public FileList(string file, IConfigParent parent): base (parent)
         {
-            this._parent = Parent;
-            this._path = Parent?.Path;
-            this._file = XmlHandler.GetStringFromXml(inputXml, "File", null);
-            this._prefix = XmlHandler.GetStringFromXml(inputXml, "Prefix", null);
-            this._countLength = XmlHandler.GetIntFromXml(inputXml, "CountLength", 2);
-            this._path = XmlHandler.GetStringFromXml(inputXml, "Path", this._path);
+            this._file = file;
+            this.ID = file; 
+
+            if (string.IsNullOrEmpty(this._file)) { throw new KnownException("List missing File attribute", ""); }
         }
 
-        public async Task<List<Variable>> ProcessAsync()
+
+        public new void LoadXml(XElement inputxml)
+        {
+            base.LoadXml(inputxml);
+
+            this._file = XmlHandler.GetStringFromXml(inputxml, "File", this._file);
+            if (string.IsNullOrWhiteSpace(this._file))
+            { throw new KnownException("File attribute is required for File List", inputxml.ToString()); }
+
+            if (string.IsNullOrWhiteSpace(this.ID))
+            { this.ID = this._file; }
+        }
+
+        public override async Task<List<Variable>> ProcessAsync()
         {
             string filecontents = string.Empty;
             if (this._file.StartsWith("http://") || this._file.StartsWith("https://") || this._file.StartsWith("ftp://"))

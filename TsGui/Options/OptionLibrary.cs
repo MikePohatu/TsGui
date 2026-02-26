@@ -52,13 +52,15 @@ namespace TsGui.Options
             //split and process the lists
             if (string.IsNullOrWhiteSpace(option.Lists) == false)
             {
-                foreach (string list in option.Lists.Split(','))
+                foreach (string listID in option.Lists.Split(','))
                 {
-
-                    if (string.IsNullOrWhiteSpace(list) == false)
+                    if (string.IsNullOrWhiteSpace(listID) == false)
                     {
-                        var optList = ListLibrary.GetOptionList(list);
-                        optList.AddOption(option);
+                        var optList = ListLibrary.GetOptionList(listID);
+                        if (optList != null)
+                        {
+                            optList.AddOption(option);
+                        }
                     }
                 }
             }

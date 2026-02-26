@@ -27,10 +27,11 @@ using System.Xml.Linq;
 using TsGui.Validation;
 using System.Collections.Generic;
 using TsGui.View.Layout.Events;
+using System;
 
 namespace TsGui.View.Layout
 {
-    public abstract class BaseLayoutElement: GroupableUIElementBase, IEventer
+    public abstract class BaseLayoutElement: GroupableUIElementBase, IEventer, IConfigParent
     {
         private bool _showgridlines;
         public Style LabelStyle { get { return this.Style.LabelStyle; } }
@@ -40,6 +41,7 @@ namespace TsGui.View.Layout
         public LayoutEvents Events { get; private set; }
         public string Lists { get; private set; }
 
+        public string Path { get; protected set; } = Director.Instance.DefaultPath;
 
         public bool ShowGridLines
         {
