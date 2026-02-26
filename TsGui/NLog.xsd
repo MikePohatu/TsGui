@@ -445,29 +445,29 @@
           <xs:element name="parameter" minOccurs="0" maxOccurs="unbounded" type="NLog.Targets.NLogViewerParameterInfo" />
           <xs:element name="ndcItemSeparator" type="xs:string" minOccurs="0" maxOccurs="1" default=" " />
           <xs:element name="loggerName" type="Layout" minOccurs="0" maxOccurs="1" />
-          <xs:element name="includeSourceInfo" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
-          <xs:element name="includeScopeNested" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="includeScopeProperties" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
-          <xs:element name="includeNdc" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
+          <xs:element name="includeScopeNested" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
+          <xs:element name="includeSourceInfo" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="includeEventProperties" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
           <xs:element name="includeCallSite" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="formattedMessage" type="Layout" minOccurs="0" maxOccurs="1" />
           <xs:element name="appInfo" type="Layout" minOccurs="0" maxOccurs="1" />
           <xs:element name="layout" type="Layout" minOccurs="0" maxOccurs="1" />
-          <xs:element name="includeNLogData" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
+          <xs:element name="includeNdc" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="onOverflow" type="NLog.Targets.NetworkTargetOverflowAction" minOccurs="0" maxOccurs="1" default="Split" />
           <xs:element name="sslProtocols" type="System.Security.Authentication.SslProtocols" minOccurs="0" maxOccurs="1" default="None" />
           <xs:element name="sendTimeoutSeconds" type="xs:integer" minOccurs="0" maxOccurs="1" default="0" />
           <xs:element name="onQueueOverflow" type="NLog.Targets.NetworkTargetQueueOverflowAction" minOccurs="0" maxOccurs="1" default="Discard" />
           <xs:element name="onConnectionOverflow" type="NLog.Targets.NetworkTargetConnectionsOverflowAction" minOccurs="0" maxOccurs="1" default="Discard" />
-          <xs:element name="address" type="Layout" minOccurs="0" maxOccurs="1" />
+          <xs:element name="connectionCacheSize" type="xs:integer" minOccurs="0" maxOccurs="1" default="5" />
           <xs:element name="maxConnections" type="xs:integer" minOccurs="0" maxOccurs="1" default="100" />
           <xs:element name="keepConnection" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
           <xs:element name="keepAliveTimeSeconds" type="xs:integer" minOccurs="0" maxOccurs="1" default="0" />
-          <xs:element name="connectionCacheSize" type="xs:integer" minOccurs="0" maxOccurs="1" default="5" />
+          <xs:element name="address" type="Layout" minOccurs="0" maxOccurs="1" />
           <xs:element name="maxQueueSize" type="xs:integer" minOccurs="0" maxOccurs="1" default="10000" />
           <xs:element name="compress" type="NLog.Targets.NetworkTargetCompressionType" minOccurs="0" maxOccurs="1" default="None" />
           <xs:element name="compressMinBytes" type="xs:integer" minOccurs="0" maxOccurs="1" default="0" />
+          <xs:element name="noDelay" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="maxMessageSize" type="xs:integer" minOccurs="0" maxOccurs="1" default="65000" />
           <xs:element name="encoding" type="xs:string" minOccurs="0" maxOccurs="1" default="utf-8" />
           <xs:element name="lineEnding" type="LineEndingMode" minOccurs="0" maxOccurs="1" />
@@ -493,9 +493,9 @@
             <xs:documentation>Log4j:event logger-xml-attribute. Default: ${logger}</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="includeSourceInfo" type="xs:boolean">
+        <xs:attribute name="includeScopeProperties" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Indicates whether to include source info (file name and line number) in the information sent over the network.</xs:documentation>
+            <xs:documentation>Whether to include the contents of the T:NLog.ScopeContext properties-dictionary.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="includeScopeNested" type="xs:boolean">
@@ -503,14 +503,9 @@
             <xs:documentation>Whether to include log4j:NDC in output from T:NLog.ScopeContext nested context.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="includeScopeProperties" type="xs:boolean">
+        <xs:attribute name="includeSourceInfo" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Whether to include the contents of the T:NLog.ScopeContext properties-dictionary.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="includeNdc" type="xs:boolean">
-          <xs:annotation>
-            <xs:documentation>Whether to include log4j:NDC in output from T:NLog.ScopeContext nested context.</xs:documentation>
+            <xs:documentation>Indicates whether to include source info (file name and line number) in the information sent over the network.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="includeEventProperties" type="xs:boolean">
@@ -538,9 +533,9 @@
             <xs:documentation>Instance of T:NLog.Layouts.Log4JXmlEventLayout that is used to format log messages.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="includeNLogData" type="xs:boolean">
+        <xs:attribute name="includeNdc" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Indicates whether to include NLog-specific extensions to log4j schema.</xs:documentation>
+            <xs:documentation>Whether to include log4j:NDC in output from T:NLog.ScopeContext nested context.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="onOverflow" type="NLog.Targets.NetworkTargetOverflowAction">
@@ -568,9 +563,9 @@
             <xs:documentation>Action that should be taken, when more connections than P:NLog.Targets.NetworkTarget.MaxConnections.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="address" type="SimpleLayoutAttribute">
+        <xs:attribute name="connectionCacheSize" type="xs:integer">
           <xs:annotation>
-            <xs:documentation>Network address.</xs:documentation>
+            <xs:documentation>Size of the connection cache (number of connections which are kept alive). Requires P:NLog.Targets.NetworkTarget.KeepConnection = true</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="maxConnections" type="xs:integer">
@@ -588,9 +583,9 @@
             <xs:documentation>The number of seconds a connection will remain idle before the first keep-alive probe is sent</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="connectionCacheSize" type="xs:integer">
+        <xs:attribute name="address" type="SimpleLayoutAttribute">
           <xs:annotation>
-            <xs:documentation>Size of the connection cache (number of connections which are kept alive). Requires P:NLog.Targets.NetworkTarget.KeepConnection = true</xs:documentation>
+            <xs:documentation>Network address.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="maxQueueSize" type="xs:integer">
@@ -606,6 +601,11 @@
         <xs:attribute name="compressMinBytes" type="xs:integer">
           <xs:annotation>
             <xs:documentation>Skip compression when protocol payload is below limit to reduce overhead in cpu-usage and additional headers</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="noDelay" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Whether to disable the delayed ACK timer, and avoid delay of 200 ms. Default = false.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="maxMessageSize" type="xs:integer">
@@ -712,6 +712,7 @@
           <xs:element name="useDefaultRowHighlightingRules" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
           <xs:element name="highlight-row" minOccurs="0" maxOccurs="unbounded" type="NLog.Targets.ConsoleRowHighlightingRule" />
           <xs:element name="highlight-word" minOccurs="0" maxOccurs="unbounded" type="NLog.Targets.ConsoleWordHighlightingRule" />
+          <xs:element name="noColor" type="Layout" minOccurs="0" maxOccurs="1" />
         </xs:choice>
         <xs:attribute name="name" type="xs:string">
           <xs:annotation>
@@ -766,6 +767,11 @@
         <xs:attribute name="useDefaultRowHighlightingRules" type="xs:boolean">
           <xs:annotation>
             <xs:documentation>Indicates whether to use default row highlighting rules.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="noColor" type="SimpleLayoutAttribute">
+          <xs:annotation>
+            <xs:documentation>Support NO_COLOR=1 environment variable. See also https://no-color.org/</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>
@@ -877,6 +883,7 @@
           <xs:element name="autoFlush" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="detectConsoleAvailable" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="encoding" type="xs:string" minOccurs="0" maxOccurs="1" default="IBM437" />
+          <xs:element name="forceWriteLine" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
           <xs:element name="stdErr" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="writeBuffer" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
         </xs:choice>
@@ -913,6 +920,11 @@
         <xs:attribute name="encoding" type="xs:string">
           <xs:annotation>
             <xs:documentation>The encoding for writing messages to the T:System.Console.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="forceWriteLine" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Whether to force M:System.Console.WriteLine (slower) instead of the faster internal buffering.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="stdErr" type="xs:boolean">
@@ -2013,6 +2025,7 @@
           <xs:element name="maxConnections" type="xs:integer" minOccurs="0" maxOccurs="1" default="100" />
           <xs:element name="compress" type="NLog.Targets.NetworkTargetCompressionType" minOccurs="0" maxOccurs="1" default="None" />
           <xs:element name="compressMinBytes" type="xs:integer" minOccurs="0" maxOccurs="1" default="0" />
+          <xs:element name="noDelay" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="maxMessageSize" type="xs:integer" minOccurs="0" maxOccurs="1" default="65000" />
           <xs:element name="encoding" type="xs:string" minOccurs="0" maxOccurs="1" default="utf-8" />
           <xs:element name="lineEnding" type="LineEndingMode" minOccurs="0" maxOccurs="1" />
@@ -2093,6 +2106,11 @@
             <xs:documentation>Skip compression when protocol payload is below limit to reduce overhead in cpu-usage and additional headers</xs:documentation>
           </xs:annotation>
         </xs:attribute>
+        <xs:attribute name="noDelay" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Whether to disable the delayed ACK timer, and avoid delay of 200 ms. Default = false.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
         <xs:attribute name="maxMessageSize" type="xs:integer">
           <xs:annotation>
             <xs:documentation>Maximum message size in bytes. On limit breach then P:NLog.Targets.NetworkTarget.OnOverflow action is activated.</xs:documentation>
@@ -2125,29 +2143,29 @@
           <xs:element name="parameter" minOccurs="0" maxOccurs="unbounded" type="NLog.Targets.NLogViewerParameterInfo" />
           <xs:element name="ndcItemSeparator" type="xs:string" minOccurs="0" maxOccurs="1" default=" " />
           <xs:element name="loggerName" type="Layout" minOccurs="0" maxOccurs="1" />
-          <xs:element name="includeSourceInfo" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
-          <xs:element name="includeScopeNested" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="includeScopeProperties" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
-          <xs:element name="includeNdc" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
+          <xs:element name="includeScopeNested" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
+          <xs:element name="includeSourceInfo" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="includeEventProperties" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="includeCallSite" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="formattedMessage" type="Layout" minOccurs="0" maxOccurs="1" />
           <xs:element name="appInfo" type="Layout" minOccurs="0" maxOccurs="1" />
           <xs:element name="layout" type="Layout" minOccurs="0" maxOccurs="1" />
-          <xs:element name="includeNLogData" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
+          <xs:element name="includeNdc" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="onOverflow" type="NLog.Targets.NetworkTargetOverflowAction" minOccurs="0" maxOccurs="1" default="Split" />
           <xs:element name="sslProtocols" type="System.Security.Authentication.SslProtocols" minOccurs="0" maxOccurs="1" default="None" />
           <xs:element name="sendTimeoutSeconds" type="xs:integer" minOccurs="0" maxOccurs="1" default="0" />
           <xs:element name="onQueueOverflow" type="NLog.Targets.NetworkTargetQueueOverflowAction" minOccurs="0" maxOccurs="1" default="Discard" />
           <xs:element name="onConnectionOverflow" type="NLog.Targets.NetworkTargetConnectionsOverflowAction" minOccurs="0" maxOccurs="1" default="Discard" />
-          <xs:element name="address" type="Layout" minOccurs="0" maxOccurs="1" />
+          <xs:element name="connectionCacheSize" type="xs:integer" minOccurs="0" maxOccurs="1" default="5" />
           <xs:element name="maxConnections" type="xs:integer" minOccurs="0" maxOccurs="1" default="100" />
           <xs:element name="keepConnection" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
           <xs:element name="keepAliveTimeSeconds" type="xs:integer" minOccurs="0" maxOccurs="1" default="0" />
-          <xs:element name="connectionCacheSize" type="xs:integer" minOccurs="0" maxOccurs="1" default="5" />
+          <xs:element name="address" type="Layout" minOccurs="0" maxOccurs="1" />
           <xs:element name="maxQueueSize" type="xs:integer" minOccurs="0" maxOccurs="1" default="10000" />
           <xs:element name="compress" type="NLog.Targets.NetworkTargetCompressionType" minOccurs="0" maxOccurs="1" default="None" />
           <xs:element name="compressMinBytes" type="xs:integer" minOccurs="0" maxOccurs="1" default="0" />
+          <xs:element name="noDelay" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="maxMessageSize" type="xs:integer" minOccurs="0" maxOccurs="1" default="65000" />
           <xs:element name="encoding" type="xs:string" minOccurs="0" maxOccurs="1" default="utf-8" />
           <xs:element name="lineEnding" type="LineEndingMode" minOccurs="0" maxOccurs="1" />
@@ -2173,9 +2191,9 @@
             <xs:documentation>Log4j:event logger-xml-attribute. Default: ${logger}</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="includeSourceInfo" type="xs:boolean">
+        <xs:attribute name="includeScopeProperties" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Indicates whether to include source info (file name and line number) in the information sent over the network.</xs:documentation>
+            <xs:documentation>Whether to include the contents of the T:NLog.ScopeContext properties-dictionary.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="includeScopeNested" type="xs:boolean">
@@ -2183,14 +2201,9 @@
             <xs:documentation>Whether to include log4j:NDC in output from T:NLog.ScopeContext nested context.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="includeScopeProperties" type="xs:boolean">
+        <xs:attribute name="includeSourceInfo" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Whether to include the contents of the T:NLog.ScopeContext properties-dictionary.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="includeNdc" type="xs:boolean">
-          <xs:annotation>
-            <xs:documentation>Whether to include log4j:NDC in output from T:NLog.ScopeContext nested context.</xs:documentation>
+            <xs:documentation>Indicates whether to include source info (file name and line number) in the information sent over the network.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="includeEventProperties" type="xs:boolean">
@@ -2218,9 +2231,9 @@
             <xs:documentation>Instance of T:NLog.Layouts.Log4JXmlEventLayout that is used to format log messages.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="includeNLogData" type="xs:boolean">
+        <xs:attribute name="includeNdc" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Indicates whether to include NLog-specific extensions to log4j schema.</xs:documentation>
+            <xs:documentation>Whether to include log4j:NDC in output from T:NLog.ScopeContext nested context.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="onOverflow" type="NLog.Targets.NetworkTargetOverflowAction">
@@ -2248,9 +2261,9 @@
             <xs:documentation>Action that should be taken, when more connections than P:NLog.Targets.NetworkTarget.MaxConnections.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="address" type="SimpleLayoutAttribute">
+        <xs:attribute name="connectionCacheSize" type="xs:integer">
           <xs:annotation>
-            <xs:documentation>Network address.</xs:documentation>
+            <xs:documentation>Size of the connection cache (number of connections which are kept alive). Requires P:NLog.Targets.NetworkTarget.KeepConnection = true</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="maxConnections" type="xs:integer">
@@ -2268,9 +2281,9 @@
             <xs:documentation>The number of seconds a connection will remain idle before the first keep-alive probe is sent</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="connectionCacheSize" type="xs:integer">
+        <xs:attribute name="address" type="SimpleLayoutAttribute">
           <xs:annotation>
-            <xs:documentation>Size of the connection cache (number of connections which are kept alive). Requires P:NLog.Targets.NetworkTarget.KeepConnection = true</xs:documentation>
+            <xs:documentation>Network address.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="maxQueueSize" type="xs:integer">
@@ -2286,6 +2299,11 @@
         <xs:attribute name="compressMinBytes" type="xs:integer">
           <xs:annotation>
             <xs:documentation>Skip compression when protocol payload is below limit to reduce overhead in cpu-usage and additional headers</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="noDelay" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Whether to disable the delayed ACK timer, and avoid delay of 200 ms. Default = false.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="maxMessageSize" type="xs:integer">
@@ -2762,7 +2780,6 @@
           <xs:element name="includeEventProperties" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="includeGdc" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="includeScopeProperties" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
-          <xs:element name="escapeForwardSlash" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="excludeEmptyProperties" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="excludeProperties" type="xs:string" minOccurs="0" maxOccurs="1" />
           <xs:element name="indentJson" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
@@ -2783,11 +2800,6 @@
         <xs:attribute name="includeScopeProperties" type="xs:boolean">
           <xs:annotation>
             <xs:documentation>Whether to include the contents of the T:NLog.ScopeContext dictionary.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="escapeForwardSlash" type="xs:boolean">
-          <xs:annotation>
-            <xs:documentation>Should forward slashes be escaped? If true, / will be converted to \/</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="excludeEmptyProperties" type="xs:boolean">
@@ -2829,7 +2841,6 @@
       <xs:element name="layout" type="Layout" minOccurs="1" maxOccurs="1" />
       <xs:element name="defaultValue" type="Layout" minOccurs="0" maxOccurs="1" />
       <xs:element name="encode" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
-      <xs:element name="escapeForwardSlash" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
       <xs:element name="escapeUnicode" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
       <xs:element name="includeEmptyValue" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
       <xs:element name="valueType" type="xs:string" minOccurs="0" maxOccurs="1" />
@@ -2852,11 +2863,6 @@
     <xs:attribute name="encode" type="xs:boolean">
       <xs:annotation>
         <xs:documentation>Whether output should be encoded as Json-String-Property, or be treated as valid json.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="escapeForwardSlash" type="xs:boolean">
-      <xs:annotation>
-        <xs:documentation>Should forward slashes be escaped? If true, / will be converted to \/</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="escapeUnicode" type="xs:boolean">
