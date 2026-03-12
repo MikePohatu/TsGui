@@ -51,6 +51,15 @@ namespace TsGui.Authentication.Ldap
         public LdapAuthenticator(XElement inputxml)
         {
             this.LoadXml(inputxml);
+            Director.Instance.AppClosing += OnAppClosing;
+        }
+
+        private void OnAppClosing(object sender, EventArgs e)
+        {
+            if (this.Connection != null && this.Connection.IsConnected)
+            {
+                this.Connection.Close();
+            }
         }
 
         public async Task<AuthenticationResult> AuthenticateAsync()
@@ -165,25 +174,16 @@ namespace TsGui.Authentication.Ldap
             { throw new KnownException("Missing Domain attribute in XML:", inputxml.ToString()); }
 
             this.BaseDN = XmlHandler.GetStringFromXml(inputxml, "BaseDN", this.BaseDN);
-            if (string.IsNullOrWhiteSpace(this.BaseDN) == true)
-            { throw new KnownException("Missing BaseDN attribute in XML:", inputxml.ToString()); }
+            
 
             this._requireAllGroups = XmlHandler.GetBoolFromXml(inputxml, "RequireAllGroups", this._requireAllGroups);
             this._createIDs = XmlHandler.GetBoolFromXml(inputxml, "CreateGroupIDs", this._createIDs);
             this._ssl = XmlHandler.GetBoolFromXml(inputxml, "SSL", this._ssl);
 
-            var xa = inputxml.Attribute("Groups");
-            if (xa != null)
+            var xa = inputxml.Attribute("Group");
+            if (string.IsNullOrWhiteSpace(xa?.Value) == false)
             {
-                if (string.IsNullOrWhiteSpace(xa.Value) == false)
-                {
-                    var groupsplit = xa.Value.Split(',');
-                    foreach (var group in groupsplit)
-                    {
-                        if (string.IsNullOrWhiteSpace(group) == false)
-                        { this.AddGroup(group); }
-                    }
-                }
+                this.AddGroup(xa.Value);
             }
 
             var x = inputxml.Element("Groups");
@@ -195,6 +195,18 @@ namespace TsGui.Authentication.Ldap
                     { this.AddGroup(g.Value); }
 
                 }
+            }
+
+            //Check GroupBaseDN is set if needed, auto create if not
+            if (this.Groups.Count > 0 && string.IsNullOrWhiteSpace(this.BaseDN) == true)
+            {
+                var domainParts = this.Domain.Split('.');
+                for (int i = 0; i < domainParts.Length; i++)
+                {
+                    domainParts[i] = $"DC={domainParts[i]}";
+                }
+                this.BaseDN = string.Join(",", domainParts);
+                Log.Info($"BaseDN not set in config. Automatically set to {this.BaseDN}");
             }
         }
 
@@ -220,8 +232,10 @@ namespace TsGui.Authentication.Ldap
 
         private string GetGroupID(string groupname)
         {
+            string strippedName = groupname.Replace("=", "_").Replace(",","_").Replace(" ", "_");
             string validatedName = null;
-            if (Variable.ConfirmValidName(groupname, out validatedName) == false)
+
+            if (Variable.ConfirmValidName(strippedName, out validatedName) == false)
             {
                 Log.Warn($"Invalid characters removed from group ID '{groupname}'");
             }

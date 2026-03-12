@@ -64,21 +64,21 @@ namespace TsGui.Authentication.Ldap
             if (filter.StartsWith("!")) return EncodeNot(filter.Substring(1));
 
             // Simple attribute filters — check multi-char operators first
-            int geIdx    = filter.IndexOf(">=", StringComparison.Ordinal);
-            int leIdx    = filter.IndexOf("<=", StringComparison.Ordinal);
-            int approxIdx= filter.IndexOf("~=", StringComparison.Ordinal);
-            int eqIdx    = filter.IndexOf('=');
+            int geIdx = filter.IndexOf(">=", StringComparison.Ordinal);
+            int leIdx = filter.IndexOf("<=", StringComparison.Ordinal);
+            int approxIdx = filter.IndexOf("~=", StringComparison.Ordinal);
+            int eqIdx = filter.IndexOf('=');
 
-            if (geIdx    > 0) return EncodeSimple(BerTag.ContextC5, filter, geIdx,    2); // greaterOrEqual
-            if (leIdx    > 0) return EncodeSimple(BerTag.ContextC6, filter, leIdx,    2); // lessOrEqual
-            if (approxIdx> 0) return EncodeSimple(BerTag.ContextC8, filter, approxIdx,2); // approxMatch
+            if (geIdx > 0) return EncodeSimple(BerTag.ContextC5, filter, geIdx, 2); // greaterOrEqual
+            if (leIdx > 0) return EncodeSimple(BerTag.ContextC6, filter, leIdx, 2); // lessOrEqual
+            if (approxIdx > 0) return EncodeSimple(BerTag.ContextC8, filter, approxIdx, 2); // approxMatch
 
             if (eqIdx > 0)
             {
                 string attr = filter.Substring(0, eqIdx);
-                string val  = filter.Substring(eqIdx + 1);
+                string val = filter.Substring(eqIdx + 1);
 
-                if (val == "*")       return EncodePresentFilter(attr);
+                if (val == "*") return EncodePresentFilter(attr);
                 if (val.Contains("*")) return EncodeSubstringFilter(attr, val);
 
                 return EncodeSimple(BerTag.ContextC3, filter, eqIdx, 1); // equality
@@ -138,12 +138,47 @@ namespace TsGui.Authentication.Ldap
         private static byte[] EncodeSimple(byte tag, string filter, int opIdx, int opLen)
         {
             string attr = filter.Substring(0, opIdx);
-            string val  = filter.Substring(opIdx + opLen);
+            string val = filter.Substring(opIdx + opLen);
             var inner = new BerWriter()
                 .WriteOctetString(attr)
-                .WriteOctetString(val)
+                .WriteOctetString(UnescapeFilterValue(val))
                 .ToArray();
             return new BerWriter().WriteConstructed(tag, inner).ToArray();
+        }
+
+        /// <summary>
+        /// Decodes RFC 4515 filter value escaping: converts \xx hex sequences to their
+        /// raw byte values. Plain text characters are UTF-8 encoded as-is.
+        /// This is required for binary attribute filters such as objectSid and objectGUID,
+        /// where the value is expressed as \xx\xx\xx... escaped hex bytes.
+        /// </summary>
+        private static byte[] UnescapeFilterValue(string val)
+        {
+            // Fast path: no escaping present
+            if (!val.Contains("\\"))
+                return Encoding.UTF8.GetBytes(val);
+
+            var result = new List<byte>();
+            int i = 0;
+            while (i < val.Length)
+            {
+                if (val[i] == '\\' && i + 2 < val.Length)
+                {
+                    string hex = val.Substring(i + 1, 2);
+                    byte b;
+                    if (byte.TryParse(hex, System.Globalization.NumberStyles.HexNumber, null, out b))
+                    {
+                        result.Add(b);
+                        i += 3;
+                        continue;
+                    }
+                }
+                // Plain character — encode as UTF-8
+                foreach (byte b in Encoding.UTF8.GetBytes(new char[] { val[i] }))
+                    result.Add(b);
+                i++;
+            }
+            return result.ToArray();
         }
 
         private static byte[] EncodePresentFilter(string attr)
@@ -158,18 +193,18 @@ namespace TsGui.Authentication.Ldap
         {
             // SubstringFilter ::= SEQUENCE { type AttributeDescription, substrings SEQUENCE OF CHOICE {
             //     initial [0] AssertionValue, any [1] AssertionValue, final [2] AssertionValue } }
-            string[] parts     = val.Split('*');
-            var      subsWriter = new BerWriter();
+            string[] parts = val.Split('*');
+            var subsWriter = new BerWriter();
 
             if (!string.IsNullOrEmpty(parts[0]))
-                subsWriter.WriteTlv(BerTag.Context0, Encoding.UTF8.GetBytes(parts[0])); // initial
+                subsWriter.WriteTlv(BerTag.Context0, UnescapeFilterValue(parts[0])); // initial
 
             for (int i = 1; i < parts.Length - 1; i++)
                 if (!string.IsNullOrEmpty(parts[i]))
-                    subsWriter.WriteTlv(BerTag.Context1, Encoding.UTF8.GetBytes(parts[i])); // any
+                    subsWriter.WriteTlv(BerTag.Context1, UnescapeFilterValue(parts[i])); // any
 
             if (parts.Length > 1 && !string.IsNullOrEmpty(parts[parts.Length - 1]))
-                subsWriter.WriteTlv(BerTag.Context2, Encoding.UTF8.GetBytes(parts[parts.Length - 1])); // final
+                subsWriter.WriteTlv(BerTag.Context2, UnescapeFilterValue(parts[parts.Length - 1])); // final
 
             var substringsSeq = new BerWriter().WriteSequence(subsWriter.ToArray()).ToArray();
             var inner = new BerWriter()

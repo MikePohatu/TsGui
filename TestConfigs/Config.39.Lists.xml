@@ -20,7 +20,9 @@
 
 				<GuiOption Type="ComputerName" Lists="AppSet1_"/>
 
-                <GuiOption Type="CheckBox" Variable="Process Apps List" ID="ProcApps" />
+                <GuiOption Type="CheckBox" Variable="Process Apps List" ID="ProcApps">
+					<Checked />
+				</GuiOption>
 
 				<Container Lists="AppList">
                     <GuiOption Type="CheckBox" Variable="Microsoft Office 365" />

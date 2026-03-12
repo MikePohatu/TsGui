@@ -24,12 +24,6 @@ namespace TsGui.Authentication.Ldap
 {
     internal static class LdapMethods
     {
-        internal static string GetPrimaryGroup(LdapConnection connection, string userUPN)
-        {
-            string group = string.Empty;
-            return group;
-        }
-
         internal static Dictionary<string, bool> IsUserMemberOfGroups(LdapConnection connection, string userUPN, List<string> groups, string baseDN)
         {
             var memberships = new Dictionary<string, bool>();
@@ -37,6 +31,12 @@ namespace TsGui.Authentication.Ldap
 
             if (groups != null && groups.Count > 0)
             {
+                if (string.IsNullOrWhiteSpace(baseDN))
+                {
+                    Log.Error("LDAP: No BaseDN configured, required for group evaluation");
+                    return memberships;
+                }
+
                 var searchfilter = LdapSearchStrings.UserUpn(userUPN);
                 var userEntries = connection.Search(
                     baseDn: baseDN,
@@ -54,7 +54,7 @@ namespace TsGui.Authentication.Ldap
                 var primaryGroupEntry = connection.GetPrimaryGroup(userDn, baseDN, new[] { "distinguishedName" });
                 var primaryGroupDN = primaryGroupEntry?.GetFirstValue("distinguishedName");
 
-                if (string.IsNullOrWhiteSpace(primaryGroupDN) == false)
+                if (string.IsNullOrWhiteSpace(primaryGroupDN) == false && groups.Contains(primaryGroupDN))
                 {
                     memberships.Add(primaryGroupDN, true);
                 }

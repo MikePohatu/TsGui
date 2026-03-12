@@ -538,7 +538,6 @@ namespace TsGui
             else { EnvironmentController.AddVariable(new Variable("TsGui_Cancel", "TRUE", null)); }
             EnvironmentController.Release();
             this.ShutDown();
-
         }
 
         public void CloseWithError(string Title, string Message)
