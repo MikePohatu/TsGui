@@ -35,6 +35,7 @@ namespace TsGui.Authentication.Ldap
 
         private AuthState _state = AuthState.NotAuthed;
         private string _domain;
+        private string _server;
         private bool _requireAllGroups = false;
         private bool _createIDs = false;
         public bool _ssl = true;
@@ -58,7 +59,7 @@ namespace TsGui.Authentication.Ldap
         {
             if (this.Connection != null && this.Connection.IsConnected)
             {
-                this.Connection.Close();
+                this.Connection?.Close();
             }
         }
 
@@ -84,7 +85,7 @@ namespace TsGui.Authentication.Ldap
             try
             {
                 var options = new LdapConnectionOptions {
-                    Host = this._domain,
+                    Host = this._server,
                     UseSsl = this._ssl,
                 };
 
@@ -169,9 +170,11 @@ namespace TsGui.Authentication.Ldap
             if (string.IsNullOrWhiteSpace(this.AuthID) == true)
             { throw new KnownException("Missing AuthID attribute in XML:", inputxml.ToString()); }
 
-            this._domain = XmlHandler.GetStringFromXml(inputxml, "Domain", null);
+            this._domain = XmlHandler.GetStringFromXml(inputxml, "Domain", this._domain);
             if (string.IsNullOrWhiteSpace(this._domain) == true)
             { throw new KnownException("Missing Domain attribute in XML:", inputxml.ToString()); }
+
+            this._server = XmlHandler.GetStringFromXml(inputxml, "Server", _domain);
 
             this.BaseDN = XmlHandler.GetStringFromXml(inputxml, "BaseDN", this.BaseDN);
             

@@ -1,8 +1,20 @@
-# LDAP Authentication (BETA)
+# LDAP Authentication (ALPHA)
 
 LDAP authentication provides authentication against a domain. 
 
 It should be noted that this feature is new and hasn't been through a security review. Use at your own risk. 
+
+* [Overview](#overview)
+  * [The Authentication Block](#the-authentication-block)
+    * [SSL](#ssl)
+    * [Limiting authentication by group membership](#limiting-authentication-by-group-membership)
+    * [Any vs All groups](#any-vs-all-groups)
+    * [Using group membership to change the UI](#using-group-membership-to-change-the-ui)
+  * [The UsernameBox GuiOption](#the-usernamebox-guioption)
+  * [The PasswordBox GuiOption](#the-passwordbox-guioption)
+  * [The ActionButton GuiOption](#the-actionbutton-guioption)
+  * [Login Example](#login-example)
+
 
 ## Overview
 Active Directory Authentication requires three things in your TsGui configuration:
@@ -21,7 +33,19 @@ The Authentication element of your configuration must have a **Type="LDAP"** att
 <Authentication Type="LDAP" AuthID="ad_auth" Domain="domain.local"/>
 ```
 
+You can optionally specify a **Server** attribute to connect to a specific server for the domain.
+```xml
+<Authentication Type="LDAP" AuthID="ad_auth" Domain="domain.local" Server="server1.domain.local" />
+```
+
 When an authentication process is initiated, the [Username](#The-UsernameBox-GuiOption) and [Password](#The-PasswordBox-GuiOption) values entered by the user are used to authenticate against the configured domain. 
+
+#### SSL
+By default TsGui will use LDAPS to connect to the server. This can be problematic in WinPE due to limited trusted root certificates. To override this to use normal LDAP, set the **SSL** attribute to FALSE:
+```xml
+<Authentication Type="LDAP" AuthID="ad_auth" Domain="domain.local" SSL="FALSE" />
+```
+
 
 #### Limiting authentication by group membership
 

@@ -1,8 +1,9 @@
-Version 2.3.1.0
+Version 2.4.0.3
 Release date: 13 Mar 2026
 
 *Features
 	Updated Lists feature to allow for Lists output separate from Variable name
+	Added LDAP authentication feature (ALPHA)
 
 *Changes
 	If a Variable attribute is not set, the GuiOption will not output a variable.
