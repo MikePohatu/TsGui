@@ -68,19 +68,6 @@ namespace TsGui.View.GuiOptions
             get { return this._maxlength; }
             set { this._maxlength = value; this.OnPropertyChanged(this, "MaxLength"); }
         }
-        public override IEnumerable<Variable> Variables
-        {
-            get
-            {
-                if ((this.IsActive == false) && (this.PurgeInactive == true))
-                { return null; }
-                else
-                {
-                    var variable = new Variable(this.VariableName, this.ControlText, this.Path);
-                    return new List<Variable> { variable };
-                }
-            }
-        }
 
         protected string _validationtext;
         public string ValidationText

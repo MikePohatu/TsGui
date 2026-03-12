@@ -63,7 +63,20 @@ namespace TsGui.View.GuiOptions
         }
         public virtual Control InteractiveControl { get; set; }
         public abstract string CurrentValue { get; }
-        public abstract IEnumerable<Variable> Variables { get; }
+        public string ListsOutput { get; protected set; }
+        public virtual IEnumerable<Variable> Variables
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.VariableName) || ((this.IsActive == false) && (PurgeInactive == true)))
+                { return null; }
+                else
+                {
+                    var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
+                    return new List<Variable> { variable };
+                }
+            }
+        }
         public string LiveValue
         {
             get
@@ -129,6 +142,9 @@ namespace TsGui.View.GuiOptions
             this.ShowGridLines = XmlHandler.GetBoolFromXml(InputXml, "ShowGridLines", this.Parent.ShowGridLines);
             this.InactiveValue = XmlHandler.GetStringFromXml(InputXml, "InactiveValue", this.InactiveValue);
             this.TabIndex = XmlHandler.GetIntFromXml(InputXml, "TabIndex", this.TabIndex);
+            this.ListsOutput = XmlHandler.GetStringFromXml(InputXml, "ListOutput", this.VariableName);
+            this.ListsOutput = XmlHandler.GetStringFromXml(InputXml, "ListsOutput", this.VariableName);
+
             this.SetLayoutRightLeft();
 
             XAttribute xa = InputXml.Attribute("ID");

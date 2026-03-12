@@ -22,6 +22,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsGui.Linking;
+using TsGui.Lists;
 
 namespace TsGui.Options
 {
@@ -29,6 +30,11 @@ namespace TsGui.Options
     {
         IEnumerable<Variable> Variables { get; }
         string LiveValue { get; }
+
+        /// <summary>
+        /// The value that will go to the Lists feature, defaults to the VariableName unless set in XML
+        /// </summary>
+        string ListsOutput { get; }
         string VariableName { get; }
         string InactiveValue { get; }
         bool PurgeInactive { get; set; }

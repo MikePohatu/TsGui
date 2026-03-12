@@ -39,6 +39,7 @@ namespace TsGui.Options
         public string Lists { get; set; }
         public string ID { get; set; }
         public string List { get; set; }
+        public string ListsOutput { get; protected set; }
         public string VariableName { get; set; }
         public string InactiveValue { get; set; } = "TSGUI_INACTIVE";
         public string CurrentValue
@@ -69,6 +70,7 @@ namespace TsGui.Options
             this.Path = Director.Instance.DefaultPath;
             this.CurrentValue = value;
             this.VariableName = variablename;
+            this.ListsOutput = this.VariableName;
             this.NotifyViewUpdate();
         }
 

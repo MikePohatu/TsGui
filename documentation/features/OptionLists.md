@@ -6,6 +6,7 @@
 * [How values are set](#how-values-are-set)
   * [ValueTest attribute](#valuetest-attribute)
   * [UseValue attribute](#usevalue-attribute)
+* [GuiOption Variables](#guioption-variables)
 * [Inheritance](#inheritance)
 
 
@@ -27,10 +28,10 @@ The **Prefix** attribute defines the prefix of a list of variables to create. Ea
 You add an Option to one or more lists by adding the Lists attribute to it with the ID of the desired list. You can add multiple list IDs separated by a comma.
 
 ```xml
-<GuiOption Type="CheckBox" Lists="Lis1,List2">
+<GuiOption Type="CheckBox" Label="App1" Lists="Lis1,List2">
 ```
 
-A list will be automatically created when you add an option if it doesn't already exist (i.e. created in the [Lists block](#the-lists-block) or in a [Set](./Sets.md)) with the specified ID and the prefix set to the same as the ID. 
+A list will be automatically created when you add an option if it doesn't already exist (i.e. created in the [Lists block](#the-lists-block) or in a [Set](./Sets.md)). The names used in the Lists attribute will be used as the ID and prefix. 
 
 In this way the configuration can be simplified if you only need the default List settings and you don't need to dynamically enable or disable the list using a Set. Just add the relevant options to the List and you're done. 
 
@@ -42,7 +43,7 @@ Because Option Lists are designed to be used with [Install applications accordin
 ```xml
 <Container Lists="AppList">
     <GuiOption Type="CheckBox" Variable="Microsoft Office 365" />
-    <GuiOption Type="CheckBox" Variable="7-zip" />
+    <GuiOption Type="CheckBox" Variable="7-zip" ListsOutput="7-zip 25.01" />
     <GuiOption Type="CheckBox" Variable="Adobe Creative Cloud" />
 </Container>
 ```
@@ -54,9 +55,7 @@ By default, when you click Finish, the Option List will evaluate all associated 
 1. If the option isn't [enabled](/documentation/features/GroupsAndToggles.md), it will be ignored
 2. The value of the option is compared against an attribute called **ValueTest**. The default value of ValueTest is TRUE i.e. the default value of a ticked CheckBox. 
 3. If ValueTest matches the value of the option, the option is processed as part of the list
-4. Variables are created with a name based on the prefix, and an incrementing number. The value is the **Variable Name** of the option. 
-
-Note that the GuiOptions added to the List will still create their configured variables as normal.
+4. Variables are created with a name based on the prefix, and an incrementing number. The value is the value of the **ListsOutput** attribute the option. If no ListsOutput attribute is set, the value of the **Variable** attribute is used instead.
 
 This behaviour can be overridden using the attributes below.
 
@@ -72,6 +71,16 @@ If you want to create variables using the value of option rather than the variab
 
 ```xml
 <List ID="VariableList1" UseValue="TRUE" />
+```
+
+
+## GuiOption Variables
+
+
+By default, GuiOptions added to a List will still create their configured variables as normal. If you don't want this to happen, don't set a Variable attribute, but make sure to set both **Label** and **ListsOutput** attributes:
+
+```xml
+<GuiOption Type="CheckBox" Lists="AppList1" Label="7-zip" ListsOutput="7-zip 25.01" />
 ```
 
 ## Inheritance

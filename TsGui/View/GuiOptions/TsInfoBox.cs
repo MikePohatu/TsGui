@@ -46,19 +46,6 @@ namespace TsGui.View.GuiOptions
                 this.SetValue(value, null);
             }
         }
-        public override IEnumerable<Variable> Variables
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(this.VariableName) == false)
-                {
-                    var variable = new Variable(this.VariableName, this.ControlText, this.Path);
-                    return new List<Variable> { variable };
-                }
-                else
-                { return null; }
-            }
-        }
 
         //constructor
         public TsInfoBox(XElement InputXml, ParentLayoutElement Parent) : base(Parent)

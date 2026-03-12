@@ -86,7 +86,7 @@ namespace TsGui.Lists
                 else if (option.CurrentValue.Equals(this._valueTest, StringComparison.OrdinalIgnoreCase))
                 {
                     count++;
-                    variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), option.VariableName, path));
+                    variables.Add(new Variable(this._prefix + count.ToString("D" + this._countLength), option.ListsOutput, path));
                 }
             }
             return variables;

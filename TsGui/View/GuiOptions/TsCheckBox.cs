@@ -60,19 +60,6 @@ namespace TsGui.View.GuiOptions
             }
         }
         public bool IsValid { get { return this.Validate(); } }
-        public override IEnumerable<Variable> Variables
-        {
-            get
-            {
-                if ((this.IsActive == false) && (PurgeInactive == true))
-                { return null; }
-                else
-                {
-                    var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
-                    return new List<Variable> { variable };
-                }
-            }
-        }
 
         public Thickness CbBorderMargin
         {
