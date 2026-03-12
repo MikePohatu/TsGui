@@ -44,6 +44,7 @@ namespace TsGui.Options.NoUI
         //properties
         public string Path { get; set; }
         public string Lists { get; set; }
+        public string ListsOutput { get; protected set; }
         public string ID
         {
             get { return this._id; }
@@ -68,11 +69,11 @@ namespace TsGui.Options.NoUI
         {
             get
             {
-                if ((this.IsActive == false) && (this.PurgeInactive == true))
+                if (string.IsNullOrEmpty(this.VariableName) || ((this.IsActive == false) && (this.PurgeInactive == true)))
                 { return null; }
                 else
-                { 
-                    var variable = new Variable(this.VariableName, this._value, this.Path);
+                {
+                    var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
                     return new List<Variable> { variable };
                 }
             }
@@ -114,6 +115,8 @@ namespace TsGui.Options.NoUI
             this.VariableName = XmlHandler.GetStringFromXml(InputXml, "Variable", this.VariableName);
             this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
             this.Lists = XmlHandler.GetStringFromXml(InputXml, "Lists", this.Lists);
+            this.ListsOutput = XmlHandler.GetStringFromXml(InputXml, "ListOutput", this.VariableName);
+            this.ListsOutput = XmlHandler.GetStringFromXml(InputXml, "ListsOutput", this.VariableName);
 
             this.InactiveValue = XmlHandler.GetStringFromXml(InputXml, "InactiveValue", this.InactiveValue);
             this._usecurrent = XmlHandler.GetBoolFromXml(InputXml, "UseCurrent", this._usecurrent);

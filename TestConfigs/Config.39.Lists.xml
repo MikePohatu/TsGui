@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TsGui LiveData="TRUE" Output="ConfigMgr" PurgeInactive="TRUE">
 	<Height>370</Height>
-	<Width>410</Width>
+	<Width>550</Width>
 
 	<HardwareEval />
 
 	<Heading>
 		<Title>Lists Test</Title>
-		<Text>Don't check Office to make sure numbers still work properly.</Text>
+		<Text>Don't check Office to make sure numbers still work properly. 7-zip has no variable, only ListsOutput</Text>
 	</Heading>
 
 	<Page>
@@ -20,11 +20,13 @@
 
 				<GuiOption Type="ComputerName" Lists="AppSet1_"/>
 
-                <GuiOption Type="CheckBox" Variable="Process Apps List" ID="ProcApps" />
+                <GuiOption Type="CheckBox" Variable="Process Apps List" ID="ProcApps">
+					<Checked />
+				</GuiOption>
 
 				<Container Lists="AppList">
                     <GuiOption Type="CheckBox" Variable="Microsoft Office 365" />
-                    <GuiOption Type="CheckBox" Variable="7-zip" />
+                    <GuiOption Type="CheckBox" ListsOutput="7-zip 21.05" Label="7-zip" />
                     <GuiOption Type="CheckBox" Variable="Adobe Creative Cloud" />
                 </Container>
 			</Column>

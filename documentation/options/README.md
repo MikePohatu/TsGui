@@ -24,7 +24,7 @@ These are most commonly UI elements known as [GuiOptions](#guioptions). You can 
 The following are the configuration elements that are common to all option types. 
 
 ### Variable
-Set the variable name. By default this will configure the Task Sequence variable name. If [outputting to registry](/documentation/features/TsGuiOutput.md#registry-output), this will configure the name of the registry value. 
+Set the variable name. By default this will configure the Task Sequence variable name. If [outputting to registry](/documentation/features/TsGuiOutput.md#registry-output), this will configure the name of the registry value. If you don't set this, the option will not create any output. 
 
 ### SetValue
 To set the default value for the option, you use the ```<SetValue>``` element. This can contain one or more [Queries](/documentation/features/Queries.md) that will generate the value. Note that a ```<Value>``` element is actually a type of query that contains a static value.

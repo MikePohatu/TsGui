@@ -69,6 +69,9 @@ namespace TsGui.View.GuiOptions
         public override IEnumerable<Variable> Variables
         {
             get {
+                if (string.IsNullOrEmpty(this.VariableName) || ((this.IsActive == false) && (PurgeInactive == true)))
+                { return null;  }
+
                 if (this._expose) {
                     var variable = new Variable(this.VariableName, this._exposedpassword, this.Path);
                     return new List<Variable> { variable };

@@ -45,6 +45,7 @@ namespace TsGui.Authentication.ExposedPassword
         public IPassword PasswordConfirmationSource { get; set; }
         public string Path { get; set; }
         public string Lists { get; set; }
+        public string ListsOutput { get; protected set; }
 
         public string AuthID { get; set; }
         public List<string> RequiredGroups { get; private set; } = new List<string>();
@@ -82,6 +83,8 @@ namespace TsGui.Authentication.ExposedPassword
             this.VariableName = XmlHandler.GetStringFromXml(inputxml, "Variable", this.VariableName);
             this.Path = XmlHandler.GetStringFromXml(inputxml, "Path", this.Path);
             this.Path = XmlHandler.GetStringFromXml(inputxml, "Path", this.Path);
+            this.ListsOutput = XmlHandler.GetStringFromXml(inputxml, "ListOutput", this.VariableName);
+            this.ListsOutput = XmlHandler.GetStringFromXml(inputxml, "ListsOutput", this.VariableName);
 
             this.AuthID = XmlHandler.GetStringFromXml(inputxml, "AuthID", null);
             this.ID = XmlHandler.GetStringFromXml(inputxml, "ID", null);

@@ -22,6 +22,7 @@ using TsGui.Authentication.LocalConfig;
 using TsGui.Authentication.ExposedPassword;
 using System.Xml.Linq;
 using TsGui.Options;
+using TsGui.Authentication.Ldap;
 
 namespace TsGui.Authentication
 {
@@ -42,6 +43,8 @@ namespace TsGui.Authentication
                 {
                     case "ActiveDirectory":                     
                         return new ActiveDirectoryAuthenticator(inputxml);
+                    case "LDAP":
+                        return new LdapAuthenticator(inputxml);
                     case "Password":
                         return new LocalConfigPasswordAuthenticator(inputxml);
                     case "ExposedPassword":

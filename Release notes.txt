@@ -1,11 +1,12 @@
-Version 2.3.0.1
-Release date: 27 Feb 2026
+Version 2.4.0.3
+Release date: 13 Mar 2026
 
 *Features
-	Added Lists feature for better support of ConfigMgr dynamic variable lists
+	Updated Lists feature to allow for Lists output separate from Variable name
+	Added LDAP authentication feature (ALPHA)
 
 *Changes
-	If a Label is not set, the Variable name will now be used for the Label. 
+	If a Variable attribute is not set, the GuiOption will not output a variable.
 
 
 *Known issues
@@ -16,6 +17,16 @@ Release date: 27 Feb 2026
 
 *Requires Microsoft .NET (WinPE-NetFx) and Windows PowerShell (WinPE-PowerShell) be added to your boot image 
 
+
+---------------
+Version 2.3.0.1
+Release date: 27 Feb 2026
+
+*Features
+	Added Lists feature for better support of ConfigMgr dynamic variable lists
+
+*Changes
+	If a Label is not set, the Variable name will now be used for the Label. 
 
 ---------------
 Version 2.2.0.3

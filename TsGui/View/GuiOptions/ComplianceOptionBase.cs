@@ -78,19 +78,6 @@ namespace TsGui.View.GuiOptions
             get { return this._validationtext; }
             set { this._validationtext = value; this.OnPropertyChanged(this, "ValidationText"); }
         }
-        public override IEnumerable<Variable> Variables
-        {
-            get
-            {
-                if ((this.IsActive == false) && (this.PurgeInactive == true))
-                { return null; }
-                else
-                {
-                    var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
-                    return new List<Variable> { variable };
-                }
-            }
-        }
 
         //constructor
         public ComplianceOptionBase(ParentLayoutElement Parent): base (Parent)
