@@ -158,11 +158,21 @@ $appFiles = @("TsGui.exe",
     "TsGui.exe.config", 
     "Core.dll", 
     "Messaging.dll", 
-    "Microsoft.Management.Infrastructure.dll", 
     "Newtonsoft.Json.dll", 
     "NLog.dll", "NLog.config",
-    "System.Management.Automation.dll", 
     "WindowsHelpers.dll"
+    "Microsoft.Bcl.AsyncInterfaces.dll",
+    "Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+    "Microsoft.Extensions.Logging.Abstractions.dll",
+    "Microsoft.Management.Infrastructure.dll",
+    "Novell.Directory.Ldap.NETStandard.dll",
+    "System.Buffers.dll",
+    "System.Diagnostics.DiagnosticSource.dll",
+    "System.Management.Automation.dll",
+    "System.Memory.dll",
+    "System.Numerics.Vectors.dll",
+    "System.Runtime.CompilerServices.Unsafe.dll",
+    "System.Threading.Tasks.Extensions.dll"
 )
 
 $appFiles | ForEach-Object {

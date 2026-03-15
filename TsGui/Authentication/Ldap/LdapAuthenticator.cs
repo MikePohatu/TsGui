@@ -19,6 +19,7 @@
 using Core.Diagnostics;
 using Core.Logging;
 using MessageCrap;
+using Novell.Directory.Ldap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace TsGui.Authentication.Ldap
         private bool _requireAllGroups = false;
         private bool _createIDs = false;
         public bool _ssl = true;
+        private int _port = 636;
 
         public AuthState State { get { return this._state; } }
         public IPassword PasswordSource { get; set; }
@@ -57,17 +59,24 @@ namespace TsGui.Authentication.Ldap
 
         private void OnAppClosing(object sender, EventArgs e)
         {
-            if (this.Connection != null && this.Connection.IsConnected)
+            if (this.Connection != null && this.Connection.Connected)
             {
-                this.Connection?.Close();
+                this.Connection?.Disconnect();
             }
         }
 
         public async Task<AuthenticationResult> AuthenticateAsync()
         {
+            //Validate the user creds are in a valid format
             if (string.IsNullOrWhiteSpace(this.UsernameSource.Username) == true)
             {
                 Log.Warn("Cannot autheticate with empty username");
+                this.SetState(AuthState.AccessDenied);
+                return new AuthenticationResult(AuthState.AccessDenied);
+            }
+            if (this.UsernameSource.Username.Contains("@") == false)
+            {
+                Log.Warn("Username must be in UserPrincipalName format");
                 this.SetState(AuthState.AccessDenied);
                 return new AuthenticationResult(AuthState.AccessDenied);
             }
@@ -84,16 +93,15 @@ namespace TsGui.Authentication.Ldap
 
             try
             {
-                var options = new LdapConnectionOptions {
-                    Host = this._server,
-                    UseSsl = this._ssl,
+                this.Connection = new LdapConnection 
+                { 
+                    SecureSocketLayer = this._ssl
                 };
 
-                this.Connection = new LdapConnection(options);
-                this.Connection.Connect();
-                this.Connection.SimpleBind(this.UsernameSource.Username, this.PasswordSource.Password);
+                await this.Connection.ConnectAsync(this._server, this._port);
+                await this.Connection.BindAsync(this.UsernameSource.Username, this.PasswordSource.Password);
 
-                groupmemberships = LdapMethods.IsUserMemberOfGroups(this.Connection, this.UsernameSource.Username, this.Groups, this.BaseDN);
+                groupmemberships = await LdapMethods.IsUserMemberOfGroupsAsync(this.Connection, this.UsernameSource.Username, this.Groups, this.BaseDN);
 
                 //if there are no groups required, default auth is true, otherwise false and requires check
                 bool authorized = this.Groups.Count == 0;
@@ -114,7 +122,8 @@ namespace TsGui.Authentication.Ldap
                     {
                         foreach (var group in this.Groups)
                         {
-                            await this.UpdateGroupIDAsync(group, groupmemberships[group]);
+                            var groupIsMember = groupmemberships.ContainsKey(group) ? groupmemberships[group] : false;
+                            await this.UpdateGroupIDAsync(group, groupIsMember);
                         }
                     }
                 }
@@ -152,11 +161,12 @@ namespace TsGui.Authentication.Ldap
             return result;
         }
 
-        private async Task UpdateGroupIDAsync(string groupName, bool ismember)
+        private async Task UpdateGroupIDAsync(string groupDn, bool ismember)
         {
             string member = ismember.ToString().ToUpper();
-            Log.Debug($"Group: {groupName} | IsMember: {member}");
-            var option = LinkingHub.Instance.GetSourceOption(GetGroupID(groupName)) as MiscOption;
+            Log.Debug($"Group: {groupDn} | IsMember: {member}");
+            var groupID = GetGroupID(groupDn);
+            var option = LinkingHub.Instance.GetSourceOption(groupID) as MiscOption;
             if (option != null)
             {
                 option.CurrentValue = member;
@@ -182,6 +192,10 @@ namespace TsGui.Authentication.Ldap
             this._requireAllGroups = XmlHandler.GetBoolFromXml(inputxml, "RequireAllGroups", this._requireAllGroups);
             this._createIDs = XmlHandler.GetBoolFromXml(inputxml, "CreateGroupIDs", this._createIDs);
             this._ssl = XmlHandler.GetBoolFromXml(inputxml, "SSL", this._ssl);
+            
+            //set the defautl port for LDAP vs LDAPS
+            this._port = this._ssl ? 636 : 389;
+            this._port = XmlHandler.GetIntFromXml(inputxml, "Port", this._port);
 
             var xa = inputxml.Attribute("Group");
             if (string.IsNullOrWhiteSpace(xa?.Value) == false)

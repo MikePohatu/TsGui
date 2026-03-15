@@ -1,3 +1,22 @@
+Version 2.5.0.0
+Release date: 15 Mar 2026
+
+*Features
+	Migrated to Novell.Directory.LDAP
+
+*Changes
+	Upgraded target .Net to 4.7.2.
+
+
+*Known issues
+	TsGui is now based on .Net 4.7.2. Older .Net versions may not work
+	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
+	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
+	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
+
+*Requires Microsoft .NET (WinPE-NetFx) and Windows PowerShell (WinPE-PowerShell) be added to your boot image 
+
+---------------
 Version 2.4.0.3
 Release date: 13 Mar 2026
 
@@ -7,16 +26,6 @@ Release date: 13 Mar 2026
 
 *Changes
 	If a Variable attribute is not set, the GuiOption will not output a variable.
-
-
-*Known issues
-	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
-	An issue has been seen in the 1809 Windows 10 ADK WPF has been broken, causing an error in WPF based apps like TsGui. This is fixed in newer ADK versions. For more details and workarounds, see the following articles:
-	https://www.reddit.com/r/SCCM/comments/9me9vn/workaround_for_adk_1809_wpf_display_issue_replace/
-	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
-
-*Requires Microsoft .NET (WinPE-NetFx) and Windows PowerShell (WinPE-PowerShell) be added to your boot image 
-
 
 ---------------
 Version 2.3.0.1
