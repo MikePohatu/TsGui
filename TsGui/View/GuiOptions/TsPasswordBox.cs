@@ -51,8 +51,12 @@ namespace TsGui.View.GuiOptions
         private string _authenticationfailuremessage = "Authentication failed";
         private string _authorizationfailuremessage = "Authorization failed";
         private string _nopasswordmessage = "Password cannot be empty";
+        private string _nologinmessage = "Please login";
         private static SolidColorBrush _greenbrush = new SolidColorBrush(Colors.Green);
         private static SolidColorBrush _hovergreenbrush = new SolidColorBrush(Colors.OliveDrab);
+
+        private static SolidColorBrush _orangebrush = new SolidColorBrush(Colors.Orange);
+        private static SolidColorBrush _hoverorangebrush = new SolidColorBrush(Colors.DarkOrange);
 
         //Properties
         #region
@@ -128,6 +132,7 @@ namespace TsGui.View.GuiOptions
             this._authorizationfailuremessage = XmlHandler.GetStringFromXml(inputxml, "AuthorizationWarning", this._authorizationfailuremessage);
             this._authenticationfailuremessage = XmlHandler.GetStringFromXml(inputxml, "AuthenticationWarning", this._authenticationfailuremessage);
             this._nopasswordmessage = XmlHandler.GetStringFromXml(inputxml, "NoPasswordMessage", this._nopasswordmessage);
+            this._nologinmessage = XmlHandler.GetStringFromXml(inputxml, "NoLoginMessage", this._nologinmessage);
             this._expose = XmlHandler.GetBoolFromXml(inputxml, "ExposePassword", this._expose);
             this._allowempty = XmlHandler.GetBoolFromXml(inputxml, "AllowEmpty", this._allowempty);
 
@@ -166,7 +171,8 @@ namespace TsGui.View.GuiOptions
                 }
                 else if (this._authenticator.State == AuthState.NotAuthed)
                 {
-                    this.ValidationHandler.ToolTipHandler.Clear();
+                    this.ValidationText = this._nologinmessage;
+                    this.ValidationHandler.ToolTipHandler.ShowInformation();
                 }
                 else if (this._authenticator.State == AuthState.NoPassword)
                 {
