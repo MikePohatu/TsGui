@@ -62,6 +62,7 @@ namespace TsGui
 
         private bool _finished = false;
         private bool _firstinitcomplete = false;
+        private bool _silentMoving = false;
 
         //properties
         public bool StartupFinished { get; set; }
@@ -461,7 +462,6 @@ namespace TsGui
         //Navigate to the current page, and update the datacontext of the window
         private void UpdateWindow()
         {
-            Log.Trace("UpdateWindow called");
             this.ParentWindow.ContentArea.Navigate(this.CurrentPage.Page);
             this.ParentWindow.ContentArea.DataContext = this.CurrentPage;
             this.CurrentPage.Update();
@@ -589,7 +589,6 @@ namespace TsGui
         public void OnWindowMoving(object o, EventArgs e)
         {
             this.WindowMoving?.Invoke(this, new EventArgs());
-            this.ParentWindow.LocationChanged += this.OnWindowMoved;
         }
 
         /// <summary>
@@ -599,7 +598,23 @@ namespace TsGui
         /// <param name="e"></param>
         public void OnWindowMoved(object o, EventArgs e)
         {
-            this._movetimer.Start();
+            if (this._silentMoving == false) { this._movetimer.Start(); }
+        }
+
+        /// <summary>
+        /// Move the Window without triggering WindowMoved events
+        /// </summary>
+        public void StartResize()
+        {
+            this._silentMoving = true;
+        }
+
+        /// <summary>
+        /// Finish the silent move and re-enable triggering WindowMoved events
+        /// </summary>
+        public void FinishResize()
+        {
+            this._silentMoving = false;
         }
 
         /// <summary>

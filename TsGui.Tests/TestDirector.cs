@@ -61,5 +61,8 @@ namespace TsGui.Tests
 
         public void UpdatePage(TsPage page) { }
 
+        void IDirector.StartResize() { }
+
+        void IDirector.FinishResize() { }
     }
 }

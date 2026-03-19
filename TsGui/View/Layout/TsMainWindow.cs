@@ -22,7 +22,9 @@
 using System;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Xml.Linq;
 using TsGui.View.GuiOptions;
 using TsGui.View.Helpers;
@@ -171,18 +173,82 @@ namespace TsGui.View.Layout
         }
 
         /// <summary>
-        /// Set a temporary height for the Window. If you don't want to set one of the values, pass double.NaN.
+        /// Change the size of the Window, remaing on same center. If you don't want to set one of the values, pass double.NaN.
         /// The NaN will be reset to the default value set during configuration.
         /// </summary>
         /// <param name="height"></param>
         /// <param name="width"></param>
         public void ChangeSize(double height, double width)
         {
-            if (double.IsNaN(height) == false) { this.Style.Height = height; }
-            else { this.Style.Height = this._configuredHeight; }
+            double duration = 100;
+            double newHeight = this._configuredHeight;
+            double newWidth = this._configuredWidth;
 
-            if (double.IsNaN(width) == false) { this.Style.Width = width; }  
-            else { this.Style.Width = this._configuredWidth; }
+            if (double.IsNaN(height) == false) { newHeight = height; }
+            if (double.IsNaN(width) == false) { newWidth = width; }
+
+            var currentHeight = this.Style.Height;
+            var currentWidth = this.Style.Width;
+
+            this.Style.Height = newHeight;
+            this.Style.Width = newWidth;
+
+            var heightDiff = currentHeight - newHeight;
+            var widthDiff = currentWidth - newWidth;
+
+            if (heightDiff == 0 && widthDiff == 0) { return; }
+
+
+            //call StartResize so the OnWindowMove functions don't run.
+            Director.Instance.StartResize();
+            DoubleAnimation hAnimation = new DoubleAnimation
+            {
+                From = currentHeight,
+                To = newHeight,
+                Duration = TimeSpan.FromMilliseconds(duration),
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut }
+            };
+            DoubleAnimation wAnimation = new DoubleAnimation
+            {
+                From = currentWidth,
+                To = newWidth,
+                Duration = TimeSpan.FromMilliseconds(duration),
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+
+            this._parentwindow.BeginAnimation(Window.HeightProperty, hAnimation);
+            this._parentwindow.BeginAnimation(Window.WidthProperty, wAnimation);
+
+
+            if (heightDiff != 0 || widthDiff != 0)
+            {
+                var currentTop = ConfigData.TsMainWindow.WindowLocation.Top;
+                var currentLeft = ConfigData.TsMainWindow.WindowLocation.Left;
+                var newLeft = ConfigData.TsMainWindow.WindowLocation.Left + (widthDiff / 2);
+                var newTop = ConfigData.TsMainWindow.WindowLocation.Top + (heightDiff / 2);
+
+                DoubleAnimation xAnimation = new DoubleAnimation
+                {
+                    From = ConfigData.TsMainWindow.WindowLocation.Left,
+                    To = newLeft >= SystemParameters.VirtualScreenLeft ? newLeft : SystemParameters.VirtualScreenLeft,
+                    Duration = TimeSpan.FromMilliseconds(duration),
+                    EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut }
+                };
+                DoubleAnimation yAnimation = new DoubleAnimation
+                {
+                    From = ConfigData.TsMainWindow.WindowLocation.Top,
+                    To = newTop >= SystemParameters.VirtualScreenTop ? newTop : SystemParameters.VirtualScreenTop,
+                    Duration = TimeSpan.FromMilliseconds(duration),
+                    EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut }
+                };
+
+                this._parentwindow.BeginAnimation(Window.LeftProperty, xAnimation);
+                this._parentwindow.BeginAnimation(Window.TopProperty, yAnimation);
+            }
+
+            Director.Instance.FinishResize();
         }
+
     }
 }

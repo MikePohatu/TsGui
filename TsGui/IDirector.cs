@@ -58,5 +58,8 @@ namespace TsGui
         void OnPageLoaded(object o, RoutedEventArgs e);
         void OnWindowMoving(object o, EventArgs e);
         void OnWindowMouseUp(object o, RoutedEventArgs e);
+
+        void StartResize();
+        void FinishResize();
     }
 }
