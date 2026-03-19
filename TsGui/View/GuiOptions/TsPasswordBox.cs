@@ -164,6 +164,10 @@ namespace TsGui.View.GuiOptions
                     this.ControlStyle.BorderBrush = _greenbrush;
                     this.ControlStyle.MouseOverBorderBrush = _hovergreenbrush;
                 }
+                else if (this._authenticator.State == AuthState.NotAuthed)
+                {
+                    this.ValidationHandler.ToolTipHandler.Clear();
+                }
                 else if (this._authenticator.State == AuthState.NoPassword)
                 {
                     this.ValidationText = this._nopasswordmessage;
