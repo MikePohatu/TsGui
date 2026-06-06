@@ -94,7 +94,7 @@ namespace TsGui.Tests.Authentication
             source.SecureString = GetSecureStringFromString(args.AuthPassword);
             adauth.AddGroups(args.Groups);
             var result = adauth.AuthenticateAsync().Result;
-            NUnit.Framework.Assert.AreEqual(args.ExpectedState, result.State);
+            NUnit.Framework.Assert.That(args.ExpectedState == result.State);
         }
 
         public static IEnumerable<TestCaseData> ActiveDirectoryAuthentication_Authenticate_TestCases
