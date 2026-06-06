@@ -46,19 +46,6 @@ namespace TsGui.View.GuiOptions.CollectionViews
         //properties
         public bool Sort { get; set; } = false;
         public UserControl Icon { get; set; }
-        public override IEnumerable<Variable> Variables
-        {
-            get
-            {
-                if ((this.IsActive == false) && (this.PurgeInactive == true))
-                { return null; }
-                else
-                {
-                    var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
-                    return new List<Variable> { variable };
-                }
-            }
-        }
         public override string CurrentValue
         {
             get { return this._currentitem?.Value; }
@@ -89,6 +76,19 @@ namespace TsGui.View.GuiOptions.CollectionViews
 
 
         //Methods
+        public override IEnumerable<Variable> GetVariables()
+        {
+            if ((this.IsActive == false) && (this.PurgeInactive == true))
+            { return null; }
+            else
+            {
+                var varlist = Variable.GetIOptionVariableList(this);
+                var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
+                varlist.Add(variable);
+                return varlist;
+            }
+        }
+
         public void AddItemGroup(Group NewGroup)
         {
             Group g;

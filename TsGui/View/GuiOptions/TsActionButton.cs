@@ -37,7 +37,6 @@ namespace TsGui.View.GuiOptions
         private bool _isdefault;
 
         public override string CurrentValue { get { return null; } }
-        public override IEnumerable<Variable> Variables { get { return null; } }
         public string ButtonText
         {
             get { return this._buttontext; }
@@ -74,6 +73,8 @@ namespace TsGui.View.GuiOptions
 
 
         //Methods
+        public override IEnumerable<Variable> GetVariables() { return null; }
+
         public new void LoadXml(XElement inputxml)
         {
             //load the xml for the base class stuff

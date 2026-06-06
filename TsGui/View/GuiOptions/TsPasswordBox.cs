@@ -70,18 +70,19 @@ namespace TsGui.View.GuiOptions
             get { return this._maxlength; }
             set { this._maxlength = value; this.OnPropertyChanged(this, "MaxLength"); }
         }
-        public override IEnumerable<Variable> Variables
+        public override IEnumerable<Variable> GetVariables()
         {
-            get {
-                if (string.IsNullOrEmpty(this.VariableName) || ((this.IsActive == false) && (PurgeInactive == true)))
-                { return null;  }
+            if (string.IsNullOrEmpty(this.VariableName) || ((this.IsActive == false) && (PurgeInactive == true)))
+            { return null; }
 
-                if (this._expose) {
-                    var variable = new Variable(this.VariableName, this._exposedpassword, this.Path);
-                    return new List<Variable> { variable };
-                }
-                else { return null; }
+            if (this._expose)
+            {
+                var varlist = Variable.GetIOptionVariableList(this);
+                var variable = new Variable(this.VariableName, this._exposedpassword, this.Path);
+                varlist.Add(variable);
+                return varlist;
             }
+            else { return null; }
         }
         public ValidationHandler ValidationHandler { get; private set; }
 
@@ -114,6 +115,7 @@ namespace TsGui.View.GuiOptions
             this._passwordboxui.PasswordBox.Loaded += this.OnLoaded;
 
             Director.Instance.ConfigLoadFinished += this.OnConfigLoadFinished;
+            this.HiddenValueFlag = true;
         }
 
         private void SetDefaults()

@@ -94,6 +94,7 @@
                                 Width="Auto" MinWidth="50"/>
                         <DataGridTextColumn x:Name="_valuecolumn" MinWidth="50" Header="Value" Binding="{Binding LiveValue}"/>
                         <DataGridTextColumn x:Name="_pathcolumn" MinWidth="50" Header="Path" Binding="{Binding Path}"/>
+                        <DataGridTextColumn x:Name="_hideflagcolumn" MinWidth="50" Header="HiddenFlag" Binding="{Binding HiddenValueFlag}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

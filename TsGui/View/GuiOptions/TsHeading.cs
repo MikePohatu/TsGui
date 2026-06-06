@@ -46,7 +46,6 @@ namespace TsGui.View.GuiOptions
                 LinkingHub.Instance.SendUpdateMessage(this, null);
             }
         }
-        public override IEnumerable<Variable> Variables { get { return null; } }
 
         //constructor
         public TsHeading(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
@@ -57,6 +56,8 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;
             this.LoadXml(InputXml);
         }
+
+        public override IEnumerable<Variable> GetVariables() { return null; }
 
         public new void LoadXml(XElement InputXml)
         {
