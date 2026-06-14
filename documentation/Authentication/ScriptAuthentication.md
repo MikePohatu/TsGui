@@ -3,9 +3,11 @@
 
 * [Overview](#overview)
   * [The Authentication Block](#the-authentication-block)
-    * [Limiting authentication by group membership](#limiting-authentication-by-group-membership)
+  * [The authentication script](#the-authentication-script)
+  * [Authorization - TsGui or Script](#authorization---tsgui-or-script)
+  * [Limiting authentication by group membership](#limiting-authentication-by-group-membership)
     * [Any vs All groups](#any-vs-all-groups)
-    * [Using group membership to change the UI](#using-group-membership-to-change-the-ui)
+  * [Using group membership to change the UI](#using-group-membership-to-change-the-ui)
   * [The UsernameBox GuiOption](#the-usernamebox-guioption)
   * [The PasswordBox GuiOption](#the-passwordbox-guioption)
   * [The ActionButton GuiOption](#the-actionbutton-guioption)
@@ -30,7 +32,7 @@ Script Authentication requires three things in your TsGui configuration:
 ### The Authentication Block
 The Authentication element of your configuration must have a **Type="Script"** attribute and an **AuthID** attribute with a value that is unique within the config. This AuthID will be used by GuiOptions to reference and trigger the Authentication process.
 
-A **Script** element is requried to define the settings for the script. 
+A **Script** element is requried to define the settings for the script. See the [Scripts](/documentation/features/Scripts.md#script-files) documentation for advanced details of the \<Script\> block.
 
 ```xml
 <Authentication Type="Script" AuthID="auth">
@@ -38,13 +40,48 @@ A **Script** element is requried to define the settings for the script.
 </Authentication>
 ```
 
-When an authentication process is initiated, the [Username](#The-UsernameBox-GuiOption) and [Password](#The-PasswordBox-GuiOption) values are passed to the **Username** and **Password** parameters of the script. 
+### The authentication script
 
-Note that you don't have to add the Username and Password as [parameters](/documentation/features/Scripts.md#parameters) when configuring your \<Script\> block. These are automatically added at runtime using the values from the UsernameBox and PasswordBox. 
+TsGui will pass a the username as a string, and the password as a SecureString to the Username and Password parameters respectively. These values will come from the [UsernameBox](#the-usernamebox-guioption) and [PasswordBox](#the-passwordbox-guioption).
 
-#### Limiting authentication by group membership
+
+Note that you don't have to add the Username and Password as [parameters](/documentation/features/Scripts.md#parameters) when configuring your \<Script\> block above. These are automatically added at runtime using the values from the UsernameBox and PasswordBox. 
+
+```PowerShell
+Param (
+    [string]$Username,
+    [securestring]$Password
+)
+```
+
+TsGui is expecting the script to return a specific type of object as below. Your script is responsible for doing whatever processing is required, then updating the values of the object before returning it. 
+
+```PowerShell
+$result = [PSCustomObject]@{
+    IsAuthenticated = $false
+    IsAuthorized = $false
+    Message = $null
+    GroupMemberships = @{}
+}
+```
+
+*The message field is not used at this time, but may be used to pass messages to the UI in future*
+
+### Authorization - TsGui or Script
+The object above has two ways to configure authorization. 
+* IsAuthorized - The script updates this value to indicate whether the user is authorized to login.
+* GroupMemberships - The script returns a hashtable of groups and whether the user is a member. TsGui then compares this against the configured rules (see [below](#limiting-authentication-by-group-membership)).
+
+IsAuthorized assumes the script will evaluate user authorization, whereas GroupMemberships will return a list of memberships and TsGui will do the evaluation. 
+
+Generally it is recommended to choose one approach or the other. If you include both in your configuration, GroupMemberships will win. 
+
+
+### Limiting authentication by group membership
 
 You can accept authentication based on the groups the user is a member of. This is evaluation against the **GroupMemberships** field returned by the script.
+
+**Important**: the group names from your script must match the ones in your TsGui configuration. These are dictionary keys, and are case sensitive. TsGui will show an error if the keys are not found. 
 
 GroupMemberships is a hash table with the group name as the key, and a boolean to indicate whether the user is a member or not. 
 
@@ -88,7 +125,7 @@ By default, the authentication will be accepted if the user is a member of **any
 <Authentication Type="Script" AuthID="auth" Groups="group 1, group 2" RequireAllGroups="TRUE" />
 ```
 
-#### Using group membership to change the UI
+### Using group membership to change the UI
 It is sometimes useful to change the UI based on who is logged in. By setting the **CreateGroupIDs** attribute to TRUE, TsGui will create a variable with a matching ID for each AD group that can be used with the [option linking feature](/documentation/features/OptionLinking.md). The ID created for each group will in the format **%AuthID%_%GroupName%**\*. 
 
 Note that characters that aren't valid for Task Sequence Variable names will be removed. See [here](https://learn.microsoft.com/en-us/intune/configmgr/osd/understand/using-task-sequence-variables#bkmk_custom) for more details on valid task sequence variable names. 
@@ -257,6 +294,7 @@ Param (
 
 # The default authentication result. Update this object with the actual authentication and 
 # authorization results before returning it to the caller.
+
 $result = [PSCustomObject]@{
     IsAuthenticated = $false
     IsAuthorized = $false
