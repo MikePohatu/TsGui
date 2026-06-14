@@ -32,6 +32,12 @@ namespace TsGui.Scripts
         public string Name { get; set; }
         public bool IsSwitch { get; set; } = false;
 
+        public Parameter(string name, string value)
+        {
+            this.Name = name;
+            this._querylist = QueryPriorityList.GetSingleValueList(value, this);
+        }
+
         public Parameter(XElement InputXml)
         {
             this._linktarget = this;

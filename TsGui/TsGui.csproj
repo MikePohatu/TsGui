@@ -133,6 +133,8 @@
     <Compile Include="Authentication\Ldap\SaslChallenge.cs" />
     <Compile Include="Authentication\LocalConfig\LocalConfigPasswordAuthenticator.cs" />
     <Compile Include="Authentication\LocalConfig\Password.cs" />
+    <Compile Include="Authentication\Script\ScriptAuthenticator.cs" />
+    <Compile Include="Authentication\Script\ScriptAuthObject.cs" />
     <Compile Include="Config\ConfigBuilder.cs" />
     <Compile Include="Config\TsGuiRootConfig.cs" />
     <Compile Include="Connectors\RegistryConnector.cs" />

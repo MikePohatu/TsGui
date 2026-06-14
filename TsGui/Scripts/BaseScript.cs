@@ -93,6 +93,8 @@ namespace TsGui.Scripts
 
         public abstract Task RunScriptAsync();
 
+        public abstract Task RunScriptAsync(List<IParameter> runtimeParmas);
+
         public async Task OnReprocessAsync()
         {
             await this.RunScriptAsync();

@@ -99,5 +99,13 @@ namespace TsGui.Queries
             }
             return formatterlist;
         }
+
+        public static QueryPriorityList GetSingleValueList(string value, ILinkTarget linktarget)
+        {
+            var ql = new QueryPriorityList(linktarget);
+            var val = new ValueOnlyQuery(value);
+            ql.AddQuery(val);
+            return ql;
+        }
     }
 }

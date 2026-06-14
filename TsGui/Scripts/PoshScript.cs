@@ -118,6 +118,14 @@ namespace TsGui.Scripts
         /// <returns></returns>
         /// <exception cref="KnownException"></exception>
         public override async Task RunScriptAsync()
+        { await this.RunScriptAsync(null); }
+
+        /// <summary>
+        /// Run the posh script. Results can be consumed from the Result property when finished
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="KnownException"></exception>
+        public override async Task RunScriptAsync(List<IParameter> runtimeParmas)
         {
             if (this.IsInlineScript)
             {
@@ -156,6 +164,12 @@ namespace TsGui.Scripts
                 using (var posh = new PoshHandler(this.ScriptContent))
                 {
                     foreach (IParameter p in this.Parameters)
+                    {
+                        var value = await p.GetValue(null);
+                        posh.Runner.AddParameter(p.Name, value);
+                    }
+
+                    foreach (IParameter p in runtimeParmas)
                     {
                         var value = await p.GetValue(null);
                         posh.Runner.AddParameter(p.Name, value);

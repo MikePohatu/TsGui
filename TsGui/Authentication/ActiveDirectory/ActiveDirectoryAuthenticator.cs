@@ -195,7 +195,7 @@ namespace TsGui.Authentication.ActiveDirectory
             }
         }
 
-        public void AddGroup(string groupname)
+        private void AddGroup(string groupname)
         {
             this.Groups.Add(groupname);
             if (this._createIDs)

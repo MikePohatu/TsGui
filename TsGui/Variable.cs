@@ -73,7 +73,7 @@ namespace TsGui
         private static char[] _allowedFirstCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
 
         /// <summary>
-        /// Confirrm a string is a valid variable name. 
+        /// Confirm a string is a valid variable name. 
         /// </summary>
         /// <param name="variableName"></param>
         /// <returns></returns>
