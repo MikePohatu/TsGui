@@ -188,7 +188,15 @@ namespace TsGui.Authentication.Script
                         {
                             foreach (var group in this.Groups)
                             {
-                                await this.UpdateGroupIDAsync(group, authObj.GroupMemberships[group]);
+                                bool outval = false;
+                                if (authObj.GroupMemberships.TryGetValue(group, out outval))
+                                {
+                                    await this.UpdateGroupIDAsync(group, authObj.GroupMemberships[group]);
+                                }
+                                else
+                                {
+                                    throw new KnownException($"Group not found in script result: {group}\nCheck groups in your config match your script output (case sensitive)", string.Empty);
+                                }
                             }
                         }
                     }
@@ -196,12 +204,12 @@ namespace TsGui.Authentication.Script
 
                     if (authorized)
                     {
-                        Log.Info("Script auth authorised");
+                        Log.Info("Script auth: authorised");
                         newstate = AuthState.Authorised;
                     }
                     else
                     {
-                        Log.Info("Script auth not authorised");
+                        Log.Info("Script auth: not authorised");
                         newstate = AuthState.NotAuthorised;
                     }
                 }
