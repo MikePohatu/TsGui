@@ -7,6 +7,7 @@ It should be noted that there are limitations to what is possible in WinPE due t
 * [Active Directory Authentication](/documentation/Authentication/ActiveDirectoryAuthentication.md)
 * [LDAP Authentication](/documentation/Authentication/Ldap.md)
 * [Local Config Authentication](/documentation/Authentication/LocalConfigAuthentication.md)
+* [Script Authentication](/documentation/Authentication/ScriptAuthentication.md) (custom authentication)
 
 
 
