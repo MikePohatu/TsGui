@@ -3,6 +3,7 @@
 **Contents**
 * [Overview](#overview)
 * [ConfigMgr Output](#configmgr-output)
+  * ['Do not display this value' option](#do-not-display-this-value-option)
 * [Registry Output](#registry-output)
   * [DefaultPath](#defaultpath)
   * [HardwareEval](#hardwareeval)
@@ -25,6 +26,22 @@ To change the output, set the ```OutputType``` attribute at the top of your conf
 
 ## ConfigMgr Output
 If you don't set an ```Output``` attribute, ConfigMgr task sequence variable output is assumed. If TsGui cannot connect to the ConfigMgr task sequence COM object, it will assume you are running it outside of a task sequence for testing. Test mode will automatically launch so you can check your layout.
+
+
+### 'Do not display this value' option
+
+To enable the **Do not display this value** option for the Task Sequence variables created by TsGui, set the **HiddenValueFlag** attribute, e.g.
+```xml
+<GuiOption Type="ComputerName" HiddenValueFlag="TRUE" />
+```
+
+This creates an additional task sequnece variable with _HiddenValueFlag appended and a value of TRUE e.g. the GuiOption above will create the *ComputerName_HiddenValueFlag* and *ComputerName* variables. 
+
+Note that this attribute can be set futher up the tree e.g. on a Page, Row, Column, or Container, and it will apply to all child items unless overridden. 
+
+*Note:* I have been unable to find official documentation that confirms this behaviour. 
+
+This attribute requires version 2.4.0.5 or higher. 
 
 ## Registry Output
 When outputing to registry, the following points should be noted:

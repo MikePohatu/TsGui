@@ -16,7 +16,7 @@
 
 
 ## Overview
-Script authentication lets you use your own scripts to complete authentication. This would be useful if you want to authentication users against an internal web service for example. 
+Script authentication lets you use your own scripts to complete authentication. This would be useful if you want to authentication users against an internal web service for example. This feature requires version 2.4.0.5 or higher. 
 
 This makes use of the [Scripts](/documentation/features/Scripts.md) feature. 
 
