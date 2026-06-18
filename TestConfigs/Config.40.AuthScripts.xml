@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TsGui LiveData="TRUE" Output="ConfigMgr" PurgeInactive="TRUE">
+	<Height>370</Height>
+	<Width>410</Width>
+
+	<HardwareEval />
+
+	<Heading>
+		<Title>Test script auth</Title>
+		<Text>testing:password</Text>
+	</Heading>
+
+	<Authentication Type="Script" AuthID="auth" Domain="home.local" RequireAllGroups="FALSE" CreateGroupIDs="TRUE" SSL="TRUE">
+		<Script Type="PowerShell" xml:space="preserve">
+Param (
+    [string]$Username,
+    [securestring]$Password
+)
+
+# The default authentication result. Update this object with the actual authentication and 
+# authorization results before returning it to the caller.
+$result = [PSCustomObject]@{
+    IsAuthenticated = $false
+    IsAuthorized = $false
+    Message = $null
+    GroupMemberships = @{}
+}
+
+
+# Implement your authentication logic here. Update the $result object accordingly. 
+$plain = [System.Net.NetworkCredential]::new("", $password).Password
+
+if ($username -eq "testing" -and $plain -eq "password") {
+    $result.IsAuthenticated = $true
+    $result.IsAuthorized = $true
+    $result.Message = "Authentication successful"
+    $result.GroupMemberships["some group"] = $true
+    $result.GroupMemberships["some other group"] = $false
+}
+else {
+    $result.Message = "Invalid username or password"
+}
+
+return $result
+
+		</Script>
+		<Groups>
+			<Group>some group</Group>
+			<Group>some other group</Group>
+		</Groups>
+	</Authentication>
+
+
+	<Formatting>
+		<LeftCellWidth>210</LeftCellWidth>
+		<RightCellWidth>160</RightCellWidth>
+	</Formatting>
+
+	<Page>
+		<Row>
+			<Column>
+				<GuiOption Type="UsernameBox" AuthID="auth" Placeholder="user@20road.com" HiddenValueFlag="TRUE">
+					<Variable>VAR_Username</Variable>
+				</GuiOption>
+
+				<GuiOption Type="PasswordBox" AuthID="auth">
+					<Variable>VAR_PW</Variable>
+				</GuiOption>
+
+				<GuiOption Type="ActionButton" IsDefault="TRUE">
+					<Action Type="Authentication" AuthID="auth" />
+					<ButtonText>Login</ButtonText>
+				</GuiOption>
+			</Column>
+		</Row>
+	</Page>
+</TsGui>
