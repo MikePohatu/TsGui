@@ -169,10 +169,13 @@ namespace TsGui.Scripts
                         posh.Runner.AddParameter(p.Name, value);
                     }
 
-                    foreach (IParameter p in runtimeParmas)
+                    if (runtimeParmas  != null)
                     {
-                        var value = await p.GetValue(null);
-                        posh.Runner.AddParameter(p.Name, value);
+                        foreach (IParameter p in runtimeParmas)
+                        {
+                            var value = await p.GetValue(null);
+                            posh.Runner.AddParameter(p.Name, value);
+                        }
                     }
                     
                     if (!string.IsNullOrWhiteSpace(this._params)) { posh.Runner.AddArgument(this._params); }
