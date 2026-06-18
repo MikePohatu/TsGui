@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -41,6 +41,7 @@ namespace TsGui.Options
         public string List { get; set; }
         public string ListsOutput { get; protected set; }
         public string VariableName { get; set; }
+        public bool HiddenValueFlag { get; private set; } = false;
         public string InactiveValue { get; set; } = "TSGUI_INACTIVE";
         public string CurrentValue
         {
@@ -49,14 +50,6 @@ namespace TsGui.Options
             {
                 this._value = value;
                 this.NotifyViewUpdate();
-            }
-        }
-        public IEnumerable<Variable> Variables
-        {
-            get
-            {
-                var variable = new Variable(this.VariableName, this._value, this.Path);
-                return new List<Variable> { variable };
             }
         }
 
@@ -81,6 +74,11 @@ namespace TsGui.Options
         }
 
         //public methods
+        public IEnumerable<Variable> GetVariables()
+        {
+            var variable = new Variable(this.VariableName, this._value, this.Path);
+            return new List<Variable> { variable };
+        }
         public async Task UpdateLinkedValueAsync(Message message)
         {
             await Task.CompletedTask;

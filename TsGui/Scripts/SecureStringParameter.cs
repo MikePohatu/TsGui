@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -32,6 +32,13 @@ namespace TsGui.Scripts
 
         public string ID { get; private set; }
         public string Name { get; set; }
+
+
+        public SecureStringParameter(string name, IPassword passwordSource)
+        {
+            this.Name = name;
+            this._passwordSource = passwordSource;
+        }
 
         public SecureStringParameter(XElement InputXml)
         {

@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -58,5 +58,8 @@ namespace TsGui
         void OnPageLoaded(object o, RoutedEventArgs e);
         void OnWindowMoving(object o, EventArgs e);
         void OnWindowMouseUp(object o, RoutedEventArgs e);
+
+        void StartResize();
+        void FinishResize();
     }
 }

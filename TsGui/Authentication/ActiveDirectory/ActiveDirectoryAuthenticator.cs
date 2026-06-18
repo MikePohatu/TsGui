@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -195,7 +195,7 @@ namespace TsGui.Authentication.ActiveDirectory
             }
         }
 
-        public void AddGroup(string groupname)
+        private void AddGroup(string groupname)
         {
             this.Groups.Add(groupname);
             if (this._createIDs)

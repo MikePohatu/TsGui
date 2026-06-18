@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -82,12 +82,13 @@ namespace TsGui.Options
             foreach (IOption option in Options)
             {
                 //first check for null option variables e.g. for headings
-                if (option.Variables != null)
+                var optionVars = option.GetVariables();
+                if (optionVars != null)
                 {
                     //now check if the option is active or not and variables created as required
                     if (option.IsActive == true)
                     {
-                        foreach (Variable variable in option.Variables)
+                        foreach (Variable variable in optionVars)
                         {
                             variables.Add(variable);
                         }

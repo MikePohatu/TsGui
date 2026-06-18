@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -17,12 +17,13 @@
 //
 #endregion
 using Core.Diagnostics;
-using TsGui.Authentication.ActiveDirectory;
-using TsGui.Authentication.LocalConfig;
-using TsGui.Authentication.ExposedPassword;
 using System.Xml.Linq;
-using TsGui.Options;
+using TsGui.Authentication.ActiveDirectory;
+using TsGui.Authentication.ExposedPassword;
 using TsGui.Authentication.Ldap;
+using TsGui.Authentication.LocalConfig;
+using TsGui.Authentication.Script;
+using TsGui.Options;
 
 namespace TsGui.Authentication
 {
@@ -51,6 +52,8 @@ namespace TsGui.Authentication
                         ExposedPasswordAuthenticator auth = new ExposedPasswordAuthenticator(inputxml);
                         OptionLibrary.Add(auth);
                         return auth;
+                    case "Script":
+                        return new ScriptAuthenticator(inputxml);
                     default:
                         throw new KnownException("Invalid type specified in query", inputxml.ToString());
                 }

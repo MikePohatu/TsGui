@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -16,13 +16,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 #endregion
+using Core.Diagnostics;
+using Core.Logging;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Core.Diagnostics;
 using WindowsHelpers;
-using Core.Logging;
-using System.Diagnostics;
 
 namespace TsGui.Scripts
 {
@@ -39,6 +40,14 @@ namespace TsGui.Scripts
         /// <returns></returns>
         /// <exception cref="KnownException"></exception>
         public override async Task RunScriptAsync()
+        { await this.RunScriptAsync(null); }
+
+        /// <summary>
+        /// Run the script with additional params. Results can be consumed from the Result property when finished
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="KnownException"></exception>
+        public override async Task RunScriptAsync(List<IParameter> runtimeParms)
         {
             this.Result = new ScriptResult<string>();
 
@@ -70,6 +79,10 @@ namespace TsGui.Scripts
 
                 using (var posh = new PoshHandler(script))
                 {
+                    if (runtimeParms != null)
+                    {
+                        Log.Error("Runtime parameters are not supported in BatchScript");
+                    }
                     Process proc = AsyncHelpers.GetProcess(this.Path, this._params);
                     this.Result.ReturnCode = await AsyncHelpers.StartProcessAsync(proc);
                     this.Result.ReturnedObject = proc.StandardOutput.ReadToEnd();

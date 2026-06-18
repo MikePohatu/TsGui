@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -17,12 +17,14 @@
 //
 #endregion
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using System.Security;
-using System.Xml.Linq;
-using TsGui.Authentication.ActiveDirectory;
-using TsGui.Authentication;
 using System.Linq;
+using System.Security;
+using System.Text;
+using System.Xml.Linq;
+using TsGui.Authentication;
+using TsGui.Authentication.ActiveDirectory;
 
 namespace TsGui.Tests.Authentication
 {
@@ -48,7 +50,29 @@ namespace TsGui.Tests.Authentication
             adauth.AddGroups(args.AuthArgs.Groups);
             var dummy = adauth.AuthenticateAsync().Result;
             var results = ActiveDirectoryMethods.IsUserMemberOfGroups(adauth.Context, args.UserName, args.ExpectedResults.Keys.ToList());
-            Assert.AreEqual(args.ExpectedResults, results);
+
+            StringBuilder sb = new StringBuilder();
+            bool match = true;
+
+            //check all the key/value pairs exist and match
+            foreach (var key in args.ExpectedResults.Keys)
+            {
+                bool outbool;
+                if (args.ExpectedResults.TryGetValue(key, out outbool))
+                {
+                    if (args.ExpectedResults[key] != outbool)
+                    {
+                        sb.Append(key);
+                        match = false;
+                    }
+                }
+                else
+                {
+                    match = false;
+                    throw new Exception($"Key not found in results: {key}");
+                }
+            }
+            Assert.That(match);
         }
 
         public static IEnumerable<TestCaseData> ActiveDirectoryAuthentication_IsMemberOfGroupsTest_TestCases

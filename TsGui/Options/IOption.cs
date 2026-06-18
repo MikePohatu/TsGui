@@ -1,5 +1,5 @@
-﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+#region license
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -28,7 +28,7 @@ namespace TsGui.Options
 {
     public interface IOption: ILinkSource
     {
-        IEnumerable<Variable> Variables { get; }
+        IEnumerable<Variable> GetVariables();
         string LiveValue { get; }
 
         /// <summary>
@@ -37,6 +37,10 @@ namespace TsGui.Options
         string ListsOutput { get; }
         string VariableName { get; }
         string InactiveValue { get; }
+        /// <summary>
+        /// whether the variable will be marked as hidden in logs by ConfigMgr. Creates %Variable%_HiddenValueFlag% variable prior to the variable
+        /// </summary>
+        bool HiddenValueFlag { get; }
         bool PurgeInactive { get; set; }
         bool IsActive { get; }
         string Lists { get; }

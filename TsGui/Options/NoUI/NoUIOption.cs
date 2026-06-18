@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -55,6 +55,7 @@ namespace TsGui.Options.NoUI
             }
         }
         public string VariableName { get; set; }
+        public bool HiddenValueFlag { get; private set; } = false;
         public string InactiveValue { get; set; } = "TSGUI_INACTIVE";
         public string CurrentValue
         {
@@ -63,19 +64,6 @@ namespace TsGui.Options.NoUI
             {
                 this._value = value;
                 this.NotifyViewUpdate();
-            }
-        }
-        public IEnumerable<Variable> Variables
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(this.VariableName) || ((this.IsActive == false) && (this.PurgeInactive == true)))
-                { return null; }
-                else
-                {
-                    var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
-                    return new List<Variable> { variable };
-                }
             }
         }
         public string LiveValue
@@ -106,12 +94,27 @@ namespace TsGui.Options.NoUI
             this._querylist = new QueryPriorityList(this);
         }
 
+
+        public IEnumerable<Variable> GetVariables()
+        {
+            if (string.IsNullOrEmpty(this.VariableName) || ((this.IsActive == false) && (this.PurgeInactive == true)))
+            { return null; }
+            else
+            {
+                var varlist = Variable.GetIOptionVariableList(this);
+                var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
+                varlist.Add(variable);
+                return varlist;
+            }
+        }
+
         //public methods
         public new void LoadXml(XElement InputXml)
         {
             base.LoadXml(InputXml);
 
             //path and variable can be set either as an element, or an attribute
+            this.HiddenValueFlag = XmlHandler.GetBoolFromXml(InputXml, "HiddenValueFlag", this.HiddenValueFlag);
             this.VariableName = XmlHandler.GetStringFromXml(InputXml, "Variable", this.VariableName);
             this.Path = XmlHandler.GetStringFromXml(InputXml, "Path", this.Path);
             this.Lists = XmlHandler.GetStringFromXml(InputXml, "Lists", this.Lists);

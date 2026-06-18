@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -51,8 +51,12 @@ namespace TsGui.View.GuiOptions
         private string _authenticationfailuremessage = "Authentication failed";
         private string _authorizationfailuremessage = "Authorization failed";
         private string _nopasswordmessage = "Password cannot be empty";
+        private string _nologinmessage = "Please login";
         private static SolidColorBrush _greenbrush = new SolidColorBrush(Colors.Green);
         private static SolidColorBrush _hovergreenbrush = new SolidColorBrush(Colors.OliveDrab);
+
+        private static SolidColorBrush _orangebrush = new SolidColorBrush(Colors.Orange);
+        private static SolidColorBrush _hoverorangebrush = new SolidColorBrush(Colors.DarkOrange);
 
         //Properties
         #region
@@ -66,18 +70,19 @@ namespace TsGui.View.GuiOptions
             get { return this._maxlength; }
             set { this._maxlength = value; this.OnPropertyChanged(this, "MaxLength"); }
         }
-        public override IEnumerable<Variable> Variables
+        public override IEnumerable<Variable> GetVariables()
         {
-            get {
-                if (string.IsNullOrEmpty(this.VariableName) || ((this.IsActive == false) && (PurgeInactive == true)))
-                { return null;  }
+            if (string.IsNullOrEmpty(this.VariableName) || ((this.IsActive == false) && (PurgeInactive == true)))
+            { return null; }
 
-                if (this._expose) {
-                    var variable = new Variable(this.VariableName, this._exposedpassword, this.Path);
-                    return new List<Variable> { variable };
-                }
-                else { return null; }
+            if (this._expose)
+            {
+                var varlist = Variable.GetIOptionVariableList(this);
+                var variable = new Variable(this.VariableName, this._exposedpassword, this.Path);
+                varlist.Add(variable);
+                return varlist;
             }
+            else { return null; }
         }
         public ValidationHandler ValidationHandler { get; private set; }
 
@@ -110,6 +115,7 @@ namespace TsGui.View.GuiOptions
             this._passwordboxui.PasswordBox.Loaded += this.OnLoaded;
 
             Director.Instance.ConfigLoadFinished += this.OnConfigLoadFinished;
+            this.HiddenValueFlag = true;
         }
 
         private void SetDefaults()
@@ -128,6 +134,7 @@ namespace TsGui.View.GuiOptions
             this._authorizationfailuremessage = XmlHandler.GetStringFromXml(inputxml, "AuthorizationWarning", this._authorizationfailuremessage);
             this._authenticationfailuremessage = XmlHandler.GetStringFromXml(inputxml, "AuthenticationWarning", this._authenticationfailuremessage);
             this._nopasswordmessage = XmlHandler.GetStringFromXml(inputxml, "NoPasswordMessage", this._nopasswordmessage);
+            this._nologinmessage = XmlHandler.GetStringFromXml(inputxml, "NoLoginMessage", this._nologinmessage);
             this._expose = XmlHandler.GetBoolFromXml(inputxml, "ExposePassword", this._expose);
             this._allowempty = XmlHandler.GetBoolFromXml(inputxml, "AllowEmpty", this._allowempty);
 
@@ -163,6 +170,11 @@ namespace TsGui.View.GuiOptions
                     this.ValidationHandler.ToolTipHandler.Clear();
                     this.ControlStyle.BorderBrush = _greenbrush;
                     this.ControlStyle.MouseOverBorderBrush = _hovergreenbrush;
+                }
+                else if (this._authenticator.State == AuthState.NotAuthed)
+                {
+                    this.ValidationText = this._nologinmessage;
+                    this.ValidationHandler.ToolTipHandler.ShowInformation();
                 }
                 else if (this._authenticator.State == AuthState.NoPassword)
                 {

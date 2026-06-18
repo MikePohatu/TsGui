@@ -1,12 +1,10 @@
-Version 2.4.0.3
-Release date: 13 Mar 2026
+Version 2.4.0.5
+Release date: 18 Jun 2026
 
 *Features
-	Updated Lists feature to allow for Lists output separate from Variable name
-	Added LDAP authentication feature (ALPHA)
-
-*Changes
-	If a Variable attribute is not set, the GuiOption will not output a variable.
+	Added HiddenValueFlag option to enable 'Do not display this value' in TS variables. 
+	 See the TsGui Output documentation (under Features on the main documentation page)
+	Add Script authentication type for custom authentication
 
 
 *Known issues
@@ -16,6 +14,17 @@ Release date: 13 Mar 2026
 	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx) and Windows PowerShell (WinPE-PowerShell) be added to your boot image 
+
+---------------
+Version 2.4.0.3
+Release date: 13 Mar 2026
+
+*Features
+	Updated Lists feature to allow for Lists output separate from Variable name
+	Added LDAP authentication feature (ALPHA)
+
+*Changes
+	If a Variable attribute is not set, the GuiOption will not output a variable.
 
 
 ---------------

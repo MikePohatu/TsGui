@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -50,6 +50,15 @@ namespace TsGui.Authentication.ExposedPassword
         public string AuthID { get; set; }
         public List<string> RequiredGroups { get; private set; } = new List<string>();
 
+        public string ID { get; private set; }
+        public string LiveValue { get { return this.PasswordSource?.Password; } }
+        public string CurrentValue { get { return this.LiveValue; } }
+        public string VariableName { get; private set; }
+        public bool HiddenValueFlag { get; private set; } = true;
+        public string InactiveValue { get { return this.LiveValue; } }
+        public bool PurgeInactive { get; set; } = false;
+        public bool IsActive { get; private set; } = true;
+
         public ExposedPasswordAuthenticator(XElement inputxml)
         {
             this.LoadXml(inputxml);
@@ -80,7 +89,6 @@ namespace TsGui.Authentication.ExposedPassword
         private void LoadXml(XElement inputxml)
         {
             this.VariableName = XmlHandler.GetStringFromXml(inputxml, "Variable", this.VariableName);
-            this.VariableName = XmlHandler.GetStringFromXml(inputxml, "Variable", this.VariableName);
             this.Path = XmlHandler.GetStringFromXml(inputxml, "Path", this.Path);
             this.Path = XmlHandler.GetStringFromXml(inputxml, "Path", this.Path);
             this.ListsOutput = XmlHandler.GetStringFromXml(inputxml, "ListOutput", this.VariableName);
@@ -95,21 +103,13 @@ namespace TsGui.Authentication.ExposedPassword
             this._blankallowed = XmlHandler.GetBoolFromXml(inputxml, "AllowBlank", this._blankallowed);
         }
 
-        public string ID { get; private set; }
-        public IEnumerable<Variable> Variables 
-        { 
-            get 
-            { 
-                var variable = new Variable(this.VariableName, this.LiveValue, this.Path);
-                return new List<Variable> { variable };
-            } 
+        public IEnumerable<Variable> GetVariables()
+        {
+            var varlist = Variable.GetIOptionVariableList(this);
+            var variable = new Variable(this.VariableName, this.LiveValue, this.Path);
+            varlist.Add(variable);
+            return varlist;
         }
-        public string LiveValue { get { return this.PasswordSource?.Password; } }
-        public string CurrentValue { get { return this.LiveValue; } }
-        public string VariableName { get; private set; }
-        public string InactiveValue { get { return this.LiveValue; } }
-        public bool PurgeInactive { get; set; } = false;
-        public bool IsActive { get; private set; } = true;
 
         public async Task InitialiseAsync() {
             if (this.PasswordSource == null) { Log.Warn($"AuthID {this.AuthID} does not have a PasswordSource defined"); }

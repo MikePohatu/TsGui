@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -33,7 +33,6 @@ namespace TsGui.View.GuiOptions
     public class TsImage : GuiOptionBase, IGuiOption
     {
         public Image Image { get; set; }
-        public override IEnumerable<Variable> Variables { get { return null; } }
         public override string CurrentValue { get { return this.Image.MultiImage.CurrentFilePath; } }
 
         //Constructor
@@ -50,6 +49,7 @@ namespace TsGui.View.GuiOptions
 
 
         //Methods
+        public override IEnumerable<Variable> GetVariables() { return null; }
         public new void LoadXml(XElement InputXml)
         {
             //load the xml for the base class stuff

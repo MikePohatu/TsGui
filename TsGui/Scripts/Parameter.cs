@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -31,6 +31,12 @@ namespace TsGui.Scripts
         private QueryPriorityList _querylist;
         public string Name { get; set; }
         public bool IsSwitch { get; set; } = false;
+
+        public Parameter(string name, string value)
+        {
+            this.Name = name;
+            this._querylist = QueryPriorityList.GetSingleValueList(value, this);
+        }
 
         public Parameter(XElement InputXml)
         {

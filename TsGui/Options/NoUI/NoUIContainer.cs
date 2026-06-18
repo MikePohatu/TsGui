@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -30,6 +30,8 @@ namespace TsGui.Options.NoUI
         private List<IOption> _options = new List<IOption>();
         private List<NoUIContainer> _containers = new List<NoUIContainer>();
         public string Lists { get; private set; }
+        public bool HiddenValueFlag { get; private set; } = false;
+
         //constructors
         public NoUIContainer(XElement InputXml) : base()
         {
@@ -46,6 +48,8 @@ namespace TsGui.Options.NoUI
         {
             base.LoadXml(InputXml);
             this.Lists = XmlHandler.GetStringFromXml(InputXml,"Lists", string.Empty);
+
+            this.HiddenValueFlag = XmlHandler.GetBoolFromXml(InputXml, "HiddenValueFlag", this.HiddenValueFlag);
             foreach (XElement opx in InputXml.Elements())
             {
                 if (opx.Name == "NoUIOption")

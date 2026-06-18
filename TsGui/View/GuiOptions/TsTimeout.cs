@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -49,7 +49,6 @@ namespace TsGui.View.GuiOptions
                 this.OnPropertyChanged(this, "CurrentValue");
             }
         }
-        public override IEnumerable<Variable> Variables { get { return null; } }
 
         //constructor
         public TsTimeout(XElement InputXml, ParentLayoutElement Parent) : base(Parent)
@@ -60,6 +59,8 @@ namespace TsGui.View.GuiOptions
             this.UserControl.DataContext = this;
             this.LoadXml(InputXml);
         }
+
+        public override IEnumerable<Variable> GetVariables() { return null; }
 
         public new void LoadXml(XElement InputXml)
         {

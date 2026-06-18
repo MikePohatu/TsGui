@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -35,7 +35,6 @@ namespace TsGui.View.GuiOptions
         private bool _verboseAllowed = false;
 
         public override string CurrentValue { get; } = null;
-        public override IEnumerable<Variable> Variables { get; } = null;
 
         private Visibility _verbosevisibility = Visibility.Collapsed;
         public Visibility VerboseVisibility
@@ -108,6 +107,8 @@ namespace TsGui.View.GuiOptions
 
             this.SubscribeToLogs();
         }
+
+        public override IEnumerable<Variable> GetVariables() { return null; }
 
         public override async Task UpdateLinkedValueAsync(Message message)
         {

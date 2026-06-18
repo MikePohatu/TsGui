@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -277,6 +277,33 @@ namespace WindowsHelpers
                         string val = hash[key] == null ? string.Empty : hash[key].ToString();
                         if (vals.ContainsKey(key)) { vals[key] = val; }
                         else { vals.Add(key, val); }
+                    }
+                }
+            }
+
+            return vals;
+        }
+
+        /// <summary>
+        /// Get a propertly that is of type hash table
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="valueName"></param>
+        /// <returns></returns>
+        public static Dictionary<string, T> GetPropertyHashTable<T>(PSObject obj, string valueName)
+        {
+            Dictionary<string, T> vals = null;
+
+            if (obj != null)
+            {
+                var hash = obj.Properties[valueName]?.Value as Hashtable;
+                if (hash != null)
+                {
+                    vals = new Dictionary<string, T>();
+                    foreach (string key in hash.Keys)
+                    {
+                        vals.Add(key, (T)hash[key]);
                     }
                 }
             }

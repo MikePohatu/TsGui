@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -98,6 +98,14 @@ namespace TsGui.Queries
                 if (wrangler != null) { formatterlist.AddRange(wrangler.GetAllPropertyFormatters()); }
             }
             return formatterlist;
+        }
+
+        public static QueryPriorityList GetSingleValueList(string value, ILinkTarget linktarget)
+        {
+            var ql = new QueryPriorityList(linktarget);
+            var val = new ValueOnlyQuery(value);
+            ql.AddQuery(val);
+            return ql;
         }
     }
 }

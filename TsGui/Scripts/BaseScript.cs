@@ -1,5 +1,5 @@
 #region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -92,6 +92,8 @@ namespace TsGui.Scripts
         }
 
         public abstract Task RunScriptAsync();
+
+        public abstract Task RunScriptAsync(List<IParameter> runtimeParmas);
 
         public async Task OnReprocessAsync()
         {

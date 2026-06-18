@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -21,9 +21,11 @@
 
 using Core.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TsGui.Config;
+using TsGui.Options;
 
 namespace TsGui
 {
@@ -71,7 +73,7 @@ namespace TsGui
         private static char[] _allowedFirstCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
 
         /// <summary>
-        /// Confirrm a string is a valid variable name. 
+        /// Confirm a string is a valid variable name. 
         /// </summary>
         /// <param name="variableName"></param>
         /// <returns></returns>
@@ -115,6 +117,27 @@ namespace TsGui
             }
 
             return wasInputValid;
+        }
+
+        /// <summary>
+        /// Get a starter list of variables for an IOption. This will add the _HiddenValueFlag variable 
+        /// if HiddenValueFlag is true on the IOption
+        /// </summary>
+        /// <param name="option"></param>
+        public static List<Variable> GetIOptionVariableList(IOption option)
+        {
+            var varlist = new List<Variable>();
+
+            //set the hidden flag if set: 
+            //https://www.reddit.com/r/SCCM/comments/14eceu6/comment/llkk0ey/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+            if (option.HiddenValueFlag)
+            {
+                var hiddenName = option.VariableName + "_HiddenValueFlag";
+                var flagvar = new Variable(hiddenName, "TRUE", option.Path);
+                varlist.Add(flagvar);
+            }
+
+            return varlist;
         }
     }
 }

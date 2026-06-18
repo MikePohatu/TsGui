@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -64,19 +64,7 @@ namespace TsGui.View.GuiOptions
         public virtual Control InteractiveControl { get; set; }
         public abstract string CurrentValue { get; }
         public string ListsOutput { get; protected set; }
-        public virtual IEnumerable<Variable> Variables
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(this.VariableName) || ((this.IsActive == false) && (PurgeInactive == true)))
-                { return null; }
-                else
-                {
-                    var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
-                    return new List<Variable> { variable };
-                }
-            }
-        }
+
         public string LiveValue
         {
             get
@@ -101,6 +89,18 @@ namespace TsGui.View.GuiOptions
         {
             this.UserControl = new GuiOptionBaseUI();
             this.UserControl.Loaded += this.OnRendered;
+        }
+        public virtual IEnumerable<Variable> GetVariables()
+        {
+            if (string.IsNullOrEmpty(this.VariableName) || ((this.IsActive == false) && (PurgeInactive == true)))
+            { return null; }
+            else
+            {
+                var varlist = Variable.GetIOptionVariableList(this);
+                var variable = new Variable(this.VariableName, this.CurrentValue, this.Path);
+                varlist.Add(variable);
+                return varlist;
+            }
         }
 
         public void OnRendered (object sender, EventArgs e)

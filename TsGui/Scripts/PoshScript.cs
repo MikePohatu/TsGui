@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -118,6 +118,14 @@ namespace TsGui.Scripts
         /// <returns></returns>
         /// <exception cref="KnownException"></exception>
         public override async Task RunScriptAsync()
+        { await this.RunScriptAsync(null); }
+
+        /// <summary>
+        /// Run the posh script. Results can be consumed from the Result property when finished
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="KnownException"></exception>
+        public override async Task RunScriptAsync(List<IParameter> runtimeParmas)
         {
             if (this.IsInlineScript)
             {
@@ -159,6 +167,15 @@ namespace TsGui.Scripts
                     {
                         var value = await p.GetValue(null);
                         posh.Runner.AddParameter(p.Name, value);
+                    }
+
+                    if (runtimeParmas  != null)
+                    {
+                        foreach (IParameter p in runtimeParmas)
+                        {
+                            var value = await p.GetValue(null);
+                            posh.Runner.AddParameter(p.Name, value);
+                        }
                     }
                     
                     if (!string.IsNullOrWhiteSpace(this._params)) { posh.Runner.AddArgument(this._params); }

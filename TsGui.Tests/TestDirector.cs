@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -61,5 +61,8 @@ namespace TsGui.Tests
 
         public void UpdatePage(TsPage page) { }
 
+        void IDirector.StartResize() { }
+
+        void IDirector.FinishResize() { }
     }
 }

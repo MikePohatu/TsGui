@@ -1,5 +1,5 @@
 ﻿#region license
-// Copyright (c) 2025 Mike Pohatu
+// Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
 //
@@ -34,6 +34,9 @@ namespace TsGui.View.Layout
     public abstract class BaseLayoutElement: GroupableUIElementBase, IEventer, IConfigParent
     {
         private bool _showgridlines;
+
+        public bool HiddenValueFlag { get; protected set; } = false;
+
         public Style LabelStyle { get { return this.Style.LabelStyle; } }
         public Style ControlStyle { get { return this.Style.ControlStyle; } }
         public StyleTree Style { get; private set; } = new StyleTree();
@@ -70,6 +73,7 @@ namespace TsGui.View.Layout
         {
             this.Parent = Parent;
             this.Lists = Parent.Lists;
+            this.HiddenValueFlag = Parent.HiddenValueFlag;
             this.Events = new LayoutEvents(this,Parent);
             if (Parent != null)
             {
@@ -82,6 +86,7 @@ namespace TsGui.View.Layout
         {
             base.LoadXml(InputXml);
 
+            this.HiddenValueFlag = XmlHandler.GetBoolFromXml(InputXml, "HiddenValueFlag", this.HiddenValueFlag);
             this.Lists = XmlHandler.GetStringFromXml(InputXml, "Lists", this.Lists);
 
             this.ShowGridLines = XmlHandler.GetBoolFromXml(InputXml, "ShowGridLines", this.ShowGridLines);
