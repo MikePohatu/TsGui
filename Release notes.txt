@@ -1,5 +1,5 @@
 Version 2.4.0.5
-Release date: 16 Jun 2026
+Release date: 18 Jun 2026
 
 *Features
 	Added HiddenValueFlag option to enable 'Do not display this value' in TS variables. 

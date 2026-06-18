@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2026 Mike Pohatu
 //
 // This file is part of TsGui.
