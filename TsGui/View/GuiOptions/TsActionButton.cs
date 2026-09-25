@@ -33,8 +33,9 @@ namespace TsGui.View.GuiOptions
         private IComplianceRoot _rootelement;
         private string _buttontext;
         private TsButtonUI _ui;
-        private IAction _action;
+        private List<IAction> _actions;
         private bool _isdefault;
+        private bool _ordered = true; //do the actions in order, or just fire and forget
 
         public override string CurrentValue { get { return null; } }
         public string ButtonText
@@ -80,10 +81,12 @@ namespace TsGui.View.GuiOptions
             //load the xml for the base class stuff
             base.LoadXml(inputxml);
             this.ButtonText = XmlHandler.GetStringFromXml(inputxml, "ButtonText", this.ButtonText);
-
-            XElement x;
-            x = inputxml.Element("Action");
-            if (x != null) { this._action = ActionFactory.CreateAction(x); }
+            this._ordered = XmlHandler.GetBoolFromXml(inputxml, "EnforceOrder", this._ordered);
+            
+            this._actions = new List<IAction>();
+            var actionsX = inputxml.Elements("Action");
+            foreach (XElement x in actionsX) 
+            { this._actions.Add(ActionFactory.CreateAction(x)); }
 
             this.IsDefault = XmlHandler.GetBoolFromXml(inputxml, "IsDefault", this.IsDefault);
         }
@@ -91,7 +94,22 @@ namespace TsGui.View.GuiOptions
         public async void OnButtonClick(object o, RoutedEventArgs e)
         {
             Log.Debug("Action button clicked");
-            await this._action?.RunActionAsync();
+            List<Task> tasks = new List<Task>();
+            if (this._ordered)
+            {
+                foreach (var action in this._actions)
+                {
+                    await action.RunActionAsync();
+                }
+            }
+            else
+            {
+                foreach (var action in this._actions)
+                {
+                    tasks.Add(action.RunActionAsync());
+                }
+                await Task.WhenAll(tasks);
+            }
         }
 
         private void SetDefaults()
