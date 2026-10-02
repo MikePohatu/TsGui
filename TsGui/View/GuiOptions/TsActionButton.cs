@@ -81,7 +81,7 @@ namespace TsGui.View.GuiOptions
             //load the xml for the base class stuff
             base.LoadXml(inputxml);
             this.ButtonText = XmlHandler.GetStringFromXml(inputxml, "ButtonText", this.ButtonText);
-            this._ordered = XmlHandler.GetBoolFromXml(inputxml, "EnforceOrder", this._ordered);
+            this._ordered = XmlHandler.GetBoolFromXml(inputxml, "OrderedActions", this._ordered);
             
             this._actions = new List<IAction>();
             var actionsX = inputxml.Elements("Action");
