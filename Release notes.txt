@@ -1,11 +1,9 @@
-Version 2.4.0.5
-Release date: 18 Jun 2026
+Version 2.4.0.6
+Release date: 2 Oct 2026
 
-*Features
-	Added HiddenValueFlag option to enable 'Do not display this value' in TS variables. 
-	 See the TsGui Output documentation (under Features on the main documentation page)
-	Add Script authentication type for custom authentication
-
+* Features 
+	Added support for multiple actions on a single ActionButton
+	
 
 *Known issues
 	TsGui is now based on .Net 4.6.2 (the oldest supported version). Older .Net versions may not work
@@ -14,6 +12,15 @@ Release date: 18 Jun 2026
 	https://www.imab.dk/workaround-fixing-crashing-wpf-forms-in-powershell-after-updating-to-windows-10-adk-v1809/
 
 *Requires Microsoft .NET (WinPE-NetFx) and Windows PowerShell (WinPE-PowerShell) be added to your boot image 
+
+---------------
+Version 2.4.0.5
+Release date: 18 Jun 2026
+
+*Features
+	Added HiddenValueFlag option to enable 'Do not display this value' in TS variables. 
+	 See the TsGui Output documentation (under Features on the main documentation page)
+	Add Script authentication type for custom authentication
 
 ---------------
 Version 2.4.0.3
