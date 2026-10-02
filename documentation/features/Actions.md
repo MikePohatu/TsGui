@@ -26,7 +26,7 @@ Single action:
 ---
 
 ### Multiple Actions
-You can run multiple actions with a single ActionButton. Add multiple \<Action> elements to your GuiOtion as below:
+You can run multiple actions with a single ActionButton (requires version 2.4.0.6 or higher). Add multiple \<Action> elements to your GuiOtion as below:
 
 ```
 <GuiOption Type="ActionButton" IsDefault="TRUE">
