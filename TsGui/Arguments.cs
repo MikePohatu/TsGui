@@ -32,6 +32,7 @@ namespace TsGui
         public string WebConfigUrl { get; private set; }
         public string LogFile { get; private set; }
         public int LoggingLevel { get; private set; }
+        public int ImportLevels { get; private set; } = 5; // how many passes to do when expanding Import elements in config
 
         public bool TestMode { get; private set; }
 
@@ -104,6 +105,11 @@ namespace TsGui
                             break;
                         case "-IGNOREPARAMERRORS":
                             this.TestingRight = true;
+                            break;
+                        case "-IMPORTLEVELS":
+                            if (Args.Length < index + 2) { throw new InvalidOperationException("Missing value after -importlevels"); }
+                            this.ImportLevels = int.Parse(Args[index + 1]);
+                            index++;
                             break;
                         default:
                             throw new InvalidOperationException("Invalid parameter: " + Args[index]);

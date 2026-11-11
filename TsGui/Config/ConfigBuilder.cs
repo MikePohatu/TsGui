@@ -30,8 +30,18 @@ namespace TsGui.Config
         /// </summary>
         public static async Task<XElement> LoadConfigAsync(string configpath)
         {
+            int maxPasses = Arguments.Instance.ImportLevels;
+            int pass = 0;
+            int importCount = 0;
             XElement rootconfig =  await GetXml(configpath);
-            await Expand(rootconfig).ConfigureAwait(false);
+
+            // Expand any Import elements in the config. Do multiple passes to allow for nested imports
+            do
+            {
+                importCount = await ExpandAsync(rootconfig);
+                pass++;
+            }
+            while (importCount > 0 && pass < maxPasses);
             return rootconfig;
         }
 
@@ -39,16 +49,20 @@ namespace TsGui.Config
         /// Traverse the XML and expand any found Import elements in place
         /// </summary>
         /// <param name="importxml"></param>
-        /// <returns></returns>
-        private static async Task Expand(XElement importxml)
+        /// <returns>int</returns>
+        /// 
+        private static async Task<int> ExpandAsync(XElement importxml)
         {
+            int importCount = 0;
             var elenum = importxml.Elements().GetEnumerator();
             var hasnext = elenum.MoveNext();
-            while(hasnext)
+
+            while (hasnext)
             {
                 XElement element = elenum.Current;
                 if (element.Name == "Import")
                 {
+                    importCount++;
                     string path = XmlHandler.GetStringFromXml(element, "Path", string.Empty);
                     path = XmlHandler.GetStringFromXml(element, "Path", path);
                     Log.Info("Loading XML import: " + element.ToString());
@@ -68,10 +82,12 @@ namespace TsGui.Config
                 } 
                 else
                 {
-                    await Expand(element);
+                    importCount += await ExpandAsync(element);
                     hasnext = elenum.MoveNext();
                 }
             }
+
+            return importCount;
         }
 
         /// <summary>
