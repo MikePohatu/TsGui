@@ -380,6 +380,7 @@ namespace TsGui
                 ScriptLibrary.LoadXml(SourceXml);
 
                 //start layout import
+                GuiTimeout.Init(SourceXml.Element("Timeout"));  //timeout is required by timeout GuiOptions, so init it first
                 ConfigData.TsMainWindow = new TsMainWindow(this.ParentWindow, SourceXml);
 
                 ConfigData.Buttons.LoadXml(SourceXml.Element("Buttons"));
@@ -400,10 +401,7 @@ namespace TsGui
 
                 pagedef.Buttons = ConfigData.Buttons;
                 pagedef.MainWindow = ConfigData.TsMainWindow;
-
-
                 ConfigData.TsMainWindow.LoadXml(SourceXml);
-                GuiTimeout.Init(SourceXml.Element("Timeout"));
 
                 //now read in the options and add to a dictionary for later use
                 pagesXml = SourceXml.Elements("Page");
